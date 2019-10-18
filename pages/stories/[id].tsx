@@ -1,18 +1,29 @@
 /**
- * @file stories/[id].js
+ * @file stories/[id].tsx
  * Page component for StoryPage.
  */
 import React, { Component } from 'react';
-import PropTypes from'prop-types';
 import Head from 'next/head';
 import Link from 'next/link';
+import { NextPageContext } from 'next-server/dist/lib/utils';
 
 import { fetchPriApiItem } from '../../lib/fetch';
 
-class StoryPage extends Component {
+// TODO: Move this into PRI API Library/SDK.
+interface StoryData {
+  id: number | string,
+  title: string,
+  teaser: string
+}
 
-  /* istanbul ignore next */
-  static async getInitialProps(ctx) {
+// TODO: Move to ./interfaces
+interface StoryState {
+  data: StoryData
+}
+
+class StoryPage extends Component<StoryState> {
+
+  static async getInitialProps(ctx: NextPageContext) {
     const { query: { id } } = ctx;
     const data = await fetchPriApiItem('node--stories', id);
 
@@ -42,13 +53,5 @@ class StoryPage extends Component {
     );
   }
 }
-
-StoryPage.propTypes = {
-  data: PropTypes.shape()
-};
-
-StoryPage.defaultProps = {
-  data: {}
-};
 
 export default StoryPage;

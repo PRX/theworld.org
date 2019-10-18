@@ -1,4 +1,9 @@
-import React, { Component } from 'react';
+/**
+ * @file index.tsx
+ * Exports the Home component.
+ */
+
+import React, { Component, ReactFragment } from 'react';
 import Link from 'next/link';
 
 class Home extends Component {

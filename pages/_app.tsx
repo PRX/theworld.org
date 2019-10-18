@@ -1,5 +1,5 @@
 /**
- * @file _app.js
+ * @file _app.tsx
  * Override the main app component.
  */
 
@@ -50,7 +50,7 @@ class TwApp extends App {
 
   /**
    * Initialize route state to be compatible with client-side routing.
-   * 
+   *
    * Initial page loads will not have populated the history state with values
    * the Next app router can use as expected. This should only need to be done
    * once on the initial page. Should replace current history state with URL
@@ -63,11 +63,14 @@ class TwApp extends App {
     // If this is not an error route and is a dynamic route, check to see if
     // the `as` is prefixed with the expected pathname.
     if (route !== '/_error' && pathname !== asPath) {
-      const asPathPrefix = Object.keys(query).reduce((result, key) => result.replace(`[${key}]`, query[key]), route);
+      const asPathPrefix = Object.keys(query).reduce((result, key) => {
+        const value = query[key].toString();
+        return result.replace(`[${key}]`, value);
+      }, route);
       // If the prefix is missing, replace history with current state and
       // using prefix as the `as` path, appending the current `as` path in the
       // `alias` querystring parameter. Use current `as` path as history URL.
-      if (asPath.indexOf(asPathPrefix !== 0)) {
+      if (asPath.indexOf(asPathPrefix) !== 0) {
         window.history.replaceState({
           url: pathname,
           as: `${asPathPrefix}?alias=${asPath}`

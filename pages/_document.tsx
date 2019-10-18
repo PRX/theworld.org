@@ -1,5 +1,5 @@
 /**
- * @file _document.js
+ * @file _document.tsx
  * Exports the main document.
  */
 
