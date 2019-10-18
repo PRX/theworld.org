@@ -1,0 +1,35 @@
+
+env:
+  browser: true
+  es6: true
+  jest: true
+  jest/globals: true
+  node: true
+extends:
+  - airbnb
+  - prettier
+  - prettier/react
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+  expect: true
+  it: true
+  describe: true
+  jest: true
+parser: babel-eslint
+plugins:
+  - react
+  - jest
+rules:
+  strict: 0
+  import/no-extraneous-dependencies: 0
+  jsx-a11y/anchor-is-valid: 0
+  react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
+  react/jsx-props-no-spreading: 0
+  react/jsx-uses-react: 2
+  react/jsx-uses-vars: 2
+  react/prefer-stateless-function: 0
+  react/react-in-jsx-scope: 2
+  no-unused-vars:
+    - error
+    - varsIgnorePattern: "React"

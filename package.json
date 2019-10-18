@@ -1,0 +1,98 @@
+{
+  "name": "theworldorg",
+  "private": true,
+  "description": "The World website fronetend.",
+  "repository": "git@github.com:PRX/theworld.org.git",
+  "author": "Rick Peterman <rick.peterman@prx.org>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8.9.0 <=12"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/.next/",
+      "<rootDir>/node_modules/"
+    ],
+    "moduleNameMapper": {
+      "^.+\\.s?css$": "identity-obj-proxy"
+    }
+  },
+  "scripts": {
+    "dev": "node server.js",
+    "build": "next build",
+    "lint": "eslint --ext .jsx,.js .",
+    "now-build": "yarn lint ; yarn test ; yarn build",
+    "snapshot": "NODE_ENV=test jest -u",
+    "start": "NODE_ENV=production node server.js",
+    "test": "NODE_ENV=test jest --verbose --coverage"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.24",
+    "@fortawesome/free-brands-svg-icons": "^5.11.1",
+    "@fortawesome/free-regular-svg-icons": "^5.11.1",
+    "@fortawesome/free-solid-svg-icons": "^5.11.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "@material-ui/core": "^4.3.3",
+    "@material-ui/icons": "^4.2.1",
+    "@types/next": "8.0.6",
+    "@zeit/next-css": "1.0.1",
+    "@zeit/next-sass": "1.0.1",
+    "autoprefixer": "9.6.1",
+    "bootstrap": "4.3.1",
+    "classnames": "2.2.6",
+    "crypto-js": "^3.1.9-1",
+    "express": "^4.17.1",
+    "font-awesome": "4.7.0",
+    "highcharts": "^7.2.0",
+    "highcharts-react-official": "^2.2.2",
+    "isomorphic-unfetch": "3.0.0",
+    "jquery": "^3.4.1",
+    "jsonapi-relate": "^2.0.0",
+    "lodash": "4.17.15",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.26",
+    "next": "9.0.3",
+    "next-absolute-url": "1.0.2",
+    "next-compose-plugins": "2.2.0",
+    "next-fonts": "0.17.0",
+    "postcss-easy-media-query": "^1.0.0",
+    "prop-types": "15.7.2",
+    "qs": "^6.8.0",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-markdown": "^4.1.0",
+    "react-moment": "^0.9.2",
+    "react-player": "^1.12.0",
+    "react-scripts": "3.1.1",
+    "url-search-params": "^1.1.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.8.0",
+    "babel-plugin-inline-react-svg": "^1.1.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
+    "enzyme-to-json": "^3.4.0",
+    "eslint": "^5.16.0 || ^6.1.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.15.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.8.0",
+    "node-sass": "^4.12.0",
+    "prettier": "^1.18.2",
+    "react-test-renderer": "^16.9.0"
+  }
+}
