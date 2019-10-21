@@ -27,7 +27,7 @@
     "dev": "node server.js",
     "build": "next build",
     "lint": "eslint --ext .jsx,.js .",
-    "now-build": "yarn lint ; yarn test ; yarn build",
+    "now-build": "yarn build",
     "snapshot": "NODE_ENV=test jest -u",
     "start": "NODE_ENV=production node server.js",
     "test": "NODE_ENV=test jest --verbose --coverage"
