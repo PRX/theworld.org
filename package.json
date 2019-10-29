@@ -3,7 +3,13 @@
   "private": true,
   "description": "The World website fronetend.",
   "repository": "git@github.com:PRX/theworld.org.git",
-  "author": "Rick Peterman <rick.peterman@prx.org>",
+  "author": "PRX",
+  "contributors": [
+    {
+      "name": "Rick Peterman",
+      "email": "rick.peterman@prx.org"
+    }
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=8.9.0 <=12"
