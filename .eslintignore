@@ -1,0 +1,4 @@
+coverage
+.next
+tmp
+server.js
