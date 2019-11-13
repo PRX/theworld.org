@@ -2,8 +2,8 @@
 // Make sure the syntax and sources this file requires are compatible with the current node version you are running
 // See https://github.com/zeit/next.js/issues/1245 for discussions on Universal Webpack or universal Babel
 const express = require('express');
+// TODO: Use pri-api-library to get data for aliases resource.
 const fetch = require('isomorphic-unfetch');
-const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
 

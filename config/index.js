@@ -21,10 +21,12 @@ try {
 }
 
 // Provide API URL override if provided as environment variable.
-const { API_URL } = process.env;
-const envConfig = {};
-if (API_URL) {
-  envConfig.apiUrl = API_URL;
+const { PRI_API_DOMAIN } = process.env;
+let envConfig = {};
+if (PRI_API_DOMAIN) {
+  envConfig = {
+    domain: PRI_API_DOMAIN
+  };
 }
 
 module.exports = { ...defaultConfig, ...localConfig, ...envConfig };

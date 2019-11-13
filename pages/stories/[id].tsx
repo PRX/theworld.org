@@ -25,7 +25,7 @@ class StoryPage extends Component<StoryState> {
 
   static async getInitialProps(ctx: NextPageContext) {
     const { query: { id } } = ctx;
-    const data = await fetchPriApiItem('node--stories', id);
+    const data = await fetchPriApiItem('node--stories', id as string);
 
     return { data };
   }
