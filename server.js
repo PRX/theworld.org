@@ -3,17 +3,20 @@
 // See https://github.com/zeit/next.js/issues/1245 for discussions on Universal Webpack or universal Babel
 const express = require('express');
 // TODO: Use pri-api-library to get data for aliases resource.
-const fetch = require('isomorphic-unfetch');
+// const fetch = require('isomorphic-unfetch');
+const { fetchPriApi } = require('pri-api-library/lib');
 const { parse } = require('url');
 const next = require('next');
 
-const { protocol, domain, apiPath, apiVersion } = require('./config');
+const { priApi: priApiConfig } = require('./config');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const nextAppHandler = app.getRequestHandler();
 
 const port = 3000;
+
+console.log(priApiConfig);
 
 /**
  * Send unknown route paths to query alias API endpoint to get resource type.
@@ -27,7 +30,7 @@ const port = 3000;
  * @param {func} nextRoute - Express `next()`` callback.
  *
  * @return {mixed} - Results from `app.render` or express `next()` callback.
- *                   Probably inconiquential as either ultimately result in a
+ *                   Probably inconsequential as either ultimately result in a
  *                   rendered response from express.
  */
 const aliasHandler = async (req, res, nextRoute) => {
@@ -36,9 +39,14 @@ const aliasHandler = async (req, res, nextRoute) => {
   const parsedUrl = parse(req.url, true);
   const { pathname, query } = parsedUrl;
   const alias = pathname.substring(1);
-  const url = `${protocol}://${domain}/${apiPath}/v${apiVersion}/query/alias/${alias}?fields=id`;
-  const apiResp = await fetch(url);
-  const data = await apiResp.json();
+  const data = await fetchPriApi(
+    `query/alias/${alias}`,
+    { fields: ['id'] },
+    null,
+    priApiConfig
+  );
+
+  console.log(data);
 
   // Check for route to handle resource type.
   if (!data.status) {
@@ -47,12 +55,7 @@ const aliasHandler = async (req, res, nextRoute) => {
     const pageType = type.split('--')[1];
 
     // Render route page, pass id as query prop.
-    return app.render(
-      req,
-      res,
-      `/${pageType}/${id}`,
-      query
-    );
+    return app.render(req, res, `/${pageType}/${id}`, query);
   }
 
   // Move on to next route handler.

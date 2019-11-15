@@ -1,8 +1,10 @@
 {
-  "protocol": "https",
-  "domain": "dev-pri9.pantheonsite.io",
-  "apiPath": "api",
-  "apiVersion": "1.0",
+  "priApi": {
+    "protocol": "https",
+    "domain": "dev-pri9.pantheonsite.io",
+    "apiPath": "api",
+    "apiVersion": "1.0"
+  },
   "analytics": {
     "chartBeat": {
       "uid": 12345
