@@ -6,6 +6,7 @@ const fetch = require('isomorphic-unfetch');
 const { parse } = require('url');
 const next = require('next');
 
+const { resolveResourceTypeRoute } = require('./routes');
 const { priApi } = require('./config');
 const { apiUrlBase } = priApi;
 
@@ -14,16 +15,6 @@ const app = next({ dev });
 const nextAppHandler = app.getRequestHandler();
 
 const port = 3000;
-
-const resourceTypeRouteMap = {
-  'node--stories': (id) => `/stories/${id}`
-};
-
-const resolveResourceTypeRoute = ({type, id}) => {
-  const route = resourceTypeRouteMap[`${type}`];
-
-  return typeof route && (typeof route === 'function' ? route(id) : route);
-};
 
 /**
  * Send unknown route paths to query alias API endpoint to get resource type.
@@ -49,6 +40,8 @@ const aliasHandler = async (req, res, nextRoute) => {
   const url = `${apiUrlBase}/query/alias/${alias}?fields=id`;
   const apiResp = await fetch(url);
   const data = await apiResp.json();
+
+  console.log(url);
 
   // Check for route to handle resource type.
   if (!data.status) {

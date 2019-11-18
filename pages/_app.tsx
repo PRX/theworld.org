@@ -11,7 +11,14 @@ import UrlSearchParams from 'url-search-params';
 class TwApp extends App {
 
   async componentDidMount() {
+    const { router: { asPath, query: { alias } } } = this.props;
     this.initializeRouteState();
+
+    // If the alias parameter appears on initial load, handle it as a client
+    // side route change (updating the displayed URL).
+    if (alias && !!alias.length) {
+      this.handleRouteChangeComplete(asPath);
+    }
 
     // Register route change events.
     Router.events.on('routeChangeComplete', this.handleRouteChangeComplete);
@@ -31,7 +38,7 @@ class TwApp extends App {
    * Here we will replace the history state to display the alias in the browser
    * URL bar, and not the app page route.
    */
-  handleRouteChangeComplete = url => {
+  handleRouteChangeComplete = (url: string) => {
     const [, urlQuerystring] = url.split('?');
     const urlParams = new UrlSearchParams(urlQuerystring);
 
