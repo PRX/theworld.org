@@ -4,7 +4,7 @@
 const express = require('express');
 // TODO: Use pri-api-library to get data for aliases resource.
 // const fetch = require('isomorphic-unfetch');
-const { fetchPriApi } = require('pri-api-library/lib');
+const { fetchPriApi } = require('pri-api-library');
 const { parse } = require('url');
 const next = require('next');
 
@@ -15,8 +15,6 @@ const app = next({ dev });
 const nextAppHandler = app.getRequestHandler();
 
 const port = 3000;
-
-console.log(priApiConfig);
 
 /**
  * Send unknown route paths to query alias API endpoint to get resource type.
@@ -39,23 +37,27 @@ const aliasHandler = async (req, res, nextRoute) => {
   const parsedUrl = parse(req.url, true);
   const { pathname, query } = parsedUrl;
   const alias = pathname.substring(1);
-  const data = await fetchPriApi(
-    `query/alias/${alias}`,
-    { fields: ['id'] },
-    null,
-    priApiConfig
-  );
 
-  console.log(data);
+  try {
+    const data = await fetchPriApi(
+      `query/alias/${alias}`,
+      { fields: ['id'] },
+      null,
+      priApiConfig
+    );
 
-  // Check for route to handle resource type.
-  if (!data.status) {
-    const { type, id } = data;
-    // TODO: Come up with a better method to map api types to pages.
-    const pageType = type.split('--')[1];
+    // Check for route to handle resource type.
+    if (!data.status) {
+      const { type, id } = data;
+      // TODO: Come up with a better method to map api types to pages.
+      const pageType = type.split('--')[1];
 
-    // Render route page, pass id as query prop.
-    return app.render(req, res, `/${pageType}/${id}`, query);
+      // Render route page, pass id as query prop.
+      return app.render(req, res, `/${pageType}/${id}`, query);
+    }
+  }
+  catch (err) {
+    console.log(err);
   }
 
   // Move on to next route handler.
@@ -67,6 +69,7 @@ app.prepare().then(() => {
 
   // Tell server where to resolve static file requests.
   server.use(express.static('static'));
+  server.get('/static/*', nextAppHandler);
 
   // Handle Next app requests.
   server.get('/_next/*', nextAppHandler);

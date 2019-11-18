@@ -7,9 +7,9 @@ import {
   fetchPriApi as libFetchPriApi,
   fetchPriApiItem as libFetchPriApiItem,
   fetchPriApiQuery as libFetchPriApiQuery
-} from 'pri-api-library/_bundles/pri-api-library';
+} from 'pri-api-library';
 import * as config from '../../../config';
-import { IPriApiResponse } from 'pri-api-library/lib';
+import { IPriApiResponse } from 'pri-api-library';
 
 /**
  * Method that simplifies GET requests.

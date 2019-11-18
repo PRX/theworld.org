@@ -19,9 +19,19 @@ else {
   defaultConfig = require('./development.json'); // eslint-disable-line global-require
 
   // If local config exists, allow overrides.
-  if (fs.existsSync('./local.json')) {
+  try {
     localConfig = require('./local.json'); // eslint-disable-line global-require, import/no-unresolved, max-len
   }
+  catch (err) {
+    console.log(err);
+  }
+
+  defaultConfig = {
+    ...defaultConfig,
+    ...localConfig
+  };
+
+  console.log(defaultConfig);
 
   // Provide API URL override if provided as environment variable.
   const { PRI_API_DOMAIN } = process.env;
@@ -35,4 +45,4 @@ else {
   }
 }
 
-module.exports = { ...defaultConfig, ...localConfig, ...envConfig };
+module.exports = { ...defaultConfig, ...envConfig };
