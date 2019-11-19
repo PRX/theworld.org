@@ -3,11 +3,12 @@
 // See https://github.com/zeit/next.js/issues/1245 for discussions on Universal Webpack or universal Babel
 const express = require('express');
 const fetch = require('isomorphic-unfetch');
-const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
 
-const { protocol, domain, apiPath, apiVersion } = require('./config');
+const { resolveResourceTypeRoute } = require('./routes');
+const { priApi } = require('./config');
+const { apiUrlBase } = priApi;
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -36,21 +37,19 @@ const aliasHandler = async (req, res, nextRoute) => {
   const parsedUrl = parse(req.url, true);
   const { pathname, query } = parsedUrl;
   const alias = pathname.substring(1);
-  const url = `${protocol}://${domain}/${apiPath}/v${apiVersion}/query/alias/${alias}?fields=id`;
+  const url = `${apiUrlBase}/query/alias/${alias}?fields=id`;
   const apiResp = await fetch(url);
   const data = await apiResp.json();
 
   // Check for route to handle resource type.
   if (!data.status) {
-    const { type, id } = data;
-    // TODO: Come up with a better method to map api types to pages.
-    const pageType = type.split('--')[1];
+    const route = resolveResourceTypeRoute(data);
 
     // Render route page, pass id as query prop.
     return app.render(
       req,
       res,
-      `/${pageType}/${id}`,
+      route,
       query
     );
   }

@@ -3,28 +3,52 @@
  * Exports default config, overridden by local config.
  */
 
-let defaultConfig = require('./development.json');
+const productionConfig = require('./production');
+const developmentConfig = require('./development');
 
 const { NODE_ENV } = process.env;
+const defaultConfig =
+  NODE_ENV === 'production' ? productionConfig : developmentConfig;
 
-// If this is a production environment, override with production settings.
-if (NODE_ENV === 'production') {
-  defaultConfig = require('./production.json'); // eslint-disable-line global-require
-}
-
-// If local config exists, allow overrides.
-let localConfig;
+// Try to get local overrides.
+// NOTE: Copy ./local.example.js to ./local.js.
+// DO NOT ADD PROPS TO local.json. This file acts as a fallback file in env's
+// not using local settings.
+let localConfig = {};
 try {
-  localConfig = require('./local.json'); // eslint-disable-line global-require, import/no-unresolved, max-len
-} catch (e) {
-  localConfig = {};
+  localConfig = require('./local'); // eslint-disable-line global-require, import/no-unresolved, max-len
+} catch (err) {
+  // console.log(err); // eslint-disable-line no-console
 }
 
-// Provide API URL override if provided as environment variable.
-const { API_URL } = process.env;
-const envConfig = {};
-if (API_URL) {
-  envConfig.apiUrl = API_URL;
-}
+// Extend default config with local config.
+const config = {
+  ...defaultConfig,
+  ...localConfig,
+  analytics: {
+    ...(defaultConfig.analytics || {}),
+    ...(localConfig.analytics || {})
+  },
+  priApi: {
+    ...(defaultConfig.priApi || {}),
+    ...(localConfig.priApi || {})
+  }
+};
 
-module.exports = { ...defaultConfig, ...localConfig, ...envConfig };
+const {
+  priApi,
+  priApi: { protocol, domain, apiPath, apiVersion }
+} = config;
+// Get env domain, fall back to configured domain.
+const { PRI_API_DOMAIN: configDomain = domain } = process.env;
+// Construct base API URL.
+const apiUrlBase = `${protocol}://${configDomain}/${apiPath}/v${apiVersion}`;
+
+module.exports = {
+  ...config,
+  priApi: {
+    ...priApi,
+    domain: configDomain,
+    apiUrlBase
+  }
+};
