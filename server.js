@@ -41,8 +41,6 @@ const aliasHandler = async (req, res, nextRoute) => {
   const apiResp = await fetch(url);
   const data = await apiResp.json();
 
-  console.log(url);
-
   // Check for route to handle resource type.
   if (!data.status) {
     const route = resolveResourceTypeRoute(data);

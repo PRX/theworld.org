@@ -67,7 +67,7 @@ typings/
 /build
 
 # local config
-config/local.json
+config/local.js
 
 # misc
 .DS_Store
