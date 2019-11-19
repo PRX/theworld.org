@@ -10,8 +10,6 @@ const { NODE_ENV } = process.env;
 const defaultConfig =
   NODE_ENV === 'production' ? productionConfig : developmentConfig;
 
-console.log(productionConfig, developmentConfig ,defaultConfig);
-
 // Try to get local overrides.
 // NOTE: Copy ./local.example.js to ./local.js.
 // DO NOT ADD PROPS TO local.json. This file acts as a fallback file in env's
@@ -45,8 +43,6 @@ const {
 const { PRI_API_DOMAIN: configDomain = domain } = process.env;
 // Construct base API URL.
 const apiUrlBase = `${protocol}://${configDomain}/${apiPath}/v${apiVersion}`;
-
-console.log(apiPath, config);
 
 module.exports = {
   ...config,
