@@ -30,6 +30,7 @@
   },
   "include": [
     "components/**/*",
+    "config/*",
     "interfaces/**/*",
     "lib/**/*",
     "pages/**/*"

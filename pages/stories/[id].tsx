@@ -23,6 +23,8 @@ interface StoryState {
 
 class StoryPage extends Component<StoryState> {
 
+  static resourceType = 'node--stories';
+
   static async getInitialProps(ctx: NextPageContext) {
     const { query: { id } } = ctx;
     const data = await fetchPriApiItem('node--stories', id as string);

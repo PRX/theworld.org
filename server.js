@@ -2,13 +2,13 @@
 // Make sure the syntax and sources this file requires are compatible with the current node version you are running
 // See https://github.com/zeit/next.js/issues/1245 for discussions on Universal Webpack or universal Babel
 const express = require('express');
-// TODO: Use pri-api-library to get data for aliases resource.
-// const fetch = require('isomorphic-unfetch');
 const { fetchPriApi } = require('pri-api-library');
 const { parse } = require('url');
 const next = require('next');
 
 const { priApi: priApiConfig } = require('./config');
+
+const { resolveResourceTypeRoute } = require('./routes');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -48,12 +48,15 @@ const aliasHandler = async (req, res, nextRoute) => {
 
     // Check for route to handle resource type.
     if (!data.status) {
-      const { type, id } = data;
-      // TODO: Come up with a better method to map api types to pages.
-      const pageType = type.split('--')[1];
+      const route = resolveResourceTypeRoute(data);
 
       // Render route page, pass id as query prop.
-      return app.render(req, res, `/${pageType}/${id}`, query);
+      return app.render(
+        req,
+        res,
+        route,
+        query
+      );
     }
   }
   catch (err) {

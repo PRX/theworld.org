@@ -3,46 +3,52 @@
  * Exports default config, overridden by local config.
  */
 
-const fs = require('fs');
-
-let defaultConfig = {};
-let localConfig = {};
-let envConfig = {};
+const productionConfig = require('./production');
+const developmentConfig = require('./development');
 
 const { NODE_ENV } = process.env;
+const defaultConfig =
+  NODE_ENV === 'production' ? productionConfig : developmentConfig;
 
-// If this is a production environment, override with production settings.
-if (NODE_ENV === 'production') {
-  defaultConfig = require('./production.json'); // eslint-disable-line global-require
-}
-else {
-  defaultConfig = require('./development.json'); // eslint-disable-line global-require
-
-  // If local config exists, allow overrides.
-  try {
-    localConfig = require('./local.json'); // eslint-disable-line global-require, import/no-unresolved, max-len
-  }
-  catch (err) {
-    console.log(err);
-  }
-
-  defaultConfig = {
-    ...defaultConfig,
-    ...localConfig
-  };
-
-  console.log(defaultConfig);
-
-  // Provide API URL override if provided as environment variable.
-  const { PRI_API_DOMAIN } = process.env;
-  if (PRI_API_DOMAIN) {
-    envConfig = {
-      priApi: {
-        ...(defaultConfig.priApi || {}),
-        domain: PRI_API_DOMAIN
-      }
-    };
-  }
+// Try to get local overrides.
+// NOTE: Copy ./local.example.js to ./local.js.
+// DO NOT ADD PROPS TO local.json. This file acts as a fallback file in env's
+// not using local settings.
+let localConfig = {};
+try {
+  localConfig = require('./local'); // eslint-disable-line global-require, import/no-unresolved, max-len
+} catch (err) {
+  // console.log(err); // eslint-disable-line no-console
 }
 
-module.exports = { ...defaultConfig, ...envConfig };
+// Extend default config with local config.
+const config = {
+  ...defaultConfig,
+  ...localConfig,
+  analytics: {
+    ...(defaultConfig.analytics || {}),
+    ...(localConfig.analytics || {})
+  },
+  priApi: {
+    ...(defaultConfig.priApi || {}),
+    ...(localConfig.priApi || {})
+  }
+};
+
+const {
+  priApi,
+  priApi: { protocol, domain, apiPath, apiVersion }
+} = config;
+// Get env domain, fall back to configured domain.
+const { PRI_API_DOMAIN: configDomain = domain } = process.env;
+// Construct base API URL.
+const apiUrlBase = `${protocol}://${configDomain}/${apiPath}/v${apiVersion}`;
+
+module.exports = {
+  ...config,
+  priApi: {
+    ...priApi,
+    domain: configDomain,
+    apiUrlBase
+  }
+};
