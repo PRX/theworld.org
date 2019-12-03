@@ -8,8 +8,8 @@ import {
   fetchPriApiItem as libFetchPriApiItem,
   fetchPriApiQuery as libFetchPriApiQuery
 } from 'pri-api-library';
-import * as config from '../../../config';
-import { IPriApiResponse } from 'pri-api-library';
+import { priApi as priApiConfig } from '../../../config';
+import { IPriApiResponse } from 'pri-api-library/types';
 
 /**
  * Method that simplifies GET requests.
@@ -30,8 +30,7 @@ const fetchPriApi = async (
   path: string,
   params?: object,
   keys?: object
-): Promise<IPriApiResponse> =>
-  libFetchPriApi(path, params, keys, config);
+): Promise<IPriApiResponse> => libFetchPriApi(path, params, keys, priApiConfig);
 
 /**
  * Methods that simplifies GET queries for collection resources.
@@ -44,8 +43,8 @@ const fetchPriApi = async (
  * @returns
  *    Denormalized resource collection.
  */
-const fetchPriApiQuery = async (type: string, params?: object) =>
-  libFetchPriApiQuery(type, params, config);
+const fetchPriApiQuery = async (type: string, params?: object, keys?: object) =>
+  libFetchPriApiQuery(type, params, keys, priApiConfig);
 
 /**
  * Methods that simplifies GET queries for resource item.
@@ -60,7 +59,11 @@ const fetchPriApiQuery = async (type: string, params?: object) =>
  * @returns
  *    Denormalized resource item.
  */
-const fetchPriApiItem = async (type: string, id: number|string, params?: object) =>
-  libFetchPriApiItem(type, id, params, config);
+const fetchPriApiItem = async (
+  type: string,
+  id: number | string,
+  params?: object,
+  keys?: object
+) => libFetchPriApiItem(type, id, params, keys, priApiConfig);
 
 export { fetchPriApi, fetchPriApiQuery, fetchPriApiItem };

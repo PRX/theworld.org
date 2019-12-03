@@ -8,20 +8,9 @@ import Link from 'next/link';
 import { NextPageContext } from 'next-server/dist/lib/utils';
 
 import { fetchPriApiItem } from '../../lib/fetch';
+import { IContentComponent } from '../../interfaces';
 
-// TODO: Move this into PRI API Library/SDK.
-interface StoryData {
-  id: number | string,
-  title: string,
-  teaser: string
-}
-
-// TODO: Move to ./interfaces
-interface StoryState {
-  data: StoryData
-}
-
-class StoryPage extends Component<StoryState> {
+class StoryPage extends Component<IContentComponent> {
 
   static resourceType = 'node--stories';
 

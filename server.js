@@ -39,7 +39,7 @@ const aliasHandler = async (req, res, nextRoute) => {
   const alias = pathname.substring(1);
 
   try {
-    const data = await fetchPriApi(
+    const { response: data, isFailure } = await fetchPriApi(
       `query/alias/${alias}`,
       { fields: ['id'] },
       null,
@@ -47,7 +47,7 @@ const aliasHandler = async (req, res, nextRoute) => {
     );
 
     // Check for route to handle resource type.
-    if (!data.status) {
+    if (!isFailure) {
       const route = resolveResourceTypeRoute(data);
 
       // Render route page, pass id as query prop.

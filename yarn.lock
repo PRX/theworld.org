@@ -9570,10 +9570,10 @@ pretty-format@^24.9.0:
     ansi-styles "^3.2.0"
     react-is "^16.8.4"
 
-pri-api-library@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/pri-api-library/-/pri-api-library-1.0.6.tgz#c08b333979be30c8d097f653ff600b2888c706c2"
-  integrity sha512-R256Oi3UQ05DFvIP0VniipqD0MeR34Gfwdh5hzVTfpRkDlBGSSRi34k7auDbc4op717WWiVr9Wc4dk3s14yjTQ==
+pri-api-library@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/pri-api-library/-/pri-api-library-1.1.0.tgz#426d946fd58afd1e59719d61993a57032c408de0"
+  integrity sha512-nSN2ZZ//UhfCEm+YmehcNRivcWl//0/vtrLLdCvn/XMX8+yhL9cHoku+u6Et04Ny07mN6PaSJMKkqNBbDVCffg==
   dependencies:
     "@types/qs" "^6.5.3"
     camelcase "^5.3.1"
