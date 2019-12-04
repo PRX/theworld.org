@@ -10,11 +10,10 @@ const { priApi: priApiConfig } = require('./config');
 
 const { resolveResourceTypeRoute } = require('./routes');
 
+const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const nextAppHandler = app.getRequestHandler();
-
-const port = 3000;
 
 /**
  * Send unknown route paths to query alias API endpoint to get resource type.
@@ -50,13 +49,17 @@ const aliasHandler = async (req, res, nextRoute) => {
     if (!isFailure) {
       const route = resolveResourceTypeRoute(data);
 
-      // Render route page, pass id as query prop.
-      return app.render(
-        req,
-        res,
-        route,
-        query
-      );
+      console.log(route);
+
+      if (route) {
+        // Render route page, pass id as query prop.
+        return app.render(
+          req,
+          res,
+          route,
+          query
+        );
+      }
     }
   }
   catch (err) {
