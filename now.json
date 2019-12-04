@@ -1,7 +1,6 @@
 {
   "version": 2,
   "routes": [
-    {"src": "/favicon.ico$", "dest": "/static/favicon.ico"},
-    {"src": "/.*", "dest": "/server.js"}
+    {"src": "/favicon.ico$", "dest": "/static/favicon.ico"}
   ]
 }
