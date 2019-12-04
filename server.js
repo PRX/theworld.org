@@ -10,11 +10,10 @@ const { resolveResourceTypeRoute } = require('./routes');
 const { priApi } = require('./config');
 const { apiUrlBase } = priApi;
 
+const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const nextAppHandler = app.getRequestHandler();
-
-const port = 3000;
 
 /**
  * Send unknown route paths to query alias API endpoint to get resource type.
