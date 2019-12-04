@@ -6,7 +6,7 @@
  * Map for resource type to route path or resolver function.
  */
 const resourceTypeRouteMap = {
-  'node--stories': (id) => `/stories/${id}`
+  'node--stories': (id) => `/story/${id}`
 };
 
 /**
@@ -16,9 +16,9 @@ const resourceTypeRouteMap = {
  *    Denormalized PRI API data object.
  */
 const resolveResourceTypeRoute = ({type, id}) => {
-  const route = resourceTypeRouteMap[`${type}`];
+  const route = resourceTypeRouteMap[`${type}`] || false;
 
-  return typeof route && (typeof route === 'function' ? route(id) : route);
+  return route && (typeof route === 'function' ? route(id) : route);
 };
 
 module.exports = { resolveResourceTypeRoute };

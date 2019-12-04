@@ -38,19 +38,25 @@ const aliasHandler = async (req, res, nextRoute) => {
   const alias = pathname.substring(1);
   const url = `${apiUrlBase}/query/alias/${alias}?fields=id`;
   const apiResp = await fetch(url);
-  const data = await apiResp.json();
+  const { data } = await apiResp.json();
+
+  console.log(data);
 
   // Check for route to handle resource type.
-  if (!data.status) {
+  if (data) {
     const route = resolveResourceTypeRoute(data);
 
-    // Render route page, pass id as query prop.
-    return app.render(
-      req,
-      res,
-      route,
-      query
-    );
+    console.log(route);
+
+    if (route) {
+      // Render route page, pass id as query prop.
+      return app.render(
+        req,
+        res,
+        route,
+        query
+      );
+    }
   }
 
   // Move on to next route handler.
