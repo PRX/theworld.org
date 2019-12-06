@@ -8,8 +8,8 @@ import {
   fetchPriApiItem as libFetchPriApiItem,
   fetchPriApiQuery as libFetchPriApiQuery
 } from 'pri-api-library';
-import { priApi as priApiConfig } from '../../../config';
-import { IPriApiResponse } from 'pri-api-library/types';
+import { PriApiResourceResponse, IPriApiResponse } from 'pri-api-library/types';
+import { priApi as priApiConfig} from '../../../config';
 
 /**
  * Method that simplifies GET requests.
@@ -43,8 +43,11 @@ const fetchPriApi = async (
  * @returns
  *    Denormalized resource collection.
  */
-const fetchPriApiQuery = async (type: string, params?: object, keys?: object) =>
+const fetchPriApiQuery = async (type: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
   libFetchPriApiQuery(type, params, keys, priApiConfig);
+
+const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
+  fetchPriApi(`query/alias/${alias}`, params, keys).then(resp => !resp.isFailure && resp.response);
 
 /**
  * Methods that simplifies GET queries for resource item.
@@ -64,6 +67,6 @@ const fetchPriApiItem = async (
   id: number | string,
   params?: object,
   keys?: object
-) => libFetchPriApiItem(type, id, params, keys, priApiConfig);
+): Promise<PriApiResourceResponse> => libFetchPriApiItem(type, id, params, keys, priApiConfig);
 
-export { fetchPriApi, fetchPriApiQuery, fetchPriApiItem };
+export { fetchPriApi, fetchPriApiQuery, fetchPriApiQueryAlias, fetchPriApiItem };

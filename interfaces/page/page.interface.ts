@@ -6,6 +6,6 @@
 import React, { Component } from 'react';
 import { IPriApiResource } from 'pri-api-library/types';
 
-export interface IContentComponent extends Component {
+export interface IPageComponent extends Component {
   data: IPriApiResource
 }

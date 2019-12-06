@@ -3,41 +3,71 @@
  * Exports the Home component.
  */
 
-import React, { Component, ReactFragment } from 'react';
-import Link from 'next/link';
+import React, { Component, ComponentType } from 'react';
+import { NextPageContext } from 'next';
+import { useAmp } from 'next/amp';
+import Error from 'next/error';
 
-class Home extends Component {
-  /* istanbul ignore next */
-  static async getInitialProps() {
-    // TODO: Get home page content fom API.
-    return {};
-  }
+import { IPriApiResource, PriApiResourceResponse } from 'pri-api-library/types';
+import { fetchPriApiQueryAlias, fetchPriApiItem } from '@lib/fetch';
+import ContentContext from '@contexts/ContentContext';
+import importResourceComponent from '@lib/import/component';
 
-  render() {
-    return (
-      <>
-        <h1>Hello, The World!</h1>
-        <p>Homepage coming soon...</p>
-        <ul>
-          <li>
-            <Link href="/story/[id]" as="/story/183368?alias=/stories/2019-08-28/thousands-chilean-women-sued-discriminatory-health-insurance-can-reforms-fix-it">
-              <a href="/stories/2019-08-28/thousands-chilean-women-sued-discriminatory-health-insurance-can-reforms-fix-it">Story 1</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/story/[id]" as="/story/183449?alias=/stories/2019-09-06/lead-colombian-elections-woman-mayoral-candidate-latest-assassination-victim">
-              <a href="/stories/2019-09-06/lead-colombian-elections-woman-mayoral-candidate-latest-assassination-victim">Story 2</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/story/[id]" as="/story/183446?alias=/stories/2019-09-06/folk-trio-younguns-uses-music-question-british-patriotism">
-              <a href="/stories/2019-09-06/folk-trio-younguns-uses-music-question-british-patriotism">Story 3</a>
-            </Link>
-          </li>
-        </ul>
-      </>
-    );
-  }
+interface IContentProxyProps {
+  data?: IPriApiResource,
+  ContentComponent?: ComponentType,
+  errorCode?: number
 }
 
-export default Home;
+const ContentProxy = (props: IContentProxyProps) => {
+  const { data, data: { type }, errorCode } = props;
+  const isAmp = useAmp();
+
+  if (errorCode) {
+    return <Error statusCode={errorCode} />
+  }
+  else {
+    const ContentComponent = importResourceComponent(type);
+
+    return (
+      <ContentContext.Provider value={{ data, isAmp }}>
+        <ContentComponent/>
+      </ContentContext.Provider>
+    );
+  }
+};
+
+ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
+  const { query: { alias } } = ctx;
+
+  if (alias) {
+    const apiResp = await fetchPriApiQueryAlias(
+      alias as string,
+      { fields: ['id'] }
+    );
+
+    if (apiResp) {
+      const { id, type } = apiResp as IPriApiResource;
+      const data = await fetchPriApiItem(type, id);
+
+      return { data };
+    }
+  }
+  else {
+    // TODO: Get Homepage data.
+    return {
+      data: {
+        type: 'homepage'
+      }
+    };
+  }
+
+  // There was a problem locating components or data.
+  return {
+    errorCode: 404
+  };
+
+};
+
+export const config = { amp: 'hybrid' }
+export default ContentProxy;
