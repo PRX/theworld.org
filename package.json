@@ -30,7 +30,6 @@
     }
   },
   "scripts": {
-    "dev": "now dev",
     "build": "next build",
     "lint": "eslint --ext .jsx,.js .",
     "snapshot": "NODE_ENV=test jest -u",

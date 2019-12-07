@@ -47,7 +47,7 @@ const fetchPriApiQuery = async (type: string, params?: object, keys?: object): P
   libFetchPriApiQuery(type, params, keys, priApiConfig);
 
 const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
-  fetchPriApi(`query/alias/${alias}`, params, keys).then(resp => !resp.isFailure && resp.response);
+  fetchPriApi(`query/alias/${alias.replace(/^\/+|\/+$/, '')}`, params, keys).then(resp => !resp.isFailure && resp.response);
 
 /**
  * Methods that simplifies GET queries for resource item.

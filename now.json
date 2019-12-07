@@ -4,6 +4,6 @@
     { "handle": "filesystem" },
     { "src": "/_next/.*" },
     { "src": "/.+\\.[^/]+$" },
-    { "src": "/(.+)$", "dest": "/?alias=$1" }
+    { "src": "(/.+)$", "dest": "/?alias=$1" }
   ]
 }
