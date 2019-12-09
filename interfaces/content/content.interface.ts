@@ -3,13 +3,12 @@
  * Interfaces for content.
  */
 
-import React, { ComponentClass } from 'react';
-import { IPriApiResource } from 'pri-api-library/types';
+import React, { ComponentType, Component, FunctionComponent } from 'react';
 
 export interface FetchDataFunc {
-  (id: number|string): Promise<IPriApiResource>
+  (id?: number|string): object
 }
 
-export interface IContentComponent extends ComponentClass {
+export interface IContentComponent extends FunctionComponent {
   fetchData: FetchDataFunc
 }

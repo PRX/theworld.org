@@ -1,6 +1,6 @@
 /**
- * @file fetch.js
- * Exports a mechanism that makes GET requests easier to manage.
+ * @file fetchPriApi.js
+ * Exports a mechanism that makes GET requests to PRI API easier to manage.
  */
 
 import {

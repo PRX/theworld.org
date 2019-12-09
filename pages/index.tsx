@@ -3,31 +3,31 @@
  * Exports the Home component.
  */
 
-import React, { Component, ComponentType } from 'react';
+import React from 'react';
 import { NextPageContext } from 'next';
 import { useAmp } from 'next/amp';
 import Error from 'next/error';
 
-import { IPriApiResource, PriApiResourceResponse } from 'pri-api-library/types';
-import { fetchPriApiQueryAlias, fetchPriApiItem } from '@lib/fetch';
+import { IPriApiResource } from 'pri-api-library/types';
+import { fetchPriApiQueryAlias } from '@lib/fetch/api';
 import ContentContext from '@contexts/ContentContext';
-import importResourceComponent from '@lib/import/component';
+import importComponent from '@lib/import/component';
 
 interface IContentProxyProps {
   data?: IPriApiResource,
-  ContentComponent?: ComponentType,
   errorCode?: number
 }
 
 const ContentProxy = (props: IContentProxyProps) => {
-  const { data, data: { type }, errorCode } = props;
-  const isAmp = useAmp();
+  const { errorCode } = props;
 
   if (errorCode) {
     return <Error statusCode={errorCode} />
   }
   else {
-    const ContentComponent = importResourceComponent(type);
+    const { data, data: { type } } = props;
+    const ContentComponent = importComponent(type);
+    const isAmp = useAmp();
 
     return (
       <ContentContext.Provider value={{ data, isAmp }}>
@@ -38,7 +38,7 @@ const ContentProxy = (props: IContentProxyProps) => {
 };
 
 ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
-  const { query: { alias } } = ctx;
+  const { req, query: { alias } } = ctx;
 
   if (alias) {
     const apiResp = await fetchPriApiQueryAlias(
@@ -48,7 +48,8 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
 
     if (apiResp) {
       const { id, type } = apiResp as IPriApiResource;
-      const data = await fetchPriApiItem(type, id);
+      const ContentComponent = (await importComponent(type).render.preload()).default;
+      const data = await ContentComponent.fetchData(id);
 
       return { data };
     }
