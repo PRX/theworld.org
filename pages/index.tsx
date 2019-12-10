@@ -38,7 +38,7 @@ const ContentProxy = (props: IContentProxyProps) => {
 };
 
 ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
-  const { req, query: { alias } } = ctx;
+  const { query: { alias } } = ctx;
 
   if (alias) {
     const apiResp = await fetchPriApiQueryAlias(
