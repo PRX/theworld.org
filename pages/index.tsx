@@ -11,7 +11,7 @@ import Error from 'next/error';
 import { IPriApiResource } from 'pri-api-library/types';
 import { fetchPriApiQueryAlias } from '@lib/fetch/api';
 import ContentContext from '@contexts/ContentContext';
-import importComponent from '@lib/import/component';
+import { importComponent, preloadComonent } from '@lib/import/component';
 
 interface IContentProxyProps {
   data?: IPriApiResource,
@@ -48,7 +48,7 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
 
     if (apiResp) {
       const { id, type } = apiResp as IPriApiResource;
-      const ContentComponent = (await importComponent(type).render.preload()).default;
+      const ContentComponent = await preloadComonent(type);
       const data = await ContentComponent.fetchData(id);
 
       return { data };
