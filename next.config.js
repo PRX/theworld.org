@@ -3,6 +3,7 @@
  * Next.js configuration for this project.
  */
 
+const path = require('path');
 const withCss = require('@zeit/next-css');
 const withSass = require('@zeit/next-sass');
 const withFonts = require('next-fonts');
@@ -23,16 +24,19 @@ module.exports = withPlugins([
     enableSvg: true
   }],
   {
-    webpack: config => {
-      // Fixes npm packages that depend on `fs` module
-      const node = {
-        ...(config.node || {}),
-        fs: 'empty'
-      }
-
+    webpack (config) {
       return {
         ...config,
-        node
+        resolve: {
+          ...config.resolve,
+          alias: {
+            ...config.resolve.alias,
+            '@components': path.join(__dirname, 'components'),
+            '@contexts': path.join(__dirname, 'contexts'),
+            '@interfaces': path.join(__dirname, 'interfaces'),
+            '@lib': path.join(__dirname, 'lib')
+          }
+        }
       }
     }
   }

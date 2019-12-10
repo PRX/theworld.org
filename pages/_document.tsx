@@ -4,25 +4,20 @@
  */
 
 import React from 'react';
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class TwDocument extends Document {
   render() {
     return (
-      <html lang="en">
+      <Html>
         <Head>
-          <meta
-            key="viewport"
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          />
           <link
             href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Raleway:400,700|Alegreya:400,400italic|Roboto|Roboto+Slab|Sanchez"
             rel="stylesheet"
             type="text/css"
           />
           <link
-            href="/static/apple-touch-icon.png"
+            href="/apple-touch-icon.png"
             rel="apple-touch-icon"
           />
           <link
@@ -32,7 +27,7 @@ class TwDocument extends Document {
             type="application/opensearchdescription+xml"
           />
           <link
-            href="/static/favicon.ico"
+            href="/favicon.ico"
             rel="icon"
           />
         </Head>
@@ -40,7 +35,7 @@ class TwDocument extends Document {
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

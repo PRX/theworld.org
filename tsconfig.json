@@ -10,6 +10,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/pri-api-library/types"
+    ],
     "lib": [
       "dom",
       "dom.iterable",
@@ -23,7 +27,14 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@lib/*": ["lib/*"],
+      "@components/*": ["components/*"],
+      "@contexts/*": ["contexts/*"],
+      "@interfaces": ["interfaces"],
+      "@interfaces/*": ["interfaces/*"]
+    }
   },
   "include": [
     "components/**/*",

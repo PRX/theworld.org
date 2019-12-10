@@ -1,7 +1,10 @@
 {
   "version": 2,
-  "target": "server",
   "routes": [
-    {"src": "/favicon.ico$", "dest": "/static/favicon.ico"}
+    { "handle": "filesystem" },
+    { "src": "/_next/.*" },
+    { "src": "/.+\\.[^/]+$" },
+    { "src": "/api/.*" },
+    { "src": "(/.+)$", "dest": "/?alias=$1" }
   ]
 }

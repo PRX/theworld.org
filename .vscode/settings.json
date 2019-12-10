@@ -1,4 +1,8 @@
 {
   "eslint.packageManager": "yarn",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "javascript.format.semicolons": "insert",
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.format.semicolons": "insert",
+  "typescript.preferences.quoteStyle": "single"
 }
