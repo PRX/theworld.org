@@ -4,28 +4,77 @@
  */
 
 import { useContext } from 'react';
-import Link from 'next/link';
 import ContentContext from '@contexts/ContentContext';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Box, Container, Grid, Hidden, Typography } from '@material-ui/core';
 
+const headingStyles = {
+  fontFamily:
+    '"Raleway","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+  fontWeight: 700
+};
+
+let theme = createMuiTheme({
+  typography: {
+    fontFamily:
+      '"Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+    h1: {
+      ...headingStyles,
+      fontSize: `${46 / 16}rem`
+    },
+    h2: {
+      ...headingStyles
+    },
+    h3: {
+      ...headingStyles
+    },
+    h4: {
+      ...headingStyles
+    },
+    h5: {
+      ...headingStyles
+    },
+    h6: {
+      ...headingStyles
+    }
+  }
+});
 
 const StoryDefault = () => {
-  const { data: { title, id, teaser } } = useContext(ContentContext);
+  const {
+    data: { title, id, teaser }
+  } = useContext(ContentContext);
 
   return (
-    <>
-      <Link href="/">
-        <a href="/">Home</a>
-      </Link>
-      <h1>{title}</h1>
-      <dl>
-        <dt>Story Id</dt>
-        <dd>{id}</dd>
-
-        <dt>Teaser</dt>
-        <dd>{teaser}</dd>
-      </dl>
-    </>
+    <ThemeProvider theme={theme}>
+      <Container fixed>
+        <Grid container spacing={1}>
+          <Hidden smDown>
+            <Grid item xs={12}>
+              <Box
+                bgcolor="text.hint"
+                color="background.paper"
+                width={728}
+                height={90}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                mx="auto"
+                my={2}
+              >
+                Top Ad
+              </Box>
+            </Grid>
+          </Hidden>
+          <Grid item xs={12}>
+            <Typography variant="h1" gutterBottom>
+              {title}
+            </Typography>
+          </Grid>
+        </Grid>
+      </Container>
+    </ThemeProvider>
   );
-}
+};
 
 export default StoryDefault;
