@@ -28,10 +28,12 @@ const theme = createMuiTheme({
     primary: {
       main: '#37729D'
     }
+  },
+  typography: {
+    fontFamily:
+      '"Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif'
   }
 });
-
-console.log(theme.typography);
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   appBar: {
