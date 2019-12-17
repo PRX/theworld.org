@@ -28,8 +28,8 @@ export default (theme: Theme) => createStyles({
       }
     },
     '& p': {
-      fontSize: '1.1rem',
-      lineHeight: '1.6rem'
+      fontSize: '1.2rem',
+      lineHeight: '1.7rem'
     },
     '& > p:first-of-type': {
       fontSize: '1.35rem',
