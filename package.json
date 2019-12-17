@@ -30,6 +30,7 @@
     }
   },
   "scripts": {
+    "dev": "next --port $PORT",
     "build": "next build",
     "lint": "eslint --ext .jsx,.js .",
     "snapshot": "NODE_ENV=test jest -u",
@@ -62,7 +63,7 @@
     "lodash": "4.17.15",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
-    "next": "^9.1.4",
+    "next": "^9.1.5",
     "next-absolute-url": "^1.0.2",
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^0.17.0",
