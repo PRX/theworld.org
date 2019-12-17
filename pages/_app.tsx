@@ -5,6 +5,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import grey from '@material-ui/core/colors/grey'
 import {
   createMuiTheme,
   createStyles,
@@ -13,10 +14,13 @@ import {
   ThemeProvider
 } from '@material-ui/core/styles';
 // Material Components
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  IconButton,
+  Toolbar
+} from '@material-ui/core';
 // Material Icons
 import MenuIcon from '@material-ui/icons/Menu';
 // SVG
@@ -55,21 +59,26 @@ const TwApp = (props) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppBar className={classes.appBar} position="static">
-        <Toolbar>
-          <IconButton  edge="start" className={ classes.menuButton} disableRipple={true} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
+      <Box minHeight='100vh' display="flex" flexDirection="column">
+        <AppBar className={classes.appBar} position="static">
+          <Toolbar>
+            <IconButton  edge="start" className={ classes.menuButton} disableRipple={true} color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
 
-          <Link href="/">
-            <a href="/">
-              <Logo className={classes.twLogo} title="The World"/>
-            </a>
-          </Link>
-        </Toolbar>
-      </AppBar>
-      <Component {...pageProps} />
+            <Link href="/">
+              <a href="/">
+                <Logo className={classes.twLogo} title="The World"/>
+              </a>
+            </Link>
+          </Toolbar>
+        </AppBar>
+        <Box flexGrow={1}>
+          <Component {...pageProps} />
+        </Box>
+        <Box height={350} bgcolor={grey.A100} mt={3}/>
+      </Box>
+      <CssBaseline />
     </ThemeProvider>
   );
 };

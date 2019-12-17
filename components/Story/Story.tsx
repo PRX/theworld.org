@@ -6,13 +6,7 @@ import React, { useContext } from 'react';
 import Head from 'next/head';
 import ContentContext from '@contexts/ContentContext';
 import { fetchPriApiItem } from '@lib/fetch';
-import dynamic from 'next/dynamic';
-
-const DynamicDefault = dynamic(() => import('./Story.default'));
-
-const layoutComponentMap = {
-  standard: DynamicDefault
-}
+import { layoutComponentMap } from './layouts';
 
 const Story = () => {
   const { data: { title, displayTemplate } } = useContext(ContentContext);
