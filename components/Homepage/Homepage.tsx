@@ -3,6 +3,7 @@
  * Component for Homepage.
  */
 import React, { useContext } from 'react';
+import Head from 'next/head';
 import Link from 'next/link';
 import ContentContext from '@contexts/ContentContext';
 
@@ -13,6 +14,9 @@ const Homepage = () => {
 
   return (
     <>
+      <Head>
+        <title>The World</title>
+      </Head>
       <h1>Hello, The World!</h1>
       <p>Homepage coming soon...</p>
       {links && (

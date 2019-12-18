@@ -11,6 +11,7 @@
     "experimentalDecorators": true,
     "target": "es5",
     "typeRoots": [
+      "@types",
       "node_modules/@types",
       "node_modules/pri-api-library/types"
     ],
@@ -29,14 +30,15 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@lib/*": ["lib/*"],
       "@components/*": ["components/*"],
       "@contexts/*": ["contexts/*"],
       "@interfaces": ["interfaces"],
-      "@interfaces/*": ["interfaces/*"]
+      "@interfaces/*": ["interfaces/*"],
+      "@lib/*": ["lib/*"]
     }
   },
   "include": [
+    "@types/**/*",
     "components/**/*",
     "config/*",
     "interfaces/**/*",

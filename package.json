@@ -30,6 +30,7 @@
     }
   },
   "scripts": {
+    "dev": "next --port $PORT",
     "build": "next build",
     "lint": "eslint --ext .jsx,.js .",
     "snapshot": "NODE_ENV=test jest -u",
@@ -42,8 +43,9 @@
     "@fortawesome/free-regular-svg-icons": "^5.11.1",
     "@fortawesome/free-solid-svg-icons": "^5.11.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "@material-ui/core": "^4.3.3",
-    "@material-ui/icons": "^4.2.1",
+    "@material-ui/core": "^4.7.2",
+    "@material-ui/icons": "^4.5.1",
+    "@material-ui/lab": "^4.0.0-alpha.35",
     "@types/next": "^8.0.6",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
@@ -61,7 +63,7 @@
     "lodash": "4.17.15",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
-    "next": "^9.1.4",
+    "next": "^9.1.5",
     "next-absolute-url": "^1.0.2",
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^0.17.0",

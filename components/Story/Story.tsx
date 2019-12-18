@@ -3,32 +3,21 @@
  * Component for Story.
  */
 import React, { useContext } from 'react';
-import { useAmp } from 'next/amp';
 import Head from 'next/head';
-import Link from 'next/link';
 import ContentContext from '@contexts/ContentContext';
-import { PriApiResourceResponse } from 'pri-api-library/types';
 import { fetchPriApiItem } from '@lib/fetch';
+import { layoutComponentMap } from './layouts';
 
 const Story = () => {
-  const { data: { title, id, teaser, byline } } = useContext(ContentContext);
+  const { data: { title, displayTemplate } } = useContext(ContentContext);
+  const LayoutComponent = layoutComponentMap[displayTemplate || 'standard'];
 
   return (
     <>
       <Head>
         <title>{title}</title>
       </Head>
-      <Link href="/">
-        <a href="/">Home</a>
-      </Link>
-      <h1>{title}</h1>
-      <dl>
-        <dt>Story Id</dt>
-        <dd>{id}</dd>
-
-        <dt>Teaser</dt>
-        <dd>{teaser}</dd>
-      </dl>
+      <LayoutComponent />
     </>
   );
 }
@@ -39,6 +28,7 @@ Story.fetchData = async (id: string|number) => {
       'audio',
       'byline.credit_type',
       'byline.person',
+      'format',
       'image',
       'categories',
       'opencalais_city',
