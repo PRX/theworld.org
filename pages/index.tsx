@@ -49,9 +49,12 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
     if (apiResp) {
       const { id, type } = apiResp as IPriApiResource;
       const ContentComponent = await preloadComonent(type);
-      const data = await ContentComponent.fetchData(id);
 
-      return { data };
+      if (ContentComponent) {
+        const data = await ContentComponent.fetchData(id);
+
+        return { data };
+      }
     }
   }
   else {
