@@ -3,14 +3,14 @@
  * Component for default story header.
  */
 
-import { Box, Grid, Hidden, Typography } from '@material-ui/core';
+import { Box, Hidden, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Skeleton } from '@material-ui/lab';
 import { useContext } from 'react';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import ContentContext from '@contexts/ContentContext';
 import ContentLink from '@components/ContentLink';
+import Image from '@components/Image'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,6 +71,8 @@ export default () => {
   const classes = useStyles({});
   const hasLogos = program && program.podcastLogo;
 
+  console.log(program.podcastLogo);
+
   return (
     <Box className={classes.root} mt={4} mb={2}>
       {primaryCategory && (
@@ -109,11 +111,7 @@ export default () => {
           <Hidden smDown>
             <Box className={classes.logos}>
               <ContentLink data={program}>
-                <img
-                  src={program.podcastLogo.styles.w128.src}
-                  alt={program.podcastLogo.alt}
-                  className={classes.logo}
-                />
+                <Image data={program.podcastLogo} width={85} height={85} />
               </ContentLink>
             </Box>
           </Hidden>
