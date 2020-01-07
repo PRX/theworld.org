@@ -9,17 +9,15 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import {
   Box,
   Container,
-  Divider,
   Grid,
-  Hidden,
-  Typography
+  Hidden
 } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
 import { storyStyles, storyTheme } from './Story.default.theme';
+import { StoryHeader } from './components';
 
 const StoryDefault = () => {
   const {
-    data: { body, title }
+    data: { body }
   } = useContext(ContentContext);
   const classes = storyStyles({});
 
@@ -45,39 +43,19 @@ const StoryDefault = () => {
             </Grid>
           </Hidden>
           <Grid item xs={12}>
-            {/* START Story Header */}
-            <Box my={3}>
-              <Typography variant="h1">
-                {title}
-              </Typography>
-              <Box my={2}>
-                <Grid container>
-                  <Grid item xs={12} md={10} style={{ lineHeight: '2rem' }}>
-                    <Skeleton variant="text" width={150}/>
-                    <Skeleton variant="text" width={300}/>
-                    <Skeleton variant="text" width={225}/>
-                  </Grid>
-                  <Hidden smDown>
-                    <Grid item md={2}>
-                      <Box ml="auto" mr={0} width={85} height={85} bgcolor="text.hint"/>
-                    </Grid>
-                  </Hidden>
-                </Grid>
-              </Box>
-              <Box
-                bgcolor="text.hint"
-                color="background.paper"
-                width="100%"
-                height={50}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                mt={3}
-              >
-                Audio Player
-              </Box>
+            <StoryHeader/>
+            <Box
+              bgcolor="text.hint"
+              color="background.paper"
+              width="100%"
+              height={50}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              my={3}
+            >
+              Audio Player
             </Box>
-            {/* END Story Header */}
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.main}>
