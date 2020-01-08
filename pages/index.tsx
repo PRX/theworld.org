@@ -89,6 +89,15 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
                 alias: '/stories/2019-09-06/folk-trio-younguns-uses-music-question-british-patriotism'
               }
             }
+          },
+          {
+            label: 'Statement pieces: Fashion designers worry over Brexit’s cost to UK industry',
+            href: {
+              pathname: '/',
+              query: {
+                alias: '/stories/2019-10-25/statement-pieces-fashion-designers-worry-over-brexit-s-cost-uk-industry'
+              }
+            }
           }
         ]
       }
