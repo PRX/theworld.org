@@ -7,35 +7,14 @@ import { createMuiTheme, createStyles, makeStyles, Theme } from '@material-ui/co
 import { default as layoutStyles } from './styles/Story.layout';
 import { default as bodyStyles } from './styles/Story.body';
 
-const headingStyles = {
-  fontFamily:
-    '"Raleway","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
-  fontWeight: 700
-};
-
 let storyTheme = (theme: Theme) =>
   createMuiTheme({
     ...theme,
     typography: {
       ...theme.typography,
       h1: {
-        ...headingStyles,
+        ...theme.typography.h1,
         fontSize: theme.typography.pxToRem(46)
-      },
-      h2: {
-        ...headingStyles
-      },
-      h3: {
-        ...headingStyles
-      },
-      h4: {
-        ...headingStyles
-      },
-      h5: {
-        ...headingStyles
-      },
-      h6: {
-        ...headingStyles
       }
     }
   });

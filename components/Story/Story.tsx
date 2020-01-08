@@ -38,8 +38,7 @@ Story.fetchData = async (id: string|number) => {
       'opencalais_region',
       'opencalais_person',
       'primary_category',
-      'program.logo',
-      'program.podcast_logo',
+      'program',
       'tags',
       'verticals',
       'video'

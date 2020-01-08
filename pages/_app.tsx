@@ -27,28 +27,73 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Logo from '../assets/svg/tw-white.svg';
 
 // TODO: move this it own module.
+const brandBlue = {
+  100: '#E6F4F9',
+  200: '#B3D9EF',
+  300: '#75BBE1',
+  400: '#3F94C6',
+  500: '#0089BD',
+  600: '#0072A3',
+  700: '#004E75',
+  800: '#003A57',
+  900: '#002533'
+};
+const brandOrange = {
+  100: '#FAEFE1',
+  200: '#F8DEBA',
+  300: '#FCCC88',
+  400: '#FAB452',
+  500: '#FF9600',
+  600: '#D17A00',
+  700: '#8A570F',
+  800: '#5B3C10',
+  900: '#2B1B08'
+}
+const headingStyles = {
+  fontFamily:
+    '"Montserrat","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+  fontWeight: 700
+};
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#37729D'
+      main: brandBlue[600]
     },
     secondary: {
-      main: '#0388BB'
+      main: brandOrange[500]
     }
   },
   typography: {
     fontFamily:
       '"Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
     caption: {
-      fontSize: '1rem',
+      fontSize: '0.9rem',
       lineHeight: '1.35rem'
+    },
+    h1: {
+      ...headingStyles,
+      color: brandBlue[900]
+    },
+    h2: {
+      ...headingStyles
+    },
+    h3: {
+      ...headingStyles
+    },
+    h4: {
+      ...headingStyles
+    },
+    h5: {
+      ...headingStyles
+    },
+    h6: {
+      ...headingStyles
     }
   }
 });
-
 const useStyles = makeStyles((theme: Theme) => createStyles({
   appBar: {
-    boxShadow: 'inset 0 -3px 0 0 #0388BB'
+    boxShadow: `inset 0 -3px 0 0 ${brandBlue[400]}`
   },
   twLogo: {
     width: 'auto',
