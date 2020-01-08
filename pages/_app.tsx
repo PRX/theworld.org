@@ -31,11 +31,18 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: '#37729D'
+    },
+    secondary: {
+      main: '#0388BB'
     }
   },
   typography: {
     fontFamily:
-      '"Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif'
+      '"Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+    caption: {
+      fontSize: '1rem',
+      lineHeight: '1.35rem'
+    }
   }
 });
 

@@ -4,8 +4,8 @@
  */
 
 import { createMuiTheme, createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { default as layoutStyles } from './styles/layout';
-import { default as bodyStyles } from './styles/body';
+import { default as layoutStyles } from './styles/Story.layout';
+import { default as bodyStyles } from './styles/Story.body';
 
 const headingStyles = {
   fontFamily:

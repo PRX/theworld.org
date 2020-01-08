@@ -6,19 +6,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Link as MuiLink } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    color: theme.palette.primary.main,
-    '&:visited' : {
-      color: theme.palette.primary.main
-    },
-    '&:hover': {
-      color: theme.palette.primary.dark
-    }
-  }
-}));
+import { contentLinkStyles } from './ContentLink.styles';
 
 export default ({ children = null, data, ...other }) => {
   const {
@@ -32,7 +20,7 @@ export default ({ children = null, data, ...other }) => {
       alias
     }
   };
-  const classes = useStyles({});
+  const classes = contentLinkStyles({});
 
   return (
       <Link href={href} as={alias}>

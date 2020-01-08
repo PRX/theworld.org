@@ -13,7 +13,7 @@ import {
   Hidden
 } from '@material-ui/core';
 import { storyStyles, storyTheme } from './Story.default.theme';
-import { StoryHeader } from './components';
+import { StoryHeader, StoryLede } from './components';
 
 const StoryDefault = () => {
   const {
@@ -60,11 +60,7 @@ const StoryDefault = () => {
           <Grid item xs={12}>
             <Box className={classes.main}>
               <Box className={classes.content}>
-                <Box
-                  bgcolor="text.hint"
-                  width="100%"
-                  pb={`${(9 / 16) * 100}%`}
-                />
+                <StoryLede />
                 <Box className={classes.body} my={2} dangerouslySetInnerHTML={{__html: body }}/>
                 <Box
                   bgcolor="text.hint"

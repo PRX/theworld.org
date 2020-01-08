@@ -41,7 +41,8 @@ Story.fetchData = async (id: string|number) => {
       'program.logo',
       'program.podcast_logo',
       'tags',
-      'verticals'
+      'verticals',
+      'video'
     ]
   });
 }

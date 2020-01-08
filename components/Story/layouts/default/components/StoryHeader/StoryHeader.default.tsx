@@ -4,58 +4,13 @@
  */
 
 import { Box, Hidden, Typography } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useContext } from 'react';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import ContentContext from '@contexts/ContentContext';
 import ContentLink from '@components/ContentLink';
 import Image from '@components/Image'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      fontSize: '1.2rem'
-    },
-    byline: {
-      padding: 0,
-      margin: 0,
-      listStyle: 'none'
-    },
-    bylineItem: {},
-    bylineLink: {
-      fontWeight: theme.typography.fontWeightBold
-    },
-    date: {
-      fontStyle: 'italic'
-    },
-    meta: {
-      display: 'grid',
-      gridTemplateColumns: 'max-content max-content',
-      gridTemplateAreas: "'INFO LOGOS'",
-      justifyContent: 'space-between'
-    },
-    info: {
-      display: 'grid',
-      alignContent: 'start',
-      gridArea: 'INFO',
-      gridGap: theme.typography.pxToRem(4)
-    },
-    logo: {
-      width: theme.typography.pxToRem(85)
-    },
-    logos: {
-      display: 'grid',
-      gridArea: 'LOGOS'
-    },
-    programLink: {
-      fontWeight: theme.typography.fontWeightBold
-    },
-    categoryLink: {
-      fontWeight: theme.typography.fontWeightBold
-    }
-  })
-);
+import { storyHeaderStyles } from './StoryHeader.default.styles';
 
 export default () => {
   const {
@@ -68,10 +23,8 @@ export default () => {
       title
     }
   } = useContext(ContentContext);
-  const classes = useStyles({});
+  const classes = storyHeaderStyles({});
   const hasLogos = program && program.podcastLogo;
-
-  console.log(program.podcastLogo);
 
   return (
     <Box className={classes.root} mt={4} mb={2}>

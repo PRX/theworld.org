@@ -3,26 +3,26 @@
  * Component file for Image.
  */
 
-import React from 'react';
-import PropTypes, { string } from 'prop-types';
-import ReactMarkdown from 'react-markdown';
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-  useTheme
-} from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
 import _ from 'lodash';
-import ContentContext from '@contexts/ContentContext';
+import { imageStyles } from './Image.styles';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      objectFit: 'cover'
-    }
-  })
-);
+export interface IResponsiveConfig {
+  xs?: number | string;
+  sm?: number | string;
+  md?: number | string;
+  lg?: number | string;
+  xl: number | string;
+}
+
+export type ImageWidth = number | IResponsiveConfig;
+
+interface IImageComponentProps {
+  data: any;
+  width: ImageWidth;
+  [k: string]: any;
+}
 
 interface IImageStyle {
   src: string;
@@ -32,22 +32,130 @@ interface IImageStyle {
   };
 }
 
-const defaultOptions = {
-  containerWidth: 800
+/**
+ * Determine if an object uses the IResponsiveConfig interface.
+ *
+ * @param relationship
+ *    Relationship object to test.
+ *
+ * @returns
+ *    True when interface is used, false otherwise.
+ */
+const determineIfIResponsiveConfig = (
+  resp: any | IResponsiveConfig
+): resp is IResponsiveConfig => {
+  if ((resp as IResponsiveConfig).xl) {
+    return true;
+  }
+  return false;
 };
 
+/**
+ * Find the best image style to cover the provided width.
+ *
+ * @param width
+ *    Width of image in pixels.
+ * @param styles
+ *    Collection of image style objects.
+ *
+ * @returns
+ *    Smallest image style larger than the provided width.
+ */
 const findBestStyle = (width: number, styles: IImageStyle[]) =>
-  _.find(styles, ({ info: { width: w } }) => w >= width);
+  _.reduceRight(
+    styles,
+    (best: IImageStyle, style: IImageStyle) =>
+      style.info.width >= width ? style : best,
+    _.last(styles)
+  );
 
-const Image = ({ data, width, height = null, ...other }) => {
+/**
+ * Generate attributes for images with a fixed width.
+ *
+ * @param width
+ *    Width image will be displayed.
+ * @param imageSrcs
+ *    Collection of image style objects.
+ *
+ * @returns
+ *    Object with attribute values.
+ */
+const generateStaticAttributes = (width: number, imageSrcs: IImageStyle[]) => {
+  const srcSetStyles = [1, 1.5, 2, 2.5, 3].map(pixelDensity => ({
+    style: findBestStyle((width as number) * pixelDensity, imageSrcs),
+    pixelDensity
+  }));
+  const srcSet = srcSetStyles
+    .map(({ style: { src }, pixelDensity }) => `${src} ${pixelDensity}x`)
+    .toString();
+  const {
+    style: { src }
+  } = _.last(srcSetStyles);
+
+  return {
+    srcSet,
+    src,
+    width
+  };
+};
+
+/**
+ * Generate attributes for images with a responsive widths.
+ *
+ * @param widths
+ *    Image widths responsive config.
+ * @param imageSrcs
+ *    Collection of image style objects.
+ *
+ * @returns
+ *    Object with attribute values.
+ */
+const generateResponsiveAttributes = (
+  widths: IResponsiveConfig,
+  imageSrcs: IImageStyle[]
+) => {
+  const theme = useTheme();
+  const srcSet = imageSrcs
+    .map(({ src, info: { width } }) => `${src} ${width}w`)
+    .toString();
+  const sizes = ((Object.entries(widths) as unknown) as [
+    'xs' | 'sm' | 'md' | 'lg' | 'xl',
+    number | string
+  ][])
+    .map(([breakpoint, width], index, all) =>
+      index < all.length - 1
+        ? `${theme.breakpoints
+            .down(breakpoint)
+            .replace(/^@media /, '')} ${width}${
+            typeof width === 'number' ? 'px' : ''
+          }`
+        : `${width}${typeof width === 'number' ? 'px' : ''}`
+    )
+    .toString();
+  const { src } = _.last(imageSrcs);
+
+  return {
+    src,
+    srcSet,
+    sizes,
+    width: null,
+    height: null
+  };
+};
+
+const Image = ({ data, width, className, ...other }: IImageComponentProps) => {
+  const isResponsive = determineIfIResponsiveConfig(width);
   const { styles, alt, url } = data;
-  const classes = useStyles({});
+  const classes = imageStyles({});
   const cx = classNames.bind(classes);
   const defaultSrc = url;
   // Filter styles to with names starting with 'w'.
   // Filter out styles without info.
   // Sort result by width descanding.
-  const imageSrcs = (Object.entries(styles) as unknown as [string, IImageStyle][])
+  const imageSrcs = ((Object.entries(styles) as unknown) as [
+    string,
+    IImageStyle
+  ][])
     .filter(pair => pair[0].match(/^w\d+$/))
     .map(([key, style]) => {
       return {
@@ -58,31 +166,17 @@ const Image = ({ data, width, height = null, ...other }) => {
       };
     })
     .filter(({ info }) => !!info)
-    .sort(
-      (a, b) => (console.log(a, b), 1)
+    .sort(({ info: { width: wa } }, { info: { width: wb } }) =>
+      wa < wb ? -1 : 1
     ) as IImageStyle[];
-  const srcSetStyles = [1, 1.5, 2, 2.5, 3]
-    .map(
-      pixelDensity => ({
-        style: findBestStyle(width * pixelDensity, imageSrcs),
-        pixelDensity
-      })
-    );
-  console.log(imageSrcs, srcSetStyles);
-  const srcSet = srcSetStyles
-    .map(
-      ({ style: { src }, pixelDensity }) =>
-        `${src} ${pixelDensity}x`
-    )
-    .toString();
-  const { style: { src = defaultSrc } } = srcSetStyles.pop();
+
   const imgAttrs = {
-    className: cx({ root: true }),
-    srcSet,
-    src,
-    width,
-    height,
-    ...other
+    className: [className, cx({ root: true })].join(' '),
+    src: defaultSrc,
+    ...other,
+    ...(isResponsive
+      ? generateResponsiveAttributes(width as IResponsiveConfig, imageSrcs)
+      : generateStaticAttributes(width as number, imageSrcs))
   };
 
   return <img alt={alt} {...imgAttrs} />;
