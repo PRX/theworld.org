@@ -143,11 +143,12 @@ const generateResponsiveAttributes = (
   };
 };
 
-const Image = ({ data, width, className, ...other }: IImageComponentProps) => {
-  const isResponsive = determineIfIResponsiveConfig(width);
-  const { styles, alt, url } = data;
+const Image = ({ data, width: propWidth, height:propHeight = null, className, ...other }: IImageComponentProps) => {
+  const isResponsive = determineIfIResponsiveConfig(propWidth);
+  const { styles, alt, url, metadata: { width, height } } = data;
   const classes = imageStyles({});
   const cx = classNames.bind(classes);
+  const aspectRatio = width / height;
   const defaultSrc = url;
   // Filter styles to with names starting with 'w'.
   // Filter out styles without info.
@@ -171,15 +172,19 @@ const Image = ({ data, width, className, ...other }: IImageComponentProps) => {
     ) as IImageStyle[];
 
   const imgAttrs = {
-    className: [className, cx({ root: true })].join(' '),
+    className: [className, cx({ root: !isResponsive, image: isResponsive })].join(' '),
     src: defaultSrc,
     ...other,
     ...(isResponsive
-      ? generateResponsiveAttributes(width as IResponsiveConfig, imageSrcs)
-      : generateStaticAttributes(width as number, imageSrcs))
+      ? generateResponsiveAttributes(propWidth as IResponsiveConfig, imageSrcs)
+      : generateStaticAttributes(propWidth as number, imageSrcs))
   };
 
-  return <img alt={alt} {...imgAttrs} />;
+  return (!isResponsive && <img alt={alt} {...imgAttrs} />) || (
+    <div className={classes.imageWrapper} style={{ 'paddingTop': `${100 / aspectRatio}%`}}>
+      <img alt={alt} {...imgAttrs} />
+    </div>
+  );
 };
 
 export default Image;

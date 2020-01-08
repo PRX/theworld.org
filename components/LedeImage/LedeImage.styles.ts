@@ -11,7 +11,16 @@ const ledeImageStyles = makeStyles((theme: Theme) => createStyles({
     gridGap: '0.75rem',
     margin: 0
   },
+  imageWrapper: {
+    position: 'relative',
+    paddingTop: `${100 / (16 / 9)}%`
+  },
   image: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%'
   },
   footer: {
     display: 'grid',
