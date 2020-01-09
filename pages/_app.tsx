@@ -23,77 +23,16 @@ import {
 } from '@material-ui/core';
 // Material Icons
 import MenuIcon from '@material-ui/icons/Menu';
+// Theme
+import { appTheme } from '@theme/App.theme';
 // SVG
 import Logo from '../assets/svg/tw-white.svg';
 
-// TODO: move this it own module.
-const brandBlue = {
-  100: '#E6F4F9',
-  200: '#B3D9EF',
-  300: '#75BBE1',
-  400: '#3F94C6',
-  500: '#0089BD',
-  600: '#0072A3',
-  700: '#004E75',
-  800: '#003A57',
-  900: '#002533'
-};
-const brandOrange = {
-  100: '#FAEFE1',
-  200: '#F8DEBA',
-  300: '#FCCC88',
-  400: '#FAB452',
-  500: '#FF9600',
-  600: '#D17A00',
-  700: '#8A570F',
-  800: '#5B3C10',
-  900: '#2B1B08'
-}
-const headingStyles = {
-  fontFamily:
-    '"Montserrat","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
-  fontWeight: 700
-};
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: brandBlue[600]
-    },
-    secondary: {
-      main: brandOrange[500]
-    }
-  },
-  typography: {
-    fontFamily:
-      '"Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
-    caption: {
-      fontSize: '0.9rem',
-      lineHeight: '1.35rem'
-    },
-    h1: {
-      ...headingStyles,
-      color: brandBlue[900]
-    },
-    h2: {
-      ...headingStyles
-    },
-    h3: {
-      ...headingStyles
-    },
-    h4: {
-      ...headingStyles
-    },
-    h5: {
-      ...headingStyles
-    },
-    h6: {
-      ...headingStyles
-    }
-  }
-});
+// Temp styles for placeholder app bar.
+import { blue } from '@theme/colors';
 const useStyles = makeStyles((theme: Theme) => createStyles({
   appBar: {
-    boxShadow: `inset 0 -3px 0 0 ${brandBlue[400]}`
+    boxShadow: `inset 0 -3px 0 0 ${blue[400]}`
   },
   twLogo: {
     width: 'auto',
@@ -110,7 +49,7 @@ const TwApp = (props) => {
   const { Component, pageProps } = props;
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={appTheme}>
       <Box minHeight='100vh' display="flex" flexDirection="column">
         <AppBar className={classes.appBar} position="static">
           <Toolbar>

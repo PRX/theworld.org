@@ -34,7 +34,8 @@
       "@contexts/*": ["contexts/*"],
       "@interfaces": ["interfaces"],
       "@interfaces/*": ["interfaces/*"],
-      "@lib/*": ["lib/*"]
+      "@lib/*": ["lib/*"],
+      "@theme/*": ["theme/*"]
     }
   },
   "include": [
@@ -43,7 +44,8 @@
     "config/*",
     "interfaces/**/*",
     "lib/**/*",
-    "pages/**/*"
+    "pages/**/*",
+    "theme/**/*"
   ],
   "exclude": [
     "node_modules",

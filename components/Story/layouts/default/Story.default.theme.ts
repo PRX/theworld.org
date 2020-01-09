@@ -7,13 +7,10 @@ import { createMuiTheme, createStyles, makeStyles, Theme } from '@material-ui/co
 import { default as layoutStyles } from './styles/Story.layout';
 import { default as bodyStyles } from './styles/Story.body';
 
-let storyTheme = (theme: Theme) =>
-  createMuiTheme({
-    ...theme,
+const storyTheme = (theme: Theme) =>
+  createMuiTheme(theme, {
     typography: {
-      ...theme.typography,
       h1: {
-        ...theme.typography.h1,
         fontSize: theme.typography.pxToRem(46)
       }
     }

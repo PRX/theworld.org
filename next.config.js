@@ -34,7 +34,8 @@ module.exports = withPlugins([
             '@components': path.join(__dirname, 'components'),
             '@contexts': path.join(__dirname, 'contexts'),
             '@interfaces': path.join(__dirname, 'interfaces'),
-            '@lib': path.join(__dirname, 'lib')
+            '@lib': path.join(__dirname, 'lib'),
+            '@theme': path.join(__dirname, 'theme')
           }
         }
       }
