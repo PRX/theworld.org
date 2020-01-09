@@ -9,8 +9,10 @@ import { CreateCSSProperties } from '@material-ui/styles';
 export default (theme: Theme) => ({
   // Reset for imag tag dimension attributes.
   '& img': {
+    width: 'auto',
     maxWidth: '100%',
-    height: 'auto'
+    height: 'auto',
+    margin: '0 auto'
   },
 
   // Media styles.
@@ -34,6 +36,7 @@ export default (theme: Theme) => ({
       '& .image__credit': {
         display: 'flex',
         fontSize: '0.75rem',
+        lineHeight: 1
       },
       '& .image__credit-label': {
         marginRight: '0.25rem'
@@ -57,12 +60,12 @@ export default (theme: Theme) => ({
   },
 
   [theme.breakpoints.up('md')]: {
-    '& .media-wysiwyg-align-left': {
+    '& .media-wysiwyg-align-left, & .media-image_on_left': {
       float: 'left',
       width: '44%',
       margin: `${theme.typography.pxToRem(7)} ${theme.typography.pxToRem(30)} 1rem 0`
     },
-    '& .media-wysiwyg-align-right': {
+    '& .media-wysiwyg-align-right, & .media-image_on_right': {
       float: 'right',
       width: '44%',
       margin: `${theme.typography.pxToRem(7)} 0 1rem ${theme.typography.pxToRem(30)}`

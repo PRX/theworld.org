@@ -6,9 +6,10 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 const imageStyles = makeStyles((theme: Theme) => createStyles({
-  imageWrapper: {
-    position: 'relative'
-  },
+  imageWrapper: (props: { width?: number, height?: number }) => ({
+    position: 'relative',
+    paddingTop: `${((props.height / props.width) || (9 / 16)) * 100}%`
+  }),
   image: {
     position: 'absolute',
     top: 0,

@@ -81,5 +81,20 @@ export default (theme: Theme) => ({
         fontSize: '0.9rem'
       }
     }
+  },
+
+  '& [gp-pullquote]': {
+    padding: theme.typography.pxToRem(theme.spacing(3)),
+    color: theme.palette.secondary.main,
+    fontFamily: '"Alegreya", serif',
+    fontSize: '1.5rem',
+    textAlign: 'center',
+  },
+  '& [gp-pullquote-source]:not([gp-pullquote-source=""]):after': {
+    content: '"- " attr(gp-pullquote-source)',
+    display: 'block',
+    marginTop: '0.75rem',
+    color: theme.palette.grey[600],
+    fontSize: '0.9rem'
   }
 } as CreateCSSProperties<{}>);
