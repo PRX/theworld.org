@@ -21,6 +21,13 @@ const StoryDefault = () => {
   } = useContext(ContentContext);
   const classes = storyStyles({});
 
+  // TODO: Parse body...
+  //    - Remove empty <p> tags (could be handled in the API)
+  //    - Insert mobile ad positions
+  //    - Insert mobile newsletter signup
+  //    - Insert mobile donation CTA
+  //    - Convert local links to ContentLinks
+  
   return (
     <ThemeProvider theme={storyTheme}>
       <Container fixed>
