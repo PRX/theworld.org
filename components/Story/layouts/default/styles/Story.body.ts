@@ -4,13 +4,13 @@
  */
 
 import { createStyles, Theme } from '@material-ui/core/styles';
-import { mediaStyles, typographyStyles } from './body';
-import { CreateCSSProperties } from '@material-ui/styles';
+import { mediaStyles, qaStyles, typographyStyles } from './body';
 
 export default (theme: Theme) =>
   createStyles({
     body: {
       ...typographyStyles(theme),
-      ...mediaStyles(theme)
+      ...mediaStyles(theme),
+      ...qaStyles(theme)
     }
   });

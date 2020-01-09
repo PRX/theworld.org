@@ -30,6 +30,21 @@ export default (theme: Theme) => ({
     marginBottom: '1.5rem'
   },
 
+  '& hr': {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '2rem',
+    border: 'none',
+    '&::before': {
+      content: '"* * *"',
+      position: 'relative',
+      top: '0.25rem',
+      fontSize: '1.5rem',
+      lineHeight: 0
+    }
+  },
+
   '& blockquote, & aside': {
     backgroundColor: theme.palette.grey[200],
     margin: 0,
