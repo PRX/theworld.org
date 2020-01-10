@@ -63,12 +63,12 @@ export default (theme: Theme) => ({
     '& .media-wysiwyg-align-left, & .media-image_on_left': {
       float: 'left',
       width: '44%',
-      margin: `${theme.typography.pxToRem(7)} ${theme.typography.pxToRem(30)} 1rem 0`
+      margin: `${theme.typography.pxToRem(7)} ${theme.typography.pxToRem(30)} 0.5rem 0`
     },
     '& .media-wysiwyg-align-right, & .media-image_on_right': {
       float: 'right',
       width: '44%',
-      margin: `${theme.typography.pxToRem(7)} 0 1rem ${theme.typography.pxToRem(30)}`
+      margin: `${theme.typography.pxToRem(7)} 0 0.5rem ${theme.typography.pxToRem(30)}`
     }
   },
 } as CreateCSSProperties<{}>);

@@ -45,7 +45,7 @@ export default (theme: Theme) => ({
     }
   },
 
-  '& blockquote, & aside': {
+  '& blockquote, & aside:not(.node-story-act)': {
     backgroundColor: theme.palette.grey[200],
     margin: 0,
     padding: theme.typography.pxToRem(theme.spacing(3)),

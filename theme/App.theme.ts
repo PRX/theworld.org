@@ -53,6 +53,12 @@ export const appTheme = createMuiTheme({
     },
     h6: {
       ...headingProps
+    },
+    overline: {
+      fontSize: '0.875rem',
+      fontWeight: 'bold',
+      letterSpacing: '0.1rem',
+      lineHeight: '1.25rem'
     }
   }
 });

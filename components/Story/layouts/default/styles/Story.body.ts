@@ -4,13 +4,14 @@
  */
 
 import { createStyles, Theme } from '@material-ui/core/styles';
-import { mediaStyles, qaStyles, typographyStyles } from './body';
+import { mediaStyles, qaStyles, storyActStyles, typographyStyles } from './body';
 
 export default (theme: Theme) =>
   createStyles({
     body: {
       ...typographyStyles(theme),
       ...mediaStyles(theme),
-      ...qaStyles(theme)
+      ...qaStyles(theme),
+      ...storyActStyles(theme)
     }
   });
