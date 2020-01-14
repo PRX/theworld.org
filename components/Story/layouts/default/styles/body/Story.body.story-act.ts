@@ -47,7 +47,7 @@ export default (theme: Theme) =>
         backgroundColor: yellow[200]
       },
 
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up('lg')]: {
         '&.cta_align-left': {
           float: 'left',
           width: '44%',
@@ -97,6 +97,102 @@ export default (theme: Theme) =>
       '& .field-story-act-external-link': {
         '& a': {
           ...theme.typography.button
+        }
+      },
+
+      '&.cta-type-internal-link': {
+        '& .element-hidden': {
+          display: 'none'
+        },
+
+        '& > .field-story-act-internal-link + .field-story-act-internal-link': {
+          marginTop: '0.5rem',
+          paddingTop: '1rem',
+          borderTop: `1px solid ${theme.palette.background.default}`
+        },
+
+        '& .teaser-list__item': {
+          display: 'grid',
+          gridTemplateColumns: '1fr 100px',
+          gridTemplateRows: 'repeat(4, min-content)',
+          gridColumnGap: '0.5rem',
+
+          '& .teaser-list__item-title': {
+            gridColumn: '1 / -2',
+            margin: 0,
+            fontSize: 'inherit'
+          },
+
+          '& .story-list__group-1': {
+            gridColumn: -2,
+            gridRow: '1 / -2',
+
+            '& .field-image': {
+              margin: 0,
+              padding: 0
+            }
+          },
+
+          '& .field-date-published': {
+            gridColumn: 1,
+            margin: 0,
+            color: theme.palette.grey[600],
+            fontSize: '0.75rem',
+            fontStyle: 'italic',
+            lineHeight: 1.2
+          },
+
+          '& > .field-updated': {
+            display: 'flex',
+            gridColumn: 1,
+            color: theme.palette.grey[600],
+            fontSize: '0.75rem',
+            fontStyle: 'italic',
+            lineHeight: 1.2,
+
+            '& .field-updated-label': {
+              '&::after': {
+                content: '"\\00A0"'
+              },
+              fontWeight: theme.typography.fontWeightBold
+            }
+          },
+
+          '& .story__categories': {
+            gridColumn: '1 / -1',
+            marginTop: '0.5rem',
+            fontSize: theme.typography.pxToRem(14),
+            lineHeight: 1.4,
+
+            '& .terms-inline': {
+              display: 'flex',
+              flexWrap: 'wrap',
+
+              '& + .terms-inline': {
+                marginTop: theme.typography.pxToRem(10)
+              },
+
+              '& > * + *': {
+                marginLeft: '0.25rem'
+              },
+
+              '& .category-label': {
+                fontWeight: 'bold'
+              },
+
+              '& > span:not(:last-of-type)': {
+                '&::after': {
+                  content: '", "'
+                }
+              },
+
+              '& > span:last-of-type': {
+                '&::before': {
+                  content: '"and "'
+                }
+              }
+            }
+          }
         }
       },
 
