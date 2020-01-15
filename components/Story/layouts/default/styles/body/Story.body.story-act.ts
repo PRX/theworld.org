@@ -7,12 +7,23 @@ import { Theme } from '@material-ui/core/styles';
 import { CreateCSSProperties } from '@material-ui/styles';
 import { blue, yellow } from '@theme/colors';
 
-const padded = {
-  padding: '1rem 1.5rem'
-};
+export default (theme: Theme) => {
+  const padded = {
+    padding: '1rem 1.5rem'
+  };
+  
+  const button = {
+    ...theme.typography.button,
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    cursor: 'pointer',
 
-export default (theme: Theme) =>
-  ({
+    '&:hover': {
+      backgroundColor: theme.palette.primary.dark
+    }
+  };
+
+  return {
     '& .edit-entity': {
       margin: '1rem 0',
 
@@ -47,16 +58,20 @@ export default (theme: Theme) =>
         backgroundColor: yellow[200]
       },
 
-      [theme.breakpoints.up('lg')]: {
+      [theme.breakpoints.up('md')]: {
         '&.cta_align-left': {
           float: 'left',
           width: '44%',
-          margin: `${theme.typography.pxToRem(7)} ${theme.typography.pxToRem(30)} 0.5rem 0`
+          margin: `${theme.typography.pxToRem(7)} ${theme.typography.pxToRem(
+            30
+          )} 0.5rem 0`
         },
         '&.cta_align-right': {
           float: 'right',
           width: '44%',
-          margin: `${theme.typography.pxToRem(7)} 0 0.5rem ${theme.typography.pxToRem(30)}`
+          margin: `${theme.typography.pxToRem(
+            7
+          )} 0 0.5rem ${theme.typography.pxToRem(30)}`
         }
       }
     },
@@ -66,8 +81,55 @@ export default (theme: Theme) =>
       gridRowGap: '0.5rem',
       gridColumnGap: '1rem',
 
-      '&.cta-type-external-link': {
+      '& .field-display-title': {
+        ...theme.typography.overline
+      },
 
+      '& .field-story-act-teaser': {
+        ...theme.typography.caption
+      },
+
+      '& .field-story-act-external-link': {
+        '& a': {
+          ...theme.typography.button
+        }
+      },
+
+      '& .field-body': {
+        ...theme.typography.caption,
+
+        '& > *': {
+          margin: 0
+        },
+        '& > * + *': {
+          marginTop: '1rem'
+        },
+
+        '& .newsletter__signup': {
+          borderTop: `2px solid ${theme.palette.primary.main}`,
+
+          '& .campaignmonitor-subscribe-form': {
+            display: 'grid',
+            gridGap: '0.5rem',
+            justifyItems: 'center',
+
+            '& .form-item': {
+              width: '100%',
+
+              '& input': {
+                width: '100%',
+                padding: '0.25rem 0.5rem'
+              }
+            },
+
+            '& .form-submit': {
+              ...button
+            }
+          }
+        }
+      },
+
+      '&.cta-type-external-link': {
         '& > *': {
           gridColumn: 1
         },
@@ -83,20 +145,6 @@ export default (theme: Theme) =>
         '& .field-story-act-image': {
           gridColumn: '2',
           gridRow: '1 / 3'
-        }
-      },
-
-      '& .field-display-title': {
-        ...theme.typography.overline
-      },
-
-      '& .field-story-act-teaser': {
-        ...theme.typography.caption
-      },
-
-      '& .field-story-act-external-link': {
-        '& a': {
-          ...theme.typography.button
         }
       },
 
@@ -192,18 +240,26 @@ export default (theme: Theme) =>
                 }
               }
             }
+          },
+
+          [theme.breakpoints.only('md')]: {
+            '& .story-list__group-1': {
+              gridRow: 1,
+              gridColumn: '1 / -1'
+            },
+
+            '& .teaser-list__item-title': {
+              gridColumn: '1 / -1'
+            },
+
+            '& .field-date-published': {
+              gridColumn: '1 / -1'
+            },
+
+            '& > .field-updated': {
+              gridColumn: '1 / -1'
+            }
           }
-        }
-      },
-
-      '& .field-body': {
-        ...theme.typography.caption,
-
-        '& > *': {
-          margin: 0
-        },
-        '& > * + *': {
-          marginTop: '1rem'
         }
       },
 
@@ -223,4 +279,5 @@ export default (theme: Theme) =>
         }
       }
     }
-  } as CreateCSSProperties<{}>);
+  } as CreateCSSProperties<{}>;
+};
