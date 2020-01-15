@@ -11,9 +11,10 @@ export default (theme: Theme) => {
   const padded = {
     padding: '1rem 1.5rem'
   };
-  
+
   const button = {
     ...theme.typography.button,
+    padding: `${theme.typography.pxToRem(8)} ${theme.typography.pxToRem(16)}`,
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     cursor: 'pointer',
@@ -145,6 +146,12 @@ export default (theme: Theme) => {
         '& .field-story-act-image': {
           gridColumn: '2',
           gridRow: '1 / 3'
+        },
+
+        '& .field-story-act-external-link': {
+          '& a': {
+            ...button
+          }
         }
       },
 
