@@ -8,6 +8,8 @@ import { CreateCSSProperties } from '@material-ui/styles';
 import { blue, yellow } from '@theme/colors';
 
 export default (theme: Theme) => {
+  const floatWidth = '44%';
+
   const padded = {
     padding: '1rem 1.5rem'
   };
@@ -23,6 +25,11 @@ export default (theme: Theme) => {
       backgroundColor: theme.palette.primary.dark
     }
   };
+
+  const inputText = {
+    width: '100%',
+    padding: '0.25rem 0.5rem'
+  }
 
   return {
     '& .edit-entity': {
@@ -62,14 +69,14 @@ export default (theme: Theme) => {
       [theme.breakpoints.up('md')]: {
         '&.cta_align-left': {
           float: 'left',
-          width: '44%',
+          width: floatWidth,
           margin: `${theme.typography.pxToRem(7)} ${theme.typography.pxToRem(
             30
           )} 0.5rem 0`
         },
         '&.cta_align-right': {
           float: 'right',
-          width: '44%',
+          width: floatWidth,
           margin: `${theme.typography.pxToRem(
             7
           )} 0 0.5rem ${theme.typography.pxToRem(30)}`
@@ -118,8 +125,7 @@ export default (theme: Theme) => {
               width: '100%',
 
               '& input': {
-                width: '100%',
-                padding: '0.25rem 0.5rem'
+                ...inputText
               }
             },
 
@@ -270,19 +276,33 @@ export default (theme: Theme) => {
         }
       },
 
-      '& #subscription_form_wrapper': {
-        '& p': {
-          margin: 0,
-          display: 'inline'
+      '&.cta-type-meetup-widget': {
+        '& form > div': {
+          display: 'grid',
+          gridGap: '0.5rem'
         },
-        '& br': {
-          display: 'none'
-        },
+
         '& .form-item': {
-          display: 'inline',
-          '& .form-text': {
-            width: '65%'
-          }
+          display: 'grid',
+          gridGap: '0.5rem'
+        },
+
+        '& .form-text': {
+          ...inputText
+        },
+
+        '& .form-submit': {
+          ...button
+        },
+
+        '& .form-required': {
+          color: theme.palette.error.main
+        },
+
+        '& label': {
+          fontWeight: theme.typography.fontWeightBold,
+          fontSize: '0.9rem',
+          lineHeight: 1
         }
       }
     }
