@@ -35,6 +35,7 @@
       "@interfaces": ["interfaces"],
       "@interfaces/*": ["interfaces/*"],
       "@lib/*": ["lib/*"],
+      "@svg": ["assets/svg/*"],
       "@theme/*": ["theme/*"]
     }
   },
@@ -45,6 +46,7 @@
     "interfaces/**/*",
     "lib/**/*",
     "pages/**/*",
+    "assets/**/*",
     "theme/**/*"
   ],
   "exclude": [
