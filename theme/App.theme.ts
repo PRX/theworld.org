@@ -32,6 +32,7 @@ export const appTheme = createMuiTheme({
     fontFamily:
       '"Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
     caption: {
+      color: grey[700],
       fontSize: '0.9rem',
       lineHeight: '1.35rem'
     },
