@@ -39,15 +39,16 @@ const fetchPriApi = async (
  *    Resource type name.
  * @param params
  *    Optional. Query string params described in key:value pairs.
+ * @param keys
+ *    Object who's keys refer to relationship types, and values refer to a
+ *    property on the related object that should become the key on the parsed
+ *    resonse.
  *
  * @returns
  *    Denormalized resource collection.
  */
 const fetchPriApiQuery = async (type: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
   libFetchPriApiQuery(type, params, keys, priApiConfig);
-
-const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
-  fetchPriApi(`query/alias/${alias.replace(/^\/+|\/+$/, '')}`, params, keys).then(resp => !resp.isFailure && resp.response);
 
 /**
  * Methods that simplifies GET queries for resource item.
@@ -58,6 +59,10 @@ const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: obje
  *    Resource unique identifier.
  * @param params
  *    Optional. Query string params described in key:value pairs.
+ * @param keys
+ *    Object who's keys refer to relationship types, and values refer to a
+ *    property on the related object that should become the key on the parsed
+ *    resonse.
  *
  * @returns
  *    Denormalized resource item.
@@ -69,4 +74,34 @@ const fetchPriApiItem = async (
   keys?: object
 ): Promise<PriApiResourceResponse> => libFetchPriApiItem(type, id, params, keys, priApiConfig);
 
-export { fetchPriApi, fetchPriApiQuery, fetchPriApiQueryAlias, fetchPriApiItem };
+/**
+ * Metho that simplifies GET queries for resource item using URL path alias.
+ *
+ * @param alias
+ *    Alias used by resource item to display data.
+ * @param params
+ *    Optional. Query string params described in key:value pairs.
+ * @param keys
+ *    Object who's keys refer to relationship types, and values refer to a
+ *    property on the related object that should become the key on the parsed
+ *    resonse.
+ *
+ * @returns
+ *    Denormalized resource item.
+ */
+const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
+  fetchPriApi(`query/alias/${alias.replace(/^\/+|\/+$/, '')}`, params, keys).then(resp => !resp.isFailure && resp.response);
+
+/**
+ * Metho that simplifies GET queries for menu.
+ *
+ * @param menuName
+ *    Machine name of menu.
+ *
+ * @returns
+ *    Denormalized resource item.
+ */
+const fetchPriApiQueryMenu = async (menuName: string): Promise<PriApiResourceResponse> =>
+  fetchPriApi(`menu/tree/${menuName}`).then(resp => !resp.isFailure && resp.response);
+
+export { fetchPriApi, fetchPriApiQuery, fetchPriApiQueryAlias, fetchPriApiItem, fetchPriApiQueryMenu };
