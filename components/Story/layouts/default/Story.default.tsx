@@ -21,6 +21,16 @@ const StoryDefault = () => {
   } = useContext(ContentContext);
   const classes = storyStyles({});
 
+  // TODO: Parse body...
+  //    - Insert mobile ad positions
+  //    - Insert mobile newsletter signup
+  //    - Insert mobile donation CTA
+  //    - Remove empty <p> tags (API?)
+  //    - Convert local links to ContentLinks
+  //    - Replace GP video embeds with player that works (API?)
+  //    - Replace older GP image embeds with image in attribute with Image (API?)
+  //    - Replace GP pullquotes with symantic markup (API?)
+
   return (
     <ThemeProvider theme={storyTheme}>
       <Container fixed>
@@ -61,7 +71,7 @@ const StoryDefault = () => {
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <StoryLede />
-                <Box className={classes.body} my={2} dangerouslySetInnerHTML={{__html: body }}/>
+                <Box className={classes.body} my={2} dangerouslySetInnerHTML={{ __html: body  }}/>
                 <Box
                   bgcolor="text.hint"
                   color="background.paper"

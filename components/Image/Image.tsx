@@ -146,7 +146,10 @@ const generateResponsiveAttributes = (
 const Image = ({ data, width: propWidth, height:propHeight = null, className, ...other }: IImageComponentProps) => {
   const isResponsive = determineIfIResponsiveConfig(propWidth);
   const { styles, alt, url, metadata: { width, height } } = data;
-  const classes = imageStyles({});
+  const classes = imageStyles({
+    width,
+    height
+  });
   const cx = classNames.bind(classes);
   const aspectRatio = width / height;
   const defaultSrc = url;
@@ -172,7 +175,7 @@ const Image = ({ data, width: propWidth, height:propHeight = null, className, ..
     ) as IImageStyle[];
 
   const imgAttrs = {
-    className: [className, cx({ root: !isResponsive, image: isResponsive })].join(' '),
+    className: [className, cx({ root: true, image: isResponsive })].join(' '),
     src: defaultSrc,
     ...other,
     ...(isResponsive
@@ -181,7 +184,7 @@ const Image = ({ data, width: propWidth, height:propHeight = null, className, ..
   };
 
   return (!isResponsive && <img alt={alt} {...imgAttrs} />) || (
-    <div className={classes.imageWrapper} style={{ 'paddingTop': `${100 / aspectRatio}%`}}>
+    <div className={classes.imageWrapper}>
       <img alt={alt} {...imgAttrs} />
     </div>
   );

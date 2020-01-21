@@ -3,13 +3,12 @@
  * Component for default story header.
  */
 
-import { Box, Hidden, Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { useContext } from 'react';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import ContentContext from '@contexts/ContentContext';
 import ContentLink from '@components/ContentLink';
-import Image from '@components/Image'
 import { storyHeaderStyles } from './StoryHeader.default.styles';
 
 export default () => {
@@ -24,7 +23,6 @@ export default () => {
     }
   } = useContext(ContentContext);
   const classes = storyHeaderStyles({});
-  const hasLogos = program && program.podcastLogo;
 
   return (
     <Box className={classes.root} mt={4} mb={2}>
@@ -60,15 +58,6 @@ export default () => {
             </ul>
           )}
         </Box>
-        {hasLogos && (
-          <Hidden smDown>
-            <Box className={classes.logos}>
-              <ContentLink data={program}>
-                <Image data={program.podcastLogo} width={85} height={85} />
-              </ContentLink>
-            </Box>
-          </Hidden>
-        )}
       </Box>
     </Box>
   );

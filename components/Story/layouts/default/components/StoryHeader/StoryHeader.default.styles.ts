@@ -23,8 +23,8 @@ const storyHeaderStyles = makeStyles((theme: Theme) => createStyles({
   },
   meta: {
     display: 'grid',
-    gridTemplateColumns: 'max-content max-content',
-    gridTemplateAreas: "'INFO LOGOS'",
+    gridTemplateColumns: 'max-content',
+    gridTemplateAreas: "'INFO'",
     justifyContent: 'space-between'
   },
   info: {
@@ -32,13 +32,6 @@ const storyHeaderStyles = makeStyles((theme: Theme) => createStyles({
     alignContent: 'start',
     gridArea: 'INFO',
     gridGap: theme.typography.pxToRem(4)
-  },
-  logo: {
-    width: theme.typography.pxToRem(85)
-  },
-  logos: {
-    display: 'grid',
-    gridArea: 'LOGOS'
   },
   programLink: {
     fontWeight: theme.typography.fontWeightBold
