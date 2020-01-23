@@ -5,22 +5,26 @@
 
 import React, { useContext } from 'react';
 import Link from 'next/link';
-// Material
+import { IButton } from '@interfaces';
+import parseMenu from '@lib/parse/menu';
+import MainMenu from '@components/MainMenu/MainMenu';
+// Material and Theme
 import {
-  Link as MuiLink,
   AppBar,
   Box,
+  Button,
   Drawer,
   Toolbar,
   IconButton,
   Typography
 } from '@material-ui/core';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import { appHeaderStyles } from './AppHeader.styles';
 // SVG
 import Logo from '@svg/tw-white.svg';
 // Contexts
-import AppContext from '../../contexts/AppContext';
+import AppContext from '@contexts/AppContext';
 
 export default () => {
   const {
@@ -28,7 +32,7 @@ export default () => {
   } = useContext(AppContext);
   const classes = appHeaderStyles({});
   const [state, setState] = React.useState({
-    open: false
+    open: true
   });
 
   const handleDrawerOpen = () => () => {
@@ -37,6 +41,10 @@ export default () => {
 
   const handleDrawerClose = () => () => {
     setState({ open: false });
+  };
+
+  const renderButton = (button: IButton) => {
+    return <div>Button</div>;
   };
 
   return (
@@ -59,11 +67,39 @@ export default () => {
               <Logo className={classes.twLogo} title="The World" />
             </a>
           </Link>
+
+          {/* Subscribe Button */}
+
+          {/* Header Nav */}
         </Toolbar>
       </AppBar>
       <Drawer open={state.open} onClose={handleDrawerClose()}>
-        <Box width="100vw" maxWidth="300px">
-          <Typography variant="body1">Main Nav</Typography>
+        <Box
+          width="100vw"
+          height="100%"
+          maxWidth="360px"
+          minHeight="100vh"
+          display="flex"
+          flexDirection="column"
+          bgcolor="primary.main"
+        >
+          <Box display="flex" justifyContent="flex-end">
+            <Button
+              disableRipple={true}
+              startIcon={<ChevronLeftIcon />}
+              onClick={handleDrawerClose()}
+              className={classes.closeBtn}
+              classes={{
+                startIcon: classes.closeBtnIcon
+              }}
+            >
+              Close
+            </Button>
+          </Box>
+
+          <Box flexGrow="1">
+            <MainMenu/>
+          </Box>
         </Box>
       </Drawer>
     </>

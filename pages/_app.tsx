@@ -4,8 +4,8 @@
  */
 
 import React from 'react';
-import Document from 'next/document';
 import App, { AppContext, AppProps } from 'next/app';
+import classNames from 'classnames/bind';
 // Material Components
 import {
   Box,
@@ -16,11 +16,12 @@ import {
   ThemeProvider
 } from '@material-ui/core/styles';
 // Theme
-import { appTheme } from '@theme/App.theme';
+import { appTheme, appStyles } from '@theme/App.theme';
 import AppHeader from '@components/AppHeader/AppHeader';
 // API
 import { fetchPriApiQueryMenu } from '@lib/fetch';
 import { PriApiResource } from 'pri-api-library/types';
+import parseMenu from '@lib/parse/menu';
 // Contexts
 import {default as TwAppContext} from '@contexts/AppContext';
 
@@ -28,7 +29,11 @@ interface TwAppProps extends AppProps {
   menus?: PriApiResource[]
 }
 
-class TwApp extends App<TwAppProps> {
+interface TwAppState {
+  javascriptDisabled: boolean
+}
+
+class TwApp extends App<TwAppProps, {}, TwAppState> {
   static async getInitialProps(ctx: AppContext) {
 
     const initialProps = await App.getInitialProps(ctx);
@@ -51,16 +56,29 @@ class TwApp extends App<TwAppProps> {
     return {
       ...initialProps,
       menus: {
-        drawerMainNav,
-        drawerSocialnav,
-        drawerTopNav,
-        footerNav,
-        headerNav
+        drawerMainNav: parseMenu(drawerMainNav),
+        drawerSocialnav: parseMenu(drawerSocialnav),
+        drawerTopNav: parseMenu(drawerTopNav),
+        footerNav: parseMenu(footerNav),
+        headerNav: parseMenu(headerNav)
       }
     };
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      javascriptDisabled: true
+    };
+  }
+
   componentDidMount() {
+    // Flag javascript as enabled.
+    this.setState({
+      javascriptDisabled: false
+    });
+
     // Remove the server-side injected CSS.
     // Fix for https://github.com/mui-org/material-ui/issues/15073
     const jssStyles = document.querySelector('#jss-server-side');
@@ -71,13 +89,18 @@ class TwApp extends App<TwAppProps> {
 
   render() {
     const { Component, pageProps, menus } = this.props;
-
-    console.log(menus);
+    const { javascriptDisabled } = this.state;
+    const cx = classNames.bind({
+      noJs: 'no-js'
+    });
+    const appClasses = cx({
+      noJs: javascriptDisabled
+    });
 
     return (
       <ThemeProvider theme={appTheme}>
         <TwAppContext.Provider value={{ menus }}>
-          <Box minHeight="100vh" display="flex" flexDirection="column">
+          <Box className={appClasses} minHeight="100vh" display="flex" flexDirection="column">
             <AppHeader/>
             <Box flexGrow={1}>
               <Component {...pageProps} />

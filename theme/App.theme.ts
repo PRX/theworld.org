@@ -4,7 +4,11 @@
  */
 
 import { createMuiTheme, createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { common } from '@material-ui/core/colors'
 import { blue, orange, red, grey } from './colors';
+
+const buttonBorderRadius = '3px';
+const buttonBorderWidth = '2px';
 
 export const headingProps = {
   fontFamily:
@@ -13,12 +17,50 @@ export const headingProps = {
 };
 
 export const appTheme = createMuiTheme({
+  overrides: {
+    MuiButton: {
+      contained: {
+        fontWeight: 'bold'
+      },
+      label: {
+        textTransform: 'none'
+      }
+    },
+    MuiButtonGroup: {
+      contained: {
+        boxShadow: 'none'
+      },
+      groupedContained: {
+        whiteSpace: 'nowrap',
+        '&:first-child': {
+          borderRadius: `${buttonBorderRadius} 0 0 ${buttonBorderRadius}`
+        },
+        '&:last-child': {
+          borderRadius: `0 ${buttonBorderRadius} ${buttonBorderRadius} 0`
+        }
+      },
+      groupedContainedSecondary: {
+        border: `${buttonBorderWidth} solid ${orange[400]}`,
+        '&:not(:last-child)': {
+          borderRight: `${buttonBorderWidth} solid ${orange[400]}`,
+        },
+        '& + *': {
+          marginLeft: `-${buttonBorderWidth}`
+        },
+        '&:hover, &:focus': {
+          backgroundColor: orange[400],
+          boxShadow: 'none'
+        }
+      }
+    }
+  },
   palette: {
     primary: {
       main: blue[600]
     },
     secondary: {
-      main: orange[500]
+      main: orange[500],
+      contrastText: common.white
     },
     error: {
       main: red[500]
@@ -27,6 +69,9 @@ export const appTheme = createMuiTheme({
     common: {
       black: grey[900]
     }
+  },
+  shape: {
+    borderRadius: 0
   },
   typography: {
     fontFamily:
@@ -62,3 +107,7 @@ export const appTheme = createMuiTheme({
     }
   }
 });
+
+export const appStyles = makeStyles((theme: Theme) => createStyles({
+  noJs: {}
+}));

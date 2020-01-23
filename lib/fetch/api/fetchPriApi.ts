@@ -9,6 +9,7 @@ import {
   fetchPriApiQuery as libFetchPriApiQuery
 } from 'pri-api-library';
 import { PriApiResourceResponse, IPriApiResponse } from 'pri-api-library/types';
+import { ILink } from '@interfaces/link';
 import { priApi as priApiConfig} from '../../../config';
 
 /**
@@ -101,7 +102,7 @@ const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: obje
  * @returns
  *    Denormalized resource item.
  */
-const fetchPriApiQueryMenu = async (menuName: string): Promise<PriApiResourceResponse> =>
-  fetchPriApi(`menu/tree/${menuName}`).then(resp => !resp.isFailure && resp.response);
+const fetchPriApiQueryMenu = async (menuName: string): Promise<ILink[]> =>
+  fetchPriApi(`menu/tree/${menuName}`).then(resp => !resp.isFailure && resp.response as ILink[]);
 
 export { fetchPriApi, fetchPriApiQuery, fetchPriApiQueryAlias, fetchPriApiItem, fetchPriApiQueryMenu };
