@@ -3,11 +3,12 @@
  * Component for links to content page.
  */
 
-import React, { useContext } from 'react';
+import React, { Component, useContext } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import { IButton } from '@interfaces';
-import parseMenu from '@lib/parse/menu';
-import MainMenu from '@components/MainMenu/MainMenu';
+import DrawerTopNav from './DrawerTopNav';
+import DrawerMainNav from './DrawerMainNav';
 // Material and Theme
 import {
   AppBar,
@@ -16,8 +17,10 @@ import {
   Drawer,
   Toolbar,
   IconButton,
-  Typography
+  Typography,
+  WithStyles
 } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import { appHeaderStyles } from './AppHeader.styles';
@@ -26,82 +29,122 @@ import Logo from '@svg/tw-white.svg';
 // Contexts
 import AppContext from '@contexts/AppContext';
 
-export default () => {
-  const {
-    menus: { headerNav }
-  } = useContext(AppContext);
-  const classes = appHeaderStyles({});
-  const [state, setState] = React.useState({
-    open: true
-  });
+interface AppHeaderProps extends WithStyles<typeof appHeaderStyles> {
+}
+interface AppHeaderState {
+  open: boolean
+}
 
-  const handleDrawerOpen = () => () => {
-    setState({ open: true });
-  };
+class AppHeader extends Component<AppHeaderProps, AppHeaderState> {
 
-  const handleDrawerClose = () => () => {
-    setState({ open: false });
-  };
+  static contextType = AppContext;
 
-  const renderButton = (button: IButton) => {
-    return <div>Button</div>;
-  };
+  constructor(props) {
+    super(props);
 
-  return (
-    <>
-      <AppBar className={classes.root} position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            disableRipple={true}
-            color="inherit"
-            aria-label="menu"
-            onClick={handleDrawerOpen()}
-          >
-            <MenuIcon />
-          </IconButton>
+    this.state = {
+      open: true
+    };
+  }
 
-          <Link href="/">
-            <a href="/">
-              <Logo className={classes.twLogo} title="The World" />
-            </a>
-          </Link>
+  componentDidMount() {
+    Router.events.on('routeChangeComplete', this.handleRouteChangeComplete);
+  }
 
-          {/* Subscribe Button */}
+  componentWillUnmount() {
+    Router.events.off('routeChangeComplete', this.handleRouteChangeComplete);
+  }
 
-          {/* Header Nav */}
-        </Toolbar>
-      </AppBar>
-      <Drawer open={state.open} onClose={handleDrawerClose()}>
-        <Box
-          width="100vw"
-          height="100%"
-          maxWidth="360px"
-          minHeight="100vh"
-          display="flex"
-          flexDirection="column"
-          bgcolor="primary.main"
-        >
-          <Box display="flex" justifyContent="flex-end">
-            <Button
+  handleRouteChangeComplete = () => {
+    window.setTimeout(() => {
+      this.setState({
+        open: false
+      });
+    }, 250);
+  }
+
+  render() {
+    const {
+      menus: { headerNav }
+    } = this.context;
+    const { classes } = this.props;
+    const { open } = this.state;
+
+    const handleDrawerOpen = () => () => {
+      this.setState({ open: true });
+    };
+
+    const handleDrawerClose = () => () => {
+      this.setState({ open: false });
+    };
+
+    const renderButton = (button: IButton) => {
+      return <div>Button</div>;
+    };
+
+    return (
+      <>
+        <AppBar className={classes.root} position="static">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
               disableRipple={true}
-              startIcon={<ChevronLeftIcon />}
-              onClick={handleDrawerClose()}
-              className={classes.closeBtn}
-              classes={{
-                startIcon: classes.closeBtnIcon
-              }}
+              color="inherit"
+              aria-label="menu"
+              onClick={handleDrawerOpen()}
             >
-              Close
-            </Button>
-          </Box>
+              <MenuIcon />
+            </IconButton>
 
-          <Box flexGrow="1">
-            <MainMenu/>
+            <Link href="/">
+              <a href="/">
+                <Logo className={classes.twLogo} title="The World" />
+              </a>
+            </Link>
+
+            {/* Subscribe Button */}
+
+            {/* Header Nav */}
+          </Toolbar>
+        </AppBar>
+        <Drawer open={open} onClose={handleDrawerClose()}>
+          <Box
+            width="100vw"
+            height="100%"
+            maxWidth="360px"
+            minHeight="100vh"
+            display="flex"
+            flexDirection="column"
+            bgcolor="primary.main"
+          >
+            <Box display="flex" justifyContent="flex-end">
+              <Button
+                disableRipple={true}
+                startIcon={<ChevronLeftIcon />}
+                onClick={handleDrawerClose()}
+                className={classes.closeBtn}
+                classes={{
+                  startIcon: classes.closeBtnIcon
+                }}
+              >
+                Close
+              </Button>
+            </Box>
+
+            <DrawerTopNav />
+
+            <Box flexGrow="1" bgcolor="background.default">
+              <DrawerMainNav />
+            </Box>
+
+            {/* Social Nav */}
+            <Box>Social Nav</Box>
           </Box>
-        </Box>
-      </Drawer>
-    </>
-  );
-};
+        </Drawer>
+      </>
+    );
+  }
+}
+
+export default withStyles(appHeaderStyles)(AppHeader);

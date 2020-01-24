@@ -6,7 +6,7 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { blue } from '@theme/colors';
 
-const appHeaderStyles = makeStyles((theme: Theme) => createStyles({
+const appHeaderStyles = (theme: Theme) => createStyles({
   root: {
     boxShadow: `inset 0 -3px 0 0 ${blue[400]}`
   },
@@ -29,7 +29,7 @@ const appHeaderStyles = makeStyles((theme: Theme) => createStyles({
       display: 'none'
     }
   }
-}));
+});
 
 
 

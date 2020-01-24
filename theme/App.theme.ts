@@ -43,6 +43,7 @@ export const appTheme = createMuiTheme({
         border: `${buttonBorderWidth} solid ${orange[400]}`,
         '&:not(:last-child)': {
           borderRight: `${buttonBorderWidth} solid ${orange[400]}`,
+          borderColor: `${orange[400]}`
         },
         '& + *': {
           marginLeft: `-${buttonBorderWidth}`
