@@ -10,27 +10,33 @@ import { IButton } from '@interfaces';
 // Material
 import { Collapse, List, ListItem, ListItemText } from '@material-ui/core';
 import { drawerMainNavStyles } from './DrawerMainNav.styles';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 // Contexts
 import AppContext from '@contexts/AppContext';
+
+interface OpenStateMap {
+  [k: string]: boolean
+}
 
 export default () => {
   const {
     menus: {  drawerMainNav }
   } = useContext(AppContext);
   const [{ open }, setState] = useState({
-    open: drawerMainNav.reduce((a: IButton, { children, key }) => {
+    open: drawerMainNav.reduce((a: OpenStateMap, { children, key }: IButton): OpenStateMap => {
       if (children) {
         const b = {
           ...a,
           [key]: false
-        }
+        };
 
         return b
       }
 
       return a;
     }, {})
-  })
+  });
   const classes = drawerMainNavStyles({});
 
   const handleToggleCollapse = (key: string | number) => () => {
@@ -54,6 +60,7 @@ export default () => {
             <React.Fragment key={key}>
               <ListItem button onClick={handleToggleCollapse(key)}>
                 <ListItemText primary={name} />
+                {open[key] ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Collapse in={open[key]}>
                 <List component="nav" className={classes.subMenu}>
