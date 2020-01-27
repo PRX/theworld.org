@@ -11,14 +11,13 @@ export interface ILinkHtmlAttributes {
   title?: string,
   name?: string,
   id?: string,
-  url?: string,
-  attributes?: ILinkHtmlAttributes
+  url?: string
 }
 
 export interface ILink extends IPriApiResource {
   id: string | number,
   name: string,
   url: string,
-  attributes: ILinkHtmlAttributes,
-  children?: ILink[]
+  attributes?: ILinkHtmlAttributes | any,
+  children?: IPriApiResource[]
 }

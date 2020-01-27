@@ -29,13 +29,13 @@ const parseMenu = (data: ILink[]): IButton[] => {
         className &&
         className.reduce(
           (color, cn) => color || (cn === 'btn-danger' && 'secondary'),
-          null
+          undefined
         ),
       icon:
         className &&
         className.reduce(
           (icon, cn) => icon || (cn.indexOf('icon-') > -1 && cn.split('-')[1]),
-          null
+          undefined
         ),
       children:
         children &&
