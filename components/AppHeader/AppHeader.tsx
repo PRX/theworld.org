@@ -3,7 +3,7 @@
  * Component for links to content page.
  */
 
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { IButton } from '@interfaces';
@@ -134,7 +134,7 @@ class AppHeader extends Component<AppHeaderProps, AppHeaderState> {
 
             <DrawerTopNav />
 
-            <Box flexGrow="1" bgcolor="background.default">
+            <Box flexGrow="1" bgcolor="background.default" p={2}>
               <DrawerMainNav />
             </Box>
 
