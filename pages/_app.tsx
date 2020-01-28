@@ -53,8 +53,6 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
       fetchPriApiQueryMenu('menu-header-nav')
     ]);
 
-    console.log("Social Nav", drawerSocialNav);
-
     return {
       ...initialProps,
       menus: {

@@ -18,13 +18,14 @@ const parseMenu = (data: ILink[]): IButton[] => {
       id,
       name,
       url,
-      attributes: { class: className },
+      attributes: { class: className, title },
       children
     }) => ({
       key: id,
       name,
+      title,
       url: parse(url),
-      itemLinkClass: className && className.join(' '),
+      itemLinkClass: (className && className.join(' ')) || undefined,
       color:
         className &&
         className.reduce(

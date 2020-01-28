@@ -18,7 +18,6 @@ import {
   Drawer,
   Toolbar,
   IconButton,
-  Typography,
   WithStyles
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -61,7 +60,7 @@ class AppHeader extends Component<AppHeaderProps, AppHeaderState> {
       this.setState({
         open: false
       });
-    }, 250);
+    }, 300);
   }
 
   render() {

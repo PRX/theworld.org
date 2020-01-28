@@ -9,8 +9,9 @@ export interface IButton {
   key: string | number,
   name: string,
   url: Url,
-  itemLinkClass: string,
-  color: string,
-  icon: string,
+  itemLinkClass?: string,
+  color?: string,
+  icon?: string,
+  title?: string,
   children?: IButton[]
 }
