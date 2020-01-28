@@ -44,7 +44,7 @@ class AppHeader extends Component<AppHeaderProps, AppHeaderState> {
     super(props);
 
     this.state = {
-      open: true
+      open: false
     };
   }
 
