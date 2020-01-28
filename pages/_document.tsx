@@ -18,7 +18,7 @@ class TwDocument extends Document {
             type="text/css"
           />
           <link
-            href="/apple-touch-icon.png"
+            href="/images/apple-touch-icon.png"
             rel="apple-touch-icon"
           />
           <link
@@ -28,7 +28,7 @@ class TwDocument extends Document {
             type="application/opensearchdescription+xml"
           />
           <link
-            href="/favicon.ico"
+            href="/images/favicon.png"
             rel="icon"
           />
         </Head>

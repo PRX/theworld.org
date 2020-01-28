@@ -41,7 +41,7 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
     // Fetch Menus
     const [
       drawerMainNav,
-      drawerSocialnav,
+      drawerSocialNav,
       drawerTopNav,
       footerNav,
       headerNav
@@ -51,13 +51,15 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
       fetchPriApiQueryMenu('menu-drawer-top-nav'),
       fetchPriApiQueryMenu('menu-footer-nav'),
       fetchPriApiQueryMenu('menu-header-nav')
-    ])
+    ]);
+
+    console.log("Social Nav", drawerSocialNav);
 
     return {
       ...initialProps,
       menus: {
         drawerMainNav: parseMenu(drawerMainNav),
-        drawerSocialnav: parseMenu(drawerSocialnav),
+        drawerSocialNav: parseMenu(drawerSocialNav),
         drawerTopNav: parseMenu(drawerTopNav),
         footerNav: parseMenu(footerNav),
         headerNav: parseMenu(headerNav)

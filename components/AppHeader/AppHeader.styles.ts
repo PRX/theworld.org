@@ -11,7 +11,6 @@ const appHeaderStyles = (theme: Theme) => createStyles({
     boxShadow: `inset 0 -3px 0 0 ${blue[400]}`
   },
   closeBtn: {
-    color: theme.palette.primary.contrastText,
     textTransform: 'capitalize'
   },
   closeBtnIcon: {
@@ -24,7 +23,6 @@ const appHeaderStyles = (theme: Theme) => createStyles({
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    borderRadius: 0,
     '.no-js &': {
       display: 'none'
     }

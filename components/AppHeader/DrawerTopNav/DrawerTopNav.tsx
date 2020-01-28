@@ -13,12 +13,12 @@ import AppContext from '@contexts/AppContext';
 
 export default () => {
   const {
-    menus: {  drawerTopNav }
+    menus: { drawerTopNav }
   } = useContext(AppContext);
   const classes = drawerTopNavStyles({});
 
   return (
-    drawerTopNav && (
+    (drawerTopNav && (
       <ButtonGroup
         className={classes.root}
         variant="contained"
@@ -27,11 +27,16 @@ export default () => {
         disableRipple={true}
       >
         {drawerTopNav.map(({ name, url, key }) => (
-          <Button onClick={handleButtonClick(url)} key={key} disableRipple={true}>
+          <Button
+            onClick={handleButtonClick(url)}
+            key={key}
+            disableRipple={true}
+          >
             {name}
           </Button>
         ))}
       </ButtonGroup>
-    )
+    )) ||
+    null
   );
 };

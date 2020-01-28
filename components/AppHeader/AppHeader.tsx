@@ -9,6 +9,7 @@ import Router from 'next/router';
 import { IButton } from '@interfaces';
 import DrawerTopNav from './DrawerTopNav';
 import DrawerMainNav from './DrawerMainNav';
+import DrawerSocialNav from './DrawerSocialNav';
 // Material and Theme
 import {
   AppBar,
@@ -116,10 +117,10 @@ class AppHeader extends Component<AppHeaderProps, AppHeaderState> {
             minHeight="100vh"
             display="flex"
             flexDirection="column"
-            bgcolor="primary.main"
           >
             <Box display="flex" justifyContent="flex-end">
               <Button
+                color="inherit"
                 disableRipple={true}
                 startIcon={<ChevronLeftIcon />}
                 onClick={handleDrawerClose()}
@@ -138,8 +139,7 @@ class AppHeader extends Component<AppHeaderProps, AppHeaderState> {
               <DrawerMainNav />
             </Box>
 
-            {/* Social Nav */}
-            <Box>Social Nav</Box>
+            <DrawerSocialNav />
           </Box>
         </Drawer>
       </>
