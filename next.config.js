@@ -35,6 +35,7 @@ module.exports = withPlugins([
             '@contexts': path.join(__dirname, 'contexts'),
             '@interfaces': path.join(__dirname, 'interfaces'),
             '@lib': path.join(__dirname, 'lib'),
+            '@svg': path.join(__dirname, 'assets', 'svg'),
             '@theme': path.join(__dirname, 'theme')
           }
         }
