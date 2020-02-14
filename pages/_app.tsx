@@ -11,13 +11,13 @@ import {
   Box,
   CssBaseline
 } from '@material-ui/core';
-import grey from '@material-ui/core/colors/grey';
 import {
   ThemeProvider
 } from '@material-ui/core/styles';
 // Theme
 import { appTheme, appStyles } from '@theme/App.theme';
-import AppHeader from '@components/AppHeader/AppHeader';
+import AppHeader from '@components/AppHeader';
+import AppFooter from '@components/AppFooter';
 // API
 import { fetchPriApiQueryMenu } from '@lib/fetch';
 import { PriApiResource } from 'pri-api-library/types';
@@ -105,7 +105,7 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
             <Box flexGrow={1}>
               <Component {...pageProps} />
             </Box>
-            <Box height={350} bgcolor={grey.A100} mt={3} />
+            <AppFooter />
           </Box>
         </TwAppContext.Provider>
         <CssBaseline />
