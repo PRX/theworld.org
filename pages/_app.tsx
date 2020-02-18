@@ -49,7 +49,7 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
       fetchPriApiQueryMenu('menu-drawer-main-nav'),
       fetchPriApiQueryMenu('menu-drawer-social-nav'),
       fetchPriApiQueryMenu('menu-drawer-top-nav'),
-      fetchPriApiQueryMenu('menu-footer-nav'),
+      fetchPriApiQueryMenu('menu-footer'),
       fetchPriApiQueryMenu('menu-header-nav')
     ]);
 
@@ -96,10 +96,11 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
     const appClasses = cx({
       noJs: javascriptDisabled
     });
+    const copyrightDate = (new Date()).getFullYear();
 
     return (
       <ThemeProvider theme={appTheme}>
-        <TwAppContext.Provider value={{ menus }}>
+        <TwAppContext.Provider value={{ menus, copyrightDate }}>
           <Box className={appClasses} minHeight="100vh" display="flex" flexDirection="column">
             <AppHeader/>
             <Box flexGrow={1}>

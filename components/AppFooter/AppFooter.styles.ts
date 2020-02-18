@@ -49,7 +49,8 @@ const appFooterStyles = makeStyles((theme: Theme) => createStyles({
   logo: {
     width: 'auto',
     height: '100%'
-  }
+  },
+  copyright: {}
 }));
 
 export { appFooterStyles };
