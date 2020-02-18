@@ -17,38 +17,63 @@ const appFooterStyles = makeStyles((theme: Theme) => createStyles({
 
     padding: theme.typography.pxToRem(theme.spacing(4)),
 
-    '& p': {
+    '& > p': {
       margin: 0
     }
   },
   twLogo: {
-    width: '30vw',
-    maxWidth: theme.typography.pxToRem(300),
+    width: theme.typography.pxToRem(250),
     height: 'auto',
     fill: theme.palette.grey['A200']
   },
   logos: {
-    display: 'grid',
-    gridTemplateColumns: `repeat(3, max-content)`,
-    gridTemplateRows: `min-content ${theme.typography.pxToRem(25)}`,
-    gridAutoRows: theme.typography.pxToRem(25),
-    gridColumnGap: theme.typography.pxToRem(25),
-    gridRowGap: theme.typography.pxToRem(theme.spacing(1.5)),
-    justifyContent: 'center',
-    justifyItems: 'center',
-    width: '100%'
+    textAlign: 'center'
   },
   logosTitle: {
-    gridColumn: '1 / -1',
+    marginTop: 0,
+    marginBottom: theme.typography.pxToRem(theme.spacing(1.5)),
     fontStyle: 'italic',
 
     '&::after': {
       content: ':'
     }
   },
+  logoLink: {},
   logo: {
+    width: '100%',
+    height: 'auto'
+  },
+  producedBy:{},
+  producedByMuiOl: {
+    justifyContent: 'center'
+  },
+  producedByMuiLi: {
+    height: theme.typography.pxToRem(25)
+  },
+  producedByLogo: {
     width: 'auto',
     height: '100%'
+  },
+  fundedBy: {},
+  fundedByMuiOl: {
+    display: 'grid',
+    gridTemplateColumns: `repeat(4, ${theme.typography.pxToRem(150)})`,
+    gridGap: theme.typography.pxToRem(theme.spacing(1)),
+    justifyContent: 'center',
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(150)})`
+    }
+  },
+  fundedByMuiLi: {
+    width: '100%',
+    height: 'auto'
+  },
+  fundedByMuiSeparator: {
+    display: 'none'
+  },
+  footerNav: {},
+  footerNavMuiOl: {
+    justifyContent: 'center'
   },
   copyright: {}
 }));

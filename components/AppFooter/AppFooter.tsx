@@ -25,8 +25,6 @@ export default () => {
   const classes = appFooterStyles({});
   const cx = classNames.bind(classes);
 
-  console.log(footerNav);
-
   return (
     <footer className={classes.root}>
       <Divider />
@@ -38,23 +36,92 @@ export default () => {
         </p>
         <Box className={cx({ logos: true, producedBy: true })}>
           <p className={classes.logosTitle}>Produced by</p>
-          <PrxLogo className={classes.logo} />
-          <BBCLogo className={classes.logo} />
-          <WGBHLogo className={classes.logo} />
+          <Breadcrumbs
+            separator=" "
+            classes={{
+              ol: classes.producedByMuiOl,
+              li: classes.producedByMuiLi
+            }}
+          >
+            <Link href="https://prx.org/">
+              <PrxLogo className={cx({ logo: true, producedByLogo: true })} />
+            </Link>
+            <Link href="https://www.bbc.co.uk/">
+              <BBCLogo className={cx({ logo: true, producedByLogo: true })} />
+            </Link>
+            <Link href="https://wgbh.org/">
+              <WGBHLogo className={cx({ logo: true, producedByLogo: true })} />
+            </Link>
+          </Breadcrumbs>
+        </Box>
+        <Box className={cx({ logos: true, fundedBy: true })}>
+          <p className={classes.logosTitle}>Major funding provided by</p>
+          <Breadcrumbs
+            separator=" "
+            aria-label="Footer Navigation"
+            classes={{
+              ol: classes.fundedByMuiOl,
+              li: classes.fundedByMuiLi,
+              separator: classes.fundedByMuiSeparator
+            }}
+          >
+            <a className={classes.logoLink} href="https://www.carnegie.org/">
+              <img
+                className={classes.logo}
+                alt="Carnegie Corporation of New York"
+                title="Carnegie Corporation of New York"
+                src="https://media.pri.org/s3fs-public/styles/original_image/public/images/2018/09/carnegie.jpg"
+              />
+            </a>
+            <a className={classes.logoLink} href="https://www.macfound.org/">
+              <img
+                className={classes.logo}
+                alt="MacArthur Foundation"
+                title="MacArthur Foundation"
+                src="https://media.pri.org/s3fs-public/logo-macarthur-color.jpg"
+              />
+            </a>
+            <a className={classes.logoLink} href="https://www.fordfoundation.org/">
+              <img
+                className={classes.logo}
+                alt="Ford Foundation"
+                title="Ford Foundation"
+                src="https://media.pri.org/s3fs-public/styles/original_image/public/images/2018/09/ford.jpg"
+              />
+            </a>
+            <a className={classes.logoLink} href="https://cpb.org/">
+              <img
+                className={classes.logo}
+                alt="Corporation for Public Broadcasting"
+                title="Corporation for Public Broadcasting"
+                src="https://media.pri.org/s3fs-public/images/2020/01/cpb-logo.png"
+              />
+            </a>
+          </Breadcrumbs>
         </Box>
       </Container>
       <Divider />
       <Container className={classes.container}>
         {footerNav && (
-          <Breadcrumbs separator=" " aria-label="Footer Navigation">
+          <Breadcrumbs
+            separator=" "
+            aria-label="Footer Navigation"
+            classes={{ ol: classes.footerNavMuiOl }}
+          >
             {footerNav.map(({ name, url, key }) => (
-              <Link href={url.pathname} onClick={handleButtonClick(url)} key={key}>
+              <Link
+                href={url.pathname}
+                onClick={handleButtonClick(url)}
+                key={key}
+              >
                 {name}
               </Link>
             ))}
           </Breadcrumbs>
         )}
-        <p className={classes.copyright}>&copy;{copyrightDate} The World from PRX</p>
+        <p className={classes.copyright}>
+          &copy;{copyrightDate} The World from PRX
+        </p>
       </Container>
     </footer>
   );
