@@ -72,3 +72,5 @@ config/local.js
 # misc
 .DS_Store
 .env*
+
+.now
