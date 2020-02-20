@@ -18,13 +18,13 @@ export interface IResponsiveConfig {
 
 export type ImageWidth = number | IResponsiveConfig;
 
-interface IImageComponentProps {
+export interface IImageComponentProps {
   data: any;
   width: ImageWidth;
   [k: string]: any;
 }
 
-interface IImageStyle {
+export interface IImageStyle {
   src: string;
   info: {
     width: number;
@@ -143,7 +143,7 @@ const generateResponsiveAttributes = (
   };
 };
 
-const Image = ({ data, width: propWidth, height:propHeight = null, className, ...other }: IImageComponentProps) => {
+export default ({ data, width: propWidth, height:propHeight = null, className, ...other }: IImageComponentProps) => {
   const isResponsive = determineIfIResponsiveConfig(propWidth);
   const { styles, alt, url, metadata: { width, height } } = data;
   const classes = imageStyles({
@@ -151,7 +151,6 @@ const Image = ({ data, width: propWidth, height:propHeight = null, className, ..
     height
   });
   const cx = classNames.bind(classes);
-  const aspectRatio = width / height;
   const defaultSrc = url;
   // Filter styles to with names starting with 'w'.
   // Filter out styles without info.
@@ -189,5 +188,3 @@ const Image = ({ data, width: propWidth, height:propHeight = null, className, ..
     </div>
   );
 };
-
-export default Image;
