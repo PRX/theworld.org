@@ -41,6 +41,7 @@
   },
   "include": [
     "@types/**/*",
+    "components/*",
     "components/**/*",
     "config/*",
     "interfaces/**/*",
