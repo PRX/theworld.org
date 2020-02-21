@@ -11,13 +11,13 @@ import {
   Box,
   CssBaseline
 } from '@material-ui/core';
-import grey from '@material-ui/core/colors/grey';
 import {
   ThemeProvider
 } from '@material-ui/core/styles';
 // Theme
 import { appTheme, appStyles } from '@theme/App.theme';
-import AppHeader from '@components/AppHeader/AppHeader';
+import AppHeader from '@components/AppHeader';
+import AppFooter from '@components/AppFooter';
 // API
 import { fetchPriApiQueryMenu } from '@lib/fetch';
 import { PriApiResource } from 'pri-api-library/types';
@@ -49,7 +49,7 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
       fetchPriApiQueryMenu('menu-drawer-main-nav'),
       fetchPriApiQueryMenu('menu-drawer-social-nav'),
       fetchPriApiQueryMenu('menu-drawer-top-nav'),
-      fetchPriApiQueryMenu('menu-footer-nav'),
+      fetchPriApiQueryMenu('menu-footer'),
       fetchPriApiQueryMenu('menu-header-nav')
     ]);
 
@@ -96,16 +96,17 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
     const appClasses = cx({
       noJs: javascriptDisabled
     });
+    const copyrightDate = (new Date()).getFullYear();
 
     return (
       <ThemeProvider theme={appTheme}>
-        <TwAppContext.Provider value={{ menus }}>
+        <TwAppContext.Provider value={{ menus, copyrightDate }}>
           <Box className={appClasses} minHeight="100vh" display="flex" flexDirection="column">
             <AppHeader/>
             <Box flexGrow={1}>
               <Component {...pageProps} />
             </Box>
-            <Box height={350} bgcolor={grey.A100} mt={3} />
+            <AppFooter />
           </Box>
         </TwAppContext.Provider>
         <CssBaseline />

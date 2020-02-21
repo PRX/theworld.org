@@ -37,6 +37,9 @@ const baseMuiTheme = createMuiTheme({
     grey: grey,
     common: {
       black: grey[900]
+    },
+    background: {
+      default: grey[200]
     }
   },
   shape: {

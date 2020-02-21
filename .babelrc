@@ -16,7 +16,7 @@
         "svgo": {
           "plugins": [
             {
-              "removeAttrs": { "attrs": "(fill)" }
+              "removeAttrs": {  }
             },
             {
               "cleanupIDs": true
