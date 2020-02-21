@@ -8,6 +8,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 const appFooterStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     marginTop: theme.typography.pxToRem(theme.spacing(3)),
+    textAlign: 'center'
   },
   container: {
     display: 'grid',
