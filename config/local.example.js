@@ -5,4 +5,4 @@ module.exports = {
     apiPath: 'api',
     apiVersion: '1.0'
   }
-}
+};

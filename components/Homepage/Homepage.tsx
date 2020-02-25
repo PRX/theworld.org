@@ -5,9 +5,9 @@
 import React, { useContext } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import ContentContext from '@contexts/ContentContext';
+import { ContentContext } from '@contexts/ContentContext';
 
-const Homepage = () => {
+export const Homepage = () => {
   const {
     data: { links }
   } = useContext(ContentContext);
@@ -74,6 +74,4 @@ Homepage.fetchData = async () => {
       }
     ]
   };
-}
-
-export default Homepage;
+};

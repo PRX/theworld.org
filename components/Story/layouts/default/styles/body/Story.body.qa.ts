@@ -8,7 +8,7 @@ import { CreateCSSProperties } from '@material-ui/styles';
 
 const accentBorderWidth = 3;
 
-export default (theme: Theme) =>
+export const storyBodyQAStyles = (theme: Theme) =>
   ({
     '& .qa-wrap': {
       padding: '0 2rem 0',

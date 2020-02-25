@@ -3,12 +3,7 @@
  * Theme and styles for App layout.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { common } from '@material-ui/core/colors';
 import { blue, orange, red, grey } from './colors';
 
@@ -21,7 +16,7 @@ export const headingProps = {
   fontWeight: 700
 };
 
-const baseMuiTheme = createMuiTheme({
+export const baseMuiTheme = createMuiTheme({
   palette: {
     primary: {
       main: blue[600]
@@ -34,7 +29,7 @@ const baseMuiTheme = createMuiTheme({
     error: {
       main: red[500]
     },
-    grey: grey,
+    grey,
     common: {
       black: grey[900]
     }
@@ -82,6 +77,11 @@ export const appTheme = ((theme: Theme) =>
   createMuiTheme(
     {
       overrides: {
+        MuiAppBar: {
+          root: {
+            boxShadow: 'none'
+          }
+        },
         MuiButton: {
           contained: {
             fontWeight: 'bold'
@@ -133,9 +133,3 @@ export const appTheme = ((theme: Theme) =>
     },
     theme
   ))(baseMuiTheme);
-
-export const appStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    noJs: {}
-  })
-);

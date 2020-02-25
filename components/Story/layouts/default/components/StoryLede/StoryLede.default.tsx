@@ -1,14 +1,14 @@
 /**
- * @file StoryHeader.ts
- * Component for default story header.
+ * @file StoryLede.ts
+ * Component for default story lede.
  */
 
-import { useContext } from 'react';
-import ContentContext from '@contexts/ContentContext';
-import LedeImage from '@components/LedeImage';
-import LedeVideo from '@components/LedeVideo';
+import React, { useContext } from 'react';
+import { ContentContext } from '@contexts/ContentContext';
+import { LedeImage } from '@components/LedeImage';
+import { LedeVideo } from '@components/LedeVideo';
 
-export default () => {
+export const StoryLede = () => {
   const {
     data: { image, video }
   } = useContext(ContentContext);

@@ -3,7 +3,7 @@
  * Define shades of cyan.
  */
 
-export default {
+const cyan = {
   100: '#E7FDFE',
   200: '#CBF4F6',
   300: '#97E8ED',
@@ -14,3 +14,5 @@ export default {
   800: '#034B4E',
   900: '#003033'
 };
+
+export { cyan };

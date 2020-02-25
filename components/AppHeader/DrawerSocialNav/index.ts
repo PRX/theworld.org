@@ -1,1 +1,1 @@
-export { default } from './DrawerSocialNav';
+export * from './DrawerSocialNav';

@@ -1,4 +1,4 @@
-import { hexToRgb, RgbValues } from './index';
+import { hexToRgb } from './index';
 
 describe(hexToRgb, () => {
   test('should parse hex string to RGB values.', () => {

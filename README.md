@@ -80,39 +80,48 @@ When importing module exports, do not use relative import paths for exports not 
 
 ### Module Exports
 
-Component files should be organized in a module directory in `./components`. The module should include at least the component file and an index file. The component file should export the component as its default. The index file should also export the main component as its default. This would result in the `MyComponent` described above being importable from simply `@components/MyComponent` instead of `components/MyComponent/MyComponent`.
+Component files should be organized in a module directory in `./components`. The module should include at least the component file and an index file. The component file should export the component as a named export.
+
+[Do not use default exports](https://basarat.gitbook.io/typescript/main-1/defaultisbad).
+
+> **Exception**
+> NextJS expects a default export page components in `./pages`. Append `// eslint-disable-line import/no-default-export` to to the export line to make file pass linting.
 
 <small>_./components/MyComponent/MyComponent.tsx_</small>
 ```tsx
-export default () => {
+import React from 'react';
+
+export const MyComponent = () => {
   return <h1>Hello World</h1>;
 };
 ```
 
 <small>_./components/MyComponent/index.ts_</small>
 ```ts
-export { default } from './MyComponent';
+export * from './MyComponent';
 ```
 
 <small>_./components/OtherComponent/OtherComponent.tsx_</small>
 ```tsx
-import MyComponent from '@components/MyComponent'
-export default () => {
+import React from 'react';
+import { MyComponent } from '@components/MyComponent';
+
+export const OtherComponent = () => {
   return <MyComponent />;
-}
+};
 ```
 
 Component files can include additional exports. Those exports should also be exported from the index file.
 
 <small>_./components/MyComponent/MyComponent.tsx_</small>
 ```tsx
-import { FunctionComponent } from 'react';
+import React from 'react';
 
-export interface IMyComponentProps {
+export interface MyComponentProps {
   title: string
 }
 
-export default ({ title }): FunctionComponent<IMyComponentProps, {}>  => {
+export const MyComponent = ({ title }: MyComponentProps) => {
   return <h1>{title}</h1>;
 };
 ```
@@ -120,24 +129,25 @@ export default ({ title }): FunctionComponent<IMyComponentProps, {}>  => {
 <small>_./components/MyComponent/index.ts_</small>
 ```ts
 export * from './MyComponent';
-export { default } from './MyComponent';
 ```
 
-<small style="margin-bottom: 0;">_./components/OtherComponent/OtherComponent.tsx_</small>
+<small>_./components/OtherComponent/OtherComponent.tsx_</small>
 ```tsx
-import MyComponent, { IMyComponentProps } from '@components/MyComponent';
+import React from 'react';
+import { MyComponent, MyComponentProps } from '@components/MyComponent';
 
-export default () => {
-  const props: IMyComponentProps = {
+export const OtherComponent = () => {
+  const props: MyComponentProps = {
     title: 'Hello World'
   };
+
   return <MyComponent {...props} />;
 }
 ```
 
 Conponent modules can have submodule directories. Submodules directies should follow the same export pattern. Submodule components should only be exported from the index file if they are intended to be used along with the main module component.
 
-Type and interface exports for the main component and submodule components should always by exported by the index file.
+Type and interface exports for the main component and submodule components, and any functions or other variables needed for unit tests, should always by exported by the index file.
 
 ----
 
@@ -218,3 +228,19 @@ Story.fetchData = async (id: string|number) => {
 export default Story;
 ```
 
+----
+
+## Material UI & Theming
+
+This project uses [Material UI](https://material-ui.com/) as the building blocks for components. When creating a coomponent, first review Material UI Components for something with similar behavior. From there use that components API to customize and theme.
+
+Application level theming can be found in `./theme`. See [Material UI Theming](https://material-ui.com/customization/theming/).
+
+When using a Material UI component not yet used in the application, customize theming of the component at the application level. Component specific theming for addition useage can then be done with a component theme.
+
+Component styling should be done using the [Hook API](https://material-ui.com/styles/basics/#hook-api) for elements that are not Amterial UI components.
+
+----
+
+## Contributing
+The process around contributing to this codebase and the workflow by which code changes are proposed and accepted into this project are documented [here](./.github/CONTRIBUTING.md).

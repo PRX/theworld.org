@@ -7,7 +7,7 @@ import { Theme } from '@material-ui/core/styles';
 import { CreateCSSProperties } from '@material-ui/styles';
 import { blue, yellow } from '@theme/colors';
 
-export default (theme: Theme) => {
+export const storyBodyStoryActStyles = (theme: Theme) => {
   const floatWidth = '44%';
 
   const padded = {
@@ -29,7 +29,7 @@ export default (theme: Theme) => {
   const inputText = {
     width: '100%',
     padding: '0.25rem 0.5rem'
-  }
+  };
 
   return {
     '& .edit-entity': {

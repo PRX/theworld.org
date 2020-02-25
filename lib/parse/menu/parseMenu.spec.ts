@@ -1,4 +1,4 @@
-import parseMenu from './index';
+import { parseMenu } from './index';
 
 describe(parseMenu, () => {
   const data = [
@@ -9,7 +9,7 @@ describe(parseMenu, () => {
       type: null,
       url: 'https://www.example.com/alias/path/foo',
       attributes: {
-        title: "Success",
+        title: 'Success',
         class: ['btn-danger', 'icon-success']
       }
     },

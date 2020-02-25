@@ -3,7 +3,7 @@
  * Define shades of grey.
  */
 
-export default {
+const grey = {
   100: '#F9F9FB',
   200: '#E9E9EC',
   300: '#DDDDE0',
@@ -14,3 +14,5 @@ export default {
   800: '#323233',
   900: '#1A1A1A'
 };
+
+export { grey };

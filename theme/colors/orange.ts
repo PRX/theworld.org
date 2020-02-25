@@ -3,7 +3,7 @@
  * Define shades of orange.
  */
 
-export default {
+const orange = {
   100: '#FAEFE1',
   200: '#F8DEBA',
   300: '#FCCC88',
@@ -14,3 +14,5 @@ export default {
   800: '#5B3C10',
   900: '#2B1B08'
 };
+
+export { orange };

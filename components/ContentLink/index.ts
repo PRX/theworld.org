@@ -1,1 +1,1 @@
-export { default } from './ContentLink';
+export * from './ContentLink';

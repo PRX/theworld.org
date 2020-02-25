@@ -7,6 +7,7 @@ env:
   node: true
 extends:
   - airbnb
+  - airbnb-typescript
   - prettier
   - prettier/react
 globals:
@@ -16,15 +17,31 @@ globals:
   it: true
   describe: true
   jest: true
-parser: babel-eslint
+settings:
+  import/parsers:
+    '@typescript-eslint/parser': [".ts", ".tsx"]
+  import/resolver:
+    typescript:
+      alwaysTryTypes: 1
+parser: '@typescript-eslint/parser'
+parserOptions:
+  project: './tsconfig.json'
 plugins:
   - react
   - jest
+  - '@typescript-eslint'
+  - import
 rules:
   strict: 0
   import/no-extraneous-dependencies: 0
+  import/prefer-default-export: 0
+  import/no-default-export: error
+  import/no-unresolved:
+    - error
+    - ignore:
+      - "\\.svg$"
   jsx-a11y/anchor-is-valid: 0
-  react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
+  react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx", ".ts", ".tsx", ".svg"] }]
   react/jsx-props-no-spreading: 0
   react/jsx-uses-react: 2
   react/jsx-uses-vars: 2

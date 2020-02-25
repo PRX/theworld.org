@@ -3,6 +3,7 @@
  * Component file for Image.
  */
 
+import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
 import _ from 'lodash';
@@ -41,7 +42,7 @@ export interface IImageStyle {
  * @returns
  *    True when interface is used, false otherwise.
  */
-const determineIfIResponsiveConfig = (
+export const determineIfIResponsiveConfig = (
   resp: any | IResponsiveConfig
 ): resp is IResponsiveConfig => {
   if ((resp as IResponsiveConfig).xl) {
@@ -61,7 +62,7 @@ const determineIfIResponsiveConfig = (
  * @returns
  *    Smallest image style larger than the provided width.
  */
-const findBestStyle = (width: number, styles: IImageStyle[]) =>
+export const findBestStyle = (width: number, styles: IImageStyle[]) =>
   _.reduceRight(
     styles,
     (best: IImageStyle, style: IImageStyle) =>
@@ -80,7 +81,7 @@ const findBestStyle = (width: number, styles: IImageStyle[]) =>
  * @returns
  *    Object with attribute values.
  */
-const generateStaticAttributes = (width: number, imageSrcs: IImageStyle[]) => {
+export const generateStaticAttributes = (width: number, imageSrcs: IImageStyle[]) => {
   const srcSetStyles = [1, 1.5, 2, 2.5, 3].map(pixelDensity => ({
     style: findBestStyle((width as number) * pixelDensity, imageSrcs),
     pixelDensity
@@ -110,7 +111,7 @@ const generateStaticAttributes = (width: number, imageSrcs: IImageStyle[]) => {
  * @returns
  *    Object with attribute values.
  */
-const generateResponsiveAttributes = (
+export const generateResponsiveAttributes = (
   widths: IResponsiveConfig,
   imageSrcs: IImageStyle[]
 ) => {
@@ -122,15 +123,15 @@ const generateResponsiveAttributes = (
     'xs' | 'sm' | 'md' | 'lg' | 'xl',
     number | string
   ][])
-    .map(([breakpoint, width], index, all) =>
-      index < all.length - 1
-        ? `${theme.breakpoints
-            .down(breakpoint)
-            .replace(/^@media /, '')} ${width}${
-            typeof width === 'number' ? 'px' : ''
-          }`
-        : `${width}${typeof width === 'number' ? 'px' : ''}`
-    )
+    .map(([breakpoint, width], index, all) => {
+      const bp: string =
+        index < all.length - 1
+          ? `${theme.breakpoints.down(breakpoint).replace(/^@media /, '')} `
+          : '';
+      const units = typeof width === 'number' ? 'px' : '';
+
+      return `${bp}${width}${units}`;
+    })
     .toString();
   const { src } = _.last(imageSrcs);
 
@@ -143,9 +144,19 @@ const generateResponsiveAttributes = (
   };
 };
 
-export default ({ data, width: propWidth, height:propHeight = null, className, ...other }: IImageComponentProps) => {
+export const Image = ({
+  data,
+  width: propWidth,
+  className,
+  ...other
+}: IImageComponentProps) => {
   const isResponsive = determineIfIResponsiveConfig(propWidth);
-  const { styles, alt, url, metadata: { width, height } } = data;
+  const {
+    styles,
+    alt,
+    url,
+    metadata: { width, height }
+  } = data;
   const classes = imageStyles({
     width,
     height
@@ -182,9 +193,11 @@ export default ({ data, width: propWidth, height:propHeight = null, className, .
       : generateStaticAttributes(propWidth as number, imageSrcs))
   };
 
-  return (!isResponsive && <img alt={alt} {...imgAttrs} />) || (
-    <div className={classes.imageWrapper}>
-      <img alt={alt} {...imgAttrs} />
-    </div>
+  return (
+    (!isResponsive && <img alt={alt} {...imgAttrs} />) || (
+      <div className={classes.imageWrapper}>
+        <img alt={alt} {...imgAttrs} />
+      </div>
+    )
   );
 };

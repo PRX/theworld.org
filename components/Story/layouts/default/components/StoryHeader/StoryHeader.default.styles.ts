@@ -5,7 +5,7 @@
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-const storyHeaderStyles = makeStyles((theme: Theme) => createStyles({
+export const storyHeaderStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     fontSize: '1.2rem'
   },
@@ -40,5 +40,3 @@ const storyHeaderStyles = makeStyles((theme: Theme) => createStyles({
     fontWeight: theme.typography.fontWeightBold
   }
 }));
-
-export { storyHeaderStyles };

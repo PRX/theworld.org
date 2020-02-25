@@ -1,14 +1,11 @@
 /**
- * @file DrawerTopNav.tsx
- * Component for app drawer top nav.
+ * @file DrawerSocialNav.tsx
+ * Component for app drawer social nav.
  */
 
 import React, { useContext } from 'react';
-import { handleButtonClick } from '@lib/routing';
 import { IButton } from '@interfaces';
-// Material
 import { IconButton, Toolbar } from '@material-ui/core';
-import { drawerTopNavStyles } from './DrawerSocialNav.styles';
 import {
   Facebook,
   Twitter,
@@ -16,10 +13,10 @@ import {
   Instagram,
   WhatsApp
 } from '@material-ui/icons';
-// Contexts
-import AppContext from '@contexts/AppContext';
+import { AppContext } from '@contexts/AppContext';
+import { drawerTopNavStyles } from './DrawerSocialNav.styles';
 
-const iconComponentMap = {
+export const iconComponentMap = {
   facebook: Facebook,
   twitter: Twitter,
   rss: RssFeed,
@@ -27,13 +24,13 @@ const iconComponentMap = {
   whatsapp: WhatsApp
 };
 
-const renderIcon = (icon: string, label: string) => {
+export const renderIcon = (icon: string, label: string) => {
   const IconComponent = iconComponentMap[icon];
 
   return (IconComponent && <IconComponent aria-label={label} />) || label;
 };
 
-export default () => {
+export const DrawerSocialNav = () => {
   const {
     menus: { drawerSocialNav }
   } = useContext(AppContext);
@@ -48,7 +45,7 @@ export default () => {
             href={url.href}
             target="_blank"
             key={key}
-            disableRipple={true}
+            disableRipple
           >
             {renderIcon(icon, title || name)}
           </IconButton>

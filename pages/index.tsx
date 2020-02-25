@@ -11,28 +11,32 @@ import Error from 'next/error';
 import { IPriApiResource } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
 import { fetchPriApiQueryAlias } from '@lib/fetch/api';
-import { importComponent, preloadComonent } from '@lib/import/component';
-import ContentContext from '@contexts/ContentContext';
+import { ContentContext } from '@contexts/ContentContext';
+import { importComponent, preloadComponent } from '@lib/import/component';
 
 const ContentProxy = (props: IContentComponentProxyProps) => {
   const { errorCode } = props;
+  let output;
 
   // Render error page.
   if (errorCode) {
-    return <Error statusCode={errorCode} />
-  }
-  // Render content using component assiciated with the data type.
-  else {
-    const { data, data: { type } } = props;
+    output = <Error statusCode={errorCode} />;
+  } else {
+    const {
+      data,
+      data: { type }
+    } = props;
     const ContentComponent = importComponent(type);
     const isAmp = useAmp();
 
-    return (
+    output = (
       <ContentContext.Provider value={{ data, isAmp }}>
-        <ContentComponent/>
+        <ContentComponent />
       </ContentContext.Provider>
     );
   }
+
+  return output;
 };
 
 ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
@@ -42,10 +46,9 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
 
   // Get data for alias.
   if (alias) {
-    const apiResp = await fetchPriApiQueryAlias(
-      alias as string,
-      { fields: ['id'] }
-    );
+    const apiResp = await fetchPriApiQueryAlias(alias as string, {
+      fields: ['id']
+    });
 
     // Update resource id and type.
     if (apiResp) {
@@ -56,7 +59,7 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   }
 
   // Preload conent compoent.
-  const ContentComponent = await preloadComonent(resourceType);
+  const ContentComponent = await preloadComponent(resourceType);
 
   // Use content comonent to fetch its data.
   if (ContentComponent) {
@@ -69,8 +72,8 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   return {
     errorCode: 404
   };
-
 };
 
-export const config = { amp: 'hybrid' }
-export default ContentProxy;
+export const config = { amp: 'hybrid' };
+export default ContentProxy; // eslint-disable-line import/no-default-export
+

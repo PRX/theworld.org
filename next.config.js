@@ -24,7 +24,7 @@ module.exports = withPlugins([
     enableSvg: true
   }],
   {
-    webpack (config) {
+    webpack(config) {
       return {
         ...config,
         resolve: {
@@ -39,7 +39,7 @@ module.exports = withPlugins([
             '@theme': path.join(__dirname, 'theme')
           }
         }
-      }
+      };
     }
   }
 ]);

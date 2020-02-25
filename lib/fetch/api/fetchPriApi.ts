@@ -27,7 +27,7 @@ import { priApi as priApiConfig} from '../../../config';
  * @returns
  *    Denormalized response to request, or error object.
  */
-const fetchPriApi = async (
+export const fetchPriApi = async (
   path: string,
   params?: object,
   keys?: object
@@ -48,7 +48,7 @@ const fetchPriApi = async (
  * @returns
  *    Denormalized resource collection.
  */
-const fetchPriApiQuery = async (type: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
+export const fetchPriApiQuery = async (type: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
   libFetchPriApiQuery(type, params, keys, priApiConfig);
 
 /**
@@ -68,7 +68,7 @@ const fetchPriApiQuery = async (type: string, params?: object, keys?: object): P
  * @returns
  *    Denormalized resource item.
  */
-const fetchPriApiItem = async (
+export const fetchPriApiItem = async (
   type: string,
   id: number | string,
   params?: object,
@@ -90,7 +90,7 @@ const fetchPriApiItem = async (
  * @returns
  *    Denormalized resource item.
  */
-const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
+export const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
   fetchPriApi(`query/alias/${alias.replace(/^\/+|\/+$/, '')}`, params, keys).then(resp => !resp.isFailure && resp.response);
 
 /**
@@ -102,7 +102,5 @@ const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: obje
  * @returns
  *    Denormalized resource item.
  */
-const fetchPriApiQueryMenu = async (menuName: string): Promise<ILink[]> =>
+export const fetchPriApiQueryMenu = async (menuName: string): Promise<ILink[]> =>
   fetchPriApi(`menu/tree/${menuName}`).then(resp => !resp.isFailure && resp.response as ILink[]);
-
-export { fetchPriApi, fetchPriApiQuery, fetchPriApiQueryAlias, fetchPriApiItem, fetchPriApiQueryMenu };

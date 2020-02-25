@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import App, { AppContext, AppProps } from 'next/app';
+import App, { AppContext as NextAppContext, AppProps } from 'next/app';
 import classNames from 'classnames/bind';
 // Material Components
 import {
@@ -16,26 +16,25 @@ import {
   ThemeProvider
 } from '@material-ui/core/styles';
 // Theme
-import { appTheme, appStyles } from '@theme/App.theme';
-import AppHeader from '@components/AppHeader/AppHeader';
+import { appTheme } from '@theme/App.theme';
+import { AppHeader } from '@components/AppHeader/AppHeader';
 // API
-import { fetchPriApiQueryMenu } from '@lib/fetch';
 import { PriApiResource } from 'pri-api-library/types';
-import parseMenu from '@lib/parse/menu';
+import { fetchPriApiQueryMenu } from '@lib/fetch';
+import { parseMenu } from '@lib/parse/menu';
 // Contexts
-import {default as TwAppContext} from '@contexts/AppContext';
+import { AppContext } from '@contexts/AppContext';
 
 interface TwAppProps extends AppProps {
-  menus?: PriApiResource[]
+  menus?: PriApiResource[];
 }
 
 interface TwAppState {
-  javascriptDisabled: boolean
+  javascriptDisabled: boolean;
 }
 
 class TwApp extends App<TwAppProps, {}, TwAppState> {
-  static async getInitialProps(ctx: AppContext) {
-
+  static async getInitialProps(ctx: NextAppContext) {
     const initialProps = await App.getInitialProps(ctx);
 
     // Fetch Menus
@@ -99,7 +98,7 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
 
     return (
       <ThemeProvider theme={appTheme}>
-        <TwAppContext.Provider value={{ menus }}>
+        <AppContext.Provider value={{ menus }}>
           <Box className={appClasses} minHeight="100vh" display="flex" flexDirection="column">
             <AppHeader/>
             <Box flexGrow={1}>
@@ -107,11 +106,11 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
             </Box>
             <Box height={350} bgcolor={grey.A100} mt={3} />
           </Box>
-        </TwAppContext.Provider>
+        </AppContext.Provider>
         <CssBaseline />
       </ThemeProvider>
     );
   }
 }
 
-export default TwApp;
+export default TwApp; // eslint-disable-line import/no-default-export

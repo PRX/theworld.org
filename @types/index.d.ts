@@ -1,11 +1,13 @@
-declare module "*.svg" {
-  const content: any;
-  export default content;
+declare module '*.svg' {
+  import React = require('react');
+  export const ReactComponent: React.SFC<React.SVGProps<SVGSVGElement>>;
+  const src: string;
+  export default src; // eslint-disable-line import/no-default-export
 }
 
-declare module '*.png'
-declare module '*.jpg'
-declare module '*.jpeg'
-declare module '*.gif'
+declare module '*.png';
+declare module '*.jpg';
+declare module '*.jpeg';
+declare module '*.gif';
 
-declare module "pri-api-library"
+declare module 'pri-api-library';

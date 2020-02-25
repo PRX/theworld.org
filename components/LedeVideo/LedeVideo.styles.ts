@@ -3,9 +3,9 @@
 * Styles for LedeVideo.
 */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-const ledeVideoStyles = makeStyles((theme: Theme) => createStyles({
+export const ledeVideoStyles = makeStyles(() => createStyles({
   root: {
     display: 'grid',
     gridGap: '0.75rem',
@@ -41,5 +41,3 @@ const ledeVideoStyles = makeStyles((theme: Theme) => createStyles({
     }
   }
 }));
-
-export { ledeVideoStyles };

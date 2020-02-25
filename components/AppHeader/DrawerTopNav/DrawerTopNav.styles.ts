@@ -5,10 +5,8 @@
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-const drawerTopNavStyles = makeStyles((theme: Theme) => createStyles({
+export const drawerTopNavStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     padding: theme.spacing(2)
   }
 }));
-
-export { drawerTopNavStyles };

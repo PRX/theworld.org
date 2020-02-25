@@ -1,1 +1,1 @@
-export { default } from './DrawerMainNav';
+export * from './DrawerMainNav';
