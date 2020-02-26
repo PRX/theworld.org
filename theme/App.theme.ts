@@ -32,6 +32,9 @@ export const baseMuiTheme = createMuiTheme({
     grey,
     common: {
       black: grey[900]
+    },
+    background: {
+      default: grey[200]
     }
   },
   shape: {
