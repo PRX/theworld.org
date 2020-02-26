@@ -5,7 +5,7 @@
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-const appFooterStyles = makeStyles((theme: Theme) => createStyles({
+export const appFooterStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     marginTop: theme.typography.pxToRem(theme.spacing(3)),
     textAlign: 'center'
@@ -25,7 +25,7 @@ const appFooterStyles = makeStyles((theme: Theme) => createStyles({
   twLogo: {
     width: theme.typography.pxToRem(250),
     height: 'auto',
-    fill: theme.palette.grey['A200']
+    fill: theme.palette.grey.A200
   },
   logos: {
     textAlign: 'center'
@@ -78,5 +78,3 @@ const appFooterStyles = makeStyles((theme: Theme) => createStyles({
   },
   copyright: {}
 }));
-
-export { appFooterStyles };

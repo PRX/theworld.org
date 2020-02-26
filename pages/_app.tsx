@@ -15,9 +15,9 @@ import {
   ThemeProvider
 } from '@material-ui/core/styles';
 // Theme
-import { appTheme, appStyles } from '@theme/App.theme';
-import AppHeader from '@components/AppHeader';
-import AppFooter from '@components/AppFooter';
+import { appTheme } from '@theme/App.theme';
+import { AppHeader } from '@components/AppHeader';
+import { AppFooter } from '@components/AppFooter';
 // API
 import { PriApiResource } from 'pri-api-library/types';
 import { fetchPriApiQueryMenu } from '@lib/fetch';
