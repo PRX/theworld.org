@@ -1,6 +1,6 @@
 import { hexToRgb } from './index';
 
-describe(hexToRgb, () => {
+describe('hexToRgb', () => {
   test('should parse hex string to RGB values.', () => {
     const result = hexToRgb('#00FF00');
 
