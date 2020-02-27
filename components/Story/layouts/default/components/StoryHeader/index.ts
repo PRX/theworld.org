@@ -1,1 +1,1 @@
-export { default as StoryHeader } from './StoryHeader.default';
+export * from './StoryHeader.default';

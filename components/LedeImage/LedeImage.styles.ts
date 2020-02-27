@@ -3,9 +3,9 @@
 * Styles for LedeImage.
 */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-const ledeImageStyles = makeStyles((theme: Theme) => createStyles({
+export const ledeImageStyles = makeStyles(() => createStyles({
   root: {
     display: 'grid',
     gridGap: '0.75rem',
@@ -43,5 +43,3 @@ const ledeImageStyles = makeStyles((theme: Theme) => createStyles({
     }
   }
 }));
-
-export { ledeImageStyles };

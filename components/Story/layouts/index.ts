@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic';
 
-const DynamicDefault = dynamic(() => import('./default/Story.default'));
+const DynamicStoryDefault = dynamic(() => import('./default') as any);
 
 const layoutComponentMap = {
-  standard: DynamicDefault
-}
+  standard: DynamicStoryDefault
+};
 
 export { layoutComponentMap };

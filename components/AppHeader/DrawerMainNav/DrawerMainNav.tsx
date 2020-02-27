@@ -7,32 +7,26 @@ import React, { useContext, useState } from 'react';
 import { handleButtonClick } from '@lib/routing';
 import { IButton } from '@interfaces';
 import classNames from 'classnames/bind';
-// Material
 import {
   Box,
   Collapse,
   List,
   ListItem,
   ListItemText,
-  createMuiTheme,
-  Theme,
   ThemeProvider
 } from '@material-ui/core';
-import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-// Theme and Colors
+import { AppContext } from '@contexts/AppContext';
 import {
   drawerMainNavTheme,
   drawerMainNavStyles
 } from './DrawerMainNav.styles';
-// Contexts
-import AppContext from '@contexts/AppContext';
 
-interface OpenStateMap {
+export interface OpenStateMap {
   [k: string]: boolean;
 }
 
-export default () => {
+export const DrawerMainNav = () => {
   const {
     menus: { drawerMainNav }
   } = useContext(AppContext);
@@ -68,7 +62,7 @@ export default () => {
   return (
     (drawerMainNav && (
       <ThemeProvider theme={drawerMainNavTheme}>
-        <List component="nav" className={classes.root} disablePadding={true}>
+        <List component="nav" className={classes.root} disablePadding>
           {drawerMainNav.map(
             ({ name, url, key, children }, index: number) =>
               (children && (
@@ -92,16 +86,16 @@ export default () => {
                     <List
                       component="nav"
                       className={classes.subMenu}
-                      disablePadding={true}
+                      disablePadding
                     >
-                      {children.map(({ name, url, key }) => (
+                      {children.map(({ name: childName, url: childUrl, key: childKey }) => (
                         <ListItem
                           button
                           className={classes.subMenuItem}
-                          onClick={handleButtonClick(url)}
-                          key={key}
+                          onClick={handleButtonClick(childUrl)}
+                          key={childKey}
                         >
-                          <ListItemText primary={name} />
+                          <ListItemText primary={childName} />
                         </ListItem>
                       ))}
                     </List>

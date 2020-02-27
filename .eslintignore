@@ -2,3 +2,4 @@ coverage
 .next
 tmp
 server.js
+./next.*.js

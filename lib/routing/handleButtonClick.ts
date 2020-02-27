@@ -20,9 +20,7 @@ import { Url } from 'url';
 export const generateLinkHrefFromUrl = (url: Url) => {
   const query =
     url.pathname !== '/'
-      ? {
-          alias: url.pathname
-        }
+      ? { alias: url.pathname }
       : null;
 
   return {
@@ -41,7 +39,7 @@ export const generateLinkHrefFromUrl = (url: Url) => {
  *    Handler function.
  */
 /* istanbul ignore next */
-export default (url: Url) => (event: MouseEvent) => {
+export const handleButtonClick = (url: Url) => (event: MouseEvent) => {
   event.preventDefault();
 
   Router.push(generateLinkHrefFromUrl(url), url.pathname);

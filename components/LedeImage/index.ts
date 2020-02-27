@@ -1,1 +1,1 @@
-export { default } from './LedeImage';
+export * from './LedeImage';

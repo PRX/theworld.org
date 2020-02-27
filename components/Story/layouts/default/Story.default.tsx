@@ -3,8 +3,8 @@
  * Component for default Story layout.
  */
 
-import { useContext } from 'react';
-import ContentContext from '@contexts/ContentContext';
+import React, { useContext } from 'react';
+import { ContentContext } from '@contexts/ContentContext';
 import { ThemeProvider } from '@material-ui/core/styles';
 import {
   Box,
@@ -15,7 +15,7 @@ import {
 import { storyStyles, storyTheme } from './Story.default.theme';
 import { StoryHeader, StoryLede } from './components';
 
-const StoryDefault = () => {
+export const StoryDefault = () => {
   const {
     data: { body }
   } = useContext(ContentContext);
@@ -165,5 +165,3 @@ const StoryDefault = () => {
     </ThemeProvider>
   );
 };
-
-export default StoryDefault;

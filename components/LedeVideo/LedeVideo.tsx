@@ -3,13 +3,18 @@
  * Component for lede video.
  */
 
+import React from 'react';
 import ReactMarkdown from 'react-markdown/with-html';
 import ReactPlayer from 'react-player';
 import { Box, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import { ledeVideoStyles } from './LedeVideo.styles';
 
-export default ({ data }) => {
+export interface ILedeVideoProps {
+  data: any;
+}
+
+export const LedeVideo = ({ data }: ILedeVideoProps) => {
   const { description, credit, url } = data;
   const theme = useTheme();
   const classes = ledeVideoStyles({});

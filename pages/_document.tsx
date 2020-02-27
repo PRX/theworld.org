@@ -17,20 +17,14 @@ class TwDocument extends Document {
             rel="stylesheet"
             type="text/css"
           />
-          <link
-            href="/images/apple-touch-icon.png"
-            rel="apple-touch-icon"
-          />
+          <link href="/images/apple-touch-icon.png" rel="apple-touch-icon" />
           <link
             href="/opensearch.xml"
             rel="search"
             title="priorg"
             type="application/opensearchdescription+xml"
           />
-          <link
-            href="/images/favicon.png"
-            rel="icon"
-          />
+          <link href="/images/favicon.png" rel="icon" />
         </Head>
         <body>
           <Main />
@@ -71,7 +65,7 @@ TwDocument.getInitialProps = async ctx => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: App => props => sheets.collect(<App {...props} />),
+      enhanceApp: App => props => sheets.collect(<App {...props} />)
     });
 
   const initialProps = await Document.getInitialProps(ctx);
@@ -79,8 +73,12 @@ TwDocument.getInitialProps = async ctx => {
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
+    styles: [
+      ...React.Children.toArray(initialProps.styles),
+      sheets.getStyleElement()
+    ]
   };
 };
 
-export default TwDocument;
+export default TwDocument; // eslint-disable-line import/no-default-export
+

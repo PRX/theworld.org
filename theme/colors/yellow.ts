@@ -3,7 +3,7 @@
  * Define shades of yellow.
  */
 
-export default {
+const yellow = {
   100: '#FDF6DD',
   200: '#FDECB5',
   300: '#FDE187',
@@ -14,3 +14,5 @@ export default {
   800: '#665605',
   900: '#4B3E02'
 };
+
+export { yellow };

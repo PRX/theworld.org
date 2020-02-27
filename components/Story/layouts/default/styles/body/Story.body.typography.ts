@@ -7,7 +7,7 @@ import { Theme } from '@material-ui/core/styles';
 import { CreateCSSProperties } from '@material-ui/styles';
 import { headingProps } from '@theme/App.theme';
 
-export default (theme: Theme) => ({
+export const storyBodyTypography = (theme: Theme) => ({
   fontSize: '1.2rem',
   lineHeight: '1.7rem',
 

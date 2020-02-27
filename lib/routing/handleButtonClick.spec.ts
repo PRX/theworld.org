@@ -1,5 +1,5 @@
-import { handleButtonClick, generateLinkHrefFromUrl } from './index';
 import { parse } from 'url';
+import { generateLinkHrefFromUrl } from './index';
 
 describe(generateLinkHrefFromUrl, () => {
   test('should return with query object containing URL path in alias property.', () => {

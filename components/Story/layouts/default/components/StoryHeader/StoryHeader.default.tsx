@@ -3,15 +3,15 @@
  * Component for default story header.
  */
 
+import React, { useContext } from 'react';
 import { Box, Typography } from '@material-ui/core';
-import { useContext } from 'react';
 import Moment from 'react-moment';
 import 'moment-timezone';
-import ContentContext from '@contexts/ContentContext';
-import ContentLink from '@components/ContentLink';
+import { ContentContext } from '@contexts/ContentContext';
+import { ContentLink } from '@components/ContentLink';
 import { storyHeaderStyles } from './StoryHeader.default.styles';
 
-export default () => {
+export const StoryHeader = () => {
   const {
     data: {
       byline,
@@ -49,9 +49,9 @@ export default () => {
           </Moment>
           {byline && (
             <ul className={classes.byline}>
-              {byline.map(({ id, creditType: { title }, person }) => (
+              {byline.map(({ id, creditType: { title: label }, person }) => (
                 <li className={classes.bylineItem} key={id}>
-                  {title}{' '}
+                  {label}{' '}
                   <ContentLink className={classes.bylineLink} data={person} />
                 </li>
               ))}

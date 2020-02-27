@@ -6,7 +6,7 @@
 import { Theme } from '@material-ui/core/styles';
 import { CreateCSSProperties } from '@material-ui/styles';
 
-export default (theme: Theme) => ({
+export const storyBodyMediaStyles = (theme: Theme) => ({
   // Reset for imag tag dimension attributes.
   '& img': {
     width: 'auto',

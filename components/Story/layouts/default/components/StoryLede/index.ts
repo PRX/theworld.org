@@ -1,1 +1,1 @@
-export { default as StoryLede } from './StoryLede.default';
+export * from './StoryLede.default';

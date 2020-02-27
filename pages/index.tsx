@@ -9,107 +9,71 @@ import { useAmp } from 'next/amp';
 import Error from 'next/error';
 
 import { IPriApiResource } from 'pri-api-library/types';
+import { IContentComponentProxyProps } from '@interfaces/content';
 import { fetchPriApiQueryAlias } from '@lib/fetch/api';
-import ContentContext from '@contexts/ContentContext';
-import { importComponent, preloadComonent } from '@lib/import/component';
+import { ContentContext } from '@contexts/ContentContext';
+import { importComponent, preloadComponent } from '@lib/import/component';
 
-interface IContentProxyProps {
-  data?: IPriApiResource,
-  errorCode?: number
-}
-
-const ContentProxy = (props: IContentProxyProps) => {
+const ContentProxy = (props: IContentComponentProxyProps) => {
   const { errorCode } = props;
+  let output;
 
+  // Render error page.
   if (errorCode) {
-    return <Error statusCode={errorCode} />
-  }
-  else {
-    const { data, data: { type } } = props;
+    output = <Error statusCode={errorCode} />;
+  } else {
+    const {
+      data,
+      data: { type }
+    } = props;
     const ContentComponent = importComponent(type);
     const isAmp = useAmp();
 
-    return (
+    output = (
       <ContentContext.Provider value={{ data, isAmp }}>
-        <ContentComponent/>
+        <ContentComponent />
       </ContentContext.Provider>
     );
   }
+
+  return output;
 };
 
 ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   const { query: { alias } } = ctx;
+  let resourceId: string | number;
+  let resourceType: string = 'homepage';
 
+  // Get data for alias.
   if (alias) {
-    const apiResp = await fetchPriApiQueryAlias(
-      alias as string,
-      { fields: ['id'] }
-    );
+    const apiResp = await fetchPriApiQueryAlias(alias as string, {
+      fields: ['id']
+    });
 
+    // Update resource id and type.
     if (apiResp) {
       const { id, type } = apiResp as IPriApiResource;
-      const ContentComponent = await preloadComonent(type);
-
-      if (ContentComponent) {
-        const data = await ContentComponent.fetchData(id);
-
-        return { data };
-      }
+      resourceId = id;
+      resourceType = type;
     }
   }
-  else {
-    // TODO: Get Homepage data.
-    return {
-      data: {
-        type: 'homepage',
-        links: [
-          {
-            label: 'These Chilean women joined thousands suing for discriminatory health insurance. Can reforms fix it?',
-            href: {
-              pathname: '/',
-              query: {
-                alias: '/stories/2019-08-28/thousands-chilean-women-sued-discriminatory-health-insurance-can-reforms-fix-it'
-              }
-            }
-          },
-          {
-            label: 'In lead-up to Colombian elections, woman mayoral candidate is latest assassination victim',
-            href: {
-              pathname: '/',
-              query: {
-                alias: '/stories/2019-09-06/lead-colombian-elections-woman-mayoral-candidate-latest-assassination-victim'
-              }
-            }
-          },
-          {
-            label: 'Folk trio The Young\'uns uses music to question British patriotism',
-            href: {
-              pathname: '/',
-              query: {
-                alias: '/stories/2019-09-06/folk-trio-younguns-uses-music-question-british-patriotism'
-              }
-            }
-          },
-          {
-            label: 'Statement pieces: Fashion designers worry over Brexit’s cost to UK industry',
-            href: {
-              pathname: '/',
-              query: {
-                alias: '/stories/2019-10-25/statement-pieces-fashion-designers-worry-over-brexit-s-cost-uk-industry'
-              }
-            }
-          }
-        ]
-      }
-    };
+
+  // Preload conent compoent.
+  const ContentComponent = await preloadComponent(resourceType);
+
+  // Use content comonent to fetch its data.
+  if (ContentComponent) {
+    const data = await ContentComponent.fetchData(resourceId);
+
+    return { data };
   }
 
   // There was a problem locating components or data.
   return {
     errorCode: 404
   };
-
 };
 
-export const config = { amp: 'hybrid' }
-export default ContentProxy;
+export const config = { amp: 'hybrid' };
+export default ContentProxy; // eslint-disable-line import/no-default-export
+

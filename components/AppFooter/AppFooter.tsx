@@ -8,28 +8,30 @@ import { handleButtonClick } from '@lib/routing';
 import classNames from 'classnames/bind';
 // Material Components
 import { Box, Breadcrumbs, Container, Divider, Link } from '@material-ui/core';
-import { appFooterStyles } from './AppFooter.styles';
 // Contexts
-import { default as TwAppContext } from '@contexts/AppContext';
+import { AppContext } from '@contexts/AppContext';
 // SVG
-import TwLogo from '@svg/tw-white.svg';
-import PrxLogo from '@svg/PRX-Logo-Horizontal-Color.svg';
-import BBCLogo from '@svg/BBC.svg';
-import WGBHLogo from '@svg/WGBH-Logo.svg';
+import { ReactComponent as TwLogo } from '@svg/tw-white.svg';
+import { ReactComponent as PrxLogo } from '@svg/PRX-Logo-Horizontal-Color.svg';
+import { ReactComponent as BBCLogo } from '@svg/BBC.svg';
+import { ReactComponent as WGBHLogo } from '@svg/WGBH-Logo.svg';
+// Module
+import { appFooterStyles } from './AppFooter.styles';
 
-export default () => {
+export const AppFooter = () => {
   const {
     copyrightDate,
     menus: { footerNav }
-  } = useContext(TwAppContext);
+  } = useContext(AppContext);
   const classes = appFooterStyles({});
   const cx = classNames.bind(classes);
+  const producedByLogoClasses = cx({ logo: true, producedByLogo: true });
 
   return (
     <footer className={classes.root}>
       <Divider />
       <Container className={classes.container}>
-        <TwLogo className={classes.twLogo} title="The World" />
+        <TwLogo className={classes.twLogo}/>
         <p>
           The World is a public radio program that crosses borders and time
           zones to bring home the stories that matter.
@@ -44,13 +46,13 @@ export default () => {
             }}
           >
             <Link href="https://prx.org/">
-              <PrxLogo className={cx({ logo: true, producedByLogo: true })} />
+              <PrxLogo className={producedByLogoClasses} />
             </Link>
             <Link href="https://www.bbc.co.uk/">
-              <BBCLogo className={cx({ logo: true, producedByLogo: true })} />
+              <BBCLogo className={producedByLogoClasses} />
             </Link>
             <Link href="https://wgbh.org/">
-              <WGBHLogo className={cx({ logo: true, producedByLogo: true })} />
+              <WGBHLogo className={producedByLogoClasses} />
             </Link>
           </Breadcrumbs>
         </Box>

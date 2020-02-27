@@ -7,7 +7,7 @@ import { PriApiResource } from 'pri-api-library/types';
 import { parse } from 'url';
 import { IButton, ILink } from '@interfaces';
 
-const parseMenu = (data: ILink[]): IButton[] => {
+export const parseMenu = (data: ILink[]): IButton[] => {
 
   // If no data or links exist, return empty array.
   if (!data || !data.length) {
@@ -29,7 +29,7 @@ const parseMenu = (data: ILink[]): IButton[] => {
       color:
         className &&
         className.reduce(
-          (color, cn) => color || (cn === 'btn-danger' && 'secondary'),
+          (color: string, cn: string) => color || (cn === 'btn-danger' && 'secondary'),
           undefined
         ),
       icon:
@@ -40,9 +40,7 @@ const parseMenu = (data: ILink[]): IButton[] => {
         ),
       children:
         children &&
-        parseMenu(children.map(({id, attributes}): ILink => ({ id, ...attributes} as ILink)))
+        parseMenu(children.map(({id: childId, attributes}): ILink => ({ id: childId, ...attributes} as ILink)))
     })
   );
-}
-
-export default parseMenu;
+};

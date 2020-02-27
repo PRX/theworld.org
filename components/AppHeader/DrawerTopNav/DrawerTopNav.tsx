@@ -5,13 +5,11 @@
 
 import React, { useContext } from 'react';
 import { handleButtonClick } from '@lib/routing';
-// Material
 import { Button, ButtonGroup } from '@material-ui/core';
+import { AppContext } from '@contexts/AppContext';
 import { drawerTopNavStyles } from './DrawerTopNav.styles';
-// Contexts
-import AppContext from '@contexts/AppContext';
 
-export default () => {
+export const DrawerTopNav = () => {
   const {
     menus: { drawerTopNav }
   } = useContext(AppContext);
@@ -23,14 +21,14 @@ export default () => {
         className={classes.root}
         variant="contained"
         color="secondary"
-        fullWidth={true}
-        disableRipple={true}
+        fullWidth
+        disableRipple
       >
         {drawerTopNav.map(({ name, url, key }) => (
           <Button
             onClick={handleButtonClick(url)}
             key={key}
-            disableRipple={true}
+            disableRipple
           >
             {name}
           </Button>

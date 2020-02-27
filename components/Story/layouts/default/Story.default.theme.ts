@@ -3,11 +3,16 @@
  * Theme and styles for default Story layout.
  */
 
-import { createMuiTheme, createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { default as layoutStyles } from './styles/Story.layout';
-import { default as bodyStyles } from './styles/Story.body';
+import {
+  createMuiTheme,
+  createStyles,
+  makeStyles,
+  Theme
+} from '@material-ui/core/styles';
+import { storyLayoutStyles } from './styles/Story.layout';
+import { storyBodyStyles } from './styles/Story.body';
 
-const storyTheme = (theme: Theme) =>
+export const storyTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     typography: {
       h1: {
@@ -16,9 +21,9 @@ const storyTheme = (theme: Theme) =>
     }
   });
 
-const storyStyles = makeStyles((theme: Theme) => createStyles({
-  ...layoutStyles(theme),
-  ...bodyStyles(theme)
-}));
-
-export { storyTheme, storyStyles };
+export const storyStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    ...storyLayoutStyles(theme),
+    ...storyBodyStyles(theme)
+  })
+);

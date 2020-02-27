@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -40,17 +40,20 @@
     }
   },
   "include": [
+    "@types/*",
     "@types/**/*",
+    "components/*",
     "components/**/*",
     "config/*",
     "interfaces/**/*",
     "lib/**/*",
     "pages/**/*",
-    "assets/**/*",
-    "theme/**/*"
+    "assets/svg/*.svg",
+    "theme/**/*",
+    "./*.js",
+    "./*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
+    "node_modules"
   ]
 }

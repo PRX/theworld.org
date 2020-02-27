@@ -5,7 +5,7 @@
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-const drawerTopNavStyles = makeStyles((theme: Theme) => createStyles({
+export const drawerTopNavStyles = makeStyles((theme: Theme) => createStyles({
   root: {
     display: 'grid',
     gridAutoFlow: 'column',
@@ -13,5 +13,3 @@ const drawerTopNavStyles = makeStyles((theme: Theme) => createStyles({
     justifyContent: 'center'
   }
 }));
-
-export { drawerTopNavStyles };

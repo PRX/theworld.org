@@ -3,7 +3,7 @@
  * Interfaces for content.
  */
 
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { IPriApiResource } from 'pri-api-library/types';
 
 export interface IPageComponent extends Component {

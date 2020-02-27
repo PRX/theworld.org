@@ -3,7 +3,7 @@
  * Define shades of blue.
  */
 
-export default {
+const blue =  {
   100: '#E6F4F9',
   200: '#B3D9EF',
   300: '#75BBE1',
@@ -14,3 +14,5 @@ export default {
   800: '#003A57',
   900: '#002533'
 };
+
+export { blue };

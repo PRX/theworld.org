@@ -3,9 +3,9 @@
 * Styles for Image.
 */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-const imageStyles = makeStyles((theme: Theme) => createStyles({
+export const imageStyles = makeStyles(() => createStyles({
   imageWrapper: (props: { width?: number, height?: number }) => ({
     position: 'relative',
     paddingTop: `${((props.height / props.width) || (9 / 16)) * 100}%`
@@ -21,5 +21,3 @@ const imageStyles = makeStyles((theme: Theme) => createStyles({
     objectFit: 'cover'
   }
 }));
-
-export { imageStyles };

@@ -4,11 +4,11 @@
  */
 import React, { useContext } from 'react';
 import Head from 'next/head';
-import ContentContext from '@contexts/ContentContext';
+import { ContentContext } from '@contexts/ContentContext';
 import { fetchPriApiItem } from '@lib/fetch';
 import { layoutComponentMap } from './layouts';
 
-const Story = () => {
+export const Story = () => {
   const { data: { title, displayTemplate } } = useContext(ContentContext);
   const LayoutComponent = layoutComponentMap[displayTemplate || 'standard'];
 
@@ -20,10 +20,10 @@ const Story = () => {
       <LayoutComponent />
     </>
   );
-}
+};
 
 Story.fetchData = async (id: string|number) => {
-  return await fetchPriApiItem('node--stories', id, {
+  return fetchPriApiItem('node--stories', id, {
     include: [
       'audio',
       'byline.credit_type',
@@ -44,6 +44,4 @@ Story.fetchData = async (id: string|number) => {
       'video'
     ]
   });
-}
-
-export default Story;
+};

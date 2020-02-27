@@ -7,7 +7,7 @@ import { createMuiTheme, createStyles, makeStyles, Theme } from '@material-ui/co
 import { orange, yellow, cyan } from '@theme/colors';
 import { hexToRgb } from '@lib/parse/color';
 
-const drawerMainNavTheme = (theme: Theme) =>
+export const drawerMainNavTheme = (theme: Theme) =>
   createMuiTheme(
     {
       overrides: {
@@ -32,7 +32,7 @@ const drawerMainNavTheme = (theme: Theme) =>
           },
           button: {
             '&:hover': {
-              backgroundColor: `rgba(var(--accent-color-rgb), 0.3)`
+              backgroundColor: 'rgba(var(--accent-color-rgb), 0.3)'
             }
           }
         },
@@ -48,7 +48,7 @@ const drawerMainNavTheme = (theme: Theme) =>
     theme
   );
 
-const drawerMainNavStyles = makeStyles((theme: Theme) => createStyles({
+export const drawerMainNavStyles = makeStyles((theme: Theme) => createStyles({
   root: {},
   accordion: {
     '--accent-color': orange[500],
@@ -93,5 +93,3 @@ const drawerMainNavStyles = makeStyles((theme: Theme) => createStyles({
     }
   }
 }));
-
-export { drawerMainNavTheme, drawerMainNavStyles };
