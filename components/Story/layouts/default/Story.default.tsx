@@ -6,20 +6,19 @@
 import React, { useContext } from 'react';
 import { ContentContext } from '@contexts/ContentContext';
 import { ThemeProvider } from '@material-ui/core/styles';
-import {
-  Box,
-  Container,
-  Grid,
-  Hidden
-} from '@material-ui/core';
-import { storyStyles, storyTheme } from './Story.default.theme';
-import { StoryHeader, StoryLede } from './components';
+import { Box, Container, Grid, Hidden } from '@material-ui/core';
+import { storyStyles, storyTheme } from './Story.default.styles';
+import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
 export const StoryDefault = () => {
   const {
-    data: { body }
+    data: {
+      story: { body },
+      related
+    }
   } = useContext(ContentContext);
   const classes = storyStyles({});
+  const hasRelated = related && !!related.length;
 
   // TODO: Parse body...
   //    - Insert mobile ad positions
@@ -53,7 +52,7 @@ export const StoryDefault = () => {
             </Grid>
           </Hidden>
           <Grid item xs={12}>
-            <StoryHeader/>
+            <StoryHeader />
             <Box
               bgcolor="text.hint"
               color="background.paper"
@@ -71,7 +70,11 @@ export const StoryDefault = () => {
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <StoryLede />
-                <Box className={classes.body} my={2} dangerouslySetInnerHTML={{ __html: body  }}/>
+                <Box
+                  className={classes.body}
+                  my={2}
+                  dangerouslySetInnerHTML={{ __html: body }}
+                />
                 <Box
                   bgcolor="text.hint"
                   color="background.paper"
@@ -84,20 +87,11 @@ export const StoryDefault = () => {
                 >
                   Newsletter Sign-up
                 </Box>
-                <Hidden smDown>
-                  <Box
-                    bgcolor="text.hint"
-                    color="background.paper"
-                    width="100%"
-                    height={300}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    mt={3}
-                  >
-                    Related Story Links
-                  </Box>
-                </Hidden>
+                {hasRelated && (
+                  <Hidden smDown>
+                    <StoryRelatedLinks/>
+                  </Hidden>
+                )}
               </Box>
               <Box className={classes.sidebar}>
                 <Hidden smDown>
