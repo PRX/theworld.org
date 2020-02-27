@@ -89,7 +89,12 @@ export const StoryDefault = () => {
                 </Box>
                 {hasRelated && (
                   <Hidden smDown>
-                    <StoryRelatedLinks/>
+                    <aside>
+                      <header>
+                        <h3>Related Content</h3>
+                      </header>
+                      <StoryRelatedLinks/>
+                    </aside>
                   </Hidden>
                 )}
               </Box>

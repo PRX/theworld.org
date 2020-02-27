@@ -5,10 +5,8 @@
 
 import { createMuiTheme, createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-export const storyRelatedLinksStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    marginTop: theme.spacing(3)
-  }
+export const storyRelatedLinksStyles = makeStyles(() => createStyles({
+  root: {}
 }));
 
 export const storyRelatedLinksTheme = (theme: Theme) => createMuiTheme({

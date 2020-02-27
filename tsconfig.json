@@ -30,13 +30,27 @@
     "isolatedModules": true,
     "jsx": "react",
     "paths": {
-      "@components/*": ["components/*"],
-      "@contexts/*": ["contexts/*"],
-      "@interfaces": ["interfaces"],
-      "@interfaces/*": ["interfaces/*"],
-      "@lib/*": ["lib/*"],
-      "@svg": ["assets/svg/*"],
-      "@theme/*": ["theme/*"]
+      "@components/*": [
+        "components/*"
+      ],
+      "@contexts/*": [
+        "contexts/*"
+      ],
+      "@interfaces": [
+        "interfaces"
+      ],
+      "@interfaces/*": [
+        "interfaces/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@svg": [
+        "assets/svg/*"
+      ],
+      "@theme/*": [
+        "theme/*"
+      ]
     }
   },
   "include": [
