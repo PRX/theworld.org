@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme, Theme } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
 import _ from 'lodash';
 import { imageStyles } from './Image.styles';
@@ -29,7 +29,7 @@ export interface IImageStyle {
   src: string;
   info: {
     width: number;
-    height: number;
+    height?: number;
   };
 }
 
@@ -48,7 +48,7 @@ export const determineIfIResponsiveConfig = (
   if ((resp as IResponsiveConfig).xl) {
     return true;
   }
-  return false;
+  return false; //
 };
 
 /**
@@ -81,7 +81,10 @@ export const findBestStyle = (width: number, styles: IImageStyle[]) =>
  * @returns
  *    Object with attribute values.
  */
-export const generateStaticAttributes = (width: number, imageSrcs: IImageStyle[]) => {
+export const generateStaticAttributes = (
+  width: number,
+  imageSrcs: IImageStyle[]
+) => {
   const srcSetStyles = [1, 1.5, 2, 2.5, 3].map(pixelDensity => ({
     style: findBestStyle((width as number) * pixelDensity, imageSrcs),
     pixelDensity
@@ -113,9 +116,9 @@ export const generateStaticAttributes = (width: number, imageSrcs: IImageStyle[]
  */
 export const generateResponsiveAttributes = (
   widths: IResponsiveConfig,
-  imageSrcs: IImageStyle[]
+  imageSrcs: IImageStyle[],
+  theme: Theme
 ) => {
-  const theme = useTheme();
   const srcSet = imageSrcs
     .map(({ src, info: { width } }) => `${src} ${width}w`)
     .toString();
@@ -150,6 +153,7 @@ export const Image = ({
   className,
   ...other
 }: IImageComponentProps) => {
+  const theme = useTheme();
   const isResponsive = determineIfIResponsiveConfig(propWidth);
   const {
     styles,
@@ -189,7 +193,7 @@ export const Image = ({
     src: defaultSrc,
     ...other,
     ...(isResponsive
-      ? generateResponsiveAttributes(propWidth as IResponsiveConfig, imageSrcs)
+      ? generateResponsiveAttributes(propWidth as IResponsiveConfig, imageSrcs, theme)
       : generateStaticAttributes(propWidth as number, imageSrcs))
   };
 

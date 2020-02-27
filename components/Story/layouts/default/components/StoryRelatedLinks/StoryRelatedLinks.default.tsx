@@ -19,8 +19,6 @@ export const StoryRelatedLinks = () => {
   } = useContext(ContentContext);
   const classes = storyRelatedLinksStyles({});
 
-  console.log(related);
-
   return (
     <ThemeProvider theme={storyRelatedLinksTheme}>
       <Grid container spacing={2} classes={{ root: classes.root }}>
