@@ -14,16 +14,5 @@ export const storyLayoutStyles = (theme: Theme) => createStyles({
     },
   },
   content: {},
-  sidebar: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'stretch',
-    '& > * + *': {
-      marginTop: theme.spacing(2)
-    },
-    '& > .stretch': {
-      flexGrow: 1,
-      justifyContent: 'center'
-    }
-  }
+  sidebar: {}
 });

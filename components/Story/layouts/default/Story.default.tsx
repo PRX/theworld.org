@@ -12,6 +12,7 @@ import {
   Grid,
   Hidden
 } from '@material-ui/core';
+import { Sidebar } from '@components/Sidebar';
 import { storyStyles, storyTheme } from './Story.default.theme';
 import { StoryHeader, StoryLede } from './components';
 
@@ -99,65 +100,79 @@ export const StoryDefault = () => {
                   </Box>
                 </Hidden>
               </Box>
-              <Box className={classes.sidebar}>
+              <Sidebar container className={classes.sidebar}>
                 <Hidden smDown>
+                  <Sidebar item>
+                    <Box
+                      bgcolor="text.hint"
+                      color="background.paper"
+                      width={300}
+                      height={268}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      Sidebar ATF Ad
+                    </Box>
+                  </Sidebar>
+                </Hidden>
+                <Sidebar item>
                   <Box
                     bgcolor="text.hint"
                     color="background.paper"
-                    width={300}
-                    height={268}
+                    height={545}
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
                   >
-                    Sidebar ATF Ad
+                    Latest Content
                   </Box>
-                </Hidden>
-                <Box
-                  bgcolor="text.hint"
-                  color="background.paper"
-                  height={545}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  Latest Content
-                </Box>
-                <Box
-                  bgcolor="text.hint"
-                  color="background.paper"
-                  width={300}
-                  height={268}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  alignSelf="center"
-                >
-                  Sidebar BTF Ad
-                </Box>
+                </Sidebar>
                 <Hidden smDown>
-                  <Box
-                    className="stretch"
-                    bgcolor="text.hint"
-                    color="background.paper"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    Donate CTA
-                  </Box>
-                  <Box
-                    className="stretch"
-                    bgcolor="text.hint"
-                    color="background.paper"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    Newsletter CTA
-                  </Box>
+                  <Sidebar item>
+                    <Box
+                      bgcolor="text.hint"
+                      color="background.paper"
+                      width={300}
+                      height={268}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      alignSelf="center"
+                    >
+                      Sidebar BTF Ad
+                    </Box>
+                  </Sidebar>
                 </Hidden>
-              </Box>
+                <Hidden smDown>
+                  <Sidebar item stretch>
+                    <Box
+                      className="stretch"
+                      bgcolor="text.hint"
+                      color="background.paper"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      height={300}
+                    >
+                      Donate CTA
+                    </Box>
+                  </Sidebar>
+                  <Sidebar item stretch>
+                    <Box
+                      className="stretch"
+                      bgcolor="text.hint"
+                      color="background.paper"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      height={300}
+                    >
+                      Newsletter CTA
+                    </Box>
+                  </Sidebar>
+                </Hidden>
+              </Sidebar>
             </Box>
           </Grid>
         </Grid>
