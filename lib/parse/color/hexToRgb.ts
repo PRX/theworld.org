@@ -15,3 +15,22 @@ export const hexToRgb = (hex: string): RgbValues =>
     .replace(/^#/, '')
     .match(/.{2}/g)
     .map((x: string) => parseInt(x, 16));
+
+export const hexToCssRgba = (hex: string, alpha: number = 1) =>
+  `rgba(${hexToRgb(hex)},${alpha})`;
+
+export const addCssColorAlpha = (color: string, alpha: number = 1) =>
+  color.indexOf('#') === 0
+    ? hexToCssRgba(color, alpha)
+    : color
+      .replace(/^rgb\(/, 'rgba(')
+      .replace(/^hsl\(/, 'hsla(')
+      .replace(/\(([^)]+)\)/, (m: string, p: string) => {
+        const rgba = p
+          .split(/,\s?|\s\/\s|\s/)
+          .slice(0, 3);
+
+        rgba.push(`${alpha}`);
+
+        return `(${rgba})`;
+      });

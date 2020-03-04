@@ -22,6 +22,10 @@ export const sidebarStyles = makeStyles((theme: Theme) =>
     stretch: {
       flexGrow: 1,
       justifyContent: 'center'
+    },
+    elevated: {
+      backgroundColor: theme.palette.background.paper,
+      boxShadow: theme.shadows[1]
     }
   })
 );

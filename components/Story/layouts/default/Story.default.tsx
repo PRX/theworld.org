@@ -4,7 +4,6 @@
  */
 
 import React, { useContext } from 'react';
-import { ContentContext } from '@contexts/ContentContext';
 import { ThemeProvider } from '@material-ui/core/styles';
 import {
   Box,
@@ -12,7 +11,9 @@ import {
   Grid,
   Hidden
 } from '@material-ui/core';
-import { Sidebar } from '@components/Sidebar';
+import { AppContext } from '@contexts/AppContext';
+import { ContentContext } from '@contexts/ContentContext';
+import { Sidebar, SidebarList } from '@components/Sidebar';
 import { storyStyles, storyTheme } from './Story.default.theme';
 import { StoryHeader, StoryLede } from './components';
 
@@ -20,6 +21,7 @@ export const StoryDefault = () => {
   const {
     data: { body }
   } = useContext(ContentContext);
+  const { latestStories } = useContext(AppContext);
   const classes = storyStyles({});
 
   // TODO: Parse body...
@@ -116,18 +118,11 @@ export const StoryDefault = () => {
                     </Box>
                   </Sidebar>
                 </Hidden>
-                <Sidebar item>
-                  <Box
-                    bgcolor="text.hint"
-                    color="background.paper"
-                    height={545}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    Latest Content
-                  </Box>
-                </Sidebar>
+                {latestStories && (
+                  <Sidebar item elevated>
+                    <SidebarList disablePadding data={latestStories} />
+                  </Sidebar>
+                )}
                 <Hidden smDown>
                   <Sidebar item>
                     <Box
