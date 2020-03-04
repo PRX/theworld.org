@@ -34,7 +34,8 @@ export const storyRelatedLinksTheme = (theme: Theme) => createMuiTheme({
     },
     MuiCardContent: {
       root: {
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
+        fontWeight: theme.typography.fontWeightBold
       }
     },
     MuiCardMedia: {

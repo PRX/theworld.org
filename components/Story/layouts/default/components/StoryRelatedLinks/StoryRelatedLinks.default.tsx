@@ -34,7 +34,7 @@ export const StoryRelatedLinks = () => {
             }
           } = story;
           return (
-            <Grid item lg={3} md={6} key={id}>
+            <Grid item lg={3} xs={6} key={id}>
               <ContentLink data={story}>
                 <Card square elevation={0}>
                   <CardActionArea>

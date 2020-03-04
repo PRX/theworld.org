@@ -88,14 +88,12 @@ export const StoryDefault = () => {
                   Newsletter Sign-up
                 </Box>
                 {hasRelated && (
-                  <Hidden smDown>
-                    <aside>
-                      <header>
-                        <h3>Related Content</h3>
-                      </header>
-                      <StoryRelatedLinks/>
-                    </aside>
-                  </Hidden>
+                  <aside>
+                    <header>
+                      <h3>Related Content</h3>
+                    </header>
+                    <StoryRelatedLinks/>
+                  </aside>
                 )}
               </Box>
               <Box className={classes.sidebar}>
