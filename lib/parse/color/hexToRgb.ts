@@ -1,10 +1,15 @@
 /**
  * @file hexToRgb.ts
- * Helper to convert hex string into array of number values.
  */
 
 export type RgbValues = number[];
 
+/**
+ * Helper to convert hex string into array of number values.
+ *
+ * @param hex
+ *    Hexidecimal color string.
+ */
 export const hexToRgb = (hex: string): RgbValues =>
   hex
     .replace(
@@ -16,11 +21,27 @@ export const hexToRgb = (hex: string): RgbValues =>
     .match(/.{2}/g)
     .map((x: string) => parseInt(x, 16));
 
-export const hexToCssRgba = (hex: string, alpha: number = 1) =>
+/**
+ * Convert hexidecimal colors strings to rgba.
+ *
+ * @param hex
+ *    Hexidecimal color string.
+ * @param alpha
+ *    Number between 0 and 1.
+ */
+export const hexToCssRgba = (hex: string, alpha: number) =>
   `rgba(${hexToRgb(hex)},${alpha})`;
 
-export const addCssColorAlpha = (color: string, alpha: number = 1) =>
-  color.indexOf('#') === 0
+/**
+ * Add alpha value to CSS color. Hexideciaml strings will be converted to rgba.
+ *
+ * @param color
+ *    CSS color string.
+ * @param alpha
+ *    Number bewteen 0 and 1.
+ */
+export const addCssColorAlpha = (color: string, alpha: number) =>
+  color.match(/^#?(?:(?:[a-f\d]{2}){3}|(?:[a-f\d]){3})$/i)
     ? hexToCssRgba(color, alpha)
     : color
       .replace(/^rgb\(/, 'rgba(')
