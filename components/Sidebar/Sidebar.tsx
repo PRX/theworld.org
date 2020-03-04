@@ -1,6 +1,6 @@
 /**
- * @file ContentLink.tsx
- * Component for links to content page.
+ * @file Sidebar.tsx
+ * Component for sidebar elements.
  */
 
 import React, { HTMLAttributes } from 'react';

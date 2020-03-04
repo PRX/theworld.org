@@ -4,16 +4,13 @@
  */
 
 import React, { useContext } from 'react';
+import Link from 'next/link';
 import { ThemeProvider } from '@material-ui/core/styles';
-import {
-  Box,
-  Container,
-  Grid,
-  Hidden
-} from '@material-ui/core';
+import { Box, Button, Container, Grid, Hidden, Typography } from '@material-ui/core';
+import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
 import { ContentContext } from '@contexts/ContentContext';
-import { Sidebar, SidebarList } from '@components/Sidebar';
+import { Sidebar, SidebarHeader, SidebarFooter, SidebarList } from '@components/Sidebar';
 import { storyStyles, storyTheme } from './Story.default.theme';
 import { StoryHeader, StoryLede } from './components';
 
@@ -56,7 +53,7 @@ export const StoryDefault = () => {
             </Grid>
           </Hidden>
           <Grid item xs={12}>
-            <StoryHeader/>
+            <StoryHeader />
             <Box
               bgcolor="text.hint"
               color="background.paper"
@@ -74,7 +71,11 @@ export const StoryDefault = () => {
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <StoryLede />
-                <Box className={classes.body} my={2} dangerouslySetInnerHTML={{ __html: body  }}/>
+                <Box
+                  className={classes.body}
+                  my={2}
+                  dangerouslySetInnerHTML={{ __html: body }}
+                />
                 <Box
                   bgcolor="text.hint"
                   color="background.paper"
@@ -120,7 +121,19 @@ export const StoryDefault = () => {
                 </Hidden>
                 {latestStories && (
                   <Sidebar item elevated>
+                    <SidebarHeader>
+                      <Typography variant="h2">
+                        <MenuBookRounded /> Latest world news headlines
+                      </Typography>
+                    </SidebarHeader>
                     <SidebarList disablePadding data={latestStories} />
+                    <SidebarFooter>
+                      <Link href="/latest/stories" passHref>
+                        <Button color="primary" variant="contained" fullWidth disableElevation>
+                          More stories <NavigateNext />
+                        </Button>
+                      </Link>
+                    </SidebarFooter>
                   </Sidebar>
                 )}
                 <Hidden smDown>

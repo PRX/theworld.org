@@ -15,6 +15,22 @@ export const sidebarListTheme = (theme: Theme) => createMuiTheme(theme, {
           backgroundColor: addCssColorAlpha(theme.palette.primary.dark, theme.palette.action.hoverOpacity)
         }
       }
+    },
+    MuiListItemText: {
+      root: {
+        display: 'list-item',
+        listStyle: 'disc',
+        marginLeft: theme.spacing(2),
+        color: theme.palette.grey[500]
+      },
+      primary: {
+        color: theme.palette.primary.main,
+        fontWeight: theme.typography.fontWeightBold,
+        lineHeight: 1,
+        'a:hover &': {
+          color: theme.palette.primary.dark
+        }
+      }
     }
   }
 });

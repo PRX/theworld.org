@@ -34,7 +34,7 @@ export const SidebarList = ({ className, data, ...other }: ISidebarListProps) =>
         {...other}
       >
         {data.map((item) => (
-          <ListItem button component={ContentLink} data={item}>
+          <ListItem button component={ContentLink} data={item} key={item.id}>
             <ListItemText>{item.title}</ListItemText>
           </ListItem>
         ))}
