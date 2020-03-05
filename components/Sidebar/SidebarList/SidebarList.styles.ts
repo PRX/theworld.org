@@ -20,6 +20,8 @@ export const sidebarListTheme = (theme: Theme) => createMuiTheme(theme, {
       root: {
         display: 'list-item',
         listStyle: 'disc',
+        marginTop: 0,
+        marginBottom: 0,
         marginLeft: theme.spacing(2),
         color: theme.palette.grey[500]
       },
