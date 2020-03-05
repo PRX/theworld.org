@@ -28,15 +28,29 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "paths": {
-      "@components/*": ["components/*"],
-      "@contexts/*": ["contexts/*"],
-      "@interfaces": ["interfaces"],
-      "@interfaces/*": ["interfaces/*"],
-      "@lib/*": ["lib/*"],
-      "@svg": ["assets/svg/*"],
-      "@theme/*": ["theme/*"]
+      "@components/*": [
+        "components/*"
+      ],
+      "@contexts/*": [
+        "contexts/*"
+      ],
+      "@interfaces": [
+        "interfaces"
+      ],
+      "@interfaces/*": [
+        "interfaces/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@svg": [
+        "assets/svg/*"
+      ],
+      "@theme/*": [
+        "theme/*"
+      ]
     }
   },
   "include": [

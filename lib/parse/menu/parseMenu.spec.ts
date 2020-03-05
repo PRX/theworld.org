@@ -1,6 +1,6 @@
 import { parseMenu } from './index';
 
-describe(parseMenu, () => {
+describe('parseMenu', () => {
   const data = [
     {
       id: '1234',

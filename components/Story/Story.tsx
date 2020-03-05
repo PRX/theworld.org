@@ -4,13 +4,18 @@
  */
 import React, { useContext } from 'react';
 import Head from 'next/head';
+import { IPriApiResource } from 'pri-api-library/types';
 import { ContentContext } from '@contexts/ContentContext';
-import { fetchPriApiItem } from '@lib/fetch';
+import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch';
 import { layoutComponentMap } from './layouts';
 
 export const Story = () => {
-  const { data: { title, displayTemplate } } = useContext(ContentContext);
-  const LayoutComponent = layoutComponentMap[displayTemplate || 'standard'];
+  const {
+    data: {
+      story: { title, displayTemplate }
+    }
+  } = useContext(ContentContext);
+  const LayoutComponent = layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
 
   return (
     <>
@@ -22,8 +27,8 @@ export const Story = () => {
   );
 };
 
-Story.fetchData = async (id: string|number) => {
-  return fetchPriApiItem('node--stories', id, {
+Story.fetchData = async (id: string | number) => {
+  const story = (await fetchPriApiItem('node--stories', id, {
     include: [
       'audio',
       'byline.credit_type',
@@ -43,5 +48,26 @@ Story.fetchData = async (id: string|number) => {
       'verticals',
       'video'
     ]
-  });
+  })) as IPriApiResource;
+  const { type, primaryCategory } = story;
+  const related = primaryCategory && (await fetchPriApiQuery('node--stories', {
+    'filter[primary_category]': primaryCategory.id,
+    'filter[status]': 1,
+    range: 4,
+    sort: '-date_published',
+    include: [
+      'image'
+    ],
+    fields: [
+      'image',
+      'metatags',
+      'title'
+    ]
+  })) as IPriApiResource[];
+
+  return {
+    type,
+    story,
+    ...(related && { related })
+  };
 };

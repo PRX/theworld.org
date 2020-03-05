@@ -10,7 +10,9 @@ import { LedeVideo } from '@components/LedeVideo';
 
 export const StoryLede = () => {
   const {
-    data: { image, video }
+    data: {
+      story: { image, video }
+    }
   } = useContext(ContentContext);
 
   return (

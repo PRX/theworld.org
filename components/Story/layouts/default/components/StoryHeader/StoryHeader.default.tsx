@@ -14,12 +14,14 @@ import { storyHeaderStyles } from './StoryHeader.default.styles';
 export const StoryHeader = () => {
   const {
     data: {
-      byline,
-      dateBroadcast,
-      datePublished,
-      primaryCategory,
-      program,
-      title
+      story: {
+        byline,
+        dateBroadcast,
+        datePublished,
+        primaryCategory,
+        program,
+        title
+      }
     }
   } = useContext(ContentContext);
   const classes = storyHeaderStyles({});
@@ -28,7 +30,10 @@ export const StoryHeader = () => {
     <Box className={classes.root} mt={4} mb={2}>
       {primaryCategory && (
         <Box mb={2}>
-          <ContentLink className={classes.categoryLink} data={primaryCategory} />
+          <ContentLink
+            className={classes.categoryLink}
+            data={primaryCategory}
+          />
         </Box>
       )}
       <Box mb={3}>
