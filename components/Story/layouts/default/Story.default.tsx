@@ -12,12 +12,13 @@ import {
   Grid,
   Hidden
 } from '@material-ui/core';
+import { AudioPlayer } from '@components/AudioPlayer';
 import { storyStyles, storyTheme } from './Story.default.theme';
 import { StoryHeader, StoryLede } from './components';
 
 export const StoryDefault = () => {
   const {
-    data: { body }
+    data: { body, audio }
   } = useContext(ContentContext);
   const classes = storyStyles({});
 
@@ -54,18 +55,9 @@ export const StoryDefault = () => {
           </Hidden>
           <Grid item xs={12}>
             <StoryHeader/>
-            <Box
-              bgcolor="text.hint"
-              color="background.paper"
-              width="100%"
-              height={50}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              my={3}
-            >
-              Audio Player
-            </Box>
+            {audio && (
+              <AudioPlayer data={audio} />
+            )}
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.main}>
