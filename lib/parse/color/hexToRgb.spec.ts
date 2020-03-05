@@ -82,6 +82,4 @@ describe('lib/parse/color', () => {
       expect(result2).toEqual('hsla(100,100%,30%,0.5)');
     });
   });
-
-
 });

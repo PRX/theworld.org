@@ -3,6 +3,7 @@
  * Component for links to content page.
  */
 
+import { parse } from 'url';
 import React, { forwardRef } from 'react';
 import Link from 'next/link';
 import { Link as MuiLink, LinkProps } from '@material-ui/core';
@@ -20,7 +21,8 @@ export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(({ child
     metatags: { canonical },
     title
   } = data;
-  const alias = canonical.replace(/^https?:\/\/[^/]+/, '');
+  const url = parse(canonical);
+  const alias = url.pathname;
   const href = {
     pathname: '/',
     query: {

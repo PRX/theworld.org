@@ -11,15 +11,19 @@ import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
 import { ContentContext } from '@contexts/ContentContext';
 import { Sidebar, SidebarHeader, SidebarFooter, SidebarList } from '@components/Sidebar';
-import { storyStyles, storyTheme } from './Story.default.theme';
-import { StoryHeader, StoryLede } from './components';
+import { storyStyles, storyTheme } from './Story.default.styles';
+import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
 export const StoryDefault = () => {
   const {
-    data: { body }
+    data: {
+      story: { body },
+      related
+    }
   } = useContext(ContentContext);
   const { latestStories } = useContext(AppContext);
   const classes = storyStyles({});
+  const hasRelated = related && !!related.length;
 
   // TODO: Parse body...
   //    - Insert mobile ad positions
@@ -88,20 +92,14 @@ export const StoryDefault = () => {
                 >
                   Newsletter Sign-up
                 </Box>
-                <Hidden smDown>
-                  <Box
-                    bgcolor="text.hint"
-                    color="background.paper"
-                    width="100%"
-                    height={300}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    mt={3}
-                  >
-                    Related Story Links
-                  </Box>
-                </Hidden>
+                {hasRelated && (
+                  <aside>
+                    <header>
+                      <h3>Related Content</h3>
+                    </header>
+                    <StoryRelatedLinks/>
+                  </aside>
+                )}
               </Box>
               <Sidebar container className={classes.sidebar}>
                 <Hidden smDown>
