@@ -3,7 +3,8 @@
  * Component for links to content page.
  */
 
-import React, { FunctionComponent } from 'react';
+import { parse } from 'url';
+import React, { forwardRef } from 'react';
 import Link from 'next/link';
 import { Link as MuiLink, LinkProps } from '@material-ui/core';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -13,12 +14,15 @@ export interface ContentLinkProps extends LinkProps {
   data: IPriApiResource
 }
 
-export const ContentLink: FunctionComponent<ContentLinkProps> = ({ children, data, ...other }: ContentLinkProps) => {
+export type ContentLinkRef = HTMLAnchorElement;
+
+export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(({ children, data, ...other }: ContentLinkProps, ref) => {
   const {
     metatags: { canonical },
     title
   } = data;
-  const alias = canonical.replace(/^https?:\/\/[^/]+/, '');
+  const url = parse(canonical);
+  const alias = url.pathname;
   const href = {
     pathname: '/',
     query: {
@@ -29,7 +33,7 @@ export const ContentLink: FunctionComponent<ContentLinkProps> = ({ children, dat
 
   return (
       <Link href={href} as={alias}>
-        <MuiLink component="a" href={alias} underline="none" classes={classes} {...other}>{children || title}</MuiLink>
+        <MuiLink ref={ref} component="a" href={alias} underline="none" classes={classes} {...other}>{children || title}</MuiLink>
       </Link>
   );
-};
+});

@@ -1,7 +1,7 @@
 import { parse } from 'url';
 import { generateLinkHrefFromUrl } from './index';
 
-describe(generateLinkHrefFromUrl, () => {
+describe('generateLinkHrefFromUrl', () => {
   test('should return with query object containing URL path in alias property.', () => {
     const url = parse('https://www.example.com/alias/path/foo');
     const result = generateLinkHrefFromUrl(url);

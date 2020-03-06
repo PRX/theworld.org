@@ -4,23 +4,27 @@
  */
 
 import React, { useContext } from 'react';
-import { ContentContext } from '@contexts/ContentContext';
+import Link from 'next/link';
 import { ThemeProvider } from '@material-ui/core/styles';
-import {
-  Box,
-  Container,
-  Grid,
-  Hidden
-} from '@material-ui/core';
+import { Box, Button, Container, Grid, Hidden, Typography } from '@material-ui/core';
+import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
+import { AppContext } from '@contexts/AppContext';
+import { ContentContext } from '@contexts/ContentContext';
 import { AudioPlayer } from '@components/AudioPlayer';
-import { storyStyles, storyTheme } from './Story.default.theme';
-import { StoryHeader, StoryLede } from './components';
+import { Sidebar, SidebarHeader, SidebarFooter, SidebarList } from '@components/Sidebar';
+import { storyStyles, storyTheme } from './Story.default.styles';
+import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
 export const StoryDefault = () => {
   const {
-    data: { body, audio }
+    data: {
+      story: { body, audio },
+      related
+    }
   } = useContext(ContentContext);
+  const { latestStories } = useContext(AppContext);
   const classes = storyStyles({});
+  const hasRelated = related && !!related.length;
 
   // TODO: Parse body...
   //    - Insert mobile ad positions
@@ -63,7 +67,11 @@ export const StoryDefault = () => {
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <StoryLede />
-                <Box className={classes.body} my={2} dangerouslySetInnerHTML={{ __html: body  }}/>
+                <Box
+                  className={classes.body}
+                  my={2}
+                  dangerouslySetInnerHTML={{ __html: body }}
+                />
                 <Box
                   bgcolor="text.hint"
                   color="background.paper"
@@ -76,80 +84,93 @@ export const StoryDefault = () => {
                 >
                   Newsletter Sign-up
                 </Box>
-                <Hidden smDown>
-                  <Box
-                    bgcolor="text.hint"
-                    color="background.paper"
-                    width="100%"
-                    height={300}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    mt={3}
-                  >
-                    Related Story Links
-                  </Box>
-                </Hidden>
+                {hasRelated && (
+                  <aside>
+                    <header>
+                      <h3>Related Content</h3>
+                    </header>
+                    <StoryRelatedLinks/>
+                  </aside>
+                )}
               </Box>
-              <Box className={classes.sidebar}>
+              <Sidebar container className={classes.sidebar}>
                 <Hidden smDown>
-                  <Box
-                    bgcolor="text.hint"
-                    color="background.paper"
-                    width={300}
-                    height={268}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    Sidebar ATF Ad
-                  </Box>
+                  <Sidebar item>
+                    <Box
+                      bgcolor="text.hint"
+                      color="background.paper"
+                      width={300}
+                      height={268}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      Sidebar ATF Ad
+                    </Box>
+                  </Sidebar>
                 </Hidden>
-                <Box
-                  bgcolor="text.hint"
-                  color="background.paper"
-                  height={545}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  Latest Content
-                </Box>
-                <Box
-                  bgcolor="text.hint"
-                  color="background.paper"
-                  width={300}
-                  height={268}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  alignSelf="center"
-                >
-                  Sidebar BTF Ad
-                </Box>
+                {latestStories && (
+                  <Sidebar item elevated>
+                    <SidebarHeader>
+                      <Typography variant="h2">
+                        <MenuBookRounded /> Latest world news headlines
+                      </Typography>
+                    </SidebarHeader>
+                    <SidebarList disablePadding data={latestStories} />
+                    <SidebarFooter>
+                      <Link href="/latest/stories" passHref>
+                        <Button color="primary" variant="contained" fullWidth disableElevation>
+                          More stories <NavigateNext />
+                        </Button>
+                      </Link>
+                    </SidebarFooter>
+                  </Sidebar>
+                )}
                 <Hidden smDown>
-                  <Box
-                    className="stretch"
-                    bgcolor="text.hint"
-                    color="background.paper"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    Donate CTA
-                  </Box>
-                  <Box
-                    className="stretch"
-                    bgcolor="text.hint"
-                    color="background.paper"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    Newsletter CTA
-                  </Box>
+                  <Sidebar item>
+                    <Box
+                      bgcolor="text.hint"
+                      color="background.paper"
+                      width={300}
+                      height={268}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      alignSelf="center"
+                    >
+                      Sidebar BTF Ad
+                    </Box>
+                  </Sidebar>
                 </Hidden>
-              </Box>
+                <Hidden smDown>
+                  <Sidebar item stretch>
+                    <Box
+                      className="stretch"
+                      bgcolor="text.hint"
+                      color="background.paper"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      height={300}
+                    >
+                      Donate CTA
+                    </Box>
+                  </Sidebar>
+                  <Sidebar item stretch>
+                    <Box
+                      className="stretch"
+                      bgcolor="text.hint"
+                      color="background.paper"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      height={300}
+                    >
+                      Newsletter CTA
+                    </Box>
+                  </Sidebar>
+                </Hidden>
+              </Sidebar>
             </Box>
           </Grid>
         </Grid>

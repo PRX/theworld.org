@@ -7,7 +7,7 @@ import { ResourceComponentMap } from '@components/ResourceComponentMap';
  *    Data or resource type.
  */
 export const importComponent = (type: string) =>
-  ResourceComponentMap[type] || null;
+  ResourceComponentMap[type];
 
 /**
  * Provide loaded component whose extended properties and methods can be accessed.
