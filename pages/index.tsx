@@ -40,7 +40,10 @@ const ContentProxy = (props: IContentComponentProxyProps) => {
 };
 
 ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
-  const { query: { alias } } = ctx;
+  const {
+    res,
+    query: { alias }
+  } = ctx;
   let resourceId: string | number;
   let resourceType: string = 'homepage';
 
@@ -55,25 +58,34 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
       const { id, type } = apiResp as IPriApiResource;
       resourceId = id;
       resourceType = type;
+    } else {
+      resourceType = null;
     }
   }
 
-  // Preload conent compoent.
-  const ContentComponent = await preloadComponent(resourceType);
+  // Preload content component.
+  if (resourceType) {
+    const ContentComponent = await preloadComponent(resourceType);
 
-  // Use content comonent to fetch its data.
-  if (ContentComponent) {
-    const data = await ContentComponent.fetchData(resourceId);
+    // Use content comonent to fetch its data.
+    if (ContentComponent) {
+      const data = await ContentComponent.fetchData(resourceId);
 
-    return { data };
+      return { data };
+    }
   }
 
   // There was a problem locating components or data.
+  const statusCode = 404;
+
+  if(res) {
+    res.statusCode = statusCode;
+  }
+
   return {
-    errorCode: 404
+    errorCode: statusCode
   };
 };
 
 export const config = { amp: 'hybrid' };
 export default ContentProxy; // eslint-disable-line import/no-default-export
-
