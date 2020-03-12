@@ -20,12 +20,6 @@ export interface IProgressState {
   loadedSeconds: number;
 }
 
-export interface IEmbedCodeState {
-  show: boolean;
-  copied: boolean;
-  failed: boolean;
-}
-
 export interface IAudioPlayerState extends IProgressState {
   hasPlayed: boolean;
   playing: boolean;
@@ -33,5 +27,5 @@ export interface IAudioPlayerState extends IProgressState {
   muted: boolean;
   duration: number;
   seeking: number;
-  embedCode: IEmbedCodeState;
+  embedCodeShown: boolean;
 }

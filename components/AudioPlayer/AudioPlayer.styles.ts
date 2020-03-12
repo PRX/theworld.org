@@ -27,9 +27,7 @@ export const audioPlayerTheme = (theme: Theme) =>
         }
       },
       MuiSlider: {
-        root: {
-          height: 'auto'
-        },
+        root: {},
         rail: {
           height: '100%',
           top: 0

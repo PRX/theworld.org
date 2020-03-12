@@ -16,11 +16,7 @@ export const audioPlayerInitialState: IAudioPlayerState = {
   muted: false,
   duration: null,
   seeking: null,
-  embedCode: {
-    show: false,
-    copied: false,
-    failed: false
-  },
+  embedCodeShown: true,
   played: null,
   playedSeconds: null,
   loaded: null,
@@ -31,7 +27,7 @@ export const audioPlayerStateReducer = (
   state: IAudioPlayerState,
   action: AudioPlayerAction
 ): IAudioPlayerState => {
-  const { playing, muted, seeking, embedCode } = state;
+  const { playing, muted, seeking, embedCodeShown } = state;
 
   switch (action.type) {
     case ActionTypes.AUDIO_PLAYER_INIT:
@@ -80,25 +76,13 @@ export const audioPlayerStateReducer = (
       };
 
     case ActionTypes.AUDIO_PLAYER_SHOW_EMBED_CODE:
-      return { ...state, embedCode: { ...embedCode, show: true } };
+      return { ...state, embedCodeShown: true };
 
     case ActionTypes.AUDIO_PLAYER_HIDE_EMBED_CODE:
-      return { ...state, embedCode: { ...embedCode, show: false } };
+      return { ...state, embedCodeShown: false };
 
-    case ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOW:
-      return { ...state, embedCode: { ...embedCode, show: !embedCode.show } };
-
-    case ActionTypes.AUDIO_PLAYER_COPY_EMBED_CODE_SUCCESS:
-      return {
-        ...state,
-        embedCode: { ...embedCode, copied: true, failed: false }
-      };
-
-    case ActionTypes.AUDIO_PLAYER_COPY_EMBED_CODE_FAILURE:
-      return {
-        ...state,
-        embedCode: { ...embedCode, copied: false, failed: true }
-      };
+    case ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN:
+      return { ...state, embedCodeShown: !embedCodeShown };
 
     default:
       throw new Error('Unknown Audio Player Action.');

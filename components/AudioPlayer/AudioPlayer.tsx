@@ -6,20 +6,16 @@
 import React, { ChangeEvent, useReducer, useRef } from 'react';
 import { Box, IconButton, NoSsr, Slider, SliderProps } from '@material-ui/core';
 import {
-  CheckBoxSharp,
   CloseSharp,
   CodeSharp,
   GetAppSharp,
   OpenInNewSharp,
   PlayArrowSharp,
   PauseSharp,
-  SelectAllSharp,
   VolumeDownSharp,
   VolumeMuteSharp,
   VolumeOffSharp,
-  VolumeUpSharp,
-  WarningSharp,
-  ShowChart
+  VolumeUpSharp
 } from '@material-ui/icons';
 import ReactPlayer from 'react-player';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -34,6 +30,7 @@ import {
   audioPlayerInitialState
 } from './AudioPlayer.reducer';
 import { audioPlayerStyles, audioPlayerTheme } from './AudioPlayer.styles';
+import { EmbedCode } from './EmbedCode';
 
 export const AudioPlayer = ({
   className,
@@ -57,13 +54,13 @@ export const AudioPlayer = ({
       loaded,
       duration,
       seeking,
-      embedCode
+      embedCodeShown
     },
     dispatch
   ] = useReducer(audioPlayerStateReducer, audioPlayerInitialState);
 
-  const showMessage = !hasPlayed && !embedCode.show;
-  const showControls = hasPlayed && !embedCode.show;
+  const showMessage = !hasPlayed && !embedCodeShown;
+  const showControls = hasPlayed && !embedCodeShown;
 
   const classes = audioPlayerStyles({ loaded, playing, hasPlayed });
   const cx = classNames.bind(classes);
@@ -189,18 +186,19 @@ export const AudioPlayer = ({
             </Box>
           )}
           {showMessage && <Box className={classes.message}>{message}</Box>}
+          {embedCodeShown && <EmbedCode src={embeddedPlayerUrl} />}
           <Box className={classes.menu}>
             {!!embeddedPlayerUrl && (
               <IconButton
                 onClick={() =>
                   dispatch({
-                    type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOW
+                    type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
                   })
                 }
                 disableRipple
               >
-                {!embedCode.show && <CodeSharp titleAccess="Show embed code" />}
-                {embedCode.show && <CloseSharp titleAccess="Hide embed code" />}
+                {!embedCodeShown && <CodeSharp titleAccess="Show embed code" />}
+                {embedCodeShown && <CloseSharp titleAccess="Hide embed code" />}
               </IconButton>
             )}
             {!!popoutPlayerUrl && (
