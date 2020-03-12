@@ -193,7 +193,11 @@ export const Image = ({
     src: defaultSrc,
     ...other,
     ...(isResponsive
-      ? generateResponsiveAttributes(propWidth as IResponsiveConfig, imageSrcs, theme)
+      ? generateResponsiveAttributes(
+          propWidth as IResponsiveConfig,
+          imageSrcs,
+          theme
+        )
       : generateStaticAttributes(propWidth as number, imageSrcs))
   };
 

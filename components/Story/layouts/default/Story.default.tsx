@@ -6,19 +6,32 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { Box, Button, Container, Grid, Hidden, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Hidden,
+  Typography
+} from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
 import { ContentContext } from '@contexts/ContentContext';
 import { AudioPlayer } from '@components/AudioPlayer';
-import { Sidebar, SidebarHeader, SidebarFooter, SidebarList } from '@components/Sidebar';
+import {
+  Sidebar,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarList
+} from '@components/Sidebar';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
 export const StoryDefault = () => {
   const {
     data: {
-      story: { body, audio },
+      story,
+      story: { body, audio, embeddedPlayerUrl, popoutPlayerUrl },
       related
     }
   } = useContext(ContentContext);
@@ -58,12 +71,17 @@ export const StoryDefault = () => {
             </Grid>
           </Hidden>
           <Grid item xs={12}>
-            <StoryHeader/>
-            {audio && (
-              <AudioPlayer data={audio} />
-            )}
+            <StoryHeader />
           </Grid>
           <Grid item xs={12}>
+            {audio && (
+              <AudioPlayer
+                data={audio}
+                message="Listen to the story."
+                embeddedPlayerUrl={embeddedPlayerUrl}
+                popoutPlayerUrl={popoutPlayerUrl}
+              />
+            )}
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <StoryLede />
@@ -89,7 +107,7 @@ export const StoryDefault = () => {
                     <header>
                       <h3>Related Content</h3>
                     </header>
-                    <StoryRelatedLinks/>
+                    <StoryRelatedLinks />
                   </aside>
                 )}
               </Box>
@@ -119,7 +137,12 @@ export const StoryDefault = () => {
                     <SidebarList disablePadding data={latestStories} />
                     <SidebarFooter>
                       <Link href="/latest/stories" passHref>
-                        <Button color="primary" variant="contained" fullWidth disableElevation>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          fullWidth
+                          disableElevation
+                        >
                           More stories <NavigateNext />
                         </Button>
                       </Link>
