@@ -16,7 +16,7 @@ export const audioPlayerInitialState: IAudioPlayerState = {
   muted: false,
   duration: null,
   seeking: null,
-  embedCodeShown: true,
+  embedCodeShown: false,
   played: null,
   playedSeconds: null,
   loaded: null,
