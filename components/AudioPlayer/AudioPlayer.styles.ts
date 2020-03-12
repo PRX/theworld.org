@@ -9,16 +9,28 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
+import { blue } from '@theme/colors';
+import { addCssColorAlpha } from '@lib/parse/color';
 
 const playerHeight = 50;
 
-export const audioPlayerTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+export const audioPlayerTheme = (theme: Theme) => {
+  const textColor = theme.palette.getContrastText(blue[900]);
+
+  return createMuiTheme(theme, {
     overrides: {
       MuiIconButton: {
         root: {
           padding: theme.spacing(1),
-          fontSize: theme.typography.pxToRem(playerHeight - theme.spacing(2))
+          color: textColor,
+          fontSize: theme.typography.pxToRem(playerHeight - theme.spacing(2)),
+
+          '&:hover': {
+            backgroundColor: addCssColorAlpha(
+              textColor,
+              theme.palette.action.hoverOpacity * 2
+            )
+          }
         }
       },
       MuiSvgIcon: {
@@ -30,7 +42,8 @@ export const audioPlayerTheme = (theme: Theme) =>
         root: {},
         rail: {
           height: '100%',
-          top: 0
+          top: 0,
+          backgroundColor: textColor
         },
         track: {
           height: '100%',
@@ -79,6 +92,7 @@ export const audioPlayerTheme = (theme: Theme) =>
       }
     }
   });
+};
 
 export const audioPlayerStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -94,8 +108,9 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[1]
+      backgroundColor: blue[900],
+      boxShadow: theme.shadows[1],
+      color: theme.palette.getContrastText(blue[900])
     }),
     player: {
       display: 'none'
@@ -135,7 +150,6 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       gridColumnGap: theme.spacing(1)
     },
     progressRail: ({ loaded }: any) => ({
-      backgroundColor: theme.palette.grey[300],
       '&::before': {
         content: '""',
         position: 'absolute',

@@ -127,6 +127,7 @@ export const AudioPlayer = ({
         payload
       })
   };
+
   const volumeAdjustAttrs = {
     className: classes.volumeControls,
     max: 1,

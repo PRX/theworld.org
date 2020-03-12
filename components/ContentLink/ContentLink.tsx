@@ -11,29 +11,40 @@ import { IPriApiResource } from 'pri-api-library/types';
 import { contentLinkStyles } from './ContentLink.styles';
 
 export interface ContentLinkProps extends LinkProps {
-  data: IPriApiResource
+  data: IPriApiResource;
 }
 
 export type ContentLinkRef = HTMLAnchorElement;
 
-export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(({ children, data, ...other }: ContentLinkProps, ref) => {
-  const {
-    metatags: { canonical },
-    title
-  } = data;
-  const url = parse(canonical);
-  const alias = url.pathname;
-  const href = {
-    pathname: '/',
-    query: {
-      alias
-    }
-  };
-  const classes = contentLinkStyles({});
+export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
+  ({ children, data, ...other }: ContentLinkProps, ref) => {
+    const {
+      metatags: { canonical },
+      title
+    } = data;
+    const url = parse(canonical);
+    const alias = url.pathname;
+    const href = {
+      pathname: '/',
+      query: {
+        alias
+      }
+    };
+    const classes = contentLinkStyles({});
 
-  return (
+    return (
       <Link href={href} as={alias}>
-        <MuiLink ref={ref} component="a" href={alias} underline="none" classes={classes} {...other}>{children || title}</MuiLink>
+        <MuiLink
+          ref={ref}
+          component="a"
+          href={alias}
+          underline="none"
+          classes={classes}
+          {...other}
+        >
+          {children || title}
+        </MuiLink>
       </Link>
-  );
-});
+    );
+  }
+);

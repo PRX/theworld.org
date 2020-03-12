@@ -38,12 +38,23 @@ export const embedCodeStyles = makeStyles((theme: Theme) =>
     },
     code: {
       flexGrow: 1,
+      position: 'relative',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
       padding: '0 0.5rem',
-      backgroundColor: theme.palette.divider,
-      lineHeight: '1.5rem'
+      lineHeight: '1.5rem',
+
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'currentColor',
+        opacity: theme.palette.action.hoverOpacity * 2
+      }
     }
   })
 );
