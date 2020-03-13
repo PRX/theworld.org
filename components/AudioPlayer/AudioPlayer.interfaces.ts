@@ -28,4 +28,6 @@ export interface IAudioPlayerState extends IProgressState {
   duration: number;
   seeking: number;
   embedCodeShown: boolean;
+  prevTop?: number;
+  stuck: boolean;
 }

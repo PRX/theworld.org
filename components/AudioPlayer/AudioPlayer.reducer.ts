@@ -20,14 +20,15 @@ export const audioPlayerInitialState: IAudioPlayerState = {
   played: null,
   playedSeconds: null,
   loaded: null,
-  loadedSeconds: null
+  loadedSeconds: null,
+  stuck: false
 };
 
 export const audioPlayerStateReducer = (
   state: IAudioPlayerState,
   action: AudioPlayerAction
 ): IAudioPlayerState => {
-  const { playing, muted, seeking, embedCodeShown } = state;
+  const { playing, muted, seeking, embedCodeShown, prevTop } = state;
 
   switch (action.type) {
     case ActionTypes.AUDIO_PLAYER_INIT:
@@ -83,6 +84,13 @@ export const audioPlayerStateReducer = (
 
     case ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN:
       return { ...state, embedCodeShown: !embedCodeShown };
+
+    case ActionTypes.AUDIO_PLAYER_UPDATE_STUCK:
+      return {
+        ...state,
+        prevTop: action.payload,
+        stuck: prevTop === action.payload
+      };
 
     default:
       throw new Error('Unknown Audio Player Action.');

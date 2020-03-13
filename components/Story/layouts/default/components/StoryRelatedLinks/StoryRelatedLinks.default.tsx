@@ -4,7 +4,13 @@
  */
 
 import React, { useContext } from 'react';
-import { Card, CardActionArea, CardContent, CardMedia, Grid } from '@material-ui/core';
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Grid
+} from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentContext } from '@contexts/ContentContext';
 import { ContentLink } from '@components/ContentLink';
@@ -36,7 +42,7 @@ export const StoryRelatedLinks = () => {
           return (
             <Grid item lg={3} xs={6} key={id}>
               <ContentLink data={story}>
-                <Card square elevation={0}>
+                <Card square elevation={1}>
                   <CardActionArea>
                     <CardMedia image={src} title={imageTitle} />
                     <CardContent>{title}</CardContent>

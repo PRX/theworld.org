@@ -96,11 +96,14 @@ export const audioPlayerTheme = (theme: Theme) => {
 
 export const audioPlayerStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: ({ playing, hasPlayed }) => ({
+    root: ({ playing, hasPlayed, stuck }) => ({
       ...((playing || hasPlayed) && {
         position: 'sticky',
         top: 0,
         zIndex: theme.zIndex.appBar
+      }),
+      transition: theme.transitions.create(['box-shadow'], {
+        duration: theme.transitions.duration.standard
       }),
       display: 'grid',
       gridTemplateColumns: `${playerHeight}px 1fr max-content`,
@@ -109,7 +112,7 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
       backgroundColor: blue[900],
-      boxShadow: theme.shadows[1],
+      boxShadow: theme.shadows[!stuck ? 1 : 3],
       color: theme.palette.getContrastText(blue[900])
     }),
     player: {

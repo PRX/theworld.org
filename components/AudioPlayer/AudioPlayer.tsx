@@ -3,7 +3,7 @@
  * Component for audio player.
  */
 
-import React, { ChangeEvent, useReducer, useRef } from 'react';
+import React, { ChangeEvent, useEffect, useReducer, useRef } from 'react';
 import { Box, IconButton, NoSsr, Slider, SliderProps } from '@material-ui/core';
 import {
   CloseSharp,
@@ -31,6 +31,7 @@ import {
 } from './AudioPlayer.reducer';
 import { audioPlayerStyles, audioPlayerTheme } from './AudioPlayer.styles';
 import { EmbedCode } from './EmbedCode';
+import { SliderValueLabel } from './SliderValueLabel';
 
 export const AudioPlayer = ({
   className,
@@ -43,6 +44,8 @@ export const AudioPlayer = ({
   const { url } = data;
   const audioDownloadFilename =
     downloadFilename || generateAudioDownloadFilename(data);
+  const playerElm = useRef<ReactPlayer>(null);
+  const rootElm = useRef<HTMLDivElement>(null);
   const [
     {
       hasPlayed,
@@ -54,7 +57,8 @@ export const AudioPlayer = ({
       loaded,
       duration,
       seeking,
-      embedCodeShown
+      embedCodeShown,
+      stuck
     },
     dispatch
   ] = useReducer(audioPlayerStateReducer, audioPlayerInitialState);
@@ -62,12 +66,9 @@ export const AudioPlayer = ({
   const showMessage = !hasPlayed && !embedCodeShown;
   const showControls = hasPlayed && !embedCodeShown;
 
-  const classes = audioPlayerStyles({ loaded, playing, hasPlayed });
+  const classes = audioPlayerStyles({ loaded, playing, hasPlayed, stuck });
   const cx = classNames.bind(classes);
-  const rootClasses = cx(className, {
-    root: true
-  });
-  const playerElm = useRef<ReactPlayer>(null);
+  const rootClasses = cx(className, classes.root);
 
   const playBtnClasses = cx({
     playBtn: true,
@@ -125,7 +126,8 @@ export const AudioPlayer = ({
       dispatch({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_SEEKING,
         payload
-      })
+      }),
+    ValueLabelComponent: SliderValueLabel
   };
 
   const volumeAdjustAttrs = {
@@ -145,6 +147,20 @@ export const AudioPlayer = ({
     (volume > 0 && VolumeDownSharp) ||
     VolumeMuteSharp;
 
+  const handleScroll = () => {
+    const { top } = rootElm.current.getBoundingClientRect();
+
+    dispatch({ type: ActionTypes.AUDIO_PLAYER_UPDATE_STUCK, payload: top });
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <NoSsr
       defer
@@ -152,7 +168,7 @@ export const AudioPlayer = ({
     >
       <ThemeProvider theme={audioPlayerTheme}>
         <ReactPlayer {...playerAttrs} />
-        <Box className={rootClasses}>
+        <div ref={rootElm} className={rootClasses}>
           <IconButton
             className={playBtnClasses}
             onClick={() =>
@@ -221,7 +237,7 @@ export const AudioPlayer = ({
               <GetAppSharp titleAccess="Download audio" />
             </IconButton>
           </Box>
-        </Box>
+        </div>
       </ThemeProvider>
     </NoSsr>
   );
