@@ -7,7 +7,8 @@ import {
   createMuiTheme,
   createStyles,
   makeStyles,
-  Theme
+  Theme,
+  lighten
 } from '@material-ui/core/styles';
 import { blue } from '@theme/colors';
 import { addCssColorAlpha } from '@lib/parse/color';
@@ -15,19 +16,17 @@ import { addCssColorAlpha } from '@lib/parse/color';
 const playerHeight = 50;
 
 export const audioPlayerTheme = (theme: Theme) => {
-  const textColor = theme.palette.getContrastText(blue[900]);
-
   return createMuiTheme(theme, {
     overrides: {
       MuiIconButton: {
         root: {
           padding: theme.spacing(1),
-          color: textColor,
+          color: theme.palette.getContrastText(blue[900]),
           fontSize: theme.typography.pxToRem(playerHeight - theme.spacing(2)),
 
           '&:hover': {
-            backgroundColor: addCssColorAlpha(
-              textColor,
+            backgroundColor: lighten(
+              blue[900],
               theme.palette.action.hoverOpacity * 2
             )
           }
@@ -43,7 +42,8 @@ export const audioPlayerTheme = (theme: Theme) => {
         rail: {
           height: '100%',
           top: 0,
-          backgroundColor: textColor
+          backgroundColor: lighten(blue[900], 0.3),
+          opacity: 1
         },
         track: {
           height: '100%',
@@ -124,7 +124,7 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2)
     },
-    playBtn: ({ playing }) => ({
+    playBtn: ({ playing }: any) => ({
       ...(!playing && {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
@@ -144,24 +144,35 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridTemplateColumns: '2fr 1fr',
       alignItems: 'center',
-      gridColumnGap: theme.spacing(2)
+      gridColumnGap: theme.spacing(2),
+      [theme.breakpoints.down('xs')]: {
+        gridTemplateColumns: '1fr 1fr'
+      }
     },
+    progress: {
+      position: 'relative',
+      lineHeight: 0,
+      backgroundColor: lighten(blue[900], 0.2)
+    },
+    loaded: {
+      position: 'absolute',
+      top: 0,
+      height: '100%',
+      backgroundColor: lighten(blue[900], 0.3)
+    },
+    seek: {},
     progressControls: {
       display: 'grid',
-      gridTemplateColumns: 'max-content 1fr max-content',
+      gridTemplateColumns: 'auto',
       alignItems: 'center',
-      gridColumnGap: theme.spacing(1)
-    },
-    progressRail: ({ loaded }: any) => ({
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        width: `${(loaded || 0) * 100}%`,
-        height: '100%',
-        backgroundColor: theme.palette.primary.light
+      gridColumnGap: theme.spacing(1),
+      [theme.breakpoints.up('sm')]: {
+        gridTemplateColumns: 'max-content 1fr max-content'
       }
-    }),
+    },
+    progressRail: {
+      display: 'none'
+    },
     volumeControls: {
       display: 'grid',
       gridTemplateColumns: `${playerHeight}px 1fr`,
@@ -169,15 +180,32 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       alignItems: 'center'
     },
     duration: {
-      fontSize: '1.25rem'
+      display: 'none',
+      fontSize: '1.25rem',
+      [theme.breakpoints.up('sm')]: {
+        display: 'initial'
+      }
     },
+    played: {},
+    total: {},
     message: {
       overflow: 'hidden',
       fontSize: '1.25rem',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap'
     },
-    seek: {},
-    menu: {}
+    menu: {
+      [theme.breakpoints.down('xs')]: {
+        display: 'none'
+      }
+    },
+    [theme.breakpoints.down('sm')]: {
+      embedBtn: {
+        display: 'none'
+      },
+      popoutBtn: {
+        display: 'none'
+      }
+    }
   })
 );

@@ -183,11 +183,20 @@ export const AudioPlayer = ({
             <Box className={classes.controls}>
               <Box className={classes.progressControls}>
                 <Duration
-                  className={classes.duration}
+                  className={cx(classes.duration, classes.played)}
                   seconds={playedSeconds}
                 />
-                <Slider {...seekAttr} />
-                <Duration className={classes.duration} seconds={duration} />
+                <Box className={classes.progress}>
+                  <Box
+                    className={classes.loaded}
+                    style={{ width: `${loaded * 100}%` }}
+                  />
+                  <Slider {...seekAttr} />
+                </Box>
+                <Duration
+                  className={cx(classes.duration, classes.total)}
+                  seconds={duration}
+                />
               </Box>
               <Box className={classes.volumeControls}>
                 <IconButton
@@ -207,6 +216,7 @@ export const AudioPlayer = ({
           <Box className={classes.menu}>
             {!!embeddedPlayerUrl && (
               <IconButton
+                className={classes.embedBtn}
                 onClick={() =>
                   dispatch({
                     type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
@@ -220,6 +230,7 @@ export const AudioPlayer = ({
             )}
             {!!popoutPlayerUrl && (
               <IconButton
+                className={classes.popoutBtn}
                 component="a"
                 href={popoutPlayerUrl}
                 target="_blank"
