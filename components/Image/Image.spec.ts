@@ -57,7 +57,10 @@ describe('Image', () => {
     };
 
     test('should trsansform image styles array to static image attributes', () => {
-      const { srcSet, src, width } = generateStaticAttributes(100, mockImageStyles);
+      const { srcSet, src, width } = generateStaticAttributes(
+        100,
+        mockImageStyles
+      );
 
       expect(srcSet).toEqual(mockResult.srcSet);
       expect(src).toEqual(mockResult.src);
