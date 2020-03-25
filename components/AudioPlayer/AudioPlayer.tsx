@@ -122,7 +122,7 @@ export const AudioPlayer = ({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_PROGRESS_TO_SEEKING
       });
     },
-    onChange: (e: ChangeEvent<{}>, value: number | number[]) =>
+    onChange: (e: any, value: number | number[]) =>
       dispatch({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_SEEKING,
         payload: value as number
@@ -135,7 +135,7 @@ export const AudioPlayer = ({
     max: 1,
     step: 0.001,
     value: muted ? 0 : volume,
-    onChange: (e: ChangeEvent<{}>, value: number | number[]) =>
+    onChange: (e: any, value: number | number[]) =>
       dispatch({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_VOLUME,
         payload: value as number
