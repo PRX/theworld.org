@@ -24,20 +24,29 @@ import {
   SidebarFooter,
   SidebarList
 } from '@components/Sidebar';
+import { Tags } from '@components/Tags';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
 export const StoryDefault = () => {
   const {
     data: {
-      story,
-      story: { body, audio, embeddedPlayerUrl, popoutPlayerUrl },
+      story: {
+        body,
+        audio,
+        embeddedPlayerUrl,
+        popoutPlayerUrl,
+        categories,
+        tags
+      },
       related
     }
   } = useContext(ContentContext);
   const { latestStories } = useContext(AppContext);
   const classes = storyStyles({});
   const hasRelated = related && !!related.length;
+  const hasCategories = categories && !!categories.length;
+  const hasTags = tags && !!tags.length;
 
   // TODO: Parse body...
   //    - Insert mobile ad positions
@@ -110,6 +119,8 @@ export const StoryDefault = () => {
                     <StoryRelatedLinks />
                   </aside>
                 )}
+                {hasCategories && <Tags data={categories} label="Categories" />}
+                {hasTags && <Tags data={tags} label="Tags" />}
               </Box>
               <Sidebar container className={classes.sidebar}>
                 <Hidden smDown>
