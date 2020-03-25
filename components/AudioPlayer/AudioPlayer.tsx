@@ -122,10 +122,10 @@ export const AudioPlayer = ({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_PROGRESS_TO_SEEKING
       });
     },
-    onChange: (e: ChangeEvent<{}>, payload: number) =>
+    onChange: (e: ChangeEvent<{}>, value: number | number[]) =>
       dispatch({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_SEEKING,
-        payload
+        payload: value as number
       }),
     ValueLabelComponent: SliderValueLabel
   };
@@ -135,10 +135,10 @@ export const AudioPlayer = ({
     max: 1,
     step: 0.001,
     value: muted ? 0 : volume,
-    onChange: (e: ChangeEvent<{}>, payload: number) =>
+    onChange: (e: ChangeEvent<{}>, value: number | number[]) =>
       dispatch({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_VOLUME,
-        payload
+        payload: value as number
       })
   };
   const VolumeBtnIcon =

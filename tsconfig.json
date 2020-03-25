@@ -28,7 +28,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react",
+    "jsx": "preserve",
     "paths": {
       "@components/*": [
         "components/*"
