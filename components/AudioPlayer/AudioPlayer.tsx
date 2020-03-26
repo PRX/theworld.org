@@ -3,8 +3,8 @@
  * Component for audio player.
  */
 
-import React, { ChangeEvent, useEffect, useReducer, useRef } from 'react';
-import { Box, IconButton, NoSsr, Slider, SliderProps } from '@material-ui/core';
+import React, { useEffect, useReducer, useRef } from 'react';
+import { Box, IconButton, NoSsr, Slider } from '@material-ui/core';
 import {
   CloseSharp,
   CodeSharp,
@@ -106,7 +106,7 @@ export const AudioPlayer = ({
       })
   };
 
-  const seekAttr: SliderProps = {
+  const seekAttr = {
     className: classes.seek,
     classes: {
       rail: classes.progressRail
@@ -114,7 +114,7 @@ export const AudioPlayer = ({
     max: 1,
     step: 0.001,
     value: seeking || played,
-    valueLabelDisplay: 'auto',
+    // valueLabelDisplay: 'auto',
     valueLabelFormat: (seek: number) => formatDuration(duration * seek),
     onChangeCommitted: () => {
       playerElm.current.seekTo(seeking);
@@ -122,11 +122,12 @@ export const AudioPlayer = ({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_PROGRESS_TO_SEEKING
       });
     },
-    onChange: (e: any, value: number | number[]) =>
+    onChange: (e: any, value: number | number[]) => {
       dispatch({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_SEEKING,
         payload: value as number
-      }),
+      });
+    },
     ValueLabelComponent: SliderValueLabel
   };
 
@@ -191,7 +192,7 @@ export const AudioPlayer = ({
                     className={classes.loaded}
                     style={{ width: `${loaded * 100}%` }}
                   />
-                  <Slider {...seekAttr} />
+                  <Slider {...seekAttr} valueLabelDisplay="auto" />
                 </Box>
                 <Duration
                   className={cx(classes.duration, classes.total)}
