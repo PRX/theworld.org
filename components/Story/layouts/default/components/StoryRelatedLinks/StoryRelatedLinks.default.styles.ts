@@ -10,9 +10,11 @@ import {
   Theme
 } from '@material-ui/core/styles';
 
-export const storyRelatedLinksStyles = makeStyles(() =>
+export const storyRelatedLinksStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {}
+    root: {
+      marginBottom: theme.spacing(3)
+    }
   })
 );
 

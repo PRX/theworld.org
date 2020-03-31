@@ -15,7 +15,8 @@ export const Story = () => {
       story: { title, displayTemplate }
     }
   } = useContext(ContentContext);
-  const LayoutComponent = layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
+  const LayoutComponent =
+    layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
 
   return (
     <>
@@ -50,20 +51,16 @@ Story.fetchData = async (id: string | number) => {
     ]
   })) as IPriApiResource;
   const { type, primaryCategory } = story;
-  const related = primaryCategory && (await fetchPriApiQuery('node--stories', {
-    'filter[primary_category]': primaryCategory.id,
-    'filter[status]': 1,
-    range: 4,
-    sort: '-date_published',
-    include: [
-      'image'
-    ],
-    fields: [
-      'image',
-      'metatags',
-      'title'
-    ]
-  })) as IPriApiResource[];
+  const related =
+    primaryCategory &&
+    ((await fetchPriApiQuery('node--stories', {
+      'filter[primary_category]': primaryCategory.id,
+      'filter[status]': 1,
+      range: 4,
+      sort: '-date_published',
+      include: ['image'],
+      fields: ['image', 'metatags', 'title']
+    })) as IPriApiResource[]);
 
   return {
     type,

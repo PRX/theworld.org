@@ -24,20 +24,29 @@ import {
   SidebarFooter,
   SidebarList
 } from '@components/Sidebar';
+import { Tags } from '@components/Tags';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
 export const StoryDefault = () => {
   const {
     data: {
-      story,
-      story: { body, audio, embeddedPlayerUrl, popoutPlayerUrl },
+      story: {
+        body,
+        audio,
+        embeddedPlayerUrl,
+        popoutPlayerUrl,
+        categories,
+        tags
+      },
       related
     }
   } = useContext(ContentContext);
   const { latestStories } = useContext(AppContext);
   const classes = storyStyles({});
   const hasRelated = related && !!related.length;
+  const hasCategories = categories && !!categories.length;
+  const hasTags = tags && !!tags.length;
 
   // TODO: Parse body...
   //    - Insert mobile ad positions
@@ -53,23 +62,6 @@ export const StoryDefault = () => {
     <ThemeProvider theme={storyTheme}>
       <Container fixed>
         <Grid container>
-          <Hidden smDown>
-            <Grid item xs={12}>
-              <Box
-                bgcolor="text.hint"
-                color="background.paper"
-                width={728}
-                height={90}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                mx="auto"
-                mt={2}
-              >
-                Top Ad
-              </Box>
-            </Grid>
-          </Hidden>
           <Grid item xs={12}>
             <StoryHeader />
           </Grid>
@@ -110,23 +102,10 @@ export const StoryDefault = () => {
                     <StoryRelatedLinks />
                   </aside>
                 )}
+                {hasCategories && <Tags data={categories} label="Categories" />}
+                {hasTags && <Tags data={tags} label="Tags" />}
               </Box>
               <Sidebar container className={classes.sidebar}>
-                <Hidden smDown>
-                  <Sidebar item>
-                    <Box
-                      bgcolor="text.hint"
-                      color="background.paper"
-                      width={300}
-                      height={268}
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                    >
-                      Sidebar ATF Ad
-                    </Box>
-                  </Sidebar>
-                </Hidden>
                 {latestStories && (
                   <Sidebar item elevated>
                     <SidebarHeader>
@@ -149,22 +128,6 @@ export const StoryDefault = () => {
                     </SidebarFooter>
                   </Sidebar>
                 )}
-                <Hidden smDown>
-                  <Sidebar item>
-                    <Box
-                      bgcolor="text.hint"
-                      color="background.paper"
-                      width={300}
-                      height={268}
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      alignSelf="center"
-                    >
-                      Sidebar BTF Ad
-                    </Box>
-                  </Sidebar>
-                </Hidden>
                 <Hidden smDown>
                   <Sidebar item stretch>
                     <Box

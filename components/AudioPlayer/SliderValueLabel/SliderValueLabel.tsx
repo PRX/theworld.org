@@ -4,7 +4,7 @@
  * See https://material-ui.com/components/slider/#customized-sliders
  */
 
-import React, { cloneElement, createElement } from 'react';
+import React, { cloneElement } from 'react';
 import { ValueLabelProps } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import { sliderValueLabelStyles } from './SliderValueLabel.styles';
