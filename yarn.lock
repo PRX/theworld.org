@@ -8091,6 +8091,11 @@ normalize-url@1.9.1:
     query-string "^4.1.0"
     sort-keys "^1.0.0"
 
+now@16:
+  version "16.7.3"
+  resolved "https://registry.yarnpkg.com/now/-/now-16.7.3.tgz#3f48e49cafcab7c4a1a29247d9f8ca2dd0c343bc"
+  integrity sha512-8jtk6dRmrDd8gBJFWA41BNYV/U1YrSdI+PRJKHb/RLBAN6ZUb+AJeIn0moWwyhLSYhoP0X+nCydcHCKjiRSIsA==
+
 npm-run-path@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
@@ -9168,9 +9173,10 @@ pretty-format@^25.2.0:
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
 
-pri-api-library@../pri-api-library/dist/pri-api-library-1.2.0.tgz:
+pri-api-library@^1.2.0:
   version "1.2.0"
-  resolved "../pri-api-library/dist/pri-api-library-1.2.0.tgz#8d8a6f1e61bb4f2ee9182b8e0e588fac1d2061ce"
+  resolved "https://registry.yarnpkg.com/pri-api-library/-/pri-api-library-1.2.0.tgz#8d8a6f1e61bb4f2ee9182b8e0e588fac1d2061ce"
+  integrity sha512-/FyfhTFvpWXCtANc1FVk2uwkaOVvfACvTJXrATHhXemOKaowfn/wY2Dl1g6LEUiOAuEYN3ZrCP/XoGyudxY/Tg==
   dependencies:
     "@types/qs" "^6.5.3"
     camelcase "^5.3.1"
