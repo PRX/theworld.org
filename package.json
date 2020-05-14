@@ -14,21 +14,6 @@
   "engines": {
     "node": ">=8.9.0 <=12"
   },
-  "jest": {
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "setupFiles": [
-      "<rootDir>/jest.setup.js"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/.next/",
-      "<rootDir>/node_modules/"
-    ],
-    "moduleNameMapper": {
-      "^.+\\.s?css$": "identity-obj-proxy"
-    }
-  },
   "scripts": {
     "dev": "next --port $PORT",
     "build": "next build",
@@ -67,10 +52,11 @@
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^0.17.0",
     "postcss-easy-media-query": "^1.0.0",
-    "pri-api-library": "^1.1.0",
+    "pri-api-library": "../pri-api-library/dist/pri-api-library-1.2.0.tgz",
     "prop-types": "^15.7.2",
     "qs": "^6.8.0",
     "react": "^16.9.0",
+    "react-cookies": "^0.1.1",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.9.0",
     "react-markdown": "^4.3.1",
