@@ -24,6 +24,7 @@ import {
   SidebarFooter,
   SidebarList
 } from '@components/Sidebar';
+import { CtaRegion } from '@components/CtaRegion';
 import { Tags } from '@components/Tags';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
@@ -39,7 +40,8 @@ export const StoryDefault = () => {
         categories,
         tags
       },
-      related
+      related,
+      ctaRegions
     }
   } = useContext(ContentContext);
   const { latestStories } = useContext(AppContext);
@@ -47,6 +49,7 @@ export const StoryDefault = () => {
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;
   const hasTags = tags && !!tags.length;
+  const hasMessages = (list: any[]) => list && list.length;
 
   // TODO: Parse body...
   //    - Insert mobile ad positions
@@ -57,6 +60,8 @@ export const StoryDefault = () => {
   //    - Replace GP video embeds with player that works (API?)
   //    - Replace older GP image embeds with image in attribute with Image (API?)
   //    - Replace GP pullquotes with symantic markup (API?)
+
+  console.log('StoryDefault > ctaRegions', ctaRegions);
 
   return (
     <ThemeProvider theme={storyTheme}>
@@ -82,18 +87,13 @@ export const StoryDefault = () => {
                   my={2}
                   dangerouslySetInnerHTML={{ __html: body }}
                 />
-                <Box
-                  bgcolor="text.hint"
-                  color="background.paper"
-                  width="100%"
-                  height={400}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  mt={3}
-                >
-                  Newsletter Sign-up
-                </Box>
+                {hasMessages(ctaRegions.tw_cta_region_content_inline_end) && (
+                  <Sidebar item stretch>
+                    <CtaRegion
+                      data={ctaRegions.tw_cta_region_content_inline_end}
+                    />
+                  </Sidebar>
+                )}
                 {hasRelated && (
                   <aside>
                     <header>
@@ -129,32 +129,20 @@ export const StoryDefault = () => {
                   </Sidebar>
                 )}
                 <Hidden smDown>
-                  <Sidebar item stretch>
-                    <Box
-                      className="stretch"
-                      bgcolor="text.hint"
-                      color="background.paper"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height={300}
-                    >
-                      Donate CTA
-                    </Box>
-                  </Sidebar>
-                  <Sidebar item stretch>
-                    <Box
-                      className="stretch"
-                      bgcolor="text.hint"
-                      color="background.paper"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height={300}
-                    >
-                      Newsletter CTA
-                    </Box>
-                  </Sidebar>
+                  {hasMessages(ctaRegions.tw_cta_region_content_sidebar_01) && (
+                    <Sidebar item stretch>
+                      <CtaRegion
+                        data={ctaRegions.tw_cta_region_content_sidebar_01}
+                      />
+                    </Sidebar>
+                  )}
+                  {hasMessages(ctaRegions.tw_cta_region_content_sidebar_02) && (
+                    <Sidebar item stretch>
+                      <CtaRegion
+                        data={ctaRegions.tw_cta_region_content_sidebar_02}
+                      />
+                    </Sidebar>
+                  )}
                 </Hidden>
               </Sidebar>
             </Box>

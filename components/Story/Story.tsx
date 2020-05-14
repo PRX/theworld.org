@@ -6,7 +6,11 @@ import React, { useContext } from 'react';
 import Head from 'next/head';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ContentContext } from '@contexts/ContentContext';
-import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch';
+import {
+  fetchPriApiItem,
+  fetchPriApiQuery,
+  postJsonPriApiCtaRegion
+} from '@lib/fetch';
 import { layoutComponentMap } from './layouts';
 
 export const Story = () => {
@@ -27,6 +31,19 @@ export const Story = () => {
     </>
   );
 };
+
+Story.getContext = (story: IPriApiResource) => [
+  `node:${story.id}`,
+  `node:${story.program?.id}`,
+  `term:${story.primaryCategory?.id}`,
+  ...((story.categories &&
+    story.categories.length &&
+    story.categories.map(({ id: tid }) => `term:${tid}`)) ||
+    []),
+  ...(story.verticals &&
+    story.verticals.length &&
+    story.verticals.map(({ tid }) => `term:${tid}`))
+];
 
 Story.fetchData = async (id: string | number) => {
   const story = (await fetchPriApiItem('node--stories', id, {
@@ -61,10 +78,21 @@ Story.fetchData = async (id: string | number) => {
       include: ['image'],
       fields: ['image', 'metatags', 'title']
     })) as IPriApiResource[]);
+  const context = Story.getContext(story);
+  const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
+    'tw_cta_regions_content',
+    {
+      context
+    }
+  )) as IPriApiResource;
+
+  console.log(story.verticals, ctaRegions);
 
   return {
     type,
     story,
-    ...(related && { related })
+    context,
+    ...(related && { related }),
+    ...(ctaRegions && { ctaRegions })
   };
 };

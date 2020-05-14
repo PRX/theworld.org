@@ -1,6 +1,6 @@
 /**
  * @file ContentContext.js
- * Crearts context for project data.
+ * Creates context for content data.
  */
 
 import React from 'react';

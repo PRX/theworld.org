@@ -16,7 +16,7 @@ import { importComponent, preloadComponent } from '@lib/import/component';
 
 const ContentProxy = (props: IContentComponentProxyProps) => {
   const { errorCode } = props;
-  let output;
+  let output: JSX.Element;
 
   // Render error page.
   if (errorCode) {
@@ -78,7 +78,7 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   // There was a problem locating components or data.
   const statusCode = 404;
 
-  if(res) {
+  if (res) {
     res.statusCode = statusCode;
   }
 

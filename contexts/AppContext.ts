@@ -1,6 +1,6 @@
 /**
  * @file AppContext.js
- * Crearts context for project data.
+ * Creates context for app data.
  */
 
 import React from 'react';
