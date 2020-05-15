@@ -31,7 +31,7 @@ export const AppFooter = () => {
     <footer className={classes.root}>
       <Divider />
       <Container className={classes.container}>
-        <TwLogo className={classes.twLogo}/>
+        <TwLogo className={classes.twLogo} />
         <p>
           The World is a public radio program that crosses borders and time
           zones to bring home the stories that matter.
@@ -83,7 +83,10 @@ export const AppFooter = () => {
                 src="https://media.pri.org/s3fs-public/logo-macarthur-color.jpg"
               />
             </a>
-            <a className={classes.logoLink} href="https://www.fordfoundation.org/">
+            <a
+              className={classes.logoLink}
+              href="https://www.fordfoundation.org/"
+            >
               <img
                 className={classes.logo}
                 alt="Ford Foundation"

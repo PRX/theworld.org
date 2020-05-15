@@ -1,11 +1,11 @@
 /**
- * @file AppFooter.style.ts
- * Styles for AppFooter.
+ * @file appCtaBanner.style.ts
+ * Styles for appCtaBanner.
  */
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-export const appFooterStyles = makeStyles((theme: Theme) =>
+export const appCtaBannerStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       marginTop: theme.typography.pxToRem(theme.spacing(3)),

@@ -27,9 +27,10 @@ export const AppHeader = () => {
   const classes = appHeaderStyles({});
   const cx = classNames.bind(classes);
   const [{ open }, setState] = useState({ open: false });
-  const setOpenState = (isOpen: boolean) => setState({
-    open: isOpen
-  });
+  const setOpenState = (isOpen: boolean) =>
+    setState({
+      open: isOpen
+    });
 
   useEffect(() => {
     function handleRouteChangeComplete() {
@@ -59,7 +60,7 @@ export const AppHeader = () => {
         <Toolbar>
           <IconButton
             edge="start"
-            className={cx({menuButton: true})}
+            className={cx({ menuButton: true })}
             disableRipple
             color="inherit"
             aria-label="menu"
@@ -70,7 +71,7 @@ export const AppHeader = () => {
 
           <Link href="/">
             <a href="/">
-              <Logo className={cx({twLogo: true})} />
+              <Logo className={cx({ twLogo: true })} />
             </a>
           </Link>
 
@@ -94,9 +95,9 @@ export const AppHeader = () => {
               disableRipple
               startIcon={<ChevronLeftIcon />}
               onClick={handleDrawerClose()}
-              className={cx({closeBtn: true})}
+              className={cx({ closeBtn: true })}
               classes={{
-                startIcon: cx({closeBtnIcon: true})
+                startIcon: cx({ closeBtnIcon: true })
               }}
             >
               Close

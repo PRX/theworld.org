@@ -12,6 +12,7 @@ import { PriApiResource, IPriApiResource } from 'pri-api-library/types';
 import { ILink } from '@interfaces/link';
 import { parseMenu } from '@lib/parse/menu';
 import { AppContext } from '@contexts/AppContext';
+import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppHeader } from '@components/AppHeader';
 import { AppFooter } from '@components/AppFooter';
 import {
@@ -142,7 +143,7 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
               display="flex"
               flexDirection="column"
             >
-              {/* <AppCtaBanner /> */}
+              <AppCtaBanner />
               <AppHeader />
               <Box flexGrow={1}>
                 <Component {...pageProps} />
