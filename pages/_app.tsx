@@ -74,8 +74,6 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
       }
     )) as IPriApiResource;
 
-    console.log('TwApp > ctaRegions', ctaRegions);
-
     return {
       ...initialProps,
       ctaRegions: {

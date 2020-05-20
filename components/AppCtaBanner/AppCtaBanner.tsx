@@ -4,15 +4,17 @@
  */
 
 import React, { useContext, useState } from 'react';
-import { handleButtonClick } from '@lib/routing';
 import classNames from 'classnames/bind';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
 // Material Components
-import { Box, Container, Link, Typography, NoSsr } from '@material-ui/core';
+import { Box, Container, IconButton, NoSsr } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { CloseSharp } from '@material-ui/icons';
 // Contexts
 import { AppContext } from '@contexts/AppContext';
 // Module
-import { appCtaBannerStyles } from './AppCtaBanner.styles';
+import { appCtaBannerStyles, appCtaBannerTheme } from './AppCtaBanner.styles';
+import { ctaTypeComponentMap } from './components';
 
 const region = 'banner';
 
@@ -21,14 +23,20 @@ export const AppCtaBanner = () => {
     ctaRegions: { banner }
   } = useContext(AppContext);
   const shownMessage = getShownMessage(banner, region);
+  const { type } = shownMessage || {};
+  const CtaMessageComponent = ctaTypeComponentMap[type];
   const [closed, setClosed] = useState(false);
   const classes = appCtaBannerStyles({});
   const cx = classNames.bind(classes);
 
   const handleClose = () => {
-    const { id, contentHash, cookieLifespan } = shownMessage;
+    // Check if cookies allowed.
+
+    // Prompt if saving cookie is ok.
+
+    const { name, hash, cookieLifespan } = shownMessage;
     // Set cookie for region message.
-    setCtaCookie(region, id, contentHash, +cookieLifespan);
+    setCtaCookie(region, name, hash, +cookieLifespan);
     // Close prompt.
     setClosed(true);
   };
@@ -37,20 +45,24 @@ export const AppCtaBanner = () => {
     !!shownMessage &&
     !closed && (
       <NoSsr>
-        <Box
-          component="aside"
-          className="stretch"
-          bgcolor="text.hint"
-          color="background.paper"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-          height={300}
-          onClick={handleClose}
-        >
-          <Typography variant="h5">{shownMessage.title}</Typography>
-        </Box>
+        <ThemeProvider theme={appCtaBannerTheme}>
+          <Box
+            component="aside"
+            className={cx('root')}
+            display="flex"
+            alignItems="center"
+            minHeight={300}
+          >
+            <Container maxWidth="lg">
+              <CtaMessageComponent data={shownMessage} onClose={handleClose} />
+            </Container>
+            <Box position="absolute" top={0} right={0}>
+              <IconButton color="inherit" disableRipple onClick={handleClose}>
+                <CloseSharp />
+              </IconButton>
+            </Box>
+          </Box>
+        </ThemeProvider>
       </NoSsr>
     )
   );

@@ -4,7 +4,9 @@
 
 import cookie from 'react-cookies';
 import { IPriApiResource } from 'pri-api-library/types';
+import { ICtaMessage } from '@interfaces/cta';
 import { getCookieKey } from './getCookieKey';
+import { parseCtaMessage } from '../parse/cta/parseCtaMessage';
 
 /**
  * Determine which (if any) of the messages should be shown.
@@ -17,7 +19,7 @@ import { getCookieKey } from './getCookieKey';
 export const getShownMessage = (
   messages: IPriApiResource[],
   region: string
-): IPriApiResource => {
+): ICtaMessage => {
   let message = null;
 
   if (messages) {
@@ -25,7 +27,6 @@ export const getShownMessage = (
       const { id, contentHash } = msg;
       const cookieName = getCookieKey(region, id);
       const hashOld = cookie.load(cookieName);
-      console.log('getShownMessage > cookie value', id, contentHash, hashOld);
       if (!result && (!hashOld || hashOld !== contentHash)) {
         return msg;
       }
@@ -33,5 +34,5 @@ export const getShownMessage = (
     }, null);
   }
 
-  return message;
+  return message && parseCtaMessage(message);
 };

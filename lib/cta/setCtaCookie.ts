@@ -14,22 +14,21 @@ import { getCookieKey } from './getCookieKey';
  *    Identifier of the message.
  * @param hash
  *    Content hash to use as cookie value.
- * @param maxAgeHours
+ * @param maxAgeDays
  *    Number of hours cookie should be expired for.
  */
 export const setCtaCookie = (
   region: string,
   id: string | number,
   hash: string,
-  maxAgeHours: number
+  maxAgeDays: number
 ) => {
   const key = getCookieKey(region, id);
-  const maxAge = (maxAgeHours || 0) * 24 * 60 * 60 * 1000;
+  const maxAge = (maxAgeDays || 0) * 24 * 60 * 60 * 1000;
   const expires = new Date(Date.now() + maxAge);
   const options = {
     ...(maxAge && { maxAge, expires }),
     path: '/'
   };
-  console.log('setCtaCookie', key, hash, options);
   cookie.save(key, hash, options);
 };
