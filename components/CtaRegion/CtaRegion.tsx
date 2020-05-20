@@ -7,8 +7,8 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { IPriApiResource } from 'pri-api-library/types';
 import cookie from 'react-cookies';
+import { CtaRegionContext } from '@contexts/CtaRegion.context';
 import { ctaRegionStyles } from './CtaRegion.styles';
-import { CtaRegionContext } from './CtaRegion.context';
 
 export type CtaRegionVariant = 'banner' | 'load_under' | 'static';
 const CtaRegionVariantDefault = 'static' as CtaRegionVariant;
