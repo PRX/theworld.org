@@ -13,6 +13,7 @@ export interface ICtaMessage {
   hash: string;
   heading?: string;
   message?: string;
+  optinLabel?: string;
   cookieLifespan?: number;
   action?: IButton;
   dismiss?: IButton;

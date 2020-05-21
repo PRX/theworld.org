@@ -6,7 +6,6 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { common } from '@material-ui/core/colors';
 import { blue, orange, red, grey } from './colors';
-import { dark } from '@material-ui/core/styles/createPalette';
 
 const buttonBorderRadius = '3px';
 const buttonBorderWidth = '2px';

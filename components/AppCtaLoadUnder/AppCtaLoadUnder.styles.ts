@@ -1,6 +1,6 @@
 /**
- * @file appCtaBanner.style.ts
- * Styles for appCtaBanner.
+ * @file AppCtaLoadUnder.style.ts
+ * Styles for AppCtaLoadUnder.
  */
 
 import {
@@ -11,15 +11,15 @@ import {
 } from '@material-ui/core/styles';
 import { blue } from '@theme/colors';
 
-export const appCtaBannerTheme = (theme: Theme) =>
+export const appCtaLoadUnderTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     typography: {
       h3: {
-        fontSize: '1.5rem'
+        fontSize: '1.25rem'
       },
       body1: {
-        fontSize: '1.1rem',
-        lineHeight: 1.4
+        fontSize: '1rem',
+        lineHeight: 1.2
       }
     },
     overrides: {
@@ -70,20 +70,31 @@ export const appCtaBannerTheme = (theme: Theme) =>
       MuiToolbar: {
         root: {
           justifyContent: 'center',
-          marginTop: theme.spacing(3),
           '& > * + *': {
             marginLeft: theme.spacing(2)
+          },
+          [theme.breakpoints.down('sm')]: {
+            marginTop: theme.spacing(3)
           }
         }
       }
     }
   });
 
-export const appCtaBannerStyles = makeStyles((theme: Theme) =>
+export const appCtaLoadUnderStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      // display: 'grid',
+      // gridTemplateColumns: `1fr ${theme.spacing(6)}px`,
+      // justifyItems: 'center',
+      boxShadow:
+        '0px -3px 5px -1px rgba(0,0,0,0.2),0px -5px 8px 0px rgba(0,0,0,0.14),0px -1px 14px 0px rgba(0,0,0,0.12)',
       backgroundColor: theme.palette.primary.dark,
       color: theme.palette.getContrastText(theme.palette.primary.dark)
+    },
+    container: {
+      paddingTop: theme.spacing(3),
+      paddingBottom: theme.spacing(3)
     }
   })
 );

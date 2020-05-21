@@ -1,25 +1,30 @@
 /**
- * @file AppCtaMessageInfo.tsx
+ * @file AppCtaMessageOptIn.tsx
  * Component for app banner info CTA messages.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
+  Checkbox,
   Toolbar,
   Typography,
-  ButtonProps
+  ButtonProps,
+  FormControlLabel,
+  Paper
 } from '@material-ui/core';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 
-export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
-  const { heading, message, action, dismiss } = data;
+export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
+  const { heading, message, optinLabel, action, dismiss } = data;
   const hasActions = !!(action || dismiss);
+  const [optedIn, setOptedIn] = useState(false);
   const actionAttrs: ButtonProps = {
     variant: 'contained',
     color: 'primary',
-    size: 'large'
+    size: 'large',
+    disabled: !optedIn
   };
   const dismissAttrs: ButtonProps = !action
     ? actionAttrs
@@ -36,6 +41,9 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
     event.preventDefault();
     onClose();
   };
+  const handleOptInChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOptedIn(event.target.checked);
+  };
 
   return (
     <Box textAlign="center">
@@ -48,12 +56,24 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
           dangerouslySetInnerHTML={{ __html: message }}
         />
       )}
+      <Paper>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={optedIn}
+              onChange={handleOptInChange}
+              name="optIn"
+            />
+          }
+          label={optinLabel}
+        />
+      </Paper>
       {hasActions && (
         <Toolbar>
           {action && (
             <Button
               {...actionAttrs}
-              href={action.url.href}
+              href={action.url && action.url.href}
               onClick={handleActionClick}
             >
               {action.name}

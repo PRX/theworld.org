@@ -1,6 +1,6 @@
 /**
- * @file AppCtaBanner.tsx
- * Component for CTA banner region.
+ * @file AppCtaLoadUnder.tsx
+ * Component for CTA load-under region.
  */
 
 import React, { useContext, useState } from 'react';
@@ -13,10 +13,13 @@ import { CloseSharp } from '@material-ui/icons';
 // Contexts
 import { AppContext } from '@contexts/AppContext';
 // Module
-import { appCtaBannerStyles, appCtaBannerTheme } from './AppCtaBanner.styles';
+import {
+  appCtaLoadUnderStyles,
+  appCtaLoadUnderTheme
+} from './AppCtaLoadUnder.styles';
 import { ctaTypeComponentMap } from './components';
 
-export const AppCtaBanner = () => {
+export const AppCtaLoadUnder = () => {
   const {
     ctaRegions: { banner }
   } = useContext(AppContext);
@@ -24,7 +27,7 @@ export const AppCtaBanner = () => {
   const { type } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[type] || null;
   const [closed, setClosed] = useState(false);
-  const classes = appCtaBannerStyles({});
+  const classes = appCtaLoadUnderStyles({});
   const cx = classNames.bind(classes);
 
   const handleClose = () => {
@@ -44,17 +47,16 @@ export const AppCtaBanner = () => {
     shownMessage &&
     !closed && (
       <NoSsr>
-        <ThemeProvider theme={appCtaBannerTheme}>
+        <ThemeProvider theme={appCtaLoadUnderTheme}>
           <Box
             component="aside"
             className={cx('root')}
-            display="flex"
-            alignItems="center"
-            minHeight={300}
+            position="fixed"
+            bottom={0}
+            width="100%"
             px={4}
-            py={3}
           >
-            <Container maxWidth="md">
+            <Container className={cx('container')} maxWidth="lg">
               <CtaMessageComponent data={shownMessage} onClose={handleClose} />
             </Container>
             <Box position="absolute" top={0} right={0}>

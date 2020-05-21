@@ -14,6 +14,7 @@ export const parseCtaMessage = (message: IPriApiResource): ICtaMessage => ({
   ...(message.heading && { heading: message.heading }),
   ...(message.message && { message: message.message }),
   ...(message.cookieLifespan && { cookieLifespan: message.cookieLifespan }),
+  ...(message.optinLabel && { optinLabel: message.optinLabel }),
   ...(message.actionLabel && {
     action: {
       name: message.actionLabel,

@@ -59,6 +59,8 @@
     "components/*",
     "components/**/*",
     "config/*",
+    "contexts/*",
+    "contexts/**/*",
     "interfaces/**/*",
     "lib/**/*",
     "pages/**/*",

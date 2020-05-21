@@ -18,12 +18,11 @@ import { getCookieKey } from './getCookieKey';
  *    Number of hours cookie should be expired for.
  */
 export const setCtaCookie = (
-  region: string,
   id: string | number,
   hash: string,
   maxAgeDays: number
 ) => {
-  const key = getCookieKey(region, id);
+  const key = getCookieKey(id);
   const maxAge = (maxAgeDays || 0) * 24 * 60 * 60 * 1000;
   const expires = new Date(Date.now() + maxAge);
   const options = {

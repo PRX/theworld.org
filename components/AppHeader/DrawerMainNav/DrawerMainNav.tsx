@@ -88,16 +88,18 @@ export const DrawerMainNav = () => {
                       className={classes.subMenu}
                       disablePadding
                     >
-                      {children.map(({ name: childName, url: childUrl, key: childKey }) => (
-                        <ListItem
-                          button
-                          className={classes.subMenuItem}
-                          onClick={handleButtonClick(childUrl)}
-                          key={childKey}
-                        >
-                          <ListItemText primary={childName} />
-                        </ListItem>
-                      ))}
+                      {children.map(
+                        ({ name: childName, url: childUrl, key: childKey }) => (
+                          <ListItem
+                            button
+                            className={classes.subMenuItem}
+                            onClick={handleButtonClick(childUrl)}
+                            key={childKey}
+                          >
+                            <ListItemText primary={childName} />
+                          </ListItem>
+                        )
+                      )}
                     </List>
                   </Collapse>
                 </Box>

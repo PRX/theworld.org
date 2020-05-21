@@ -13,6 +13,7 @@ import { ILink } from '@interfaces/link';
 import { parseMenu } from '@lib/parse/menu';
 import { AppContext } from '@contexts/AppContext';
 import { AppCtaBanner } from '@components/AppCtaBanner';
+import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppHeader } from '@components/AppHeader';
 import { AppFooter } from '@components/AppFooter';
 import {
@@ -147,7 +148,7 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
                 <Component {...pageProps} />
               </Box>
               <AppFooter />
-              {/* <AppCtaLoadUnder /> */}
+              <AppCtaLoadUnder />
             </Box>
           </AppContext.Provider>
           <CssBaseline />

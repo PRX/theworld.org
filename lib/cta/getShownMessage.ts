@@ -16,16 +16,13 @@ import { parseCtaMessage } from '../parse/cta/parseCtaMessage';
  *
  * @return {object|null} - Message data object that should be rendered.
  */
-export const getShownMessage = (
-  messages: IPriApiResource[],
-  region: string
-): ICtaMessage => {
+export const getShownMessage = (messages: IPriApiResource[]): ICtaMessage => {
   let message = null;
 
   if (messages) {
     message = messages.reduce((result, msg) => {
       const { id, contentHash } = msg;
-      const cookieName = getCookieKey(region, id);
+      const cookieName = getCookieKey(id);
       const hashOld = cookie.load(cookieName);
       if (!result && (!hashOld || hashOld !== contentHash)) {
         return msg;
