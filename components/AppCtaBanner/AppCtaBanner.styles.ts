@@ -28,15 +28,6 @@ export const appCtaBannerTheme = (theme: Theme) =>
           '&:hover': {
             backgroundColor: theme.palette.secondary.main
           }
-        },
-        outlinedPrimary: {
-          color: theme.palette.secondary.main,
-          '&:hover': {
-            borderColor: theme.palette.secondary.main
-          },
-          '& $label': {
-            color: theme.palette.getContrastText(theme.palette.primary.dark)
-          }
         }
       },
       MuiCheckbox: {

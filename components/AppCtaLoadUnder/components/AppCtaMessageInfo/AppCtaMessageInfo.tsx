@@ -7,10 +7,10 @@ import React from 'react';
 import {
   Box,
   Button,
+  Grid,
   Toolbar,
   Typography,
-  ButtonProps,
-  Grid
+  ButtonProps
 } from '@material-ui/core';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 

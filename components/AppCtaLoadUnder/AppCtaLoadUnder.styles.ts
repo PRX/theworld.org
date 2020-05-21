@@ -28,15 +28,6 @@ export const appCtaLoadUnderTheme = (theme: Theme) =>
           '&:hover': {
             backgroundColor: theme.palette.secondary.main
           }
-        },
-        outlinedPrimary: {
-          color: theme.palette.secondary.main,
-          '&:hover': {
-            borderColor: theme.palette.secondary.main
-          },
-          '& $label': {
-            color: theme.palette.getContrastText(theme.palette.primary.dark)
-          }
         }
       },
       MuiCheckbox: {
@@ -74,7 +65,7 @@ export const appCtaLoadUnderTheme = (theme: Theme) =>
             marginLeft: theme.spacing(2)
           },
           [theme.breakpoints.down('sm')]: {
-            marginTop: theme.spacing(3)
+            marginTop: theme.spacing(1)
           }
         }
       }
@@ -84,9 +75,7 @@ export const appCtaLoadUnderTheme = (theme: Theme) =>
 export const appCtaLoadUnderStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      // display: 'grid',
-      // gridTemplateColumns: `1fr ${theme.spacing(6)}px`,
-      // justifyItems: 'center',
+      zIndex: theme.zIndex.drawer,
       boxShadow:
         '0px -3px 5px -1px rgba(0,0,0,0.2),0px -5px 8px 0px rgba(0,0,0,0.14),0px -1px 14px 0px rgba(0,0,0,0.12)',
       backgroundColor: theme.palette.primary.dark,
