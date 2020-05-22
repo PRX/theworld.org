@@ -3,7 +3,7 @@
  * Interfaces for content.
  */
 
-import { IButton } from '@interfaces';
+import { IButton } from '@interfaces/button';
 
 export type CtaMessageType = 'info' | 'optin' | 'donation' | 'newsletter';
 
@@ -17,4 +17,11 @@ export interface ICtaMessage {
   cookieLifespan?: number;
   action?: IButton;
   dismiss?: IButton;
+}
+export interface ICtaRegions {
+  [k: string]: ICtaMessage;
+}
+
+export interface ICtaMessageComponentContext {
+  data: ICtaMessage;
 }

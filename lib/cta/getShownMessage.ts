@@ -3,10 +3,8 @@
  */
 
 import cookie from 'react-cookies';
-import { IPriApiResource } from 'pri-api-library/types';
 import { ICtaMessage } from '@interfaces/cta';
 import { getCookieKey } from './getCookieKey';
-import { parseCtaMessage } from '../parse/cta/parseCtaMessage';
 
 /**
  * Determine which (if any) of the messages should be shown.
@@ -16,20 +14,20 @@ import { parseCtaMessage } from '../parse/cta/parseCtaMessage';
  *
  * @return {object|null} - Message data object that should be rendered.
  */
-export const getShownMessage = (messages: IPriApiResource[]): ICtaMessage => {
+export const getShownMessage = (messages: ICtaMessage[]): ICtaMessage => {
   let message = null;
 
   if (messages) {
     message = messages.reduce((result, msg) => {
-      const { id, contentHash } = msg;
-      const cookieName = getCookieKey(id);
+      const { name, hash } = msg;
+      const cookieName = getCookieKey(name);
       const hashOld = cookie.load(cookieName);
-      if (!result && (!hashOld || hashOld !== contentHash)) {
+      if (!result && (!hashOld || hashOld !== hash)) {
         return msg;
       }
       return result;
     }, null);
   }
 
-  return message && parseCtaMessage(message);
+  return message;
 };

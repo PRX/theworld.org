@@ -11,13 +11,13 @@ import {
   fetchPriApiQuery,
   postJsonPriApiCtaRegion
 } from '@lib/fetch';
+import { parseCtaMessage } from '@lib/parse/cta';
 import { layoutComponentMap } from './layouts';
+import { IContentContextData } from '../../interfaces/content/content.interface';
 
 export const Story = () => {
   const {
-    data: {
-      story: { title, displayTemplate }
-    }
+    data: { title, displayTemplate }
   } = useContext(ContentContext);
   const LayoutComponent =
     layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
@@ -32,7 +32,7 @@ export const Story = () => {
   );
 };
 
-Story.getContext = (story: IPriApiResource) => [
+Story.getContext = (story: IPriApiResource): string[] => [
   `node:${story.id}`,
   `node:${story.program?.id}`,
   `term:${story.primaryCategory?.id}`,
@@ -45,8 +45,8 @@ Story.getContext = (story: IPriApiResource) => [
     story.verticals.map(({ tid }) => `term:${tid}`))
 ];
 
-Story.fetchData = async (id: string | number) => {
-  const story = (await fetchPriApiItem('node--stories', id, {
+Story.fetchData = async (id: string | number): Promise<IContentContextData> => {
+  const data = (await fetchPriApiItem('node--stories', id, {
     include: [
       'audio',
       'byline.credit_type',
@@ -67,7 +67,7 @@ Story.fetchData = async (id: string | number) => {
       'video'
     ]
   })) as IPriApiResource;
-  const { type, primaryCategory } = story;
+  const { type, primaryCategory } = data;
   const related =
     primaryCategory &&
     ((await fetchPriApiQuery('node--stories', {
@@ -78,7 +78,7 @@ Story.fetchData = async (id: string | number) => {
       include: ['image'],
       fields: ['image', 'metatags', 'title']
     })) as IPriApiResource[]);
-  const context = Story.getContext(story);
+  const context = Story.getContext(data);
   const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
     'tw_cta_regions_content',
     {
@@ -86,13 +86,21 @@ Story.fetchData = async (id: string | number) => {
     }
   )) as IPriApiResource;
 
-  console.log(story.verticals, ctaRegions);
+  console.log('Story > getData > ctaRegions', ctaRegions);
 
   return {
     type,
-    story,
+    data,
     context,
     ...(related && { related }),
-    ...(ctaRegions && { ctaRegions })
+    ...(ctaRegions && {
+      ctaRegions: Object.entries(ctaRegions).reduce(
+        (a, [key, val]) => ({
+          ...a,
+          [key]: parseCtaMessage(val[0])
+        }),
+        {}
+      )
+    })
   };
 };

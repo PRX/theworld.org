@@ -9,7 +9,9 @@ import classNames from 'classnames/bind';
 import { Box, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { PriApiResource, IPriApiResource } from 'pri-api-library/types';
+import { ICtaMessage } from '@interfaces/cta';
 import { ILink } from '@interfaces/link';
+import { parseCtaMessage } from '@lib/parse/cta';
 import { parseMenu } from '@lib/parse/menu';
 import { AppContext } from '@contexts/AppContext';
 import { AppCtaBanner } from '@components/AppCtaBanner';
@@ -25,7 +27,7 @@ import { baseMuiTheme, appTheme } from '@theme/App.theme';
 
 interface TwAppProps extends AppProps {
   ctaRegions?: {
-    [K: string]: PriApiResource[];
+    [K: string]: ICtaMessage[];
   };
   latestStories?: PriApiResource[];
   menus?: {
@@ -41,10 +43,9 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
   static async getInitialProps(ctx: NextAppContext) {
     const initialProps = await App.getInitialProps(ctx);
     const {
-      pageProps: {
-        data: { context }
-      }
+      pageProps: { data }
     } = initialProps;
+    const { context } = data || {};
 
     // Fetch Menus
     const [
@@ -78,8 +79,8 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
     return {
       ...initialProps,
       ctaRegions: {
-        banner: ctaRegions.tw_cta_region_site_banner,
-        loadUnder: ctaRegions.tw_cta_region_site_load_under
+        banner: ctaRegions.tw_cta_region_site_banner.map(parseCtaMessage),
+        loadUnder: ctaRegions.tw_cta_region_site_load_under.map(parseCtaMessage)
       },
       latestStories,
       menus: {

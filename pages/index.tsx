@@ -30,7 +30,7 @@ const ContentProxy = (props: IContentComponentProxyProps) => {
     const isAmp = useAmp();
 
     output = (
-      <ContentContext.Provider value={{ data, isAmp }}>
+      <ContentContext.Provider value={{ ...data, isAmp }}>
         <ContentComponent />
       </ContentContext.Provider>
     );

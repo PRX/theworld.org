@@ -4,5 +4,8 @@
  */
 
 import React from 'react';
+import { ICtaMessageComponentContext } from '@interfaces/cta';
 
-export const CtaRegionContext = React.createContext(null);
+export const CtaRegionContext = React.createContext({
+  data: null
+} as ICtaMessageComponentContext);

@@ -4,5 +4,6 @@
  */
 
 import React from 'react';
+import { IContentContext } from '@interfaces/content';
 
-export const ContentContext = React.createContext(null);
+export const ContentContext = React.createContext(null as IContentContext);
