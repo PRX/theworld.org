@@ -86,8 +86,6 @@ Story.fetchData = async (id: string | number): Promise<IContentContextData> => {
     }
   )) as IPriApiResource;
 
-  console.log('Story > getData > ctaRegions', ctaRegions);
-
   return {
     type,
     data,

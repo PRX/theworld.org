@@ -52,8 +52,6 @@ export const StoryDefault = () => {
   //    - Replace older GP image embeds with image in attribute with Image (API?)
   //    - Replace GP pullquotes with symantic markup (API?)
 
-  console.log('StoryDefault > ctaRegions', ctaRegions);
-
   return (
     <ThemeProvider theme={storyTheme}>
       <Container fixed>
