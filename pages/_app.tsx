@@ -75,12 +75,18 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
         context
       }
     )) as IPriApiResource;
+    const banner =
+      ctaRegions.tw_cta_region_site_banner &&
+      ctaRegions.tw_cta_region_site_banner.map(parseCtaMessage);
+    const loadUnder =
+      ctaRegions.tw_cta_region_site_load_under &&
+      ctaRegions.tw_cta_region_site_load_under.map(parseCtaMessage);
 
     return {
       ...initialProps,
       ctaRegions: {
-        banner: ctaRegions.tw_cta_region_site_banner.map(parseCtaMessage),
-        loadUnder: ctaRegions.tw_cta_region_site_load_under.map(parseCtaMessage)
+        ...(banner && { banner }),
+        ...(loadUnder && { loadUnder })
       },
       latestStories,
       menus: {
