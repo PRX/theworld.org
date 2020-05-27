@@ -20,6 +20,7 @@ import { ContentContext } from '@contexts/ContentContext';
 import { AudioPlayer } from '@components/AudioPlayer';
 import {
   Sidebar,
+  SidebarCta,
   SidebarHeader,
   SidebarFooter,
   SidebarList
@@ -121,14 +122,14 @@ export const StoryDefault = () => {
                 <Hidden smDown>
                   {ctaRegions.tw_cta_region_content_sidebar_01 && (
                     <Sidebar item stretch>
-                      <CtaRegion
+                      <SidebarCta
                         data={ctaRegions.tw_cta_region_content_sidebar_01}
                       />
                     </Sidebar>
                   )}
                   {ctaRegions.tw_cta_region_content_sidebar_02 && (
                     <Sidebar item stretch>
-                      <CtaRegion
+                      <SidebarCta
                         data={ctaRegions.tw_cta_region_content_sidebar_02}
                       />
                     </Sidebar>

@@ -18,6 +18,10 @@ export interface ICtaMessage {
   action?: IButton;
   dismiss?: IButton;
 }
+
+export interface ICtaMessageProps {
+  data: ICtaMessage;
+}
 export interface ICtaRegions {
   [k: string]: ICtaMessage;
 }
