@@ -27,6 +27,7 @@ export const SidebarCtaMessageOptIn = ({ data }: ICtaMessageProps) => {
     color: 'primary',
     size: 'large',
     fullWidth: true,
+    disableElevation: true,
     disabled: !optedIn
   };
   const handleActionClick = () => {

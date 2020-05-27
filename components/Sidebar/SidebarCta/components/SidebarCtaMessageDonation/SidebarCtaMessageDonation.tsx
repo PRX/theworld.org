@@ -24,7 +24,8 @@ export const SidebarCtaMessageDonation = ({ data }: ICtaMessageProps) => {
     variant: 'contained',
     color: 'secondary',
     size: 'large',
-    fullWidth: true
+    fullWidth: true,
+    disableElevation: true
   };
   const handleActionClick = () => {
     // TODO: Route to in-app donation form.

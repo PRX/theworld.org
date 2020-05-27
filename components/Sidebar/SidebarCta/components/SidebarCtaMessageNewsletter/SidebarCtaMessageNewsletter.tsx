@@ -31,7 +31,8 @@ export const SidebarCtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
     variant: 'contained',
     color: 'primary',
     size: 'large',
-    fullWidth: true
+    fullWidth: true,
+    disableElevation: true
   };
   const handleActionClick = () => {
     // TODO: Open subscribtion modal/dioalog/UI.

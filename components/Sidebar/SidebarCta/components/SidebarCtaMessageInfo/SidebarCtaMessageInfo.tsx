@@ -22,7 +22,8 @@ export const SidebarCtaMessageInfo = ({ data }: ICtaMessageProps) => {
     variant: 'contained',
     color: 'primary',
     size: 'large',
-    fullWidth: true
+    fullWidth: true,
+    disableElevation: true
   };
 
   return (
