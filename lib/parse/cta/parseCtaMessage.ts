@@ -25,5 +25,7 @@ export const parseCtaMessage = (message: IPriApiResource): ICtaMessage => ({
     dismiss: {
       name: message.dismissButtonLabel
     }
-  })
+  }),
+  ...(message.listId && { listId: message.listId }),
+  ...(message.sourceList && { sourceList: message.sourceList })
 });

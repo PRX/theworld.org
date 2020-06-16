@@ -1,12 +1,12 @@
 /**
- * @file AppCtaMessageNewsletter.style.ts
- * Styles for AppCtaMessageNewsletter.
+ * @file Newsletter.style.ts
+ * Styles for Newsletter.
  */
 
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
 
-export const appCtaMessageNewsletterTheme = (theme: Theme) =>
+export const newsletterTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     overrides: {
       MuiButton: {
@@ -22,6 +22,11 @@ export const appCtaMessageNewsletterTheme = (theme: Theme) =>
           '&:hover': {
             borderColor: theme.palette.success.main
           }
+        }
+      },
+      MuiDialogContent: {
+        root: {
+          padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`
         }
       }
     }

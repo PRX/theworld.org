@@ -9,11 +9,10 @@ import {
   Button,
   Toolbar,
   Typography,
-  ButtonProps,
-  ThemeProvider
+  ButtonProps
 } from '@material-ui/core';
+import { Newsletter, INewsletterOptions } from '@components/Newsletter';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
-import { appCtaMessageNewsletterTheme } from './AppCtaMessageNewsletter.styles';
 
 export const AppCtaMessageNewsletter = ({
   data,
@@ -25,8 +24,15 @@ export const AppCtaMessageNewsletter = ({
     action = {
       name: 'Subscribe'
     },
-    dismiss
+    dismiss,
+    listId,
+    sourceList
   } = data;
+  const newsletterOptions: INewsletterOptions = {
+    listId,
+    ...(sourceList && { 'source-list': sourceList }),
+    'source-placement': 'banner'
+  };
   const hasActions = !!(action || dismiss);
   const actionAttrs: ButtonProps = {
     variant: 'contained',
@@ -39,9 +45,7 @@ export const AppCtaMessageNewsletter = ({
         variant: 'outlined',
         color: 'primary'
       };
-  const handleActionClick = () => {
-    // TODO: Open subscribtion modal/dioalog/UI.
-
+  const handleSubscribe = () => {
     onClose();
   };
   const handleDismissClick = (
@@ -52,36 +56,31 @@ export const AppCtaMessageNewsletter = ({
   };
 
   return (
-    <ThemeProvider theme={appCtaMessageNewsletterTheme}>
-      <Box textAlign="center">
-        {heading && <Typography variant="h3">{heading}</Typography>}
-        {message && (
-          <Typography
-            component="div"
-            variant="body1"
-            /* eslint-disable-next-line */
-            dangerouslySetInnerHTML={{ __html: message }}
+    <Box textAlign="center">
+      {heading && <Typography variant="h3">{heading}</Typography>}
+      {message && (
+        <Typography
+          component="div"
+          variant="body1"
+          /* eslint-disable-next-line */
+          dangerouslySetInnerHTML={{ __html: message }}
+        />
+      )}
+      {hasActions && (
+        <Toolbar>
+          <Newsletter
+            onSubscribed={handleSubscribe}
+            label={action && action.name}
+            options={newsletterOptions}
+            buttonProps={actionAttrs}
           />
-        )}
-        {hasActions && (
-          <Toolbar>
-            {action && (
-              <Button
-                {...actionAttrs}
-                href={action.url && action.url.href}
-                onClick={handleActionClick}
-              >
-                {action.name}
-              </Button>
-            )}
-            {dismiss && (
-              <Button {...dismissAttrs} onClick={handleDismissClick}>
-                {dismiss.name}
-              </Button>
-            )}
-          </Toolbar>
-        )}
-      </Box>
-    </ThemeProvider>
+          {dismiss && (
+            <Button {...dismissAttrs} onClick={handleDismissClick}>
+              {dismiss.name}
+            </Button>
+          )}
+        </Toolbar>
+      )}
+    </Box>
   );
 };

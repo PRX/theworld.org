@@ -195,20 +195,25 @@ export const postJsonPriApiCtaRegion = async (
 ): Promise<PriApiResourceResponse> =>
   postJsonPriApi(`tw/cta/region_group/${name}`, null, body)
     .then(resp => !resp.isFailure && resp.response)
-    .then((resp: IPriApiResource) => ({
-      ...resp,
-      subqueues: Object.entries(resp.subqueues)
-        // Denormalize subqueue array items.
-        .map(([key, value]) => [
-          key,
-          denormalizeJsonApi({ data: value } as JSONAPI.CollectionResourceDoc)
-        ])
-        // Convert back to object.
-        .reduce(
-          (a, [key, value]) => ({
-            ...a,
-            [key]: value
-          }),
-          {}
-        )
-    }));
+    .then(
+      (resp: IPriApiResource) =>
+        resp && {
+          ...resp,
+          subqueues: Object.entries(resp.subqueues)
+            // Denormalize subqueue array items.
+            .map(([key, value]) => [
+              key,
+              denormalizeJsonApi({
+                data: value
+              } as JSONAPI.CollectionResourceDoc)
+            ])
+            // Convert back to object.
+            .reduce(
+              (a, [key, value]) => ({
+                ...a,
+                [key]: value
+              }),
+              {}
+            )
+        }
+    );

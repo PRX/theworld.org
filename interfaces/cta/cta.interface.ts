@@ -17,6 +17,8 @@ export interface ICtaMessage {
   cookieLifespan?: number;
   action?: IButton;
   dismiss?: IButton;
+  listId?: string;
+  sourceList?: string;
 }
 
 export interface ICtaMessageProps {

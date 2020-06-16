@@ -9,7 +9,6 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
-import { blue } from '@theme/colors';
 
 export const appCtaBannerTheme = (theme: Theme) =>
   createMuiTheme(theme, {
@@ -50,12 +49,6 @@ export const appCtaBannerTheme = (theme: Theme) =>
           '&:hover': {
             backgroundColor: theme.palette.action.focus
           }
-        }
-      },
-      MuiPaper: {
-        root: {
-          backgroundColor: blue[700],
-          color: theme.palette.getContrastText(blue[700])
         }
       },
       MuiToolbar: {

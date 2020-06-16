@@ -12,9 +12,11 @@ import {
   Typography,
   ButtonProps,
   FormControlLabel,
-  Paper
+  Paper,
+  ThemeProvider
 } from '@material-ui/core';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
+import { appCtaMessageOptInTheme } from './AppCtaMessageOptIn.styles';
 
 export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   const { heading, message, optinLabel, action, dismiss } = data;
@@ -46,46 +48,48 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   };
 
   return (
-    <Box textAlign="center">
-      {heading && <Typography variant="h3">{heading}</Typography>}
-      {message && (
-        <Typography
-          component="div"
-          variant="body1"
-          /* eslint-disable-next-line */
-          dangerouslySetInnerHTML={{ __html: message }}
-        />
-      )}
-      <Paper>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={optedIn}
-              onChange={handleOptInChange}
-              name="optIn"
-            />
-          }
-          label={optinLabel}
-        />
-      </Paper>
-      {hasActions && (
-        <Toolbar>
-          {action && (
-            <Button
-              {...actionAttrs}
-              href={action.url && action.url.href}
-              onClick={handleActionClick}
-            >
-              {action.name}
-            </Button>
-          )}
-          {dismiss && (
-            <Button {...dismissAttrs} onClick={handleDismissClick}>
-              {dismiss.name}
-            </Button>
-          )}
-        </Toolbar>
-      )}
-    </Box>
+    <ThemeProvider theme={appCtaMessageOptInTheme}>
+      <Box textAlign="center">
+        {heading && <Typography variant="h3">{heading}</Typography>}
+        {message && (
+          <Typography
+            component="div"
+            variant="body1"
+            /* eslint-disable-next-line */
+            dangerouslySetInnerHTML={{ __html: message }}
+          />
+        )}
+        <Paper>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={optedIn}
+                onChange={handleOptInChange}
+                name="optIn"
+              />
+            }
+            label={optinLabel}
+          />
+        </Paper>
+        {hasActions && (
+          <Toolbar>
+            {action && (
+              <Button
+                {...actionAttrs}
+                href={action.url && action.url.href}
+                onClick={handleActionClick}
+              >
+                {action.name}
+              </Button>
+            )}
+            {dismiss && (
+              <Button {...dismissAttrs} onClick={handleDismissClick}>
+                {dismiss.name}
+              </Button>
+            )}
+          </Toolbar>
+        )}
+      </Box>
+    </ThemeProvider>
   );
 };
