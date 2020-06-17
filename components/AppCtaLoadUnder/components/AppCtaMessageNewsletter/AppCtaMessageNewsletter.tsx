@@ -13,6 +13,7 @@ import {
   Typography,
   ThemeProvider
 } from '@material-ui/core';
+import { Newsletter, INewsletterOptions } from '@components/Newsletter';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 import { appCtaMessageNewsletterTheme } from './AppCtaMessageNewsletter.styles';
 
@@ -26,8 +27,15 @@ export const AppCtaMessageNewsletter = ({
     action = {
       name: 'Subscribe'
     },
-    dismiss
+    dismiss,
+    listId,
+    sourceList
   } = data;
+  const newsletterOptions: INewsletterOptions = {
+    ...(listId && { listId }),
+    ...(sourceList && { 'source-list': sourceList }),
+    'source-placement': 'load-under'
+  };
   const hasActions = !!(action || dismiss);
   const actionAttrs: ButtonProps = {
     variant: 'contained',
@@ -40,9 +48,7 @@ export const AppCtaMessageNewsletter = ({
         variant: 'outlined',
         color: 'primary'
       };
-  const handleActionClick = () => {
-    // TODO: Open subscribtion modal/dioalog/UI.
-
+  const handleSubscribe = () => {
     onClose();
   };
   const handleDismissClick = (
@@ -70,15 +76,12 @@ export const AppCtaMessageNewsletter = ({
           <Grid item sm={12} md={4}>
             {hasActions && (
               <Toolbar>
-                {action && (
-                  <Button
-                    {...actionAttrs}
-                    href={action.url && action.url.href}
-                    onClick={handleActionClick}
-                  >
-                    {action.name}
-                  </Button>
-                )}
+                <Newsletter
+                  onSubscribed={handleSubscribe}
+                  label={action && action.name}
+                  options={newsletterOptions}
+                  buttonProps={actionAttrs}
+                />
                 {dismiss && (
                   <Button {...dismissAttrs} onClick={handleDismissClick}>
                     {dismiss.name}

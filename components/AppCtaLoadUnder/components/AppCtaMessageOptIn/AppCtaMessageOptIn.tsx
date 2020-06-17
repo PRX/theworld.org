@@ -13,10 +13,14 @@ import {
   Typography,
   ButtonProps,
   FormControlLabel,
-  Paper
+  Paper,
+  ThemeProvider
 } from '@material-ui/core';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
-import { appCtaMessageOptInStyles } from './AppCtaMessageOptIn.styles';
+import {
+  appCtaMessageOptInStyles,
+  appCtaMessageOptInTheme
+} from './AppCtaMessageOptIn.styles';
 
 export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   const { heading, message, optinLabel, action, dismiss } = data;
@@ -49,50 +53,52 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   };
 
   return (
-    <Box textAlign="center">
-      {heading && <Typography variant="h3">{heading}</Typography>}
-      {message && (
-        <Typography
-          component="div"
-          variant="body1"
-          /* eslint-disable-next-line */
-          dangerouslySetInnerHTML={{ __html: message }}
-        />
-      )}
-      <Box className={cx('controls')}>
-        <Box>
-          <Paper>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={optedIn}
-                  onChange={handleOptInChange}
-                  name="optIn"
-                />
-              }
-              label={optinLabel}
-            />
-          </Paper>
-        </Box>
-        {hasActions && (
-          <Toolbar>
-            {action && (
-              <Button
-                {...actionAttrs}
-                href={action.url && action.url.href}
-                onClick={handleActionClick}
-              >
-                {action.name}
-              </Button>
-            )}
-            {dismiss && (
-              <Button {...dismissAttrs} onClick={handleDismissClick}>
-                {dismiss.name}
-              </Button>
-            )}
-          </Toolbar>
+    <ThemeProvider theme={appCtaMessageOptInTheme}>
+      <Box textAlign="center">
+        {heading && <Typography variant="h3">{heading}</Typography>}
+        {message && (
+          <Typography
+            component="div"
+            variant="body1"
+            /* eslint-disable-next-line */
+            dangerouslySetInnerHTML={{ __html: message }}
+          />
         )}
+        <Box className={cx('controls')}>
+          <Box>
+            <Paper>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={optedIn}
+                    onChange={handleOptInChange}
+                    name="optIn"
+                  />
+                }
+                label={optinLabel}
+              />
+            </Paper>
+          </Box>
+          {hasActions && (
+            <Toolbar>
+              {action && (
+                <Button
+                  {...actionAttrs}
+                  href={action.url && action.url.href}
+                  onClick={handleActionClick}
+                >
+                  {action.name}
+                </Button>
+              )}
+              {dismiss && (
+                <Button {...dismissAttrs} onClick={handleDismissClick}>
+                  {dismiss.name}
+                </Button>
+              )}
+            </Toolbar>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 };

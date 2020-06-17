@@ -6,6 +6,7 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import fetch from 'isomorphic-unfetch';
 import {
+  Box,
   Button,
   ButtonProps,
   Checkbox,
@@ -128,6 +129,9 @@ export const Newsletter = ({
       emailAddress: ''
     });
     setOpen(false);
+    if (subscribed && onSubscribed) {
+      onSubscribed();
+    }
   };
 
   const handleOptIn = (e: ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -146,10 +150,6 @@ export const Newsletter = ({
     } else {
       setError(null);
       setSubscribed(true);
-      setOpen(false);
-      if (onSubscribed) {
-        onSubscribed();
-      }
     }
 
     setSubmitted(false);
@@ -180,7 +180,7 @@ export const Newsletter = ({
       >
         {label || 'Subscribe'}
       </Button>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog maxWidth="sm" fullWidth open={open} onClose={handleClose}>
         <DialogTitle>Subscribe</DialogTitle>
         <DialogContent>
           {!subscribed && (
@@ -245,16 +245,20 @@ export const Newsletter = ({
           {subscribed && (
             <Grid container spacing={4} justify="center" alignContent="center">
               <Grid item xs={12}>
-                <Grid
-                  container
-                  spacing={2}
-                  justify="center"
+                <Box
+                  display="grid"
+                  gridTemplateColumns="min-content 1fr"
+                  gridGap={16}
+                  justifyContent="center"
                   alignItems="center"
                 >
-                  <Grid item xs={12} sm={2}>
-                    <CheckCircleOutlineSharp style={{ fontSize: '5rem' }} />
-                  </Grid>
-                  <Grid item xs={12} sm={7}>
+                  <Box>
+                    <CheckCircleOutlineSharp
+                      color="primary"
+                      style={{ fontSize: '5rem' }}
+                    />
+                  </Box>
+                  <Box>
                     <Typography variant="overline">
                       You&apos;re Subscribed
                     </Typography>
@@ -262,8 +266,8 @@ export const Newsletter = ({
                       <strong>Thank you{data.name && `, ${data.name}`}!</strong>{' '}
                       You mean the world to us.
                     </Typography>
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Box>
               </Grid>
             </Grid>
           )}
@@ -271,6 +275,7 @@ export const Newsletter = ({
         <DialogActions>
           {!subscribed && (
             <>
+              <Button onClick={handleClose}>Cancel</Button>
               <Button
                 variant="contained"
                 color="primary"
@@ -281,13 +286,10 @@ export const Newsletter = ({
               >
                 Subscribe
               </Button>
-              <Button variant="contained" onClick={handleClose}>
-                Cancel
-              </Button>
             </>
           )}
           {subscribed && (
-            <Button variant="contained" onClick={handleClose}>
+            <Button variant="contained" color="primary" onClick={handleClose}>
               Done
             </Button>
           )}

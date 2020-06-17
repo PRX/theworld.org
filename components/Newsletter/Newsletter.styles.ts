@@ -28,6 +28,11 @@ export const newsletterTheme = (theme: Theme) =>
         root: {
           padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`
         }
+      },
+      MuiSvgIcon: {
+        colorPrimary: {
+          color: theme.palette.success.main
+        }
       }
     }
   });

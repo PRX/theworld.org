@@ -9,11 +9,11 @@ import {
   CardHeader,
   CardContent,
   CardActions,
-  Button,
   ButtonProps,
   Typography,
   ThemeProvider
 } from '@material-ui/core';
+import { Newsletter, INewsletterOptions } from '@components/Newsletter';
 import { ICtaMessageProps } from '@interfaces/cta';
 import { ctaMessageNewsletterTheme } from './CtaMessageNewsletter.styles';
 
@@ -24,17 +24,21 @@ export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
     action = {
       name: 'Subscribe'
     },
-    dismiss
+    dismiss,
+    listId,
+    sourceList
   } = data;
+  const newsletterOptions: INewsletterOptions = {
+    ...(listId && { listId }),
+    ...(sourceList && { 'source-list': sourceList }),
+    'source-placement': 'content'
+  };
   const hasActions = !!(action || dismiss);
   const actionAttrs: ButtonProps = {
     variant: 'contained',
     color: 'primary',
     size: 'large',
     disableElevation: true
-  };
-  const handleActionClick = () => {
-    // TODO: Open subscribtion modal/dioalog/UI.
   };
 
   return (
@@ -53,11 +57,11 @@ export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
         )}
         {hasActions && (
           <CardActions>
-            {action && (
-              <Button {...actionAttrs} onClick={handleActionClick}>
-                {action.name}
-              </Button>
-            )}
+            <Newsletter
+              label={action && action.name}
+              options={newsletterOptions}
+              buttonProps={actionAttrs}
+            />
           </CardActions>
         )}
       </Card>

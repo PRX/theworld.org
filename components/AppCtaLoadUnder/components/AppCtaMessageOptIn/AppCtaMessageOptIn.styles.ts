@@ -3,7 +3,25 @@
  * Styles for AppCtaMessageOptIn.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  createStyles,
+  makeStyles,
+  Theme
+} from '@material-ui/core/styles';
+import { blue } from '@theme/colors';
+
+export const appCtaMessageOptInTheme = (theme: Theme) =>
+  createMuiTheme(theme, {
+    overrides: {
+      MuiPaper: {
+        root: {
+          backgroundColor: blue[700],
+          color: theme.palette.getContrastText(blue[700])
+        }
+      }
+    }
+  });
 
 export const appCtaMessageOptInStyles = makeStyles((theme: Theme) =>
   createStyles({

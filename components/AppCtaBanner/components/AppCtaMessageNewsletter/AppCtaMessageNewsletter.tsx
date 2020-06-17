@@ -29,7 +29,7 @@ export const AppCtaMessageNewsletter = ({
     sourceList
   } = data;
   const newsletterOptions: INewsletterOptions = {
-    listId,
+    ...(listId && { listId }),
     ...(sourceList && { 'source-list': sourceList }),
     'source-placement': 'banner'
   };
