@@ -10,13 +10,13 @@ import Error from 'next/error';
 
 import { IPriApiResource } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
-import { fetchPriApiQueryAlias } from '@lib/fetch/api';
+import { fetchApiQueryAlias } from '@lib/fetch/api';
 import { ContentContext } from '@contexts/ContentContext';
 import { importComponent, preloadComponent } from '@lib/import/component';
 
 const ContentProxy = (props: IContentComponentProxyProps) => {
   const { errorCode } = props;
-  let output;
+  let output: any;
 
   // Render error page.
   if (errorCode) {
@@ -42,6 +42,7 @@ const ContentProxy = (props: IContentComponentProxyProps) => {
 ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   const {
     res,
+    req,
     query: { alias }
   } = ctx;
   let resourceId: string | number;
@@ -49,9 +50,7 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
 
   // Get data for alias.
   if (alias) {
-    const apiResp = await fetchPriApiQueryAlias(alias as string, {
-      fields: ['id']
-    });
+    const apiResp = await fetchApiQueryAlias(alias as string, req);
 
     // Update resource id and type.
     if (apiResp) {
@@ -78,7 +77,7 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   // There was a problem locating components or data.
   const statusCode = 404;
 
-  if(res) {
+  if (res) {
     res.statusCode = statusCode;
   }
 

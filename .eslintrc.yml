@@ -54,3 +54,7 @@ rules:
   react/react-in-jsx-scope: 2
   '@typescript-eslint/indent': 0
   prettier/prettier: 'error'
+overrides:
+  - 'files': ['./pages/**/*', './pages/*']
+    'rules':
+      'import/no-default-export': 0
