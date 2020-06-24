@@ -1,6 +1,6 @@
 /**
- * @file alias.ts
- * Query API for data related to the provided URL path alias.
+ * @file [..slugs].ts
+ * Query CMS API for data related to the provided URL path alias.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchPriApiQueryAlias } from '@lib/fetch/api';
@@ -17,9 +17,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (apiResp) {
       res.status(200).json(apiResp);
     } else {
-      res.status(404);
+      res.status(404).json({});
     }
+
+    return;
   }
 
-  res.status(400);
+  res.status(400).json({});
 };

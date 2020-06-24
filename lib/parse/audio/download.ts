@@ -6,14 +6,19 @@
 import { parse } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 
-export const generateAudioDownloadFilename = ({
-  program,
-  metatags: { canonical },
-  metadata
-}: IPriApiResource, prefixOverride: string = null) => {
+export const generateAudioDownloadFilename = (
+  { program, metatags: { canonical }, metadata }: IPriApiResource,
+  prefixOverride: string = null
+) => {
+  console.log('generateAudioDownloadFilename >> program', program);
   const { pathname } = parse(canonical);
-  const parts = pathname.split('/').filter(item => !!item && !!item.length && item !== 'file');
-  const prefix = prefixOverride || (program && program.title.toLowerCase().replace(/\s+/, '-')) || 'tw';
+  const parts = pathname
+    .split('/')
+    .filter(item => !!item && !!item.length && item !== 'file');
+  const prefix =
+    prefixOverride ||
+    (!!program && program.title.toLowerCase().replace(/\s+/, '-')) ||
+    'tw';
   const format = (metadata && metadata.audio_url) || 'mp3';
 
   return `${[prefix, ...parts].join('--')}.${format}`;

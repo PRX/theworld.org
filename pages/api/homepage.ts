@@ -1,41 +1,11 @@
 /**
- * @file Homepage.tsx
- * Component for Homepage.
+ * @file app.ts
+ * Gather homepage data from CMS API.
  */
-import React, { useContext } from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
-import { ContentContext } from '@contexts/ContentContext';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export const Homepage = () => {
-  const {
-    data: { links }
-  } = useContext(ContentContext);
-
-  return (
-    <>
-      <Head>
-        <title>The World</title>
-      </Head>
-      <h1>Hello, The World!</h1>
-      <p>Homepage coming soon...</p>
-      {links && (
-        <ul>
-          {links.map(({ href, label }) => (
-            <li key={label}>
-              <Link href={href} as={href.query.alias}>
-                <a>{label}</a>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </>
-  );
-};
-
-Homepage.fetchData = async () => {
-  return {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const apiResp = {
     type: 'homepage',
     links: [
       {
@@ -84,4 +54,6 @@ Homepage.fetchData = async () => {
       }
     ]
   };
+
+  res.status(200).json(apiResp);
 };
