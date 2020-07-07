@@ -1,9 +1,11 @@
 {
+  "editor.formatOnSave": true,
   "eslint.packageManager": "yarn",
-  "editor.tabSize": 2,
-  "javascript.format.semicolons": "insert",
-  "javascript.preferences.quoteStyle": "single",
-  "typescript.format.semicolons": "insert",
-  "typescript.preferences.quoteStyle": "single",
-  "npm.packageManager": "yarn"
+  "npm.packageManager": "yarn",
+  "prettier.packageManager": "yarn",
+  "prettier.prettierPath": "./node_modules/prettier",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
