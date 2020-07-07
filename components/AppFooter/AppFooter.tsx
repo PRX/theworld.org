@@ -13,7 +13,6 @@ import { AppContext } from '@contexts/AppContext';
 // SVG
 import { ReactComponent as TwLogo } from '@svg/tw-white.svg';
 import { ReactComponent as PrxLogo } from '@svg/PRX-Logo-Horizontal-Color.svg';
-import { ReactComponent as BBCLogo } from '@svg/BBC.svg';
 import { ReactComponent as WGBHLogo } from '@svg/WGBH-Logo.svg';
 // Module
 import { appFooterStyles } from './AppFooter.styles';
@@ -31,7 +30,7 @@ export const AppFooter = () => {
     <footer className={classes.root}>
       <Divider />
       <Container className={classes.container}>
-        <TwLogo className={classes.twLogo}/>
+        <TwLogo className={classes.twLogo} />
         <p>
           The World is a public radio program that crosses borders and time
           zones to bring home the stories that matter.
@@ -47,9 +46,6 @@ export const AppFooter = () => {
           >
             <Link href="https://prx.org/">
               <PrxLogo className={producedByLogoClasses} />
-            </Link>
-            <Link href="https://www.bbc.co.uk/">
-              <BBCLogo className={producedByLogoClasses} />
             </Link>
             <Link href="https://wgbh.org/">
               <WGBHLogo className={producedByLogoClasses} />
@@ -83,7 +79,10 @@ export const AppFooter = () => {
                 src="https://media.pri.org/s3fs-public/logo-macarthur-color.jpg"
               />
             </a>
-            <a className={classes.logoLink} href="https://www.fordfoundation.org/">
+            <a
+              className={classes.logoLink}
+              href="https://www.fordfoundation.org/"
+            >
               <img
                 className={classes.logo}
                 alt="Ford Foundation"
