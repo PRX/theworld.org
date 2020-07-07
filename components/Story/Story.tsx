@@ -40,9 +40,10 @@ Story.getContext = (story: IPriApiResource): string[] => [
     story.categories.length &&
     story.categories.map(({ id: tid }) => `term:${tid}`)) ||
     []),
-  ...(story.verticals &&
-    story.verticals.length &&
-    story.verticals.map(({ tid }) => `term:${tid}`))
+  ...((story.vertical &&
+    story.vertical.length &&
+    story.vertical.map(({ tid }) => `term:${tid}`)) ||
+    [])
 ];
 
 Story.fetchData = async (id: string | number): Promise<IContentContextData> => {
