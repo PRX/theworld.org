@@ -8,30 +8,27 @@ import App, { AppContext as NextAppContext, AppProps } from 'next/app';
 import classNames from 'classnames/bind';
 import { Box, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { PriApiResource, IPriApiResource } from 'pri-api-library/types';
+import { IPriApiResource } from 'pri-api-library/types';
+import { IButton } from '@interfaces/button';
 import { ICtaMessage } from '@interfaces/cta';
-import { ILink } from '@interfaces/link';
-import { parseCtaMessage } from '@lib/parse/cta';
-import { parseMenu } from '@lib/parse/menu';
 import { AppContext } from '@contexts/AppContext';
 import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppHeader } from '@components/AppHeader';
 import { AppFooter } from '@components/AppFooter';
-import {
-  fetchPriApiQuery,
-  fetchPriApiQueryMenu,
-  postJsonPriApiCtaRegion
-} from '@lib/fetch';
+import { postJsonPriApiCtaRegion } from '@lib/fetch';
+import { fetchApiApp } from '@lib/fetch/api';
+import { parseCtaMessage } from '@lib/parse/cta';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 
 interface TwAppProps extends AppProps {
   ctaRegions?: {
-    [K: string]: ICtaMessage[];
+    banner?: ICtaMessage[];
+    loadUnder?: ICtaMessage[];
   };
-  latestStories?: PriApiResource[];
+  latestStories?: IPriApiResource[];
   menus?: {
-    [K: string]: PriApiResource[];
+    [K: string]: IButton[];
   };
 }
 
@@ -41,32 +38,15 @@ interface TwAppState {
 
 class TwApp extends App<TwAppProps, {}, TwAppState> {
   static async getInitialProps(ctx: NextAppContext) {
+    const { req } = ctx.ctx;
     const initialProps = await App.getInitialProps(ctx);
     const {
-      pageProps: { data }
+      pageProps: { data: contentData }
     } = initialProps;
-    const { context } = data || {};
+    const { context } = contentData || {};
 
-    // Fetch Menus
-    const [
-      drawerMainNav,
-      drawerSocialNav,
-      drawerTopNav,
-      footerNav,
-      headerNav,
-      latestStories
-    ] = await Promise.all([
-      fetchPriApiQueryMenu('menu-drawer-main-nav'),
-      fetchPriApiQueryMenu('menu-drawer-social-nav'),
-      fetchPriApiQueryMenu('menu-drawer-top-nav'),
-      fetchPriApiQueryMenu('menu-footer'),
-      fetchPriApiQueryMenu('menu-header-nav'),
-      fetchPriApiQuery('node--stories', {
-        'filter[status]': 1,
-        sort: '-date_published',
-        range: 10
-      })
-    ]);
+    // Fetch App Data
+    const data = await fetchApiApp(req);
 
     // Fetch CTA Messages
     const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
@@ -88,14 +68,7 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
         ...(banner && { banner }),
         ...(loadUnder && { loadUnder })
       },
-      latestStories,
-      menus: {
-        drawerMainNav: parseMenu(drawerMainNav as ILink[]),
-        drawerSocialNav: parseMenu(drawerSocialNav as ILink[]),
-        drawerTopNav: parseMenu(drawerTopNav as ILink[]),
-        footerNav: parseMenu(footerNav as ILink[]),
-        headerNav: parseMenu(headerNav as ILink[])
-      }
+      ...data
     };
   }
 
@@ -136,13 +109,11 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
     const appClasses = cx({
       noJs: javascriptDisabled
     });
-    const copyrightDate = new Date().getFullYear();
-    const appContextValue = { ctaRegions, latestStories, menus, copyrightDate };
 
     return (
       <ThemeProvider theme={baseMuiTheme}>
         <ThemeProvider theme={appTheme}>
-          <AppContext.Provider value={appContextValue}>
+          <AppContext.Provider value={{ ctaRegions, latestStories, menus }}>
             <Box
               className={appClasses}
               minHeight="100vh"

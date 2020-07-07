@@ -16,7 +16,7 @@ export const generateAudioDownloadFilename = (
     .filter(item => !!item && !!item.length && item !== 'file');
   const prefix =
     prefixOverride ||
-    (program && program.title.toLowerCase().replace(/\s+/, '-')) ||
+    (!!program && program.title.toLowerCase().replace(/\s+/, '-')) ||
     'tw';
   const format = (metadata && metadata.audio_url) || 'mp3';
 

@@ -57,3 +57,7 @@ rules:
     - error
     - varsIgnorePattern: "React"
   prettier/prettier: 'error'
+overrides:
+  - 'files': ['./pages/**/*', './pages/*']
+    'rules':
+      'import/no-default-export': 0

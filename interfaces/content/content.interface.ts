@@ -23,9 +23,7 @@ export interface IContentContextData {
   related?: IPriApiResource[];
 }
 
-export interface IContentContext extends IContentContextData {
-  isAmp: boolean;
-}
+export interface IContentContext extends IContentContextData {}
 
 export interface IContentComponentProxyProps {
   data?: IContentContextData;

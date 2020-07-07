@@ -13,7 +13,6 @@ import { AppContext } from '@contexts/AppContext';
 // SVG
 import { ReactComponent as TwLogo } from '@svg/tw-white.svg';
 import { ReactComponent as PrxLogo } from '@svg/PRX-Logo-Horizontal-Color.svg';
-import { ReactComponent as BBCLogo } from '@svg/BBC.svg';
 import { ReactComponent as WGBHLogo } from '@svg/WGBH-Logo.svg';
 // Module
 import { appFooterStyles } from './AppFooter.styles';
@@ -47,9 +46,6 @@ export const AppFooter = () => {
           >
             <Link href="https://prx.org/">
               <PrxLogo className={producedByLogoClasses} />
-            </Link>
-            <Link href="https://www.bbc.co.uk/">
-              <BBCLogo className={producedByLogoClasses} />
             </Link>
             <Link href="https://wgbh.org/">
               <WGBHLogo className={producedByLogoClasses} />
