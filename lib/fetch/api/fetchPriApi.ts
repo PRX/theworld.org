@@ -10,7 +10,7 @@ import {
 } from 'pri-api-library';
 import { PriApiResourceResponse, IPriApiResponse } from 'pri-api-library/types';
 import { ILink } from '@interfaces/link';
-import { priApi as priApiConfig} from '../../../config';
+import { priApi as priApiConfig } from '../../../config';
 
 /**
  * Method that simplifies GET requests.
@@ -48,7 +48,11 @@ export const fetchPriApi = async (
  * @returns
  *    Denormalized resource collection.
  */
-export const fetchPriApiQuery = async (type: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
+export const fetchPriApiQuery = async (
+  type: string,
+  params?: object,
+  keys?: object
+): Promise<PriApiResourceResponse> =>
   libFetchPriApiQuery(type, params, keys, priApiConfig);
 
 /**
@@ -73,7 +77,8 @@ export const fetchPriApiItem = async (
   id: number | string,
   params?: object,
   keys?: object
-): Promise<PriApiResourceResponse> => libFetchPriApiItem(type, id, params, keys, priApiConfig);
+): Promise<PriApiResourceResponse> =>
+  libFetchPriApiItem(type, id, params, keys, priApiConfig);
 
 /**
  * Metho that simplifies GET queries for resource item using URL path alias.
@@ -90,8 +95,16 @@ export const fetchPriApiItem = async (
  * @returns
  *    Denormalized resource item.
  */
-export const fetchPriApiQueryAlias = async (alias: string, params?: object, keys?: object): Promise<PriApiResourceResponse> =>
-  fetchPriApi(`query/alias/${alias.replace(/^\/+|\/+$/, '')}`, params, keys).then(resp => !resp.isFailure && resp.response);
+export const fetchPriApiQueryAlias = async (
+  alias: string,
+  params?: object,
+  keys?: object
+): Promise<PriApiResourceResponse> =>
+  fetchPriApi(
+    `query/alias/${alias.replace(/^\/+|\/+$/, '')}`,
+    params,
+    keys
+  ).then(resp => !resp.isFailure && resp.response);
 
 /**
  * Metho that simplifies GET queries for menu.
@@ -102,5 +115,9 @@ export const fetchPriApiQueryAlias = async (alias: string, params?: object, keys
  * @returns
  *    Denormalized resource item.
  */
-export const fetchPriApiQueryMenu = async (menuName: string): Promise<ILink[]> =>
-  fetchPriApi(`menu/tree/${menuName}`).then(resp => !resp.isFailure && resp.response as ILink[]);
+export const fetchPriApiQueryMenu = async (
+  menuName: string
+): Promise<ILink[]> =>
+  fetchPriApi(`menu/tree/${menuName}`).then(
+    resp => !resp.isFailure && (resp.response as ILink[])
+  );

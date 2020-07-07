@@ -8,19 +8,18 @@ import App, { AppContext as NextAppContext, AppProps } from 'next/app';
 import classNames from 'classnames/bind';
 import { Box, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { PriApiResource } from 'pri-api-library/types';
-import { ILink } from '@interfaces/link';
-import { parseMenu } from '@lib/parse/menu';
+import { IPriApiResource } from 'pri-api-library/types';
+import { IButton } from '@interfaces/button';
 import { AppContext } from '@contexts/AppContext';
 import { AppHeader } from '@components/AppHeader';
 import { AppFooter } from '@components/AppFooter';
-import { fetchPriApiQuery, fetchPriApiQueryMenu } from '@lib/fetch';
+import { fetchApiApp } from '@lib/fetch/api';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 
 interface TwAppProps extends AppProps {
-  latestStories?: PriApiResource[];
+  latestStories?: IPriApiResource[];
   menus?: {
-    [K: string]: PriApiResource[];
+    [K: string]: IButton[];
   };
 }
 
@@ -30,39 +29,15 @@ interface TwAppState {
 
 class TwApp extends App<TwAppProps, {}, TwAppState> {
   static async getInitialProps(ctx: NextAppContext) {
+    const { req } = ctx.ctx;
     const initialProps = await App.getInitialProps(ctx);
 
     // Fetch Menus
-    const [
-      drawerMainNav,
-      drawerSocialNav,
-      drawerTopNav,
-      footerNav,
-      headerNav,
-      latestStories
-    ] = await Promise.all([
-      fetchPriApiQueryMenu('menu-drawer-main-nav'),
-      fetchPriApiQueryMenu('menu-drawer-social-nav'),
-      fetchPriApiQueryMenu('menu-drawer-top-nav'),
-      fetchPriApiQueryMenu('menu-footer'),
-      fetchPriApiQueryMenu('menu-header-nav'),
-      fetchPriApiQuery('node--stories', {
-        'filter[status]': 1,
-        sort: '-date_published',
-        range: 10
-      })
-    ]);
+    const data = await fetchApiApp(req);
 
     return {
       ...initialProps,
-      latestStories,
-      menus: {
-        drawerMainNav: parseMenu(drawerMainNav as ILink[]),
-        drawerSocialNav: parseMenu(drawerSocialNav as ILink[]),
-        drawerTopNav: parseMenu(drawerTopNav as ILink[]),
-        footerNav: parseMenu(footerNav as ILink[]),
-        headerNav: parseMenu(headerNav as ILink[])
-      }
+      ...data
     };
   }
 
@@ -97,12 +72,11 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
     const appClasses = cx({
       noJs: javascriptDisabled
     });
-    const copyrightDate = new Date().getFullYear();
 
     return (
       <ThemeProvider theme={baseMuiTheme}>
         <ThemeProvider theme={appTheme}>
-          <AppContext.Provider value={{ latestStories, menus, copyrightDate }}>
+          <AppContext.Provider value={{ latestStories, menus }}>
             <Box
               className={appClasses}
               minHeight="100vh"
