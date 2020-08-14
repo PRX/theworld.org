@@ -8,6 +8,19 @@ import { IPriApiResource } from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
+  const getContext = (story: IPriApiResource): string[] => [
+    `node:${story.id}`,
+    `node:${story.program?.id}`,
+    `term:${story.primaryCategory?.id}`,
+    ...((story.categories &&
+      story.categories.length &&
+      story.categories.map(({ id: tid }) => `term:${tid}`)) ||
+      []),
+    ...((story.vertical &&
+      story.vertical.length &&
+      story.vertical.map(({ tid }) => `term:${tid}`)) ||
+      [])
+  ];
 
   if (id) {
     const story = (await fetchPriApiItem('node--stories', id as string, {
@@ -34,6 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (story) {
       const { type, primaryCategory } = story;
+      const context = getContext(story);
       const related =
         primaryCategory &&
         ((await fetchPriApiQuery('node--stories', {
@@ -46,6 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         })) as IPriApiResource[]);
       const apiResp = {
         type,
+        context,
         story,
         ...(related && { related })
       };
