@@ -17,6 +17,7 @@ import {
 } from 'pri-api-library/types';
 import * as JSONAPI from 'jsonapi-typescript';
 import { ILink } from '@interfaces/link';
+import { parseCtaMessage } from '@lib/parse/cta';
 import { priApi as priApiConfig } from '../../../config';
 
 /**
@@ -193,7 +194,13 @@ export const postJsonPriApiCtaRegion = async (
   name: string,
   body: object
 ): Promise<PriApiResourceResponse> =>
-  postJsonPriApi(`tw/cta/region_group/${name}`, null, body)
+  postJsonPriApi(
+    `tw/cta/region_group/${name}`,
+    {
+      include: 'newsletter'
+    },
+    body
+  )
     .then(resp => !resp.isFailure && resp.response)
     .then(
       (resp: IPriApiResource) =>
@@ -201,15 +208,17 @@ export const postJsonPriApiCtaRegion = async (
           ...resp,
           subqueues: Object.entries(resp.subqueues)
             // Denormalize subqueue array items.
-            .map(([key, value]) => [
+            .map(([key, items]: [string, JSONAPI.CollectionResourceDoc[]]) => [
               key,
-              denormalizeJsonApi({
-                data: value
-              } as JSONAPI.CollectionResourceDoc)
+              items.map(denormalizeJsonApi)
             ])
+            // Parse Message data
+            .map(([key, items]: [string, IPriApiResource[]]) => {
+              return [key, items.map(item => parseCtaMessage(item, key))];
+            })
             // Convert back to object.
             .reduce(
-              (a, [key, value]) => ({
+              (a, [key, value]: [string, any]) => ({
                 ...a,
                 [key]: value
               }),

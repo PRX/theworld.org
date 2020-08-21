@@ -11,7 +11,7 @@ import {
   Typography,
   ButtonProps
 } from '@material-ui/core';
-import { Newsletter, INewsletterOptions } from '@components/Newsletter';
+import { Newsletter } from '@components/Newsletter';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 
 export const AppCtaMessageNewsletter = ({
@@ -25,14 +25,8 @@ export const AppCtaMessageNewsletter = ({
       name: 'Subscribe'
     },
     dismiss,
-    listId,
-    sourceList
+    newsletterOptions
   } = data;
-  const newsletterOptions: INewsletterOptions = {
-    ...(listId && { listId }),
-    ...(sourceList && { 'source-list': sourceList }),
-    'source-placement': 'banner'
-  };
   const hasActions = !!(action || dismiss);
   const actionAttrs: ButtonProps = {
     variant: 'contained',

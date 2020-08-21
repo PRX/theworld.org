@@ -23,44 +23,40 @@ import {
 } from '@material-ui/core';
 import { useAmp } from 'next/amp';
 import { CheckCircleOutlineSharp, SendSharp } from '@material-ui/icons';
+import {
+  INewsletterOptions,
+  INewsletterData,
+  ICMApiCustomField
+} from '@interfaces/newsletter';
 import { newsletterTheme } from './Newsletter.styles';
 
-export interface INewsletterData {
-  emailAddress?: string;
-  name?: string;
-}
-
-export interface ICustomFields {
-  [k: string]: string;
-}
-
-export interface INewsletterOptions {
-  listId: string;
-  [k: string]: string;
+export interface INewsletterProps {
+  label?: string;
+  options?: INewsletterOptions;
+  onSubscribed?: Function;
+  buttonProps?: ButtonProps;
 }
 
 const defaultOptions: INewsletterOptions = {
-  listId: '04472db22d3fa6920bb38f18358b0f72',
-  'source-list': 'tw-daily-newsletter',
-  'source-placement': 'end-of-story-engagement'
+  listId: '04472db22d3fa6920bb38f18358b0f72'
 };
 
 export const submitSubscription = (
-  { name, emailAddress }: INewsletterData,
+  { emailAddress }: INewsletterData,
   options: INewsletterOptions
 ) => {
-  const { listId, ...other } = {
+  const { listId, customFields: cflds } = {
     ...defaultOptions,
-    ...options,
-    source: 'website'
+    ...options
   };
-  const customFields = Object.entries(other).map(([Key, Value]) => ({
-    Key,
-    Value
-  }));
+  const customFields = Object.entries(cflds).map(
+    ([Key, Value]: [string, string]): ICMApiCustomField => ({
+      Key,
+      Value
+    })
+  );
   const payload = {
     listId,
-    name,
     emailAddress,
     customFields
   };
@@ -75,13 +71,6 @@ export const submitSubscription = (
 
 export const validateEmailAddress = (emailAddress: string) =>
   !!emailAddress?.match(/^\S+@\S+(?:\.\S+)+$/);
-
-export interface INewsletterProps {
-  label?: string;
-  options?: INewsletterOptions;
-  onSubscribed?: Function;
-  buttonProps?: ButtonProps;
-}
 
 export const Newsletter = ({
   label,
@@ -112,20 +101,12 @@ export const Newsletter = ({
     });
   };
 
-  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    setData({
-      ...data,
-      ...(e.target && { name: e.target.value })
-    });
-  };
-
   const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setData({
-      name: '',
       emailAddress: ''
     });
     setOpen(false);
@@ -193,17 +174,6 @@ export const Newsletter = ({
               >
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    id="subscriber-name"
-                    type="text"
-                    label="Name"
-                    value={data.name}
-                    onChange={handleChangeName}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
                     id="subscriber-emailAddress"
                     type="email"
                     label="Email Address"
@@ -263,8 +233,7 @@ export const Newsletter = ({
                       You&apos;re Subscribed
                     </Typography>
                     <Typography>
-                      <strong>Thank you{data.name && `, ${data.name}`}!</strong>{' '}
-                      You mean the world to us.
+                      <strong>Thank you!</strong> You mean the world to us.
                     </Typography>
                   </Box>
                 </Box>

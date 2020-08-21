@@ -11,7 +11,6 @@ import {
   fetchPriApiQuery,
   postJsonPriApiCtaRegion
 } from '@lib/fetch';
-import { parseCtaMessage } from '@lib/parse/cta';
 import { layoutComponentMap } from './layouts';
 import { IContentContextData } from '../../interfaces/content/content.interface';
 
@@ -92,14 +91,6 @@ Story.fetchData = async (id: string | number): Promise<IContentContextData> => {
     data,
     context,
     ...(related && { related }),
-    ...(ctaRegions && {
-      ctaRegions: Object.entries(ctaRegions).reduce(
-        (a, [key, val]) => ({
-          ...a,
-          [key]: parseCtaMessage(val[0])
-        }),
-        {}
-      )
-    })
+    ...(ctaRegions && { ctaRegions })
   };
 };

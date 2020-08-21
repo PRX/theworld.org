@@ -4,6 +4,7 @@
  */
 
 import { IButton } from '@interfaces/button';
+import { INewsletterOptions, IPriApiNewsletter } from '@interfaces/newsletter';
 
 export type CtaMessageType = 'info' | 'optin' | 'donation' | 'newsletter';
 
@@ -17,8 +18,9 @@ export interface ICtaMessage {
   cookieLifespan?: number;
   action?: IButton;
   dismiss?: IButton;
-  listId?: string;
-  sourceList?: string;
+  newsletter?: IPriApiNewsletter;
+  newsletterOptions?: INewsletterOptions;
+  region?: string;
 }
 
 export interface ICtaMessageProps {

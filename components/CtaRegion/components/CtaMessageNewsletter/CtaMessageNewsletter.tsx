@@ -13,7 +13,7 @@ import {
   Typography,
   ThemeProvider
 } from '@material-ui/core';
-import { Newsletter, INewsletterOptions } from '@components/Newsletter';
+import { Newsletter } from '@components/Newsletter';
 import { ICtaMessageProps } from '@interfaces/cta';
 import { ctaMessageNewsletterTheme } from './CtaMessageNewsletter.styles';
 
@@ -25,14 +25,8 @@ export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
       name: 'Subscribe'
     },
     dismiss,
-    listId,
-    sourceList
+    newsletterOptions
   } = data;
-  const newsletterOptions: INewsletterOptions = {
-    ...(listId && { listId }),
-    ...(sourceList && { 'source-list': sourceList }),
-    'source-placement': 'content'
-  };
   const hasActions = !!(action || dismiss);
   const actionAttrs: ButtonProps = {
     variant: 'contained',

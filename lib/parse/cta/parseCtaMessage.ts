@@ -6,8 +6,23 @@
 import { IPriApiResource } from 'pri-api-library/types';
 import { ICtaMessage } from '@interfaces/cta';
 import { parse } from 'url';
+import { IPriApiNewsletter, INewsletterOptions } from '@interfaces/newsletter';
 
-export const parseCtaMessage = (message: IPriApiResource): ICtaMessage => ({
+export const parseNewsletterOptions = (
+  { listId }: IPriApiNewsletter,
+  region: string
+): INewsletterOptions => ({
+  listId,
+  customFields: {
+    source: 'website',
+    ...(region && { 'source-placement': region })
+  }
+});
+
+export const parseCtaMessage = (
+  message: IPriApiResource,
+  region: string
+): ICtaMessage => ({
   name: message.id,
   type: message.ctaType,
   hash: message.contentHash,
@@ -26,6 +41,9 @@ export const parseCtaMessage = (message: IPriApiResource): ICtaMessage => ({
       name: message.dismissButtonLabel
     }
   }),
-  ...(message.listId && { listId: message.listId }),
-  ...(message.sourceList && { sourceList: message.sourceList })
+  ...(message.newsletter && {
+    newsletter: message.newsletter,
+    newsletterOptions: parseNewsletterOptions(message.newsletter, region)
+  }),
+  ...(region && { region })
 });

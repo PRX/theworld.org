@@ -38,6 +38,7 @@ module.exports = withPlugins([
           alias: {
             ...config.resolve.alias,
             '@components': path.join(__dirname, 'components'),
+            '@config': path.join(__dirname, 'config'),
             '@contexts': path.join(__dirname, 'contexts'),
             '@interfaces': path.join(__dirname, 'interfaces'),
             '@lib': path.join(__dirname, 'lib'),

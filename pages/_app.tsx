@@ -18,7 +18,6 @@ import { AppHeader } from '@components/AppHeader';
 import { AppFooter } from '@components/AppFooter';
 import { postJsonPriApiCtaRegion } from '@lib/fetch';
 import { fetchApiApp } from '@lib/fetch/api';
-import { parseCtaMessage } from '@lib/parse/cta';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 
 interface TwAppProps extends AppProps {
@@ -55,12 +54,8 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
         context
       }
     )) as IPriApiResource;
-    const banner =
-      ctaRegions.tw_cta_region_site_banner &&
-      ctaRegions.tw_cta_region_site_banner.map(parseCtaMessage);
-    const loadUnder =
-      ctaRegions.tw_cta_region_site_load_under &&
-      ctaRegions.tw_cta_region_site_load_under.map(parseCtaMessage);
+    const banner = ctaRegions.tw_cta_region_site_banner;
+    const loadUnder = ctaRegions.tw_cta_region_site_load_under;
 
     return {
       ...initialProps,
