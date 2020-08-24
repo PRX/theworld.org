@@ -42,6 +42,8 @@ export const StoryDefault = () => {
   const hasCategories = categories && !!categories.length;
   const hasTags = tags && !!tags.length;
 
+  console.log('Story.default >> ctaRegions', ctaRegions);
+
   // TODO: Parse body...
   //    - Insert mobile ad positions
   //    - Insert mobile newsletter signup

@@ -26,8 +26,13 @@ export interface ICtaMessage {
 export interface ICtaMessageProps {
   data: ICtaMessage;
 }
+
+export interface ICtaRegionProps {
+  data: ICtaMessage[];
+}
+
 export interface ICtaRegions {
-  [k: string]: ICtaMessage;
+  [k: string]: ICtaMessage[];
 }
 
 export interface ICtaMessageComponentContext {
