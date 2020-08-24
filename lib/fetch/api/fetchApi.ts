@@ -23,7 +23,6 @@ export const fetchApi = async (path: string, req: IncomingMessage) => {
   const baseUrl = req
     ? `${req.headers['x-forwarded-proto']}://${req.headers.host}`
     : '';
-  console.log('fetchApi >> ', baseUrl, req);
   return fetch(`${baseUrl}/api/${path}`).then(resp => resp.json());
 };
 

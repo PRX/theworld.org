@@ -27,8 +27,6 @@ const ContentProxy = (props: IContentComponentProxyProps) => {
     } = props;
     const ContentComponent = importComponent(type);
 
-    // console.log('index', data);
-
     output = (
       <ContentContext.Provider value={data}>
         <ContentComponent />

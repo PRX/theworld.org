@@ -15,8 +15,6 @@ export const CtaRegion = ({ data }: ICtaRegionProps) => {
   const { type } = shownMessage;
   const CtaMessageComponent = ctaTypeComponentMap[type] || null;
 
-  console.log('CtaRegion >> data', data);
-
   return (
     data &&
     CtaMessageComponent && (
