@@ -11,7 +11,7 @@ import {
   Typography,
   ButtonProps
 } from '@material-ui/core';
-import { Newsletter } from '@components/Newsletter';
+import { NewsletterForm } from '@components/NewsletterForm';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 
 export const AppCtaMessageNewsletter = ({
@@ -62,11 +62,10 @@ export const AppCtaMessageNewsletter = ({
       )}
       {hasActions && (
         <Toolbar>
-          <Newsletter
+          <NewsletterForm
             onSubscribed={handleSubscribe}
             label={action && action.name}
             options={newsletterOptions}
-            buttonProps={actionAttrs}
           />
           {dismiss && (
             <Button {...dismissAttrs} onClick={handleDismissClick}>
