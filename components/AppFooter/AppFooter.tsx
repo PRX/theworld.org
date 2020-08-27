@@ -47,7 +47,7 @@ export const AppFooter = () => {
             <Link href="https://prx.org/">
               <PrxLogo className={producedByLogoClasses} />
             </Link>
-            <Link href="https://wgbh.org/">
+            <Link href="https://gbh.org/">
               <WGBHLogo className={producedByLogoClasses} />
             </Link>
           </Breadcrumbs>
