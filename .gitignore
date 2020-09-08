@@ -73,3 +73,5 @@ config/local.js
 .DS_Store
 .env*
 .now
+
+.vercel
