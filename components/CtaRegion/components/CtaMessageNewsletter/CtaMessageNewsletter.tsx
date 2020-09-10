@@ -29,10 +29,9 @@ export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
     action = {
       name: 'Subscribe'
     },
-    dismiss,
     newsletterOptions
   } = data;
-  const hasActions = !!(action || dismiss);
+  const hasActions = !!action;
   const actionAttrs: ButtonProps = {
     variant: 'contained',
     color: 'primary',
