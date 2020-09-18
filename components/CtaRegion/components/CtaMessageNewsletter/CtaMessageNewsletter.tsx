@@ -6,7 +6,6 @@
 import React, { useState } from 'react';
 import {
   Box,
-  ButtonProps,
   Card,
   CardHeader,
   CardContent,
@@ -29,16 +28,9 @@ export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
     action = {
       name: 'Subscribe'
     },
-    dismiss,
     newsletterOptions
   } = data;
-  const hasActions = !!(action || dismiss);
-  const actionAttrs: ButtonProps = {
-    variant: 'contained',
-    color: 'primary',
-    size: 'large',
-    disableElevation: true
-  };
+  const hasActions = !!action;
 
   const handleSubscribed = () => {
     setSubscribed(true);

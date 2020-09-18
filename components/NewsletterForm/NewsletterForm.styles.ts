@@ -14,7 +14,8 @@ export const newsletterFormTheme = (theme: Theme) => {
   const tempTheme = createMuiTheme(theme, {
     palette: {
       primary: {
-        ...theme.palette.success
+        ...theme.palette.success,
+        contrastText: theme.palette.common.white
       }
     }
   });

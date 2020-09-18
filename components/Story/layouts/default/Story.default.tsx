@@ -77,11 +77,9 @@ export const StoryDefault = () => {
                   dangerouslySetInnerHTML={{ __html: body }}
                 />
                 {ctaRegions.tw_cta_region_content_inline_end && (
-                  <Sidebar item stretch>
-                    <CtaRegion
-                      data={ctaRegions.tw_cta_region_content_inline_end}
-                    />
-                  </Sidebar>
+                  <CtaRegion
+                    data={ctaRegions.tw_cta_region_content_inline_end}
+                  />
                 )}
                 {hasRelated && (
                   <aside>
