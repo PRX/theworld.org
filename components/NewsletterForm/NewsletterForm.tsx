@@ -12,13 +12,11 @@ import {
   Checkbox,
   CircularProgress,
   FormControlLabel,
-  Grid,
   TextField,
-  ThemeProvider,
-  Typography
+  ThemeProvider
 } from '@material-ui/core';
 import { useAmp } from 'next/amp';
-import { CheckCircleOutlineSharp, SendSharp } from '@material-ui/icons';
+import { SendSharp } from '@material-ui/icons';
 import { INewsletterOptions, INewsletterData } from '@interfaces/newsletter';
 import { postNewsletterSubsciption } from '@lib/fetch/api';
 import { validateEmailAddress } from '@lib/validate';
@@ -47,7 +45,6 @@ export const NewsletterForm = ({
   } as INewsletterData);
   const [error, setError] = useState(null);
   const [optedIn, setOptedIn] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const emailError = !!error && !!error.message.match(/\bemail\b/i);
   const readyToSubmit = optedIn && validateEmailAddress(data.emailAddress);
@@ -80,7 +77,6 @@ export const NewsletterForm = ({
       setError(err);
     } else {
       setError(null);
-      setSubscribed(true);
       if (onSubscribed) {
         onSubscribed();
       }
@@ -139,7 +135,7 @@ export const NewsletterForm = ({
                 color="primary"
                 size="large"
                 disabled={!readyToSubmit}
-                disableElevation={submitted || subscribed}
+                disableElevation={submitted}
                 endIcon={icon}
                 onClick={handleSubmit}
               >
@@ -173,34 +169,6 @@ export const NewsletterForm = ({
           </Box>
         </Box>
       </form>
-      {subscribed && (
-        <Grid container spacing={4} justify="center" alignContent="center">
-          <Grid item xs={12}>
-            <Box
-              display="grid"
-              gridTemplateColumns="min-content 1fr"
-              gridGap={16}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Box>
-                <CheckCircleOutlineSharp
-                  color="primary"
-                  style={{ fontSize: '5rem' }}
-                />
-              </Box>
-              <Box>
-                <Typography variant="overline">
-                  You&apos;re Subscribed
-                </Typography>
-                <Typography>
-                  <strong>Thank you!</strong> You mean the world to us.
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      )}
     </ThemeProvider>
   );
 };
