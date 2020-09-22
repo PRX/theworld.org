@@ -27,6 +27,9 @@ export const newsletterFormTheme = (theme: Theme) => {
           '&:hover': {
             backgroundColor: tempTheme.palette.primary.dark
           }
+        },
+        label: {
+          whiteSpace: 'nowrap'
         }
       }
     }
