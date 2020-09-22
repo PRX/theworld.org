@@ -46,7 +46,8 @@ export const NewsletterForm = ({
   const [error, setError] = useState(null);
   const [optedIn, setOptedIn] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const emailError = !!error && !!error.message.match(/\bemail\b/i);
+  const emailError =
+    !!error && !!error.message && !!error.message.match(/\bemail\b/i);
   const readyToSubmit = optedIn && validateEmailAddress(data.emailAddress);
   const icon = (submitted && (
     <CircularProgress color="inherit" size={20} />
