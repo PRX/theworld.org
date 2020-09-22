@@ -11,3 +11,5 @@ declare module '*.jpeg';
 declare module '*.gif';
 
 declare module 'pri-api-library';
+
+declare module 'createsend-node';
