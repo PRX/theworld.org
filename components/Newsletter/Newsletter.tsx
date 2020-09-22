@@ -7,6 +7,7 @@ import { IncomingMessage } from 'http';
 import classNames from 'classnames/bind';
 import Head from 'next/head';
 import { Box, Container, Grid, ThemeProvider } from '@material-ui/core';
+import { Image } from '@components/Image';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { ContentContext } from '@contexts/ContentContext';
 import { IContentContextData } from '@interfaces/content';
@@ -18,7 +19,7 @@ import { newsletterTheme, newsletterStyles } from './Newsletter.styles';
 export const Newsletter = () => {
   const {
     data,
-    data: { title, body, buttonLabel, summary }
+    data: { title, body, buttonLabel, summary, image }
   } = useContext(ContentContext);
   const options = parseNewsletterOptions(
     data as IPriApiNewsletter,
@@ -26,6 +27,8 @@ export const Newsletter = () => {
   );
   const classes = newsletterStyles({});
   const cx = classNames.bind(classes);
+
+  console.log('Newsletter >> image', image);
 
   return (
     <>
@@ -35,7 +38,13 @@ export const Newsletter = () => {
       <ThemeProvider theme={newsletterTheme}>
         <Container>
           <Grid container justify="center">
-            <Grid item xs={12} sm={9}>
+            <Grid
+              item
+              xs={12}
+              sm={9}
+              className={cx('header', { withImage: !!image })}
+            >
+              {image && <Image data={image} width={{ xl: 924 }} />}
               <h1 className={cx('title')}>{title}</h1>
               <p className={cx('summary')}>{summary}</p>
               <Box className={cx('form')}>

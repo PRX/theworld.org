@@ -189,7 +189,7 @@ export const Image = ({
     ) as IImageStyle[];
 
   const imgAttrs = {
-    className: [className, cx({ root: true, image: isResponsive })].join(' '),
+    className: [className, cx('root', { responsive: isResponsive })].join(' '),
     src: defaultSrc,
     ...other,
     ...(isResponsive
