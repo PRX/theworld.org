@@ -35,6 +35,7 @@ export const ctaMessageNewsletterTheme = (theme: Theme) => {
       },
       MuiCard: {
         root: {
+          paddingBottom: '0.5rem',
           borderLeftColor: theme.palette.success.main
         }
       }
