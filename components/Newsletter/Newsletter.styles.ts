@@ -15,7 +15,7 @@ export const newsletterTheme = (theme: Theme) =>
     overrides: {
       MuiOutlinedInput: {
         input: {
-          backgroundColor: 'rgba(255, 255, 255, 0.3)'
+          backgroundColor: 'rgba(255, 255, 255, 0.5)'
         }
       }
     }
@@ -41,15 +41,20 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
         '& $imageWrapper': {
           zIndex: 0
         },
-        '&::after': {
+        '&::before, &::after': {
           content: '""',
           display: 'block',
           gridColumn: '1 / -1',
           gridRow: '2 / -1',
           zIndex: 1,
           backgroundColor: 'rgba(255, 255, 255, 0.65)',
-          transformOrigin: 'center top',
+          transformOrigin: 'center top'
+        },
+        '&::before': {
           transform: 'scale(2) rotate(10deg)'
+        },
+        '&::after': {
+          transform: 'scale(2) rotate(6deg) translateY(10%)'
         }
       }
     },
@@ -63,6 +68,7 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
       gridColumn: '2 / -2',
       gridRow: 2,
       maxWidth: '65%',
+      color: theme.palette.primary.dark,
       fontSize: '3rem',
       lineHeight: '1.1'
     },

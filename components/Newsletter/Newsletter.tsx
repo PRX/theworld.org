@@ -2,11 +2,18 @@
  * @file Story.tsx
  * Component for Story.
  */
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { IncomingMessage } from 'http';
 import classNames from 'classnames/bind';
 import Head from 'next/head';
-import { Box, Container, Grid, ThemeProvider } from '@material-ui/core';
+import {
+  Box,
+  Container,
+  Grid,
+  ThemeProvider,
+  Typography
+} from '@material-ui/core';
+import { CheckCircleOutlineSharp } from '@material-ui/icons';
 import { Image } from '@components/Image';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { ContentContext } from '@contexts/ContentContext';
@@ -17,6 +24,7 @@ import { parseNewsletterOptions } from '@lib/parse/cta';
 import { newsletterTheme, newsletterStyles } from './Newsletter.styles';
 
 export const Newsletter = () => {
+  const [subscribed, setSubscribed] = useState(false);
   const {
     data,
     data: { title, body, buttonLabel, summary, image }
@@ -28,7 +36,9 @@ export const Newsletter = () => {
   const classes = newsletterStyles({});
   const cx = classNames.bind(classes);
 
-  console.log('Newsletter >> image', image);
+  const handleSubscribed = () => {
+    setSubscribed(true);
+  };
 
   return (
     <>
@@ -49,13 +59,53 @@ export const Newsletter = () => {
                   className={cx('image')}
                   wrapperClassName={cx('imageWrapper')}
                   data={image}
-                  width={{ xl: 924 }}
+                  width={{ xl: '100vw' }}
                 />
               )}
               <h1 className={cx('title')}>{title}</h1>
               <p className={cx('summary')}>{summary}</p>
               <Box className={cx('form')}>
-                <NewsletterForm options={options} label={buttonLabel} />
+                {!subscribed && (
+                  <NewsletterForm
+                    options={options}
+                    label={buttonLabel}
+                    onSubscribed={handleSubscribed}
+                  />
+                )}
+                {subscribed && (
+                  <Grid
+                    container
+                    spacing={4}
+                    justify="center"
+                    alignContent="center"
+                  >
+                    <Grid item xs={12}>
+                      <Box
+                        display="grid"
+                        gridTemplateColumns="min-content 1fr"
+                        gridGap={16}
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <Box>
+                          <CheckCircleOutlineSharp
+                            color="primary"
+                            style={{ fontSize: '5rem' }}
+                          />
+                        </Box>
+                        <Box>
+                          <Typography variant="overline">
+                            You&apos;re Subscribed
+                          </Typography>
+                          <Typography>
+                            <strong>Thank you!</strong> You mean the world to
+                            us.
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                )}
               </Box>
             </Grid>
             {body && (
