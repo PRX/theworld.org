@@ -6,6 +6,7 @@
 import fetch from 'isomorphic-unfetch';
 import { IPriApiResource } from 'pri-api-library/types';
 import { IncomingMessage } from 'http';
+import { IContentContextData } from '@interfaces/content';
 
 /**
  * Method that simplifies GET requests.
@@ -65,10 +66,26 @@ export const fetchApiHomepage = async (req: IncomingMessage) =>
   fetchApi('homepage', req);
 
 /**
+ * Method that simplifies GET queries for newsletter data.
+ *
+ * @param id
+ *    API id of newsletter.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Story data object.
+ */
+export const fetchApiNewsletter = async (
+  id: string | number,
+  req: IncomingMessage
+) => fetchApi(`newsletter/${id}`, req);
+
+/**
  * Method that simplifies GET queries for story data.
  *
- * @param alias
- *    Alias used by resource item to display data.
+ * @param id
+ *    API id of story.
  * @param req
  *    Request object from `getInitialProps` ctx object.
  *
@@ -78,25 +95,4 @@ export const fetchApiHomepage = async (req: IncomingMessage) =>
 export const fetchApiStory = async (
   id: string | number,
   req: IncomingMessage
-) => fetchApi(`story/${id}`, req);
-
-/**
- * Map resource type to their fetch function.
- */
-export const resourceTypeFetchMap = {
-  'node--stories': fetchApiStory
-};
-
-export const fetchApiContent = async (
-  type: string,
-  id: string | number,
-  req: IncomingMessage
-) => {
-  if (type === 'homepage') {
-    return fetchApiHomepage(req);
-  }
-
-  const func = resourceTypeFetchMap[type];
-
-  return func ? func(id, req) : new Promise(resolve => resolve(null));
-};
+): Promise<IContentContextData> => fetchApi(`story/${id}`, req);

@@ -20,9 +20,7 @@ import {
 } from './StoryRelatedLinks.default.styles';
 
 export const StoryRelatedLinks = () => {
-  const {
-    data: { related }
-  } = useContext(ContentContext);
+  const { related } = useContext(ContentContext);
   const classes = storyRelatedLinksStyles({});
 
   return (

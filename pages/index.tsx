@@ -9,13 +9,13 @@ import Error from 'next/error';
 
 import { IPriApiResource } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
-import { fetchApiQueryAlias, fetchApiContent } from '@lib/fetch/api';
+import { fetchApiQueryAlias } from '@lib/fetch/api';
 import { ContentContext } from '@contexts/ContentContext';
 import { importComponent, preloadComponent } from '@lib/import/component';
 
 const ContentProxy = (props: IContentComponentProxyProps) => {
   const { errorCode } = props;
-  let output: any;
+  let output: JSX.Element;
 
   // Render error page.
   if (errorCode) {
@@ -28,7 +28,7 @@ const ContentProxy = (props: IContentComponentProxyProps) => {
     const ContentComponent = importComponent(type);
 
     output = (
-      <ContentContext.Provider value={{ data }}>
+      <ContentContext.Provider value={data}>
         <ContentComponent />
       </ContentContext.Provider>
     );
@@ -64,9 +64,9 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   if (resourceType) {
     const ContentComponent = await preloadComponent(resourceType);
 
-    // Use content comonent to fetch its data.
+    // Use content component to fetch its data.
     if (ContentComponent) {
-      const data = await fetchApiContent(resourceType, resourceId, req);
+      const data = await ContentComponent.fetchData(resourceId, req);
 
       return { data };
     }

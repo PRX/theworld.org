@@ -15,11 +15,7 @@
       "node_modules/@types",
       "node_modules/pri-api-library/types"
     ],
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -30,27 +26,14 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@contexts/*": [
-        "contexts/*"
-      ],
-      "@interfaces": [
-        "interfaces"
-      ],
-      "@interfaces/*": [
-        "interfaces/*"
-      ],
-      "@lib/*": [
-        "lib/*"
-      ],
-      "@svg": [
-        "assets/svg/*"
-      ],
-      "@theme/*": [
-        "theme/*"
-      ]
+      "@components/*": ["components/*"],
+      "@config/*": ["config/*"],
+      "@contexts/*": ["contexts/*"],
+      "@interfaces": ["interfaces"],
+      "@interfaces/*": ["interfaces/*"],
+      "@lib/*": ["lib/*"],
+      "@svg": ["assets/svg/*"],
+      "@theme/*": ["theme/*"]
     }
   },
   "include": [
@@ -59,6 +42,8 @@
     "components/*",
     "components/**/*",
     "config/*",
+    "contexts/*",
+    "contexts/**/*",
     "interfaces/**/*",
     "lib/**/*",
     "pages/**/*",
@@ -67,7 +52,5 @@
     "./*.js",
     "./*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

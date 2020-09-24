@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "env": {
+    "CM_API_KEY": "@cm-api-key"
+  },
   "routes": [
     { "handle": "filesystem" },
     { "src": "/_next/.*",

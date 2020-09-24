@@ -10,13 +10,21 @@ import { Box, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { IPriApiResource } from 'pri-api-library/types';
 import { IButton } from '@interfaces/button';
+import { ICtaMessage } from '@interfaces/cta';
 import { AppContext } from '@contexts/AppContext';
+import { AppCtaBanner } from '@components/AppCtaBanner';
+import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppHeader } from '@components/AppHeader';
 import { AppFooter } from '@components/AppFooter';
+import { postJsonPriApiCtaRegion } from '@lib/fetch';
 import { fetchApiApp } from '@lib/fetch/api';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 
 interface TwAppProps extends AppProps {
+  ctaRegions?: {
+    banner?: ICtaMessage[];
+    loadUnder?: ICtaMessage[];
+  };
   latestStories?: IPriApiResource[];
   menus?: {
     [K: string]: IButton[];
@@ -31,12 +39,30 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
   static async getInitialProps(ctx: NextAppContext) {
     const { req } = ctx.ctx;
     const initialProps = await App.getInitialProps(ctx);
+    const {
+      pageProps: { data: contentData }
+    } = initialProps;
+    const { context } = contentData || {};
 
-    // Fetch Menus
+    // Fetch App Data
     const data = await fetchApiApp(req);
+
+    // Fetch CTA Messages
+    const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
+      'tw_cta_regions_site',
+      {
+        context
+      }
+    )) as IPriApiResource;
+    const banner = ctaRegions.tw_cta_region_site_banner;
+    const loadUnder = ctaRegions.tw_cta_region_site_load_under;
 
     return {
       ...initialProps,
+      ctaRegions: {
+        ...(banner && { banner }),
+        ...(loadUnder && { loadUnder })
+      },
       ...data
     };
   }
@@ -64,7 +90,13 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
   }
 
   render() {
-    const { Component, pageProps, menus, latestStories } = this.props;
+    const {
+      Component,
+      ctaRegions,
+      pageProps,
+      menus,
+      latestStories
+    } = this.props;
     const { javascriptDisabled } = this.state;
     const cx = classNames.bind({
       noJs: 'no-js'
@@ -76,18 +108,20 @@ class TwApp extends App<TwAppProps, {}, TwAppState> {
     return (
       <ThemeProvider theme={baseMuiTheme}>
         <ThemeProvider theme={appTheme}>
-          <AppContext.Provider value={{ latestStories, menus }}>
+          <AppContext.Provider value={{ ctaRegions, latestStories, menus }}>
             <Box
               className={appClasses}
               minHeight="100vh"
               display="flex"
               flexDirection="column"
             >
+              <AppCtaBanner />
               <AppHeader />
               <Box flexGrow={1}>
                 <Component {...pageProps} />
               </Box>
               <AppFooter />
+              <AppCtaLoadUnder />
             </Box>
           </AppContext.Provider>
           <CssBaseline />

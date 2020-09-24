@@ -20,27 +20,21 @@ import { ContentContext } from '@contexts/ContentContext';
 import { AudioPlayer } from '@components/AudioPlayer';
 import {
   Sidebar,
+  SidebarCta,
   SidebarHeader,
   SidebarFooter,
   SidebarList
 } from '@components/Sidebar';
+import { CtaRegion } from '@components/CtaRegion';
 import { Tags } from '@components/Tags';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
 export const StoryDefault = () => {
   const {
-    data: {
-      story: {
-        body,
-        audio,
-        embeddedPlayerUrl,
-        popoutPlayerUrl,
-        categories,
-        tags
-      },
-      related
-    }
+    data: { body, audio, embeddedPlayerUrl, popoutPlayerUrl, categories, tags },
+    related,
+    ctaRegions
   } = useContext(ContentContext);
   const { latestStories } = useContext(AppContext);
   const classes = storyStyles({});
@@ -82,18 +76,13 @@ export const StoryDefault = () => {
                   my={2}
                   dangerouslySetInnerHTML={{ __html: body }}
                 />
-                <Box
-                  bgcolor="text.hint"
-                  color="background.paper"
-                  width="100%"
-                  height={400}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  mt={3}
-                >
-                  Newsletter Sign-up
-                </Box>
+                {ctaRegions.tw_cta_region_content_inline_end && (
+                  <Sidebar item stretch>
+                    <CtaRegion
+                      data={ctaRegions.tw_cta_region_content_inline_end}
+                    />
+                  </Sidebar>
+                )}
                 {hasRelated && (
                   <aside>
                     <header>
@@ -129,32 +118,20 @@ export const StoryDefault = () => {
                   </Sidebar>
                 )}
                 <Hidden smDown>
-                  <Sidebar item stretch>
-                    <Box
-                      className="stretch"
-                      bgcolor="text.hint"
-                      color="background.paper"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height={300}
-                    >
-                      Donate CTA
-                    </Box>
-                  </Sidebar>
-                  <Sidebar item stretch>
-                    <Box
-                      className="stretch"
-                      bgcolor="text.hint"
-                      color="background.paper"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height={300}
-                    >
-                      Newsletter CTA
-                    </Box>
-                  </Sidebar>
+                  {ctaRegions.tw_cta_region_content_sidebar_01 && (
+                    <Sidebar item stretch>
+                      <SidebarCta
+                        data={ctaRegions.tw_cta_region_content_sidebar_01}
+                      />
+                    </Sidebar>
+                  )}
+                  {ctaRegions.tw_cta_region_content_sidebar_02 && (
+                    <Sidebar item stretch>
+                      <SidebarCta
+                        data={ctaRegions.tw_cta_region_content_sidebar_02}
+                      />
+                    </Sidebar>
+                  )}
                 </Hidden>
               </Sidebar>
             </Box>

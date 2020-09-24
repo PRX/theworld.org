@@ -14,21 +14,6 @@
   "engines": {
     "node": ">=8.9.0 <=12"
   },
-  "jest": {
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "setupFiles": [
-      "<rootDir>/jest.setup.js"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/.next/",
-      "<rootDir>/node_modules/"
-    ],
-    "moduleNameMapper": {
-      "^.+\\.s?css$": "identity-obj-proxy"
-    }
-  },
   "scripts": {
     "dev": "next --port $PORT",
     "build": "next build",
@@ -49,15 +34,10 @@
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "autoprefixer": "^9.6.1",
-    "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
-    "crypto-js": "^3.1.9-1",
-    "express": "^4.17.1",
+    "createsend-node": "^0.8.2",
     "font-awesome": "4.7.0",
-    "highcharts": "^7.2.0",
-    "highcharts-react-official": "^2.2.2",
     "isomorphic-unfetch": "^3.0.0",
-    "jquery": "^3.4.1",
     "jsonapi-relate": "^2.0.0",
     "lodash": "4.17.15",
     "moment": "^2.24.0",
@@ -66,12 +46,12 @@
     "next-absolute-url": "^1.0.2",
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^0.17.0",
-    "now": "^19.1.1",
     "postcss-easy-media-query": "^1.0.0",
-    "pri-api-library": "^1.1.0",
+    "pri-api-library": "^1.2.0",
     "prop-types": "^15.7.2",
     "qs": "^6.8.0",
     "react": "^16.9.0",
+    "react-cookies": "^0.1.1",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.9.0",
     "react-markdown": "^4.3.1",
@@ -88,6 +68,7 @@
     "@types/moment": "^2.13.0",
     "@types/node": "^13.1.8",
     "@types/react": "^16.9.9",
+    "@types/react-cookies": "^0.1.0",
     "@types/react-dom": "^16.9.2",
     "@types/url-search-params": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^2.20.0",
@@ -114,6 +95,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.0.0",
     "node-sass": "^4.12.0",
+    "now": "^20.1.0",
     "prettier": "^1.18.2",
     "react-test-renderer": "^16.9.0",
     "ts-jest": "^25.0.0",

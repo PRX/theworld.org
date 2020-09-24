@@ -10,7 +10,6 @@ export const generateAudioDownloadFilename = (
   { program, metatags: { canonical }, metadata }: IPriApiResource,
   prefixOverride: string = null
 ) => {
-  console.log('generateAudioDownloadFilename >> program', program);
   const { pathname } = parse(canonical);
   const parts = pathname
     .split('/')

@@ -44,14 +44,12 @@ export const addCssColorAlpha = (color: string, alpha: number) =>
   color.match(/^#?(?:(?:[a-f\d]{2}){3}|(?:[a-f\d]){3})$/i)
     ? hexToCssRgba(color, alpha)
     : color
-      .replace(/^rgb\(/, 'rgba(')
-      .replace(/^hsl\(/, 'hsla(')
-      .replace(/\(([^)]+)\)/, (m: string, p: string) => {
-        const rgba = p
-          .split(/,\s?|\s\/\s|\s/)
-          .slice(0, 3);
+        .replace(/^rgb\(/, 'rgba(')
+        .replace(/^hsl\(/, 'hsla(')
+        .replace(/\(([^)]+)\)/, (m: string, p: string) => {
+          const rgba = p.split(/,\s?|\s\/\s|\s/).slice(0, 3);
 
-        rgba.push(`${alpha}`);
+          rgba.push(`${alpha}`);
 
-        return `(${rgba})`;
-      });
+          return `(${rgba})`;
+        });

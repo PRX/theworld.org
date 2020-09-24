@@ -14,14 +14,12 @@ import { storyHeaderStyles } from './StoryHeader.default.styles';
 export const StoryHeader = () => {
   const {
     data: {
-      story: {
-        byline,
-        dateBroadcast,
-        datePublished,
-        primaryCategory,
-        program,
-        title
-      }
+      byline,
+      dateBroadcast,
+      datePublished,
+      primaryCategory,
+      program,
+      title
     }
   } = useContext(ContentContext);
   const classes = storyHeaderStyles({});

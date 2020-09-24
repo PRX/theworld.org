@@ -3,11 +3,28 @@
  * Gather story data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
+import {
+  fetchPriApiItem,
+  fetchPriApiQuery,
+  postJsonPriApiCtaRegion
+} from '@lib/fetch/api';
 import { IPriApiResource } from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
+  const getContext = (story: IPriApiResource): string[] => [
+    `node:${story.id}`,
+    `node:${story.program?.id}`,
+    `term:${story.primaryCategory?.id}`,
+    ...((story.categories &&
+      story.categories.length &&
+      story.categories.map(({ id: tid }) => `term:${tid}`)) ||
+      []),
+    ...((story.vertical &&
+      story.vertical.length &&
+      story.vertical.map(({ tid }) => `term:${tid}`)) ||
+      [])
+  ];
 
   if (id) {
     const story = (await fetchPriApiItem('node--stories', id as string, {
@@ -34,6 +51,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (story) {
       const { type, primaryCategory } = story;
+
+      // Fetch related links.
       const related =
         primaryCategory &&
         ((await fetchPriApiQuery('node--stories', {
@@ -44,9 +63,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           include: ['image'],
           fields: ['image', 'metatags', 'title']
         })) as IPriApiResource[]);
+
+      // Fetch CTA Messages.
+      const context = getContext(story);
+      const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
+        'tw_cta_regions_content',
+        {
+          context
+        }
+      )) as IPriApiResource;
+
+      // Build response object.
       const apiResp = {
         type,
-        story,
+        context,
+        ctaRegions,
+        data: story,
         ...(related && { related })
       };
 

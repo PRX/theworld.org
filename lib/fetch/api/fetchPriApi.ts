@@ -5,11 +5,19 @@
 
 import {
   fetchPriApi as libFetchPriApi,
+  postJsonPriApi as libPostJsonPriApi,
   fetchPriApiItem as libFetchPriApiItem,
-  fetchPriApiQuery as libFetchPriApiQuery
+  fetchPriApiQuery as libFetchPriApiQuery,
+  denormalizeJsonApi
 } from 'pri-api-library';
-import { PriApiResourceResponse, IPriApiResponse } from 'pri-api-library/types';
+import {
+  IPriApiResource,
+  PriApiResourceResponse,
+  IPriApiResponse
+} from 'pri-api-library/types';
+import * as JSONAPI from 'jsonapi-typescript';
 import { ILink } from '@interfaces/link';
+import { parseCtaMessage } from '@lib/parse/cta';
 import { priApi as priApiConfig } from '../../../config';
 
 /**
@@ -34,7 +42,32 @@ export const fetchPriApi = async (
 ): Promise<IPriApiResponse> => libFetchPriApi(path, params, keys, priApiConfig);
 
 /**
- * Methods that simplifies GET queries for collection resources.
+ * Method that simplifies POST JSON requests.
+ *
+ * @param path
+ *    Path to the resource being requested.
+ * @param params
+ *    Object that will be transformed into a query string.
+ * @param body
+ *    Object containing the body to send as JSON.
+ * @param keys
+ *    Object who's keys refer to relationship types, and values refer to a
+ *    property on the related object that should become the key on the parsed
+ *    resonse.
+ *
+ * @returns
+ *    Denormalized response to request, or error object.
+ */
+export const postJsonPriApi = async (
+  path: string,
+  params?: object,
+  body?: object,
+  keys?: object
+): Promise<IPriApiResponse> =>
+  libPostJsonPriApi(path, params, body, keys, priApiConfig);
+
+/**
+ * Method that simplifies GET queries for collection resources.
  *
  * @param type
  *    Resource type name.
@@ -56,7 +89,7 @@ export const fetchPriApiQuery = async (
   libFetchPriApiQuery(type, params, keys, priApiConfig);
 
 /**
- * Methods that simplifies GET queries for resource item.
+ * Method that simplifies GET queries for resource item.
  *
  * @param type
  *    Resource type name.
@@ -81,7 +114,7 @@ export const fetchPriApiItem = async (
   libFetchPriApiItem(type, id, params, keys, priApiConfig);
 
 /**
- * Metho that simplifies GET queries for resource item using URL path alias.
+ * Method that simplifies GET queries for resource item using URL path alias.
  *
  * @param alias
  *    Alias used by resource item to display data.
@@ -107,7 +140,7 @@ export const fetchPriApiQueryAlias = async (
   ).then(resp => !resp.isFailure && resp.response);
 
 /**
- * Metho that simplifies GET queries for menu.
+ * Method that simplifies GET queries for menu.
  *
  * @param menuName
  *    Machine name of menu.
@@ -121,3 +154,75 @@ export const fetchPriApiQueryMenu = async (
   fetchPriApi(`menu/tree/${menuName}`).then(
     resp => !resp.isFailure && (resp.response as ILink[])
   );
+
+/**
+ * Method that simplifies GET queries for CTA region collections.
+ *
+ * @param alias
+ *    Alias used by resource item to display data.
+ * @param params
+ *    Optional. Query string params described in key:value pairs.
+ * @param keys
+ *    Object who's keys refer to relationship types, and values refer to a
+ *    property on the related object that should become the key on the parsed
+ *    resonse.
+ *
+ * @returns
+ *    Denormalized resource item.
+ */
+export const fetchPriApiCtaRegion = async (
+  name: string,
+  params?: object,
+  keys?: object
+): Promise<PriApiResourceResponse> =>
+  fetchPriApi(`cta/region/${name.replace(/^\/+|\/+$/, '')}`, params, keys).then(
+    resp => !resp.isFailure && resp.response
+  );
+
+/**
+ * Method that simplifies POST JSON queries for CTA region group collections.
+ *
+ * @param alias
+ *    Alias used by resource item to display data.
+ * @param body
+ *    Object containing the body to send as JSON.
+ *
+ * @returns
+ *    Denormalized resource item.
+ */
+export const postJsonPriApiCtaRegion = async (
+  name: string,
+  body: object
+): Promise<PriApiResourceResponse> =>
+  postJsonPriApi(
+    `tw/cta/region_group/${name}`,
+    {
+      include: 'newsletter'
+    },
+    body
+  )
+    .then(resp => !resp.isFailure && resp.response)
+    .then(
+      (resp: IPriApiResource) =>
+        resp && {
+          ...resp,
+          subqueues: Object.entries(resp.subqueues)
+            // Denormalize subqueue array items.
+            .map(([key, items]: [string, JSONAPI.CollectionResourceDoc[]]) => [
+              key,
+              items.map(denormalizeJsonApi)
+            ])
+            // Parse Message data
+            .map(([key, items]: [string, IPriApiResource[]]) => {
+              return [key, items.map(item => parseCtaMessage(item, key))];
+            })
+            // Convert back to object.
+            .reduce(
+              (a, [key, value]: [string, any]) => ({
+                ...a,
+                [key]: value
+              }),
+              {}
+            )
+        }
+    );

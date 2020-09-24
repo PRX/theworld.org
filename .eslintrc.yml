@@ -53,6 +53,9 @@ rules:
   react/prefer-stateless-function: 0
   react/react-in-jsx-scope: 2
   '@typescript-eslint/indent': 0
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - varsIgnorePattern: "React"
   prettier/prettier: 'error'
 overrides:
   - 'files': ['./pages/**/*', './pages/*']

@@ -19,7 +19,8 @@ export const headingProps = {
 export const baseMuiTheme = createMuiTheme({
   palette: {
     primary: {
-      main: blue[600]
+      main: blue[600],
+      dark: blue[800]
     },
     secondary: {
       light: orange[400],
