@@ -62,51 +62,53 @@ export const Newsletter = () => {
                   width={{ xl: '100vw' }}
                 />
               )}
-              <h1 className={cx('title')}>{title}</h1>
-              <p className={cx('summary')}>{summary}</p>
-              <Box className={cx('form')}>
-                {!subscribed && (
-                  <NewsletterForm
-                    options={options}
-                    label={buttonLabel}
-                    onSubscribed={handleSubscribed}
-                  />
-                )}
-                {subscribed && (
-                  <Grid
-                    container
-                    spacing={4}
-                    justify="center"
-                    alignContent="center"
-                  >
-                    <Grid item xs={12}>
-                      <Box
-                        display="grid"
-                        gridTemplateColumns="min-content 1fr"
-                        gridGap={16}
-                        justifyContent="center"
-                        alignItems="center"
-                      >
-                        <Box>
-                          <CheckCircleOutlineSharp
-                            color="primary"
-                            style={{ fontSize: '5rem' }}
-                          />
+              <div className={cx('content')}>
+                <h1 className={cx('title')}>{title}</h1>
+                <p className={cx('summary')}>{summary}</p>
+                <Box className={cx('form')}>
+                  {!subscribed && (
+                    <NewsletterForm
+                      options={options}
+                      label={buttonLabel}
+                      onSubscribed={handleSubscribed}
+                    />
+                  )}
+                  {subscribed && (
+                    <Grid
+                      container
+                      spacing={4}
+                      justify="center"
+                      alignContent="center"
+                    >
+                      <Grid item xs={12}>
+                        <Box
+                          display="grid"
+                          gridTemplateColumns="min-content 1fr"
+                          gridGap={16}
+                          justifyContent="center"
+                          alignItems="center"
+                        >
+                          <Box>
+                            <CheckCircleOutlineSharp
+                              color="primary"
+                              style={{ fontSize: '5rem' }}
+                            />
+                          </Box>
+                          <Box>
+                            <Typography variant="overline">
+                              You&apos;re Subscribed
+                            </Typography>
+                            <Typography>
+                              <strong>Thank you!</strong> You mean the world to
+                              us.
+                            </Typography>
+                          </Box>
                         </Box>
-                        <Box>
-                          <Typography variant="overline">
-                            You&apos;re Subscribed
-                          </Typography>
-                          <Typography>
-                            <strong>Thank you!</strong> You mean the world to
-                            us.
-                          </Typography>
-                        </Box>
-                      </Box>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                )}
-              </Box>
+                  )}
+                </Box>
+              </div>
             </Grid>
             {body && (
               <Grid item xs={10} sm={8}>

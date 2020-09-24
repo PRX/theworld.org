@@ -29,7 +29,7 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
         display: 'grid',
         gridTemplateColumns:
           'minmax(2rem, 1fr) minmax(75vw, 1fr) minmax(2rem, 1fr)',
-        gridTemplateRows: '2fr max-content max-content max-content 2rem',
+        gridTemplateRows: '2fr max-content 2rem',
         gridGap: '1rem',
         maxHeight: '75vh',
         overflow: 'hidden',
@@ -64,22 +64,28 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
       gridRow: '1 / -1',
       maxHeight: '75vh'
     },
-    title: {
+    content: {
       gridColumn: '2 / -2',
-      gridRow: 2,
-      maxWidth: '65%',
+      gridRow: '2 / -2',
+      '&::before': {
+        content: '""',
+        display: 'block',
+        float: 'right',
+        width: '55%',
+        height: '7.4vw',
+        shapeOutside: 'polygon(0 0, 100% 0, 100% 100%)'
+      }
+    },
+    title: {
       color: theme.palette.primary.dark,
       fontSize: '3rem',
-      lineHeight: '1.1'
+      lineHeight: '1.1',
+      marginTop: 0
     },
     summary: {
-      gridColumn: '2 / -2',
-      gridRow: 3,
-      maxWidth: '85%',
       fontSize: '1.5rem'
     },
     form: {
-      gridColumn: '2 / -2',
       gridRow: 4
     },
     body: {
