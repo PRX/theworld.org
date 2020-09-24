@@ -62,7 +62,9 @@ export const newsletterFormStyles = makeStyles((theme: Theme) =>
         `${theme.spacing(compact ? 1 : 2)}px`
     },
     optin: {
-      gridColumn: '1 / -1'
+      gridColumn: '1 / -1',
+      marginTop: ({ compact }: { compact: boolean }) =>
+        `-${theme.spacing(compact ? 1 : 2)}px`
     }
   })
 );
