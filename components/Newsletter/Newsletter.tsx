@@ -36,15 +36,22 @@ export const Newsletter = () => {
         <title>{title}</title>
       </Head>
       <ThemeProvider theme={newsletterTheme}>
-        <Container>
+        <Container disableGutters={!!image} maxWidth={false}>
           <Grid container justify="center">
             <Grid
               item
               xs={12}
-              sm={9}
+              sm={image ? 12 : 9}
               className={cx('header', { withImage: !!image })}
             >
-              {image && <Image data={image} width={{ xl: 924 }} />}
+              {image && (
+                <Image
+                  className={cx('image')}
+                  wrapperClassName={cx('imageWrapper')}
+                  data={image}
+                  width={{ xl: 924 }}
+                />
+              )}
               <h1 className={cx('title')}>{title}</h1>
               <p className={cx('summary')}>{summary}</p>
               <Box className={cx('form')}>
@@ -52,7 +59,7 @@ export const Newsletter = () => {
               </Box>
             </Grid>
             {body && (
-              <Grid item xs={12} sm={8}>
+              <Grid item xs={10} sm={8}>
                 <Box
                   className={cx('body')}
                   my={2}
