@@ -65,29 +65,31 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
       maxHeight: '75vh'
     },
     content: {
-      gridColumn: '2 / -2',
-      gridRow: '2 / -2',
-      '&::before': {
-        content: '""',
-        display: 'block',
-        float: 'right',
-        width: '55%',
-        height: '7.4vw',
-        shapeOutside: 'polygon(0 0, 100% 0, 100% 100%)'
+      '$withImage &': {
+        gridColumn: '2 / -2',
+        gridRow: '2 / -2',
+        '&::before': {
+          content: '""',
+          display: 'block',
+          float: 'right',
+          width: '55%',
+          height: '7.4vw',
+          shapeOutside: 'polygon(0 0, 100% 0, 100% 100%)'
+        }
       }
     },
     title: {
       color: theme.palette.primary.dark,
       fontSize: '3rem',
       lineHeight: '1.1',
-      marginTop: 0
+      '$withImage &': {
+        marginTop: 0
+      }
     },
     summary: {
       fontSize: '1.5rem'
     },
-    form: {
-      gridRow: 4
-    },
+    form: {},
     body: {
       fontSize: '1.2rem',
       lineHeight: '1.7rem',
