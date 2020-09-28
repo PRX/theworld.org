@@ -69,8 +69,6 @@ export const appCtaLoadUnderStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       zIndex: theme.zIndex.drawer,
-      boxShadow:
-        '0px -3px 5px -1px rgba(0,0,0,0.2),0px -5px 8px 0px rgba(0,0,0,0.14),0px -1px 14px 0px rgba(0,0,0,0.12)',
       backgroundColor: theme.palette.primary.dark,
       color: theme.palette.getContrastText(theme.palette.primary.dark)
     },
