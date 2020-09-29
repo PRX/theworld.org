@@ -13,23 +13,16 @@ import {
   Typography,
   ThemeProvider
 } from '@material-ui/core';
-import { NewsletterForm } from '@components/NewsletterForm';
+import { useRouter } from 'next/router';
+import { newsletterFormTheme } from '@components/NewsletterForm/NewsletterForm.styles';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
-import { appCtaMessageNewsletterTheme } from './AppCtaMessageNewsletter.styles';
 
 export const AppCtaMessageNewsletter = ({
   data,
   onClose
 }: IAppCtaMessageProps) => {
-  const {
-    heading,
-    message,
-    action = {
-      name: 'Subscribe'
-    },
-    dismiss,
-    newsletterOptions
-  } = data;
+  const router = useRouter();
+  const { heading, message, action, dismiss } = data;
   const hasActions = !!(action || dismiss);
   const actionAttrs: ButtonProps = {
     variant: 'contained',
@@ -42,7 +35,16 @@ export const AppCtaMessageNewsletter = ({
         variant: 'outlined',
         color: 'primary'
       };
-  const handleSubscribe = () => {
+  const handleActionClick = () => {
+    router.push(
+      {
+        pathname: '/',
+        query: {
+          alias: action.url.pathname
+        }
+      },
+      action.url.pathname
+    );
     onClose();
   };
   const handleDismissClick = (
@@ -53,7 +55,7 @@ export const AppCtaMessageNewsletter = ({
   };
 
   return (
-    <ThemeProvider theme={appCtaMessageNewsletterTheme}>
+    <ThemeProvider theme={newsletterFormTheme}>
       <Box textAlign="center">
         <Grid container justify="center" alignItems="center">
           <Grid item sm={12} md={8}>
@@ -70,11 +72,13 @@ export const AppCtaMessageNewsletter = ({
           <Grid item sm={12} md={4}>
             {hasActions && (
               <Toolbar>
-                <NewsletterForm
-                  onSubscribed={handleSubscribe}
-                  label={action && action.name}
-                  options={newsletterOptions}
-                />
+                <Button
+                  {...actionAttrs}
+                  href={action.url.pathname}
+                  onClick={handleActionClick}
+                >
+                  {action.name}
+                </Button>
                 {dismiss && (
                   <Button {...dismissAttrs} onClick={handleDismissClick}>
                     {dismiss.name}

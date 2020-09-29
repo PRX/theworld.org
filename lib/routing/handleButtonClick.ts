@@ -18,10 +18,7 @@ import { Url } from 'url';
  *    Url object with alias query relative to app.
  */
 export const generateLinkHrefFromUrl = (url: Url) => {
-  const query =
-    url.pathname !== '/'
-      ? { alias: url.pathname }
-      : null;
+  const query = url.pathname !== '/' ? { alias: url.pathname } : null;
 
   return {
     pathname: '/',

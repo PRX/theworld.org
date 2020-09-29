@@ -7,26 +7,21 @@ import React from 'react';
 import {
   Box,
   Button,
+  ButtonProps,
   Toolbar,
   Typography,
-  ButtonProps
+  ThemeProvider
 } from '@material-ui/core';
-import { NewsletterForm } from '@components/NewsletterForm';
+import { useRouter } from 'next/router';
+import { newsletterFormTheme } from '@components/NewsletterForm/NewsletterForm.styles';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 
 export const AppCtaMessageNewsletter = ({
   data,
   onClose
 }: IAppCtaMessageProps) => {
-  const {
-    heading,
-    message,
-    action = {
-      name: 'Subscribe'
-    },
-    dismiss,
-    newsletterOptions
-  } = data;
+  const router = useRouter();
+  const { heading, message, action, dismiss } = data;
   const hasActions = !!(action || dismiss);
   const actionAttrs: ButtonProps = {
     variant: 'contained',
@@ -39,7 +34,16 @@ export const AppCtaMessageNewsletter = ({
         variant: 'outlined',
         color: 'primary'
       };
-  const handleSubscribe = () => {
+  const handleActionClick = () => {
+    router.push(
+      {
+        pathname: '/',
+        query: {
+          alias: action.url.pathname
+        }
+      },
+      action.url.pathname
+    );
     onClose();
   };
   const handleDismissClick = (
@@ -50,30 +54,34 @@ export const AppCtaMessageNewsletter = ({
   };
 
   return (
-    <Box textAlign="center">
-      {heading && <Typography variant="h3">{heading}</Typography>}
-      {message && (
-        <Typography
-          component="div"
-          variant="body1"
-          /* eslint-disable-next-line */
-          dangerouslySetInnerHTML={{ __html: message }}
-        />
-      )}
-      {hasActions && (
-        <Toolbar>
-          <NewsletterForm
-            onSubscribed={handleSubscribe}
-            label={action && action.name}
-            options={newsletterOptions}
+    <ThemeProvider theme={newsletterFormTheme}>
+      <Box textAlign="center">
+        {heading && <Typography variant="h3">{heading}</Typography>}
+        {message && (
+          <Typography
+            component="div"
+            variant="body1"
+            /* eslint-disable-next-line */
+            dangerouslySetInnerHTML={{ __html: message }}
           />
-          {dismiss && (
-            <Button {...dismissAttrs} onClick={handleDismissClick}>
-              {dismiss.name}
+        )}
+        {hasActions && (
+          <Toolbar>
+            <Button
+              {...actionAttrs}
+              href={action.url.pathname}
+              onClick={handleActionClick}
+            >
+              {action.name}
             </Button>
-          )}
-        </Toolbar>
-      )}
-    </Box>
+            {dismiss && (
+              <Button {...dismissAttrs} onClick={handleDismissClick}>
+                {dismiss.name}
+              </Button>
+            )}
+          </Toolbar>
+        )}
+      </Box>
+    </ThemeProvider>
   );
 };
