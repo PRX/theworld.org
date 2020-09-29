@@ -12,15 +12,14 @@ import {
   Typography,
   ThemeProvider
 } from '@material-ui/core';
-import { useRouter } from 'next/router';
 import { newsletterFormTheme } from '@components/NewsletterForm/NewsletterForm.styles';
+import { handleButtonClick } from '@lib/routing';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 
 export const AppCtaMessageNewsletter = ({
   data,
   onClose
 }: IAppCtaMessageProps) => {
-  const router = useRouter();
   const { heading, message, action, dismiss } = data;
   const hasActions = !!(action || dismiss);
   const actionAttrs: ButtonProps = {
@@ -34,18 +33,9 @@ export const AppCtaMessageNewsletter = ({
         variant: 'outlined',
         color: 'primary'
       };
-  const handleActionClick = () => {
-    router.push(
-      {
-        pathname: '/',
-        query: {
-          alias: action.url.pathname
-        }
-      },
-      action.url.pathname
-    );
+  const handleActionClick = handleButtonClick(action.url, () => {
     onClose();
-  };
+  });
   const handleDismissClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -67,11 +57,7 @@ export const AppCtaMessageNewsletter = ({
         )}
         {hasActions && (
           <Toolbar>
-            <Button
-              {...actionAttrs}
-              href={action.url.pathname}
-              onClick={handleActionClick}
-            >
+            <Button {...actionAttrs} onClick={handleActionClick}>
               {action.name}
             </Button>
             {dismiss && (

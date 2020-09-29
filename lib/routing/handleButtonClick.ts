@@ -36,8 +36,14 @@ export const generateLinkHrefFromUrl = (url: Url) => {
  *    Handler function.
  */
 /* istanbul ignore next */
-export const handleButtonClick = (url: Url) => (event: MouseEvent) => {
+export const handleButtonClick = (url: Url, callback: Function = null) => (
+  event: MouseEvent
+) => {
   event.preventDefault();
 
   Router.push(generateLinkHrefFromUrl(url), url.pathname);
+
+  if (callback) {
+    callback();
+  }
 };
