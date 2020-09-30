@@ -16,6 +16,7 @@
   },
   "scripts": {
     "dev": "next --port $PORT",
+    "dev:start": "yarn vercel dev",
     "build": "next build",
     "lint": "eslint --ext .jsx,.js,.tsx,.ts ./{components,config,contexts,interfaces,lib,pages,theme,assets/svg} --no-error-on-unmatched-pattern",
     "format:check": "prettier --config ./prettier.config.js --check **/*.{js,ts,tsx}",
@@ -98,10 +99,10 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.0.0",
     "node-sass": "^4.12.0",
-    "now": "^20.1.0",
     "prettier": "^1.18.2",
     "react-test-renderer": "^16.9.0",
     "ts-jest": "^25.0.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.6.4",
+    "vercel": "^20.1.1"
   }
 }
