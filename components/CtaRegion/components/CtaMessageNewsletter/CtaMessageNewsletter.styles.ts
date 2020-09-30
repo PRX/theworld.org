@@ -6,8 +6,17 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
 
-export const ctaMessageNewsletterTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+export const ctaMessageNewsletterTheme = (theme: Theme) => {
+  const tempTheme = createMuiTheme(theme, {
+    palette: {
+      primary: {
+        ...theme.palette.success,
+        contrastText: theme.palette.common.white
+      }
+    }
+  });
+
+  return createMuiTheme(tempTheme, {
     overrides: {
       MuiButton: {
         containedPrimary: {
@@ -26,8 +35,10 @@ export const ctaMessageNewsletterTheme = (theme: Theme) =>
       },
       MuiCard: {
         root: {
+          paddingBottom: '0.5rem',
           borderLeftColor: theme.palette.success.main
         }
       }
     }
   });
+};

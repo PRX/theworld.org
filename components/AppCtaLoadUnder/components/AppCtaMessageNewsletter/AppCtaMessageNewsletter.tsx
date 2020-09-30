@@ -13,7 +13,7 @@ import {
   Typography,
   ThemeProvider
 } from '@material-ui/core';
-import { Newsletter } from '@components/Newsletter';
+import { NewsletterForm } from '@components/NewsletterForm';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 import { appCtaMessageNewsletterTheme } from './AppCtaMessageNewsletter.styles';
 
@@ -70,11 +70,10 @@ export const AppCtaMessageNewsletter = ({
           <Grid item sm={12} md={4}>
             {hasActions && (
               <Toolbar>
-                <Newsletter
+                <NewsletterForm
                   onSubscribed={handleSubscribe}
                   label={action && action.name}
                   options={newsletterOptions}
-                  buttonProps={actionAttrs}
                 />
                 {dismiss && (
                   <Button {...dismissAttrs} onClick={handleDismissClick}>

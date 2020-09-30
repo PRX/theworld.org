@@ -7,6 +7,11 @@ import fetch from 'isomorphic-unfetch';
 import { IPriApiResource } from 'pri-api-library/types';
 import { IncomingMessage } from 'http';
 import { IContentContextData } from '@interfaces/content';
+import {
+  INewsletterOptions,
+  INewsletterData,
+  ICMApiCustomField
+} from '@interfaces/newsletter';
 
 /**
  * Method that simplifies GET requests.
@@ -80,6 +85,41 @@ export const fetchApiNewsletter = async (
   id: string | number,
   req: IncomingMessage
 ) => fetchApi(`newsletter/${id}`, req);
+
+/**
+ * Post subscription data to Campaign Monitor.
+ *
+ * @param newsletter Newsletter data object.
+ * @param options Newsletter subscription options.
+ */
+export const postNewsletterSubsciption = async (
+  newsletter: INewsletterData,
+  options: INewsletterOptions
+) => {
+  const { emailAddress } = newsletter;
+  const { listId, customFields: cflds } = {
+    listId: '04472db22d3fa6920bb38f18358b0f72',
+    ...options
+  };
+  const customFields = Object.entries(cflds).map(
+    ([Key, Value]: [string, string]): ICMApiCustomField => ({
+      Key,
+      Value
+    })
+  );
+  const payload = {
+    listId,
+    emailAddress,
+    customFields
+  };
+  return fetch('/api/newsletter/subscribe', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  }).then(r => r.json());
+};
 
 /**
  * Method that simplifies GET queries for story data.

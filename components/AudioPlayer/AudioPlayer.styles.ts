@@ -11,7 +11,6 @@ import {
   lighten
 } from '@material-ui/core/styles';
 import { blue } from '@theme/colors';
-import { addCssColorAlpha } from '@lib/parse/color';
 
 const playerHeight = 50;
 

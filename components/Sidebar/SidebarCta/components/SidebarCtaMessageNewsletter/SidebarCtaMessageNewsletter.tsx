@@ -9,11 +9,11 @@ import {
   CardHeader,
   CardContent,
   CardActions,
-  ButtonProps,
   Typography,
-  ThemeProvider
+  ThemeProvider,
+  Divider
 } from '@material-ui/core';
-import { Newsletter } from '@components/Newsletter';
+import { NewsletterForm } from '@components/NewsletterForm';
 import { ICtaMessageProps } from '@interfaces/cta';
 import { sidebarCtaMessageNewsletterTheme } from './SidebarCtaMessageNewsletter.styles';
 
@@ -28,13 +28,6 @@ export const SidebarCtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
     newsletterOptions
   } = data;
   const hasActions = !!(action || dismiss);
-  const actionAttrs: ButtonProps = {
-    variant: 'contained',
-    color: 'primary',
-    size: 'large',
-    fullWidth: true,
-    disableElevation: true
-  };
 
   return (
     <ThemeProvider theme={sidebarCtaMessageNewsletterTheme}>
@@ -51,13 +44,16 @@ export const SidebarCtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
           </CardContent>
         )}
         {hasActions && (
-          <CardActions>
-            <Newsletter
-              label={action && action.name}
-              options={newsletterOptions}
-              buttonProps={actionAttrs}
-            />
-          </CardActions>
+          <>
+            <Divider />
+            <CardActions>
+              <NewsletterForm
+                label={action && action.name}
+                options={newsletterOptions}
+                compact
+              />
+            </CardActions>
+          </>
         )}
       </Card>
     </ThemeProvider>

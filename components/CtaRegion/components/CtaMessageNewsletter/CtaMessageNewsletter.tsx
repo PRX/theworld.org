@@ -3,36 +3,36 @@
  * Component for newsletter CTA messages.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  Box,
   Card,
   CardHeader,
   CardContent,
   CardActions,
-  ButtonProps,
+  Grid,
   Typography,
   ThemeProvider
 } from '@material-ui/core';
-import { Newsletter } from '@components/Newsletter';
+import { CheckCircleOutlineSharp } from '@material-ui/icons';
+import { NewsletterForm } from '@components/NewsletterForm';
 import { ICtaMessageProps } from '@interfaces/cta';
 import { ctaMessageNewsletterTheme } from './CtaMessageNewsletter.styles';
 
 export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
+  const [subscribed, setSubscribed] = useState(false);
   const {
     heading,
     message,
     action = {
       name: 'Subscribe'
     },
-    dismiss,
     newsletterOptions
   } = data;
-  const hasActions = !!(action || dismiss);
-  const actionAttrs: ButtonProps = {
-    variant: 'contained',
-    color: 'primary',
-    size: 'large',
-    disableElevation: true
+  const hasActions = !!action;
+
+  const handleSubscribed = () => {
+    setSubscribed(true);
   };
 
   return (
@@ -51,11 +51,46 @@ export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
         )}
         {hasActions && (
           <CardActions>
-            <Newsletter
-              label={action && action.name}
-              options={newsletterOptions}
-              buttonProps={actionAttrs}
-            />
+            {!subscribed && (
+              <NewsletterForm
+                label={action && action.name}
+                options={newsletterOptions}
+                onSubscribed={handleSubscribed}
+              />
+            )}
+            {subscribed && (
+              <Grid
+                container
+                spacing={4}
+                justify="center"
+                alignContent="center"
+              >
+                <Grid item xs={12}>
+                  <Box
+                    display="grid"
+                    gridTemplateColumns="min-content 1fr"
+                    gridGap={16}
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Box>
+                      <CheckCircleOutlineSharp
+                        color="primary"
+                        style={{ fontSize: '5rem' }}
+                      />
+                    </Box>
+                    <Box>
+                      <Typography variant="overline">
+                        You&apos;re Subscribed
+                      </Typography>
+                      <Typography>
+                        <strong>Thank you!</strong> You mean the world to us.
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            )}
           </CardActions>
         )}
       </Card>
