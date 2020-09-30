@@ -123,6 +123,9 @@ export const AppFooter = () => {
         <p className={classes.copyright}>
           &copy;{copyrightDate} The World from PRX
         </p>
+        <p className={classes.copyright}>
+          PRX is a 501(c)(3) organization recognized by the IRS: #263347402.
+        </p>
       </Container>
     </footer>
   );
