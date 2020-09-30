@@ -58,7 +58,7 @@ cp .env-example .env
 
 Update variable values as needed. Some features, like newsletter subscriptions will not work until a valid key is provided here.
 
-Lets go ahead and do the same for the local app config file:
+If you need to use a local data API, do the following to create a local app config file:
 
 ```
 cp ./config/local.example.js ./config/local.js
