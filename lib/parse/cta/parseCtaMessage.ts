@@ -44,6 +44,8 @@ export const parseCtaMessage = (
   }),
   ...(message.ctaType === 'newsletter' &&
     message.newsletter && {
+      ...(!message.heading && { heading: message.newsletter.title }),
+      ...(!message.message && { message: message.newsletter.summary }),
       action: {
         name: message.actionLabel || message.newsletter.buttonLabel,
         url: generateLinkHrefForContent(message.newsletter)

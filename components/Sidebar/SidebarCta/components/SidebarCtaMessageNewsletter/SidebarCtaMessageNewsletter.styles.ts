@@ -6,8 +6,17 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
 
-export const sidebarCtaMessageNewsletterTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+export const sidebarCtaMessageNewsletterTheme = (theme: Theme) => {
+  const tempTheme = createMuiTheme(theme, {
+    palette: {
+      primary: {
+        ...theme.palette.success,
+        contrastText: theme.palette.common.white
+      }
+    }
+  });
+
+  return createMuiTheme(tempTheme, {
     overrides: {
       MuiButton: {
         containedPrimary: {
@@ -31,3 +40,4 @@ export const sidebarCtaMessageNewsletterTheme = (theme: Theme) =>
       }
     }
   });
+};
