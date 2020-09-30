@@ -7,6 +7,7 @@ import { IPriApiResource } from 'pri-api-library/types';
 import { ICtaMessage } from '@interfaces/cta';
 import { parse } from 'url';
 import { IPriApiNewsletter, INewsletterOptions } from '@interfaces/newsletter';
+import { generateLinkHrefForContent } from '@lib/routing';
 
 export const parseNewsletterOptions = (
   { listId }: IPriApiNewsletter,
@@ -41,9 +42,14 @@ export const parseCtaMessage = (
       name: message.dismissButtonLabel
     }
   }),
-  ...(message.newsletter && {
-    newsletter: message.newsletter,
-    newsletterOptions: parseNewsletterOptions(message.newsletter, region)
-  }),
+  ...(message.ctaType === 'newsletter' &&
+    message.newsletter && {
+      action: {
+        name: message.actionLabel || message.newsletter.buttonLabel,
+        url: generateLinkHrefForContent(message.newsletter)
+      },
+      newsletter: message.newsletter,
+      newsletterOptions: parseNewsletterOptions(message.newsletter, region)
+    }),
   ...(region && { region })
 });

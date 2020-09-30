@@ -13,23 +13,15 @@ import {
   Typography,
   ThemeProvider
 } from '@material-ui/core';
-import { NewsletterForm } from '@components/NewsletterForm';
+import { newsletterFormTheme } from '@components/NewsletterForm/NewsletterForm.styles';
+import { handleButtonClick } from '@lib/routing';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
-import { appCtaMessageNewsletterTheme } from './AppCtaMessageNewsletter.styles';
 
 export const AppCtaMessageNewsletter = ({
   data,
   onClose
 }: IAppCtaMessageProps) => {
-  const {
-    heading,
-    message,
-    action = {
-      name: 'Subscribe'
-    },
-    dismiss,
-    newsletterOptions
-  } = data;
+  const { heading, message, action, dismiss } = data;
   const hasActions = !!(action || dismiss);
   const actionAttrs: ButtonProps = {
     variant: 'contained',
@@ -42,9 +34,9 @@ export const AppCtaMessageNewsletter = ({
         variant: 'outlined',
         color: 'primary'
       };
-  const handleSubscribe = () => {
+  const handleActionClick = handleButtonClick(action.url, () => {
     onClose();
-  };
+  });
   const handleDismissClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -53,7 +45,7 @@ export const AppCtaMessageNewsletter = ({
   };
 
   return (
-    <ThemeProvider theme={appCtaMessageNewsletterTheme}>
+    <ThemeProvider theme={newsletterFormTheme}>
       <Box textAlign="center">
         <Grid container justify="center" alignItems="center">
           <Grid item sm={12} md={8}>
@@ -70,11 +62,9 @@ export const AppCtaMessageNewsletter = ({
           <Grid item sm={12} md={4}>
             {hasActions && (
               <Toolbar>
-                <NewsletterForm
-                  onSubscribed={handleSubscribe}
-                  label={action && action.name}
-                  options={newsletterOptions}
-                />
+                <Button {...actionAttrs} onClick={handleActionClick}>
+                  {action.name}
+                </Button>
                 {dismiss && (
                   <Button {...dismissAttrs} onClick={handleDismissClick}>
                     {dismiss.name}

@@ -16,12 +16,13 @@ import { IPriApiResource } from 'pri-api-library/types';
  * @returns
  *    Url object with alias query relative to app.
  */
-export const generateLinkHrefForContent = (data: IPriApiResource): UrlWithParsedQuery => {
+export const generateLinkHrefForContent = (
+  data: IPriApiResource
+): UrlWithParsedQuery => {
   const {
     metatags: { canonical }
   } = data;
-  const { pathname: alias} = parse(canonical);
-  const href = parse(`/?alias=${alias}`, true);
+  const href = parse(canonical as string, true);
 
   return href;
 };

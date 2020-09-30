@@ -18,10 +18,7 @@ import { Url } from 'url';
  *    Url object with alias query relative to app.
  */
 export const generateLinkHrefFromUrl = (url: Url) => {
-  const query =
-    url.pathname !== '/'
-      ? { alias: url.pathname }
-      : null;
+  const query = url.pathname !== '/' ? { alias: url.pathname } : null;
 
   return {
     pathname: '/',
@@ -39,8 +36,14 @@ export const generateLinkHrefFromUrl = (url: Url) => {
  *    Handler function.
  */
 /* istanbul ignore next */
-export const handleButtonClick = (url: Url) => (event: MouseEvent) => {
+export const handleButtonClick = (url: Url, callback: Function = null) => (
+  event: MouseEvent
+) => {
   event.preventDefault();
 
   Router.push(generateLinkHrefFromUrl(url), url.pathname);
+
+  if (callback) {
+    callback();
+  }
 };
