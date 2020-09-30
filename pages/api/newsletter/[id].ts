@@ -12,7 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (id) {
     const data = (await fetchPriApiItem(
-      'node--newsletter_sign_up',
+      'node--newsletter_sign_ups',
       id as string,
       {
         include: ['image']

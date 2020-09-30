@@ -5,14 +5,15 @@
 
 import { createStyles, Theme } from '@material-ui/core/styles';
 
-export const storyLayoutStyles = (theme: Theme) => createStyles({
-  main: {
-    display: 'grid',
-    gridGap: `${theme.spacing(2)}px`,
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: 'auto 300px'
+export const storyLayoutStyles = (theme: Theme) =>
+  createStyles({
+    main: {
+      display: 'grid',
+      gridGap: `${theme.spacing(2)}px`,
+      [theme.breakpoints.up('md')]: {
+        gridTemplateColumns: 'auto 300px'
+      }
     },
-  },
-  content: {},
-  sidebar: {}
-});
+    content: {},
+    sidebar: {}
+  });

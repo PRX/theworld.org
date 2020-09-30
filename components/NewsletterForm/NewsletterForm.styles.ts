@@ -1,6 +1,6 @@
 /**
- * @file Newsletter.style.ts
- * Styles for Newsletter.
+ * @file NewsletterForm.style.ts
+ * Styles for NewsletterForm.
  */
 
 import {

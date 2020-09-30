@@ -22,6 +22,7 @@ export type ImageWidth = number | IResponsiveConfig;
 export interface IImageComponentProps {
   data: any;
   width: ImageWidth;
+  wrapperClassName?: string;
   [k: string]: any;
 }
 
@@ -150,6 +151,7 @@ export const generateResponsiveAttributes = (
 export const Image = ({
   data,
   width: propWidth,
+  wrapperClassName,
   className,
   ...other
 }: IImageComponentProps) => {
@@ -189,7 +191,7 @@ export const Image = ({
     ) as IImageStyle[];
 
   const imgAttrs = {
-    className: [className, cx({ root: true, image: isResponsive })].join(' '),
+    className: [className, cx('root', { responsive: isResponsive })].join(' '),
     src: defaultSrc,
     ...other,
     ...(isResponsive
@@ -203,7 +205,7 @@ export const Image = ({
 
   return (
     (!isResponsive && <img alt={alt} {...imgAttrs} />) || (
-      <div className={classes.imageWrapper}>
+      <div className={cx(wrapperClassName, 'imageWrapper')}>
         <img alt={alt} {...imgAttrs} />
       </div>
     )

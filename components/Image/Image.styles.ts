@@ -7,11 +7,17 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 export const imageStyles = makeStyles(() =>
   createStyles({
-    imageWrapper: (props: { width?: number; height?: number }) => ({
+    imageWrapper: ({
+      width = 16,
+      height = 9
+    }: {
+      width?: number;
+      height?: number;
+    }) => ({
       position: 'relative',
-      paddingTop: `${(props.height / props.width || 9 / 16) * 100}%`
+      paddingTop: `${(height / width) * 100}%`
     }),
-    image: {
+    responsive: {
       position: 'absolute',
       top: 0,
       left: 0,
