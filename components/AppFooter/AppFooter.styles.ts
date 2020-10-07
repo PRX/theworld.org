@@ -59,11 +59,14 @@ export const appFooterStyles = makeStyles((theme: Theme) =>
     fundedBy: {},
     fundedByMuiOl: {
       display: 'grid',
-      gridTemplateColumns: `repeat(4, ${theme.typography.pxToRem(150)})`,
+      gridTemplateColumns: `${theme.typography.pxToRem(150)}`,
       gridGap: theme.typography.pxToRem(theme.spacing(1)),
       justifyContent: 'center',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.up(370)]: {
         gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(150)})`
+      },
+      [theme.breakpoints.up('md')]: {
+        gridTemplateColumns: `repeat(4, ${theme.typography.pxToRem(150)})`
       }
     },
     fundedByMuiLi: {
