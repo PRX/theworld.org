@@ -66,11 +66,19 @@ cp ./config/local.example.js ./config/local.js
 
 Update the settings here to point at you local dev API if they differ from the default.
 
+Make sure you are logged into the vercel CLI:
+
+```
+yarn vercel login
+```
+
 Finally, lets spin up the development server:
 
 ```
 yarn dev:start
 ```
+
+> You will be prompted to link the code with a Vercel project the first time you start dev server. All projects should be in the PRX Team. If you are not presented with that team as an option, post a request in _#tech-devops_ in Slack to be added to the PRX Team on Vercel.
 
 Then open the app in your browser at [localhost:3000]().
 
