@@ -6,14 +6,14 @@ import React, { useContext } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Box, Container } from '@material-ui/core';
 import { LandingPage } from '@components/LandingPage';
 import { ContentContext } from '@contexts/ContentContext';
 import { fetchApiHomepage } from '@lib/fetch';
+import { StoryCard } from '@components/StoryCard';
 
 export const Homepage = () => {
   const { data } = useContext(ContentContext);
-  const { links } = data;
+  const { links, featuredStory } = data;
 
   console.log(data);
 
@@ -23,11 +23,10 @@ export const Homepage = () => {
         <title>The World</title>
       </Head>
       <LandingPage container>
-        <LandingPage main>
-          <h1>Hello, The World!</h1>
-          <p>Homepage coming soon...</p>
+        <LandingPage main mt={2}>
+          <StoryCard data={featuredStory} size="large" />
         </LandingPage>
-        <LandingPage sidebar>
+        <LandingPage sidebar mt={2}>
           {links && (
             <ul>
               {links.map(({ href, label }) => (

@@ -123,19 +123,20 @@ export const generateResponsiveAttributes = (
   const srcSet = imageSrcs
     .map(({ src, info: { width } }) => `${src} ${width}w`)
     .toString();
-  const sizes = ((Object.entries(widths) as unknown) as [
-    'xs' | 'sm' | 'md' | 'lg' | 'xl',
-    number | string
-  ][])
-    .map(([breakpoint, width], index, all) => {
+  const sizes = ['xs', 'sm', 'md', 'lg', 'xl']
+    .map((breakpoint, index, all) => {
       const bp: string =
         index < all.length - 1
-          ? `${theme.breakpoints.down(breakpoint).replace(/^@media /, '')} `
+          ? `${theme.breakpoints
+              .down(breakpoint as any)
+              .replace(/^@media /, '')} `
           : '';
+      const width = widths[breakpoint];
       const units = typeof width === 'number' ? 'px' : '';
 
-      return `${bp}${width}${units}`;
+      return width && `${bp}${width}${units}`;
     })
+    .filter(val => !!val)
     .toString();
   const { src } = _.last(imageSrcs);
 

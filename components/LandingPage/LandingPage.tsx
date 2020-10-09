@@ -3,12 +3,12 @@
  * Component for sidebar elements.
  */
 
-import React, { HTMLAttributes } from 'react';
-import { Box } from '@material-ui/core';
+import React from 'react';
+import { Box, BoxProps } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import { landingPageStyles } from './LandingPage.styles';
 
-interface ILandingPageProps extends HTMLAttributes<{}> {
+interface ILandingPageProps extends BoxProps {
   container?: boolean;
   header?: boolean;
   main?: boolean;
@@ -21,7 +21,8 @@ export const LandingPage = ({
   container,
   header,
   main,
-  sidebar
+  sidebar,
+  ...other
 }: ILandingPageProps) => {
   const classes = landingPageStyles({});
   const cx = classNames.bind(classes);
@@ -36,6 +37,7 @@ export const LandingPage = ({
         main,
         sidebar
       })}
+      {...other}
     >
       {children}
     </Box>

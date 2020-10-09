@@ -33,11 +33,10 @@ export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
     const classes = contentLinkStyles({});
 
     return (
-      <Link href={href} as={alias}>
+      <Link href={href} as={alias} passHref>
         <MuiLink
           ref={ref}
           component="a"
-          href={alias}
           underline="none"
           classes={classes}
           {...other}
