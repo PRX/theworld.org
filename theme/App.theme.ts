@@ -140,8 +140,11 @@ export const appTheme = (theme: Theme) =>
       MuiLink: {
         root: {
           color: theme.palette.primary.main,
+          '&:visited': {
+            color: theme.palette.primary.main
+          },
           '&:hover': {
-            color: theme.palette.secondary.main
+            color: theme.palette.primary.dark
           }
         }
       }

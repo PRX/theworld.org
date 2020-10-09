@@ -20,6 +20,11 @@ export const storyRelatedLinksStyles = makeStyles((theme: Theme) =>
 
 export const storyRelatedLinksTheme = (theme: Theme) =>
   createMuiTheme(theme, {
+    typography: {
+      h5: {
+        fontSize: 'inherit'
+      }
+    },
     overrides: {
       MuiButtonBase: {
         root: {

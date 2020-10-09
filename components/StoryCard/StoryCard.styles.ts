@@ -9,8 +9,9 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
+import { addCssColorAlpha } from '@lib/parse/color';
 
-export const storyCardStyles = makeStyles((theme: Theme) =>
+export const storyCardStyles = makeStyles(() =>
   createStyles({
     root: {},
     link: {
@@ -18,7 +19,9 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       top: 0,
       right: 0,
       bottom: 0,
-      left: 0
+      left: 0,
+      overflow: 'hidden',
+      textIndent: '-200vw'
     },
     overline: {
       position: 'relative',
@@ -50,8 +53,13 @@ export const storyCardTheme = (theme: Theme) =>
       },
       MuiCard: {
         root: {
-          height: '100%',
           color: theme.palette.primary.main
+        }
+      },
+      MuiCardActions: {
+        root: {
+          margin: 0,
+          padding: 0
         }
       },
       MuiCardActionArea: {
@@ -69,8 +77,41 @@ export const storyCardTheme = (theme: Theme) =>
           fontWeight: theme.typography.fontWeightBold
         }
       },
-      MuiCardMedia: {
-        root: {}
+      MuiList: {
+        root: {
+          width: '100%'
+        },
+        padding: {
+          paddingTop: 0,
+          paddingBottom: theme.typography.pxToRem(theme.spacing(2))
+        }
+      },
+      MuiListItem: {
+        root: {},
+        button: {
+          '&:hover': {
+            color: theme.palette.primary.main,
+            backgroundColor: addCssColorAlpha(
+              theme.palette.primary.main,
+              theme.palette.action.hoverOpacity
+            )
+          }
+        }
+      },
+      MuiListItemText: {
+        root: {
+          display: 'list-item',
+          listStyle: 'disc',
+          marginTop: 0,
+          marginBottom: 0,
+          marginLeft: theme.spacing(2),
+          color: theme.palette.grey[500]
+        },
+        primary: {
+          color: theme.palette.primary.main,
+          fontWeight: theme.typography.fontWeightBold,
+          lineHeight: 1
+        }
       },
       MuiTypography: {
         gutterBottom: {
