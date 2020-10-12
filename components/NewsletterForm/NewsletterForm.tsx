@@ -118,6 +118,7 @@ export const NewsletterForm = ({
               error={emailError}
               helperText={emailError && error.message}
               variant="outlined"
+              size={compact ? 'small' : 'medium'}
               fullWidth
             />
           </Box>
@@ -125,6 +126,7 @@ export const NewsletterForm = ({
             {(compact && (
               <IconButton
                 color="primary"
+                size="small"
                 onClick={handleSubmit}
                 disabled={!readyToSubmit}
               >

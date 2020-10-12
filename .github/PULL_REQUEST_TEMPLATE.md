@@ -1,17 +1,18 @@
- Closes #[ISSUE_ID]
+Closes #[ISSUE_ID]
 
 - [List what the PR does...]
 
 ## To Review
+
 - [ ] Use the Preview link located in the Now comment below.
 
->  ...or...
+> ...or...
 
 - [ ] Checkout Branch.
 - [ ] Run `yarn`.
-- [ ] Run `now dev`.
+- [ ] Run `yarn dev:start`.
 - [ ] Go to [localhost:3000](https://localhost:3000).
 
->  ...then...
+> ...then...
 
 - [ ] [Add more review steps...]
