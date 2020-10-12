@@ -6,17 +6,21 @@ import React, { useContext } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Grid } from '@material-ui/core';
 import { LandingPage } from '@components/LandingPage';
 import { ContentContext } from '@contexts/ContentContext';
 import { fetchApiHomepage } from '@lib/fetch';
+import { CtaRegion } from '@components/CtaRegion';
 import { StoryCard } from '@components/StoryCard';
+import { StoryCardGrid } from '@components/StoryCardGrid';
 
 export const Homepage = () => {
-  const { data } = useContext(ContentContext);
+  const {
+    data,
+    ctaRegions: { tw_cta_region_landing_inline_01: inlineTop }
+  } = useContext(ContentContext);
   const { links, featuredStory, featuredStories } = data;
 
-  console.log(data);
+  console.log(inlineTop);
 
   return (
     <>
@@ -25,16 +29,9 @@ export const Homepage = () => {
       </Head>
       <LandingPage container>
         <LandingPage main mt={2}>
-          <Grid container spacing={2} alignItems="stretch">
-            <Grid item xs={12}>
-              <StoryCard data={featuredStory} size="large" crossLinks />
-            </Grid>
-            {featuredStories.map(item => (
-              <Grid item xs={12} md={6} alignContent="stretch">
-                <StoryCard data={item} size="small" crossLinks />
-              </Grid>
-            ))}
-          </Grid>
+          <StoryCard data={featuredStory} feature />
+          <StoryCardGrid data={featuredStories} />
+          {/* {inlineTop && <CtaRegion data={inlineTop} />} */}
         </LandingPage>
         <LandingPage sidebar mt={2}>
           {links && (

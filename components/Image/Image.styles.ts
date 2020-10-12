@@ -25,9 +25,7 @@ export const imageStyles = makeStyles(() =>
       height: '100%'
     },
     root: {
-      objectFit: 'cover',
-      padding: '1rem',
-      textIndent: '0.5rem'
+      objectFit: 'cover'
     }
   })
 );

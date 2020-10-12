@@ -9,7 +9,6 @@ import { fetchApiProgram, fetchPriApiQuery } from '@lib/fetch';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Program Data
   const {
-    data: program,
     data: { featuredStories },
     ctaRegions,
     context

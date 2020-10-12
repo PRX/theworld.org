@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { parse } from 'url';
+import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Card,
@@ -24,35 +25,20 @@ import { Image } from '@components/Image';
 import { ILink } from '@interfaces/link';
 import { storyCardStyles, storyCardTheme } from './StoryCard.styles';
 
-export type StoryCardSize = 'large' | 'small';
-
 export interface StoryCardProps {
   data: IPriApiResource;
-  size?: StoryCardSize;
-  horizontal?: boolean;
-  crossLinks?: boolean;
+  feature?: boolean;
 }
 
-export const StoryCard = ({
-  data,
-  size = 'small',
-  horizontal,
-  crossLinks: showCrosslinks
-}: StoryCardProps) => {
+export const StoryCard = ({ data, feature }: StoryCardProps) => {
   const { teaser, title, image, primaryCategory, crossLinks } = data;
   const classes = storyCardStyles({});
+  const cx = classNames.bind(classes);
   const imageWidth = {
-    large: {
-      xs: '100vw',
-      md: '568px',
-      xl: '808px'
-    },
-    small: {
-      xs: '50vw',
-      md: '568px',
-      xl: '808px'
-    }
-  }[size];
+    xs: '100vw',
+    md: '568px',
+    xl: '808px'
+  };
 
   const renderLink = ({ title: linkTitle, url }: ILink) => {
     const oUrl = parse(url, true, true);
@@ -79,26 +65,28 @@ export const StoryCard = ({
   return (
     <ThemeProvider theme={storyCardTheme}>
       <Card square elevation={1}>
-        <CardActionArea>
+        <CardActionArea className={cx('actionArea', { feature })}>
           <CardMedia>
             <Image data={image} width={imageWidth} />
           </CardMedia>
           <CardContent>
             <Typography variant="overline" gutterBottom>
-              <ContentLink data={primaryCategory} className={classes.overline}>
+              <ContentLink data={primaryCategory}>
                 {primaryCategory.title}
               </ContentLink>
             </Typography>
             <Typography variant="h5" component="h3" gutterBottom>
               {title}
             </Typography>
-            <Typography variant="body1" component="p" color="textSecondary">
-              {teaser}
-            </Typography>
-            {/* <ContentLink data={data} className={classes.link} /> */}
+            {feature && (
+              <Typography variant="body1" component="p" color="textSecondary">
+                {teaser}
+              </Typography>
+            )}
+            <ContentLink data={data} className={cx('link')} />
           </CardContent>
         </CardActionArea>
-        {showCrosslinks && !!crossLinks.length && (
+        {feature && !!crossLinks.length && (
           <CardActions>
             <List>{crossLinks.map((link: ILink) => renderLink(link))}</List>
           </CardActions>

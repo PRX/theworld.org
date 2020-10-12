@@ -22,10 +22,6 @@ export const storyCardStyles = makeStyles(() =>
       left: 0,
       overflow: 'hidden',
       textIndent: '-200vw'
-    },
-    overline: {
-      position: 'relative',
-      zIndex: 1
     }
   })
 );
@@ -38,6 +34,8 @@ export const storyCardTheme = (theme: Theme) =>
       },
       overline: {
         display: 'block',
+        position: 'relative',
+        zIndex: 1,
         fontFamily:
           '"Open Sans","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
         letterSpacing: 'unset',
@@ -75,6 +73,20 @@ export const storyCardTheme = (theme: Theme) =>
         root: {
           color: theme.palette.text.primary,
           fontWeight: theme.typography.fontWeightBold
+        }
+      },
+      MuiCardMedia: {
+        root: {
+          position: 'relative',
+          height: 0,
+          paddingTop: `${(9 / 16) * 100}%`,
+          '& > :only-child': {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%'
+          }
         }
       },
       MuiList: {
