@@ -11,9 +11,28 @@ import {
 } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
 
-export const storyCardStyles = makeStyles(() =>
+export const storyCardStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
+    title: {
+      [theme.breakpoints.down('xs')]: {
+        fontSize: '16px',
+        '$feature &': {
+          fontSize: '22px'
+        }
+      }
+    },
+    teaser: {
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
+        '$feature &': {
+          display: 'initial'
+        }
+      }
+    },
+    imageWrapper: {
+      paddingTop: 'unset'
+    },
     link: {
       position: 'absolute',
       top: 0,
@@ -21,8 +40,44 @@ export const storyCardStyles = makeStyles(() =>
       bottom: 0,
       left: 0,
       overflow: 'hidden',
-      textIndent: '-200vw'
-    }
+      textIndent: '-2000vw'
+    },
+    MuiCardActionAreaRoot: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gridGap: `${theme.spacing(2)}px`,
+      alignItems: 'start',
+      padding: `${theme.spacing(2)}px`,
+      [theme.breakpoints.down('xs')]: {
+        gridTemplateColumns: '100px 1fr',
+        alignItems: 'center'
+      },
+      '$feature &': {
+        display: 'flex',
+        gridGap: 0,
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        justifyContent: 'start',
+        height: '100%',
+        padding: 0
+      }
+    },
+    MuiCardContentRoot: {
+      padding: 0,
+      '$feature &': {
+        padding: `${theme.spacing(2)}px`
+      }
+    },
+    MuiCardMediaRoot: {
+      [theme.breakpoints.down('xs')]: {
+        alignSelf: 'start',
+        paddingTop: '100%',
+        '$feature &': {
+          paddingTop: `${(9 / 16) * 100}%`
+        }
+      }
+    },
+    feature: {}
   })
 );
 
@@ -60,15 +115,6 @@ export const storyCardTheme = (theme: Theme) =>
           padding: 0
         }
       },
-      MuiCardActionArea: {
-        root: {
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          justifyContent: 'start',
-          height: '100%'
-        }
-      },
       MuiCardContent: {
         root: {
           color: theme.palette.text.primary,
@@ -78,6 +124,7 @@ export const storyCardTheme = (theme: Theme) =>
       MuiCardMedia: {
         root: {
           position: 'relative',
+          width: '100%',
           height: 0,
           paddingTop: `${(9 / 16) * 100}%`,
           '& > :only-child': {

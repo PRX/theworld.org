@@ -13,7 +13,6 @@ import {
 export const storyCardGridStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      margin: `${theme.spacing(2)}px 0`,
       '& > * + *': {
         marginTop: `${theme.spacing(2)}px`
       },
@@ -41,7 +40,7 @@ export const storyCardGridTheme = (theme: Theme) =>
         root: {
           [theme.breakpoints.down('xs')]: {
             display: 'grid',
-            gridTemplateColumns: `${100}px 1fr`,
+            gridTemplateColumns: '100px 1fr',
             gridGap: `${theme.spacing(2)}px`,
             padding: `${theme.spacing(2)}px`
           }

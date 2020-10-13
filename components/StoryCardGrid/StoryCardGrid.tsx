@@ -9,6 +9,7 @@ import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
+  BoxProps,
   Card,
   CardActionArea,
   CardActions,
@@ -33,11 +34,11 @@ import {
   storyCardGridTheme
 } from './StoryCardGrid.styles';
 
-export interface StoryCardGridProps {
+export interface StoryCardGridProps extends BoxProps {
   data: IPriApiResource[];
 }
 
-export const StoryCardGrid = ({ data }: StoryCardGridProps) => {
+export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
   const classes = storyCardGridStyles({});
   const cardClasses = storyCardStyles({});
   const cx = classNames.bind(classes);
@@ -52,7 +53,7 @@ export const StoryCardGrid = ({ data }: StoryCardGridProps) => {
   const renderLink = ({ title: linkTitle, url }: ILink) => {
     const oUrl = parse(url, true, true);
     const LinkComponent = oUrl.host ? MuiLink : ContentLink;
-    const other = oUrl.host
+    const attrs = oUrl.host
       ? {
           href: url
         }
@@ -62,10 +63,8 @@ export const StoryCardGrid = ({ data }: StoryCardGridProps) => {
           }
         };
 
-    console.log(oUrl);
-
     return (
-      <ListItem button component={LinkComponent} key={url} {...other}>
+      <ListItem button component={LinkComponent} key={url} {...attrs}>
         <ListItemText>{linkTitle}</ListItemText>
       </ListItem>
     );
@@ -74,7 +73,7 @@ export const StoryCardGrid = ({ data }: StoryCardGridProps) => {
   return (
     <ThemeProvider theme={storyCardTheme}>
       <ThemeProvider theme={storyCardGridTheme}>
-        <Box className={cx('root')}>
+        <Box className={cx('root')} {...other}>
           {data.map(item => {
             const { id, title, image, primaryCategory, crossLinks } = item;
             return (

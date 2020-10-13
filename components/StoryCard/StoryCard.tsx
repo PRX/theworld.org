@@ -64,25 +64,39 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
 
   return (
     <ThemeProvider theme={storyCardTheme}>
-      <Card square elevation={1}>
-        <CardActionArea className={cx('actionArea', { feature })}>
-          <CardMedia>
-            <Image data={image} width={imageWidth} />
+      <Card square elevation={1} className={cx({ feature })}>
+        <CardActionArea classes={{ root: classes.MuiCardActionAreaRoot }}>
+          <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
+            <Image
+              data={image}
+              width={imageWidth}
+              wrapperClassName={classes.imageWrapper}
+            />
           </CardMedia>
-          <CardContent>
-            <Typography variant="overline" gutterBottom>
-              <ContentLink data={primaryCategory}>
-                {primaryCategory.title}
-              </ContentLink>
-            </Typography>
-            <Typography variant="h5" component="h3" gutterBottom>
-              {title}
-            </Typography>
-            {feature && (
-              <Typography variant="body1" component="p" color="textSecondary">
-                {teaser}
+          <CardContent classes={{ root: classes.MuiCardContentRoot }}>
+            {primaryCategory && (
+              <Typography variant="overline" gutterBottom>
+                <ContentLink data={primaryCategory}>
+                  {primaryCategory.title}
+                </ContentLink>
               </Typography>
             )}
+            <Typography
+              variant="h5"
+              component="h3"
+              gutterBottom
+              className={classes.title}
+            >
+              {title}
+            </Typography>
+            <Typography
+              variant="body1"
+              component="p"
+              color="textSecondary"
+              className={classes.teaser}
+            >
+              {teaser}
+            </Typography>
             <ContentLink data={data} className={cx('link')} />
           </CardContent>
         </CardActionArea>
