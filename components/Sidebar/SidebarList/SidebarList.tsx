@@ -13,11 +13,13 @@ import { sidebarListStyles, sidebarListTheme } from './SidebarList.styles';
 
 interface ISidebarListProps extends ListProps {
   data: IPriApiResource[];
+  formatTitle?: (data: IPriApiResource) => string;
 }
 
 export const SidebarList = ({
   className,
   data,
+  formatTitle,
   ...other
 }: ISidebarListProps) => {
   const classes = sidebarListStyles({});
@@ -31,7 +33,9 @@ export const SidebarList = ({
       <List className={listClasses} {...other}>
         {data.map(item => (
           <ListItem button component={ContentLink} data={item} key={item.id}>
-            <ListItemText>{item.title}</ListItemText>
+            <ListItemText>
+              {formatTitle ? formatTitle(item) : item.title}
+            </ListItemText>
           </ListItem>
         ))}
       </List>

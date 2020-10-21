@@ -1,5 +1,5 @@
 /**
- * @file StoryCard.default.ts
+ * @file StoryCard.tsx
  * Component for story card links.
  */
 
@@ -52,8 +52,6 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
             metatags: { canonical: `/${url}` }
           }
         };
-
-    console.log(oUrl);
 
     return (
       <ListItem button component={LinkComponent} key={url} {...other}>

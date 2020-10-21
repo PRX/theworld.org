@@ -1,5 +1,5 @@
 /**
- * @file StoryRelatedLinks.default.style.tsx
+ * @file StoryCardGrid.style.tsx
  * Styles for Story Card Grid.
  */
 

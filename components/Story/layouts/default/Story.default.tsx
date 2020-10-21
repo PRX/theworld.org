@@ -104,6 +104,7 @@ export const StoryDefault = () => {
                     <SidebarFooter>
                       <Link href="/latest/stories" passHref>
                         <Button
+                          component="a"
                           color="primary"
                           variant="contained"
                           fullWidth

@@ -1,6 +1,6 @@
 /**
  * @file StoryCardGrid.default.ts
- * Component for story card links.
+ * Component for story card links grid.
  */
 
 import React from 'react';

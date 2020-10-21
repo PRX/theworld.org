@@ -11,6 +11,7 @@ const buttonBorderRadius = '3px';
 const buttonBorderWidth = '2px';
 
 export const headingProps = {
+  color: blue[900],
   fontFamily:
     '"Montserrat","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
   fontWeight: 700
@@ -50,8 +51,7 @@ export const baseMuiTheme = createMuiTheme({
       lineHeight: '1.35rem'
     },
     h1: {
-      ...headingProps,
-      color: blue[900]
+      ...headingProps
     },
     h2: {
       ...headingProps

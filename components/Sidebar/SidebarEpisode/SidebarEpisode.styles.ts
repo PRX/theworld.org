@@ -1,7 +1,8 @@
 /**
- * @file StoryCard.style.tsx
- * Styles for story card.
+ * @file SidebarEpisode.style.tsx
+ * Styles for default sidebar episode card.
  */
+import { addCssColorAlpha } from '@lib/parse/color';
 
 import {
   createMuiTheme,
@@ -9,30 +10,10 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
 
-export const storyCardStyles = makeStyles((theme: Theme) =>
+export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
-    title: {
-      [theme.breakpoints.down('xs')]: {
-        fontSize: '16px',
-        '$feature &': {
-          fontSize: theme.typography.pxToRem(22)
-        }
-      }
-    },
-    teaser: {
-      '$feature &': {
-        fontSize: theme.typography.pxToRem(18)
-      },
-      [theme.breakpoints.down('xs')]: {
-        display: 'none',
-        '$feature &': {
-          display: 'initial'
-        }
-      }
-    },
     imageWrapper: {
       paddingTop: 'unset'
     },
@@ -45,59 +26,38 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
       textIndent: '-2000vw'
     },
-    MuiCardActionAreaRoot: {
+    title: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gridGap: `${theme.spacing(2)}px`,
-      alignItems: 'start',
-      padding: `${theme.spacing(2)}px`,
-      [theme.breakpoints.down('xs')]: {
-        gridTemplateColumns: '100px 1fr',
-        alignItems: 'center'
-      },
-      '$feature &': {
-        display: 'flex',
-        gridGap: 0,
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        justifyContent: 'start',
-        height: '100%',
-        padding: 0
-      }
+      gridTemplateColumns: 'min-content 1fr',
+      gridGap: `${theme.spacing(1)}px`
     },
-    MuiCardContentRoot: {
-      padding: 0,
-      '$feature &': {
-        padding: `${theme.spacing(2)}px`
-      }
-    },
-    MuiCardMediaRoot: {
-      [theme.breakpoints.down('xs')]: {
-        alignSelf: 'start',
-        paddingTop: '100%',
-        '$feature &': {
-          paddingTop: `${(9 / 16) * 100}%`
-        }
-      }
-    },
-    feature: {}
+    playIcon: {
+      fontSize: theme.typography.pxToRem(48)
+    }
   })
 );
 
-export const storyCardTheme = (theme: Theme) =>
+export const sidebarEpisodeTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     typography: {
+      body1: {
+        fontSize: theme.typography.pxToRem(16)
+      },
+      h2: {
+        color: theme.palette.text.primary
+      },
       h5: {
-        lineHeight: 1.1
+        fontSize: theme.typography.pxToRem(18)
       },
       overline: {
-        display: 'block',
-        position: 'relative',
-        zIndex: 1,
-        fontFamily:
-          '"Open Sans","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
-        letterSpacing: 'unset',
-        textTransform: 'unset'
+        display: 'inline-block',
+        padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+        background: theme.palette.grey[200],
+        border: `1px solid ${theme.palette.grey[300]}`,
+        borderRadius: '12px',
+        fontSize: theme.typography.pxToRem(14),
+        fontWeight: theme.typography.fontWeightRegular,
+        lineHeight: 1
       }
     },
     overrides: {
