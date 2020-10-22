@@ -30,10 +30,6 @@ export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
     };
     const classes = contentLinkStyles({});
 
-    if (!canonical) {
-      console.warn('Could not render ContentLink. No metadata provided.', data);
-    }
-
     return (
       canonical && (
         <Link href={href} as={alias} passHref>

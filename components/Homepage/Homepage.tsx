@@ -70,7 +70,7 @@ export const Homepage = () => {
             <Box mt={index ? 2 : 0} key={item.id}>
               <StoryCard
                 data={item}
-                feature={item.displayTemplate === 'feature'}
+                feature={item.displayTemplate === 'full'}
               />
             </Box>
           ))}
