@@ -83,11 +83,13 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     <Image data={image} width={imageWidth} />
                   </CardMedia>
                   <CardContent>
-                    <Typography variant="overline" gutterBottom>
-                      <ContentLink data={primaryCategory}>
-                        {primaryCategory.title}
-                      </ContentLink>
-                    </Typography>
+                    {primaryCategory && (
+                      <Typography variant="overline" gutterBottom>
+                        <ContentLink data={primaryCategory}>
+                          {primaryCategory.title}
+                        </ContentLink>
+                      </Typography>
+                    )}
                     <Typography variant="h5" component="h3" gutterBottom>
                       {title}
                     </Typography>
