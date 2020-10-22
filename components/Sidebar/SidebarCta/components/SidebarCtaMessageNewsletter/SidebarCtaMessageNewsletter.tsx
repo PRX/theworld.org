@@ -34,8 +34,6 @@ export const SidebarCtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
     setSubscribed(true);
   };
 
-  console.log(data);
-
   return (
     <ThemeProvider theme={sidebarCtaMessageNewsletterTheme}>
       <Card elevation={0}>

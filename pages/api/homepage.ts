@@ -19,6 +19,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     include: ['image', 'primary_category'],
     'filter[status]': 1,
     'filter[program]': 3704,
+    ...(featuredStories && {
+      'filter[id][value]': featuredStories.map(({ id }) => id),
+      'filter[id][operator]': '<>'
+    }),
     sort: '-date_published',
     range: 15 - (featuredStories ? featuredStories.length : 0)
   })) as IPriApiResource[];
