@@ -20,7 +20,7 @@ export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
   ({ children, data, ...other }: ContentLinkProps, ref) => {
     const { metatags, title } = data;
     const { canonical } = metatags || {};
-    const url = parse(canonical);
+    const url = parse(canonical || '');
     const alias = url.pathname;
     const href = {
       pathname: '/',
