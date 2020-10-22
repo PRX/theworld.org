@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (id) {
     const program = (await fetchPriApiItem('node--programs', id as string, {
-      include: ['featured_stories.image']
+      include: ['featured_stories.image', 'featured_stories.primary_category']
     })) as IPriApiResource;
 
     if (program) {
