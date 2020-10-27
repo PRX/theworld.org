@@ -52,9 +52,11 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
   };
   const formatTitle = ({ audioTitle: at, title: t }: IPriApiResource) =>
     at || t;
-  const linksList = segments.map((item: IPriApiResource) =>
-    item.usage && item.usage.story ? item.usage.story[0] : item
-  );
+  const linksList =
+    segments &&
+    segments.map((item: IPriApiResource) =>
+      item.usage && item.usage.story ? item.usage.story[0] : item
+    );
 
   return (
     <ThemeProvider theme={sidebarEpisodeTheme}>
@@ -92,16 +94,20 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
             <ContentLink data={data} className={cx('link')} />
           </CardContent>
         </CardActionArea>
-        <SidebarHeader>
-          <Typography variant="h2">
-            <EqualizerRounded /> In this episode:
-          </Typography>
-        </SidebarHeader>
-        <SidebarList
-          disablePadding
-          data={linksList}
-          formatTitle={formatTitle}
-        />
+        {linksList && (
+          <>
+            <SidebarHeader>
+              <Typography variant="h2">
+                <EqualizerRounded /> In this episode:
+              </Typography>
+            </SidebarHeader>
+            <SidebarList
+              disablePadding
+              data={linksList}
+              formatTitle={formatTitle}
+            />
+          </>
+        )}
         <SidebarFooter>
           <Link href="/latest/episodes" passHref>
             <Button

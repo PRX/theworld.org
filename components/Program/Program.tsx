@@ -1,11 +1,12 @@
 /**
- * @file Homepage.tsx
- * Component for Homepage.
+ * @file Program.tsx
+ * Component for Program.
  */
 import React, { useContext } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
+import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Button, Hidden, Typography } from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
 import { LandingPage } from '@components/LandingPage';
@@ -20,18 +21,20 @@ import {
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { ContentContext } from '@contexts/ContentContext';
-import { fetchApiHomepage } from '@lib/fetch';
-import { IPriApiResource } from 'pri-api-library/types';
+import { fetchApiProgram } from '@lib/fetch';
+import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
+import { AppContext } from '@contexts/AppContext';
 
-export const Homepage = () => {
+export const Program = () => {
+  const { latestStories } = useContext(AppContext);
   const {
     data,
     ctaRegions: {
-      tw_cta_region_landing_inline_01: inlineTop,
-      tw_cta_region_landing_inline_02: inlineBottom,
-      tw_cta_region_landing_sidebar_01: sidebarTop,
-      tw_cta_region_landing_sidebar_02: sidebarBottom
+      tw_cta_region_landing_inline_01: ctaInlineTop,
+      tw_cta_region_landing_inline_02: ctaInlineBottom,
+      tw_cta_region_landing_sidebar_01: ctaSidebarTop,
+      tw_cta_region_landing_sidebar_02: ctaSidebarBottom
     }
   } = useContext(ContentContext);
   const {
@@ -39,8 +42,11 @@ export const Homepage = () => {
     featuredStories,
     latestEpisode,
     stories,
-    latestStories
+    title,
+    bannerImage
   } = data;
+
+  console.log('Program >> ', data);
 
   const mainElements = [
     {
@@ -49,13 +55,13 @@ export const Homepage = () => {
         <Box mt={3}>
           <StoryCard data={featuredStory} feature />
           <StoryCardGrid data={featuredStories} mt={2} />
-          {inlineTop && (
+          {ctaInlineTop && (
             <Box mt={3}>
               <Hidden xsDown>
-                <CtaRegion data={inlineTop} />
+                <CtaRegion data={ctaInlineTop} />
               </Hidden>
               <Hidden smUp>
-                <SidebarCta data={inlineTop} />
+                <SidebarCta data={ctaInlineTop} />
               </Hidden>
             </Box>
           )}
@@ -74,13 +80,13 @@ export const Homepage = () => {
               />
             </Box>
           ))}
-          {inlineBottom && (
+          {ctaInlineBottom && (
             <Box mt={3}>
               <Hidden xsDown>
-                <CtaRegion data={inlineBottom} />
+                <CtaRegion data={ctaInlineBottom} />
               </Hidden>
               <Hidden smUp>
-                <SidebarCta data={inlineBottom} />
+                <SidebarCta data={ctaInlineBottom} />
               </Hidden>
             </Box>
           )}
@@ -94,14 +100,26 @@ export const Homepage = () => {
       key: 'sidebar top',
       children: (
         <Box mt={3}>
-          <SidebarEpisode data={latestEpisode} label="Latest Edition" />
-          {sidebarTop && (
+          {latestEpisode && (
+            <SidebarEpisode data={latestEpisode} label="Latest Edition" />
+          )}
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            mt={2}
+            bgcolor="#fff"
+            height="600px"
+          >
+            Program Info Card
+          </Box>
+          {ctaSidebarTop && (
             <Box mt={3}>
               <Hidden only="sm">
-                <SidebarCta data={sidebarTop} />
+                <SidebarCta data={ctaSidebarTop} />
               </Hidden>
               <Hidden xsDown mdUp>
-                <CtaRegion data={sidebarTop} />
+                <CtaRegion data={ctaSidebarTop} />
               </Hidden>
             </Box>
           )}
@@ -133,13 +151,13 @@ export const Homepage = () => {
               </Link>
             </SidebarFooter>
           </Sidebar>
-          {sidebarBottom && (
+          {ctaSidebarBottom && (
             <Box mt={3}>
               <Hidden only="sm">
-                <SidebarCta data={sidebarBottom} />
+                <SidebarCta data={ctaSidebarBottom} />
               </Hidden>
               <Hidden xsDown mdUp>
-                <CtaRegion data={sidebarBottom} />
+                <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
             </Box>
           )}
@@ -153,10 +171,11 @@ export const Homepage = () => {
       <Head>
         <title>The World</title>
       </Head>
+      <LandingPageHeader title={title} image={bannerImage} />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
 };
 
-Homepage.fetchData = async (id: string | number, req: IncomingMessage) =>
-  fetchApiHomepage(req);
+Program.fetchData = async (id: string | number, req: IncomingMessage) =>
+  fetchApiProgram(id, req);

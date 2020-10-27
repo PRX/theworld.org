@@ -153,3 +153,20 @@ export const fetchApiProgram = async (
   id: string | number,
   req: IncomingMessage
 ): Promise<IContentContextData> => fetchApi(`program/${id}`, req);
+
+/**
+ * Method that simplifies GET queries for program stories data.
+ *
+ * @param id
+ *    API id of program.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Story data object.
+ */
+export const fetchApiProgramStories = async (
+  id: string | number,
+  req: IncomingMessage
+): Promise<{ data: IPriApiResource[] }> =>
+  fetchApi(`program/${id}/stories`, req);

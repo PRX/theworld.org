@@ -29,9 +29,11 @@ export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
     title: {
       display: 'grid',
       gridTemplateColumns: 'min-content 1fr',
-      gridGap: `${theme.spacing(1)}px`
+      gridGap: `${theme.spacing(1)}px`,
+      alignItems: 'center'
     },
     playIcon: {
+      alignSelf: 'start',
       fontSize: theme.typography.pxToRem(48)
     }
   })
