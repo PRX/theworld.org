@@ -37,27 +37,32 @@ export const LandingPageHeader = ({
   const cx = classNames.bind(classes);
   return (
     <ThemeProvider theme={landingPageHeaderTheme}>
-      <Grid container>
-        <Grid
-          item
-          xs={12}
-          sm={image ? 12 : 9}
-          className={cx('header', { withImage: !!image })}
-        >
-          {image && (
-            <Image
-              className={cx('image')}
-              wrapperClassName={cx('imageWrapper')}
-              data={image}
-              width={{ xl: '100vw' }}
-            />
-          )}
-          <div className={cx('content')}>
-            <h1 className={cx('title')}>{title}</h1>
-            <p className={cx('summary')}>{subhead}</p>
-          </div>
-        </Grid>
-      </Grid>
+      <Box className={cx('root', { withImage: !!image })}>
+        {image && (
+          <Image
+            className={cx('image')}
+            wrapperClassName={cx('imageWrapper')}
+            data={image}
+            width={{ xl: '100vw' }}
+          />
+        )}
+        <Box className={cx('content')}>
+          <Container fixed className={cx('header')}>
+            {logo && (
+              <Image
+                data={logo}
+                width={220}
+                height={220}
+                className={cx('logo')}
+              />
+            )}
+            <Box>
+              <h1 className={cx('title')}>{title}</h1>
+              {subhead && <p className={cx('subhead')}>{subhead}</p>}
+            </Box>
+          </Container>
+        </Box>
+      </Box>
     </ThemeProvider>
   );
 };

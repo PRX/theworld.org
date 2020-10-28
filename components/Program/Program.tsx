@@ -43,7 +43,10 @@ export const Program = () => {
     latestEpisode,
     stories,
     title,
-    bannerImage
+    teaser,
+    bannerImage,
+    logo,
+    podcastLogo
   } = data;
 
   console.log('Program >> ', data);
@@ -53,8 +56,8 @@ export const Program = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
-          <StoryCard data={featuredStory} feature />
-          <StoryCardGrid data={featuredStories} mt={2} />
+          {featuredStory && <StoryCard data={featuredStory} feature />}
+          {featuredStories && <StoryCardGrid data={featuredStories} mt={2} />}
           {ctaInlineTop && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -72,14 +75,15 @@ export const Program = () => {
       key: 'main bottom',
       children: (
         <Box mt={3}>
-          {stories.map((item: IPriApiResource, index: number) => (
-            <Box mt={index ? 2 : 0} key={item.id}>
-              <StoryCard
-                data={item}
-                feature={item.displayTemplate !== 'standard'}
-              />
-            </Box>
-          ))}
+          {stories &&
+            stories.map((item: IPriApiResource, index: number) => (
+              <Box mt={index ? 2 : 0} key={item.id}>
+                <StoryCard
+                  data={item}
+                  feature={item.displayTemplate !== 'standard'}
+                />
+              </Box>
+            ))}
           {ctaInlineBottom && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -171,7 +175,12 @@ export const Program = () => {
       <Head>
         <title>The World</title>
       </Head>
-      <LandingPageHeader title={title} image={bannerImage} />
+      <LandingPageHeader
+        title={title}
+        subhead={teaser}
+        image={bannerImage}
+        logo={podcastLogo}
+      />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );

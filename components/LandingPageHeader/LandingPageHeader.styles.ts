@@ -10,6 +10,7 @@ import {
   createStyles
 } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
+import { relative } from 'path';
 
 export const landingPageHeaderTheme = (theme: Theme) =>
   createMuiTheme(theme, {
@@ -18,91 +19,98 @@ export const landingPageHeaderTheme = (theme: Theme) =>
 
 export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
-    header: {
+    root: {
       position: 'relative',
-      display: 'flex',
-      alignItems: 'flex-end',
-      flexGrow: 1,
-      maxWidth: 'unset',
-      minHeight: '25vh',
+      display: 'grid',
+      gridTemplateRows: 'max-content max-content',
+      alignItems: 'end',
       maxHeight: '75vh',
       overflow: 'hidden',
       backgroundColor: theme.palette.primary.dark,
-      '& > *': {
-        position: 'relative',
-        zIndex: 2,
-        margin: 0
-      },
-      '& $imageWrapper': {
-        zIndex: 0
-      },
-      '&::before, &::after': {
-        content: '""',
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backgroundColor: addCssColorAlpha(
-          theme.palette.background.default,
-          0.65
-        )
-      },
-      '&::before': {
-        clipPath: 'polygon(0 33.33333%, 100% 66.66666%, 100% 100%, 0 100%)'
-      },
-      '&::after': {
-        clipPath: 'polygon(0 13.33333%, 100% 60.66666%, 100% 100%, 0 100%)'
-      }
+      marginBottom: theme.typography.pxToRem(theme.spacing(2))
     },
     imageWrapper: {
       gridColumn: '1 / -1',
       gridRow: '1 / -1',
+      height: '100%',
+      zIndex: 0
+    },
+    image: {
+      height: '100%',
       maxHeight: '75vh'
     },
     content: {
       position: 'relative',
+      gridColumn: '1 / -1',
+      gridRow: '1 / -1',
       display: 'grid',
       alignItems: 'end',
       // gridTemplateColumns: '1fr 100vw 1fr',
       gridGap: theme.typography.pxToRem(theme.spacing(2)),
       width: '100%',
-      height: '66.66666%',
-      margin: '0 auto',
-      padding: theme.typography.pxToRem(theme.spacing(2)),
-      '&::before': {
+      minHeight: '33.33333%',
+      padding: theme.typography.pxToRem(theme.spacing(3)),
+      '&::before, &::after': {
         content: '""',
-        display: 'block',
-        float: 'right',
-        width: '55%',
-        height: '7.4vw',
-        shapeOutside: 'polygon(0 0, 100% 0, 100% 100%)'
+        position: 'absolute',
+        bottom: -1,
+        left: -1,
+        right: -1,
+        zIndex: 0,
+        backgroundColor: addCssColorAlpha(
+          theme.palette.background.default,
+          0.65
+        ),
+        clipPath: 'polygon(0 0, 100% 66.66666%, 100% 100%, 0 100%)'
       },
-      [theme.breakpoints.up('sm')]: {
-        maxWidth: `${theme.breakpoints.values.sm}px`
+      '&::before': {
+        height: '110%'
+      },
+      '&::after': {
+        height: '150%'
       },
       [theme.breakpoints.up('md')]: {
-        maxWidth: `${theme.breakpoints.values.md}px`
+        '$withImage &': {
+          position: 'absolute',
+          bottom: 0,
+          gridRow: 'unset'
+        }
+      }
+    },
+    header: {
+      gridRow: '1 / -1',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      zIndex: 1,
+      [theme.breakpoints.up('sm')]: {
+        alignItems: 'flex-start'
       },
-      [theme.breakpoints.up('lg')]: {
-        maxWidth: `${theme.breakpoints.values.lg}px`
+      [theme.breakpoints.up('md')]: {
+        flexDirection: 'row',
+        alignItems: 'center'
       }
     },
     title: {
       color: theme.palette.primary.dark,
       fontSize: '3rem',
       lineHeight: '1.1',
-      marginTop: 0
+      margin: `0 0 ${theme.typography.pxToRem(theme.spacing(3))}`
     },
-    summary: {
+    subhead: {
       fontSize: '1.5rem'
     },
-    form: {},
-    body: {
-      fontSize: '1.2rem',
-      lineHeight: '1.7rem',
-      marginTop: `${theme.spacing(4)}px`,
-      paddingTop: `${theme.spacing(4)}px`,
-      borderTop: `1px solid ${theme.palette.divider}`
-    }
+    logo: {
+      flexShrink: 0,
+      margin: theme.typography.pxToRem(theme.spacing(3)),
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: 0
+      },
+      [theme.breakpoints.up('md')]: {
+        margin: 0,
+        marginRight: theme.typography.pxToRem(theme.spacing(3))
+      }
+    },
+    withImage: {}
   })
 );
