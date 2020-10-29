@@ -6,14 +6,7 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
-import {
-  Box,
-  Container,
-  Grid,
-  Hidden,
-  Typography,
-  ThemeProvider
-} from '@material-ui/core';
+import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
 import { Image } from '@components/Image';
 import {
   landingPageHeaderStyles,
@@ -56,9 +49,11 @@ export const LandingPageHeader = ({
                 className={cx('logo')}
               />
             )}
-            <Box>
-              <h1 className={cx('title')}>{title}</h1>
-              {subhead && <p className={cx('subhead')}>{subhead}</p>}
+            <Box className={cx('text')}>
+              <Typography variant="h1">{title}</Typography>
+              {subhead && (
+                <Typography variant="subtitle1">{subhead}</Typography>
+              )}
             </Box>
           </Container>
         </Box>

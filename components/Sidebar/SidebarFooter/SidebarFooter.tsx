@@ -4,12 +4,13 @@
  */
 
 import React, { HTMLAttributes } from 'react';
-import {
-  Box
-} from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
-import { sidebarFooterStyles, sidebarFooterTheme } from './SidebarFooter.styles';
+import {
+  sidebarFooterStyles,
+  sidebarFooterTheme
+} from './SidebarFooter.styles';
 
 interface ISidebarFooterProps extends HTMLAttributes<{}> {}
 
@@ -19,7 +20,7 @@ export const SidebarFooter = ({ children, className }: ISidebarFooterProps) => {
 
   return (
     <ThemeProvider theme={sidebarFooterTheme}>
-      <Box component="footer" className={cx(className, { root: true })}>
+      <Box component="footer" className={cx(className, 'root')}>
         {children}
       </Box>
     </ThemeProvider>

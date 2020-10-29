@@ -7,7 +7,13 @@ import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Button, Hidden, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Hidden,
+  ListSubheader,
+  Typography
+} from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
@@ -25,6 +31,7 @@ import { fetchApiProgram } from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { AppContext } from '@contexts/AppContext';
+import { SidebarContent } from '@components/Sidebar/SidebarContent';
 
 export const Program = () => {
   const { latestStories } = useContext(AppContext);
@@ -45,8 +52,10 @@ export const Program = () => {
     title,
     teaser,
     bannerImage,
-    logo,
-    podcastLogo
+    podcastLogo,
+    hosts,
+    sponsors,
+    body
   } = data;
 
   console.log('Program >> ', data);
@@ -107,15 +116,27 @@ export const Program = () => {
           {latestEpisode && (
             <SidebarEpisode data={latestEpisode} label="Latest Edition" />
           )}
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            mt={2}
-            bgcolor="#fff"
-            height="600px"
-          >
-            Program Info Card
+          <Box mt={2}>
+            <Sidebar item elevated>
+              {body && (
+                <SidebarContent dangerouslySetInnerHTML={{ __html: body }} />
+              )}
+              {hosts && !!hosts.length && (
+                <SidebarList
+                  data={hosts.map((item: IPriApiResource) => ({
+                    ...item,
+                    avatar: item.image
+                  }))}
+                  subheader={<ListSubheader>Hosted by</ListSubheader>}
+                />
+              )}
+              {sponsors && sponsors.length && (
+                <SidebarList
+                  data={sponsors}
+                  subheader={<ListSubheader>Supported by</ListSubheader>}
+                />
+              )}
+            </Sidebar>
           </Box>
           {ctaSidebarTop && (
             <Box mt={3}>
@@ -173,7 +194,7 @@ export const Program = () => {
   return (
     <>
       <Head>
-        <title>The World</title>
+        <title>{title}</title>
       </Head>
       <LandingPageHeader
         title={title}

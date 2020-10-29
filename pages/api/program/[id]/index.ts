@@ -23,6 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'banner_image',
         'featured_stories.image',
         'featured_stories.primary_category',
+        'hosts.image',
         'logo',
         'podcast_logo'
       ]

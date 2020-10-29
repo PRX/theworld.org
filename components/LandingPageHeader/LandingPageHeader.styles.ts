@@ -10,11 +10,18 @@ import {
   createStyles
 } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
-import { relative } from 'path';
 
 export const landingPageHeaderTheme = (theme: Theme) =>
   createMuiTheme(theme, {
-    overrides: {}
+    typography: {
+      h1: {
+        fontSize: theme.typography.pxToRem(48)
+      },
+      subtitle1: {
+        fontSize: '1.5rem',
+        lineHeight: '1.1'
+      }
+    }
   });
 
 export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
@@ -64,10 +71,16 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
         clipPath: 'polygon(0 0, 100% 66.66666%, 100% 100%, 0 100%)'
       },
       '&::before': {
-        height: '110%'
+        height: '110%',
+        [theme.breakpoints.down('sm')]: {
+          height: '66%'
+        }
       },
       '&::after': {
-        height: '150%'
+        height: '150%',
+        [theme.breakpoints.down('sm')]: {
+          height: '80%'
+        }
       },
       [theme.breakpoints.up('md')]: {
         '$withImage &': {
@@ -91,14 +104,9 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
         alignItems: 'center'
       }
     },
-    title: {
-      color: theme.palette.primary.dark,
-      fontSize: '3rem',
-      lineHeight: '1.1',
-      margin: `0 0 ${theme.typography.pxToRem(theme.spacing(3))}`
-    },
-    subhead: {
-      fontSize: '1.5rem'
+    text: {
+      display: 'grid',
+      gridGap: theme.typography.pxToRem(theme.spacing(2))
     },
     logo: {
       flexShrink: 0,
