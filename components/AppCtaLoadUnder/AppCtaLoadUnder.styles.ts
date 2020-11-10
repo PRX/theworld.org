@@ -14,6 +14,7 @@ export const appCtaLoadUnderTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     typography: {
       h3: {
+        color: theme.palette.primary.contrastText,
         fontSize: '1.25rem'
       },
       body1: {

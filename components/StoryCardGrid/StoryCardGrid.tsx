@@ -80,7 +80,11 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
               <Card square elevation={1} key={id}>
                 <CardActionArea>
                   <CardMedia>
-                    <Image data={image} width={imageWidth} />
+                    <Image
+                      data={image}
+                      width={imageWidth}
+                      wrapperClassName={cxCard('imageWrapper')}
+                    />
                   </CardMedia>
                   <CardContent>
                     {primaryCategory && (
