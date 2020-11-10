@@ -26,8 +26,9 @@ import {
  */
 export const fetchApi = async (path: string, req: IncomingMessage) => {
   const baseUrl = req
-    ? `${req.headers['x-forwarded-proto']}://${req.headers.host}`
+    ? `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
     : '';
+
   return fetch(`${baseUrl}/api/${path}`).then(resp => resp.json());
 };
 
@@ -136,3 +137,19 @@ export const fetchApiStory = async (
   id: string | number,
   req: IncomingMessage
 ): Promise<IContentContextData> => fetchApi(`story/${id}`, req);
+
+/**
+ * Method that simplifies GET queries for program data.
+ *
+ * @param id
+ *    API id of program.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Story data object.
+ */
+export const fetchApiProgram = async (
+  id: string | number,
+  req: IncomingMessage
+): Promise<IContentContextData> => fetchApi(`program/${id}`, req);

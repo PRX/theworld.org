@@ -14,6 +14,7 @@ export const appCtaBannerTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     typography: {
       h3: {
+        color: theme.palette.primary.contrastText,
         fontSize: '1.5rem'
       },
       body1: {

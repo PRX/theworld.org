@@ -3,18 +3,10 @@
  * Styles for ContentLink.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-export const contentLinkStyles = makeStyles((theme: Theme) =>
+export const contentLinkStyles = makeStyles(() =>
   createStyles({
-    root: {
-      color: theme.palette.primary.main,
-      '&:visited': {
-        color: theme.palette.primary.main
-      },
-      '&:hover': {
-        color: theme.palette.primary.dark
-      }
-    }
+    root: {}
   })
 );

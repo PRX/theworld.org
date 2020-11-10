@@ -4,12 +4,13 @@
  */
 
 import React, { HTMLAttributes } from 'react';
-import {
-  Box
-} from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
-import { sidebarHeaderStyles, sidebarHeaderTheme } from './SidebarHeader.styles';
+import {
+  sidebarHeaderStyles,
+  sidebarHeaderTheme
+} from './SidebarHeader.styles';
 
 interface ISidebarHeaderProps extends HTMLAttributes<{}> {}
 

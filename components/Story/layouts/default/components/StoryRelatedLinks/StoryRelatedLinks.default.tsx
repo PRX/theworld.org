@@ -9,7 +9,8 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Grid
+  Grid,
+  Typography
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentContext } from '@contexts/ContentContext';
@@ -43,7 +44,11 @@ export const StoryRelatedLinks = () => {
                 <Card square elevation={1}>
                   <CardActionArea>
                     <CardMedia image={src} title={imageTitle} />
-                    <CardContent>{title}</CardContent>
+                    <CardContent>
+                      <Typography variant="h5" component="h3">
+                        {title}
+                      </Typography>
+                    </CardContent>
                   </CardActionArea>
                 </Card>
               </ContentLink>

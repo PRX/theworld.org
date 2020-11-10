@@ -18,11 +18,9 @@ export type ContentLinkRef = HTMLAnchorElement;
 
 export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
   ({ children, data, ...other }: ContentLinkProps, ref) => {
-    const {
-      metatags: { canonical },
-      title
-    } = data;
-    const url = parse(canonical);
+    const { metatags, title } = data;
+    const { canonical } = metatags || {};
+    const url = parse(canonical || '');
     const alias = url.pathname;
     const href = {
       pathname: '/',
@@ -33,18 +31,19 @@ export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
     const classes = contentLinkStyles({});
 
     return (
-      <Link href={href} as={alias}>
-        <MuiLink
-          ref={ref}
-          component="a"
-          href={alias}
-          underline="none"
-          classes={classes}
-          {...other}
-        >
-          {children || title}
-        </MuiLink>
-      </Link>
+      canonical && (
+        <Link href={href} as={alias} passHref>
+          <MuiLink
+            ref={ref}
+            component="a"
+            underline="none"
+            classes={classes}
+            {...other}
+          >
+            {children || title}
+          </MuiLink>
+        </Link>
+      )
     );
   }
 );

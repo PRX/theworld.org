@@ -3,11 +3,64 @@
  * Gather homepage data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
+import { IPriApiResource } from 'pri-api-library/types';
+import { fetchApiProgram, fetchPriApiQuery } from '@lib/fetch';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  // Program Data
+  const {
+    data: { featuredStories },
+    ctaRegions,
+    context
+  } = await fetchApiProgram(3704, req);
+
+  // Latest TW Stories
+  const latestTwStories = (await fetchPriApiQuery('node--stories', {
+    include: ['image', 'primary_category'],
+    'filter[status]': 1,
+    'filter[program]': 3704,
+    ...(featuredStories && {
+      'filter[id][value]': featuredStories.map(({ id }) => id),
+      'filter[id][operator]': '<>'
+    }),
+    sort: '-date_published',
+    range: 15 - (featuredStories ? featuredStories.length : 0)
+  })) as IPriApiResource[];
+
+  // Latest Non-TW stories
+  const latestStories = (await fetchPriApiQuery('node--stories', {
+    'filter[status]': 1,
+    'filter[program][value]': 3704,
+    'filter[program][operator]': '<>',
+    sort: '-date_published',
+    range: 10
+  })) as IPriApiResource[];
+
+  // Latest TW Episode
+  const latestTwEpisode = ((await fetchPriApiQuery('node--episodes', {
+    include: ['image', 'audio.segments'],
+    'filter[status]': 1,
+    'filter[program]': 3704,
+    sort: '-date_published',
+    range: 1
+  })) as IPriApiResource[]).shift();
+
   const apiResp = {
     type: 'homepage',
+    ctaRegions,
+    context,
     data: {
+      featuredStory: featuredStories
+        ? featuredStories.shift()
+        : latestTwStories.shift(),
+      featuredStories: featuredStories
+        ? featuredStories.concat(
+            latestTwStories.splice(0, 4 - featuredStories.length)
+          )
+        : latestTwStories.splice(0, 4),
+      latestTwStories,
+      latestStories,
+      latestTwEpisode,
       links: [
         {
           label:
