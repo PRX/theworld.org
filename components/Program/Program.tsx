@@ -2,7 +2,7 @@
  * @file Program.tsx
  * Component for Program.
  */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -27,7 +27,7 @@ import {
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { ContentContext } from '@contexts/ContentContext';
-import { fetchApiProgram } from '@lib/fetch';
+import { fetchApiProgram, fetchApiProgramStories } from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { AppContext } from '@contexts/AppContext';
@@ -45,6 +45,7 @@ export const Program = () => {
     }
   } = useContext(ContentContext);
   const {
+    id,
     featuredStory,
     featuredStories,
     latestEpisode,
@@ -55,10 +56,61 @@ export const Program = () => {
     podcastLogo,
     hosts,
     sponsors,
-    body
+    body,
+    page,
+    nextPageUrl,
+    nextPageAs
   } = data;
+  const [loadedState, setLoadedState] = useState({
+    loading: false,
+    loadedStories: stories,
+    loadedPage: page,
+    loadMoreUrl: nextPageUrl,
+    loadMoreAs: nextPageAs
+  });
+  const [oldscrollY, setOldScrollY] = useState(0);
+  const {
+    loading,
+    loadedStories,
+    loadedPage,
+    loadMoreUrl,
+    loadMoreAs
+  } = loadedState;
 
-  console.log('Program >> ', data);
+  useEffect(() => {
+    // Something wants to keep the last interacted element in view.
+    // When we have loaded a new page, we want to counter this scoll change.
+    window.scrollBy({ top: oldscrollY - window.scrollY });
+    setOldScrollY(window.scrollY);
+  }, [loadedPage]);
+
+  const loadMoreStories = async () => {
+    setLoadedState({
+      ...loadedState,
+      loading: true
+    });
+    const loadPage = loadedPage + 1;
+    const nextPage = loadPage + 1;
+    const { data: moreStories } = await fetchApiProgramStories(id, loadPage);
+    setOldScrollY(window.scrollY);
+    setLoadedState({
+      ...loadedState,
+      loading: false,
+      loadedStories: [...loadedStories, ...moreStories],
+      loadedPage: loadPage,
+      loadMoreUrl: {
+        ...nextPageUrl,
+        query: {
+          ...nextPageUrl.query,
+          p: nextPage
+        }
+      },
+      loadMoreAs: `${nextPageUrl.query.alias ||
+        window.location.pathname}?p=${nextPage}`
+    });
+  };
+
+  console.log('Program >> ', nextPageUrl, loadMoreUrl, loadMoreAs, loadedPage);
 
   const mainElements = [
     {
@@ -84,8 +136,8 @@ export const Program = () => {
       key: 'main bottom',
       children: (
         <Box mt={3}>
-          {stories &&
-            stories.map((item: IPriApiResource, index: number) => (
+          {loadedStories &&
+            loadedStories.map((item: IPriApiResource, index: number) => (
               <Box mt={index ? 2 : 0} key={item.id}>
                 <StoryCard
                   data={item}
@@ -93,6 +145,33 @@ export const Program = () => {
                 />
               </Box>
             ))}
+          <Box mt={3}>
+            <Link
+              href={loadMoreUrl}
+              as={loadMoreAs}
+              passHref
+              replace
+              shallow
+              scroll={false}
+            >
+              <Button
+                component="a"
+                variant="contained"
+                size="large"
+                color="primary"
+                fullWidth
+                disabled={loading}
+                onClick={(
+                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+                ) => {
+                  e.preventDefault();
+                  loadMoreStories();
+                }}
+              >
+                {loading ? 'Loading Stories...' : 'More Stories'}
+              </Button>
+            </Link>
+          </Box>
           {ctaInlineBottom && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -130,7 +209,7 @@ export const Program = () => {
                   subheader={<ListSubheader>Hosted by</ListSubheader>}
                 />
               )}
-              {sponsors && sponsors.length && (
+              {sponsors && !!sponsors.length && (
                 <SidebarList
                   data={sponsors}
                   subheader={<ListSubheader>Supported by</ListSubheader>}
@@ -194,7 +273,10 @@ export const Program = () => {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>
+          {title}
+          {page > 1 ? ` - Page ${page}` : ''}
+        </title>
       </Head>
       <LandingPageHeader
         title={title}

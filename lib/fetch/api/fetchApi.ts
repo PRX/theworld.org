@@ -12,6 +12,7 @@ import {
   INewsletterData,
   ICMApiCustomField
 } from '@interfaces/newsletter';
+import { parse } from 'url';
 
 /**
  * Method that simplifies GET requests.
@@ -24,12 +25,17 @@ import {
  * @returns
  *    Denormalized response to request, or error object.
  */
-export const fetchApi = async (path: string, req: IncomingMessage) => {
+export const fetchApi = async (path: string, req?: IncomingMessage) => {
   const baseUrl = req
     ? `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
     : '';
+  const oUrl = req && parse(req.url);
 
-  return fetch(`${baseUrl}/api/${path}`).then(resp => resp.json());
+  console.log(oUrl);
+
+  return fetch(
+    `${baseUrl}/api/${path}${oUrl ? oUrl.search || '' : ''}`
+  ).then(resp => resp.json());
 };
 
 /**
@@ -167,6 +173,7 @@ export const fetchApiProgram = async (
  */
 export const fetchApiProgramStories = async (
   id: string | number,
-  req: IncomingMessage
+  page: string | number = 1,
+  req?: IncomingMessage
 ): Promise<{ data: IPriApiResource[] }> =>
-  fetchApi(`program/${id}/stories`, req);
+  fetchApi(`program/${id}/stories/${page}`, req);

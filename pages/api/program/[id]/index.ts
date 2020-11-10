@@ -3,6 +3,7 @@
  * Gather program data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
+import { parse } from 'url';
 import {
   fetchApiProgramStories,
   fetchPriApiItem,
@@ -12,7 +13,7 @@ import {
 import { IPriApiResource } from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+  const { id, p = '1' } = req.query;
   const getContext = (program: IPriApiResource): string[] => [
     `node:${program.id}`
   ];
@@ -30,10 +31,36 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })) as IPriApiResource;
 
     if (program) {
-      const { type, featuredStories } = program;
+      const {
+        type,
+        featuredStories,
+        metatags: { canonical }
+      } = program;
+      const oUrl = parse(canonical);
+      const page = parseInt(p as string, 10) || 1;
+      const nextPage = page + 1;
+      const nextPageUrl = {
+        pathname: '/',
+        query: {
+          alias: oUrl.pathname,
+          p: nextPage
+        }
+      };
+      const nextPageAs = `${oUrl.pathname}?p=${nextPage}`;
+
+      console.log(req.query, page);
 
       // Fetch list of stories. Paginated.
-      const { data: stories } = await fetchApiProgramStories(id as string, req);
+      const { data: stories } = await fetchApiProgramStories(
+        id as string,
+        1,
+        req
+      );
+
+      const moreStories =
+        (page > 1 &&
+          (await fetchApiProgramStories(id as string, page, req)).data) ||
+        [];
 
       // Latest Episode
       const latestEpisode = ((await fetchPriApiQuery('node--episodes', {
@@ -68,8 +95,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 stories.splice(0, 4 - featuredStories.length)
               )
             : stories.splice(0, 4),
+          stories: [...stories, ...moreStories],
           latestEpisode,
-          stories
+          page,
+          nextPageUrl,
+          nextPageAs
         }
       };
 

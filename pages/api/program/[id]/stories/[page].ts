@@ -7,7 +7,7 @@ import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { IPriApiResource } from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, p: page } = req.query;
+  const { id, page = '1' } = req.query;
 
   if (id) {
     const program = (await fetchPriApiItem(
@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           'filter[id][operator]': '<>'
         }),
         sort: '-date_published',
-        range: 15 - (featuredStories ? featuredStories.length : 0),
+        range: 15,
         page
       })) as IPriApiResource[];
 
