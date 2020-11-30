@@ -93,6 +93,6 @@ export const audioPlayerStateReducer = (
       };
 
     default:
-      throw new Error('Unknown Audio Player Action.');
+      return state;
   }
 };

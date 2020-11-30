@@ -37,8 +37,8 @@ export const Homepage = () => {
   const {
     featuredStory,
     featuredStories,
-    latestTwEpisode,
-    latestTwStories,
+    latestEpisode,
+    stories,
     latestStories
   } = data;
 
@@ -66,11 +66,11 @@ export const Homepage = () => {
       key: 'main bottom',
       children: (
         <Box mt={3}>
-          {latestTwStories.map((item: IPriApiResource, index: number) => (
+          {stories.map((item: IPriApiResource, index: number) => (
             <Box mt={index ? 2 : 0} key={item.id}>
               <StoryCard
                 data={item}
-                feature={item.displayTemplate === 'full'}
+                feature={item.displayTemplate !== 'standard'}
               />
             </Box>
           ))}
@@ -94,7 +94,7 @@ export const Homepage = () => {
       key: 'sidebar top',
       children: (
         <Box mt={3}>
-          <SidebarEpisode data={latestTwEpisode} label="Latest Edition" />
+          <SidebarEpisode data={latestEpisode} label="Latest Edition" />
           {sidebarTop && (
             <Box mt={3}>
               <Hidden only="sm">

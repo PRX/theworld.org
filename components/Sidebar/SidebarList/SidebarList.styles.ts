@@ -13,6 +13,11 @@ import { addCssColorAlpha } from '@lib/parse/color';
 
 export const sidebarListTheme = (theme: Theme) =>
   createMuiTheme(theme, {
+    typography: {
+      body2: {
+        fontSize: theme.typography.pxToRem(18)
+      }
+    },
     overrides: {
       MuiListItem: {
         root: {},
@@ -24,6 +29,13 @@ export const sidebarListTheme = (theme: Theme) =>
               theme.palette.action.hoverOpacity
             )
           }
+        }
+      },
+      MuiAvatar: {
+        root: {
+          width: '75px',
+          height: '75px',
+          boxShadow: theme.shadows[3]
         }
       },
       MuiListItemText: {
@@ -40,12 +52,21 @@ export const sidebarListTheme = (theme: Theme) =>
           fontWeight: theme.typography.fontWeightBold,
           lineHeight: 1
         }
+      },
+      MuiListSubheader: {
+        root: {
+          ...theme.typography.h6
+        }
       }
     }
   });
 
 export const sidebarListStyles = makeStyles(() =>
   createStyles({
-    root: {}
+    root: {},
+    noBullet: {
+      display: 'unset',
+      listStyle: 'unset'
+    }
   })
 );
