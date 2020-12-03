@@ -38,6 +38,9 @@ export const storyCardGridTheme = (theme: Theme) =>
     overrides: {
       MuiCardActionArea: {
         root: {
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
           [theme.breakpoints.down('xs')]: {
             display: 'grid',
             gridTemplateColumns: '100px 1fr',

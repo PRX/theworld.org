@@ -12,6 +12,7 @@
       "@interfaces": ["interfaces"],
       "@interfaces/*": ["interfaces/*"],
       "@lib/*": ["./lib/*"],
+      "@store/*": ["./store/*"],
       "@svg/*": ["./assets/svg/*"],
       "@theme/*": ["./theme/*"]
     }

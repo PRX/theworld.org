@@ -4,16 +4,26 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
 import { NextPageContext } from 'next';
 import Error from 'next/error';
-
+import { IncomingMessage } from 'http';
 import { IPriApiResource } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
-import { fetchApiQueryAlias } from '@lib/fetch/api';
 import { ContentContext } from '@contexts/ContentContext';
 import { importComponent, preloadComponent } from '@lib/import/component';
+import { RootState } from '@interfaces/state';
+import * as fromActions from '@store/actions/fetchAliasData';
 
-const ContentProxy = (props: IContentComponentProxyProps) => {
+interface DispatchProps {
+  fetchAliasData: (alias: string, req: IncomingMessage) => void;
+}
+
+interface StateProps extends RootState {}
+
+type Props = StateProps & DispatchProps & IContentComponentProxyProps;
+
+const ContentProxy = (props: Props) => {
   const { errorCode } = props;
   let output: JSX.Element;
 
@@ -41,20 +51,32 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   const {
     res,
     req,
+    store,
     query: { alias }
   } = ctx;
   let resourceId: string | number;
   let resourceType: string = 'homepage';
+  let resourceSignature: string;
+  let state = store.getState() as RootState;
 
   // Get data for alias.
   if (alias) {
-    const apiResp = await fetchApiQueryAlias(alias as string, req);
+    let aliasData = state.byAlias[alias as string];
+
+    if (!aliasData) {
+      await store.dispatch<any>(
+        fromActions.fetchAliasData(alias as string, req)
+      );
+      state = store.getState();
+      aliasData = state.byAlias[alias as string];
+    }
 
     // Update resource id and type.
-    if (apiResp?.id) {
-      const { id, type } = apiResp as IPriApiResource;
+    if (aliasData?.id) {
+      const { id, type } = aliasData as IPriApiResource;
       resourceId = id;
       resourceType = type;
+      resourceSignature = [resourceType, resourceId].join(':');
     } else {
       resourceType = null;
     }
@@ -66,7 +88,14 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
 
     // Use content component to fetch its data.
     if (ContentComponent) {
-      const data = await ContentComponent.fetchData(resourceId, req);
+      const contentData = state.byResource[resourceSignature];
+
+      // TODO: Thunk that only returns resource data.
+      const data = await ContentComponent.fetchData(
+        resourceId,
+        req,
+        contentData
+      );
 
       return { data };
     }
@@ -84,5 +113,12 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   };
 };
 
+const mapStateToProps = (state: RootState): StateProps => ({
+  byAlias: state.byAlias,
+  byResource: state.byResource
+});
+
 export const config = { amp: 'hybrid' };
-export default ContentProxy; // eslint-disable-line import/no-default-export
+export default connect<StateProps, DispatchProps, IContentComponentProxyProps>(
+  mapStateToProps
+)(ContentProxy); // eslint-disable-line import/no-default-export

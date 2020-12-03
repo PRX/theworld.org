@@ -32,6 +32,8 @@
       "@interfaces": ["interfaces"],
       "@interfaces/*": ["interfaces/*"],
       "@lib/*": ["lib/*"],
+      "@store": ["store"],
+      "@store/*": ["store/*"],
       "@svg": ["assets/svg/*"],
       "@theme/*": ["theme/*"]
     }
@@ -48,6 +50,7 @@
     "lib/**/*",
     "pages/**/*",
     "assets/svg/*.svg",
+    "store/**/*",
     "theme/**/*",
     "./*.js",
     "./*.ts"

@@ -9,6 +9,7 @@ import {
   postJsonPriApiCtaRegion
 } from '@lib/fetch/api';
 import { IPriApiResource } from 'pri-api-library/types';
+import { fullStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
@@ -28,25 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (id) {
     const story = (await fetchPriApiItem('node--stories', id as string, {
-      include: [
-        'audio.program',
-        'byline.credit_type',
-        'byline.person',
-        'format',
-        'image',
-        'categories',
-        'opencalais_city',
-        'opencalais_continent',
-        'opencalais_country',
-        'opencalais_province',
-        'opencalais_region',
-        'opencalais_person',
-        'primary_category',
-        'program',
-        'tags',
-        'verticals',
-        'video'
-      ]
+      ...fullStoryParams
     })) as IPriApiResource;
 
     if (story) {
@@ -56,12 +39,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const related =
         primaryCategory &&
         ((await fetchPriApiQuery('node--stories', {
+          ...fullStoryParams,
           'filter[primary_category]': primaryCategory.id,
           'filter[status]': 1,
           range: 4,
-          sort: '-date_published',
-          include: ['image'],
-          fields: ['image', 'metatags', 'title']
+          sort: '-date_published'
         })) as IPriApiResource[]);
 
       // Fetch CTA Messages.

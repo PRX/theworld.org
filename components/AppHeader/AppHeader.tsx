@@ -12,7 +12,8 @@ import {
   Button,
   Drawer,
   Toolbar,
-  IconButton
+  IconButton,
+  NoSsr
 } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -58,16 +59,18 @@ export const AppHeader = () => {
     <>
       <AppBar className={cx({ root: true })} position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={cx({ menuButton: true })}
-            disableRipple
-            color="inherit"
-            aria-label="menu"
-            onClick={handleDrawerOpen()}
-          >
-            <MenuIcon />
-          </IconButton>
+          <NoSsr>
+            <IconButton
+              edge="start"
+              className={cx('menuButton')}
+              disableRipple
+              color="inherit"
+              aria-label="menu"
+              onClick={handleDrawerOpen()}
+            >
+              <MenuIcon />
+            </IconButton>
+          </NoSsr>
 
           <Link href="/">
             <a href="/">
