@@ -9,12 +9,7 @@ import thunkMiddleware from 'redux-thunk';
 import { RootState } from '@interfaces/state';
 import { reducers } from './reducers';
 
-export const initialState: RootState = {
-  byAlias: {},
-  byResource: {}
-};
-
 const makeStore: MakeStore<RootState> = () =>
   createStore(reducers, composeWithDevTools(applyMiddleware(thunkMiddleware)));
 
-export const wrapper = createWrapper<RootState>(makeStore, { debug: true });
+export const wrapper = createWrapper<RootState>(makeStore, { debug: false });

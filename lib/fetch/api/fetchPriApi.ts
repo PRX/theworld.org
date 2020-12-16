@@ -210,12 +210,13 @@ export const postJsonPriApiCtaRegion = async (
             // Denormalize subqueue array items.
             .map(([key, items]: [string, JSONAPI.CollectionResourceDoc[]]) => [
               key,
-              items.map(denormalizeJsonApi)
+              items.map(item => denormalizeJsonApi(item))
             ])
             // Parse Message data
-            .map(([key, items]: [string, IPriApiResource[]]) => {
-              return [key, items.map(item => parseCtaMessage(item, key))];
-            })
+            .map(([key, items]: [string, IPriApiResource[]]) => [
+              key,
+              items.map(item => parseCtaMessage(item, key))
+            ])
             // Convert back to object.
             .reduce(
               (a, [key, value]: [string, any]) => ({

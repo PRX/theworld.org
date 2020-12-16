@@ -3,7 +3,8 @@
  * Component for default story related links.
  */
 
-import React, { useContext } from 'react';
+import React from 'react';
+import { IPriApiResource } from 'pri-api-library/types';
 import {
   Card,
   CardActionArea,
@@ -13,15 +14,17 @@ import {
   Typography
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { ContentContext } from '@contexts/ContentContext';
 import { ContentLink } from '@components/ContentLink';
 import {
   storyRelatedLinksStyles,
   storyRelatedLinksTheme
 } from './StoryRelatedLinks.default.styles';
 
-export const StoryRelatedLinks = () => {
-  const { related } = useContext(ContentContext);
+interface Props {
+  data: IPriApiResource[];
+}
+
+export const StoryRelatedLinks = ({ data: related }: Props) => {
   const classes = storyRelatedLinksStyles({});
 
   return (
@@ -29,7 +32,7 @@ export const StoryRelatedLinks = () => {
       <Grid container spacing={2} classes={{ root: classes.root }}>
         {related.map(story => {
           const {
-            id,
+            id: storyId,
             title,
             image: {
               title: imageTitle,
@@ -39,7 +42,7 @@ export const StoryRelatedLinks = () => {
             }
           } = story;
           return (
-            <Grid item lg={3} xs={6} key={id}>
+            <Grid item lg={3} xs={6} key={storyId}>
               <ContentLink data={story}>
                 <Card square elevation={1}>
                   <CardActionArea>

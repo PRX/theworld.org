@@ -2,7 +2,7 @@
  * @file Homepage.tsx
  * Component for Homepage.
  */
-import React, { useContext } from 'react';
+import React from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -19,21 +19,35 @@ import {
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { ContentContext } from '@contexts/ContentContext';
 import { fetchApiHomepage } from '@lib/fetch';
 import { IPriApiResource } from 'pri-api-library/types';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
+import { RootState } from '@interfaces/state';
+import { IContentComponentProps } from '@interfaces/content';
 
-export const Homepage = () => {
+interface StateProps extends RootState {}
+
+type Props = StateProps & IContentComponentProps;
+
+export const Homepage = ({ contentData }: Props) => {
+  const data = {
+    featuredStory: null,
+    featuredStories: [],
+    latestEpisode: null,
+    stories: [],
+    latestStories: []
+  };
   const {
-    data,
-    ctaRegions: {
-      tw_cta_region_landing_inline_01: inlineTop,
-      tw_cta_region_landing_inline_02: inlineBottom,
-      tw_cta_region_landing_sidebar_01: sidebarTop,
-      tw_cta_region_landing_sidebar_02: sidebarBottom
-    }
-  } = useContext(ContentContext);
+    tw_cta_region_landing_inline_01: inlineTop,
+    tw_cta_region_landing_inline_02: inlineBottom,
+    tw_cta_region_landing_sidebar_01: sidebarTop,
+    tw_cta_region_landing_sidebar_02: sidebarBottom
+  } = {
+    tw_cta_region_landing_inline_01: [],
+    tw_cta_region_landing_inline_02: [],
+    tw_cta_region_landing_sidebar_01: [],
+    tw_cta_region_landing_sidebar_02: []
+  };
   const {
     featuredStory,
     featuredStories,

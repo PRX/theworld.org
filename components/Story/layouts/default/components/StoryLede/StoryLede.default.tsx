@@ -3,15 +3,17 @@
  * Component for default story lede.
  */
 
-import React, { useContext } from 'react';
-import { ContentContext } from '@contexts/ContentContext';
+import React from 'react';
 import { LedeImage } from '@components/LedeImage';
 import { LedeVideo } from '@components/LedeVideo';
+import { IPriApiResource } from 'pri-api-library/types';
 
-export const StoryLede = () => {
-  const {
-    data: { image, video }
-  } = useContext(ContentContext);
+interface Props {
+  data: IPriApiResource;
+}
+
+export const StoryLede = ({ data }: Props) => {
+  const { image, video } = data;
 
   return (
     <>

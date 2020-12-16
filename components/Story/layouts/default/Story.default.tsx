@@ -3,8 +3,9 @@
  * Component for default Story layout.
  */
 
-import React, { useContext } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import {
   Box,
@@ -15,8 +16,6 @@ import {
   Typography
 } from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
-import { AppContext } from '@contexts/AppContext';
-import { ContentContext } from '@contexts/ContentContext';
 import { AudioPlayer } from '@components/AudioPlayer';
 import {
   Sidebar,
@@ -27,16 +26,32 @@ import {
 } from '@components/Sidebar';
 import { CtaRegion } from '@components/CtaRegion';
 import { Tags } from '@components/Tags';
+import { IContentComponentProps } from '@interfaces/content';
+import { ICtaMessage } from '@interfaces/cta';
+import { RootState } from '@interfaces/state';
+import { getCollectionData } from '@store/reducers';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
-export const StoryDefault = () => {
+interface StateProps extends RootState {}
+
+type Props = StateProps & IContentComponentProps;
+
+export const StoryDefault = ({ data }: Props) => {
   const {
-    data: { body, audio, embeddedPlayerUrl, popoutPlayerUrl, categories, tags },
-    related,
-    ctaRegions
-  } = useContext(ContentContext);
-  const { latestStories } = useContext(AppContext);
+    id,
+    type,
+    body,
+    audio,
+    embeddedPlayerUrl,
+    popoutPlayerUrl,
+    categories,
+    tags
+  } = data;
+  const store = useStore();
+  const related = getCollectionData(store.getState(), type, id, 'related');
+  const ctaRegions: { [k: string]: ICtaMessage[] } = {};
+  const latestStories = null;
   const classes = storyStyles({});
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;
@@ -57,7 +72,7 @@ export const StoryDefault = () => {
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
-            <StoryHeader />
+            <StoryHeader data={data} />
           </Grid>
           <Grid item xs={12}>
             {audio && (
@@ -70,7 +85,7 @@ export const StoryDefault = () => {
             )}
             <Box className={classes.main}>
               <Box className={classes.content}>
-                <StoryLede />
+                <StoryLede data={data} />
                 <Box
                   className={classes.body}
                   my={2}
@@ -86,7 +101,7 @@ export const StoryDefault = () => {
                     <header>
                       <h3>Related Content</h3>
                     </header>
-                    <StoryRelatedLinks />
+                    <StoryRelatedLinks data={related} />
                   </aside>
                 )}
                 {hasCategories && <Tags data={categories} label="Categories" />}

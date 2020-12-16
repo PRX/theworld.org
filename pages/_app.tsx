@@ -68,12 +68,13 @@ const TwApp = ({
 };
 
 TwApp.getInitialProps = async (ctx: NextAppContext) => {
-  const { req } = ctx.ctx;
+  const { req, store } = ctx.ctx;
+  const state = store.getState();
   const initialProps = await App.getInitialProps(ctx);
   const {
-    pageProps: { data: contentData }
+    pageProps: { type, id }
   } = initialProps;
-  const { context } = contentData || {};
+  const;
 
   // Fetch App Data
   const data = await fetchApiApp(req);
@@ -82,13 +83,13 @@ TwApp.getInitialProps = async (ctx: NextAppContext) => {
   const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
     'tw_cta_regions_site',
     {
-      context
+      context: []
     }
   )) as IPriApiResource;
   const banner = ctaRegions.tw_cta_region_site_banner;
   const loadUnder = ctaRegions.tw_cta_region_site_load_under;
 
-  console.log(initialProps);
+  console.log('TwApp.getInitialProps >> initialProps', initialProps, store);
 
   return {
     ...initialProps,

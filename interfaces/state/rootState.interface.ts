@@ -4,10 +4,13 @@
  * Define interfaces for RootState.
  */
 
-import { ByAliasState } from './byAliasState.interface';
-import { ByResourceState } from './byResource.interface';
+import { ContentDataState } from './contentData.interface';
+import { CollectionsState } from './collections.interface';
+import { CtaDataState } from './ctaData.interface';
 
 export interface RootState {
-  byAlias: ByAliasState;
-  byResource: ByResourceState;
+  aliasData: ContentDataState;
+  contentData: ContentDataState;
+  collections: CollectionsState;
+  ctaData: CtaDataState;
 }

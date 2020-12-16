@@ -4,29 +4,31 @@
  */
 
 import { FunctionComponent } from 'react';
+import { IncomingMessage } from 'http';
+import { AnyAction } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
-import { ICtaRegions } from '@interfaces/cta';
 
 export interface FetchDataFunc {
-  (id?: number | string): IContentContextData;
+  (id: string, req: IncomingMessage): ThunkAction<void, {}, {}, AnyAction>;
 }
 
 export interface IContentComponent extends FunctionComponent {
   fetchData: FetchDataFunc;
 }
 
-export interface IContentContextData {
-  type: string;
-  data: IPriApiResource;
-  context: string[];
-  ctaRegions?: ICtaRegions;
-  related?: IPriApiResource[];
+export interface IContentComponentProps {
+  id: string;
+  data?: IPriApiResource;
 }
 
-export interface IContentContext extends IContentContextData {}
-
 export interface IContentComponentProxyProps {
-  data?: IContentContextData;
-  context?: string[];
+  type?: string;
+  id?: string;
   errorCode?: number;
+}
+
+export interface IContentContext {
+  type: string;
+  id?: string;
 }

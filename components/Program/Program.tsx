@@ -2,7 +2,7 @@
  * @file Program.tsx
  * Component for Program.
  */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -26,26 +26,33 @@ import {
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { ContentContext } from '@contexts/ContentContext';
 import { fetchApiProgram, fetchApiProgramStories } from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
-import { AppContext } from '@contexts/AppContext';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
+import { RootState } from '@interfaces/state';
+import { IContentComponentProps } from '@interfaces/content';
+import { getContentData } from '../../store/reducers/contentData';
 
-export const Program = () => {
-  const { latestStories } = useContext(AppContext);
+interface StateProps extends RootState {}
+
+type Props = StateProps & IContentComponentProps;
+
+export const Program = ({ id, contentData }: Props) => {
+  const latestStories = [];
+  const data = getContentData(contentData, 'node--programs', id);
   const {
-    data,
-    ctaRegions: {
-      tw_cta_region_landing_inline_01: ctaInlineTop,
-      tw_cta_region_landing_inline_02: ctaInlineBottom,
-      tw_cta_region_landing_sidebar_01: ctaSidebarTop,
-      tw_cta_region_landing_sidebar_02: ctaSidebarBottom
-    }
-  } = useContext(ContentContext);
+    tw_cta_region_landing_inline_01: ctaInlineTop,
+    tw_cta_region_landing_inline_02: ctaInlineBottom,
+    tw_cta_region_landing_sidebar_01: ctaSidebarTop,
+    tw_cta_region_landing_sidebar_02: ctaSidebarBottom
+  } = {
+    tw_cta_region_landing_inline_01: [],
+    tw_cta_region_landing_inline_02: [],
+    tw_cta_region_landing_sidebar_01: [],
+    tw_cta_region_landing_sidebar_02: []
+  };
   const {
-    id,
     featuredStory,
     featuredStories,
     latestEpisode,

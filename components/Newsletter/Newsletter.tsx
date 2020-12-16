@@ -2,10 +2,12 @@
  * @file Story.tsx
  * Component for Story.
  */
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { IncomingMessage } from 'http';
 import classNames from 'classnames/bind';
 import Head from 'next/head';
+import { AnyAction } from 'redux';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import {
   Box,
   Container,
@@ -16,19 +18,23 @@ import {
 import { CheckCircleOutlineSharp } from '@material-ui/icons';
 import { Image } from '@components/Image';
 import { NewsletterForm } from '@components/NewsletterForm';
-import { ContentContext } from '@contexts/ContentContext';
-import { IContentContextData } from '@interfaces/content';
+import { IContentComponentProps } from '@interfaces/content';
 import { IPriApiNewsletter } from '@interfaces/newsletter';
+import { RootState } from '@interfaces/state';
 import { fetchApiNewsletter } from '@lib/fetch';
 import { parseNewsletterOptions } from '@lib/parse/cta';
+import { getDataByResource } from '@store/reducers';
+import { getContentData } from '@store/reducers/contentData';
 import { newsletterTheme, newsletterStyles } from './Newsletter.styles';
 
-export const Newsletter = () => {
+interface StateProps extends RootState {}
+
+type Props = StateProps & IContentComponentProps;
+
+export const Newsletter = ({ id, contentData }: Props) => {
   const [subscribed, setSubscribed] = useState(false);
-  const {
-    data,
-    data: { title, body, buttonLabel, summary, image }
-  } = useContext(ContentContext);
+  const data = getContentData(contentData, 'node--newsletter_sign_ups', id);
+  const { title, body, buttonLabel, summary, image } = data;
   const options = parseNewsletterOptions(
     data as IPriApiNewsletter,
     'newsletter-page'
@@ -126,7 +132,31 @@ export const Newsletter = () => {
   );
 };
 
-Newsletter.fetchData = async (
-  id: string | number,
+Newsletter.fetchData = (
+  id: string,
   req: IncomingMessage
-): Promise<IContentContextData> => fetchApiNewsletter(id, req);
+): ThunkAction<void, {}, {}, AnyAction> => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>,
+  getState: () => RootState
+) => {
+  const state = getState();
+  const data = getDataByResource(state, 'node--newsletter_sign_ups', id);
+
+  // Get missing content data.
+  if (!data) {
+    dispatch({
+      type: 'FETCH_CONTENT_DATA_REQUEST',
+      payload: {
+        type: 'node--newsletter_sign_ups',
+        id
+      }
+    });
+
+    const apiData = await fetchApiNewsletter(id, req);
+
+    dispatch({
+      type: 'FETCH_CONTENT_DATA_SUCCESS',
+      payload: apiData
+    });
+  }
+};

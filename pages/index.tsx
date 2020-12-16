@@ -10,10 +10,11 @@ import Error from 'next/error';
 import { IncomingMessage } from 'http';
 import { IPriApiResource } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
-import { ContentContext } from '@contexts/ContentContext';
 import { importComponent, preloadComponent } from '@lib/import/component';
 import { RootState } from '@interfaces/state';
-import * as fromActions from '@store/actions/fetchAliasData';
+import { fetchAliasData } from '@store/actions';
+import { getDataByAlias } from '@store/reducers';
+import { ContentContext } from '@contexts/Content.context';
 
 interface DispatchProps {
   fetchAliasData: (alias: string, req: IncomingMessage) => void;
@@ -27,19 +28,17 @@ const ContentProxy = (props: Props) => {
   const { errorCode } = props;
   let output: JSX.Element;
 
-  // Render error page.
   if (errorCode) {
+    // Render error page.
     output = <Error statusCode={errorCode} />;
   } else {
-    const {
-      data,
-      data: { type }
-    } = props;
+    // Render content component.
+    const { type, id } = props;
     const ContentComponent = importComponent(type);
 
     output = (
-      <ContentContext.Provider value={data}>
-        <ContentComponent />
+      <ContentContext.Provider value={{ type, id }}>
+        <ContentComponent id={id} />
       </ContentContext.Provider>
     );
   }
@@ -47,28 +46,27 @@ const ContentProxy = (props: Props) => {
   return output;
 };
 
-ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
+ContentProxy.getInitialProps = async (
+  ctx: NextPageContext
+): Promise<IContentComponentProxyProps> => {
   const {
     res,
     req,
     store,
     query: { alias }
   } = ctx;
-  let resourceId: string | number;
+  let resourceId: string;
   let resourceType: string = 'homepage';
-  let resourceSignature: string;
   let state = store.getState() as RootState;
 
   // Get data for alias.
   if (alias) {
-    let aliasData = state.byAlias[alias as string];
+    let aliasData = getDataByAlias(state, alias as string);
 
     if (!aliasData) {
-      await store.dispatch<any>(
-        fromActions.fetchAliasData(alias as string, req)
-      );
+      await store.dispatch<any>(fetchAliasData(alias as string, req));
       state = store.getState();
-      aliasData = state.byAlias[alias as string];
+      aliasData = getDataByAlias(state, alias as string);
     }
 
     // Update resource id and type.
@@ -76,7 +74,6 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
       const { id, type } = aliasData as IPriApiResource;
       resourceId = id;
       resourceType = type;
-      resourceSignature = [resourceType, resourceId].join(':');
     } else {
       resourceType = null;
     }
@@ -88,16 +85,9 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
 
     // Use content component to fetch its data.
     if (ContentComponent) {
-      const contentData = state.byResource[resourceSignature];
-
-      // TODO: Thunk that only returns resource data.
-      const data = await ContentComponent.fetchData(
-        resourceId,
-        req,
-        contentData
-      );
-
-      return { data };
+      // Dispatch action returned from content component fetchData.
+      await store.dispatch<any>(ContentComponent.fetchData(resourceId, req));
+      return { type: resourceType, id: resourceId };
     }
   }
 
@@ -113,10 +103,7 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   };
 };
 
-const mapStateToProps = (state: RootState): StateProps => ({
-  byAlias: state.byAlias,
-  byResource: state.byResource
-});
+const mapStateToProps = (state: RootState): StateProps => state;
 
 export const config = { amp: 'hybrid' };
 export default connect<StateProps, DispatchProps, IContentComponentProxyProps>(
