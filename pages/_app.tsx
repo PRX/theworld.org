@@ -74,7 +74,6 @@ TwApp.getInitialProps = async (ctx: NextAppContext) => {
   const {
     pageProps: { type, id }
   } = initialProps;
-  const;
 
   // Fetch App Data
   const data = await fetchApiApp(req);
