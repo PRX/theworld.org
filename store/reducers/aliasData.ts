@@ -7,6 +7,7 @@
 import { AnyAction } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 import { ContentDataState, RootState } from '@interfaces/state';
+import { generateLinkHrefForContent } from '@lib/routing/content';
 
 type State = ContentDataState | RootState;
 
@@ -18,6 +19,11 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
       return {
         ...state,
         [action.alias]: action.data
+      };
+    case 'FETCH_CONTENT_DATA_SUCCESS':
+      return {
+        ...state,
+        [generateLinkHrefForContent(action.payload).pathname]: action.payload
       };
 
     default:

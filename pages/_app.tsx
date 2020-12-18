@@ -15,10 +15,9 @@ import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppHeader } from '@components/AppHeader';
 import { AppFooter } from '@components/AppFooter';
-import { postJsonPriApiCtaRegion } from '@lib/fetch';
-import { fetchApiApp } from '@lib/fetch/api';
-import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
+import { fetchAppData } from '@store/actions';
+import { baseMuiTheme, appTheme } from '@theme/App.theme';
 
 interface TwAppProps extends AppProps {
   ctaRegions?: {
@@ -69,34 +68,31 @@ const TwApp = ({
 
 TwApp.getInitialProps = async (ctx: NextAppContext) => {
   const { req, store } = ctx.ctx;
-  const state = store.getState();
   const initialProps = await App.getInitialProps(ctx);
-  const {
-    pageProps: { type, id }
-  } = initialProps;
+  // const {
+  //   pageProps: { type, id }
+  // } = initialProps;
 
   // Fetch App Data
-  const data = await fetchApiApp(req);
+  await store.dispatch<any>(fetchAppData(req));
 
-  // Fetch CTA Messages
-  const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
-    'tw_cta_regions_site',
-    {
-      context: []
-    }
-  )) as IPriApiResource;
-  const banner = ctaRegions.tw_cta_region_site_banner;
-  const loadUnder = ctaRegions.tw_cta_region_site_load_under;
-
-  console.log('TwApp.getInitialProps >> initialProps', initialProps, store);
+  // // Fetch CTA Messages
+  // const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
+  //   'tw_cta_regions_site',
+  //   {
+  //     context: []
+  //   }
+  // )) as IPriApiResource;
+  // const banner = ctaRegions.tw_cta_region_site_banner;
+  // const loadUnder = ctaRegions.tw_cta_region_site_load_under;
 
   return {
-    ...initialProps,
-    ctaRegions: {
-      ...(banner && { banner }),
-      ...(loadUnder && { loadUnder })
-    },
-    ...data
+    ...initialProps
+    // ctaRegions: {
+    //   ...(banner && { banner }),
+    //   ...(loadUnder && { loadUnder })
+    // },
+    // ...data
   };
 };
 

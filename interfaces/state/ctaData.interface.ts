@@ -1,5 +1,4 @@
 /**
-import { ICtaMessage } from '@interfaces/cta';
  * @file ctaData.interface.ts
  *
  * Define interfaces for ctaData.

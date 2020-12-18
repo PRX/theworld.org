@@ -30,5 +30,5 @@ export const contentData = (state: State = {}, action: AnyAction) => {
 export const getContentData = (
   state: ContentDataState = {},
   type: string,
-  id: string | number
+  id: string
 ) => state[makeResourceSignature({ type, id } as IPriApiResource)];

@@ -7,45 +7,34 @@ import { IncomingMessage } from 'http';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
+import { RootState } from '@interfaces/state';
 import { fetchApiQueryAlias } from '@lib/fetch/api';
-
-// Action Definitions
-
-export interface FetchAliasDataRequest {
-  type: 'FETCH_ALIAS_DATA_REQUEST';
-  alias: string;
-}
-
-export interface FetchAliadDataSuccess {
-  type: 'FETCH_ALIAS_DATA_SUCCESS';
-  alias: string;
-  data: IPriApiResource;
-}
-
-// Union Action Types
-
-export type Actions = FetchAliasDataRequest | FetchAliasDataRequest;
-
-// Action Creators
-
-export const requestAliasData = () => {};
+import { getDataByAlias } from '@store/reducers';
 
 export const fetchAliasData = (
   alias: string,
   req: IncomingMessage
 ): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>
-): Promise<void> => {
-  dispatch({
-    type: 'FETCH_ALIAS_DATA_REQUEST',
-    alias
-  });
+  dispatch: ThunkDispatch<{}, {}, AnyAction>,
+  getState: () => RootState
+): Promise<IPriApiResource> => {
+  const state = getState();
+  let data = getDataByAlias(state, alias);
 
-  const data = await fetchApiQueryAlias(alias, req);
+  if (!data) {
+    dispatch({
+      type: 'FETCH_ALIAS_DATA_REQUEST',
+      alias
+    });
 
-  dispatch({
-    type: 'FETCH_ALIAS_DATA_SUCCESS',
-    alias,
-    data
-  });
+    data = await fetchApiQueryAlias(alias, req);
+
+    dispatch({
+      type: 'FETCH_ALIAS_DATA_SUCCESS',
+      alias,
+      data
+    });
+  }
+
+  return data;
 };

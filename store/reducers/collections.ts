@@ -49,7 +49,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
 export const getResourceCollection = (
   state: CollectionsState = {},
   type: string,
-  id: number | string,
+  id: string,
   collection: string
 ) => {
   const key = makeResourceSignature({ type, id } as IPriApiResource);

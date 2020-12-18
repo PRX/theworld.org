@@ -43,18 +43,18 @@ export const ctaData = (state: State = {}, action: AnyAction) => {
 export const getCtaData = (
   state: CtaDataState = {},
   type: string,
-  id: string | number
+  id: string
 ) => state[makeResourceSignature({ type, id } as IPriApiResource)];
 
 export const getCtaContext = (
   state: CtaDataState = {},
   type: string,
-  id: string | number
+  id: string
 ) => (getCtaData(state, type, id) || {}).context;
 
 export const getCtaRegionData = (
   state: CtaDataState = {},
   type: string,
-  id: string | number,
+  id: string,
   region: string
 ) => ((getCtaData(state, type, id) || {}).data || {})[region];

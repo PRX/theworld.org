@@ -13,7 +13,6 @@ import { IContentComponentProxyProps } from '@interfaces/content';
 import { importComponent, preloadComponent } from '@lib/import/component';
 import { RootState } from '@interfaces/state';
 import { fetchAliasData } from '@store/actions';
-import { getDataByAlias } from '@store/reducers';
 import { ContentContext } from '@contexts/Content.context';
 
 interface DispatchProps {
@@ -57,17 +56,13 @@ ContentProxy.getInitialProps = async (
   } = ctx;
   let resourceId: string;
   let resourceType: string = 'homepage';
-  let state = store.getState() as RootState;
+  // let state = store.getState() as RootState;
 
   // Get data for alias.
   if (alias) {
-    let aliasData = getDataByAlias(state, alias as string);
-
-    if (!aliasData) {
-      await store.dispatch<any>(fetchAliasData(alias as string, req));
-      state = store.getState();
-      aliasData = getDataByAlias(state, alias as string);
-    }
+    const aliasData = await store.dispatch<any>(
+      fetchAliasData(alias as string, req)
+    );
 
     // Update resource id and type.
     if (aliasData?.id) {

@@ -17,9 +17,8 @@ import { appCtaBannerStyles, appCtaBannerTheme } from './AppCtaBanner.styles';
 import { ctaTypeComponentMap } from './components';
 
 export const AppCtaBanner = () => {
-  const {
-    ctaRegions: { banner }
-  } = useContext(AppContext);
+  const { ctaRegions } = useContext(AppContext);
+  const { banner } = ctaRegions || {};
   const shownMessage = getShownMessage(banner);
   const { type } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[type] || null;
