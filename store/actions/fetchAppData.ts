@@ -27,14 +27,12 @@ export const fetchAppData = (
     const apiResp = await fetchApiApp(req);
     const { latestStories, menus } = apiResp;
 
-    console.log('fetchAppData', apiResp);
-
     dispatch({
       type: 'APPEND_REFS_TO_COLLECTION',
       payload: {
         resource: { type: 'app', id: null },
         collection: 'latest',
-        latestStories
+        items: latestStories
       }
     });
 

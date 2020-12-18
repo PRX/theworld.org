@@ -6,6 +6,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useStore } from 'react-redux';
+import { IPriApiResource } from 'pri-api-library/types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import {
   Box,
@@ -40,18 +41,35 @@ type Props = StateProps & IContentComponentProps;
 export const StoryDefault = ({ data }: Props) => {
   const {
     id,
-    type,
     body,
     audio,
     embeddedPlayerUrl,
     popoutPlayerUrl,
     categories,
+    primaryCategory,
     tags
   } = data;
   const store = useStore();
-  const related = getCollectionData(store.getState(), type, id, 'related');
+  const state = store.getState();
+  const related =
+    primaryCategory &&
+    (
+      (getCollectionData(
+        state,
+        primaryCategory.type,
+        primaryCategory.id,
+        'stories'
+      ) as IPriApiResource[]) || []
+    )
+      .filter(item => item.id !== id)
+      .slice(0, 4);
   const ctaRegions: { [k: string]: ICtaMessage[] } = {};
-  const latestStories = null;
+  const latestStories = getCollectionData(
+    state,
+    'app',
+    null,
+    'latest'
+  ) as IPriApiResource[];
   const classes = storyStyles({});
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;

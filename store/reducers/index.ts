@@ -42,8 +42,10 @@ export const getCollectionData = (
   );
 
   return (
-    collectionRefs &&
-    collectionRefs.map((key: string) => state.contentData[key])
+    (collectionRefs &&
+      Array.isArray(collectionRefs) &&
+      collectionRefs.map((key: string) => state.contentData[key])) ||
+    state.contentData[collectionRefs as string]
   );
 };
 

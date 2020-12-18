@@ -50,7 +50,6 @@ Story.fetchData = (
   const type = 'node--stories';
   const state = getState();
   const data = getDataByResource(state, type, id);
-  const related = getCollectionData(state, type, id, 'related');
 
   // Get missing content data.
   if (!data) {
@@ -71,33 +70,40 @@ Story.fetchData = (
   }
 
   // TODO: Get missing related stories data.
+  const { primaryCategory } = getDataByResource(getState(), type, id);
+  const related =
+    primaryCategory &&
+    getCollectionData(
+      state,
+      primaryCategory.type,
+      primaryCategory.id,
+      'stories'
+    );
   if (!related) {
-    const { primaryCategory } = getDataByResource(getState(), type, id);
-
     if (primaryCategory) {
       dispatch({
         type: 'FETCH_COLLECTION_DATA_REQUEST',
         payload: {
-          type,
-          id,
-          collection: 'related'
+          type: primaryCategory.type,
+          id: primaryCategory.id,
+          collection: 'stories'
         }
       });
 
       const { data: apiData } = await fetchApiCategoryStories(
         primaryCategory.id,
         1,
-        4,
-        [id],
+        5,
+        undefined,
         req
       );
 
       if (apiData) {
         appendResourceCollection(dispatch, getState, null)(
           apiData,
-          type,
-          id,
-          'related'
+          primaryCategory.type,
+          primaryCategory.id,
+          'stories'
         );
       }
     }

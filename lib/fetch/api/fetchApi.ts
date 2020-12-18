@@ -223,6 +223,6 @@ export const fetchApiCategoryStories = async (
   req?: IncomingMessage
 ): Promise<{ data: IPriApiResource[] }> =>
   fetchApi(`category/${id}/stories/${page}`, req, {
-    range: `${range}`,
-    exclude
+    ...(range && { range: `${range}` }),
+    ...(exclude && { exclude })
   });
