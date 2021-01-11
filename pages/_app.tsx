@@ -16,8 +16,9 @@ import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppHeader } from '@components/AppHeader';
 import { AppFooter } from '@components/AppFooter';
 import { wrapper } from '@store';
-import { fetchAppData } from '@store/actions';
+import { fetchAppData, fetchCtaData } from '@store/actions';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
+import { getCtaContext } from '@store/reducers';
 
 interface TwAppProps extends AppProps {
   ctaRegions?: {
@@ -30,13 +31,17 @@ interface TwAppProps extends AppProps {
   };
 }
 
-const TwApp = ({
-  Component,
-  ctaRegions,
-  pageProps,
-  menus,
-  latestStories
-}: TwAppProps) => {
+const TwApp = ({ Component, pageProps }: TwAppProps) => {
+  const { type, id } = pageProps;
+  const contextValue = {
+    page: {
+      resource: {
+        type,
+        id
+      }
+    }
+  };
+
   useEffect(() => {
     // Remove the server-side injected CSS.
     // Fix for https://github.com/mui-org/material-ui/issues/15073
@@ -49,7 +54,7 @@ const TwApp = ({
   return (
     <ThemeProvider theme={baseMuiTheme}>
       <ThemeProvider theme={appTheme}>
-        <AppContext.Provider value={{ ctaRegions, latestStories, menus }}>
+        <AppContext.Provider value={contextValue}>
           <Box minHeight="100vh" display="flex" flexDirection="column">
             <AppCtaBanner />
             <AppHeader />
@@ -69,30 +74,21 @@ const TwApp = ({
 TwApp.getInitialProps = async (ctx: NextAppContext) => {
   const { req, store } = ctx.ctx;
   const initialProps = await App.getInitialProps(ctx);
-  // const {
-  //   pageProps: { type, id }
-  // } = initialProps;
+  const {
+    pageProps: { type, id }
+  } = initialProps;
+  const context = getCtaContext(store.getState(), type, id);
 
   // Fetch App Data
   await store.dispatch<any>(fetchAppData(req));
 
   // // Fetch CTA Messages
-  // const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
-  //   'tw_cta_regions_site',
-  //   {
-  //     context: []
-  //   }
-  // )) as IPriApiResource;
-  // const banner = ctaRegions.tw_cta_region_site_banner;
-  // const loadUnder = ctaRegions.tw_cta_region_site_load_under;
+  await store.dispatch<any>(
+    fetchCtaData('tw_cta_regions_site', type, id, context, req)
+  );
 
   return {
     ...initialProps
-    // ctaRegions: {
-    //   ...(banner && { banner }),
-    //   ...(loadUnder && { loadUnder })
-    // },
-    // ...data
   };
 };
 

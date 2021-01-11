@@ -28,9 +28,8 @@ import {
 import { CtaRegion } from '@components/CtaRegion';
 import { Tags } from '@components/Tags';
 import { IContentComponentProps } from '@interfaces/content';
-import { ICtaMessage } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
-import { getCollectionData } from '@store/reducers';
+import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
@@ -40,6 +39,7 @@ type Props = StateProps & IContentComponentProps;
 
 export const StoryDefault = ({ data }: Props) => {
   const {
+    type,
     id,
     body,
     audio,
@@ -63,7 +63,24 @@ export const StoryDefault = ({ data }: Props) => {
     )
       .filter(item => item.id !== id)
       .slice(0, 4);
-  const ctaRegions: { [k: string]: ICtaMessage[] } = {};
+  const ctaInlineEnd = getCtaRegionData(
+    state,
+    type,
+    id,
+    'tw_cta_region_content_inline_end'
+  );
+  const ctaSidebarTop = getCtaRegionData(
+    state,
+    type,
+    id,
+    'tw_cta_region_content_sidebar_01'
+  );
+  const ctaSidebarBottom = getCtaRegionData(
+    state,
+    type,
+    id,
+    'tw_cta_region_content_sidebar_02'
+  );
   const latestStories = getCollectionData(
     state,
     'app',
@@ -109,11 +126,7 @@ export const StoryDefault = ({ data }: Props) => {
                   my={2}
                   dangerouslySetInnerHTML={{ __html: body }}
                 />
-                {ctaRegions.tw_cta_region_content_inline_end && (
-                  <CtaRegion
-                    data={ctaRegions.tw_cta_region_content_inline_end}
-                  />
-                )}
+                {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
                 {hasRelated && (
                   <aside>
                     <header>
@@ -150,18 +163,14 @@ export const StoryDefault = ({ data }: Props) => {
                   </Sidebar>
                 )}
                 <Hidden smDown>
-                  {ctaRegions.tw_cta_region_content_sidebar_01 && (
+                  {ctaSidebarTop && (
                     <Sidebar item stretch>
-                      <SidebarCta
-                        data={ctaRegions.tw_cta_region_content_sidebar_01}
-                      />
+                      <SidebarCta data={ctaSidebarTop} />
                     </Sidebar>
                   )}
-                  {ctaRegions.tw_cta_region_content_sidebar_02 && (
+                  {ctaSidebarBottom && (
                     <Sidebar item stretch>
-                      <SidebarCta
-                        data={ctaRegions.tw_cta_region_content_sidebar_02}
-                      />
+                      <SidebarCta data={ctaSidebarBottom} />
                     </Sidebar>
                   )}
                 </Hidden>

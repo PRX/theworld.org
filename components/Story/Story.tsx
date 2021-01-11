@@ -8,15 +8,19 @@ import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { ContentContext } from '@contexts/Content.context';
+import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
 import { fetchApiStory, fetchApiCategoryStories } from '@lib/fetch';
-import { appendResourceCollection } from '@store/actions';
+import { appendResourceCollection, fetchCtaData } from '@store/actions';
 import { getDataByResource, getCollectionData } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
 
 export const Story = () => {
-  const { type, id } = useContext(ContentContext);
+  const {
+    page: {
+      resource: { type, id }
+    }
+  } = useContext(AppContext);
   const store = useStore();
   const state = store.getState();
   const data = getDataByResource(state, type, id);
@@ -46,26 +50,26 @@ Story.fetchData = (
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
-) => {
+): Promise<void> => {
   const type = 'node--stories';
   const state = getState();
-  const data = getDataByResource(state, type, id);
+  let data = getDataByResource(state, type, id);
 
   // Get missing content data.
   if (!data) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
-        type: 'node--stories',
+        type,
         id
       }
     });
 
-    const apiData = await fetchApiStory(id, req);
+    data = await fetchApiStory(id, req);
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload: apiData
+      payload: data
     });
   }
 
@@ -79,6 +83,7 @@ Story.fetchData = (
       primaryCategory.id,
       'stories'
     );
+
   if (!related) {
     if (primaryCategory) {
       dispatch({
@@ -109,5 +114,21 @@ Story.fetchData = (
     }
   }
 
-  // TODO: Get missing CTA message data.
+  // Get CTA message data.
+  const context = [
+    `node:${data.id}`,
+    `node:${data.program?.id}`,
+    `term:${data.primaryCategory?.id}`,
+    ...((data.categories &&
+      data.categories.length &&
+      data.categories.map(({ id: tid }) => `term:${tid}`)) ||
+      []),
+    ...((data.vertical &&
+      data.vertical.length &&
+      data.vertical.map(({ tid }) => `term:${tid}`)) ||
+      [])
+  ];
+  await dispatch(
+    fetchCtaData('tw_cta_regions_content', type, id, context, req)
+  );
 };

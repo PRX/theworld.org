@@ -19,19 +19,32 @@ export const ctaData = (state: State = {}, action: AnyAction) => {
     case HYDRATE:
       return { ...state, ...action.payload.ctaData };
     case 'FETCH_CTA_DATA_SUCCESS':
-      key = makeResourceSignature(action.payload);
+      key = makeResourceSignature({
+        type: action.payload.type,
+        id: action.payload.id
+      } as IPriApiResource);
       return {
         ...state,
         ...(state[key]
           ? {
-              ...state[key],
-              data: {
-                ...state[key].data,
-                ...action.payload.data
+              [key]: {
+                ...state[key],
+                groups: {
+                  ...state[key].groups,
+                  ...action.payload.groups
+                },
+                data: {
+                  ...state[key].data,
+                  ...action.payload.data
+                }
               }
             }
           : {
-              [key]: action.payload
+              [key]: {
+                context: action.payload.context,
+                groups: action.payload.groups,
+                data: action.payload.data
+              }
             })
       };
 
@@ -58,3 +71,10 @@ export const getCtaRegionData = (
   id: string,
   region: string
 ) => ((getCtaData(state, type, id) || {}).data || {})[region];
+
+export const getCtaRegionGroup = (
+  state: CtaDataState = {},
+  type: string,
+  id: string,
+  group: string
+) => ((getCtaData(state, type, id) || {}).groups || {})[group];

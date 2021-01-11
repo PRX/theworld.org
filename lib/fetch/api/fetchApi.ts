@@ -8,6 +8,7 @@ import { IPriApiResource } from 'pri-api-library/types';
 import { IncomingMessage } from 'http';
 import { ParsedUrlQuery } from 'querystring';
 import { parse, format } from 'url';
+import { ICtaMessage } from '@interfaces/cta';
 import {
   INewsletterOptions,
   INewsletterData,
@@ -21,6 +22,10 @@ import {
  *    Path to the resource being requested.
  * @param req
  *    Request object from `getInitialProps` ctx object.
+ * @param query
+ *    Query object.
+ * @param body
+ *    Data object to send as JSON. Will convert request to POST.
  *
  * @returns
  *    Denormalized response to request, or error object.
@@ -28,7 +33,8 @@ import {
 export const fetchApi = async (
   path: string,
   req?: IncomingMessage,
-  query?: ParsedUrlQuery
+  query?: ParsedUrlQuery,
+  body?: Object
 ) => {
   const baseUrl = req
     ? `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
@@ -45,7 +51,18 @@ export const fetchApi = async (
     }
   });
 
-  return fetch(url).then(r => r.json());
+  return fetch(
+    url,
+    body
+      ? {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        }
+      : {}
+  ).then(r => r.json());
 };
 
 /**
@@ -225,4 +242,13 @@ export const fetchApiCategoryStories = async (
   fetchApi(`category/${id}/stories/${page}`, req, {
     ...(range && { range: `${range}` }),
     ...(exclude && { exclude })
+  });
+
+export const fetchApiCtaRegionGroup = async (
+  regionGroup: string,
+  context: string[],
+  req: IncomingMessage
+): Promise<{ data: { [k: string]: ICtaMessage[] } }> =>
+  fetchApi(`cta/${regionGroup}`, req, undefined, {
+    context
   });

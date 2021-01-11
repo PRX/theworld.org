@@ -33,12 +33,10 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
     color: 'primary',
     disabled: !optedIn
   };
-  const dismissAttrs: ButtonProps = !action
-    ? actionAttrs
-    : {
-        variant: 'outlined',
-        color: 'primary'
-      };
+  const dismissAttrs: ButtonProps = {
+    variant: 'outlined',
+    color: 'primary'
+  };
   const handleActionClick = () => {
     onClose();
   };

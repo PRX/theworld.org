@@ -13,7 +13,6 @@ import { IContentComponentProxyProps } from '@interfaces/content';
 import { importComponent, preloadComponent } from '@lib/import/component';
 import { RootState } from '@interfaces/state';
 import { fetchAliasData } from '@store/actions';
-import { ContentContext } from '@contexts/Content.context';
 
 interface DispatchProps {
   fetchAliasData: (alias: string, req: IncomingMessage) => void;
@@ -35,11 +34,7 @@ const ContentProxy = (props: Props) => {
     const { type, id } = props;
     const ContentComponent = importComponent(type);
 
-    output = (
-      <ContentContext.Provider value={{ type, id }}>
-        <ContentComponent id={id} />
-      </ContentContext.Provider>
-    );
+    output = <ContentComponent id={id} />;
   }
 
   return output;
