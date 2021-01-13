@@ -166,8 +166,6 @@ export const Program = () => {
     });
   };
 
-  console.log('Program >> ', nextPageUrl, loadMoreUrl, loadMoreAs, loadedPage);
-
   const mainElements = [
     {
       key: 'main top',
