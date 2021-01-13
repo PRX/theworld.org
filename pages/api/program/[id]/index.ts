@@ -7,32 +7,34 @@ import { parse } from 'url';
 import {
   fetchApiProgramStories,
   fetchPriApiItem,
-  fetchPriApiQuery,
-  postJsonPriApiCtaRegion
+  fetchPriApiQuery
 } from '@lib/fetch/api';
+import { fullStoryParams } from '@lib/fetch/api/params';
 import { IPriApiResource } from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id, p = '1' } = req.query;
-  const getContext = (program: IPriApiResource): string[] => [
-    `node:${program.id}`
-  ];
 
   if (id) {
-    const program = (await fetchPriApiItem('node--programs', id as string, {
+    const params = {
       include: [
         'banner_image',
-        'featured_stories.image',
-        'featured_stories.primary_category',
         'hosts.image',
         'logo',
-        'podcast_logo'
+        'podcast_logo',
+        ...(fullStoryParams.include || []).map(
+          param => `featured_stories.${param}`
+        )
       ]
-    })) as IPriApiResource;
+    };
+    const program = (await fetchPriApiItem(
+      'node--programs',
+      id as string,
+      params
+    )) as IPriApiResource;
 
     if (program) {
       const {
-        type,
         featuredStories,
         metatags: { canonical }
       } = program;
@@ -47,8 +49,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
       };
       const nextPageAs = `${oUrl.pathname}?p=${nextPage}`;
-
-      console.log(req.query, page);
 
       // Fetch list of stories. Paginated.
       const { data: stories } = await fetchApiProgramStories(
@@ -71,43 +71,29 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         range: 1
       })) as IPriApiResource[]).shift();
 
-      // Fetch CTA Messages.
-      const context = getContext(program);
-      const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
-        'tw_cta_regions_landing',
-        {
-          context
-        }
-      )) as IPriApiResource;
-
       // Build response object.
       const apiResp = {
-        type,
-        context,
-        ctaRegions,
-        data: {
-          ...program,
-          featuredStory: featuredStories
-            ? featuredStories.shift()
-            : stories.shift(),
-          featuredStories: featuredStories
-            ? featuredStories.concat(
-                stories.splice(0, 4 - featuredStories.length)
-              )
-            : stories.splice(0, 4),
-          stories: [...stories, ...moreStories],
-          latestEpisode,
-          page,
-          nextPageUrl,
-          nextPageAs
-        }
+        ...program,
+        featuredStory: featuredStories
+          ? featuredStories.shift()
+          : stories.shift(),
+        featuredStories: featuredStories
+          ? featuredStories.concat(
+              stories.splice(0, 4 - featuredStories.length)
+            )
+          : stories.splice(0, 4),
+        stories: [...stories, ...moreStories],
+        latestEpisode,
+        page,
+        nextPageUrl,
+        nextPageAs
       };
 
       res.status(200).json(apiResp);
     } else {
-      res.status(404);
+      res.status(404).end();
     }
   }
 
-  res.status(400);
+  res.status(400).end();
 };

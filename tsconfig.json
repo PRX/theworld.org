@@ -27,6 +27,7 @@
     "jsx": "preserve",
     "paths": {
       "@components/*": ["components/*"],
+      "@config": ["config"],
       "@config/*": ["config/*"],
       "@contexts/*": ["contexts/*"],
       "@interfaces": ["interfaces"],

@@ -62,7 +62,7 @@ ContentProxy.getInitialProps = async (
     // Update resource id and type.
     if (aliasData?.id) {
       const { id, type } = aliasData as IPriApiResource;
-      resourceId = id;
+      resourceId = id as string;
       resourceType = type;
     } else {
       resourceType = null;

@@ -74,6 +74,7 @@ Story.fetchData = (
   }
 
   // TODO: Get missing related stories data.
+  const collection = 'related';
   const { primaryCategory } = getDataByResource(getState(), type, id);
   const related =
     primaryCategory &&
@@ -81,7 +82,7 @@ Story.fetchData = (
       state,
       primaryCategory.type,
       primaryCategory.id,
-      'stories'
+      collection
     );
 
   if (!related) {
@@ -91,7 +92,7 @@ Story.fetchData = (
         payload: {
           type: primaryCategory.type,
           id: primaryCategory.id,
-          collection: 'stories'
+          collection
         }
       });
 
@@ -108,7 +109,7 @@ Story.fetchData = (
           apiData,
           primaryCategory.type,
           primaryCategory.id,
-          'stories'
+          collection
         );
       }
     }
@@ -128,7 +129,7 @@ Story.fetchData = (
       data.vertical.map(({ tid }) => `term:${tid}`)) ||
       [])
   ];
-  await dispatch(
+  await dispatch<any>(
     fetchCtaData('tw_cta_regions_content', type, id, context, req)
   );
 };

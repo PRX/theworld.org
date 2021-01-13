@@ -19,11 +19,13 @@ export const collections = (state: State = {}, action: AnyAction) => {
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload.collections };
+
     case 'APPEND_REFS_TO_COLLECTION':
       key = makeResourceSignature(action.payload.resource);
       refs = (action.payload.items || []).map((ref: IPriApiResource) =>
         makeResourceSignature(ref)
       );
+
       return {
         ...state,
         [key]: {
@@ -31,7 +33,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
             ? {
                 ...state[key],
                 [action.payload.collection]: [
-                  ...state[key][action.payload.collection],
+                  ...(state[key][action.payload.collection] || []),
                   ...refs
                 ]
               }

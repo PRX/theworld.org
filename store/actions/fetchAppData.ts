@@ -1,7 +1,7 @@
 /**
  * @file fetchAppData.ts
  *
- * Actions to fetch basic data for a URL alias.
+ * Actions to fetch data for app.
  */
 import { IncomingMessage } from 'http';
 import { AnyAction } from 'redux';

@@ -56,9 +56,9 @@ export const StoryDefault = ({ data }: Props) => {
     (
       (getCollectionData(
         state,
-        primaryCategory.type,
-        primaryCategory.id,
-        'stories'
+        type,
+        id as string,
+        'related'
       ) as IPriApiResource[]) || []
     )
       .filter(item => item.id !== id)
@@ -66,19 +66,19 @@ export const StoryDefault = ({ data }: Props) => {
   const ctaInlineEnd = getCtaRegionData(
     state,
     type,
-    id,
+    id as string,
     'tw_cta_region_content_inline_end'
   );
   const ctaSidebarTop = getCtaRegionData(
     state,
     type,
-    id,
+    id as string,
     'tw_cta_region_content_sidebar_01'
   );
   const ctaSidebarBottom = getCtaRegionData(
     state,
     type,
-    id,
+    id as string,
     'tw_cta_region_content_sidebar_02'
   );
   const latestStories = getCollectionData(

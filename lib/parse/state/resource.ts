@@ -7,4 +7,4 @@
 import { IPriApiResource } from 'pri-api-library/types';
 
 export const makeResourceSignature = ({ type, id }: IPriApiResource) =>
-  [type, id].join(':');
+  [type, id].filter(v => !!v).join(':');
