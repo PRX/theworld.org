@@ -2,10 +2,13 @@
  * @file Program.tsx
  * Component for Program.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
+import { AnyAction } from 'redux';
+import { useStore } from 'react-redux';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -30,33 +33,71 @@ import { fetchApiProgram, fetchApiProgramStories } from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
+import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import { IContentComponentProps } from '@interfaces/content';
-import { getContentData } from '../../store/reducers/contentData';
+import { appendResourceCollection, fetchCtaData } from '@store/actions';
+import {
+  getCollectionData,
+  getCtaRegionData,
+  getDataByResource
+} from '@store/reducers';
 
-interface StateProps extends RootState {}
-
-type Props = StateProps & IContentComponentProps;
-
-export const Program = ({ id, contentData }: Props) => {
-  const latestStories = [];
-  const data = getContentData(contentData, 'node--programs', id);
+export const Program = () => {
   const {
-    tw_cta_region_landing_inline_01: ctaInlineTop,
-    tw_cta_region_landing_inline_02: ctaInlineBottom,
-    tw_cta_region_landing_sidebar_01: ctaSidebarTop,
-    tw_cta_region_landing_sidebar_02: ctaSidebarBottom
-  } = {
-    tw_cta_region_landing_inline_01: [],
-    tw_cta_region_landing_inline_02: [],
-    tw_cta_region_landing_sidebar_01: [],
-    tw_cta_region_landing_sidebar_02: []
-  };
+    page: {
+      resource: { type, id }
+    }
+  } = useContext(AppContext);
+  const store = useStore();
+  const state = store.getState();
+  const data = getDataByResource(state, type, id);
+  const ctaInlineTop = getCtaRegionData(
+    state,
+    type,
+    id,
+    'tw_cta_region_landing_inline_01'
+  );
+  const ctaInlineBottom = getCtaRegionData(
+    state,
+    type,
+    id,
+    'tw_cta_region_landing_inline_02'
+  );
+  const ctaSidebarTop = getCtaRegionData(
+    state,
+    type,
+    id,
+    'tw_cta_region_landing_sidebar_01'
+  );
+  const ctaSidebarBottom = getCtaRegionData(
+    state,
+    type,
+    id,
+    'tw_cta_region_landing_sidebar_02'
+  );
+  const featuredStory = (getCollectionData(state, type, id, 'featured story') ||
+    [])[0] as IPriApiResource;
+  const featuredStories = getCollectionData(
+    state,
+    type,
+    id,
+    'featured stories'
+  ) as IPriApiResource[];
+  const stories = getCollectionData(
+    state,
+    type,
+    id,
+    'stories'
+  ) as IPriApiResource[];
+  const latestStories = getCollectionData(
+    state,
+    'app',
+    undefined,
+    'latest'
+  ) as IPriApiResource[];
+  const latestEpisode = (getCollectionData(state, type, id, 'latest episode') ||
+    [])[0] as IPriApiResource;
   const {
-    featuredStory,
-    featuredStories,
-    latestEpisode,
-    stories,
     title,
     teaser,
     bannerImage,
@@ -99,6 +140,14 @@ export const Program = ({ id, contentData }: Props) => {
     const loadPage = loadedPage + 1;
     const nextPage = loadPage + 1;
     const { data: moreStories } = await fetchApiProgramStories(id, loadPage);
+
+    appendResourceCollection(store.dispatch, store.getState, null)(
+      moreStories,
+      type,
+      id,
+      'stories'
+    );
+
     setOldScrollY(window.scrollY);
     setLoadedState({
       ...loadedState,
@@ -296,5 +345,91 @@ export const Program = ({ id, contentData }: Props) => {
   );
 };
 
-Program.fetchData = async (id: string | number, req: IncomingMessage) =>
-  fetchApiProgram(id, req);
+Program.fetchData = (
+  id: string,
+  req: IncomingMessage
+): ThunkAction<void, {}, {}, AnyAction> => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>,
+  getState: () => RootState
+): Promise<void> => {
+  const type = 'node--programs';
+  const state = getState();
+  const data = getDataByResource(state, type, id);
+
+  // Get missing content data.
+  if (!data) {
+    dispatch({
+      type: 'FETCH_CONTENT_DATA_REQUEST',
+      payload: {
+        type,
+        id
+      }
+    });
+
+    const {
+      featuredStory,
+      featuredStories,
+      latestEpisode,
+      stories,
+      ...payload
+    } = await fetchApiProgram(id, req);
+
+    dispatch({
+      type: 'FETCH_CONTENT_DATA_SUCCESS',
+      payload
+    });
+
+    dispatch({
+      type: 'APPEND_REFS_TO_COLLECTION',
+      payload: {
+        resource: { type, id },
+        collection: 'latest episode',
+        items: [latestEpisode]
+      }
+    });
+
+    dispatch({
+      type: 'APPEND_REFS_TO_COLLECTION',
+      payload: {
+        resource: { type, id },
+        collection: 'featured story',
+        items: [featuredStory]
+      }
+    });
+
+    dispatch({
+      type: 'APPEND_REFS_TO_COLLECTION',
+      payload: {
+        resource: { type, id },
+        collection: 'featured stories',
+        items: [...featuredStories]
+      }
+    });
+
+    dispatch({
+      type: 'APPEND_REFS_TO_COLLECTION',
+      payload: {
+        resource: { type, id },
+        collection: 'stories',
+        items: [...stories]
+      }
+    });
+
+    [featuredStory, ...featuredStories, ...stories, latestEpisode].forEach(
+      (item: any) => {
+        if (item) {
+          dispatch({
+            type: 'FETCH_CONTENT_DATA_SUCCESS',
+            payload: item
+          });
+        }
+      }
+    );
+  }
+
+  // Get CTA message data.
+  const context = [`node:${id}`];
+  await dispatch<any>(
+    fetchCtaData('tw_cta_regions_landing', type, id, context, req)
+  );
+};

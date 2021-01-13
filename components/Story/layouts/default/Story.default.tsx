@@ -56,8 +56,8 @@ export const StoryDefault = ({ data }: Props) => {
     (
       (getCollectionData(
         state,
-        type,
-        id as string,
+        primaryCategory.type,
+        primaryCategory.id as string,
         'related'
       ) as IPriApiResource[]) || []
     )

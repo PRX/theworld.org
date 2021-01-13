@@ -40,6 +40,7 @@ export const storyCardGridTheme = (theme: Theme) =>
         root: {
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'start',
           height: '100%',
           [theme.breakpoints.down('xs')]: {
             display: 'grid',

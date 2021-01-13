@@ -22,9 +22,9 @@ export const collections = (state: State = {}, action: AnyAction) => {
 
     case 'APPEND_REFS_TO_COLLECTION':
       key = makeResourceSignature(action.payload.resource);
-      refs = (action.payload.items || []).map((ref: IPriApiResource) =>
-        makeResourceSignature(ref)
-      );
+      refs = (action.payload.items || [])
+        .filter(v => !!v)
+        .map((ref: IPriApiResource) => makeResourceSignature(ref));
 
       return {
         ...state,

@@ -18,12 +18,12 @@ import { layoutComponentMap } from './layouts';
 export const Story = () => {
   const {
     page: {
-      resource: { type, id }
+      resource: { id }
     }
   } = useContext(AppContext);
   const store = useStore();
   const state = store.getState();
-  const data = getDataByResource(state, type, id);
+  const data = getDataByResource(state, 'node--stories', id);
 
   if (!data) {
     return null;
@@ -121,11 +121,11 @@ Story.fetchData = (
     `node:${data.program?.id}`,
     `term:${data.primaryCategory?.id}`,
     ...((data.categories &&
-      data.categories.length &&
+      !!data.categories.length &&
       data.categories.map(({ id: tid }) => `term:${tid}`)) ||
       []),
     ...((data.vertical &&
-      data.vertical.length &&
+      !!data.vertical.length &&
       data.vertical.map(({ tid }) => `term:${tid}`)) ||
       [])
   ];

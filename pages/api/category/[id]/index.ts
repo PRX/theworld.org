@@ -4,13 +4,14 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { parse } from 'url';
+import { IPriApiResource } from 'pri-api-library/types';
 import {
   fetchApiProgramStories,
   fetchPriApiItem,
   fetchPriApiQuery,
   postJsonPriApiCtaRegion
 } from '@lib/fetch/api';
-import { IPriApiResource } from 'pri-api-library/types';
+import { fullStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id, p = '1' } = req.query;
@@ -23,7 +24,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'taxonomy_term--categories',
       id as string,
       {
-        include: ['banner_image', 'logo', 'podcast_logo']
+        include: [
+          'banner_image',
+          'logo',
+          'podcast_logo',
+          ...(fullStoryParams.include || []).map(
+            param => `featured_stories.${param}`
+          )
+        ]
       }
     )) as IPriApiResource;
 

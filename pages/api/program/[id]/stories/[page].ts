@@ -3,8 +3,9 @@
  * Gather program stories data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { IPriApiResource } from 'pri-api-library/types';
+import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
+import { fullStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id, page = '1', range, exclude } = req.query;
@@ -24,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Fetch list of stories. Paginated.
       const data = (await fetchPriApiQuery('node--stories', {
-        include: ['image', 'primary_category'],
+        ...fullStoryParams,
         'filter[status]': 1,
         'filter[program]': id,
         ...(excluded && {
