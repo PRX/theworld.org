@@ -75,28 +75,34 @@ export const Program = () => {
     id,
     'tw_cta_region_landing_sidebar_02'
   );
-  const featuredStory = (getCollectionData(state, type, id, 'featured story') ||
-    [])[0] as IPriApiResource;
-  const featuredStories = getCollectionData(
+  const featuredStoryState = getCollectionData(
+    state,
+    type,
+    id,
+    'featured story'
+  );
+  const featuredStory = featuredStoryState.items[0];
+  const { items: featuredStories } = getCollectionData(
     state,
     type,
     id,
     'featured stories'
-  ) as IPriApiResource[];
-  const stories = getCollectionData(
-    state,
-    type,
-    id,
-    'stories'
-  ) as IPriApiResource[];
-  const latestStories = getCollectionData(
+  );
+  const storiesState = getCollectionData(state, type, id, 'stories');
+  const { items: stories, page } = storiesState;
+  const { items: latestStories } = getCollectionData(
     state,
     'app',
     undefined,
     'latest'
-  ) as IPriApiResource[];
-  const latestEpisode = (getCollectionData(state, type, id, 'latest episode') ||
-    [])[0] as IPriApiResource;
+  );
+  const latestEpisodeState = getCollectionData(
+    state,
+    type,
+    id,
+    'latest episode'
+  );
+  const latestEpisode = latestEpisodeState && latestEpisodeState.items[0];
   const {
     title,
     teaser,
@@ -104,66 +110,47 @@ export const Program = () => {
     podcastLogo,
     hosts,
     sponsors,
-    body,
-    page,
-    nextPageUrl,
-    nextPageAs
+    body
   } = data;
-  const [loadedState, setLoadedState] = useState({
-    loading: false,
-    loadedStories: stories,
-    loadedPage: page,
-    loadMoreUrl: nextPageUrl,
-    loadMoreAs: nextPageAs
-  });
+  const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
-  const {
-    loading,
-    loadedStories,
-    loadedPage,
-    loadMoreUrl,
-    loadMoreAs
-  } = loadedState;
+
+  // const unsubStore = store.subscribe(() => {
+  //   state = store.getState();
+  //   const { items, page: newPage } = getCollectionData(
+  //     state,
+  //     type,
+  //     id,
+  //     'stories'
+  //   );
+  //   stories = items;
+  //   page = newPage;
+
+  //   console.log(page, stories);
+  // });
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
-  }, [loadedPage]);
+
+    // return () => {
+    //   unsubStore();
+    // };
+  }, [page]);
 
   const loadMoreStories = async () => {
-    setLoadedState({
-      ...loadedState,
-      loading: true
-    });
-    const loadPage = loadedPage + 1;
-    const nextPage = loadPage + 1;
-    const { data: moreStories } = await fetchApiProgramStories(id, loadPage);
+    setLoading(true);
 
-    appendResourceCollection(store.dispatch, store.getState, null)(
-      moreStories,
-      type,
-      id,
-      'stories'
-    );
+    const { data: moreStories } = await fetchApiProgramStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
-    setLoadedState({
-      ...loadedState,
-      loading: false,
-      loadedStories: [...loadedStories, ...moreStories],
-      loadedPage: loadPage,
-      loadMoreUrl: {
-        ...nextPageUrl,
-        query: {
-          ...nextPageUrl.query,
-          p: nextPage
-        }
-      },
-      loadMoreAs: `${nextPageUrl.query.alias ||
-        window.location.pathname}?p=${nextPage}`
-    });
+    setLoading(false);
+
+    store.dispatch<any>(
+      appendResourceCollection([...moreStories], type, id, 'stories')
+    );
   };
 
   const mainElements = [
@@ -190,8 +177,8 @@ export const Program = () => {
       key: 'main bottom',
       children: (
         <Box mt={3}>
-          {loadedStories &&
-            loadedStories.map((item: IPriApiResource, index: number) => (
+          {stories &&
+            stories.map((item: IPriApiResource, index: number) => (
               <Box mt={index ? 2 : 0} key={item.id}>
                 <StoryCard
                   data={item}
@@ -200,31 +187,18 @@ export const Program = () => {
               </Box>
             ))}
           <Box mt={3}>
-            <Link
-              href={loadMoreUrl}
-              as={loadMoreAs}
-              passHref
-              replace
-              shallow
-              scroll={false}
+            <Button
+              variant="contained"
+              size="large"
+              color="primary"
+              fullWidth
+              disabled={loading}
+              onClick={() => {
+                loadMoreStories();
+              }}
             >
-              <Button
-                component="a"
-                variant="contained"
-                size="large"
-                color="primary"
-                fullWidth
-                disabled={loading}
-                onClick={(
-                  e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-                ) => {
-                  e.preventDefault();
-                  loadMoreStories();
-                }}
-              >
-                {loading ? 'Loading Stories...' : 'More Stories'}
-              </Button>
-            </Link>
+              {loading ? 'Loading Stories...' : 'More Stories'}
+            </Button>
           </Box>
           {ctaInlineBottom && (
             <Box mt={3}>
@@ -377,52 +351,24 @@ Program.fetchData = (
       payload
     });
 
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type, id },
-        collection: 'latest episode',
-        items: [latestEpisode]
-      }
-    });
-
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type, id },
-        collection: 'featured story',
-        items: [featuredStory]
-      }
-    });
-
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type, id },
-        collection: 'featured stories',
-        items: [...featuredStories]
-      }
-    });
-
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type, id },
-        collection: 'stories',
-        items: [...stories]
-      }
-    });
-
-    [featuredStory, ...featuredStories, ...stories, latestEpisode].forEach(
-      (item: any) => {
-        if (item) {
-          dispatch({
-            type: 'FETCH_CONTENT_DATA_SUCCESS',
-            payload: item
-          });
-        }
-      }
+    dispatch(
+      appendResourceCollection([latestEpisode], type, id, 'latest episode')
     );
+
+    dispatch(
+      appendResourceCollection([featuredStory], type, id, 'featured story')
+    );
+
+    dispatch(
+      appendResourceCollection(
+        [...featuredStories],
+        type,
+        id,
+        'featured stories'
+      )
+    );
+
+    dispatch(appendResourceCollection([...stories], type, id, 'stories'));
   }
 
   // Get CTA message data.

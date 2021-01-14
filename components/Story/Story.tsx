@@ -105,11 +105,13 @@ Story.fetchData = (
       );
 
       if (apiData) {
-        appendResourceCollection(dispatch, getState, null)(
-          apiData,
-          primaryCategory.type,
-          primaryCategory.id,
-          collection
+        dispatch(
+          appendResourceCollection(
+            apiData,
+            primaryCategory.type,
+            primaryCategory.id,
+            collection
+          )
         );
       }
     }

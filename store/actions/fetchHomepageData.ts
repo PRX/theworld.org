@@ -9,6 +9,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from '@interfaces/state';
 import { fetchApiHomepage } from '@lib/fetch/api';
 import { getCollectionData } from '@store/reducers';
+import { appendResourceCollection } from './appendResourceCollection';
 
 export const fetchHomepageData = (
   req: IncomingMessage
@@ -17,12 +18,9 @@ export const fetchHomepageData = (
   getState: () => RootState
 ): Promise<void> => {
   const state = getState();
-  const dataCheck = getCollectionData(
-    state,
-    'homepage',
-    null,
-    'featured story'
-  );
+  const type = 'homepage';
+  const id = undefined;
+  const dataCheck = getCollectionData(state, type, id, 'featured story');
 
   if (!dataCheck) {
     dispatch({
@@ -38,62 +36,25 @@ export const fetchHomepageData = (
       stories
     } = apiResp;
 
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type: 'homepage', id: null },
-        collection: 'latest episode',
-        items: [latestEpisode]
-      }
-    });
+    dispatch(
+      appendResourceCollection([latestEpisode], type, id, 'latest episode')
+    );
 
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type: 'homepage', id: null },
-        collection: 'latest',
-        items: [...latestStories]
-      }
-    });
+    dispatch(
+      appendResourceCollection([featuredStory], type, id, 'featured story')
+    );
 
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type: 'homepage', id: null },
-        collection: 'featured story',
-        items: [featuredStory]
-      }
-    });
+    dispatch(
+      appendResourceCollection(
+        [...featuredStories],
+        type,
+        id,
+        'featured stories'
+      )
+    );
 
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type: 'homepage', id: null },
-        collection: 'featured stories',
-        items: [...featuredStories]
-      }
-    });
+    dispatch(appendResourceCollection([...stories], type, id, 'stories'));
 
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type: 'homepage', id: null },
-        collection: 'stories',
-        items: [...stories]
-      }
-    });
-
-    [
-      featuredStory,
-      ...featuredStories,
-      ...stories,
-      ...latestStories,
-      latestEpisode
-    ].forEach((item: any) => {
-      dispatch({
-        type: 'FETCH_CONTENT_DATA_SUCCESS',
-        payload: item
-      });
-    });
+    dispatch(appendResourceCollection([...latestStories], type, id, 'latest'));
   }
 };

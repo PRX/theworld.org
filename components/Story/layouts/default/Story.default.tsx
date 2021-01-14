@@ -6,7 +6,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { useStore } from 'react-redux';
-import { IPriApiResource } from 'pri-api-library/types';
 import { ThemeProvider } from '@material-ui/core/styles';
 import {
   Box,
@@ -51,18 +50,17 @@ export const StoryDefault = ({ data }: Props) => {
   } = data;
   const store = useStore();
   const state = store.getState();
-  const related =
+  const relatedState =
     primaryCategory &&
-    (
-      (getCollectionData(
-        state,
-        primaryCategory.type,
-        primaryCategory.id as string,
-        'related'
-      ) as IPriApiResource[]) || []
-    )
-      .filter(item => item.id !== id)
-      .slice(0, 4);
+    getCollectionData(
+      state,
+      primaryCategory.type,
+      primaryCategory.id as string,
+      'related'
+    );
+  const related =
+    relatedState &&
+    relatedState.items.filter(item => item.id !== id).slice(0, 4);
   const ctaInlineEnd = getCtaRegionData(
     state,
     type,
@@ -81,12 +79,12 @@ export const StoryDefault = ({ data }: Props) => {
     id as string,
     'tw_cta_region_content_sidebar_02'
   );
-  const latestStories = getCollectionData(
+  const { items: latestStories } = getCollectionData(
     state,
     'app',
     null,
     'latest'
-  ) as IPriApiResource[];
+  );
   const classes = storyStyles({});
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;

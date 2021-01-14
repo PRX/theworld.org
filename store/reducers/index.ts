@@ -34,7 +34,7 @@ export const getCollectionData = (
   id: string,
   collection: string
 ) => {
-  const collectionRefs = fromCollections.getResourceCollection(
+  const collectionState = fromCollections.getResourceCollection(
     state.collections,
     type,
     id,
@@ -42,8 +42,10 @@ export const getCollectionData = (
   );
 
   return (
-    collectionRefs &&
-    collectionRefs.map((key: string) => state.contentData[key])
+    collectionState && {
+      ...collectionState,
+      items: collectionState.items.map((key: string) => state.contentData[key])
+    }
   );
 };
 

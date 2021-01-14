@@ -36,36 +36,38 @@ type Props = StateProps & IContentComponentProps;
 export const Homepage = () => {
   const store = useStore();
   const state = store.getState();
-  const featuredStory = (getCollectionData(
+  const featuredStoryState = getCollectionData(
     state,
     'homepage',
     undefined,
     'featured story'
-  ) || [])[0] as IPriApiResource;
-  const featuredStories = getCollectionData(
+  );
+  const featuredStory = featuredStoryState.items[0];
+  const { items: featuredStories } = getCollectionData(
     state,
     'homepage',
     undefined,
     'featured stories'
-  ) as IPriApiResource[];
-  const stories = getCollectionData(
+  );
+  const { items: stories } = getCollectionData(
     state,
     'homepage',
     undefined,
     'stories'
-  ) as IPriApiResource[];
-  const latestStories = getCollectionData(
+  );
+  const { items: latestStories } = getCollectionData(
     state,
     'homepage',
     undefined,
     'latest'
-  ) as IPriApiResource[];
-  const latestEpisode = (getCollectionData(
+  );
+  const latestEpisodeState = getCollectionData(
     state,
     'homepage',
     undefined,
     'latest episode'
-  ) || [])[0] as IPriApiResource;
+  );
+  const latestEpisode = latestEpisodeState && latestEpisodeState.items[0];
   const inlineTop = getCtaRegionData(
     state,
     'homepage',
