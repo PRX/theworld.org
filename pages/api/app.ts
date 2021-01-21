@@ -4,7 +4,7 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchPriApiQuery, fetchPriApiQueryMenu } from '@lib/fetch/api';
-import { fullStoryParams } from '@lib/fetch/api/params';
+import { basicStoryParams } from '@lib/fetch/api/params';
 import { parseMenu } from '@lib/parse/menu';
 import { ILink } from '@interfaces/link';
 
@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     fetchPriApiQueryMenu('menu-footer'),
     fetchPriApiQueryMenu('menu-header-nav'),
     fetchPriApiQuery('node--stories', {
-      ...fullStoryParams,
+      ...basicStoryParams,
       'filter[status]': 1,
       sort: '-date_published',
       range: 10

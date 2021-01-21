@@ -15,7 +15,9 @@ export const appendResourceCollection = (
 ): ThunkAction<void, {}, {}, AnyAction> => (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ): void => {
-  items.forEach((item: IPriApiResource) => {
+  const payloadItems = items.filter(v => !!v);
+
+  payloadItems.forEach((item: IPriApiResource) => {
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
       payload: item
@@ -27,7 +29,7 @@ export const appendResourceCollection = (
     payload: {
       resource: { type, id },
       collection,
-      items
+      items: payloadItems
     }
   });
 };

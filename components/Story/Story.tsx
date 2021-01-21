@@ -2,7 +2,7 @@
  * @file Story.tsx
  * Component for Story.
  */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
@@ -10,20 +10,24 @@ import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import { fetchApiStory, fetchApiCategoryStories } from '@lib/fetch';
-import { appendResourceCollection, fetchCtaData } from '@store/actions';
+import { fetchApiCategoryStories } from '@lib/fetch';
+import {
+  appendResourceCollection,
+  fetchCtaData,
+  fetchStoryData
+} from '@store/actions';
 import { getDataByResource, getCollectionData } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
 
 export const Story = () => {
   const {
     page: {
-      resource: { id }
+      resource: { type, id }
     }
   } = useContext(AppContext);
   const store = useStore();
   const state = store.getState();
-  const data = getDataByResource(state, 'node--stories', id);
+  let data = getDataByResource(state, type, id);
 
   if (!data) {
     return null;
@@ -32,6 +36,69 @@ export const Story = () => {
   const { title, displayTemplate } = data;
   const LayoutComponent =
     layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
+
+  useEffect(() => {
+    if (!data.complete) {
+      (async () => {
+        // Get content data.
+        await store.dispatch<any>(fetchStoryData(id));
+        data = getDataByResource(state, type, id);
+      })();
+    }
+
+    // Get missing related stories data.
+    const collection = 'related';
+    const { primaryCategory } = data;
+    const related =
+      primaryCategory &&
+      getCollectionData(
+        state,
+        primaryCategory.type,
+        primaryCategory.id,
+        collection
+      );
+
+    if (!related && primaryCategory) {
+      (async () => {
+        const { data: apiData } = await fetchApiCategoryStories(
+          primaryCategory.id,
+          1,
+          5
+        );
+
+        if (apiData) {
+          store.dispatch<any>(
+            appendResourceCollection(
+              apiData,
+              primaryCategory.type,
+              primaryCategory.id,
+              collection
+            )
+          );
+        }
+      })();
+    }
+
+    // Get CTA message data.
+    const context = [
+      `node:${data.id}`,
+      `node:${data.program?.id}`,
+      `term:${data.primaryCategory?.id}`,
+      ...((data.categories &&
+        !!data.categories.length &&
+        data.categories.filter(v => !!v).map(({ id: tid }) => `term:${tid}`)) ||
+        []),
+      ...((data.vertical &&
+        !!data.vertical.length &&
+        data.vertical.filter(v => !!v).map(({ tid }) => `term:${tid}`)) ||
+        [])
+    ];
+    (async () => {
+      await store.dispatch<any>(
+        fetchCtaData('tw_cta_regions_content', type, id, context)
+      );
+    })();
+  }, [id]);
 
   return (
     <>
@@ -52,86 +119,10 @@ Story.fetchData = (
   getState: () => RootState
 ): Promise<void> => {
   const type = 'node--stories';
-  const state = getState();
-  let data = getDataByResource(state, type, id);
+  const data = getDataByResource(getState(), type, id);
 
-  // Get missing content data.
   if (!data) {
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_REQUEST',
-      payload: {
-        type,
-        id
-      }
-    });
-
-    data = await fetchApiStory(id, req);
-
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload: data
-    });
+    // Get content data.
+    await dispatch<any>(fetchStoryData(id, req));
   }
-
-  // TODO: Get missing related stories data.
-  const collection = 'related';
-  const { primaryCategory } = getDataByResource(getState(), type, id);
-  const related =
-    primaryCategory &&
-    getCollectionData(
-      state,
-      primaryCategory.type,
-      primaryCategory.id,
-      collection
-    );
-
-  if (!related) {
-    if (primaryCategory) {
-      dispatch({
-        type: 'FETCH_COLLECTION_DATA_REQUEST',
-        payload: {
-          type: primaryCategory.type,
-          id: primaryCategory.id,
-          collection
-        }
-      });
-
-      const { data: apiData } = await fetchApiCategoryStories(
-        primaryCategory.id,
-        1,
-        5,
-        undefined,
-        req
-      );
-
-      if (apiData) {
-        dispatch(
-          appendResourceCollection(
-            apiData,
-            primaryCategory.type,
-            primaryCategory.id,
-            collection
-          )
-        );
-      }
-    }
-  }
-
-  // Get CTA message data.
-  const context = [
-    `node:${data.id}`,
-    `node:${data.program?.id}`,
-    `term:${data.primaryCategory?.id}`,
-    ...((data.categories &&
-      !!data.categories.length &&
-      data.categories.map(({ id: tid }) => `term:${tid}`)) ||
-      []),
-    ...((data.vertical &&
-      !!data.vertical.length &&
-      data.vertical.map(({ tid }) => `term:${tid}`)) ||
-      [])
-  ];
-  await dispatch<any>(
-    fetchCtaData('tw_cta_regions_content', type, id, context, req)
-  );
 };

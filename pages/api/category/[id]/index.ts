@@ -11,7 +11,7 @@ import {
   fetchPriApiQuery,
   postJsonPriApiCtaRegion
 } from '@lib/fetch/api';
-import { fullStoryParams } from '@lib/fetch/api/params';
+import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id, p = '1' } = req.query;
@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           'banner_image',
           'logo',
           'podcast_logo',
-          ...(fullStoryParams.include || []).map(
+          ...(basicStoryParams.include || []).map(
             param => `featured_stories.${param}`
           )
         ]

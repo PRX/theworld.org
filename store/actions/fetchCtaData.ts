@@ -1,7 +1,7 @@
 /**
- * @file fetchAliasData.ts
+ * @file fetchCtaData.ts
  *
- * Actions to fetch basic data for a URL alias.
+ * Actions to fetch data for a CTA region group.
  */
 import { IncomingMessage } from 'http';
 import { AnyAction } from 'redux';
@@ -15,7 +15,7 @@ export const fetchCtaData = (
   type: string,
   id: string,
   context: string[],
-  req: IncomingMessage
+  req?: IncomingMessage
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState

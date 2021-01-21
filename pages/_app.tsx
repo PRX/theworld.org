@@ -5,11 +5,9 @@
 
 import React, { useEffect } from 'react';
 import App, { AppContext as NextAppContext, AppProps } from 'next/app';
+import { useStore } from 'react-redux';
 import { Box, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { IPriApiResource } from 'pri-api-library/types';
-import { IButton } from '@interfaces/button';
-import { ICtaMessage } from '@interfaces/cta';
 import { AppContext } from '@contexts/AppContext';
 import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
@@ -20,18 +18,10 @@ import { fetchAppData, fetchCtaData } from '@store/actions';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { getCtaContext } from '@store/reducers';
 
-interface TwAppProps extends AppProps {
-  ctaRegions?: {
-    banner?: ICtaMessage[];
-    loadUnder?: ICtaMessage[];
-  };
-  latestStories?: IPriApiResource[];
-  menus?: {
-    [K: string]: IButton[];
-  };
-}
+interface TwAppProps extends AppProps {}
 
 const TwApp = ({ Component, pageProps }: TwAppProps) => {
+  const store = useStore();
   const { type, id } = pageProps;
   const contextValue = {
     page: {
@@ -41,6 +31,16 @@ const TwApp = ({ Component, pageProps }: TwAppProps) => {
       }
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      // Fetch CTA Messages
+      const context = getCtaContext(store.getState(), type, id);
+      await store.dispatch<any>(
+        fetchCtaData('tw_cta_regions_site', type, id, context)
+      );
+    })();
+  }, [type, id]);
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -77,18 +77,19 @@ TwApp.getInitialProps = async (ctx: NextAppContext) => {
   const {
     pageProps: { type, id }
   } = initialProps;
-  const context = getCtaContext(store.getState(), type, id);
 
   // Fetch App Data
   await store.dispatch<any>(fetchAppData(req));
 
-  // // Fetch CTA Messages
+  // Fetch CTA Messages
+  const context = getCtaContext(store.getState(), type, id);
   await store.dispatch<any>(
     fetchCtaData('tw_cta_regions_site', type, id, context, req)
   );
 
   return {
-    ...initialProps
+    ...initialProps,
+    store
   };
 };
 

@@ -20,11 +20,14 @@ export const Tags = ({ data, label }: ITagsProps) => {
   return (
     <Box component="aside" className={classes.root}>
       {label && <h4 className={classes.label}>{label}</h4>}
-      {data.map(item => (
-        <span className={classes.tag} key={item.id}>
-          <ContentLink className={classes.link} data={item} />
-        </span>
-      ))}
+      {data.map(
+        item =>
+          item && (
+            <span className={classes.tag} key={item.id}>
+              <ContentLink className={classes.link} data={item} />
+            </span>
+          )
+      )}
     </Box>
   );
 };

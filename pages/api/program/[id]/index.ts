@@ -9,7 +9,7 @@ import {
   fetchPriApiItem,
   fetchPriApiQuery
 } from '@lib/fetch/api';
-import { fullStoryParams } from '@lib/fetch/api/params';
+import { basicStoryParams } from '@lib/fetch/api/params';
 import { IPriApiResource } from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'hosts.image',
         'logo',
         'podcast_logo',
-        ...(fullStoryParams.include || []).map(
+        ...(basicStoryParams.include || []).map(
           param => `featured_stories.${param}`
         )
       ]

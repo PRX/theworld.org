@@ -13,13 +13,16 @@ import { makeResourceSignature } from '@lib/parse/state';
 type State = ContentDataState | RootState;
 
 export const contentData = (state: State = {}, action: AnyAction) => {
+  let key: string;
+
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload.contentData };
     case 'FETCH_CONTENT_DATA_SUCCESS':
+      key = makeResourceSignature(action.payload);
       return {
         ...state,
-        [makeResourceSignature(action.payload)]: action.payload
+        [key]: state[key] && state[key].complete ? state[key] : action.payload
       };
 
     default:

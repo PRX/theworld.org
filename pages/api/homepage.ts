@@ -5,7 +5,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { IPriApiResource } from 'pri-api-library/types';
 import { fetchApiProgram, fetchPriApiQuery } from '@lib/fetch';
-import { fullStoryParams } from '@lib/fetch/api/params';
+import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Program Data
@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // Latest Non-TW stories
   const latestStories = (await fetchPriApiQuery('node--stories', {
-    ...fullStoryParams,
+    ...basicStoryParams,
     'filter[status]': 1,
     'filter[program][value]': 3704,
     'filter[program][operator]': '<>',

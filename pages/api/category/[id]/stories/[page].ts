@@ -5,7 +5,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { IPriApiResource } from 'pri-api-library/types';
 import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
-import { fullStoryParams } from '@lib/fetch/api/params';
+import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id, page = '1', range = 15, exclude } = req.query;
@@ -25,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Fetch list of stories. Paginated.
       const data = (await fetchPriApiQuery('node--stories', {
-        ...fullStoryParams,
+        ...basicStoryParams,
         'filter[status]': 1,
         'filter[primary_category]': id,
         ...(excluded && {

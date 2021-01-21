@@ -78,7 +78,7 @@ export const fetchApi = async (
  */
 export const fetchApiQueryAlias = async (
   alias: string,
-  req: IncomingMessage
+  req?: IncomingMessage
 ): Promise<IPriApiResource> => fetchApi(`query/alias${alias}`, req);
 
 /**
@@ -90,7 +90,8 @@ export const fetchApiQueryAlias = async (
  * @returns
  *    App data object.
  */
-export const fetchApiApp = async (req: IncomingMessage) => fetchApi('app', req);
+export const fetchApiApp = async (req?: IncomingMessage) =>
+  fetchApi('app', req);
 
 /**
  * Method that simplifies GET queries for homepage data.
@@ -101,7 +102,7 @@ export const fetchApiApp = async (req: IncomingMessage) => fetchApi('app', req);
  * @returns
  *    Homepage data object.
  */
-export const fetchApiHomepage = async (req: IncomingMessage) =>
+export const fetchApiHomepage = async (req?: IncomingMessage) =>
   fetchApi('homepage', req);
 
 /**
@@ -117,7 +118,7 @@ export const fetchApiHomepage = async (req: IncomingMessage) =>
  */
 export const fetchApiNewsletter = async (
   id: string | number,
-  req: IncomingMessage
+  req?: IncomingMessage
 ) => fetchApi(`newsletter/${id}`, req);
 
 /**
@@ -168,7 +169,7 @@ export const postNewsletterSubsciption = async (
  */
 export const fetchApiStory = async (
   id: string | number,
-  req: IncomingMessage
+  req?: IncomingMessage
 ): Promise<IPriApiResource> => fetchApi(`story/${id}`, req);
 
 /**
@@ -184,7 +185,7 @@ export const fetchApiStory = async (
  */
 export const fetchApiProgram = async (
   id: string | number,
-  req: IncomingMessage
+  req?: IncomingMessage
 ): Promise<IPriApiResource> => fetchApi(`program/${id}`, req);
 
 /**
@@ -218,7 +219,7 @@ export const fetchApiProgramStories = async (
  */
 export const fetchApiCategory = async (
   id: string | number,
-  req: IncomingMessage
+  req?: IncomingMessage
 ): Promise<IPriApiResource> => fetchApi(`category/${id}`, req);
 
 /**

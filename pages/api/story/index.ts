@@ -5,13 +5,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchPriApiQuery } from '@lib/fetch/api';
 import { IPriApiResource } from 'pri-api-library/types';
-import { fullStoryParams } from '@lib/fetch/api/params';
+import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const query = req.query || {};
 
   const stories = (await fetchPriApiQuery('node--stories', {
-    ...fullStoryParams,
+    ...basicStoryParams,
     range: 10,
     sort: '-date_published',
     ...query,
