@@ -237,12 +237,14 @@ export const fetchApiCategoryStories = async (
   id: string | number,
   page: number = 1,
   range?: number,
+  field?: string,
   exclude?: string | string[],
   req?: IncomingMessage
 ): Promise<{ data: IPriApiResource[] }> =>
   fetchApi(`category/${id}/stories/${page}`, req, {
     ...(range && { range: `${range}` }),
-    ...(exclude && { exclude })
+    ...(exclude && { exclude }),
+    ...(field && { field })
   });
 
 export const fetchApiCtaRegionGroup = async (

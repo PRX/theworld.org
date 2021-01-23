@@ -8,7 +8,13 @@ import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, page = '1', range = 15, exclude } = req.query;
+  const {
+    id,
+    page = '1',
+    range = 15,
+    field = 'categories',
+    exclude
+  } = req.query;
 
   if (id) {
     const category = (await fetchPriApiItem(
@@ -27,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const data = (await fetchPriApiQuery('node--stories', {
         ...basicStoryParams,
         'filter[status]': 1,
-        'filter[primary_category]': id,
+        [`filter[${field}]`]: id,
         ...(excluded && {
           'filter[id][value]': excluded,
           'filter[id][operator]': '<>'

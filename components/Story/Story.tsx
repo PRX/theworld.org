@@ -63,7 +63,8 @@ export const Story = () => {
         const { data: apiData } = await fetchApiCategoryStories(
           primaryCategory.id,
           1,
-          5
+          5,
+          'primary_category'
         );
 
         if (apiData) {
