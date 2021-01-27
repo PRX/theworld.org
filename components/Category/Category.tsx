@@ -107,29 +107,11 @@ export const Category = () => {
   const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
 
-  // const unsubStore = store.subscribe(() => {
-  //   state = store.getState();
-  //   const { items, page: newPage } = getCollectionData(
-  //     state,
-  //     type,
-  //     id,
-  //     'stories'
-  //   );
-  //   stories = items;
-  //   page = newPage;
-
-  //   console.log(page, stories);
-  // });
-
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
-
-    // return () => {
-    //   unsubStore();
-    // };
   }, [page]);
 
   const loadMoreStories = async () => {

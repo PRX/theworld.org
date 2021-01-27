@@ -227,18 +227,26 @@ export const fetchApiCategory = async (
  *
  * @param id
  *    API id of category.
+ * @param page
+ *    Page number of stories to return.
+ * @param range
+ *    Number of stories to return for the page.
+ * @param field
+ *    Name of field prop to look for category reference on stories.
+ * @param exclude
+ *    Array of story ids to exclude from query.
  * @param req
  *    Request object from `getInitialProps` ctx object.
  *
  * @returns
- *    Story data object.
+ *    Promise that returns Collection of Story data objects.
  */
 export const fetchApiCategoryStories = async (
   id: string | number,
   page: number = 1,
   range?: number,
   field?: string,
-  exclude?: string | string[],
+  exclude?: string[],
   req?: IncomingMessage
 ): Promise<{ data: IPriApiResource[] }> =>
   fetchApi(`category/${id}/stories/${page}`, req, {
@@ -247,6 +255,76 @@ export const fetchApiCategoryStories = async (
     ...(field && { field })
   });
 
+/**
+ * Method that simplifies GET queries for person stories data.
+ *
+ * @param id
+ *    API id of person.
+ * @param page
+ *    Page number of stories to return.
+ * @param range
+ *    Number of stories to return for the page.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Promise that returns Collection of Story data objects.
+ */
+export const fetchApiPersonStories = async (
+  id: string | number,
+  page: number = 1,
+  range?: number,
+  req?: IncomingMessage
+): Promise<{ data: IPriApiResource[] }> =>
+  fetchApi(`person/${id}/stories/${page}`, req, {
+    ...(range && { range: `${range}` })
+  });
+
+/**
+ * Method that simplifies GET queries for person stories data.
+ *
+ * @param id
+ *    API id of person.
+ * @param page
+ *    Page number of stories to return.
+ * @param range
+ *    Number of stories to return for the page.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Promise that returns Collection of Story data objects.
+ */
+export const fetchApiPersonAudio = async (
+  id: string,
+  audioType?: string,
+  page: number = 1,
+  range: number = 10,
+  req?: IncomingMessage
+): Promise<{ data: IPriApiResource[] }> =>
+  fetchApi('file', req, {
+    'filter[audioAuthor]': id,
+    sort: '-broadcast_date',
+    ...(audioType && { 'filter[type]': audioType }),
+    ...(page && { page: `${page}` }),
+    ...(range && { range: `${range}` })
+  });
+
+/**
+ * Method that simplifies fetching of CTA Region Group data.
+ *
+ * @param regionGroup
+ *    Machine name of region group's entity queue.
+ * @param context
+ *    Array of strings that describe the type and id's of targetable traits of
+ *    the shown content.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @return
+ *    Promise that returns object with region names as keys containing
+ *    collection of CTA messages available for the content in that region.
+ */
 export const fetchApiCtaRegionGroup = async (
   regionGroup: string,
   context: string[],
