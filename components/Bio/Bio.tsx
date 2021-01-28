@@ -28,9 +28,7 @@ import {
   SidebarList
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
-import { StoryCardGrid } from '@components/StoryCardGrid';
-import { fetchApiCategory, fetchApiCategoryStories } from '@lib/fetch';
-import { LandingPageHeader } from '@components/LandingPageHeader';
+import { fetchApiPerson, fetchApiPersonStories } from '@lib/fetch';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
@@ -40,8 +38,9 @@ import {
   getCtaRegionData,
   getDataByResource
 } from '@store/reducers';
+import { BioHeader } from '@components/BioHeader';
 
-export const Category = () => {
+export const Bio = () => {
   const {
     page: {
       resource: { type, id }
@@ -50,18 +49,6 @@ export const Category = () => {
   const store = useStore();
   const state = store.getState();
   const data = getDataByResource(state, type, id);
-  const ctaInlineTop = getCtaRegionData(
-    state,
-    type,
-    id,
-    'tw_cta_region_landing_inline_01'
-  );
-  const ctaInlineBottom = getCtaRegionData(
-    state,
-    type,
-    id,
-    'tw_cta_region_landing_inline_02'
-  );
   const ctaSidebarTop = getCtaRegionData(
     state,
     type,
@@ -74,19 +61,6 @@ export const Category = () => {
     id,
     'tw_cta_region_landing_sidebar_02'
   );
-  const featuredStoryState = getCollectionData(
-    state,
-    type,
-    id,
-    'featured story'
-  );
-  const featuredStory = featuredStoryState.items[0];
-  const { items: featuredStories } = getCollectionData(
-    state,
-    type,
-    id,
-    'featured stories'
-  );
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories, page } = storiesState;
   const { items: latestStories } = getCollectionData(
@@ -95,7 +69,7 @@ export const Category = () => {
     undefined,
     'latest'
   );
-  const { title, teaser, bannerImage, logo, hosts, sponsors, body } = data;
+  const { title, teaser, image, bio, program, position } = data;
   const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
 
@@ -109,7 +83,7 @@ export const Category = () => {
   const loadMoreStories = async () => {
     setLoading(true);
 
-    const { data: moreStories } = await fetchApiCategoryStories(id, page + 1);
+    const { data: moreStories } = await fetchApiPersonStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
     setLoading(false);
@@ -124,34 +98,30 @@ export const Category = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
-          {featuredStory && <StoryCard data={featuredStory} feature />}
-          {featuredStories && <StoryCardGrid data={featuredStories} mt={2} />}
-          {ctaInlineTop && (
-            <Box mt={3}>
-              <Hidden xsDown>
-                <CtaRegion data={ctaInlineTop} />
-              </Hidden>
-              <Hidden smUp>
-                <SidebarCta data={ctaInlineTop} />
-              </Hidden>
-            </Box>
+          {bio && (
+            <Typography
+              variant="body1"
+              dangerouslySetInnerHTML={{ __html: bio }}
+            />
           )}
         </Box>
       )
     },
     {
       key: 'main bottom',
-      children: (
-        <Box mt={3}>
-          {stories &&
-            stories.map((item: IPriApiResource, index: number) => (
-              <Box mt={index ? 2 : 0} key={item.id}>
-                <StoryCard
-                  data={item}
-                  feature={item.displayTemplate !== 'standard'}
-                />
-              </Box>
-            ))}
+      children: stories && (
+        <Box mt={6}>
+          <Typography component="h2" variant="h4">
+            Recent Stories
+          </Typography>
+          {stories.map((item: IPriApiResource, index: number) => (
+            <Box mt={index ? 2 : 3} key={item.id}>
+              <StoryCard
+                data={item}
+                feature={item.displayTemplate !== 'standard'}
+              />
+            </Box>
+          ))}
           <Box mt={3}>
             <Button
               variant="contained"
@@ -166,16 +136,6 @@ export const Category = () => {
               {loading ? 'Loading Stories...' : 'More Stories'}
             </Button>
           </Box>
-          {ctaInlineBottom && (
-            <Box mt={3}>
-              <Hidden xsDown>
-                <CtaRegion data={ctaInlineBottom} />
-              </Hidden>
-              <Hidden smUp>
-                <SidebarCta data={ctaInlineBottom} />
-              </Hidden>
-            </Box>
-          )}
         </Box>
       )
     }
@@ -188,24 +148,7 @@ export const Category = () => {
         <Box mt={3}>
           <Box mt={2}>
             <Sidebar item elevated>
-              {body && (
-                <SidebarContent dangerouslySetInnerHTML={{ __html: body }} />
-              )}
-              {hosts && !!hosts.length && (
-                <SidebarList
-                  data={hosts.map((item: IPriApiResource) => ({
-                    ...item,
-                    avatar: item.image
-                  }))}
-                  subheader={<ListSubheader>Hosted by</ListSubheader>}
-                />
-              )}
-              {sponsors && !!sponsors.length && (
-                <SidebarList
-                  data={sponsors}
-                  subheader={<ListSubheader>Supported by</ListSubheader>}
-                />
-              )}
+              {/* SEGMENTS */}
             </Sidebar>
           </Box>
           {ctaSidebarTop && (
@@ -269,25 +212,26 @@ export const Category = () => {
           {page > 1 ? ` - Page ${page}` : ''}
         </title>
       </Head>
-      <LandingPageHeader
+      <BioHeader
         title={title}
+        position={position}
         subhead={teaser}
-        image={bannerImage}
-        logo={logo}
+        image={image}
+        program={program}
       />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
 };
 
-Category.fetchData = (
+Bio.fetchData = (
   id: string,
   req: IncomingMessage
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {
-  const type = 'taxonomy_term--categories';
+  const type = 'node--people';
   const state = getState();
   const data = getDataByResource(state, type, id);
 
@@ -301,36 +245,24 @@ Category.fetchData = (
       }
     });
 
-    const {
-      featuredStory,
-      featuredStories,
-      stories,
-      ...payload
-    } = await fetchApiCategory(id, req);
+    const { stories, segments, ...payload } = await fetchApiPerson(id, req);
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
       payload
     });
 
-    dispatch(
-      appendResourceCollection([featuredStory], type, id, 'featured story')
-    );
+    if (stories) {
+      dispatch(appendResourceCollection([...stories], type, id, 'stories'));
+    }
 
-    dispatch(
-      appendResourceCollection(
-        [...featuredStories],
-        type,
-        id,
-        'featured stories'
-      )
-    );
-
-    dispatch(appendResourceCollection([...stories], type, id, 'stories'));
+    if (segments) {
+      dispatch(appendResourceCollection([...segments], type, id, 'segments'));
+    }
   }
 
   // Get CTA message data.
-  const context = [`term:${id}`];
+  const context = [`node:${id}`];
   await dispatch<any>(
     fetchCtaData('tw_cta_regions_landing', type, id, context, req)
   );

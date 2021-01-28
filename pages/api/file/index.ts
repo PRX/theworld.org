@@ -12,7 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const stories = (await fetchPriApiQuery('file--audio', {
     ...basicAudioParams,
-    sort: '-date_published',
+    sort: '-broadcast_date',
     ...query
   })) as IPriApiResource[];
 

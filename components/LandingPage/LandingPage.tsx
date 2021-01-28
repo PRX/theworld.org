@@ -36,15 +36,17 @@ export const LandingPage = ({ main, sidebar }: ILandingPageProps) => {
     <Container fixed>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          {mainItems.map(({ key, children }: ILandingPageItem) => (
-            <Fragment key={key}>{children}</Fragment>
-          ))}
+          {mainItems.map(
+            ({ key, children }: ILandingPageItem) =>
+              children && <Fragment key={key}>{children}</Fragment>
+          )}
         </Grid>
         <Hidden smDown>
           <Grid item xs md={4}>
-            {sidebar.map(({ key, children }: ILandingPageItem) => (
-              <Fragment key={key}>{children}</Fragment>
-            ))}
+            {sidebar.map(
+              ({ key, children }: ILandingPageItem) =>
+                children && <Fragment key={key}>{children}</Fragment>
+            )}
           </Grid>
         </Hidden>
       </Grid>

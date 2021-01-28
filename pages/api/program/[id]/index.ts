@@ -39,6 +39,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { data: stories } = await fetchApiProgramStories(
         id as string,
         1,
+        undefined,
+        undefined,
         req
       );
 

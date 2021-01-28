@@ -4,7 +4,7 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
-  fetchApiProgramStories,
+  fetchApiPersonStories,
   fetchPriApiItem,
   fetchApiPersonAudio
 } from '@lib/fetch/api';
@@ -18,16 +18,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       include: ['program', 'image', 'social_links']
     };
     const person = (await fetchPriApiItem(
-      'node--persons',
+      'node--people',
       id as string,
       params
     )) as IPriApiResource;
 
     if (person) {
       // Fetch first page of stories.
-      const { data: stories } = await fetchApiProgramStories(
+      const { data: stories } = await fetchApiPersonStories(
         id as string,
         1,
+        undefined,
         req
       );
 

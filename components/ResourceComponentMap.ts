@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 
 // Define dynamic component imports.
+const DynamicBio = dynamic(() => import('./Bio') as any);
 const DynamicCategory = dynamic(() => import('./Category') as any);
 const DynamicHomepage = dynamic(() => import('./Homepage') as any);
 const DynamicNewsletter = dynamic(() => import('./Newsletter') as any);
@@ -11,6 +12,7 @@ const DynamicStory = dynamic(() => import('./Story') as any);
 export const ResourceComponentMap = {
   homepage: DynamicHomepage,
   'node--newsletter_sign_ups': DynamicNewsletter,
+  'node--people': DynamicBio,
   'node--programs': DynamicProgram,
   'node--stories': DynamicStory,
   'taxonomy_term--categories': DynamicCategory
