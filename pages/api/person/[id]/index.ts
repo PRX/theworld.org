@@ -33,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
       // Latest audio segments.
-      const { data: segments } = await fetchApiPersonAudio(
+      const segments = await fetchApiPersonAudio(
         id as string,
         'program-segment',
         1,

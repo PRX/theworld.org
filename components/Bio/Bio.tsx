@@ -4,24 +4,25 @@
  */
 import React, { useContext, useEffect, useState } from 'react';
 import { IncomingMessage } from 'http';
+import classNames from 'classnames/bind';
 import Head from 'next/head';
 import Link from 'next/link';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
+import { Box, Button, Hidden, Typography } from '@material-ui/core';
 import {
-  Box,
-  Button,
-  Hidden,
-  ListSubheader,
-  Typography
-} from '@material-ui/core';
-import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
+  EqualizerRounded,
+  MenuBookRounded,
+  NavigateNext,
+  PublicRounded
+} from '@material-ui/icons';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import {
   Sidebar,
+  SidebarAudioList,
   SidebarCta,
   SidebarFooter,
   SidebarHeader,
@@ -29,7 +30,6 @@ import {
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { fetchApiPerson, fetchApiPersonStories } from '@lib/fetch';
-import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
 import { appendResourceCollection, fetchCtaData } from '@store/actions';
@@ -39,6 +39,7 @@ import {
   getDataByResource
 } from '@store/reducers';
 import { BioHeader } from '@components/BioHeader';
+import { bioStyles } from './Bio.styles';
 
 export const Bio = () => {
   const {
@@ -69,9 +70,24 @@ export const Bio = () => {
     undefined,
     'latest'
   );
-  const { title, teaser, image, bio, program, position } = data;
+  const segmentsState = getCollectionData(state, type, id, 'segments');
+  const { items: segments } = segmentsState || {};
+  const { title, teaser, image, bio, program, position, socialLinks } = data;
+  const { twitter, tumblr, podcast, blog, website, rss, contact } =
+    socialLinks || {};
+  const followLinks = [
+    twitter,
+    tumblr,
+    podcast,
+    blog,
+    website,
+    rss,
+    contact
+  ].filter(v => !!v);
   const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
+  const classes = bioStyles({});
+  const cx = classNames.bind(classes);
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -96,24 +112,19 @@ export const Bio = () => {
   const mainElements = [
     {
       key: 'main top',
-      children: (
+      children: bio && (
         <Box mt={3}>
-          {bio && (
-            <Typography
-              variant="body1"
-              dangerouslySetInnerHTML={{ __html: bio }}
-            />
-          )}
+          <Box
+            className={cx('body')}
+            dangerouslySetInnerHTML={{ __html: bio }}
+          />
         </Box>
       )
     },
     {
       key: 'main bottom',
       children: stories && (
-        <Box mt={6}>
-          <Typography component="h2" variant="h4">
-            Recent Stories
-          </Typography>
+        <Box mt={bio ? 6 : 3}>
           {stories.map((item: IPriApiResource, index: number) => (
             <Box mt={index ? 2 : 3} key={item.id}>
               <StoryCard
@@ -146,11 +157,28 @@ export const Bio = () => {
       key: 'sidebar top',
       children: (
         <Box mt={3}>
-          <Box mt={2}>
+          {segments && !!segments.length && (
             <Sidebar item elevated>
-              {/* SEGMENTS */}
+              <SidebarHeader>
+                <Typography variant="h2">
+                  <EqualizerRounded /> Latest segments from {title}
+                </Typography>
+              </SidebarHeader>
+              <SidebarAudioList disablePadding data={segments} />
+              <SidebarFooter />
             </Sidebar>
-          </Box>
+          )}
+          {!!followLinks.length && (
+            <Sidebar item elevated>
+              <SidebarHeader>
+                <Typography variant="h2">
+                  <PublicRounded /> Follow {title}
+                </Typography>
+              </SidebarHeader>
+              <SidebarList disablePadding data={followLinks} />
+              <SidebarFooter />
+            </Sidebar>
+          )}
           {ctaSidebarTop && (
             <Box mt={3}>
               <Hidden only="sm">

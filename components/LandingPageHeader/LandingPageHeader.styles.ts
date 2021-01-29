@@ -33,7 +33,7 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       alignItems: 'end',
       maxHeight: '75vh',
       overflow: 'hidden',
-      backgroundColor: theme.palette.primary.dark,
+      backgroundColor: theme.palette.primary.light,
       marginBottom: theme.typography.pxToRem(theme.spacing(2))
     },
     imageWrapper: {

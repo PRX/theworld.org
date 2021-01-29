@@ -52,8 +52,8 @@ export const bioHeaderStyles = makeStyles((theme: Theme) =>
       gridGap: theme.typography.pxToRem(theme.spacing(2)),
       width: '100%',
       minHeight: '33.33333%',
-      padding: theme.typography.pxToRem(theme.spacing(3)),
-      paddingTop: theme.typography.pxToRem(theme.spacing(9)),
+      padding: theme.typography.pxToRem(theme.spacing(4)),
+      paddingTop: theme.typography.pxToRem(theme.spacing(12)),
       '&::before, &::after': {
         content: '""',
         position: 'absolute',
@@ -77,13 +77,6 @@ export const bioHeaderStyles = makeStyles((theme: Theme) =>
         height: '150%',
         [theme.breakpoints.down('sm')]: {
           height: '80%'
-        }
-      },
-      [theme.breakpoints.up('md')]: {
-        '$withImage &': {
-          position: 'absolute',
-          bottom: 0,
-          gridRow: 'unset'
         }
       }
     },

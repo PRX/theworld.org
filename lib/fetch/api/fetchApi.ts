@@ -321,7 +321,7 @@ export const fetchApiPersonAudio = async (
   range: number = 10,
   req?: IncomingMessage
 ): Promise<{ data: IPriApiResource[] }> =>
-  fetchApi('file', req, {
+  fetchApi('file/audio', req, {
     'filter[audioAuthor]': id,
     sort: '-broadcast_date',
     ...(audioType && { 'filter[type]': audioType }),
