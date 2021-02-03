@@ -23,12 +23,14 @@ export const tagsStyles = makeStyles((theme: Theme) =>
       fontWeight: theme.typography.fontWeightBold
     },
     tag: {
+      textTransform: 'capitalize',
       '&::after': {
         content: '",\x20"'
       },
       '&:last-child': {
         '&:before': {
-          content: '"and\x20"'
+          content: '"and\x20"',
+          textTransform: 'none'
         },
         '&::after': {
           content: 'none'

@@ -8,6 +8,7 @@ import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import Link from 'next/link';
 import {
+  Box,
   Button,
   Card,
   CardActionArea,
@@ -55,13 +56,15 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
     <ThemeProvider theme={sidebarEpisodeTheme}>
       <Card square elevation={1}>
         <CardActionArea>
-          <CardMedia>
-            <Image
-              data={image}
-              width={imageWidth}
-              wrapperClassName={classes.imageWrapper}
-            />
-          </CardMedia>
+          {image && (
+            <CardMedia>
+              <Image
+                data={image}
+                width={imageWidth}
+                wrapperClassName={classes.imageWrapper}
+              />
+            </CardMedia>
+          )}
           <CardContent>
             {label && (
               <Typography variant="overline" gutterBottom>
@@ -81,8 +84,11 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
               />{' '}
               {title}
             </Typography>
-            <Typography variant="body1" component="p" color="textSecondary">
-              {teaser}
+            <Typography variant="body1" component="div" color="textSecondary">
+              <Box
+                className={cx('body')}
+                dangerouslySetInnerHTML={{ __html: teaser }}
+              />
             </Typography>
             <ContentLink data={data} className={cx('link')} />
           </CardContent>

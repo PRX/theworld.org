@@ -264,10 +264,7 @@ export const Category = () => {
   return (
     <>
       <Head>
-        <title>
-          {title}
-          {page > 1 ? ` - Page ${page}` : ''}
-        </title>
+        <title>{title}</title>
       </Head>
       <LandingPageHeader
         title={title}

@@ -1,6 +1,6 @@
 /**
- * @file Program.tsx
- * Component for Program.
+ * @file Term.tsx
+ * Component for Term.
  */
 import React, { useContext, useEffect, useState } from 'react';
 import { IncomingMessage } from 'http';
@@ -10,13 +10,7 @@ import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
-import {
-  Box,
-  Button,
-  Hidden,
-  ListSubheader,
-  Typography
-} from '@material-ui/core';
+import { Box, Button, Hidden, Typography } from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
@@ -29,7 +23,7 @@ import {
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { fetchApiProgram, fetchApiProgramStories } from '@lib/fetch';
+import { fetchApiTerm, fetchApiTermStories } from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
@@ -42,7 +36,7 @@ import {
   getDataByResource
 } from '@store/reducers';
 
-export const Program = () => {
+export const Term = () => {
   const {
     page: {
       resource: { type, id }
@@ -103,15 +97,7 @@ export const Program = () => {
     'latest episode'
   );
   const latestEpisode = latestEpisodeState && latestEpisodeState.items[0];
-  const {
-    title,
-    teaser,
-    bannerImage,
-    podcastLogo,
-    hosts,
-    sponsors,
-    body
-  } = data;
+  const { title, description } = data;
   const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
 
@@ -125,7 +111,7 @@ export const Program = () => {
   const loadMoreStories = async () => {
     setLoading(true);
 
-    const { data: moreStories } = await fetchApiProgramStories(id, page + 1);
+    const { data: moreStories } = await fetchApiTermStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
     setLoading(false);
@@ -205,28 +191,15 @@ export const Program = () => {
           {latestEpisode && (
             <SidebarEpisode data={latestEpisode} label="Latest Edition" />
           )}
-          <Box mt={2}>
-            <Sidebar item elevated>
-              {body && (
-                <SidebarContent dangerouslySetInnerHTML={{ __html: body }} />
-              )}
-              {hosts && !!hosts.length && (
-                <SidebarList
-                  data={hosts.map((item: IPriApiResource) => ({
-                    ...item,
-                    avatar: item.image
-                  }))}
-                  subheader={<ListSubheader>Hosted by</ListSubheader>}
+          {description && (
+            <Box mt={2}>
+              <Sidebar item elevated>
+                <SidebarContent
+                  dangerouslySetInnerHTML={{ __html: description }}
                 />
-              )}
-              {sponsors && !!sponsors.length && (
-                <SidebarList
-                  data={sponsors}
-                  subheader={<ListSubheader>Supported by</ListSubheader>}
-                />
-              )}
-            </Sidebar>
-          </Box>
+              </Sidebar>
+            </Box>
+          )}
           {ctaSidebarTop && (
             <Box mt={3}>
               <Hidden only="sm">
@@ -285,25 +258,20 @@ export const Program = () => {
       <Head>
         <title>{title}</title>
       </Head>
-      <LandingPageHeader
-        title={title}
-        subhead={teaser}
-        image={bannerImage}
-        logo={podcastLogo}
-      />
+      <LandingPageHeader title={title} subhead={description} />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
 };
 
-Program.fetchData = (
+Term.fetchData = (
   id: string,
   req: IncomingMessage
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {
-  const type = 'node--programs';
+  const type = 'taxonomy_term--terms';
   const state = getState();
   const data = getDataByResource(state, type, id);
 
@@ -323,7 +291,7 @@ Program.fetchData = (
       latestEpisode,
       stories,
       ...payload
-    } = await fetchApiProgram(id, req);
+    } = await fetchApiTerm(id, req);
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
@@ -351,7 +319,7 @@ Program.fetchData = (
   }
 
   // Get CTA message data.
-  const context = [`node:${id}`];
+  const context = [`term:${id}`];
   await dispatch<any>(
     fetchCtaData('tw_cta_regions_landing', type, id, context, req)
   );

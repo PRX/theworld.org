@@ -46,7 +46,13 @@ export const StoryDefault = ({ data }: Props) => {
     popoutPlayerUrl,
     categories,
     primaryCategory,
-    tags
+    tags,
+    opencalaisCity,
+    opencalaisContinent,
+    opencalaisCountry,
+    opencalaisProvince,
+    opencalaisRegion,
+    opencalaisPerson
   } = data;
   const store = useStore();
   const state = store.getState();
@@ -88,7 +94,16 @@ export const StoryDefault = ({ data }: Props) => {
   const classes = storyStyles({});
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;
-  const hasTags = tags && !!tags.length;
+  const allTags = [
+    ...(tags || []),
+    ...(opencalaisCity || []),
+    ...(opencalaisContinent || []),
+    ...(opencalaisCountry || []),
+    ...(opencalaisProvince || []),
+    ...(opencalaisRegion || []),
+    ...(opencalaisPerson || [])
+  ];
+  const hasTags = !!allTags.length;
 
   // TODO: Parse body...
   //    - Insert mobile ad positions
@@ -134,7 +149,7 @@ export const StoryDefault = ({ data }: Props) => {
                   </aside>
                 )}
                 {hasCategories && <Tags data={categories} label="Categories" />}
-                {hasTags && <Tags data={tags} label="Tags" />}
+                {hasTags && <Tags data={allTags} label="Tags" />}
               </Box>
               <Sidebar container className={classes.sidebar}>
                 {latestStories && (
