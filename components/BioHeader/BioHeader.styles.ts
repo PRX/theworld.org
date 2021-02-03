@@ -1,6 +1,6 @@
 /**
- * @file LandingPageHeader.style.ts
- * Styles for LandingPageHeader.
+ * @file BioHeader.style.ts
+ * Styles for BioHeader.
  */
 
 import {
@@ -11,20 +11,20 @@ import {
 } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
 
-export const landingPageHeaderTheme = (theme: Theme) =>
+export const bioHeaderTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     typography: {
       h1: {
         fontSize: theme.typography.pxToRem(48)
       },
       subtitle1: {
-        fontSize: '1.5rem',
+        fontSize: 'inherit',
         lineHeight: '1.1'
       }
     }
   });
 
-export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
+export const bioHeaderStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       position: 'relative',
@@ -42,10 +42,6 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       height: '100%',
       zIndex: 0
     },
-    image: {
-      height: '100%',
-      maxHeight: '75vh'
-    },
     content: {
       position: 'relative',
       gridColumn: '1 / -1',
@@ -56,7 +52,8 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       gridGap: theme.typography.pxToRem(theme.spacing(2)),
       width: '100%',
       minHeight: '33.33333%',
-      padding: theme.typography.pxToRem(theme.spacing(3)),
+      padding: theme.typography.pxToRem(theme.spacing(4)),
+      paddingTop: theme.typography.pxToRem(theme.spacing(12)),
       '&::before, &::after': {
         content: '""',
         position: 'absolute',
@@ -81,13 +78,6 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
         [theme.breakpoints.down('sm')]: {
           height: '80%'
         }
-      },
-      [theme.breakpoints.up('md')]: {
-        '$withImage &': {
-          position: 'absolute',
-          bottom: 0,
-          gridRow: 'unset'
-        }
       }
     },
     header: {
@@ -106,9 +96,13 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
     },
     text: {
       display: 'grid',
-      gridGap: theme.typography.pxToRem(theme.spacing(2))
+      gridGap: theme.typography.pxToRem(theme.spacing(2)),
+      fontSize: theme.typography.pxToRem(18)
     },
-    logo: {
+    link: {
+      fontWeight: theme.typography.fontWeightBold
+    },
+    image: {
       flexShrink: 0,
       margin: theme.typography.pxToRem(theme.spacing(3)),
       [theme.breakpoints.up('sm')]: {
@@ -118,7 +112,6 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
         margin: 0,
         marginRight: theme.typography.pxToRem(theme.spacing(3))
       }
-    },
-    withImage: {}
+    }
   })
 );

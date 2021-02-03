@@ -3,13 +3,12 @@
  * Gather category data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { parse } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 import { fetchApiCategoryStories, fetchPriApiItem } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, p = '1' } = req.query;
+  const { id } = req.query;
 
   if (id) {
     const category = (await fetchPriApiItem(
@@ -27,21 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )) as IPriApiResource;
 
     if (category) {
-      const {
-        featuredStories,
-        metatags: { canonical }
-      } = category;
-      const oUrl = parse(canonical);
-      const page = parseInt(p as string, 10) || 1;
-      const nextPage = page + 1;
-      const nextPageUrl = {
-        pathname: '/',
-        query: {
-          alias: oUrl.pathname,
-          p: nextPage
-        }
-      };
-      const nextPageAs = `${oUrl.pathname}?p=${nextPage}`;
+      const { featuredStories } = category;
 
       // Fetch list of stories. Paginated.
       const { data: stories } = await fetchApiCategoryStories(
@@ -52,20 +37,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         undefined,
         req
       );
-
-      const moreStories =
-        (page > 1 &&
-          (
-            await fetchApiCategoryStories(
-              id as string,
-              page,
-              undefined,
-              undefined,
-              undefined,
-              req
-            )
-          ).data) ||
-        [];
 
       // Build response object.
       const apiResp = {
@@ -78,10 +49,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               stories.splice(0, 4 - featuredStories.length)
             )
           : stories.splice(0, 4),
-        stories: [...stories, ...moreStories],
-        page,
-        nextPageUrl,
-        nextPageAs
+        stories
       };
 
       res.status(200).json(apiResp);

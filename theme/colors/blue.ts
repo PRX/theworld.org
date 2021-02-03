@@ -3,7 +3,7 @@
  * Define shades of blue.
  */
 
-const blue =  {
+const blue = {
   100: '#E6F4F9',
   200: '#B3D9EF',
   300: '#75BBE1',

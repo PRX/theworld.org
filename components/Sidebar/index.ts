@@ -4,3 +4,4 @@ export * from './SidebarEpisode';
 export * from './SidebarHeader';
 export * from './SidebarFooter';
 export * from './SidebarList';
+export * from './SidebarAudioList';

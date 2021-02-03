@@ -3,7 +3,6 @@
  * Gather program data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { parse } from 'url';
 import {
   fetchApiProgramStories,
   fetchPriApiItem,
@@ -13,7 +12,7 @@ import { basicStoryParams } from '@lib/fetch/api/params';
 import { IPriApiResource } from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, p = '1' } = req.query;
+  const { id } = req.query;
 
   if (id) {
     const params = {
@@ -34,33 +33,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )) as IPriApiResource;
 
     if (program) {
-      const {
-        featuredStories,
-        metatags: { canonical }
-      } = program;
-      const oUrl = parse(canonical);
-      const page = parseInt(p as string, 10) || 1;
-      const nextPage = page + 1;
-      const nextPageUrl = {
-        pathname: '/',
-        query: {
-          alias: oUrl.pathname,
-          p: nextPage
-        }
-      };
-      const nextPageAs = `${oUrl.pathname}?p=${nextPage}`;
+      const { featuredStories } = program;
 
       // Fetch list of stories. Paginated.
       const { data: stories } = await fetchApiProgramStories(
         id as string,
         1,
+        undefined,
+        undefined,
         req
       );
-
-      const moreStories =
-        (page > 1 &&
-          (await fetchApiProgramStories(id as string, page, req)).data) ||
-        [];
 
       // Latest Episode
       const latestEpisode = ((await fetchPriApiQuery('node--episodes', {
@@ -82,11 +64,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               stories.splice(0, 4 - featuredStories.length)
             )
           : stories.splice(0, 4),
-        stories: [...stories, ...moreStories],
-        latestEpisode,
-        page,
-        nextPageUrl,
-        nextPageAs
+        stories,
+        latestEpisode
       };
 
       res.status(200).json(apiResp);

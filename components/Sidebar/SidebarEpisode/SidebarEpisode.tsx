@@ -28,7 +28,7 @@ import {
   sidebarEpisodeTheme
 } from './SidebarEpisode.styles';
 import { SidebarHeader } from '../SidebarHeader';
-import { SidebarList } from '../SidebarList';
+import { SidebarAudioList } from '../SidebarAudioList';
 import { SidebarFooter } from '../SidebarFooter';
 
 export interface SidebarEpisodeProps {
@@ -50,13 +50,6 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
     md: '320px',
     xl: '400px'
   };
-  const formatTitle = ({ audioTitle: at, title: t }: IPriApiResource) =>
-    at || t;
-  const linksList =
-    segments &&
-    segments.map((item: IPriApiResource) =>
-      item.usage && item.usage.story ? item.usage.story[0] : item
-    );
 
   return (
     <ThemeProvider theme={sidebarEpisodeTheme}>
@@ -94,18 +87,14 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
             <ContentLink data={data} className={cx('link')} />
           </CardContent>
         </CardActionArea>
-        {linksList && (
+        {segments && (
           <>
             <SidebarHeader>
               <Typography variant="h2">
                 <EqualizerRounded /> In this episode:
               </Typography>
             </SidebarHeader>
-            <SidebarList
-              disablePadding
-              data={linksList}
-              formatTitle={formatTitle}
-            />
+            <SidebarAudioList disablePadding data={segments} />
           </>
         )}
         <SidebarFooter>
