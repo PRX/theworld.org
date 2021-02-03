@@ -5,7 +5,7 @@
 
 module.exports = {
   plugins: {
-    'autoprefixer': {},
-    'postcss-easy-media-query': {},
+    autoprefixer: {},
+    'postcss-easy-media-query': {}
   }
 };

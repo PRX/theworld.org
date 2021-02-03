@@ -5,17 +5,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { IPriApiResource } from 'pri-api-library/types';
 import { fetchApiProgram, fetchPriApiQuery } from '@lib/fetch';
+import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Program Data
-  const {
-    data: { featuredStories, latestEpisode, stories },
-    ctaRegions,
-    context
-  } = await fetchApiProgram(3704, req);
+  const { featuredStories, latestEpisode, stories } = await fetchApiProgram(
+    '3704',
+    req
+  );
 
   // Latest Non-TW stories
   const latestStories = (await fetchPriApiQuery('node--stories', {
+    ...basicStoryParams,
     'filter[status]': 1,
     'filter[program][value]': 3704,
     'filter[program][operator]': '<>',
@@ -24,20 +25,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   })) as IPriApiResource[];
 
   const apiResp = {
-    type: 'homepage',
-    ctaRegions,
-    context,
-    data: {
-      featuredStory: featuredStories
-        ? featuredStories.shift()
-        : stories.shift(),
-      featuredStories: featuredStories
-        ? featuredStories.concat(stories.splice(0, 4 - featuredStories.length))
-        : stories.splice(0, 4),
-      stories,
-      latestStories,
-      latestEpisode
-    }
+    featuredStory: featuredStories ? featuredStories.shift() : stories.shift(),
+    featuredStories: featuredStories
+      ? featuredStories.concat(stories.splice(0, 4 - featuredStories.length))
+      : stories.splice(0, 4),
+    stories,
+    latestStories,
+    latestEpisode
   };
 
   res.status(200).json(apiResp);

@@ -3,11 +3,12 @@
  * Gather program stories data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { IPriApiResource } from 'pri-api-library/types';
+import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
+import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, page = '1' } = req.query;
+  const { id, page = '1', range, exclude } = req.query;
 
   if (id) {
     const program = (await fetchPriApiItem(
@@ -17,18 +18,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (program) {
       const { featuredStories } = program;
+      const excluded = (exclude || featuredStories) && [
+        ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
+        ...(featuredStories && featuredStories.map(({ id: i }) => i))
+      ];
 
-      // Fetch list of stories. Paginated./ Latest TW Stories
+      // Fetch list of stories. Paginated.
       const data = (await fetchPriApiQuery('node--stories', {
-        include: ['image', 'primary_category'],
+        ...basicStoryParams,
         'filter[status]': 1,
         'filter[program]': id,
-        ...(featuredStories && {
-          'filter[id][value]': featuredStories.map(({ id: i }) => i),
+        ...(excluded && {
+          'filter[id][value]': excluded,
           'filter[id][operator]': '<>'
         }),
         sort: '-date_published',
-        range: 15,
+        range: range || 15,
         page
       })) as IPriApiResource[];
 

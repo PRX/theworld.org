@@ -110,7 +110,6 @@ export const NewsletterForm = ({
         <Box className={cx('layout')}>
           <Box>
             <TextField
-              id="subscriber-emailAddress"
               type="email"
               label="Email Address"
               value={data.emailAddress}

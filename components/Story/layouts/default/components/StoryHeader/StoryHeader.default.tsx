@@ -3,25 +3,27 @@
  * Component for default story header.
  */
 
-import React, { useContext } from 'react';
-import { Box, Typography } from '@material-ui/core';
-import Moment from 'react-moment';
+import React from 'react';
 import 'moment-timezone';
-import { ContentContext } from '@contexts/ContentContext';
+import Moment from 'react-moment';
+import { IPriApiResource } from 'pri-api-library/types';
+import { Box, Typography } from '@material-ui/core';
 import { ContentLink } from '@components/ContentLink';
 import { storyHeaderStyles } from './StoryHeader.default.styles';
 
-export const StoryHeader = () => {
+interface Props {
+  data: IPriApiResource;
+}
+
+export const StoryHeader = ({ data }: Props) => {
   const {
-    data: {
-      byline,
-      dateBroadcast,
-      datePublished,
-      primaryCategory,
-      program,
-      title
-    }
-  } = useContext(ContentContext);
+    byline,
+    dateBroadcast,
+    datePublished,
+    primaryCategory,
+    program,
+    title
+  } = data;
   const classes = storyHeaderStyles({});
 
   return (

@@ -9,7 +9,7 @@ import { INewsletterOptions, IPriApiNewsletter } from '@interfaces/newsletter';
 export type CtaMessageType = 'info' | 'optin' | 'donation' | 'newsletter';
 
 export interface ICtaMessage {
-  name: string | number;
+  name: string;
   type: CtaMessageType;
   hash: string;
   heading?: string;

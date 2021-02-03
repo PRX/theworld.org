@@ -20,10 +20,7 @@ export const appHeaderStyles = makeStyles((theme: Theme) =>
       fill: theme.palette.primary.contrastText
     },
     menuButton: {
-      marginRight: theme.spacing(2),
-      '.no-js &': {
-        display: 'none'
-      }
+      marginRight: theme.spacing(2)
     }
   })
 );

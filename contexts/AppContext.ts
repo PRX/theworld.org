@@ -4,25 +4,17 @@
  */
 
 import React from 'react';
-import { IPriApiResource } from 'pri-api-library/types';
-import { IButton } from '@interfaces/button';
-import { ICtaMessage } from '@interfaces/cta';
 
 export interface IAppContext {
+  page?: {
+    resource?: {
+      type?: string;
+      id?: string;
+    };
+  };
   copyrightDate?: string | number;
-  ctaRegions?: {
-    banner?: ICtaMessage[];
-    loadUNder?: ICtaMessage[];
-  };
-  latestStories: IPriApiResource[];
-  menus?: {
-    [K: string]: IButton[];
-  };
 }
 
 export const AppContext = React.createContext({
-  copyrightDate: new Date().getFullYear(),
-  ctaRegions: {},
-  latestStories: [],
-  menus: {}
+  copyrightDate: new Date().getFullYear()
 } as IAppContext);

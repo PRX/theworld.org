@@ -17,11 +17,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (apiResp) {
       res.status(200).json(apiResp);
     } else {
-      res.status(404).json({});
+      res.status(404).end();
     }
 
     return;
   }
 
-  res.status(400).json({});
+  res.status(400).end();
 };

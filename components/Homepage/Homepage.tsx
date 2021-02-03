@@ -2,10 +2,13 @@
  * @file Homepage.tsx
  * Component for Homepage.
  */
-import React, { useContext } from 'react';
+import React from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
+import { AnyAction } from 'redux';
+import { useStore } from 'react-redux';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Box, Button, Hidden, Typography } from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
 import { LandingPage } from '@components/LandingPage';
@@ -19,28 +22,76 @@ import {
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { ContentContext } from '@contexts/ContentContext';
-import { fetchApiHomepage } from '@lib/fetch';
 import { IPriApiResource } from 'pri-api-library/types';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
+import { RootState } from '@interfaces/state';
+import { IContentComponentProps } from '@interfaces/content';
+import { fetchCtaData, fetchHomepageData } from '@store/actions';
+import { getCollectionData, getCtaRegionData } from '@store/reducers';
+
+interface StateProps extends RootState {}
+
+type Props = StateProps & IContentComponentProps;
 
 export const Homepage = () => {
-  const {
-    data,
-    ctaRegions: {
-      tw_cta_region_landing_inline_01: inlineTop,
-      tw_cta_region_landing_inline_02: inlineBottom,
-      tw_cta_region_landing_sidebar_01: sidebarTop,
-      tw_cta_region_landing_sidebar_02: sidebarBottom
-    }
-  } = useContext(ContentContext);
-  const {
-    featuredStory,
-    featuredStories,
-    latestEpisode,
-    stories,
-    latestStories
-  } = data;
+  const store = useStore();
+  const state = store.getState();
+  const featuredStoryState = getCollectionData(
+    state,
+    'homepage',
+    undefined,
+    'featured story'
+  );
+  const featuredStory = featuredStoryState.items[0];
+  const { items: featuredStories } = getCollectionData(
+    state,
+    'homepage',
+    undefined,
+    'featured stories'
+  );
+  const { items: stories } = getCollectionData(
+    state,
+    'homepage',
+    undefined,
+    'stories'
+  );
+  const { items: latestStories } = getCollectionData(
+    state,
+    'homepage',
+    undefined,
+    'latest'
+  );
+  const latestEpisodeState = getCollectionData(
+    state,
+    'homepage',
+    undefined,
+    'latest episode'
+  );
+  const latestEpisode = latestEpisodeState && latestEpisodeState.items[0];
+  const inlineTop = getCtaRegionData(
+    state,
+    'homepage',
+    undefined,
+    'tw_cta_region_landing_inline_01'
+  );
+  const inlineBottom = getCtaRegionData(
+    state,
+    'homepage',
+    undefined,
+    'tw_cta_region_landing_inline_02'
+  );
+  const sidebarTop = getCtaRegionData(
+    state,
+    'homepage',
+    undefined,
+    'tw_cta_region_landing_sidebar_01'
+  );
+  const sidebarBottom = getCtaRegionData(
+    state,
+    'homepage',
+    undefined,
+    'tw_cta_region_landing_sidebar_02'
+  );
 
   const mainElements = [
     {
@@ -158,5 +209,18 @@ export const Homepage = () => {
   );
 };
 
-Homepage.fetchData = async (id: string | number, req: IncomingMessage) =>
-  fetchApiHomepage(req);
+Homepage.fetchData = (
+  id: string,
+  req: IncomingMessage
+): ThunkAction<void, {}, {}, AnyAction> => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+): Promise<void> => {
+  // Fetch App Data
+  await dispatch<any>(fetchHomepageData(req));
+
+  // Get CTA message data.
+  const context = ['node:3704'];
+  await dispatch<any>(
+    fetchCtaData('tw_cta_regions_landing', 'homepage', undefined, context, req)
+  );
+};

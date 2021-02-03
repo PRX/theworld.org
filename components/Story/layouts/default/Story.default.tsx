@@ -3,8 +3,9 @@
  * Component for default Story layout.
  */
 
-import React, { useContext } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import {
   Box,
@@ -15,8 +16,6 @@ import {
   Typography
 } from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
-import { AppContext } from '@contexts/AppContext';
-import { ContentContext } from '@contexts/ContentContext';
 import { AudioPlayer } from '@components/AudioPlayer';
 import {
   Sidebar,
@@ -27,16 +26,65 @@ import {
 } from '@components/Sidebar';
 import { CtaRegion } from '@components/CtaRegion';
 import { Tags } from '@components/Tags';
+import { IContentComponentProps } from '@interfaces/content';
+import { RootState } from '@interfaces/state';
+import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
 
-export const StoryDefault = () => {
+interface StateProps extends RootState {}
+
+type Props = StateProps & IContentComponentProps;
+
+export const StoryDefault = ({ data }: Props) => {
   const {
-    data: { body, audio, embeddedPlayerUrl, popoutPlayerUrl, categories, tags },
-    related,
-    ctaRegions
-  } = useContext(ContentContext);
-  const { latestStories } = useContext(AppContext);
+    type,
+    id,
+    body,
+    audio,
+    embeddedPlayerUrl,
+    popoutPlayerUrl,
+    categories,
+    primaryCategory,
+    tags
+  } = data;
+  const store = useStore();
+  const state = store.getState();
+  const relatedState =
+    primaryCategory &&
+    getCollectionData(
+      state,
+      primaryCategory.type,
+      primaryCategory.id as string,
+      'related'
+    );
+  const related =
+    relatedState &&
+    relatedState.items.filter(item => item.id !== id).slice(0, 4);
+  const ctaInlineEnd = getCtaRegionData(
+    state,
+    type,
+    id as string,
+    'tw_cta_region_content_inline_end'
+  );
+  const ctaSidebarTop = getCtaRegionData(
+    state,
+    type,
+    id as string,
+    'tw_cta_region_content_sidebar_01'
+  );
+  const ctaSidebarBottom = getCtaRegionData(
+    state,
+    type,
+    id as string,
+    'tw_cta_region_content_sidebar_02'
+  );
+  const { items: latestStories } = getCollectionData(
+    state,
+    'app',
+    null,
+    'latest'
+  );
   const classes = storyStyles({});
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;
@@ -57,7 +105,7 @@ export const StoryDefault = () => {
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
-            <StoryHeader />
+            <StoryHeader data={data} />
           </Grid>
           <Grid item xs={12}>
             {audio && (
@@ -70,23 +118,19 @@ export const StoryDefault = () => {
             )}
             <Box className={classes.main}>
               <Box className={classes.content}>
-                <StoryLede />
+                <StoryLede data={data} />
                 <Box
                   className={classes.body}
                   my={2}
                   dangerouslySetInnerHTML={{ __html: body }}
                 />
-                {ctaRegions.tw_cta_region_content_inline_end && (
-                  <CtaRegion
-                    data={ctaRegions.tw_cta_region_content_inline_end}
-                  />
-                )}
+                {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
                 {hasRelated && (
                   <aside>
                     <header>
                       <h3>Related Content</h3>
                     </header>
-                    <StoryRelatedLinks />
+                    <StoryRelatedLinks data={related} />
                   </aside>
                 )}
                 {hasCategories && <Tags data={categories} label="Categories" />}
@@ -117,18 +161,14 @@ export const StoryDefault = () => {
                   </Sidebar>
                 )}
                 <Hidden smDown>
-                  {ctaRegions.tw_cta_region_content_sidebar_01 && (
+                  {ctaSidebarTop && (
                     <Sidebar item stretch>
-                      <SidebarCta
-                        data={ctaRegions.tw_cta_region_content_sidebar_01}
-                      />
+                      <SidebarCta data={ctaSidebarTop} />
                     </Sidebar>
                   )}
-                  {ctaRegions.tw_cta_region_content_sidebar_02 && (
+                  {ctaSidebarBottom && (
                     <Sidebar item stretch>
-                      <SidebarCta
-                        data={ctaRegions.tw_cta_region_content_sidebar_02}
-                      />
+                      <SidebarCta data={ctaSidebarBottom} />
                     </Sidebar>
                   )}
                 </Hidden>

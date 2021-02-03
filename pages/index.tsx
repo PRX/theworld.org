@@ -4,56 +4,65 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
 import { NextPageContext } from 'next';
 import Error from 'next/error';
-
+import { IncomingMessage } from 'http';
 import { IPriApiResource } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
-import { fetchApiQueryAlias } from '@lib/fetch/api';
-import { ContentContext } from '@contexts/ContentContext';
 import { importComponent, preloadComponent } from '@lib/import/component';
+import { RootState } from '@interfaces/state';
+import { fetchAliasData } from '@store/actions';
 
-const ContentProxy = (props: IContentComponentProxyProps) => {
+interface DispatchProps {
+  fetchAliasData: (alias: string, req: IncomingMessage) => void;
+}
+
+interface StateProps extends RootState {}
+
+type Props = StateProps & DispatchProps & IContentComponentProxyProps;
+
+const ContentProxy = (props: Props) => {
   const { errorCode } = props;
   let output: JSX.Element;
 
-  // Render error page.
   if (errorCode) {
+    // Render error page.
     output = <Error statusCode={errorCode} />;
   } else {
-    const {
-      data,
-      data: { type }
-    } = props;
+    // Render content component.
+    const { type, id } = props;
     const ContentComponent = importComponent(type);
 
-    output = (
-      <ContentContext.Provider value={data}>
-        <ContentComponent />
-      </ContentContext.Provider>
-    );
+    output = <ContentComponent id={id} />;
   }
 
   return output;
 };
 
-ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
+ContentProxy.getInitialProps = async (
+  ctx: NextPageContext
+): Promise<IContentComponentProxyProps> => {
   const {
     res,
     req,
+    store,
     query: { alias }
   } = ctx;
-  let resourceId: string | number;
+  let resourceId: string;
   let resourceType: string = 'homepage';
+  // let state = store.getState() as RootState;
 
   // Get data for alias.
   if (alias) {
-    const apiResp = await fetchApiQueryAlias(alias as string, req);
+    const aliasData = await store.dispatch<any>(
+      fetchAliasData(alias as string, req)
+    );
 
     // Update resource id and type.
-    if (apiResp?.id) {
-      const { id, type } = apiResp as IPriApiResource;
-      resourceId = id;
+    if (aliasData?.id) {
+      const { id, type } = aliasData as IPriApiResource;
+      resourceId = id as string;
       resourceType = type;
     } else {
       resourceType = null;
@@ -66,9 +75,9 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
 
     // Use content component to fetch its data.
     if (ContentComponent) {
-      const data = await ContentComponent.fetchData(resourceId, req);
-
-      return { data };
+      // Dispatch action returned from content component fetchData.
+      await store.dispatch<any>(ContentComponent.fetchData(resourceId, req));
+      return { type: resourceType, id: resourceId };
     }
   }
 
@@ -84,5 +93,9 @@ ContentProxy.getInitialProps = async (ctx: NextPageContext) => {
   };
 };
 
+const mapStateToProps = (state: RootState): StateProps => state;
+
 export const config = { amp: 'hybrid' };
-export default ContentProxy; // eslint-disable-line import/no-default-export
+export default connect<StateProps, DispatchProps, IContentComponentProxyProps>(
+  mapStateToProps
+)(ContentProxy); // eslint-disable-line import/no-default-export

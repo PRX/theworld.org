@@ -3,25 +3,21 @@
  * Component for links to content page.
  */
 
-import React, { useContext } from 'react';
-import { handleButtonClick } from '@lib/routing';
+import React from 'react';
+import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
-// Material Components
 import { Box, Breadcrumbs, Container, Divider, Link } from '@material-ui/core';
-// Contexts
-import { AppContext } from '@contexts/AppContext';
-// SVG
+import { handleButtonClick } from '@lib/routing';
+import { getMenusData } from '@store/reducers';
 import { ReactComponent as TwLogo } from '@svg/tw-white.svg';
 import { ReactComponent as PrxLogo } from '@svg/PRX-Logo-Horizontal-Color.svg';
 import { ReactComponent as WGBHLogo } from '@svg/WGBH-Logo.svg';
-// Module
 import { appFooterStyles } from './AppFooter.styles';
 
 export const AppFooter = () => {
-  const {
-    copyrightDate,
-    menus: { footerNav }
-  } = useContext(AppContext);
+  const store = useStore();
+  const footerNav = getMenusData(store.getState(), 'footerNav');
+  const copyrightDate = new Date().getFullYear();
   const classes = appFooterStyles({});
   const cx = classNames.bind(classes);
   const producedByLogoClasses = cx({ logo: true, producedByLogo: true });

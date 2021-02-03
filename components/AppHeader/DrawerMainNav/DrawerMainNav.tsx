@@ -3,7 +3,8 @@
  * Component for app drawer top nav.
  */
 
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import { useStore } from 'react-redux';
 import { handleButtonClick } from '@lib/routing';
 import { IButton } from '@interfaces';
 import classNames from 'classnames/bind';
@@ -16,7 +17,7 @@ import {
   ThemeProvider
 } from '@material-ui/core';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import { AppContext } from '@contexts/AppContext';
+import { getMenusData } from '@store/reducers';
 import {
   drawerMainNavTheme,
   drawerMainNavStyles
@@ -27,25 +28,26 @@ export interface OpenStateMap {
 }
 
 export const DrawerMainNav = () => {
-  const {
-    menus: { drawerMainNav }
-  } = useContext(AppContext);
+  const store = useStore();
+  const drawerMainNav = getMenusData(store.getState(), 'drawerMainNav');
   const [{ open }, setState] = useState({
-    open: drawerMainNav.reduce(
-      (a: OpenStateMap, { children, key }: IButton): OpenStateMap => {
-        if (children) {
-          const b = {
-            ...a,
-            [key]: false
-          };
+    open: drawerMainNav
+      ? drawerMainNav.reduce(
+          (a: OpenStateMap, { children, key }: IButton): OpenStateMap => {
+            if (children) {
+              const b = {
+                ...a,
+                [key]: false
+              };
 
-          return b;
-        }
+              return b;
+            }
 
-        return a;
-      },
-      {}
-    )
+            return a;
+          },
+          {}
+        )
+      : {}
   });
   const classes = drawerMainNavStyles({});
   const cx = classNames.bind(classes);

@@ -4,15 +4,14 @@
  */
 
 import React, { useContext, useState } from 'react';
+import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
-// Material Components
 import { Box, Container, IconButton, NoSsr } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CloseSharp } from '@material-ui/icons';
-// Contexts
 import { AppContext } from '@contexts/AppContext';
-// Module
+import { getCtaRegionData } from '@store/reducers';
 import {
   appCtaLoadUnderStyles,
   appCtaLoadUnderTheme
@@ -20,12 +19,22 @@ import {
 import { ctaTypeComponentMap } from './components';
 
 export const AppCtaLoadUnder = () => {
+  const store = useStore();
+  const state = store.getState();
   const {
-    ctaRegions: { banner }
+    page: {
+      resource: { type, id }
+    }
   } = useContext(AppContext);
+  const banner = getCtaRegionData(
+    state,
+    type,
+    id,
+    'tw_cta_region_site_load_under'
+  );
   const shownMessage = getShownMessage(banner);
-  const { type } = shownMessage || {};
-  const CtaMessageComponent = ctaTypeComponentMap[type] || null;
+  const { type: msgType } = shownMessage || {};
+  const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);
   const classes = appCtaLoadUnderStyles({});
   const cx = classNames.bind(classes);

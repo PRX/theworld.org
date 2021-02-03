@@ -24,7 +24,7 @@ export const parseCtaMessage = (
   message: IPriApiResource,
   region: string
 ): ICtaMessage => ({
-  name: message.id,
+  name: message.id as string,
   type: message.ctaType,
   hash: message.contentHash,
   ...(message.heading && { heading: message.heading }),

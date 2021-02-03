@@ -6,13 +6,14 @@
 import fetch from 'isomorphic-unfetch';
 import { IPriApiResource } from 'pri-api-library/types';
 import { IncomingMessage } from 'http';
-import { IContentContextData } from '@interfaces/content';
+import { ParsedUrlQuery } from 'querystring';
+import { parse, format } from 'url';
+import { ICtaMessage } from '@interfaces/cta';
 import {
   INewsletterOptions,
   INewsletterData,
   ICMApiCustomField
 } from '@interfaces/newsletter';
-import { parse } from 'url';
 
 /**
  * Method that simplifies GET requests.
@@ -21,21 +22,47 @@ import { parse } from 'url';
  *    Path to the resource being requested.
  * @param req
  *    Request object from `getInitialProps` ctx object.
+ * @param query
+ *    Query object.
+ * @param body
+ *    Data object to send as JSON. Will convert request to POST.
  *
  * @returns
  *    Denormalized response to request, or error object.
  */
-export const fetchApi = async (path: string, req?: IncomingMessage) => {
+export const fetchApi = async (
+  path: string,
+  req?: IncomingMessage,
+  query?: ParsedUrlQuery,
+  body?: Object
+) => {
   const baseUrl = req
     ? `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
     : '';
-  const oUrl = req && parse(req.url);
+  const { query: reqQuery = {} } = (req && parse(req.url, true)) || {};
 
-  console.log(oUrl);
+  delete reqQuery.alias;
+
+  const url = format({
+    pathname: `${baseUrl}/api/${path}`,
+    query: {
+      ...reqQuery,
+      ...(query || {})
+    }
+  });
 
   return fetch(
-    `${baseUrl}/api/${path}${oUrl ? oUrl.search || '' : ''}`
-  ).then(resp => resp.json());
+    url,
+    body
+      ? {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        }
+      : {}
+  ).then(r => r.json());
 };
 
 /**
@@ -51,7 +78,7 @@ export const fetchApi = async (path: string, req?: IncomingMessage) => {
  */
 export const fetchApiQueryAlias = async (
   alias: string,
-  req: IncomingMessage
+  req?: IncomingMessage
 ): Promise<IPriApiResource> => fetchApi(`query/alias${alias}`, req);
 
 /**
@@ -63,7 +90,8 @@ export const fetchApiQueryAlias = async (
  * @returns
  *    App data object.
  */
-export const fetchApiApp = async (req: IncomingMessage) => fetchApi('app', req);
+export const fetchApiApp = async (req?: IncomingMessage) =>
+  fetchApi('app', req);
 
 /**
  * Method that simplifies GET queries for homepage data.
@@ -74,7 +102,7 @@ export const fetchApiApp = async (req: IncomingMessage) => fetchApi('app', req);
  * @returns
  *    Homepage data object.
  */
-export const fetchApiHomepage = async (req: IncomingMessage) =>
+export const fetchApiHomepage = async (req?: IncomingMessage) =>
   fetchApi('homepage', req);
 
 /**
@@ -90,7 +118,7 @@ export const fetchApiHomepage = async (req: IncomingMessage) =>
  */
 export const fetchApiNewsletter = async (
   id: string | number,
-  req: IncomingMessage
+  req?: IncomingMessage
 ) => fetchApi(`newsletter/${id}`, req);
 
 /**
@@ -141,8 +169,8 @@ export const postNewsletterSubsciption = async (
  */
 export const fetchApiStory = async (
   id: string | number,
-  req: IncomingMessage
-): Promise<IContentContextData> => fetchApi(`story/${id}`, req);
+  req?: IncomingMessage
+): Promise<IPriApiResource> => fetchApi(`story/${id}`, req);
 
 /**
  * Method that simplifies GET queries for program data.
@@ -157,8 +185,8 @@ export const fetchApiStory = async (
  */
 export const fetchApiProgram = async (
   id: string | number,
-  req: IncomingMessage
-): Promise<IContentContextData> => fetchApi(`program/${id}`, req);
+  req?: IncomingMessage
+): Promise<IPriApiResource> => fetchApi(`program/${id}`, req);
 
 /**
  * Method that simplifies GET queries for program stories data.
@@ -177,3 +205,51 @@ export const fetchApiProgramStories = async (
   req?: IncomingMessage
 ): Promise<{ data: IPriApiResource[] }> =>
   fetchApi(`program/${id}/stories/${page}`, req);
+
+/**
+ * Method that simplifies GET queries for category data.
+ *
+ * @param id
+ *    API id of category.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Story data object.
+ */
+export const fetchApiCategory = async (
+  id: string | number,
+  req?: IncomingMessage
+): Promise<IPriApiResource> => fetchApi(`category/${id}`, req);
+
+/**
+ * Method that simplifies GET queries for category stories data.
+ *
+ * @param id
+ *    API id of category.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Story data object.
+ */
+export const fetchApiCategoryStories = async (
+  id: string | number,
+  page: number = 1,
+  range?: number,
+  exclude?: string | string[],
+  req?: IncomingMessage
+): Promise<{ data: IPriApiResource[] }> =>
+  fetchApi(`category/${id}/stories/${page}`, req, {
+    ...(range && { range: `${range}` }),
+    ...(exclude && { exclude })
+  });
+
+export const fetchApiCtaRegionGroup = async (
+  regionGroup: string,
+  context: string[],
+  req: IncomingMessage
+): Promise<{ data: { [k: string]: ICtaMessage[] } }> =>
+  fetchApi(`cta/${regionGroup}`, req, undefined, {
+    context
+  });
