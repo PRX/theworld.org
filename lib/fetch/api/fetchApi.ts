@@ -4,11 +4,14 @@
  */
 
 import fetch from 'isomorphic-unfetch';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiCollectionResponse,
+  IPriApiResource
+} from 'pri-api-library/types';
 import { IncomingMessage } from 'http';
 import { ParsedUrlQuery } from 'querystring';
 import { parse, format } from 'url';
-import { ICtaMessage } from '@interfaces/cta';
+import { ICtaRegions } from '@interfaces/cta';
 import {
   INewsletterOptions,
   INewsletterData,
@@ -203,7 +206,7 @@ export const fetchApiProgramStories = async (
   range?: number,
   exclude?: string[],
   req?: IncomingMessage
-): Promise<{ data: IPriApiResource[] }> =>
+): Promise<IPriApiCollectionResponse> =>
   fetchApi(`program/${id}/stories/${page}`, req, {
     ...(range && { range: `${range}` }),
     ...(exclude && { exclude })
@@ -251,7 +254,7 @@ export const fetchApiCategoryStories = async (
   field?: string,
   exclude?: string[],
   req?: IncomingMessage
-): Promise<{ data: IPriApiResource[] }> =>
+): Promise<IPriApiCollectionResponse> =>
   fetchApi(`category/${id}/stories/${page}`, req, {
     ...(range && { range: `${range}` }),
     ...(exclude && { exclude }),
@@ -297,7 +300,7 @@ export const fetchApiTermStories = async (
   range?: number,
   exclude?: string[],
   req?: IncomingMessage
-): Promise<{ data: IPriApiResource[] }> =>
+): Promise<IPriApiCollectionResponse> =>
   fetchApi(`term/${id}/stories/${page}`, req, {
     ...(range && { range: `${range}` }),
     ...(exclude && { exclude })
@@ -339,7 +342,7 @@ export const fetchApiPersonStories = async (
   page: number = 1,
   range?: number,
   req?: IncomingMessage
-): Promise<{ data: IPriApiResource[] }> =>
+): Promise<IPriApiCollectionResponse> =>
   fetchApi(`person/${id}/stories/${page}`, req, {
     ...(range && { range: `${range}` })
   });
@@ -365,7 +368,7 @@ export const fetchApiPersonAudio = async (
   page: number = 1,
   range: number = 10,
   req?: IncomingMessage
-): Promise<{ data: IPriApiResource[] }> =>
+): Promise<IPriApiCollectionResponse> =>
   fetchApi('file/audio', req, {
     'filter[audioAuthor]': id,
     sort: '-broadcast_date',
@@ -393,7 +396,7 @@ export const fetchApiCtaRegionGroup = async (
   regionGroup: string,
   context: string[],
   req: IncomingMessage
-): Promise<{ data: { [k: string]: ICtaMessage[] } }> =>
+): Promise<ICtaRegions> =>
   fetchApi(`cta/${regionGroup}`, req, undefined, {
     context
   });

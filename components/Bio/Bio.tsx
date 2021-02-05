@@ -99,13 +99,13 @@ export const Bio = () => {
   const loadMoreStories = async () => {
     setLoading(true);
 
-    const { data: moreStories } = await fetchApiPersonStories(id, page + 1);
+    const moreStories = await fetchApiPersonStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
     setLoading(false);
 
     store.dispatch<any>(
-      appendResourceCollection([...moreStories], type, id, 'stories')
+      appendResourceCollection(moreStories, type, id, 'stories')
     );
   };
 
@@ -278,11 +278,11 @@ Bio.fetchData = (
     });
 
     if (stories) {
-      dispatch(appendResourceCollection([...stories], type, id, 'stories'));
+      dispatch(appendResourceCollection(stories, type, id, 'stories'));
     }
 
     if (segments) {
-      dispatch(appendResourceCollection([...segments], type, id, 'segments'));
+      dispatch(appendResourceCollection(segments, type, id, 'segments'));
     }
   }
 

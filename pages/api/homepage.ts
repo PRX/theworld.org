@@ -3,16 +3,13 @@
  * Gather homepage data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IPriApiResource } from 'pri-api-library/types';
-import { fetchApiProgram, fetchPriApiQuery } from '@lib/fetch';
+import { IPriApiCollectionResponse } from 'pri-api-library/types';
 import { basicStoryParams } from '@lib/fetch/api/params';
+import { fetchApiProgram, fetchPriApiQuery } from '@lib/fetch';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   // Program Data
-  const { featuredStories, latestEpisode, stories } = await fetchApiProgram(
-    '3704',
-    req
-  );
+  const program = await fetchApiProgram('3704', req);
 
   // Latest Non-TW stories
   const latestStories = (await fetchPriApiQuery('node--stories', {
@@ -22,16 +19,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     'filter[program][operator]': '<>',
     sort: '-date_published',
     range: 10
-  })) as IPriApiResource[];
+  })) as IPriApiCollectionResponse;
 
   const apiResp = {
-    featuredStory: featuredStories ? featuredStories.shift() : stories.shift(),
-    featuredStories: featuredStories
-      ? featuredStories.concat(stories.splice(0, 4 - featuredStories.length))
-      : stories.splice(0, 4),
-    stories,
-    latestStories,
-    latestEpisode
+    ...program,
+    latestStories
   };
 
   res.status(200).json(apiResp);

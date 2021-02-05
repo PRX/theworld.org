@@ -28,12 +28,11 @@ export const collections = (state: State = {}, action: AnyAction) => {
 
     case 'APPEND_REFS_TO_COLLECTION':
       key = makeResourceSignature(action.payload.resource);
-      refs = (action.payload.items || [])
+      refs = (action.payload.data || [])
         .filter(v => !!v)
         .map((ref: IPriApiResource) => makeResourceSignature(ref));
       newCollection = {
-        page: 1,
-        range: refs.length,
+        ...action.payload.meta,
         items: [...refs]
       };
 
@@ -47,7 +46,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
                   ? {
                       [action.payload.collection]: {
                         ...state[key][action.payload.collection],
-                        page: state[key][action.payload.collection].page + 1,
+                        ...action.payload.meta,
                         items: _.uniq([
                           ...state[key][action.payload.collection].items,
                           ...refs

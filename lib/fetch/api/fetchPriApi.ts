@@ -13,7 +13,8 @@ import {
 import {
   IPriApiResource,
   PriApiResourceResponse,
-  IPriApiResponse
+  IPriApiResponse,
+  IPriApiResourceResponse
 } from 'pri-api-library/types';
 import * as JSONAPI from 'jsonapi-typescript';
 import { ILink } from '@interfaces/link';
@@ -153,7 +154,7 @@ export const fetchPriApiQueryMenu = async (
   menuName: string
 ): Promise<ILink[]> =>
   fetchPriApi(`menu/tree/${menuName}`).then(
-    resp => !resp.isFailure && (resp.response as ILink[])
+    ({ isFailure, response }) => !isFailure && (response.data as ILink[])
   );
 
 /**
@@ -204,27 +205,32 @@ export const postJsonPriApiCtaRegion = async (
   )
     .then(resp => !resp.isFailure && resp.response)
     .then(
-      (resp: IPriApiResource) =>
+      (resp: IPriApiResourceResponse) =>
         resp && {
           ...resp,
-          subqueues: Object.entries(resp.subqueues)
-            // Denormalize subqueue array items.
-            .map(([key, items]: [string, JSONAPI.CollectionResourceDoc[]]) => [
-              key,
-              items.map(item => denormalizeJsonApi(item))
-            ])
-            // Parse Message data
-            .map(([key, items]: [string, IPriApiResource[]]) => [
-              key,
-              items.map(item => parseCtaMessage(item, key))
-            ])
-            // Convert back to object.
-            .reduce(
-              (a, [key, value]: [string, any]) => ({
-                ...a,
-                [key]: value
-              }),
-              {}
-            )
+          data: {
+            ...resp.data,
+            subqueues: Object.entries((resp.data as IPriApiResource).subqueues)
+              // Denormalize subqueue array items.
+              .map(
+                ([key, items]: [string, JSONAPI.CollectionResourceDoc[]]) => [
+                  key,
+                  items.map(item => denormalizeJsonApi(item))
+                ]
+              )
+              // Parse Message data
+              .map(([key, items]: [string, IPriApiResource[]]) => [
+                key,
+                items.map(item => parseCtaMessage(item, key))
+              ])
+              // Convert back to object.
+              .reduce(
+                (a, [key, value]: [string, any]) => ({
+                  ...a,
+                  [key]: value
+                }),
+                {}
+              )
+          }
         }
     );

@@ -32,11 +32,11 @@ export const fetchAppData = (
       payload: {
         resource: { type: 'app', id: null },
         collection: 'latest',
-        items: latestStories
+        ...latestStories
       }
     });
 
-    latestStories.forEach((item: any) => {
+    latestStories.data.forEach((item: any) => {
       dispatch({
         type: 'FETCH_CONTENT_DATA_SUCCESS',
         payload: item

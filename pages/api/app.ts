@@ -6,7 +6,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchPriApiQuery, fetchPriApiQueryMenu } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 import { parseMenu } from '@lib/parse/menu';
-import { ILink } from '@interfaces/link';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const [
@@ -32,11 +31,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const apiResp = {
     latestStories,
     menus: {
-      drawerMainNav: parseMenu(drawerMainNav as ILink[]),
-      drawerSocialNav: parseMenu(drawerSocialNav as ILink[]),
-      drawerTopNav: parseMenu(drawerTopNav as ILink[]),
-      footerNav: parseMenu(footerNav as ILink[]),
-      headerNav: parseMenu(headerNav as ILink[])
+      drawerMainNav: parseMenu(drawerMainNav),
+      drawerSocialNav: parseMenu(drawerSocialNav),
+      drawerTopNav: parseMenu(drawerTopNav),
+      footerNav: parseMenu(footerNav),
+      headerNav: parseMenu(headerNav)
     }
   };
 

@@ -4,32 +4,41 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchPriApiItem, postJsonPriApiCtaRegion } from '@lib/fetch/api';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
   const getContext = (data: IPriApiResource): string[] => [`node:${data.id}`];
 
   if (id) {
-    const data = (await fetchPriApiItem(
+    const newsletter = (await fetchPriApiItem(
       'node--newsletter_sign_ups',
       id as string,
       {
         include: ['image']
       }
-    )) as IPriApiResource;
+    )) as IPriApiResourceResponse;
 
-    if (data) {
-      const { type } = data;
+    if (newsletter) {
+      const {
+        data,
+        data: { type }
+      } = newsletter;
 
       // Fetch CTA Messages.
       const context = getContext(data);
-      const { subqueues: ctaRegions } = (await postJsonPriApiCtaRegion(
+      const regionsGroup = (await postJsonPriApiCtaRegion(
         'tw_cta_regions_content',
         {
           context
         }
-      )) as IPriApiResource;
+      )) as IPriApiResourceResponse;
+      const { data: regionsGroupData } = regionsGroup || {};
+      const { subqueues: ctaRegions } =
+        regionsGroupData || ({} as IPriApiResource);
 
       // Build response object.
       const apiResp = {

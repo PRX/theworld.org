@@ -5,17 +5,20 @@
  */
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiCollectionResponse,
+  IPriApiResource
+} from 'pri-api-library/types';
 
 export const appendResourceCollection = (
-  items: IPriApiResource[],
+  resp: IPriApiCollectionResponse,
   type: string,
   id: number | string,
   collection: string
 ): ThunkAction<void, {}, {}, AnyAction> => (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ): void => {
-  const payloadItems = items.filter(v => !!v);
+  const payloadItems = resp.data.filter(v => !!v);
 
   payloadItems.forEach((item: IPriApiResource) => {
     dispatch({
@@ -29,7 +32,7 @@ export const appendResourceCollection = (
     payload: {
       resource: { type, id },
       collection,
-      items: payloadItems
+      ...resp
     }
   });
 };

@@ -109,13 +109,13 @@ export const Category = () => {
   const loadMoreStories = async () => {
     setLoading(true);
 
-    const { data: moreStories } = await fetchApiCategoryStories(id, page + 1);
+    const moreStories = await fetchApiCategoryStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
     setLoading(false);
 
     store.dispatch<any>(
-      appendResourceCollection([...moreStories], type, id, 'stories')
+      appendResourceCollection(moreStories, type, id, 'stories')
     );
   };
 
@@ -311,19 +311,24 @@ Category.fetchData = (
     });
 
     dispatch(
-      appendResourceCollection([featuredStory], type, id, 'featured story')
+      appendResourceCollection(
+        { data: [featuredStory], meta: { count: 1 } },
+        type,
+        id,
+        'featured story'
+      )
     );
 
     dispatch(
       appendResourceCollection(
-        [...featuredStories],
+        { data: [...featuredStories], meta: { count: featuredStories.length } },
         type,
         id,
         'featured stories'
       )
     );
 
-    dispatch(appendResourceCollection([...stories], type, id, 'stories'));
+    dispatch(appendResourceCollection(stories, type, id, 'stories'));
   }
 
   // Get CTA message data.

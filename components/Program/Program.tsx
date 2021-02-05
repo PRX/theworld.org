@@ -125,13 +125,13 @@ export const Program = () => {
   const loadMoreStories = async () => {
     setLoading(true);
 
-    const { data: moreStories } = await fetchApiProgramStories(id, page + 1);
+    const moreStories = await fetchApiProgramStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
     setLoading(false);
 
     store.dispatch<any>(
-      appendResourceCollection([...moreStories], type, id, 'stories')
+      appendResourceCollection(moreStories, type, id, 'stories')
     );
   };
 
@@ -331,23 +331,33 @@ Program.fetchData = (
     });
 
     dispatch(
-      appendResourceCollection([latestEpisode], type, id, 'latest episode')
-    );
-
-    dispatch(
-      appendResourceCollection([featuredStory], type, id, 'featured story')
+      appendResourceCollection(
+        { data: [latestEpisode], meta: { count: 1 } },
+        type,
+        id,
+        'latest episode'
+      )
     );
 
     dispatch(
       appendResourceCollection(
-        [...featuredStories],
+        { data: [featuredStory], meta: { count: 1 } },
+        type,
+        id,
+        'featured story'
+      )
+    );
+
+    dispatch(
+      appendResourceCollection(
+        { data: [...featuredStories], meta: { count: featuredStories.length } },
         type,
         id,
         'featured stories'
       )
     );
 
-    dispatch(appendResourceCollection([...stories], type, id, 'stories'));
+    dispatch(appendResourceCollection(stories, type, id, 'stories'));
   }
 
   // Get CTA message data.
