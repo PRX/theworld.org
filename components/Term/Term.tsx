@@ -126,8 +126,10 @@ export const Term = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
-          {featuredStory && <StoryCard data={featuredStory} feature />}
-          {featuredStories && <StoryCardGrid data={featuredStories} mt={2} />}
+          {featuredStory && <StoryCard data={featuredStory[0]} feature />}
+          {featuredStories && (
+            <StoryCardGrid data={featuredStories[0]} mt={2} />
+          )}
           {ctaInlineTop && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -146,14 +148,16 @@ export const Term = () => {
       children: (
         <Box mt={3}>
           {stories &&
-            stories.map((item: IPriApiResource, index: number) => (
-              <Box mt={index ? 2 : 0} key={item.id}>
-                <StoryCard
-                  data={item}
-                  feature={item.displayTemplate !== 'standard'}
-                />
-              </Box>
-            ))}
+            stories
+              .reduce((a, p) => [...a, ...p], [])
+              .map((item: IPriApiResource, index: number) => (
+                <Box mt={index ? 2 : 0} key={item.id}>
+                  <StoryCard
+                    data={item}
+                    feature={item.displayTemplate !== 'standard'}
+                  />
+                </Box>
+              ))}
           <Box mt={3}>
             <Button
               variant="contained"
@@ -189,7 +193,7 @@ export const Term = () => {
       children: (
         <Box mt={3}>
           {latestEpisode && (
-            <SidebarEpisode data={latestEpisode} label="Latest Edition" />
+            <SidebarEpisode data={latestEpisode[0]} label="Latest Edition" />
           )}
           {description && (
             <Box mt={2}>
@@ -223,7 +227,7 @@ export const Term = () => {
                 <MenuBookRounded /> Latest world news headlines
               </Typography>
             </SidebarHeader>
-            <SidebarList disablePadding data={latestStories} />
+            <SidebarList disablePadding data={latestStories[0]} />
             <SidebarFooter>
               <Link href="/latest/stories" passHref>
                 <Button

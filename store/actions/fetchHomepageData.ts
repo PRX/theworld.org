@@ -36,8 +36,6 @@ export const fetchHomepageData = (
       stories
     } = apiResp;
 
-    console.log(apiResp);
-
     dispatch(
       appendResourceCollection(
         { data: [latestEpisode], meta: { count: 1 } },

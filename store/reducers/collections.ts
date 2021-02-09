@@ -22,6 +22,18 @@ export const collections = (state: State = {}, action: AnyAction) => {
   let refs: string[];
   let newCollection: CollectionState;
 
+  const addCollectionPage = (
+    items: string[][],
+    page: string[],
+    pageNumber: number
+  ) => {
+    const result = [...items];
+
+    result[pageNumber] = page;
+
+    return result;
+  };
+
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload.collections };
@@ -33,7 +45,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
         .map((ref: IPriApiResource) => makeResourceSignature(ref));
       newCollection = {
         ...action.payload.meta,
-        items: [...refs]
+        items: addCollectionPage([], _.uniq(refs), action.payload.meta.page)
       };
 
       return {
@@ -47,10 +59,11 @@ export const collections = (state: State = {}, action: AnyAction) => {
                       [action.payload.collection]: {
                         ...state[key][action.payload.collection],
                         ...action.payload.meta,
-                        items: _.uniq([
-                          ...state[key][action.payload.collection].items,
-                          ...refs
-                        ])
+                        items: addCollectionPage(
+                          state[key][action.payload.collection].items,
+                          _.uniq(refs),
+                          action.payload.meta.page
+                        )
                       }
                     }
                   : {

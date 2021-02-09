@@ -9,6 +9,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from '@interfaces/state';
 import { fetchApiApp } from '@lib/fetch/api';
 import { getCollectionData } from '@store/reducers';
+import { appendResourceCollection } from './appendResourceCollection';
 
 export const fetchAppData = (
   req: IncomingMessage
@@ -27,21 +28,9 @@ export const fetchAppData = (
     const apiResp = await fetchApiApp(req);
     const { latestStories, menus } = apiResp;
 
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type: 'app', id: null },
-        collection: 'latest',
-        ...latestStories
-      }
-    });
-
-    latestStories.data.forEach((item: any) => {
-      dispatch({
-        type: 'FETCH_CONTENT_DATA_SUCCESS',
-        payload: item
-      });
-    });
+    dispatch(
+      appendResourceCollection(latestStories, 'app', undefined, 'latest')
+    );
 
     dispatch({
       type: 'FETCH_MENUS_DATA_SUCCESS',

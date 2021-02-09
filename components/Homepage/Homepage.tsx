@@ -98,8 +98,8 @@ export const Homepage = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
-          <StoryCard data={featuredStory} feature />
-          <StoryCardGrid data={featuredStories} mt={2} />
+          <StoryCard data={featuredStory[0]} feature />
+          <StoryCardGrid data={featuredStories[0]} mt={2} />
           {inlineTop && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -117,14 +117,16 @@ export const Homepage = () => {
       key: 'main bottom',
       children: (
         <Box mt={3}>
-          {stories.map((item: IPriApiResource, index: number) => (
-            <Box mt={index ? 2 : 0} key={item.id}>
-              <StoryCard
-                data={item}
-                feature={item.displayTemplate !== 'standard'}
-              />
-            </Box>
-          ))}
+          {stories
+            .reduce((a, p) => [...a, ...p], [])
+            .map((item: IPriApiResource, index: number) => (
+              <Box mt={index ? 2 : 0} key={item.id}>
+                <StoryCard
+                  data={item}
+                  feature={item.displayTemplate !== 'standard'}
+                />
+              </Box>
+            ))}
           {inlineBottom && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -145,7 +147,7 @@ export const Homepage = () => {
       key: 'sidebar top',
       children: (
         <Box mt={3}>
-          <SidebarEpisode data={latestEpisode} label="Latest Edition" />
+          <SidebarEpisode data={latestEpisode[0]} label="Latest Edition" />
           {sidebarTop && (
             <Box mt={3}>
               <Hidden only="sm">
@@ -169,7 +171,7 @@ export const Homepage = () => {
                 <MenuBookRounded /> Latest world news headlines
               </Typography>
             </SidebarHeader>
-            <SidebarList disablePadding data={latestStories} />
+            <SidebarList disablePadding data={latestStories[0]} />
             <SidebarFooter>
               <Link href="/latest/stories" passHref>
                 <Button

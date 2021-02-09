@@ -5,29 +5,17 @@
  */
 
 export const basicStoryParams = {
-  include: [
-    'audio.program',
-    'byline.credit_type',
-    'byline.person',
-    'format',
-    'image',
-    'primary_category',
-    'program',
-    'video'
-  ]
+  include: ['format', 'image', 'primary_category']
 };
 
 export const fullStoryParams = {
   include: [
+    ...basicStoryParams.include,
     'audio.program',
     'byline.credit_type',
     'byline.person',
-    'format',
-    'image',
     'program',
-    'video',
     'categories',
-    'primary_category',
     'opencalais_city',
     'opencalais_continent',
     'opencalais_country',
@@ -35,6 +23,7 @@ export const fullStoryParams = {
     'opencalais_region',
     'opencalais_person',
     'tags',
-    'verticals'
+    'verticals',
+    'video'
   ]
 };

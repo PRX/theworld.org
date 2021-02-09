@@ -18,6 +18,7 @@ import {
   NavigateNext,
   PublicRounded
 } from '@material-ui/icons';
+import Pagination from '@material-ui/lab/Pagination';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import {
@@ -63,7 +64,7 @@ export const Bio = () => {
     'tw_cta_region_landing_sidebar_02'
   );
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page } = storiesState;
+  const { items: stories, page, next } = storiesState;
   const { items: latestStories } = getCollectionData(
     state,
     'app',
@@ -71,7 +72,13 @@ export const Bio = () => {
     'latest'
   );
   const segmentsState = getCollectionData(state, type, id, 'segments');
-  const { items: segments } = segmentsState || {};
+  const {
+    items: segments,
+    next: segmentsNext,
+    count: segmentsCount,
+    size: segmentsSize
+  } = segmentsState || {};
+  const segmentsPageCount = Math.ceil(segmentsCount / segmentsSize);
   const { title, teaser, image, bio, program, position, socialLinks } = data;
   const { twitter, tumblr, podcast, blog, website, rss, contact } =
     socialLinks || {};
@@ -86,8 +93,11 @@ export const Bio = () => {
   ].filter(v => !!v);
   const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
+  const [segmentsPage, setSegmentsPage] = useState(1);
   const classes = bioStyles({});
   const cx = classNames.bind(classes);
+
+  console.log('Bio >> segmentsState', segmentsState);
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -125,28 +135,32 @@ export const Bio = () => {
       key: 'main bottom',
       children: stories && (
         <Box mt={bio ? 6 : 3}>
-          {stories.map((item: IPriApiResource, index: number) => (
-            <Box mt={index ? 2 : 3} key={item.id}>
-              <StoryCard
-                data={item}
-                feature={item.displayTemplate !== 'standard'}
-              />
+          {stories
+            .reduce((a, p) => [...a, ...p], [])
+            .map((item: IPriApiResource, index: number) => (
+              <Box mt={index ? 2 : 3} key={item.id}>
+                <StoryCard
+                  data={item}
+                  feature={item.displayTemplate !== 'standard'}
+                />
+              </Box>
+            ))}
+          {next && (
+            <Box mt={3}>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                fullWidth
+                disabled={loading}
+                onClick={() => {
+                  loadMoreStories();
+                }}
+              >
+                {loading ? 'Loading Stories...' : 'More Stories'}
+              </Button>
             </Box>
-          ))}
-          <Box mt={3}>
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              fullWidth
-              disabled={loading}
-              onClick={() => {
-                loadMoreStories();
-              }}
-            >
-              {loading ? 'Loading Stories...' : 'More Stories'}
-            </Button>
-          </Box>
+          )}
         </Box>
       )
     }
@@ -164,8 +178,12 @@ export const Bio = () => {
                   <EqualizerRounded /> Latest segments from {title}
                 </Typography>
               </SidebarHeader>
-              <SidebarAudioList disablePadding data={segments} />
-              <SidebarFooter />
+              <SidebarAudioList disablePadding data={segments[segmentsPage]} />
+              <SidebarFooter>
+                {segmentsNext && (
+                  <Pagination count={segmentsPageCount} color="primary" />
+                )}
+              </SidebarFooter>
             </Sidebar>
           )}
           {!!followLinks.length && (
@@ -202,7 +220,7 @@ export const Bio = () => {
                 <MenuBookRounded /> Latest world news headlines
               </Typography>
             </SidebarHeader>
-            <SidebarList disablePadding data={latestStories} />
+            <SidebarList disablePadding data={latestStories[1]} />
             <SidebarFooter>
               <Link href="/latest/stories" passHref>
                 <Button
