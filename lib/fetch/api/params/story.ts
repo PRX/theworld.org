@@ -5,13 +5,12 @@
  */
 
 export const basicStoryParams = {
-  include: ['format', 'image', 'primary_category']
+  include: ['audio.program', 'format', 'image', 'primary_category']
 };
 
 export const fullStoryParams = {
   include: [
     ...basicStoryParams.include,
-    'audio.program',
     'byline.credit_type',
     'byline.person',
     'program',

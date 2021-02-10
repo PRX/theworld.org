@@ -81,7 +81,7 @@ export const Program = () => {
     id,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[0];
+  const featuredStory = featuredStoryState.items[1][0];
   const { items: featuredStories } = getCollectionData(
     state,
     type,
@@ -102,7 +102,7 @@ export const Program = () => {
     id,
     'latest episode'
   );
-  const latestEpisode = latestEpisodeState && latestEpisodeState.items[0];
+  const latestEpisode = latestEpisodeState && latestEpisodeState.items[1][0];
   const {
     title,
     teaser,
@@ -140,9 +140,9 @@ export const Program = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
-          {featuredStory && <StoryCard data={featuredStory[0]} feature />}
+          {featuredStory && <StoryCard data={featuredStory} feature />}
           {featuredStories && (
-            <StoryCardGrid data={featuredStories[0]} mt={2} />
+            <StoryCardGrid data={featuredStories[1]} mt={2} />
           )}
           {ctaInlineTop && (
             <Box mt={3}>
@@ -207,7 +207,7 @@ export const Program = () => {
       children: (
         <Box mt={3}>
           {latestEpisode && (
-            <SidebarEpisode data={latestEpisode[0]} label="Latest Edition" />
+            <SidebarEpisode data={latestEpisode} label="Latest Edition" />
           )}
           <Box mt={2}>
             <Sidebar item elevated>
@@ -254,7 +254,7 @@ export const Program = () => {
                 <MenuBookRounded /> Latest world news headlines
               </Typography>
             </SidebarHeader>
-            <SidebarList disablePadding data={latestStories[0]} />
+            <SidebarList disablePadding data={latestStories[1]} />
             <SidebarFooter>
               <Link href="/latest/stories" passHref>
                 <Button

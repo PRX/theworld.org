@@ -75,7 +75,7 @@ export const Term = () => {
     id,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[0];
+  const featuredStory = featuredStoryState.items[1][0];
   const { items: featuredStories } = getCollectionData(
     state,
     type,
@@ -96,7 +96,7 @@ export const Term = () => {
     id,
     'latest episode'
   );
-  const latestEpisode = latestEpisodeState && latestEpisodeState.items[0];
+  const latestEpisode = latestEpisodeState && latestEpisodeState.items[1][0];
   const { title, description } = data;
   const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
@@ -126,9 +126,9 @@ export const Term = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
-          {featuredStory && <StoryCard data={featuredStory[0]} feature />}
+          {featuredStory && <StoryCard data={featuredStory} feature />}
           {featuredStories && (
-            <StoryCardGrid data={featuredStories[0]} mt={2} />
+            <StoryCardGrid data={featuredStories[1]} mt={2} />
           )}
           {ctaInlineTop && (
             <Box mt={3}>
@@ -193,7 +193,7 @@ export const Term = () => {
       children: (
         <Box mt={3}>
           {latestEpisode && (
-            <SidebarEpisode data={latestEpisode[0]} label="Latest Edition" />
+            <SidebarEpisode data={latestEpisode} label="Latest Edition" />
           )}
           {description && (
             <Box mt={2}>
@@ -227,7 +227,7 @@ export const Term = () => {
                 <MenuBookRounded /> Latest world news headlines
               </Typography>
             </SidebarHeader>
-            <SidebarList disablePadding data={latestStories[0]} />
+            <SidebarList disablePadding data={latestStories[1]} />
             <SidebarFooter>
               <Link href="/latest/stories" passHref>
                 <Button
@@ -302,14 +302,16 @@ Term.fetchData = (
       payload
     });
 
-    dispatch(
-      appendResourceCollection(
-        { data: [latestEpisode], meta: { count: 1 } },
-        type,
-        id,
-        'latest episode'
-      )
-    );
+    if (latestEpisode) {
+      dispatch(
+        appendResourceCollection(
+          { data: [latestEpisode], meta: { count: 1 } },
+          type,
+          id,
+          'latest episode'
+        )
+      );
+    }
 
     dispatch(
       appendResourceCollection(

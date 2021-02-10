@@ -221,7 +221,7 @@ export const postJsonPriApiCtaRegion = async (
               // Parse Message data
               .map(([key, items]: [string, IPriApiResource[]]) => [
                 key,
-                items.map(item => parseCtaMessage(item, key))
+                items.map(item => parseCtaMessage(item.data, key))
               ])
               // Convert back to object.
               .reduce(

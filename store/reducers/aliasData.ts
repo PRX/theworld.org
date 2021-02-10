@@ -23,7 +23,9 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
     case 'FETCH_CONTENT_DATA_SUCCESS':
       return {
         ...state,
-        [generateLinkHrefForContent(action.payload).pathname]: action.payload
+        ...(action.payload && {
+          [generateLinkHrefForContent(action.payload).pathname]: action.payload
+        })
       };
 
     default:

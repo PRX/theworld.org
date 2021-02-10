@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )) as IPriApiCollectionResponse;
 
     if (fcForPerson) {
-      const { data: fcData, meta } = fcForPerson;
+      const { data: fcData, ...other } = fcForPerson;
       const fcIds = _.uniq(fcData.map(fc => fc.id as string));
 
       // Fetch list of stories. Paginated.
@@ -49,9 +49,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Build response object.
       const apiResp = {
-        fcIds,
         data,
-        meta
+        ...other
       };
 
       res.status(200).json(apiResp);

@@ -47,7 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Build response object.
       const apiResp = {
-        ...term,
+        ...term.data,
         featuredStory: featuredStories
           ? featuredStories.shift()
           : stories.data.shift(),

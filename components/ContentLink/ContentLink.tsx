@@ -18,7 +18,7 @@ export type ContentLinkRef = HTMLAnchorElement;
 
 export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
   ({ children, data, ...other }: ContentLinkProps, ref) => {
-    const { metatags, title } = data;
+    const { metatags, title } = data || ({} as IPriApiResource);
     const { canonical } = metatags || {};
     const url = parse(canonical || '');
     const alias = url.pathname;

@@ -70,7 +70,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Build response object.
       const apiResp = {
-        data: _.orderBy(data, story => story.data.datePublished, 'desc'),
+        data: _.orderBy(data, story => story.datePublished, 'desc'),
         meta
       };
 

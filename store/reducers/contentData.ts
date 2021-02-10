@@ -19,10 +19,12 @@ export const contentData = (state: State = {}, action: AnyAction) => {
     case HYDRATE:
       return { ...state, ...action.payload.contentData };
     case 'FETCH_CONTENT_DATA_SUCCESS':
-      key = makeResourceSignature(action.payload);
+      key = action.payload && makeResourceSignature(action.payload);
       return {
         ...state,
-        [key]: state[key] && state[key].complete ? state[key] : action.payload
+        ...(action.payload && {
+          [key]: state[key] && state[key].complete ? state[key] : action.payload
+        })
       };
 
     default:

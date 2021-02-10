@@ -30,7 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ];
 
       // Fetch list of stories. Paginated.
-      const { data } = (await fetchPriApiQuery('node--stories', {
+      const stories = (await fetchPriApiQuery('node--stories', {
         ...basicStoryParams,
         'filter[status]': 1,
         [`filter[${field}]`]: id,
@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       })) as PriApiResponseBody;
 
       // Build response object.
-      const apiResp = { data };
+      const apiResp = stories;
 
       res.status(200).json(apiResp);
     } else {

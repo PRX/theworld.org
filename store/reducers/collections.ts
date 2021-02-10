@@ -25,7 +25,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
   const addCollectionPage = (
     items: string[][],
     page: string[],
-    pageNumber: number
+    pageNumber: number = 1
   ) => {
     const result = [...items];
 

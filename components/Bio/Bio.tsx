@@ -30,7 +30,11 @@ import {
   SidebarList
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
-import { fetchApiPerson, fetchApiPersonStories } from '@lib/fetch';
+import {
+  fetchApiPerson,
+  fetchApiPersonAudio,
+  fetchApiPersonStories
+} from '@lib/fetch';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
 import { appendResourceCollection, fetchCtaData } from '@store/actions';
@@ -72,12 +76,8 @@ export const Bio = () => {
     'latest'
   );
   const segmentsState = getCollectionData(state, type, id, 'segments');
-  const {
-    items: segments,
-    next: segmentsNext,
-    count: segmentsCount,
-    size: segmentsSize
-  } = segmentsState || {};
+  const { items: segments, count: segmentsCount, size: segmentsSize } =
+    segmentsState || {};
   const segmentsPageCount = Math.ceil(segmentsCount / segmentsSize);
   const { title, teaser, image, bio, program, position, socialLinks } = data;
   const { twitter, tumblr, podcast, blog, website, rss, contact } =
@@ -97,8 +97,6 @@ export const Bio = () => {
   const classes = bioStyles({});
   const cx = classNames.bind(classes);
 
-  console.log('Bio >> segmentsState', segmentsState);
-
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
     // When we have loaded a new page, we want to counter this scoll change.
@@ -117,6 +115,28 @@ export const Bio = () => {
     store.dispatch<any>(
       appendResourceCollection(moreStories, type, id, 'stories')
     );
+  };
+
+  const handleSegmentsPageChange = async (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    const pageItems = segmentsState.items[value];
+
+    if (!pageItems || !pageItems.length) {
+      const moreSegments = await fetchApiPersonAudio(
+        id as string,
+        'program-segment',
+        value,
+        10
+      );
+
+      store.dispatch<any>(
+        appendResourceCollection(moreSegments, type, id, 'segments')
+      );
+    }
+
+    setSegmentsPage(value);
   };
 
   const mainElements = [
@@ -180,8 +200,13 @@ export const Bio = () => {
               </SidebarHeader>
               <SidebarAudioList disablePadding data={segments[segmentsPage]} />
               <SidebarFooter>
-                {segmentsNext && (
-                  <Pagination count={segmentsPageCount} color="primary" />
+                {segmentsPageCount > 1 && (
+                  <Pagination
+                    count={segmentsPageCount}
+                    page={segmentsPage}
+                    color="primary"
+                    onChange={handleSegmentsPageChange}
+                  />
                 )}
               </SidebarFooter>
             </Sidebar>

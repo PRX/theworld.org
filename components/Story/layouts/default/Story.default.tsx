@@ -66,7 +66,7 @@ export const StoryDefault = ({ data }: Props) => {
     );
   const related =
     relatedState &&
-    relatedState[0].items.filter(item => item.id !== id).slice(0, 4);
+    relatedState.items[1].filter(item => item.id !== id).slice(0, 4);
   const ctaInlineEnd = getCtaRegionData(
     state,
     type,
@@ -159,7 +159,7 @@ export const StoryDefault = ({ data }: Props) => {
                         <MenuBookRounded /> Latest world news headlines
                       </Typography>
                     </SidebarHeader>
-                    <SidebarList disablePadding data={latestStories[0]} />
+                    <SidebarList disablePadding data={latestStories[1]} />
                     <SidebarFooter>
                       <Link href="/latest/stories" passHref>
                         <Button

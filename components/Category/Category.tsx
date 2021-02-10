@@ -80,7 +80,7 @@ export const Category = () => {
     id,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[0];
+  const featuredStory = featuredStoryState.items[1][0];
   const { items: featuredStories } = getCollectionData(
     state,
     type,
@@ -119,14 +119,16 @@ export const Category = () => {
     );
   };
 
+  console.log(featuredStory);
+
   const mainElements = [
     {
       key: 'main top',
       children: (
         <Box mt={3}>
-          {featuredStory && <StoryCard data={featuredStory[0]} feature />}
+          {featuredStory && <StoryCard data={featuredStory} feature />}
           {featuredStories && (
-            <StoryCardGrid data={featuredStories[0]} mt={2} />
+            <StoryCardGrid data={featuredStories[1]} mt={2} />
           )}
           {ctaInlineTop && (
             <Box mt={3}>
@@ -235,7 +237,7 @@ export const Category = () => {
                 <MenuBookRounded /> Latest world news headlines
               </Typography>
             </SidebarHeader>
-            <SidebarList disablePadding data={latestStories[0]} />
+            <SidebarList disablePadding data={latestStories[1]} />
             <SidebarFooter>
               <Link href="/latest/stories" passHref>
                 <Button
