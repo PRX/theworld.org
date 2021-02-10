@@ -79,13 +79,15 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
             return (
               <Card square elevation={1} key={id}>
                 <CardActionArea>
-                  <CardMedia>
-                    <Image
-                      data={image}
-                      width={imageWidth}
-                      wrapperClassName={cxCard('imageWrapper')}
-                    />
-                  </CardMedia>
+                  {image && (
+                    <CardMedia>
+                      <Image
+                        data={image}
+                        width={imageWidth}
+                        wrapperClassName={cxCard('imageWrapper')}
+                      />
+                    </CardMedia>
+                  )}
                   <CardContent>
                     {primaryCategory && (
                       <Typography variant="overline" gutterBottom>

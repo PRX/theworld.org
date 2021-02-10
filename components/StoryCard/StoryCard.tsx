@@ -64,13 +64,15 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
     <ThemeProvider theme={storyCardTheme}>
       <Card square elevation={1} className={cx({ feature })}>
         <CardActionArea classes={{ root: classes.MuiCardActionAreaRoot }}>
-          <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
-            <Image
-              data={image}
-              width={imageWidth}
-              wrapperClassName={classes.imageWrapper}
-            />
-          </CardMedia>
+          {image && (
+            <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
+              <Image
+                data={image}
+                width={imageWidth}
+                wrapperClassName={classes.imageWrapper}
+              />
+            </CardMedia>
+          )}
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
             {primaryCategory && (
               <Typography variant="overline" gutterBottom>

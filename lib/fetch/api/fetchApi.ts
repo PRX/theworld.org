@@ -218,7 +218,7 @@ export const fetchApiProgramStories = async (
  *    Request object from `getInitialProps` ctx object.
  *
  * @returns
- *    Story data object.
+ *    Category data object.
  */
 export const fetchApiCategory = async (
   id: string,
@@ -259,6 +259,51 @@ export const fetchApiCategoryStories = async (
   });
 
 /**
+ * Method that simplifies GET queries for term data.
+ *
+ * @param id
+ *    API id of term.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Term data object.
+ */
+export const fetchApiTerm = async (
+  id: string,
+  req?: IncomingMessage
+): Promise<IPriApiResource> => fetchApi(`term/${id}`, req);
+
+/**
+ * Method that simplifies GET queries for term stories data.
+ *
+ * @param id
+ *    API id of term.
+ * @param page
+ *    Page number of stories to return.
+ * @param range
+ *    Number of stories to return for the page.
+ * @param exclude
+ *    Array of story ids to exclude from query.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Promise that returns Collection of Story data objects.
+ */
+export const fetchApiTermStories = async (
+  id: string,
+  page: number = 1,
+  range?: number,
+  exclude?: string[],
+  req?: IncomingMessage
+): Promise<{ data: IPriApiResource[] }> =>
+  fetchApi(`term/${id}/stories/${page}`, req, {
+    ...(range && { range: `${range}` }),
+    ...(exclude && { exclude })
+  });
+
+/**
  * Method that simplifies GET queries for person data.
  *
  * @param id
@@ -267,7 +312,7 @@ export const fetchApiCategoryStories = async (
  *    Request object from `getInitialProps` ctx object.
  *
  * @returns
- *    Story data object.
+ *    Person data object.
  */
 export const fetchApiPerson = async (
   id: string,

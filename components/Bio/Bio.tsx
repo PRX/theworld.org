@@ -235,10 +235,7 @@ export const Bio = () => {
   return (
     <>
       <Head>
-        <title>
-          {title}
-          {page > 1 ? ` - Page ${page}` : ''}
-        </title>
+        <title>{title}</title>
       </Head>
       <BioHeader
         title={title}
