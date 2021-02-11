@@ -89,7 +89,7 @@ export const Program = () => {
     'featured stories'
   );
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page } = storiesState;
+  const { items: stories, page, next } = storiesState;
   const { items: latestStories } = getCollectionData(
     state,
     'app',
@@ -172,20 +172,22 @@ export const Program = () => {
                   />
                 </Box>
               ))}
-          <Box mt={3}>
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              fullWidth
-              disabled={loading}
-              onClick={() => {
-                loadMoreStories();
-              }}
-            >
-              {loading ? 'Loading Stories...' : 'More Stories'}
-            </Button>
-          </Box>
+          {next && (
+            <Box mt={3}>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                fullWidth
+                disabled={loading}
+                onClick={() => {
+                  loadMoreStories();
+                }}
+              >
+                {loading ? 'Loading Stories...' : 'More Stories'}
+              </Button>
+            </Box>
+          )}
           {ctaInlineBottom && (
             <Box mt={3}>
               <Hidden xsDown>
