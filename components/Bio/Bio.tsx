@@ -191,7 +191,7 @@ export const Bio = () => {
       key: 'sidebar top',
       children: (
         <Box mt={3}>
-          {segments && !!segments.length && (
+          {segments && !!segments[1].length && (
             <Sidebar item elevated>
               <SidebarHeader>
                 <Typography variant="h2">

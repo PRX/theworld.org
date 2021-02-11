@@ -102,7 +102,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     <ContentLink data={item} className={cxCard('link')} />
                   </CardContent>
                 </CardActionArea>
-                {!!crossLinks.length && (
+                {!!(crossLinks && crossLinks.length) && (
                   <CardActions>
                     <List>
                       {crossLinks.map((link: ILink) => renderLink(link))}

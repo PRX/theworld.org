@@ -14,8 +14,6 @@ import { basicStoryParams } from '@lib/fetch/api/params';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id, page = '1', range } = req.query;
 
-  console.log('person', id);
-
   if (id) {
     const fcForPerson = (await fetchPriApiQuery(
       'field_collection--story_creators',

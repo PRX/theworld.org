@@ -100,7 +100,7 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
             <ContentLink data={data} className={cx('link')} />
           </CardContent>
         </CardActionArea>
-        {feature && !!crossLinks.length && (
+        {feature && !!(crossLinks && crossLinks.length) && (
           <CardActions>
             <List>{crossLinks.map((link: ILink) => renderLink(link))}</List>
           </CardActions>
