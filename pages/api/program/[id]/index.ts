@@ -4,15 +4,15 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
+  IPriApiResourceResponse,
+  IPriApiCollectionResponse
+} from 'pri-api-library/types';
+import {
   fetchApiProgramStories,
   fetchPriApiItem,
   fetchPriApiQuery
 } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
-import {
-  IPriApiResourceResponse,
-  IPriApiCollectionResponse
-} from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
