@@ -174,6 +174,22 @@ export const fetchApiStory = async (
 ): Promise<IPriApiResource> => fetchApi(`story/${id}`, req);
 
 /**
+ * Method that simplifies GET queries for episode data.
+ *
+ * @param id
+ *    API id of episode.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Episode data object.
+ */
+export const fetchApiEpisode = async (
+  id: string,
+  req?: IncomingMessage
+): Promise<IPriApiResource> => fetchApi(`episode/${id}`, req);
+
+/**
  * Method that simplifies GET queries for program data.
  *
  * @param id
