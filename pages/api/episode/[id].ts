@@ -3,9 +3,12 @@
  * Gather episode data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 import { fetchPriApiItem } from '@lib/fetch/api';
-import { fullEpisodeParams } from '@lib/fetch/api/params';
+import { fullEpisodeParams, basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
@@ -16,7 +19,36 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })) as IPriApiResourceResponse;
 
     if (episode) {
-      res.status(200).json(episode.data);
+      const { audio } = episode.data;
+      const { segments } = audio || {};
+      let stories: IPriApiResource[];
+
+      if (segments && segments.length) {
+        stories = (await Promise.all(
+          segments
+            .filter((item: IPriApiResource) => !!item.usage.story)
+            .map((item: IPriApiResource) => item.usage.story[0])
+            .map((item: IPriApiResource) =>
+              fetchPriApiItem('node--stories', item.id, basicStoryParams).then(
+                (resp: IPriApiResourceResponse) => resp.data
+              )
+            )
+        )) as IPriApiResource[];
+      }
+
+      const apiResp = {
+        ...episode.data,
+        ...(!!stories.length && {
+          stories: {
+            data: stories,
+            meta: {
+              count: stories.length
+            }
+          }
+        })
+      };
+
+      res.status(200).json(apiResp);
     } else {
       res.status(404).end();
     }

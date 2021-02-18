@@ -13,7 +13,6 @@ export const sidebarCtaTheme = (theme: Theme) =>
       MuiCard: {
         root: {
           display: 'grid',
-          gridFlow: 'column',
           gridGap: theme.spacing(2),
           padding: theme.spacing(2),
           background: 'transparent',
