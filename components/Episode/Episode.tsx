@@ -16,6 +16,7 @@ import {
   Container,
   Grid,
   Hidden,
+  ListSubheader,
   Typography
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -66,7 +67,17 @@ export const Episode = () => {
     return null;
   }
 
-  const { title, body, audio, embeddedPlayerUrl, popoutPlayerUrl } = data;
+  const {
+    title,
+    body,
+    audio,
+    embeddedPlayerUrl,
+    popoutPlayerUrl,
+    hosts,
+    producers,
+    guests,
+    reporters
+  } = data;
   const { segments } = audio || {};
 
   const storiesState = getCollectionData(state, type, id, 'stories');
@@ -106,7 +117,7 @@ export const Episode = () => {
     }
 
     // Get CTA message data.
-    const context = [`node:${data.id}`, `node:${data.program?.id}`];
+    const context = [`node:${data.id}`, `node:${data.program.id}`];
     (async () => {
       await store.dispatch<any>(
         fetchCtaData('tw_cta_regions_content', type, id, context)
@@ -173,13 +184,53 @@ export const Episode = () => {
                     <SidebarFooter />
                   </Sidebar>
                 )}
-                {/* HOSTS */}
-                {/* PRODUCERS */}
-                {/* GUESTS */}
-                {/* REPORTERS */}
+                {hosts && !!hosts.length && (
+                  <Sidebar item elevated>
+                    <SidebarList
+                      data={hosts.map((item: IPriApiResource) => ({
+                        ...item,
+                        avatar: item.image
+                      }))}
+                      subheader={<ListSubheader>Hosts</ListSubheader>}
+                    />
+                  </Sidebar>
+                )}
+                {producers && !!producers.length && (
+                  <Sidebar item elevated>
+                    <SidebarList
+                      data={producers.map((item: IPriApiResource) => ({
+                        ...item,
+                        avatar: item.image
+                      }))}
+                      subheader={<ListSubheader>Producers</ListSubheader>}
+                    />
+                  </Sidebar>
+                )}
+                {guests && !!guests.length && (
+                  <Sidebar item elevated>
+                    <SidebarList
+                      data={guests.map((item: IPriApiResource) => ({
+                        ...item,
+                        avatar: item.image
+                      }))}
+                      subheader={<ListSubheader>Guests</ListSubheader>}
+                    />
+                  </Sidebar>
+                )}
+                {reporters && !!reporters.length && (
+                  <Sidebar item elevated>
+                    <SidebarList
+                      data={reporters.map((item: IPriApiResource) => ({
+                        ...item,
+                        avatar: item.image
+                      }))}
+                      subheader={<ListSubheader>Reporters</ListSubheader>}
+                    />
+                  </Sidebar>
+                )}
                 {ctaSidebarTop && (
                   <Hidden smDown>
-                    <Sidebar item stretch>
+                    <Sidebar item>
                       <SidebarCta data={ctaSidebarTop} />
                     </Sidebar>
                   </Hidden>
@@ -209,7 +260,7 @@ export const Episode = () => {
                 )}
                 {ctaSidebarBottom && (
                   <Hidden smDown>
-                    <Sidebar item stretch>
+                    <Sidebar item>
                       <SidebarCta data={ctaSidebarBottom} />
                     </Sidebar>
                   </Hidden>

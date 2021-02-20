@@ -38,14 +38,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       const apiResp = {
         ...episode.data,
-        ...(!!stories.length && {
-          stories: {
-            data: stories,
-            meta: {
-              count: stories.length
+        ...(stories &&
+          !!stories.length && {
+            stories: {
+              data: stories,
+              meta: {
+                count: stories.length
+              }
             }
-          }
-        })
+          })
       };
 
       res.status(200).json(apiResp);

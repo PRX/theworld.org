@@ -1,7 +1,7 @@
 /**
- * @file fulStory.ts
+ * @file audio.ts
  *
- * Query parameters needed to requests data for full story.
+ * Query parameters needed to requests data for audio.
  */
 
 export const basicAudioParams = {};
