@@ -81,7 +81,7 @@ export const Program = () => {
     id,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[0];
+  const featuredStory = featuredStoryState.items[1][0];
   const { items: featuredStories } = getCollectionData(
     state,
     type,
@@ -89,7 +89,7 @@ export const Program = () => {
     'featured stories'
   );
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page } = storiesState;
+  const { items: stories, page, next } = storiesState;
   const { items: latestStories } = getCollectionData(
     state,
     'app',
@@ -102,7 +102,7 @@ export const Program = () => {
     id,
     'latest episode'
   );
-  const latestEpisode = latestEpisodeState && latestEpisodeState.items[0];
+  const latestEpisode = latestEpisodeState && latestEpisodeState.items[1][0];
   const {
     title,
     teaser,
@@ -125,13 +125,13 @@ export const Program = () => {
   const loadMoreStories = async () => {
     setLoading(true);
 
-    const { data: moreStories } = await fetchApiProgramStories(id, page + 1);
+    const moreStories = await fetchApiProgramStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
     setLoading(false);
 
     store.dispatch<any>(
-      appendResourceCollection([...moreStories], type, id, 'stories')
+      appendResourceCollection(moreStories, type, id, 'stories')
     );
   };
 
@@ -141,7 +141,9 @@ export const Program = () => {
       children: (
         <Box mt={3}>
           {featuredStory && <StoryCard data={featuredStory} feature />}
-          {featuredStories && <StoryCardGrid data={featuredStories} mt={2} />}
+          {featuredStories && (
+            <StoryCardGrid data={featuredStories[1]} mt={2} />
+          )}
           {ctaInlineTop && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -160,28 +162,32 @@ export const Program = () => {
       children: (
         <Box mt={3}>
           {stories &&
-            stories.map((item: IPriApiResource, index: number) => (
-              <Box mt={index ? 2 : 0} key={item.id}>
-                <StoryCard
-                  data={item}
-                  feature={item.displayTemplate !== 'standard'}
-                />
-              </Box>
-            ))}
-          <Box mt={3}>
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              fullWidth
-              disabled={loading}
-              onClick={() => {
-                loadMoreStories();
-              }}
-            >
-              {loading ? 'Loading Stories...' : 'More Stories'}
-            </Button>
-          </Box>
+            stories
+              .reduce((a, p) => [...a, ...p], [])
+              .map((item: IPriApiResource, index: number) => (
+                <Box mt={index ? 2 : 0} key={item.id}>
+                  <StoryCard
+                    data={item}
+                    feature={item.displayTemplate !== 'standard'}
+                  />
+                </Box>
+              ))}
+          {next && (
+            <Box mt={3}>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                fullWidth
+                disabled={loading}
+                onClick={() => {
+                  loadMoreStories();
+                }}
+              >
+                {loading ? 'Loading Stories...' : 'More Stories'}
+              </Button>
+            </Box>
+          )}
           {ctaInlineBottom && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -250,7 +256,7 @@ export const Program = () => {
                 <MenuBookRounded /> Latest world news headlines
               </Typography>
             </SidebarHeader>
-            <SidebarList disablePadding data={latestStories} />
+            <SidebarList disablePadding data={latestStories[1]} />
             <SidebarFooter>
               <Link href="/latest/stories" passHref>
                 <Button
@@ -331,23 +337,33 @@ Program.fetchData = (
     });
 
     dispatch(
-      appendResourceCollection([latestEpisode], type, id, 'latest episode')
-    );
-
-    dispatch(
-      appendResourceCollection([featuredStory], type, id, 'featured story')
+      appendResourceCollection(
+        { data: [latestEpisode], meta: { count: 1 } },
+        type,
+        id,
+        'latest episode'
+      )
     );
 
     dispatch(
       appendResourceCollection(
-        [...featuredStories],
+        { data: [featuredStory], meta: { count: 1 } },
+        type,
+        id,
+        'featured story'
+      )
+    );
+
+    dispatch(
+      appendResourceCollection(
+        { data: [...featuredStories], meta: { count: featuredStories.length } },
         type,
         id,
         'featured stories'
       )
     );
 
-    dispatch(appendResourceCollection([...stories], type, id, 'stories'));
+    dispatch(appendResourceCollection(stories, type, id, 'stories'));
   }
 
   // Get CTA message data.

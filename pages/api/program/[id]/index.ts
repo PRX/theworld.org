@@ -9,7 +9,10 @@ import {
   fetchPriApiQuery
 } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiResourceResponse,
+  IPriApiCollectionResponse
+} from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
@@ -30,13 +33,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'node--programs',
       id as string,
       params
-    )) as IPriApiResource;
+    )) as IPriApiResourceResponse;
 
     if (program) {
-      const { featuredStories } = program;
+      const { featuredStories } = program.data;
 
       // Fetch list of stories. Paginated.
-      const { data: stories } = await fetchApiProgramStories(
+      const stories = await fetchApiProgramStories(
         id as string,
         1,
         undefined,
@@ -45,25 +48,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
       // Latest Episode
-      const latestEpisode = ((await fetchPriApiQuery('node--episodes', {
+      const latestEpisode = await fetchPriApiQuery('node--episodes', {
         include: ['image', 'audio.segments'],
         'filter[status]': 1,
         'filter[program]': id,
         sort: '-date_published',
         range: 1
-      })) as IPriApiResource[]).shift();
+      }).then((resp: IPriApiCollectionResponse) => resp.data.shift());
 
       // Build response object.
       const apiResp = {
-        ...program,
+        ...program.data,
         featuredStory: featuredStories
           ? featuredStories.shift()
-          : stories.shift(),
+          : stories.data.shift(),
         featuredStories: featuredStories
           ? featuredStories.concat(
-              stories.splice(0, 4 - featuredStories.length)
+              stories.data.splice(0, 4 - featuredStories.length)
             )
-          : stories.splice(0, 4),
+          : stories.data.splice(0, 4),
         stories,
         latestEpisode
       };

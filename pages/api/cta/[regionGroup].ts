@@ -4,7 +4,7 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { postJsonPriApiCtaRegion } from '@lib/fetch/api';
-import { IPriApiResource } from 'pri-api-library/types';
+import { IPriApiResourceResponse } from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -18,15 +18,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         {
           context
         }
-      )) as IPriApiResource;
+      )) as IPriApiResourceResponse;
 
-      if (!regionGroupData.id) {
+      if (!regionGroupData || !regionGroupData.data.id) {
         // Unknown region group name.
         return res.status(404);
       }
 
       // OK. Return region group subqueues.
-      return res.status(200).json(regionGroupData.subqueues);
+      return res.status(200).json(regionGroupData.data.subqueues);
     }
     // No region group name provided.
     return res.status(400);

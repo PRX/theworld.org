@@ -3,7 +3,10 @@
  * Gather category data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiResourceResponse,
+  IPriApiCollectionResponse
+} from 'pri-api-library/types';
 import {
   fetchApiTermStories,
   fetchPriApiItem,
@@ -18,13 +21,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'taxonomy_term--terms',
       id as string,
       {}
-    )) as IPriApiResource;
+    )) as IPriApiResourceResponse;
 
     if (term) {
-      const { featuredStories } = term;
+      const { featuredStories } = term.data;
 
       // Fetch list of stories. Paginated.
-      const { data: stories } = await fetchApiTermStories(
+      const stories = await fetchApiTermStories(
         id as string,
         1,
         undefined,
@@ -40,19 +43,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'filter[tags][operator]': '"CONTAINS"',
         sort: '-date_published',
         range: 1
-      }).then((resp: IPriApiResource[]) => resp.shift());
+      }).then((resp: IPriApiCollectionResponse) => resp.data.shift());
 
       // Build response object.
       const apiResp = {
-        ...term,
+        ...term.data,
         featuredStory: featuredStories
           ? featuredStories.shift()
-          : stories.shift(),
+          : stories.data.shift(),
         featuredStories: featuredStories
           ? featuredStories.concat(
-              stories.splice(0, 4 - featuredStories.length)
+              stories.data.splice(0, 4 - featuredStories.length)
             )
-          : stories.splice(0, 4),
+          : stories.data.splice(0, 4),
         stories,
         latestEpisode
       };

@@ -3,7 +3,7 @@
  * Gather category data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IPriApiResource } from 'pri-api-library/types';
+import { IPriApiResource, PriApiResponseBody } from 'pri-api-library/types';
 import { fetchApiCategoryStories, fetchPriApiItem } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   if (id) {
-    const category = (await fetchPriApiItem(
+    const { data: category } = (await fetchPriApiItem(
       'taxonomy_term--categories',
       id as string,
       {
@@ -23,13 +23,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             .map(param => `featured_stories.${param}`)
         ]
       }
-    )) as IPriApiResource;
+    )) as PriApiResponseBody;
 
     if (category) {
-      const { featuredStories } = category;
+      const { featuredStories } = category as IPriApiResource;
 
       // Fetch list of stories. Paginated.
-      const { data: stories } = await fetchApiCategoryStories(
+      const stories = await fetchApiCategoryStories(
         id as string,
         1,
         undefined,
@@ -43,12 +43,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         ...category,
         featuredStory: featuredStories
           ? featuredStories.shift()
-          : stories.shift(),
+          : stories.data.shift(),
         featuredStories: featuredStories
           ? featuredStories.concat(
-              stories.splice(0, 4 - featuredStories.length)
+              stories.data.splice(0, 4 - featuredStories.length)
             )
-          : stories.splice(0, 4),
+          : stories.data.splice(0, 4),
         stories
       };
 

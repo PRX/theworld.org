@@ -18,6 +18,7 @@ import {
   NavigateNext,
   PublicRounded
 } from '@material-ui/icons';
+import Pagination from '@material-ui/lab/Pagination';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import {
@@ -29,7 +30,11 @@ import {
   SidebarList
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
-import { fetchApiPerson, fetchApiPersonStories } from '@lib/fetch';
+import {
+  fetchApiPerson,
+  fetchApiPersonAudio,
+  fetchApiPersonStories
+} from '@lib/fetch';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
 import { appendResourceCollection, fetchCtaData } from '@store/actions';
@@ -63,7 +68,7 @@ export const Bio = () => {
     'tw_cta_region_landing_sidebar_02'
   );
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page } = storiesState;
+  const { items: stories, page, next } = storiesState;
   const { items: latestStories } = getCollectionData(
     state,
     'app',
@@ -71,7 +76,9 @@ export const Bio = () => {
     'latest'
   );
   const segmentsState = getCollectionData(state, type, id, 'segments');
-  const { items: segments } = segmentsState || {};
+  const { items: segments, count: segmentsCount, size: segmentsSize } =
+    segmentsState || {};
+  const segmentsPageCount = Math.ceil(segmentsCount / segmentsSize);
   const { title, teaser, image, bio, program, position, socialLinks } = data;
   const { twitter, tumblr, podcast, blog, website, rss, contact } =
     socialLinks || {};
@@ -86,6 +93,7 @@ export const Bio = () => {
   ].filter(v => !!v);
   const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
+  const [segmentsPage, setSegmentsPage] = useState(1);
   const classes = bioStyles({});
   const cx = classNames.bind(classes);
 
@@ -99,14 +107,36 @@ export const Bio = () => {
   const loadMoreStories = async () => {
     setLoading(true);
 
-    const { data: moreStories } = await fetchApiPersonStories(id, page + 1);
+    const moreStories = await fetchApiPersonStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
     setLoading(false);
 
     store.dispatch<any>(
-      appendResourceCollection([...moreStories], type, id, 'stories')
+      appendResourceCollection(moreStories, type, id, 'stories')
     );
+  };
+
+  const handleSegmentsPageChange = async (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    const pageItems = segmentsState.items[value];
+
+    if (!pageItems || !pageItems.length) {
+      const moreSegments = await fetchApiPersonAudio(
+        id as string,
+        'program-segment',
+        value,
+        10
+      );
+
+      store.dispatch<any>(
+        appendResourceCollection(moreSegments, type, id, 'segments')
+      );
+    }
+
+    setSegmentsPage(value);
   };
 
   const mainElements = [
@@ -125,28 +155,32 @@ export const Bio = () => {
       key: 'main bottom',
       children: stories && (
         <Box mt={bio ? 6 : 3}>
-          {stories.map((item: IPriApiResource, index: number) => (
-            <Box mt={index ? 2 : 3} key={item.id}>
-              <StoryCard
-                data={item}
-                feature={item.displayTemplate !== 'standard'}
-              />
+          {stories
+            .reduce((a, p) => [...a, ...p], [])
+            .map((item: IPriApiResource, index: number) => (
+              <Box mt={index ? 2 : 3} key={item.id}>
+                <StoryCard
+                  data={item}
+                  feature={item.displayTemplate !== 'standard'}
+                />
+              </Box>
+            ))}
+          {next && (
+            <Box mt={3}>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                fullWidth
+                disabled={loading}
+                onClick={() => {
+                  loadMoreStories();
+                }}
+              >
+                {loading ? 'Loading Stories...' : 'More Stories'}
+              </Button>
             </Box>
-          ))}
-          <Box mt={3}>
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              fullWidth
-              disabled={loading}
-              onClick={() => {
-                loadMoreStories();
-              }}
-            >
-              {loading ? 'Loading Stories...' : 'More Stories'}
-            </Button>
-          </Box>
+          )}
         </Box>
       )
     }
@@ -157,15 +191,24 @@ export const Bio = () => {
       key: 'sidebar top',
       children: (
         <Box mt={3}>
-          {segments && !!segments.length && (
+          {segments && !!segments[1].length && (
             <Sidebar item elevated>
               <SidebarHeader>
                 <Typography variant="h2">
                   <EqualizerRounded /> Latest segments from {title}
                 </Typography>
               </SidebarHeader>
-              <SidebarAudioList disablePadding data={segments} />
-              <SidebarFooter />
+              <SidebarAudioList disablePadding data={segments[segmentsPage]} />
+              <SidebarFooter>
+                {segmentsPageCount > 1 && (
+                  <Pagination
+                    count={segmentsPageCount}
+                    page={segmentsPage}
+                    color="primary"
+                    onChange={handleSegmentsPageChange}
+                  />
+                )}
+              </SidebarFooter>
             </Sidebar>
           )}
           {!!followLinks.length && (
@@ -202,7 +245,7 @@ export const Bio = () => {
                 <MenuBookRounded /> Latest world news headlines
               </Typography>
             </SidebarHeader>
-            <SidebarList disablePadding data={latestStories} />
+            <SidebarList disablePadding data={latestStories[1]} />
             <SidebarFooter>
               <Link href="/latest/stories" passHref>
                 <Button
@@ -278,11 +321,11 @@ Bio.fetchData = (
     });
 
     if (stories) {
-      dispatch(appendResourceCollection([...stories], type, id, 'stories'));
+      dispatch(appendResourceCollection(stories, type, id, 'stories'));
     }
 
     if (segments) {
-      dispatch(appendResourceCollection([...segments], type, id, 'segments'));
+      dispatch(appendResourceCollection(segments, type, id, 'segments'));
     }
   }
 

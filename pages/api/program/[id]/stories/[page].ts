@@ -3,7 +3,10 @@
  * Gather program stories data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiResourceResponse,
+  IPriApiCollectionResponse
+} from 'pri-api-library/types';
 import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
@@ -14,17 +17,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const program = (await fetchPriApiItem(
       'node--programs',
       id as string
-    )) as IPriApiResource;
+    )) as IPriApiResourceResponse;
 
     if (program) {
-      const { featuredStories } = program;
+      const { featuredStories } = program.data;
       const excluded = (exclude || featuredStories) && [
         ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
         ...(featuredStories && featuredStories.map(({ id: i }) => i))
       ];
 
       // Fetch list of stories. Paginated.
-      const data = (await fetchPriApiQuery('node--stories', {
+      const stories = (await fetchPriApiQuery('node--stories', {
         ...basicStoryParams,
         'filter[status]': 1,
         'filter[program]': id,
@@ -35,10 +38,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         sort: '-date_published',
         range: range || 15,
         page
-      })) as IPriApiResource[];
+      })) as IPriApiCollectionResponse;
 
       // Build response object.
-      const apiResp = { data };
+      const apiResp = stories;
 
       res.status(200).json(apiResp);
     } else {

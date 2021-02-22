@@ -3,7 +3,7 @@
  * Gather program stories data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IPriApiResource } from 'pri-api-library/types';
+import { IPriApiResource, PriApiResponseBody } from 'pri-api-library/types';
 import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
@@ -17,20 +17,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } = req.query;
 
   if (id) {
-    const category = (await fetchPriApiItem(
+    const { data: category } = (await fetchPriApiItem(
       'taxonomy_term--categories',
       id as string
-    )) as IPriApiResource;
+    )) as PriApiResponseBody;
 
     if (category) {
-      const { featuredStories } = category;
+      const { featuredStories } = category as IPriApiResource;
       const excluded = (exclude || featuredStories) && [
         ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
         ...(featuredStories ? featuredStories.map(({ id: i }) => i) : [])
       ];
 
       // Fetch list of stories. Paginated.
-      const data = (await fetchPriApiQuery('node--stories', {
+      const stories = (await fetchPriApiQuery('node--stories', {
         ...basicStoryParams,
         'filter[status]': 1,
         [`filter[${field}]`]: id,
@@ -41,10 +41,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         sort: '-date_published',
         range,
         page
-      })) as IPriApiResource[];
+      })) as PriApiResponseBody;
 
       // Build response object.
-      const apiResp = { data };
+      const apiResp = stories;
 
       res.status(200).json(apiResp);
     } else {

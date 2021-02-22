@@ -4,7 +4,10 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiResource,
+  IPriApiCollectionResponse
+} from 'pri-api-library/types';
 import { fetchPriApiQuery } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
@@ -20,10 +23,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         range: range || 15,
         page
       }
-    )) as IPriApiResource[];
+    )) as IPriApiCollectionResponse;
 
     if (fcForPerson) {
-      const fcIds = _.uniq(fcForPerson.map(fc => fc.id as string));
+      const { data: fcData, ...other } = fcForPerson;
+      const fcIds = _.uniq(fcData.map(fc => fc.id as string));
 
       // Fetch list of stories. Paginated.
       const data = _.orderBy(
@@ -34,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               'filter[status]': 1,
               'filter[byline][value]': fcId,
               'filter[byline][operator]': '"CONTAINS"'
-            }).then(resp => resp[0])
+            }).then((resp: IPriApiCollectionResponse) => resp.data[0])
           )
         )) as IPriApiResource[],
         story => story.datePublished,
@@ -43,8 +47,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Build response object.
       const apiResp = {
-        fcIds,
-        data
+        data,
+        ...other
       };
 
       res.status(200).json(apiResp);

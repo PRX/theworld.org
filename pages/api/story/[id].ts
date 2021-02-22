@@ -3,7 +3,7 @@
  * Gather story data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IPriApiResource } from 'pri-api-library/types';
+import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { fetchPriApiItem } from '@lib/fetch/api';
 import { fullStoryParams } from '@lib/fetch/api/params';
 
@@ -13,10 +13,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (id) {
     const story = (await fetchPriApiItem('node--stories', id as string, {
       ...fullStoryParams
-    })) as IPriApiResource;
+    })) as IPriApiResourceResponse;
 
     if (story) {
-      res.status(200).json(story);
+      res.status(200).json(story.data);
     } else {
       res.status(404).end();
     }

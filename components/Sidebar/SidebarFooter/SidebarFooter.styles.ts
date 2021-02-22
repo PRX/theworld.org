@@ -11,7 +11,15 @@ import {
 } from '@material-ui/core/styles';
 
 export const sidebarFooterTheme = (theme: Theme) => {
-  return createMuiTheme(theme, {});
+  return createMuiTheme(theme, {
+    overrides: {
+      MuiPagination: {
+        ul: {
+          justifyContent: 'center'
+        }
+      }
+    }
+  });
 };
 
 export const sidebarFooterStyles = makeStyles(() =>

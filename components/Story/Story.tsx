@@ -60,7 +60,7 @@ export const Story = () => {
 
     if (!related && primaryCategory) {
       (async () => {
-        const { data: apiData } = await fetchApiCategoryStories(
+        const apiData = await fetchApiCategoryStories(
           primaryCategory.id,
           1,
           5,

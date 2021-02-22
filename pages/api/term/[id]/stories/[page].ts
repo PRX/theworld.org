@@ -4,7 +4,10 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiResourceResponse,
+  IPriApiCollectionResponse
+} from 'pri-api-library/types';
 import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
@@ -24,50 +27,52 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const term = (await fetchPriApiItem(
       'taxonomy_term--terms',
       id as string
-    )) as IPriApiResource;
+    )) as IPriApiResourceResponse;
 
     if (term) {
-      const { featuredStories } = term;
+      const { featuredStories } = term.data;
       const excluded = (exclude || featuredStories) && [
         ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
         ...(featuredStories ? featuredStories.map(({ id: i }) => i) : [])
       ];
 
       // Fetch list of stories. Paginated.
-      const data = _.orderBy(
-        (await Promise.all(
-          storyTermFields.map(field =>
-            fetchPriApiQuery('node--stories', {
-              ...basicStoryParams,
-              'filter[status]': 1,
-              [`filter[${field}]`]: id,
-              ...(excluded && {
-                'filter[id][value]': excluded,
-                'filter[id][operator]': '<>'
-              }),
-              sort: '-date_published',
-              range,
-              page
-            })
-          )
-        ).then(resp =>
-          resp.reduce(
-            (acc, stories) =>
-              stories
-                ? {
-                    ...acc,
-                    ...stories
+      const { data, meta } = (await Promise.all(
+        storyTermFields.map(field =>
+          fetchPriApiQuery('node--stories', {
+            ...basicStoryParams,
+            'filter[status]': 1,
+            [`filter[${field}]`]: id,
+            ...(excluded && {
+              'filter[id][value]': excluded,
+              'filter[id][operator]': '<>'
+            }),
+            sort: '-date_published',
+            range,
+            page
+          })
+        )
+      ).then(resp =>
+        resp.reduce(
+          (acc: IPriApiCollectionResponse, next: IPriApiCollectionResponse) =>
+            next
+              ? {
+                  data: [...acc.data, ...next.data],
+                  meta: {
+                    count:
+                      (acc.meta.count as number) + (next.meta.count as number)
                   }
-                : acc,
-            []
-          )
-        )) as IPriApiResource[],
-        story => story.datePublished,
-        'desc'
-      );
+                }
+              : acc,
+          { data: [], meta: {} }
+        )
+      )) as IPriApiCollectionResponse;
 
       // Build response object.
-      const apiResp = { data };
+      const apiResp = {
+        data: _.orderBy(data, story => story.datePublished, 'desc'),
+        meta
+      };
 
       res.status(200).json(apiResp);
     } else {

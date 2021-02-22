@@ -4,7 +4,7 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchPriApiQuery } from '@lib/fetch/api';
-import { IPriApiResource } from 'pri-api-library/types';
+import { IPriApiCollectionResponse } from 'pri-api-library/types';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     sort: '-date_published',
     ...query,
     'filter[status]': 1
-  })) as IPriApiResource[];
+  })) as IPriApiCollectionResponse;
 
   res.status(200).json(stories);
 };

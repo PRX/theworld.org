@@ -5,9 +5,15 @@
  */
 
 export interface CollectionState {
-  page: number;
-  range: number;
-  items: string[];
+  count?: number;
+  page?: number;
+  range?: number;
+  size?: number;
+  first?: number;
+  last?: number;
+  next?: number;
+  prev?: number;
+  items: string[][];
 }
 
 export interface CollectionsState {

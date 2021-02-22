@@ -19,10 +19,9 @@ import { IPriApiResource } from 'pri-api-library/types';
 export const generateLinkHrefForContent = (
   data: IPriApiResource
 ): UrlWithParsedQuery => {
-  const {
-    metatags: { canonical }
-  } = data;
-  const href = parse(canonical as string, true);
+  const { metatags } = data || ({} as IPriApiResource);
+  const { canonical } = metatags || {};
+  const href = canonical && parse(canonical as string, true);
 
   return href;
 };

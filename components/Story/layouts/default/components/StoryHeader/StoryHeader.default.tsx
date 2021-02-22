@@ -17,6 +17,7 @@ interface Props {
 
 export const StoryHeader = ({ data }: Props) => {
   const {
+    complete,
     byline,
     dateBroadcast,
     datePublished,
@@ -54,9 +55,9 @@ export const StoryHeader = ({ data }: Props) => {
           </Moment>
           {byline && (
             <ul className={classes.byline}>
-              {byline.map(({ id, creditType: { title: label }, person }) => (
+              {byline.map(({ id, creditType, person }) => (
                 <li className={classes.bylineItem} key={id}>
-                  {label}{' '}
+                  {creditType ? creditType.title : 'By'}{' '}
                   <ContentLink className={classes.bylineLink} data={person} />
                 </li>
               ))}

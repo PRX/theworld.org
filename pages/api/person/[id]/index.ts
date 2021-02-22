@@ -8,7 +8,7 @@ import {
   fetchPriApiItem,
   fetchApiPersonAudio
 } from '@lib/fetch/api';
-import { IPriApiResource } from 'pri-api-library/types';
+import { IPriApiResourceResponse } from 'pri-api-library/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
@@ -21,11 +21,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       'node--people',
       id as string,
       params
-    )) as IPriApiResource;
+    )) as IPriApiResourceResponse;
 
     if (person) {
       // Fetch first page of stories.
-      const { data: stories } = await fetchApiPersonStories(
+      const stories = await fetchApiPersonStories(
         id as string,
         1,
         undefined,
@@ -43,7 +43,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Build response object.
       const apiResp = {
-        ...person,
+        ...person.data,
         stories,
         segments
       };

@@ -4,7 +4,7 @@
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchPriApiQuery } from '@lib/fetch/api';
-import { IPriApiResource } from 'pri-api-library/types';
+import { IPriApiCollectionResponse } from 'pri-api-library/types';
 import { basicAudioParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ...basicAudioParams,
     sort: '-broadcast_date',
     ...query
-  })) as IPriApiResource[];
+  })) as IPriApiCollectionResponse;
 
   res.status(200).json(stories);
 };

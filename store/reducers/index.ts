@@ -44,7 +44,9 @@ export const getCollectionData = (
   return (
     collectionState && {
       ...collectionState,
-      items: collectionState.items.map((key: string) => state.contentData[key])
+      items: collectionState.items.map((page: string[]) =>
+        page ? page.map((key: string) => state.contentData[key]) : []
+      )
     }
   );
 };

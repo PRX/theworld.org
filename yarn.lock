@@ -9618,10 +9618,10 @@ pretty-format@^25.2.0:
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
 
-pri-api-library@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/pri-api-library/-/pri-api-library-1.2.1.tgz#052d075c8a8d72082d0ca9931583a1e2eed51422"
-  integrity sha512-aeTFEM6ihkNiJzmHSm2K3+8GqdRdgJhfwoVc1AOGeeAKWhUen5ATJOjhcRWcoDSbUh4gF+zOBR7G+/YjY3F81A==
+pri-api-library@^1.3.9:
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/pri-api-library/-/pri-api-library-1.3.9.tgz#6ace9da2f9046eef1c336eaf689b50ff4cfb9c4e"
+  integrity sha512-Th8G6SV0NOBMuj84bsiGwdyflYXUTyX7P9OCkPJuV2TVXWQt1I4srHxSIfwPf0aL+17V5PnSTPy1PjglP3sIQA==
   dependencies:
     "@types/qs" "^6.5.3"
     camelcase "^5.3.1"
@@ -9629,6 +9629,7 @@ pri-api-library@^1.2.1:
     jsonapi-relate "^2.0.0"
     jsonapi-typescript "^0.1.3"
     qs "^6.9.0"
+    url "^0.11.0"
 
 private@^0.1.8:
   version "0.1.8"

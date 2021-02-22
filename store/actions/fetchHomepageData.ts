@@ -37,24 +37,34 @@ export const fetchHomepageData = (
     } = apiResp;
 
     dispatch(
-      appendResourceCollection([latestEpisode], type, id, 'latest episode')
-    );
-
-    dispatch(
-      appendResourceCollection([featuredStory], type, id, 'featured story')
+      appendResourceCollection(
+        { data: [latestEpisode], meta: { count: 1 } },
+        type,
+        id,
+        'latest episode'
+      )
     );
 
     dispatch(
       appendResourceCollection(
-        [...featuredStories],
+        { data: [featuredStory], meta: { count: 1 } },
+        type,
+        id,
+        'featured story'
+      )
+    );
+
+    dispatch(
+      appendResourceCollection(
+        { data: [...featuredStories], meta: { count: featuredStories.length } },
         type,
         id,
         'featured stories'
       )
     );
 
-    dispatch(appendResourceCollection([...stories], type, id, 'stories'));
+    dispatch(appendResourceCollection(stories, type, id, 'stories'));
 
-    dispatch(appendResourceCollection([...latestStories], type, id, 'latest'));
+    dispatch(appendResourceCollection(latestStories, type, id, 'latest'));
   }
 };

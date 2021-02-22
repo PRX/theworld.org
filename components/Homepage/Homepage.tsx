@@ -42,7 +42,7 @@ export const Homepage = () => {
     undefined,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[0];
+  const featuredStory = featuredStoryState.items[1][0];
   const { items: featuredStories } = getCollectionData(
     state,
     'homepage',
@@ -67,7 +67,7 @@ export const Homepage = () => {
     undefined,
     'latest episode'
   );
-  const latestEpisode = latestEpisodeState && latestEpisodeState.items[0];
+  const latestEpisode = latestEpisodeState && latestEpisodeState.items[1][0];
   const inlineTop = getCtaRegionData(
     state,
     'homepage',
@@ -99,7 +99,7 @@ export const Homepage = () => {
       children: (
         <Box mt={3}>
           <StoryCard data={featuredStory} feature />
-          <StoryCardGrid data={featuredStories} mt={2} />
+          <StoryCardGrid data={featuredStories[1]} mt={2} />
           {inlineTop && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -117,14 +117,16 @@ export const Homepage = () => {
       key: 'main bottom',
       children: (
         <Box mt={3}>
-          {stories.map((item: IPriApiResource, index: number) => (
-            <Box mt={index ? 2 : 0} key={item.id}>
-              <StoryCard
-                data={item}
-                feature={item.displayTemplate !== 'standard'}
-              />
-            </Box>
-          ))}
+          {stories
+            .reduce((a, p) => [...a, ...p], [])
+            .map((item: IPriApiResource, index: number) => (
+              <Box mt={index ? 2 : 0} key={item.id}>
+                <StoryCard
+                  data={item}
+                  feature={item.displayTemplate !== 'standard'}
+                />
+              </Box>
+            ))}
           {inlineBottom && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -169,7 +171,7 @@ export const Homepage = () => {
                 <MenuBookRounded /> Latest world news headlines
               </Typography>
             </SidebarHeader>
-            <SidebarList disablePadding data={latestStories} />
+            <SidebarList disablePadding data={latestStories[1]} />
             <SidebarFooter>
               <Link href="/latest/stories" passHref>
                 <Button
