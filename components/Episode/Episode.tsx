@@ -288,8 +288,6 @@ Episode.fetchData = (
     await dispatch<any>(fetchEpisodeData(id, req));
     const { stories } = getDataByResource(getState(), type, id);
 
-    console.log('Episode.fetchData >> stories', stories);
-
     if (stories) {
       dispatch(appendResourceCollection(stories, type, id, 'stories'));
     }
