@@ -14,6 +14,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Grid,
   Hidden,
   ListSubheader,
@@ -155,6 +156,7 @@ export const Episode = () => {
                 />
                 {stories && (
                   <Box my={3}>
+                    <Divider />
                     <Typography variant="h4">
                       Stories from this episode
                     </Typography>

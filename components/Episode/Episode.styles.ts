@@ -17,6 +17,16 @@ export const episodeTheme = (theme: Theme) =>
     typography: {
       h1: {
         fontSize: theme.typography.pxToRem(46)
+      },
+      h4: {
+        fontSize: theme.typography.pxToRem(20)
+      }
+    },
+    overrides: {
+      MuiDivider: {
+        root: {
+          marginBottom: theme.typography.pxToRem(theme.spacing(3))
+        }
       }
     }
   });
