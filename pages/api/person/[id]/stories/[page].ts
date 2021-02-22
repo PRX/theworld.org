@@ -6,26 +6,36 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
 import {
   IPriApiResource,
-  IPriApiCollectionResponse
+  IPriApiCollectionResponse,
+  IPriApiResourceResponse
 } from 'pri-api-library/types';
-import { fetchPriApiQuery } from '@lib/fetch/api';
+import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, page = '1', range } = req.query;
+  const { id, page = '1', range, exclude } = req.query;
 
   if (id) {
-    const fcForPerson = (await fetchPriApiQuery(
-      'field_collection--story_creators',
-      {
-        'filter[person]': id as string,
-        sort: '-id',
-        range: range || 15,
-        page
-      }
-    )) as IPriApiCollectionResponse;
+    const person = (await fetchPriApiItem(
+      'node--people',
+      id as string
+    )) as IPriApiResourceResponse;
 
-    if (fcForPerson) {
+    if (person) {
+      const { featuredStories } = person.data;
+      const excluded = (exclude || featuredStories) && [
+        ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
+        ...(featuredStories && featuredStories.map(({ id: i }) => i))
+      ];
+      const fcForPerson = (await fetchPriApiQuery(
+        'field_collection--story_creators',
+        {
+          'filter[person]': id as string,
+          sort: '-id',
+          range: range || 15,
+          page
+        }
+      )) as IPriApiCollectionResponse;
       const { data: fcData, ...other } = fcForPerson;
       const fcIds = _.uniq(fcData.map(fc => fc.id as string));
 
@@ -37,7 +47,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               ...basicStoryParams,
               'filter[status]': 1,
               'filter[byline][value]': fcId,
-              'filter[byline][operator]': '"CONTAINS"'
+              'filter[byline][operator]': '"CONTAINS"',
+              ...(excluded && {
+                'filter[id][value]': excluded,
+                'filter[id][operator]': '<>'
+              })
             }).then((resp: IPriApiCollectionResponse) => resp.data[0])
           )
         )) as IPriApiResource[],

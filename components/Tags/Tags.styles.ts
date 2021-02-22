@@ -27,7 +27,7 @@ export const tagsStyles = makeStyles((theme: Theme) =>
       '&::after': {
         content: '",\x20"'
       },
-      '&:last-child': {
+      '&:last-child:not(:only-of-type)': {
         '&:before': {
           content: '"and\x20"',
           textTransform: 'none'
@@ -36,7 +36,7 @@ export const tagsStyles = makeStyles((theme: Theme) =>
           content: 'none'
         }
       },
-      '&:only-child': {
+      '&:only-of-type': {
         '&::before': {
           content: 'none'
         },
