@@ -35,6 +35,7 @@ import {
   SidebarFooter,
   SidebarList
 } from '@components/Sidebar';
+import { SpotifyPlayer } from '@components/SpotifyPlayer';
 import { StoryCard } from '@components/StoryCard';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
@@ -52,7 +53,6 @@ import {
 import { episodeStyles, episodeTheme } from './Episode.styles';
 import { EpisodeLede } from './components/EpisodeLede';
 import { EpisodeHeader } from './components/EpisodeHeader';
-import { SpotifyPlayer } from '@components/SpotifyPlayer';
 
 export const Episode = () => {
   const {
@@ -161,7 +161,7 @@ export const Episode = () => {
                     <Divider />
                     <Typography variant="h4">Music heard on air</Typography>
                     <Grid container spacing={2}>
-                      {spotifyPlaylist.map(({ uri }: { uri: string }) => (
+                      {spotifyPlaylist.map(({ uri }) => (
                         <Grid item xs={12} sm={6} lg={4} key={uri}>
                           <SpotifyPlayer uri={uri} size="large" stretch />
                         </Grid>

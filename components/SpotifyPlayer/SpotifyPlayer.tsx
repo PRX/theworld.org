@@ -43,3 +43,8 @@ export const SpotifyPlayer = ({
     />
   );
 };
+
+SpotifyPlayer.defaultProps = {
+  size: 'compact',
+  stretch: false
+};
