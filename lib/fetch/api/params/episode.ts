@@ -50,8 +50,7 @@ export const fullEpisodeParams = {
     'hosts.image.license',
     'guests.image.license',
     'producers.image.license',
-    'reporters.image.license',
-    'music_heard' // Need to add to API (Drupal)
+    'reporters.image.license'
   ],
   fields: [
     'title',
@@ -83,6 +82,6 @@ export const fullEpisodeParams = {
     'stories.image',
     'stories.primary_category.title',
     'stories.primary_category.metatags',
-    'music_heard' // Need to add to API (Drupal)
+    'spotify_playlist'
   ]
 };

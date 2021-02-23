@@ -19,7 +19,8 @@ export const episodeTheme = (theme: Theme) =>
         fontSize: theme.typography.pxToRem(46)
       },
       h4: {
-        fontSize: theme.typography.pxToRem(20)
+        fontSize: theme.typography.pxToRem(20),
+        marginBottom: theme.typography.pxToRem(theme.spacing(2))
       }
     },
     overrides: {
