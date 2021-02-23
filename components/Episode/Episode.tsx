@@ -156,7 +156,7 @@ export const Episode = () => {
                   my={2}
                   dangerouslySetInnerHTML={{ __html: body }}
                 />
-                {spotifyPlaylist && (
+                {spotifyPlaylist && !!spotifyPlaylist.length && (
                   <Box my={3}>
                     <Divider />
                     <Typography variant="h4">Music heard on air</Typography>
