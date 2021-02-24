@@ -43,7 +43,7 @@ import {
   getCtaRegionData,
   getDataByResource
 } from '@store/reducers';
-import { BioHeader } from '@components/BioHeader';
+import { BioHeader } from './components/BioHeader';
 import { bioStyles } from './Bio.styles';
 
 export const Bio = () => {

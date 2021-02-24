@@ -9,8 +9,8 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
-import { storyLayoutStyles } from '@components/Story/layouts/default/styles/Story.layout';
-import { storyBodyStyles } from '@components/Story/layouts/default/styles/Story.body';
+import { storyLayoutStyles } from '@components/pages/Story/layouts/default/styles/Story.layout';
+import { storyBodyStyles } from '@components/pages/Story/layouts/default/styles/Story.body';
 
 export const episodeTheme = (theme: Theme) =>
   createMuiTheme(theme, {
