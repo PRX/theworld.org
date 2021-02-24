@@ -190,6 +190,22 @@ export const fetchApiEpisode = async (
 ): Promise<IPriApiResource> => fetchApi(`episode/${id}`, req);
 
 /**
+ * Method that simplifies GET queries for audio file data.
+ *
+ * @param id
+ *    API id of audio file.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Audio file data object.
+ */
+export const fetchApiFileAudio = async (
+  id: string,
+  req?: IncomingMessage
+): Promise<IPriApiResource> => fetchApi(`file/audio/${id}`, req);
+
+/**
  * Method that simplifies GET queries for program data.
  *
  * @param id
