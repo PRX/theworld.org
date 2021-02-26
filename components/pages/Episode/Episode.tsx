@@ -143,7 +143,7 @@ export const Episode = () => {
             {audio && (
               <AudioPlayer
                 data={audio}
-                message="Listen to the story."
+                message="Listen to the episode."
                 embeddedPlayerUrl={embeddedPlayerUrl}
                 popoutPlayerUrl={popoutPlayerUrl}
               />

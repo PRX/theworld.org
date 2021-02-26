@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 
 // Define dynamic component imports.
+const DynamicAudio = dynamic(() => import('./Audio') as any);
 const DynamicBio = dynamic(() => import('./Bio') as any);
 const DynamicCategory = dynamic(() => import('./Category') as any);
 const DynamicEpisode = dynamic(() => import('./Episode') as any);
@@ -12,6 +13,7 @@ const DynamicTerm = dynamic(() => import('./Term') as any);
 
 // Map dyanmic component to a data/resource type.
 export const ResourceComponentMap = {
+  'file--audio': DynamicAudio,
   homepage: DynamicHomepage,
   'node--episodes': DynamicEpisode,
   'node--newsletter_sign_ups': DynamicNewsletter,
