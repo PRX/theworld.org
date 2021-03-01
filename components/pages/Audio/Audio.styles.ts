@@ -34,7 +34,6 @@ export const audioTheme = (theme: Theme) =>
 
 export const audioStyles = makeStyles((theme: Theme) =>
   createStyles({
-    ...storyLayoutStyles(theme),
     ...storyBodyStyles(theme)
   })
 );
