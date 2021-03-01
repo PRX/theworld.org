@@ -43,6 +43,7 @@ import {
   getCtaRegionData,
   getDataByResource
 } from '@store/reducers';
+import { StoryCardGrid } from '@components/StoryCardGrid';
 import { BioHeader } from './components/BioHeader';
 import { bioStyles } from './Bio.styles';
 
@@ -66,6 +67,19 @@ export const Bio = () => {
     type,
     id,
     'tw_cta_region_landing_sidebar_02'
+  );
+  const featuredStoryState = getCollectionData(
+    state,
+    type,
+    id,
+    'featured story'
+  );
+  const featuredStory = featuredStoryState.items[1][0];
+  const { items: featuredStories } = getCollectionData(
+    state,
+    type,
+    id,
+    'featured stories'
   );
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories, page, next } = storiesState;
@@ -155,6 +169,10 @@ export const Bio = () => {
       key: 'main bottom',
       children: stories && (
         <Box mt={bio ? 6 : 3}>
+          {featuredStory && <StoryCard data={featuredStory} feature />}
+          {featuredStories && (
+            <StoryCardGrid data={featuredStories[1]} mt={2} />
+          )}
           {stories
             .reduce((a, p) => [...a, ...p], [])
             .map((item: IPriApiResource, index: number) => (
@@ -313,12 +331,36 @@ Bio.fetchData = (
       }
     });
 
-    const { stories, segments, ...payload } = await fetchApiPerson(id, req);
+    const {
+      featuredStory,
+      featuredStories,
+      stories,
+      segments,
+      ...payload
+    } = await fetchApiPerson(id, req);
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
       payload
     });
+
+    dispatch(
+      appendResourceCollection(
+        { data: [featuredStory], meta: { count: 1 } },
+        type,
+        id,
+        'featured story'
+      )
+    );
+
+    dispatch(
+      appendResourceCollection(
+        { data: [...featuredStories], meta: { count: featuredStories.length } },
+        type,
+        id,
+        'featured stories'
+      )
+    );
 
     if (stories) {
       dispatch(appendResourceCollection(stories, type, id, 'stories'));

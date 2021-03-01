@@ -3,19 +3,27 @@
  * Gather program data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
+import { IPriApiResourceResponse } from 'pri-api-library/types';
 import {
   fetchApiPersonStories,
   fetchPriApiItem,
   fetchApiPersonAudio
 } from '@lib/fetch/api';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
+import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   if (id) {
     const params = {
-      include: ['program', 'image', 'social_links']
+      include: [
+        'program',
+        'image',
+        'social_links',
+        ...(basicStoryParams.include || []).map(
+          param => `featured_stories.${param}`
+        )
+      ]
     };
     const person = (await fetchPriApiItem(
       'node--people',
@@ -24,6 +32,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )) as IPriApiResourceResponse;
 
     if (person) {
+      const { featuredStories } = person.data;
+
       // Fetch first page of stories.
       const stories = await fetchApiPersonStories(
         id as string,
@@ -44,6 +54,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // Build response object.
       const apiResp = {
         ...person.data,
+        featuredStory: featuredStories
+          ? featuredStories.shift()
+          : stories.data.shift(),
+        featuredStories: featuredStories
+          ? featuredStories.concat(
+              stories.data.splice(0, 4 - featuredStories.length)
+            )
+          : stories.data.splice(0, 4),
         stories,
         segments
       };
