@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })) as IPriApiResourceResponse;
 
     if (file) {
-      res.status(200).json(file);
+      res.status(200).json(file.data);
     } else {
       res.status(404).end();
     }

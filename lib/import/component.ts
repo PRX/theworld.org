@@ -1,4 +1,4 @@
-import { ResourceComponentMap } from '@components/ResourceComponentMap';
+import { ResourceComponentMap } from '@components/pages/ResourceComponentMap';
 
 /**
  * Provide component sutable for use in render functions.
