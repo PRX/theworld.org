@@ -1,7 +1,7 @@
 /**
- * @file fulStory.ts
+ * @file story.ts
  *
- * Query parameters needed to requests data for full story.
+ * Query parameters needed to requests data for a story.
  */
 
 export const basicStoryParams = {

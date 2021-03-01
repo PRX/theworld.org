@@ -38,12 +38,8 @@ export interface SidebarEpisodeProps {
 }
 
 export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
-  const {
-    teaser,
-    title,
-    image,
-    audio: { segments }
-  } = data;
+  const { teaser, title, image, audio } = data;
+  const { segments } = audio || {};
   const classes = sidebarEpisodeStyles({});
   const cx = classNames.bind(classes);
   const imageWidth = {
