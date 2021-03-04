@@ -7,6 +7,7 @@
 export const basicEpisodeParams = {
   include: [
     'audio.segments',
+    'audio.program',
     'image',
     'program',
     'hosts',
@@ -45,6 +46,7 @@ export const basicEpisodeParams = {
 export const fullEpisodeParams = {
   include: [
     'audio.segments',
+    'audio.program',
     'image',
     'program',
     'hosts.image.license',

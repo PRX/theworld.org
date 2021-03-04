@@ -6,15 +6,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
+  AppBar,
   Box,
   Button,
+  Container,
   Hidden,
   ListSubheader,
+  Tab,
+  Tabs,
   Typography
 } from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
@@ -22,17 +27,22 @@ import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import {
   Sidebar,
+  SidebarContent,
   SidebarCta,
+  SidebarEpisode,
   SidebarFooter,
   SidebarHeader,
   SidebarList
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { fetchApiProgram, fetchApiProgramStories } from '@lib/fetch';
+import {
+  fetchApiProgram,
+  fetchApiProgramEpisodes,
+  fetchApiProgramStories
+} from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
-import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
-import { SidebarContent } from '@components/Sidebar/SidebarContent';
+import { EpisodeCard } from '@components/EpisodeCard';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
 import { appendResourceCollection, fetchCtaData } from '@store/actions';
@@ -41,6 +51,7 @@ import {
   getCtaRegionData,
   getDataByResource
 } from '@store/reducers';
+import { generateLinkPropsForContent } from '@lib/routing';
 
 export const Program = () => {
   const {
@@ -48,6 +59,8 @@ export const Program = () => {
       resource: { type, id }
     }
   } = useContext(AppContext);
+  const router = useRouter();
+  const { query } = router;
   const store = useStore();
   const state = store.getState();
   const data = getDataByResource(state, type, id);
@@ -89,20 +102,26 @@ export const Program = () => {
     'featured stories'
   );
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page, next } = storiesState;
+  const { items: stories, page, next, count } = storiesState;
   const { items: latestStories } = getCollectionData(
     state,
     'app',
     undefined,
     'latest'
   );
-  const latestEpisodeState = getCollectionData(
-    state,
-    type,
-    id,
-    'latest episode'
-  );
-  const latestEpisode = latestEpisodeState && latestEpisodeState.items[1][0];
+  const hasStories = count > 0;
+  const episodesState = getCollectionData(state, type, id, 'episodes');
+  const {
+    items: episodes,
+    page: episodesPage,
+    next: episodesNext,
+    count: episodesCount
+  } = episodesState || {};
+  const hasEpisodes = episodesCount > 0;
+  const isEpisodesView =
+    (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
+  const latestEpisode = episodes && episodes[1].shift();
+  const hasContentLinks = hasStories || hasEpisodes;
   const {
     title,
     teaser,
@@ -120,7 +139,7 @@ export const Program = () => {
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
-  }, [page]);
+  }, [page, episodesPage]);
 
   const loadMoreStories = async () => {
     setLoading(true);
@@ -135,14 +154,45 @@ export const Program = () => {
     );
   };
 
+  const loadMoreEpisodes = async () => {
+    setLoading(true);
+
+    const moreEpisodes = await fetchApiProgramEpisodes(id, episodesPage + 1);
+
+    setOldScrollY(window.scrollY);
+    setLoading(false);
+
+    store.dispatch<any>(
+      appendResourceCollection(moreEpisodes, type, id, 'episodes')
+    );
+  };
+
+  const handleFilterChange = (e: object, value: any) => {
+    const { href, as: alias } = generateLinkPropsForContent(data, {
+      ...(value === 1 && { v: 'episodes' })
+    });
+
+    router.push(href, alias);
+  };
+
   const mainElements = [
     {
       key: 'main top',
       children: (
         <Box mt={3}>
-          {featuredStory && <StoryCard data={featuredStory} feature />}
-          {featuredStories && (
-            <StoryCardGrid data={featuredStories[1]} mt={2} />
+          {body && !hasContentLinks && (
+            <SidebarContent dangerouslySetInnerHTML={{ __html: body }} />
+          )}
+          {!isEpisodesView && (
+            <>
+              {featuredStory && <StoryCard data={featuredStory} feature />}
+              {featuredStories && (
+                <StoryCardGrid data={featuredStories[1]} mt={2} />
+              )}
+            </>
+          )}
+          {isEpisodesView && (
+            <EpisodeCard data={latestEpisode} label="Latest Edition" />
           )}
           {ctaInlineTop && (
             <Box mt={3}>
@@ -161,32 +211,63 @@ export const Program = () => {
       key: 'main bottom',
       children: (
         <Box mt={3}>
-          {stories &&
-            stories
-              .reduce((a, p) => [...a, ...p], [])
-              .map((item: IPriApiResource, index: number) => (
-                <Box mt={index ? 2 : 0} key={item.id}>
-                  <StoryCard
-                    data={item}
-                    feature={item.displayTemplate !== 'standard'}
-                  />
+          {!isEpisodesView && (
+            <>
+              {stories &&
+                stories
+                  .reduce((a, p) => [...a, ...p], [])
+                  .map((item: IPriApiResource, index: number) => (
+                    <Box mt={index ? 2 : 0} key={item.id}>
+                      <StoryCard
+                        data={item}
+                        feature={item.displayTemplate !== 'standard'}
+                      />
+                    </Box>
+                  ))}
+              {next && (
+                <Box mt={3}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    fullWidth
+                    disabled={loading}
+                    onClick={() => {
+                      loadMoreStories();
+                    }}
+                  >
+                    {loading ? 'Loading Stories...' : 'More Stories'}
+                  </Button>
                 </Box>
-              ))}
-          {next && (
-            <Box mt={3}>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                fullWidth
-                disabled={loading}
-                onClick={() => {
-                  loadMoreStories();
-                }}
-              >
-                {loading ? 'Loading Stories...' : 'More Stories'}
-              </Button>
-            </Box>
+              )}
+            </>
+          )}
+          {isEpisodesView && (
+            <>
+              {episodes
+                .reduce((a, p) => [...a, ...p], [])
+                .map((item: IPriApiResource, index: number) => (
+                  <Box mt={index ? 2 : 0} key={item.id}>
+                    <EpisodeCard data={item} />
+                  </Box>
+                ))}
+              {episodesNext && (
+                <Box mt={3}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    fullWidth
+                    disabled={loading}
+                    onClick={() => {
+                      loadMoreEpisodes();
+                    }}
+                  >
+                    {loading ? 'Loading Episodes...' : 'More Episodes'}
+                  </Button>
+                </Box>
+              )}
+            </>
           )}
           {ctaInlineBottom && (
             <Box mt={3}>
@@ -208,12 +289,12 @@ export const Program = () => {
       key: 'sidebar top',
       children: (
         <Box mt={3}>
-          {latestEpisode && (
+          {latestEpisode && !isEpisodesView && (
             <SidebarEpisode data={latestEpisode} label="Latest Edition" />
           )}
           <Box mt={2}>
             <Sidebar item elevated>
-              {body && (
+              {body && hasContentLinks && (
                 <SidebarContent dangerouslySetInnerHTML={{ __html: body }} />
               )}
               {hosts && !!hosts.length && (
@@ -289,7 +370,9 @@ export const Program = () => {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>
+          {title} | {!isEpisodesView ? 'Stories' : 'Episodes'}
+        </title>
       </Head>
       <LandingPageHeader
         title={title}
@@ -297,6 +380,22 @@ export const Program = () => {
         image={bannerImage}
         logo={podcastLogo}
       />
+      {hasStories && hasEpisodes && (
+        <AppBar position="static" color="transparent">
+          <Container fixed>
+            <Tabs
+              indicatorColor="primary"
+              centered
+              value={!isEpisodesView ? 0 : 1}
+              onChange={handleFilterChange}
+              aria-label="filter links"
+            >
+              <Tab label="Stories" />
+              <Tab label="Episodes" />
+            </Tabs>
+          </Container>
+        </AppBar>
+      )}
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
@@ -326,8 +425,8 @@ Program.fetchData = (
     const {
       featuredStory,
       featuredStories,
-      latestEpisode,
       stories,
+      episodes,
       ...payload
     } = await fetchApiProgram(id, req);
 
@@ -335,15 +434,6 @@ Program.fetchData = (
       type: 'FETCH_CONTENT_DATA_SUCCESS',
       payload
     });
-
-    dispatch(
-      appendResourceCollection(
-        { data: [latestEpisode], meta: { count: 1 } },
-        type,
-        id,
-        'latest episode'
-      )
-    );
 
     dispatch(
       appendResourceCollection(
@@ -364,6 +454,8 @@ Program.fetchData = (
     );
 
     dispatch(appendResourceCollection(stories, type, id, 'stories'));
+
+    dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
   }
 
   // Get CTA message data.
