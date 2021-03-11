@@ -4,10 +4,11 @@
  * Query parameters needed to requests data for an episode.
  */
 
+import { basicAudioParams, fullAudioParams } from './audio';
+
 export const basicEpisodeParams = {
   include: [
-    'audio.segments',
-    'audio.program',
+    ...basicAudioParams.include.map(p => `audio.${p}`),
     'image',
     'program',
     'hosts',
@@ -45,8 +46,7 @@ export const basicEpisodeParams = {
 
 export const fullEpisodeParams = {
   include: [
-    'audio.segments',
-    'audio.program',
+    ...fullAudioParams.include.map(p => `audio.${p}`),
     'image',
     'program',
     'hosts.image.license',

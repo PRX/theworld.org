@@ -15,11 +15,7 @@ import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
 import { fetchCtaData, fetchAudioData } from '@store/actions';
-import {
-  getDataByResource,
-  getCollectionData,
-  getCtaRegionData
-} from '@store/reducers';
+import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { audioStyles, audioTheme } from './Audio.styles';
 import { AudioHeader } from './components/AudioHeader';
 
@@ -38,39 +34,13 @@ export const Audio = () => {
     return null;
   }
 
-  const {
-    audioAuthor,
-    audioTitle,
-    broadcastDate,
-    description,
-    credit,
-    transcript,
-    program
-  } = data;
+  const { audioTitle, description } = data;
 
   const ctaInlineEnd = getCtaRegionData(
     state,
     type,
     id as string,
     'tw_cta_region_content_inline_end'
-  );
-  const ctaSidebarTop = getCtaRegionData(
-    state,
-    type,
-    id as string,
-    'tw_cta_region_content_sidebar_01'
-  );
-  const ctaSidebarBottom = getCtaRegionData(
-    state,
-    type,
-    id as string,
-    'tw_cta_region_content_sidebar_02'
-  );
-  const { items: latestStories } = getCollectionData(
-    state,
-    'app',
-    null,
-    'latest'
   );
 
   useEffect(() => {

@@ -14,4 +14,5 @@ export interface IButton {
   icon?: string;
   title?: string;
   children?: IButton[];
+  attributes?: { [k: string]: string };
 }

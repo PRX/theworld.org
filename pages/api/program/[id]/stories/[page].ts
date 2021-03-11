@@ -11,7 +11,7 @@ import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, page = '1', range, exclude } = req.query;
+  const { id, page = '1', range = 15, exclude } = req.query;
 
   if (id) {
     const program = (await fetchPriApiItem(
@@ -36,7 +36,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           'filter[id][operator]': '<>'
         }),
         sort: '-date_published',
-        range: range || 15,
+        range,
         page
       })) as IPriApiCollectionResponse;
 

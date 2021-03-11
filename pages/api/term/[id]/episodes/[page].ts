@@ -1,6 +1,6 @@
 /**
- * @file program/[id]/episodes.ts
- * Gather program episodes data from CMS API.
+ * @file term/[id]/episodes.ts
+ * Gather term episodes data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
@@ -14,21 +14,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id, page = '1', range = 10, exclude } = req.query;
 
   if (id) {
-    const program = (await fetchPriApiItem(
-      'node--programs',
+    const term = (await fetchPriApiItem(
+      'taxonomy_term--terms',
       id as string
     )) as IPriApiResourceResponse;
 
-    if (program) {
+    if (term) {
       const excluded = exclude && [
         ...(exclude && Array.isArray(exclude) ? exclude : [exclude])
       ];
 
-      // Fetch list of episodes. Paginated.
-      const episodes = (await fetchPriApiQuery('node--episodes', {
+      // Fetch list of stories. Paginated.
+      const stories = (await fetchPriApiQuery('node--episodes', {
         ...basicEpisodeParams,
         'filter[status]': 1,
-        'filter[program]': id,
+        'filter[tags]': id,
         ...(excluded && {
           'filter[id][value]': excluded,
           'filter[id][operator]': '<>'
@@ -39,13 +39,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       })) as IPriApiCollectionResponse;
 
       // Build response object.
-      const apiResp = episodes;
+      const apiResp = stories;
 
       res.status(200).json(apiResp);
     } else {
-      res.status(404);
+      res.status(404).end();
     }
   }
 
-  res.status(400);
+  res.status(400).end();
 };

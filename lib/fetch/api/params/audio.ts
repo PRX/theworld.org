@@ -9,5 +9,5 @@ export const basicAudioParams = {
 };
 
 export const fullAudioParams = {
-  include: ['audioAuthor', 'program', 'segments']
+  include: ['audioAuthor', 'program']
 };

@@ -94,8 +94,8 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
             <SidebarAudioList disablePadding data={segments} />
           </>
         )}
-        <SidebarFooter>
-          {program && (
+        {program?.metatags && (
+          <SidebarFooter>
             <ContentButton
               data={program}
               query={{ v: 'episodes' }}
@@ -105,8 +105,8 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
             >
               More Episodes
             </ContentButton>
-          )}
-        </SidebarFooter>
+          </SidebarFooter>
+        )}
       </Card>
     </ThemeProvider>
   );

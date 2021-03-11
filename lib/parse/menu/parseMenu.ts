@@ -12,7 +12,13 @@ export const parseMenu = (data: ILink[]): IButton[] => {
     return [];
   }
   return data.map(
-    ({ id, name, url, attributes: { class: className, title }, children }) => ({
+    ({
+      id,
+      name,
+      url,
+      attributes: { class: className, title, ...otherAttributes },
+      children
+    }) => ({
       key: id,
       name,
       title,
@@ -38,7 +44,8 @@ export const parseMenu = (data: ILink[]): IButton[] => {
             ({ id: childId, attributes }): ILink =>
               ({ id: childId, ...attributes } as ILink)
           )
-        )
+        ),
+      attrinbutes: otherAttributes
     })
   );
 };

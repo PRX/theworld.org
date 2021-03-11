@@ -26,7 +26,7 @@ export const AudioHeader = ({ data }: Props) => {
       </Box>
       <Box className={classes.meta} mb={2}>
         <Box className={classes.info}>
-          {program && (
+          {program?.metatags && (
             <ContentLink data={program} className={classes.programLink} />
           )}
           <Moment
@@ -39,11 +39,17 @@ export const AudioHeader = ({ data }: Props) => {
           </Moment>
           {audioAuthor && !!audioAuthor.length && (
             <ul className={classes.byline}>
-              {audioAuthor.map((person: IPriApiResource) => (
-                <li className={classes.bylineItem} key={person.id}>
-                  <ContentLink className={classes.bylineLink} data={person} />
-                </li>
-              ))}
+              {audioAuthor.map(
+                (person: IPriApiResource) =>
+                  person?.metatags && (
+                    <li className={classes.bylineItem} key={person.id}>
+                      <ContentLink
+                        className={classes.bylineLink}
+                        data={person}
+                      />
+                    </li>
+                  )
+              )}
             </ul>
           )}
         </Box>

@@ -105,11 +105,12 @@ export const AppFooter = () => {
             aria-label="Footer Navigation"
             classes={{ ol: classes.footerNavMuiOl }}
           >
-            {footerNav.map(({ name, url, key }) => (
+            {footerNav.map(({ name, url, key, attributes }) => (
               <Link
                 href={url.pathname}
                 onClick={handleButtonClick(url)}
                 key={key}
+                {...attributes}
               >
                 {name}
               </Link>

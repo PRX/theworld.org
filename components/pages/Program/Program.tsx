@@ -181,7 +181,7 @@ export const Program = () => {
       children: (
         <Box mt={3}>
           {body && !hasContentLinks && (
-            <SidebarContent dangerouslySetInnerHTML={{ __html: body }} />
+            <Box dangerouslySetInnerHTML={{ __html: body }} />
           )}
           {!isEpisodesView && (
             <>
