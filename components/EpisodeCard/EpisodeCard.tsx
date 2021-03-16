@@ -16,35 +16,29 @@ import {
 } from '@material-ui/core';
 import { EqualizerRounded, PlayCircleOutlineRounded } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { ContentButton } from '@components/ContentButton';
 import { ContentLink } from '@components/ContentLink';
 import { Image } from '@components/Image';
-import {
-  sidebarEpisodeStyles,
-  sidebarEpisodeTheme
-} from './SidebarEpisode.styles';
-import { SidebarHeader } from '../SidebarHeader';
-import { SidebarAudioList } from '../SidebarAudioList';
-import { SidebarFooter } from '../SidebarFooter';
+import { SidebarAudioList } from '@components/Sidebar/SidebarAudioList';
+import { episodeCardStyles, episodeCardTheme } from './EpisodeCard.styles';
 
-export interface SidebarEpisodeProps {
+export interface EpisodeCardProps {
   data: IPriApiResource;
   label?: string;
 }
 
-export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
-  const { teaser, title, image, audio, program } = data;
+export const EpisodeCard = ({ data, label }: EpisodeCardProps) => {
+  const { teaser, title, image, audio } = data;
   const { segments } = audio || {};
-  const classes = sidebarEpisodeStyles({});
+  const classes = episodeCardStyles({});
   const cx = classNames.bind(classes);
   const imageWidth = {
     xs: '100vw',
-    md: '320px',
-    xl: '400px'
+    md: '568px',
+    xl: '808px'
   };
 
   return (
-    <ThemeProvider theme={sidebarEpisodeTheme}>
+    <ThemeProvider theme={episodeCardTheme}>
       <Card square elevation={1}>
         <CardActionArea>
           {image && (
@@ -86,26 +80,13 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
         </CardActionArea>
         {segments && (
           <>
-            <SidebarHeader>
+            <Box component="header" className={cx('header')}>
               <Typography variant="h2">
                 <EqualizerRounded /> In this episode:
               </Typography>
-            </SidebarHeader>
-            <SidebarAudioList disablePadding data={segments} />
+            </Box>
+            <SidebarAudioList data={segments} />
           </>
-        )}
-        {program?.metatags && (
-          <SidebarFooter>
-            <ContentButton
-              data={program}
-              query={{ v: 'episodes' }}
-              variant="contained"
-              color="primary"
-              fullWidth
-            >
-              More Episodes
-            </ContentButton>
-          </SidebarFooter>
         )}
       </Card>
     </ThemeProvider>

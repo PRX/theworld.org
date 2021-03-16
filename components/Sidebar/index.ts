@@ -1,4 +1,5 @@
 export * from './Sidebar';
+export * from './SidebarContent';
 export * from './SidebarCta';
 export * from './SidebarEpisode';
 export * from './SidebarHeader';

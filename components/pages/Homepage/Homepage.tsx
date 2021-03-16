@@ -61,13 +61,14 @@ export const Homepage = () => {
     undefined,
     'latest'
   );
-  const latestEpisodeState = getCollectionData(
+  const episodesState = getCollectionData(
     state,
     'homepage',
     undefined,
-    'latest episode'
+    'episodes'
   );
-  const latestEpisode = latestEpisodeState && latestEpisodeState.items[1][0];
+  const latestEpisode =
+    episodesState.count > 0 && episodesState.items[1].shift();
   const inlineTop = getCtaRegionData(
     state,
     'homepage',

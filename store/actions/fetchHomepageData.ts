@@ -31,19 +31,10 @@ export const fetchHomepageData = (
     const {
       featuredStory,
       featuredStories,
-      latestEpisode,
       latestStories,
-      stories
+      stories,
+      episodes
     } = apiResp;
-
-    dispatch(
-      appendResourceCollection(
-        { data: [latestEpisode], meta: { count: 1 } },
-        type,
-        id,
-        'latest episode'
-      )
-    );
 
     dispatch(
       appendResourceCollection(
@@ -64,6 +55,8 @@ export const fetchHomepageData = (
     );
 
     dispatch(appendResourceCollection(stories, type, id, 'stories'));
+
+    dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
 
     dispatch(appendResourceCollection(latestStories, type, id, 'latest'));
   }

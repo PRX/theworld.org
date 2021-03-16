@@ -16,26 +16,11 @@ interface Props {
 }
 
 export const EpisodeHeader = ({ data }: Props) => {
-  const {
-    byline,
-    dateBroadcast,
-    datePublished,
-    primaryCategory,
-    program,
-    title
-  } = data;
+  const { dateBroadcast, datePublished, program, title } = data;
   const classes = episodeHeaderStyles({});
 
   return (
     <Box className={classes.root} mt={4} mb={2}>
-      {primaryCategory && (
-        <Box mb={2}>
-          <ContentLink
-            className={classes.categoryLink}
-            data={primaryCategory}
-          />
-        </Box>
-      )}
       <Box mb={3}>
         <Typography variant="h1">{title}</Typography>
       </Box>
@@ -52,16 +37,6 @@ export const EpisodeHeader = ({ data }: Props) => {
           >
             {dateBroadcast || datePublished}
           </Moment>
-          {byline && (
-            <ul className={classes.byline}>
-              {byline.map(({ id, creditType, person }) => (
-                <li className={classes.bylineItem} key={id}>
-                  {creditType ? creditType.title : 'By'}{' '}
-                  <ContentLink className={classes.bylineLink} data={person} />
-                </li>
-              ))}
-            </ul>
-          )}
         </Box>
       </Box>
     </Box>

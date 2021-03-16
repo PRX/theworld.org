@@ -39,17 +39,20 @@ export const DrawerSocialNav = () => {
   return (
     (drawerSocialNav && (
       <Toolbar className={classes.root}>
-        {drawerSocialNav.map(({ name, url, icon, key, title }: IButton) => (
-          <IconButton
-            color="inherit"
-            href={url.href}
-            target="_blank"
-            key={key}
-            disableRipple
-          >
-            {renderIcon(icon, title || name)}
-          </IconButton>
-        ))}
+        {drawerSocialNav.map(
+          ({ name, url, icon, key, title, attributes }: IButton) => (
+            <IconButton
+              color="inherit"
+              href={url.href}
+              target="_blank"
+              key={key}
+              disableRipple
+              {...attributes}
+            >
+              {renderIcon(icon, title || name)}
+            </IconButton>
+          )
+        )}
       </Toolbar>
     )) ||
     null

@@ -230,7 +230,7 @@ export const fetchApiProgram = async (
  *    Request object from `getInitialProps` ctx object.
  *
  * @returns
- *    Story data object.
+ *    Story collection data object.
  */
 export const fetchApiProgramStories = async (
   id: string,
@@ -240,6 +240,29 @@ export const fetchApiProgramStories = async (
   req?: IncomingMessage
 ): Promise<IPriApiCollectionResponse> =>
   fetchApi(`program/${id}/stories/${page}`, req, {
+    ...(range && { range: `${range}` }),
+    ...(exclude && { exclude })
+  });
+
+/**
+ * Method that simplifies GET queries for program stories data.
+ *
+ * @param id
+ *    API id of program.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Episode collection data object.
+ */
+export const fetchApiProgramEpisodes = async (
+  id: string,
+  page: number = 1,
+  range?: number,
+  exclude?: string[],
+  req?: IncomingMessage
+): Promise<IPriApiCollectionResponse> =>
+  fetchApi(`program/${id}/episodes/${page}`, req, {
     ...(range && { range: `${range}` }),
     ...(exclude && { exclude })
   });
@@ -334,6 +357,35 @@ export const fetchApiTermStories = async (
   req?: IncomingMessage
 ): Promise<IPriApiCollectionResponse> =>
   fetchApi(`term/${id}/stories/${page}`, req, {
+    ...(range && { range: `${range}` }),
+    ...(exclude && { exclude })
+  });
+
+/**
+ * Method that simplifies GET queries for term episodes data.
+ *
+ * @param id
+ *    API id of term.
+ * @param page
+ *    Page number of episodes to return.
+ * @param range
+ *    Number of episodes to return for the page.
+ * @param exclude
+ *    Array of story ids to exclude from query.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Promise that returns Collection of episode data objects.
+ */
+export const fetchApiTermEpisodes = async (
+  id: string,
+  page: number = 1,
+  range?: number,
+  exclude?: string[],
+  req?: IncomingMessage
+): Promise<IPriApiCollectionResponse> =>
+  fetchApi(`term/${id}/episodes/${page}`, req, {
     ...(range && { range: `${range}` }),
     ...(exclude && { exclude })
   });

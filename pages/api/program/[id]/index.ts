@@ -3,14 +3,11 @@
  * Gather program data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
+import { IPriApiResourceResponse } from 'pri-api-library/types';
 import {
-  IPriApiResourceResponse,
-  IPriApiCollectionResponse
-} from 'pri-api-library/types';
-import {
+  fetchApiProgramEpisodes,
   fetchApiProgramStories,
-  fetchPriApiItem,
-  fetchPriApiQuery
+  fetchPriApiItem
 } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
 
@@ -47,14 +44,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         req
       );
 
-      // Latest Episode
-      const latestEpisode = await fetchPriApiQuery('node--episodes', {
-        include: ['image', 'audio.segments'],
-        'filter[status]': 1,
-        'filter[program]': id,
-        sort: '-date_published',
-        range: 1
-      }).then((resp: IPriApiCollectionResponse) => resp.data.shift());
+      // Fetch list of episodes. Paginated.
+      const episodes = await fetchApiProgramEpisodes(
+        id as string,
+        1,
+        undefined,
+        undefined,
+        req
+      );
 
       // Build response object.
       const apiResp = {
@@ -68,7 +65,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             )
           : stories.data.splice(0, 4),
         stories,
-        latestEpisode
+        episodes
       };
 
       res.status(200).json(apiResp);

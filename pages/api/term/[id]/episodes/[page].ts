@@ -1,6 +1,6 @@
 /**
- * @file program/[id]/stories.ts
- * Gather program stories data from CMS API.
+ * @file term/[id]/episodes.ts
+ * Gather term episodes data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
@@ -8,29 +8,27 @@ import {
   IPriApiCollectionResponse
 } from 'pri-api-library/types';
 import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
-import { basicStoryParams } from '@lib/fetch/api/params';
+import { basicEpisodeParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, page = '1', range = 15, exclude } = req.query;
+  const { id, page = '1', range = 10, exclude } = req.query;
 
   if (id) {
-    const program = (await fetchPriApiItem(
-      'node--programs',
+    const term = (await fetchPriApiItem(
+      'taxonomy_term--terms',
       id as string
     )) as IPriApiResourceResponse;
 
-    if (program) {
-      const { featuredStories } = program.data;
-      const excluded = (exclude || featuredStories) && [
-        ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
-        ...(featuredStories && featuredStories.map(({ id: i }) => i))
+    if (term) {
+      const excluded = exclude && [
+        ...(exclude && Array.isArray(exclude) ? exclude : [exclude])
       ];
 
       // Fetch list of stories. Paginated.
-      const stories = (await fetchPriApiQuery('node--stories', {
-        ...basicStoryParams,
+      const stories = (await fetchPriApiQuery('node--episodes', {
+        ...basicEpisodeParams,
         'filter[status]': 1,
-        'filter[program]': id,
+        'filter[tags]': id,
         ...(excluded && {
           'filter[id][value]': excluded,
           'filter[id][operator]': '<>'
@@ -45,9 +43,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       res.status(200).json(apiResp);
     } else {
-      res.status(404);
+      res.status(404).end();
     }
   }
 
-  res.status(400);
+  res.status(400).end();
 };

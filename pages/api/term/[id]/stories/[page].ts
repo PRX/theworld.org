@@ -3,25 +3,16 @@
  * Gather term stories data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import _ from 'lodash';
 import {
   IPriApiResourceResponse,
   IPriApiCollectionResponse
 } from 'pri-api-library/types';
 import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { basicStoryParams } from '@lib/fetch/api/params';
+import { generateLinkHrefForContent } from '@lib/routing';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id, page = '1', range = 15, exclude } = req.query;
-  const storyTermFields = [
-    'opencalais_city',
-    'opencalais_continent',
-    'opencalais_country',
-    'opencalais_province',
-    'opencalais_region',
-    'opencalais_person',
-    'tags'
-  ];
 
   if (id) {
     const term = (await fetchPriApiItem(
@@ -35,44 +26,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
         ...(featuredStories ? featuredStories.map(({ id: i }) => i) : [])
       ];
+      const { pathname } = generateLinkHrefForContent(term.data);
+      const [, fn] = pathname.split('/');
+      const fieldName = fn === 'tags' ? fn : `opencalais_${fn}`;
 
       // Fetch list of stories. Paginated.
-      const { data, meta } = (await Promise.all(
-        storyTermFields.map(field =>
-          fetchPriApiQuery('node--stories', {
-            ...basicStoryParams,
-            'filter[status]': 1,
-            [`filter[${field}]`]: id,
-            ...(excluded && {
-              'filter[id][value]': excluded,
-              'filter[id][operator]': '<>'
-            }),
-            sort: '-date_published',
-            range,
-            page
-          })
-        )
-      ).then(resp =>
-        resp.reduce(
-          (acc: IPriApiCollectionResponse, next: IPriApiCollectionResponse) =>
-            next
-              ? {
-                  data: [...acc.data, ...next.data],
-                  meta: {
-                    count:
-                      (acc.meta.count as number) + (next.meta.count as number)
-                  }
-                }
-              : acc,
-          { data: [], meta: {} }
-        )
-      )) as IPriApiCollectionResponse;
+      const stories = (await fetchPriApiQuery('node--stories', {
+        ...basicStoryParams,
+        'filter[status]': 1,
+        [`filter[${fieldName}]`]: id,
+        ...(excluded && {
+          'filter[id][value]': excluded,
+          'filter[id][operator]': '<>'
+        }),
+        sort: '-date_published',
+        range,
+        page
+      })) as IPriApiCollectionResponse;
 
       // Build response object.
-      const apiResp = {
-        data: _.orderBy(data, story => story.datePublished, 'desc'),
-        meta
-      };
+      const apiResp = stories;
 
       res.status(200).json(apiResp);
     } else {

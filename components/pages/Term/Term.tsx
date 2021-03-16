@@ -6,11 +6,21 @@ import React, { useContext, useEffect, useState } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Button, Hidden, Typography } from '@material-ui/core';
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Hidden,
+  Tab,
+  Tabs,
+  Typography
+} from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
@@ -23,10 +33,13 @@ import {
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { fetchApiTerm, fetchApiTermStories } from '@lib/fetch';
+import {
+  fetchApiTerm,
+  fetchApiTermEpisodes,
+  fetchApiTermStories
+} from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
-import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
 import { appendResourceCollection, fetchCtaData } from '@store/actions';
@@ -35,6 +48,8 @@ import {
   getCtaRegionData,
   getDataByResource
 } from '@store/reducers';
+import { generateLinkPropsForContent } from '@lib/routing';
+import { EpisodeCard } from '@components/EpisodeCard';
 
 export const Term = () => {
   const {
@@ -42,6 +57,8 @@ export const Term = () => {
       resource: { type, id }
     }
   } = useContext(AppContext);
+  const router = useRouter();
+  const { query } = router;
   const store = useStore();
   const state = store.getState();
   const data = getDataByResource(state, type, id);
@@ -83,20 +100,25 @@ export const Term = () => {
     'featured stories'
   );
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page, next } = storiesState;
+  const { items: stories, page, next, count } = storiesState;
   const { items: latestStories } = getCollectionData(
     state,
     'app',
     undefined,
     'latest'
   );
-  const latestEpisodeState = getCollectionData(
-    state,
-    type,
-    id,
-    'latest episode'
-  );
-  const latestEpisode = latestEpisodeState && latestEpisodeState.items[1][0];
+  const hasStories = count > 0;
+  const episodesState = getCollectionData(state, type, id, 'episodes');
+  const {
+    items: episodes,
+    page: episodesPage,
+    next: episodesNext,
+    count: episodesCount
+  } = episodesState || {};
+  const hasEpisodes = episodesCount > 0;
+  const isEpisodesView =
+    (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
+  const latestEpisode = episodes && episodes[1].shift();
   const { title, description } = data;
   const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
@@ -121,14 +143,42 @@ export const Term = () => {
     );
   };
 
+  const loadMoreEpisodes = async () => {
+    setLoading(true);
+
+    const moreEpisodes = await fetchApiTermEpisodes(id, episodesPage + 1);
+
+    setOldScrollY(window.scrollY);
+    setLoading(false);
+
+    store.dispatch<any>(
+      appendResourceCollection(moreEpisodes, type, id, 'episodes')
+    );
+  };
+
+  const handleFilterChange = (e: object, value: any) => {
+    const { href, as: alias } = generateLinkPropsForContent(data, {
+      ...(value === 1 && { v: 'episodes' })
+    });
+
+    router.push(href, alias);
+  };
+
   const mainElements = [
     {
       key: 'main top',
       children: (
         <Box mt={3}>
-          {featuredStory && <StoryCard data={featuredStory} feature />}
-          {featuredStories && (
-            <StoryCardGrid data={featuredStories[1]} mt={2} />
+          {!isEpisodesView && (
+            <>
+              {featuredStory && <StoryCard data={featuredStory} feature />}
+              {featuredStories && (
+                <StoryCardGrid data={featuredStories[1]} mt={2} />
+              )}
+            </>
+          )}
+          {isEpisodesView && (
+            <EpisodeCard data={latestEpisode} label="Latest Edition" />
           )}
           {ctaInlineTop && (
             <Box mt={3}>
@@ -147,32 +197,63 @@ export const Term = () => {
       key: 'main bottom',
       children: (
         <Box mt={3}>
-          {stories &&
-            stories
-              .reduce((a, p) => [...a, ...p], [])
-              .map((item: IPriApiResource, index: number) => (
-                <Box mt={index ? 2 : 0} key={item.id}>
-                  <StoryCard
-                    data={item}
-                    feature={item.displayTemplate !== 'standard'}
-                  />
+          {!isEpisodesView && (
+            <>
+              {stories &&
+                stories
+                  .reduce((a, p) => [...a, ...p], [])
+                  .map((item: IPriApiResource, index: number) => (
+                    <Box mt={index ? 2 : 0} key={item.id}>
+                      <StoryCard
+                        data={item}
+                        feature={item.displayTemplate !== 'standard'}
+                      />
+                    </Box>
+                  ))}
+              {next && (
+                <Box mt={3}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    fullWidth
+                    disabled={loading}
+                    onClick={() => {
+                      loadMoreStories();
+                    }}
+                  >
+                    {loading ? 'Loading Stories...' : 'More Stories'}
+                  </Button>
                 </Box>
-              ))}
-          {next && (
-            <Box mt={3}>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                fullWidth
-                disabled={loading}
-                onClick={() => {
-                  loadMoreStories();
-                }}
-              >
-                {loading ? 'Loading Stories...' : 'More Stories'}
-              </Button>
-            </Box>
+              )}
+            </>
+          )}
+          {isEpisodesView && (
+            <>
+              {episodes
+                .reduce((a, p) => [...a, ...p], [])
+                .map((item: IPriApiResource, index: number) => (
+                  <Box mt={index ? 2 : 0} key={item.id}>
+                    <EpisodeCard data={item} />
+                  </Box>
+                ))}
+              {episodesNext && (
+                <Box mt={3}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    fullWidth
+                    disabled={loading}
+                    onClick={() => {
+                      loadMoreEpisodes();
+                    }}
+                  >
+                    {loading ? 'Loading Episodes...' : 'More Episodes'}
+                  </Button>
+                </Box>
+              )}
+            </>
           )}
           {ctaInlineBottom && (
             <Box mt={3}>
@@ -194,17 +275,14 @@ export const Term = () => {
       key: 'sidebar top',
       children: (
         <Box mt={3}>
-          {latestEpisode && (
-            <SidebarEpisode data={latestEpisode} label="Latest Edition" />
-          )}
-          {description && (
-            <Box mt={2}>
-              <Sidebar item elevated>
-                <SidebarContent
-                  dangerouslySetInnerHTML={{ __html: description }}
-                />
-              </Sidebar>
-            </Box>
+          {latestEpisode && !isEpisodesView && (
+            <SidebarEpisode
+              data={{
+                ...latestEpisode,
+                program: data
+              }}
+              label="Latest Edition"
+            />
           )}
           {ctaSidebarTop && (
             <Box mt={3}>
@@ -265,6 +343,22 @@ export const Term = () => {
         <title>{title}</title>
       </Head>
       <LandingPageHeader title={title} subhead={description} />
+      {hasStories && hasEpisodes && (
+        <AppBar position="static" color="transparent">
+          <Container fixed>
+            <Tabs
+              indicatorColor="primary"
+              centered
+              value={!isEpisodesView ? 0 : 1}
+              onChange={handleFilterChange}
+              aria-label="filter links"
+            >
+              <Tab label="Stories" />
+              <Tab label="Episodes" />
+            </Tabs>
+          </Container>
+        </AppBar>
+      )}
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
@@ -294,8 +388,8 @@ Term.fetchData = (
     const {
       featuredStory,
       featuredStories,
-      latestEpisode,
       stories,
+      episodes,
       ...payload
     } = await fetchApiTerm(id, req);
 
@@ -303,17 +397,6 @@ Term.fetchData = (
       type: 'FETCH_CONTENT_DATA_SUCCESS',
       payload
     });
-
-    if (latestEpisode) {
-      dispatch(
-        appendResourceCollection(
-          { data: [latestEpisode], meta: { count: 1 } },
-          type,
-          id,
-          'latest episode'
-        )
-      );
-    }
 
     dispatch(
       appendResourceCollection(
@@ -334,6 +417,8 @@ Term.fetchData = (
     );
 
     dispatch(appendResourceCollection(stories, type, id, 'stories'));
+
+    dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
   }
 
   // Get CTA message data.
