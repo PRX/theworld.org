@@ -7,7 +7,7 @@ import React, { HTMLAttributes } from 'react';
 import { formatDuration } from '@lib/parse/time';
 
 interface IDuarationProps extends HTMLAttributes<{}> {
-  seconds: number
+  seconds: number;
 }
 
 export const Duration = ({ seconds, ...other }: IDuarationProps) => (

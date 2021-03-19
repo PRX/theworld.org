@@ -4,7 +4,9 @@
  */
 
 import React from 'react';
+import { convertNodeToElement, Transform } from 'react-html-parser';
 import Link from 'next/link';
+import { DomElement } from 'htmlparser2';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import {
@@ -25,6 +27,7 @@ import {
   SidebarList
 } from '@components/Sidebar';
 import { CtaRegion } from '@components/CtaRegion';
+import { HtmlContent } from '@components/HtmlContent';
 import { Tags } from '@components/Tags';
 import { IContentComponentProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
@@ -67,6 +70,18 @@ export const StoryDefault = ({ data }: Props) => {
   const related =
     relatedState &&
     relatedState.items[1].filter(item => item.id !== id).slice(0, 4);
+  const ctaInlineMobile01 = getCtaRegionData(
+    state,
+    type,
+    id as string,
+    'tw_cta_region_content_inline_mobile_01'
+  );
+  const ctaInlineMobile02 = getCtaRegionData(
+    state,
+    type,
+    id as string,
+    'tw_cta_region_content_inline_mobile_02'
+  );
   const ctaInlineEnd = getCtaRegionData(
     state,
     type,
@@ -104,6 +119,74 @@ export const StoryDefault = ({ data }: Props) => {
     ...(opencalaisPerson || [])
   ];
   const hasTags = !!allTags.length;
+  let ctaMobile01Position: number;
+  let ctaMobile02Position: number;
+
+  const cleanHtml = (html: string) => {
+    return [h => h.replace('<p></p>', '')].reduce(
+      (acc, func) => func(acc),
+      html
+    );
+  };
+
+  const insertCtaMobile01 = (
+    node: DomElement,
+    transform: Transform,
+    index: number
+  ) => {
+    if (
+      !node.parent &&
+      node.type === 'tag' &&
+      node.name === 'p' &&
+      node?.next?.name === 'p' &&
+      !ctaMobile01Position &&
+      index >= 5
+    ) {
+      ctaMobile01Position = index;
+      return (
+        <>
+          {convertNodeToElement(node, index, transform)}
+          {ctaInlineMobile01 && (
+            <Hidden mdUp>
+              <CtaRegion data={ctaInlineMobile01} />
+            </Hidden>
+          )}
+        </>
+      );
+    }
+
+    return undefined;
+  };
+
+  const insertCtaMobile02 = (
+    node: DomElement,
+    transform: Transform,
+    index: number
+  ) => {
+    if (
+      !node.parent &&
+      node.type === 'tag' &&
+      node.name === 'p' &&
+      node?.next?.name === 'p' &&
+      !node?.next?.next?.next?.next?.next?.next?.next &&
+      !ctaMobile02Position &&
+      index >= ctaMobile01Position + 6
+    ) {
+      ctaMobile02Position = index;
+      return (
+        <>
+          {convertNodeToElement(node, index, transform)}
+          {ctaInlineMobile02 && (
+            <Hidden mdUp>
+              <CtaRegion data={ctaInlineMobile02} />
+            </Hidden>
+          )}
+        </>
+      );
+    }
+
+    return undefined;
+  };
 
   // TODO: Parse body...
   //    - Insert mobile ad positions
@@ -134,11 +217,12 @@ export const StoryDefault = ({ data }: Props) => {
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <StoryLede data={data} />
-                <Box
-                  className={classes.body}
-                  my={2}
-                  dangerouslySetInnerHTML={{ __html: body }}
-                />
+                <Box className={classes.body} my={2}>
+                  <HtmlContent
+                    html={cleanHtml(body)}
+                    transforms={[insertCtaMobile01, insertCtaMobile02]}
+                  />
+                </Box>
                 {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
                 {hasRelated && (
                   <aside>

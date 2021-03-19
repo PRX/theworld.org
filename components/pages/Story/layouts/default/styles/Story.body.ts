@@ -17,6 +17,11 @@ export const storyBodyStyles = (theme: Theme) =>
       ...storyBodyTypography(theme),
       ...storyBodyMediaStyles(theme),
       ...storyBodyQAStyles(theme),
-      ...storyBodyStoryActStyles(theme)
+      ...storyBodyStoryActStyles(theme),
+      '&::after': {
+        content: '""',
+        display: 'block',
+        clear: 'both'
+      }
     }
   });
