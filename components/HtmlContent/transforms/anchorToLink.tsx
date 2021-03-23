@@ -27,6 +27,7 @@ export const anchorToLink = (
   if (node.type === 'tag' && node.name === 'a' && node.attribs.href) {
     // Return an app link.
     const {
+      attribs,
       attribs: { href }
     } = node;
     const isLocal = (url: string) => /(www\.)?pri\.org/.test(url);
@@ -46,9 +47,11 @@ export const anchorToLink = (
         metatags: { canonical: url.href }
       });
 
+      delete attribs.target;
+
       return (
         <Link href={linkHref} as={linkAs} passHref key={id}>
-          {convertNodeToElement(node, index, transform)}
+          {convertNodeToElement({ ...node, attribs }, index, transform)}
         </Link>
       );
     }

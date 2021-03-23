@@ -10,7 +10,8 @@ import {
   anchorToLink,
   instagramEmebed,
   scriptRemove,
-  twitterEmebed
+  twitterEmebed,
+  videoSourceDescendant
 } from './transforms';
 
 export interface IHtmlContentProps {
@@ -29,6 +30,7 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
       instagramEmebed,
       scriptRemove,
       twitterEmebed,
+      videoSourceDescendant,
       ...transforms
     ].reduce(
       (acc, func) => (acc || acc === null ? acc : func(node, transform, index)),

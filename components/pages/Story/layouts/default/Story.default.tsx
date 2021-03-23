@@ -189,11 +189,9 @@ export const StoryDefault = ({ data }: Props) => {
   };
 
   // TODO: Parse body...
-  //    - Insert mobile ad positions
-  //    - Insert mobile newsletter signup
-  //    - Insert mobile donation CTA
-  //    - Remove empty <p> tags (API?)
-  //    - Convert local links to ContentLinks
+  //    -x- Insert mobile CTA positions
+  //    -x- Remove empty <p> tags
+  //    -x- Convert local links to ContentLinks
   //    - Replace GP video embeds with player that works (API?)
   //    - Replace older GP image embeds with image in attribute with Image (API?)
   //    - Replace GP pullquotes with symantic markup (API?)
