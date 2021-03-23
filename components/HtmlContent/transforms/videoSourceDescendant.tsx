@@ -48,22 +48,23 @@ export const videoSourceDescendant = (node: DomElement) => {
         break;
 
       default:
-        src = videoUrl;
         break;
     }
 
-    return (
-      <div className="media-youtube-video" key={src}>
-        <iframe
-          title={src}
-          allow="encrypted-media; accelerometer; gyroscope; picture-in-picture"
-          allowFullScreen
-          scrolling="no"
-          src={src}
-          tabIndex={-1}
-        />
-      </div>
-    );
+    if (src) {
+      return (
+        <div className="media-youtube-video" key={src}>
+          <iframe
+            title={src}
+            allow="encrypted-media; accelerometer; gyroscope; picture-in-picture"
+            allowFullScreen
+            scrolling="no"
+            src={src}
+            tabIndex={-1}
+          />
+        </div>
+      );
+    }
   }
 
   return undefined;
