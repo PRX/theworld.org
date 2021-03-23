@@ -30,7 +30,7 @@ export const anchorToLink = (
       attribs,
       attribs: { href }
     } = node;
-    const isLocal = (url: string) => /(www\.)?pri\.org/.test(url);
+    const isLocal = (url: string) => /(www\.)?(pri|theworld)\.org/.test(url);
     let url = parse(href, true);
 
     // Handle links copied from google searches for internal URL's.

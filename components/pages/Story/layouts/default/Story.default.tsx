@@ -122,13 +122,6 @@ export const StoryDefault = ({ data }: Props) => {
   let ctaMobile01Position: number;
   let ctaMobile02Position: number;
 
-  const cleanHtml = (html: string) => {
-    return [h => h.replace('<p></p>', '')].reduce(
-      (acc, func) => func(acc),
-      html
-    );
-  };
-
   const insertCtaMobile01 = (
     node: DomElement,
     transform: Transform,
@@ -217,7 +210,7 @@ export const StoryDefault = ({ data }: Props) => {
                 <StoryLede data={data} />
                 <Box className={classes.body} my={2}>
                   <HtmlContent
-                    html={cleanHtml(body)}
+                    html={body}
                     transforms={[insertCtaMobile01, insertCtaMobile02]}
                   />
                 </Box>

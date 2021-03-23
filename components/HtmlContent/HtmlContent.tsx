@@ -8,6 +8,9 @@ import { DomElement } from 'htmlparser2';
 import ReactHtmlParser, { Transform } from 'react-html-parser';
 import {
   anchorToLink,
+  facebookPost,
+  facebookVideo,
+  fbRootRemove,
   instagramEmebed,
   scriptRemove,
   twitterEmebed,
@@ -24,9 +27,18 @@ export interface IHtmlContentProps {
 }
 
 export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
+  const cleanHtml = (dirtyHtml: string) => {
+    return [h => h.replace('<p></p>', '')].reduce(
+      (acc, func) => func(acc),
+      dirtyHtml
+    );
+  };
   const transform = (node: DomElement, index: number) => {
     return [
       anchorToLink,
+      facebookPost,
+      facebookVideo,
+      fbRootRemove,
       instagramEmebed,
       scriptRemove,
       twitterEmebed,
@@ -38,5 +50,9 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
     );
   };
 
-  return <>{ReactHtmlParser(html, { transform: transform as Transform })}</>;
+  return (
+    <>
+      {ReactHtmlParser(cleanHtml(html), { transform: transform as Transform })}
+    </>
+  );
 };

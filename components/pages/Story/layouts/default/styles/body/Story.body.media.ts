@@ -18,15 +18,19 @@ export const storyBodyMediaStyles = (theme: Theme) =>
 
     // Reset for img tag dimension attributes.
     '& img': {
-      width: 'auto',
+      width: '100%',
       maxWidth: '100%',
       height: 'auto',
-      margin: '0 auto'
+      margin: '0 auto',
+      backgroundColor: theme.palette.grey[200]
     },
 
     // Media styles.
     '& .media': {
-      width: '100%'
+      clear: 'both',
+      width: '100%',
+      marginTop: theme.typography.pxToRem(theme.spacing(4)),
+      marginBottom: theme.typography.pxToRem(theme.spacing(4))
     },
     '& .file-image': {
       '& .content': {
@@ -69,9 +73,28 @@ export const storyBodyMediaStyles = (theme: Theme) =>
       }
     },
 
+    // Twitter embeds.
+    '& .twitter-tweet': {
+      display: 'block',
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    },
+
+    // Facebook embeds.
+    '& .fb-post': {
+      display: 'block',
+
+      '& > span': {
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+      }
+    },
+
     [theme.breakpoints.up('md')]: {
       '& .media-wysiwyg-align-left, & .media-image_on_left': {
         float: 'left',
+        clear: 'left',
         width: '44%',
         margin: `${theme.typography.pxToRem(7)} ${theme.typography.pxToRem(
           30
@@ -79,6 +102,7 @@ export const storyBodyMediaStyles = (theme: Theme) =>
       },
       '& .media-wysiwyg-align-right, & .media-image_on_right': {
         float: 'right',
+        clear: 'right',
         width: '44%',
         margin: `${theme.typography.pxToRem(
           7
