@@ -8,6 +8,7 @@ import { DomElement } from 'htmlparser2';
 import ReactHtmlParser, { Transform } from 'react-html-parser';
 import {
   anchorToLink,
+  audioDescendant,
   facebookPost,
   facebookVideo,
   fbRootRemove,
@@ -36,6 +37,7 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
   const transform = (node: DomElement, index: number) => {
     return [
       anchorToLink,
+      audioDescendant,
       facebookPost,
       facebookVideo,
       fbRootRemove,

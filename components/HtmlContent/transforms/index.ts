@@ -1,4 +1,5 @@
 export * from './anchorToLink';
+export * from './audioDescendant';
 export * from './facebookPost';
 export * from './facebookVideo';
 export * from './fbRootRemove';
