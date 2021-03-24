@@ -65,7 +65,7 @@ export const fetchApi = async (
           body: JSON.stringify(body)
         }
       : {}
-  ).then(r => r.json());
+  ).then(r => r.status === 200 && r.json());
 };
 
 /**

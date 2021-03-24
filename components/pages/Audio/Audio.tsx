@@ -13,6 +13,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { AudioPlayer } from '@components/AudioPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
+import { HtmlContent } from '@components/HtmlContent';
 import { RootState } from '@interfaces/state';
 import { fetchCtaData, fetchAudioData } from '@store/actions';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
@@ -72,11 +73,9 @@ export const Audio = () => {
           <Grid item xs={12}>
             <AudioHeader data={data} />
             <AudioPlayer data={data} />
-            <Box
-              className={classes.body}
-              my={2}
-              dangerouslySetInnerHTML={{ __html: description }}
-            />
+            <Box className={classes.body} my={2}>
+              <HtmlContent html={description} />
+            </Box>
             {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
           </Grid>
         </Grid>

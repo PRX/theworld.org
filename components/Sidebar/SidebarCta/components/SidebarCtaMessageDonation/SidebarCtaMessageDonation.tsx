@@ -14,6 +14,7 @@ import {
   Typography,
   ThemeProvider
 } from '@material-ui/core';
+import { HtmlContent } from '@components/HtmlContent';
 import { ICtaMessageProps } from '@interfaces/cta';
 import { sidebarCtaMessageDonationTheme } from './SidebarCtaMessageDonation.styles';
 
@@ -37,12 +38,9 @@ export const SidebarCtaMessageDonation = ({ data }: ICtaMessageProps) => {
         {heading && <CardHeader title={heading} />}
         {message && (
           <CardContent>
-            <Typography
-              component="div"
-              variant="body1"
-              /* eslint-disable-next-line */
-              dangerouslySetInnerHTML={{ __html: message }}
-            />
+            <Typography component="div" variant="body1">
+              <HtmlContent html={message} />
+            </Typography>
           </CardContent>
         )}
         {hasActions && (

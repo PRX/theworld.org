@@ -16,6 +16,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { CheckCircleOutlineSharp } from '@material-ui/icons';
+import { HtmlContent } from '@components/HtmlContent';
 import { Image } from '@components/Image';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { IContentComponentProps } from '@interfaces/content';
@@ -118,11 +119,9 @@ export const Newsletter = ({ id, contentData }: Props) => {
             </Grid>
             {body && (
               <Grid item xs={10} sm={8}>
-                <Box
-                  className={cx('body')}
-                  my={2}
-                  dangerouslySetInnerHTML={{ __html: body }}
-                />
+                <Box className={cx('body')} my={2}>
+                  <HtmlContent html={body} />
+                </Box>
               </Grid>
             )}
           </Grid>

@@ -13,7 +13,7 @@ import {
   landingPageHeaderTheme
 } from './LandingPageHeader.styles';
 
-interface ILandingPageHeaderProps {
+export interface ILandingPageHeaderProps {
   image?: IPriApiResource;
   logo?: IPriApiResource;
   title: string;

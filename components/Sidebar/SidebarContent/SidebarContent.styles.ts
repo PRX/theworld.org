@@ -18,7 +18,7 @@ export const sidebarContentStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       ...theme.typography.body1,
-      '& p': {
+      '& > *': {
         margin: 0
       },
       '& > * + *': {

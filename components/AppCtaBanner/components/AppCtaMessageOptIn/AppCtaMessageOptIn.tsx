@@ -15,6 +15,7 @@ import {
   Paper,
   ThemeProvider
 } from '@material-ui/core';
+import { HtmlContent } from '@components/HtmlContent';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 import { appCtaMessageOptInTheme } from './AppCtaMessageOptIn.styles';
 
@@ -52,12 +53,9 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
       <Box textAlign="center">
         {heading && <Typography variant="h3">{heading}</Typography>}
         {message && (
-          <Typography
-            component="div"
-            variant="body1"
-            /* eslint-disable-next-line */
-            dangerouslySetInnerHTML={{ __html: message }}
-          />
+          <Typography component="div" variant="body1">
+            <HtmlContent html={message} />
+          </Typography>
         )}
         <Paper>
           <FormControlLabel
