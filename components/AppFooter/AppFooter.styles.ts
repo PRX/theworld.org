@@ -28,6 +28,18 @@ export const appFooterStyles = makeStyles((theme: Theme) =>
       height: 'auto',
       fill: theme.palette.grey.A200
     },
+    link: {
+      color: theme.palette.primary.main,
+      '&:is(a)': {
+        textDecoration: 'none',
+        '&:hover': {
+          textDecoration: 'underline'
+        }
+      },
+      '&:visited': {
+        color: theme.palette.primary.main
+      }
+    },
     logos: {
       textAlign: 'center'
     },

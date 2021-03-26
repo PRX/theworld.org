@@ -112,12 +112,18 @@ export const AppFooter = () => {
                   href={url.pathname}
                   onClick={handleButtonClick(url)}
                   key={key}
+                  className={classes.link}
                   {...attributes}
                 >
                   {name}
                 </Link>
               ) : (
-                <a href={url.href} key={key} {...attributes}>
+                <a
+                  href={url.href}
+                  className={classes.link}
+                  key={key}
+                  {...attributes}
+                >
                   {name}
                 </a>
               )
