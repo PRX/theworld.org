@@ -7,6 +7,7 @@ import React from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import { Box, Breadcrumbs, Container, Divider, Link } from '@material-ui/core';
+import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';
 import { ReactComponent as TwLogo } from '@svg/tw-white.svg';
@@ -105,16 +106,22 @@ export const AppFooter = () => {
             aria-label="Footer Navigation"
             classes={{ ol: classes.footerNavMuiOl }}
           >
-            {footerNav.map(({ name, url, key, attributes }) => (
-              <Link
-                href={url.pathname}
-                onClick={handleButtonClick(url)}
-                key={key}
-                {...attributes}
-              >
-                {name}
-              </Link>
-            ))}
+            {footerNav.map(({ name, url, key, attributes }) =>
+              isLocalUrl(url.href) ? (
+                <Link
+                  href={url.pathname}
+                  onClick={handleButtonClick(url)}
+                  key={key}
+                  {...attributes}
+                >
+                  {name}
+                </Link>
+              ) : (
+                <a href={url.href} key={key} {...attributes}>
+                  {name}
+                </a>
+              )
+            )}
           </Breadcrumbs>
         )}
         <p className={classes.copyright}>
