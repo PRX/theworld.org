@@ -17,7 +17,6 @@ interface Props {
 
 export const StoryHeader = ({ data }: Props) => {
   const {
-    complete,
     byline,
     dateBroadcast,
     datePublished,

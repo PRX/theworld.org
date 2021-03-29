@@ -153,7 +153,10 @@ export const Category = () => {
                 <Box mt={index ? 2 : 0} key={item.id}>
                   <StoryCard
                     data={item}
-                    feature={item.displayTemplate !== 'standard'}
+                    feature={
+                      item.displayTemplate &&
+                      item.displayTemplate !== 'standard'
+                    }
                   />
                 </Box>
               ))}
