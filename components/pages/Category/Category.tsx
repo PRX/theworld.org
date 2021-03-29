@@ -30,6 +30,7 @@ import {
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { fetchApiCategory, fetchApiCategoryStories } from '@lib/fetch';
+import { HtmlContent } from '@components/HtmlContent';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { AppContext } from '@contexts/AppContext';
@@ -195,7 +196,9 @@ export const Category = () => {
           <Box mt={2}>
             <Sidebar item elevated>
               {body && (
-                <SidebarContent dangerouslySetInnerHTML={{ __html: body }} />
+                <SidebarContent>
+                  <HtmlContent html={body} />
+                </SidebarContent>
               )}
               {hosts && !!hosts.length && (
                 <SidebarList

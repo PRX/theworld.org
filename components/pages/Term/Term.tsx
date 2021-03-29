@@ -120,7 +120,8 @@ export const Term = () => {
     (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
   const latestEpisode = episodes && episodes[1].shift();
   const { title, description } = data;
-  const [loading, setLoading] = useState(false);
+  const [loadingStories, setLoadingStories] = useState(false);
+  const [loadingEpisodes, setLoadingEpisodes] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
 
   useEffect(() => {
@@ -131,12 +132,12 @@ export const Term = () => {
   }, [page]);
 
   const loadMoreStories = async () => {
-    setLoading(true);
+    setLoadingStories(true);
 
     const moreStories = await fetchApiTermStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
-    setLoading(false);
+    setLoadingStories(false);
 
     store.dispatch<any>(
       appendResourceCollection(moreStories, type, id, 'stories')
@@ -144,12 +145,12 @@ export const Term = () => {
   };
 
   const loadMoreEpisodes = async () => {
-    setLoading(true);
+    setLoadingEpisodes(true);
 
     const moreEpisodes = await fetchApiTermEpisodes(id, episodesPage + 1);
 
     setOldScrollY(window.scrollY);
-    setLoading(false);
+    setLoadingEpisodes(false);
 
     store.dispatch<any>(
       appendResourceCollection(moreEpisodes, type, id, 'episodes')
@@ -217,12 +218,13 @@ export const Term = () => {
                     size="large"
                     color="primary"
                     fullWidth
-                    disabled={loading}
+                    disabled={loadingStories}
+                    disableElevation={loadingStories}
                     onClick={() => {
                       loadMoreStories();
                     }}
                   >
-                    {loading ? 'Loading Stories...' : 'More Stories'}
+                    {loadingStories ? 'Loading Stories...' : 'More Stories'}
                   </Button>
                 </Box>
               )}
@@ -244,12 +246,13 @@ export const Term = () => {
                     size="large"
                     color="primary"
                     fullWidth
-                    disabled={loading}
+                    disabled={loadingEpisodes}
+                    disableElevation={loadingEpisodes}
                     onClick={() => {
                       loadMoreEpisodes();
                     }}
                   >
-                    {loading ? 'Loading Episodes...' : 'More Episodes'}
+                    {loadingEpisodes ? 'Loading Episodes...' : 'More Episodes'}
                   </Button>
                 </Box>
               )}

@@ -7,10 +7,11 @@ import { parse } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 
 export const generateAudioDownloadFilename = (
-  { program, metatags: { canonical }, metadata }: IPriApiResource,
+  { url, program, metatags, metadata }: IPriApiResource,
   prefixOverride: string = null
 ) => {
-  const { pathname } = parse(canonical);
+  const { canonical } = metatags || {};
+  const { pathname } = parse(canonical || url);
   const parts = pathname
     .split('/')
     .filter(item => !!item && !!item.length && item !== 'file');

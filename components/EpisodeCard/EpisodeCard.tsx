@@ -17,6 +17,7 @@ import {
 import { EqualizerRounded, PlayCircleOutlineRounded } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
+import { HtmlContent } from '@components/HtmlContent';
 import { Image } from '@components/Image';
 import { SidebarAudioList } from '@components/Sidebar/SidebarAudioList';
 import { episodeCardStyles, episodeCardTheme } from './EpisodeCard.styles';
@@ -70,10 +71,9 @@ export const EpisodeCard = ({ data, label }: EpisodeCardProps) => {
               {title}
             </Typography>
             <Typography variant="body1" component="div" color="textSecondary">
-              <Box
-                className={cx('body')}
-                dangerouslySetInnerHTML={{ __html: teaser }}
-              />
+              <Box className={cx('body')}>
+                <HtmlContent html={teaser} />
+              </Box>
             </Typography>
             <ContentLink data={data} className={cx('link')} />
           </CardContent>

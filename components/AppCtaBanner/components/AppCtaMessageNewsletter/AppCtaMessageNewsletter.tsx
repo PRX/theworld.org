@@ -12,6 +12,7 @@ import {
   Typography,
   ThemeProvider
 } from '@material-ui/core';
+import { HtmlContent } from '@components/HtmlContent';
 import { newsletterFormTheme } from '@components/NewsletterForm/NewsletterForm.styles';
 import { handleButtonClick } from '@lib/routing';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
@@ -48,12 +49,9 @@ export const AppCtaMessageNewsletter = ({
       <Box textAlign="center">
         {heading && <Typography variant="h3">{heading}</Typography>}
         {message && (
-          <Typography
-            component="div"
-            variant="body1"
-            /* eslint-disable-next-line */
-            dangerouslySetInnerHTML={{ __html: message }}
-          />
+          <Typography component="div" variant="body1">
+            <HtmlContent html={message} />
+          </Typography>
         )}
         {hasActions && (
           <Toolbar>

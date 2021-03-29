@@ -11,6 +11,7 @@ const accentBorderWidth = 3;
 export const storyBodyQAStyles = (theme: Theme) =>
   ({
     '& .qa-wrap': {
+      clear: 'both',
       padding: '0 2rem 0',
       marginLeft: theme.typography.pxToRem(accentBorderWidth),
       border: '1px solid transparent',
@@ -21,7 +22,9 @@ export const storyBodyQAStyles = (theme: Theme) =>
       '& h3': {
         margin: '1rem 0 1rem',
         paddingBottom: '1.25rem',
-        borderBottom: `${theme.typography.pxToRem(2)} solid ${theme.palette.grey[200]}`,
+        borderBottom: `${theme.typography.pxToRem(2)} solid ${
+          theme.palette.grey[200]
+        }`
       },
 
       '& p': {
@@ -33,7 +36,9 @@ export const storyBodyQAStyles = (theme: Theme) =>
       },
 
       '&--border-around': {
-        border: `${theme.typography.pxToRem(1)} solid ${theme.palette.grey[200]}`,
+        border: `${theme.typography.pxToRem(1)} solid ${
+          theme.palette.grey[200]
+        }`,
         borderLeft: 'none'
       }
     }

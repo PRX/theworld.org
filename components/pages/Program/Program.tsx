@@ -23,8 +23,10 @@ import {
   Typography
 } from '@material-ui/core';
 import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
-import { LandingPage } from '@components/LandingPage';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { CtaRegion } from '@components/CtaRegion';
+import { HtmlContent } from '@components/HtmlContent';
+import { LandingPage } from '@components/LandingPage';
 import {
   Sidebar,
   SidebarContent,
@@ -52,6 +54,7 @@ import {
   getDataByResource
 } from '@store/reducers';
 import { generateLinkPropsForContent } from '@lib/routing';
+import { programStyles, programTheme } from './Program.styles';
 
 export const Program = () => {
   const {
@@ -63,6 +66,7 @@ export const Program = () => {
   const { query } = router;
   const store = useStore();
   const state = store.getState();
+  const classes = programStyles({});
   const data = getDataByResource(state, type, id);
   const ctaInlineTop = getCtaRegionData(
     state,
@@ -131,7 +135,8 @@ export const Program = () => {
     sponsors,
     body
   } = data;
-  const [loading, setLoading] = useState(false);
+  const [loadingStories, setLoadingStories] = useState(false);
+  const [loadingEpisodes, setLoadingEpisodes] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
 
   useEffect(() => {
@@ -142,12 +147,12 @@ export const Program = () => {
   }, [page, episodesPage]);
 
   const loadMoreStories = async () => {
-    setLoading(true);
+    setLoadingStories(true);
 
     const moreStories = await fetchApiProgramStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
-    setLoading(false);
+    setLoadingStories(false);
 
     store.dispatch<any>(
       appendResourceCollection(moreStories, type, id, 'stories')
@@ -155,12 +160,12 @@ export const Program = () => {
   };
 
   const loadMoreEpisodes = async () => {
-    setLoading(true);
+    setLoadingEpisodes(true);
 
     const moreEpisodes = await fetchApiProgramEpisodes(id, episodesPage + 1);
 
     setOldScrollY(window.scrollY);
-    setLoading(false);
+    setLoadingEpisodes(false);
 
     store.dispatch<any>(
       appendResourceCollection(moreEpisodes, type, id, 'episodes')
@@ -181,7 +186,9 @@ export const Program = () => {
       children: (
         <Box mt={3}>
           {body && !hasContentLinks && (
-            <Box dangerouslySetInnerHTML={{ __html: body }} />
+            <Box className={classes.body}>
+              <HtmlContent html={body} />
+            </Box>
           )}
           {!isEpisodesView && (
             <>
@@ -231,12 +238,13 @@ export const Program = () => {
                     size="large"
                     color="primary"
                     fullWidth
-                    disabled={loading}
+                    disabled={loadingStories}
+                    disableElevation={loadingStories}
                     onClick={() => {
                       loadMoreStories();
                     }}
                   >
-                    {loading ? 'Loading Stories...' : 'More Stories'}
+                    {loadingStories ? 'Loading Stories...' : 'More Stories'}
                   </Button>
                 </Box>
               )}
@@ -258,12 +266,13 @@ export const Program = () => {
                     size="large"
                     color="primary"
                     fullWidth
-                    disabled={loading}
+                    disabled={loadingEpisodes}
+                    disableElevation={loadingEpisodes}
                     onClick={() => {
                       loadMoreEpisodes();
                     }}
                   >
-                    {loading ? 'Loading Episodes...' : 'More Episodes'}
+                    {loadingEpisodes ? 'Loading Episodes...' : 'More Episodes'}
                   </Button>
                 </Box>
               )}
@@ -295,7 +304,9 @@ export const Program = () => {
           <Box mt={2}>
             <Sidebar item elevated>
               {body && hasContentLinks && (
-                <SidebarContent dangerouslySetInnerHTML={{ __html: body }} />
+                <SidebarContent>
+                  <HtmlContent html={body} />
+                </SidebarContent>
               )}
               {hosts && !!hosts.length && (
                 <SidebarList
@@ -368,7 +379,7 @@ export const Program = () => {
   ];
 
   return (
-    <>
+    <ThemeProvider theme={programTheme}>
       <Head>
         <title>
           {title} | {!isEpisodesView ? 'Stories' : 'Episodes'}
@@ -397,7 +408,7 @@ export const Program = () => {
         </AppBar>
       )}
       <LandingPage main={mainElements} sidebar={sidebarElements} />
-    </>
+    </ThemeProvider>
   );
 };
 

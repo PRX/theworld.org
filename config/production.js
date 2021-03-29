@@ -5,6 +5,11 @@ module.exports = {
     apiPath: 'api',
     apiVersion: '1.0'
   },
+  fb: {
+    appId: '142079625983010',
+    clientToken: '987e1f53e945ba53f8fbd95d8c82c93e',
+    clientAccessToken: '142079625983010|987e1f53e945ba53f8fbd95d8c82c93e'
+  },
   analytics: {
     chartBeat: {
       uid: 19027,

@@ -27,6 +27,7 @@ import {
   NavigateNext
 } from '@material-ui/icons';
 import { AudioPlayer } from '@components/AudioPlayer';
+import { HtmlContent } from '@components/HtmlContent';
 import {
   Sidebar,
   SidebarAudioList,
@@ -151,11 +152,9 @@ export const Episode = () => {
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <EpisodeLede data={data} />
-                <Box
-                  className={classes.body}
-                  my={2}
-                  dangerouslySetInnerHTML={{ __html: body }}
-                />
+                <Box className={classes.body} my={2}>
+                  <HtmlContent html={body} />
+                </Box>
                 {spotifyPlaylist && !!spotifyPlaylist.length && (
                   <Box my={3}>
                     <Divider />

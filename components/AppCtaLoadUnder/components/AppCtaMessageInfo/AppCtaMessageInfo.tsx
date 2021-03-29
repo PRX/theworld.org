@@ -12,6 +12,7 @@ import {
   Typography,
   ButtonProps
 } from '@material-ui/core';
+import { HtmlContent } from '@components/HtmlContent';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 
 export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
@@ -44,12 +45,9 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
         <Grid item sm={12} md={8}>
           {heading && <Typography variant="h3">{heading}</Typography>}
           {message && (
-            <Typography
-              component="div"
-              variant="body1"
-              /* eslint-disable-next-line */
-              dangerouslySetInnerHTML={{ __html: message }}
-            />
+            <Typography component="div" variant="body1">
+              <HtmlContent html={message} />
+            </Typography>
           )}
         </Grid>
         <Grid item sm={12} md={4}>

@@ -16,20 +16,14 @@ interface ISidebarContentProps extends HTMLAttributes<{}> {}
 
 export const SidebarContent = ({
   children,
-  className,
-  dangerouslySetInnerHTML
+  className
 }: ISidebarContentProps) => {
   const classes = sidebarContentStyles({});
   const cx = classNames.bind(classes);
 
   return (
     <ThemeProvider theme={sidebarContentTheme}>
-      <CardContent
-        className={cx(className, 'root')}
-        dangerouslySetInnerHTML={dangerouslySetInnerHTML}
-      >
-        {children}
-      </CardContent>
+      <CardContent className={cx(className, 'root')}>{children}</CardContent>
     </ThemeProvider>
   );
 };

@@ -21,6 +21,7 @@ import {
 import Pagination from '@material-ui/lab/Pagination';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
+import { HtmlContent } from '@components/HtmlContent';
 import {
   Sidebar,
   SidebarAudioList,
@@ -158,10 +159,9 @@ export const Bio = () => {
       key: 'main top',
       children: bio && (
         <Box mt={3}>
-          <Box
-            className={cx('body')}
-            dangerouslySetInnerHTML={{ __html: bio }}
-          />
+          <Box className={cx('body')}>
+            <HtmlContent html={bio} />
+          </Box>
         </Box>
       )
     },

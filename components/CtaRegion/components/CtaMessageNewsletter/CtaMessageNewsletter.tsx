@@ -15,6 +15,7 @@ import {
   ThemeProvider
 } from '@material-ui/core';
 import { CheckCircleOutlineSharp } from '@material-ui/icons';
+import { HtmlContent } from '@components/HtmlContent';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { ICtaMessageProps } from '@interfaces/cta';
 import { ctaMessageNewsletterTheme } from './CtaMessageNewsletter.styles';
@@ -41,12 +42,9 @@ export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
         {heading && <CardHeader title={heading} />}
         {message && (
           <CardContent>
-            <Typography
-              component="div"
-              variant="body1"
-              /* eslint-disable-next-line */
-              dangerouslySetInnerHTML={{ __html: message }}
-            />
+            <Typography component="div" variant="body1">
+              <HtmlContent html={message} />
+            </Typography>
           </CardContent>
         )}
         {hasActions && (
