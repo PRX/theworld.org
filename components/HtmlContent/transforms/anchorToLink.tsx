@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { DomElement } from 'htmlparser2';
 import { parse } from 'url';
 import { generateLinkPropsForContent } from '@lib/routing';
+import { isLocalUrl } from '@lib/parse/url';
 
 function* genId() {
   let id = 0;
@@ -24,13 +25,17 @@ export const anchorToLink = (
   transform: Transform,
   index: number
 ) => {
-  if (node.type === 'tag' && node.name === 'a' && node.attribs.href) {
+  if (
+    node.type === 'tag' &&
+    node.name === 'a' &&
+    node.attribs.href &&
+    !/^mailto:/.test(node.attribs.href)
+  ) {
     // Return an app link.
     const {
       attribs,
       attribs: { href }
     } = node;
-    const isLocal = (url: string) => /(www\.)?(pri|theworld)\.org/.test(url);
     let url = parse(href, true);
 
     // Handle links copied from google searches for internal URL's.
@@ -38,7 +43,7 @@ export const anchorToLink = (
       url = parse(url.query.q as string, true);
     }
 
-    if (isLocal(url.hostname)) {
+    if (isLocalUrl(url.href)) {
       const id = gen.next().value as number;
       const { href: linkHref, as: linkAs } = generateLinkPropsForContent({
         id: '',

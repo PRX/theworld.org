@@ -5,4 +5,5 @@ export * from './fetchAudioData';
 export * from './fetchCtaData';
 export * from './fetchEpisodeData';
 export * from './fetchHomepageData';
+export * from './fetchPageData';
 export * from './fetchStoryData';

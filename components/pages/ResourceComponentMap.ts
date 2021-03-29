@@ -7,6 +7,7 @@ const DynamicCategory = dynamic(() => import('./Category') as any);
 const DynamicEpisode = dynamic(() => import('./Episode') as any);
 const DynamicHomepage = dynamic(() => import('./Homepage') as any);
 const DynamicNewsletter = dynamic(() => import('./Newsletter') as any);
+const DynamicPage = dynamic(() => import('./Page') as any);
 const DynamicProgram = dynamic(() => import('./Program') as any);
 const DynamicStory = dynamic(() => import('./Story') as any);
 const DynamicTerm = dynamic(() => import('./Term') as any);
@@ -17,6 +18,7 @@ export const ResourceComponentMap = {
   homepage: DynamicHomepage,
   'node--episodes': DynamicEpisode,
   'node--newsletter_sign_ups': DynamicNewsletter,
+  'node--pages': DynamicPage,
   'node--people': DynamicBio,
   'node--programs': DynamicProgram,
   'node--stories': DynamicStory,

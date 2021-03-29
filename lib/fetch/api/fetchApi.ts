@@ -391,6 +391,22 @@ export const fetchApiTermEpisodes = async (
   });
 
 /**
+ * Method that simplifies GET queries for page data.
+ *
+ * @param id
+ *    API id of page.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Page data object.
+ */
+export const fetchApiPage = async (
+  id: string,
+  req?: IncomingMessage
+): Promise<IPriApiResource> => fetchApi(`page/${id}`, req);
+
+/**
  * Method that simplifies GET queries for person data.
  *
  * @param id

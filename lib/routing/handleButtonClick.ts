@@ -6,6 +6,7 @@
 import { MouseEvent } from 'react';
 import Router from 'next/router';
 import { Url } from 'url';
+import { isLocalUrl } from '@lib/parse/url';
 
 /**
  * Helper function to convert generic Url object for use in app relative aliseed
@@ -41,7 +42,10 @@ export const handleButtonClick = (url: Url, callback: Function = null) => (
 ) => {
   event.preventDefault();
 
-  Router.push(generateLinkHrefFromUrl(url), url.pathname);
+  Router.push(
+    isLocalUrl(url.href) ? generateLinkHrefFromUrl(url) : url,
+    url.pathname
+  );
 
   if (callback) {
     callback();
