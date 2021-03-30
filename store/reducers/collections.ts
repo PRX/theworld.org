@@ -21,6 +21,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
   let key: string;
   let refs: string[];
   let newCollection: CollectionState;
+  let meta: object;
 
   const addCollectionPage = (
     items: string[][],
@@ -43,8 +44,15 @@ export const collections = (state: State = {}, action: AnyAction) => {
       refs = (action.payload.data || [])
         .filter(v => !!v)
         .map((ref: IPriApiResource) => makeResourceSignature(ref));
-      newCollection = {
+      meta = {
         ...action.payload.meta,
+        next:
+          action.payload.meta.next <= action.payload.meta.last
+            ? action.payload.meta.next
+            : null
+      };
+      newCollection = {
+        ...meta,
         items: addCollectionPage([], _.uniq(refs), action.payload.meta.page)
       };
 
@@ -58,7 +66,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
                   ? {
                       [action.payload.collection]: {
                         ...state[key][action.payload.collection],
-                        ...action.payload.meta,
+                        ...meta,
                         items: addCollectionPage(
                           state[key][action.payload.collection].items,
                           _.uniq(refs),

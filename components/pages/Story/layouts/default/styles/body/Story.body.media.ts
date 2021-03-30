@@ -91,6 +91,12 @@ export const storyBodyMediaStyles = (theme: Theme) =>
       }
     },
 
+    // Instagram embeds.
+    '& .instagram-media': {
+      marginLeft: 'auto !important',
+      marginRight: 'auto !important'
+    },
+
     [theme.breakpoints.up('md')]: {
       '& .media-wysiwyg-align-left, & .media-image_on_left': {
         float: 'left',

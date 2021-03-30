@@ -12,8 +12,8 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     '& iframe': {
       display: 'block',
       maxWidth: '100%',
-      marginLeft: 'auto !important',
-      marginRight: 'auto !important'
+      marginLeft: 'auto',
+      marginRight: 'auto'
     },
 
     // Reset for img tag dimension attributes.
@@ -116,22 +116,34 @@ export const storyBodyMediaStyles = (theme: Theme) =>
       }
     },
 
+    // Instagram embeds.
+    '& .instagram-media': {
+      marginLeft: 'auto !important',
+      marginRight: 'auto !important'
+    },
+
     [theme.breakpoints.up('md')]: {
       '& .media-wysiwyg-align-left, & .media-image_on_left': {
         float: 'left',
         clear: 'left',
         width: '44%',
-        margin: `${theme.typography.pxToRem(7)} ${theme.typography.pxToRem(
-          30
-        )} 0.5rem 0`
+        margin: `${[
+          theme.typography.pxToRem(theme.spacing(1)),
+          theme.typography.pxToRem(theme.spacing(6)),
+          theme.typography.pxToRem(theme.spacing(4)),
+          0
+        ].join(' ')}`
       },
       '& .media-wysiwyg-align-right, & .media-image_on_right': {
         float: 'right',
         clear: 'right',
         width: '44%',
-        margin: `${theme.typography.pxToRem(
-          7
-        )} 0 0.5rem ${theme.typography.pxToRem(30)}`
+        margin: `${[
+          theme.typography.pxToRem(theme.spacing(1)),
+          0,
+          theme.typography.pxToRem(theme.spacing(4)),
+          theme.typography.pxToRem(theme.spacing(6))
+        ].join(' ')}`
       }
     }
   } as CreateCSSProperties<{}>);

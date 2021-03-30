@@ -9,6 +9,7 @@ import { convertNodeToElement, Transform } from 'react-html-parser';
 import { DomElement } from 'htmlparser2';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Box, Container, Grid } from '@material-ui/core';
+import { AudioPlayer } from '@components/AudioPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { Tags } from '@components/Tags';
@@ -35,7 +36,10 @@ export const StoryDefault = ({ data }: Props) => {
     opencalaisCountry,
     opencalaisProvince,
     opencalaisRegion,
-    opencalaisPerson
+    opencalaisPerson,
+    audio,
+    embeddedPlayerUrl,
+    popoutPlayerUrl
   } = data;
   const store = useStore();
   const state = store.getState();
@@ -116,6 +120,14 @@ export const StoryDefault = ({ data }: Props) => {
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
+            {audio && (
+              <AudioPlayer
+                data={audio}
+                message="Listen to the story."
+                embeddedPlayerUrl={embeddedPlayerUrl}
+                popoutPlayerUrl={popoutPlayerUrl}
+              />
+            )}
             <Box className={classes.body} my={2}>
               <HtmlContent
                 html={body}

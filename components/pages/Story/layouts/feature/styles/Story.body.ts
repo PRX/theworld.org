@@ -14,10 +14,13 @@ import {
 export const storyBodyStyles = (theme: Theme) =>
   createStyles({
     body: {
+      marginTop: theme.typography.pxToRem(theme.spacing(4)),
+
       ...storyBodyTypography(theme),
       ...storyBodyMediaStyles(theme),
       ...storyBodyQAStyles(theme),
       ...storyBodyStoryActStyles(theme),
+
       '&::after': {
         content: '""',
         display: 'block',

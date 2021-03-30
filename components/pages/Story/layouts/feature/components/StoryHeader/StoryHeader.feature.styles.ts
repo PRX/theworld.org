@@ -114,7 +114,7 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
     footer: {
       display: 'grid',
       gridGap: '0.5rem',
-      marginBottom: theme.typography.pxToRem(theme.spacing(8)),
+      marginBottom: theme.typography.pxToRem(theme.spacing(2)),
       '& p': {
         margin: 0
       },

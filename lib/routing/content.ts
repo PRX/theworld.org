@@ -31,20 +31,23 @@ export const generateLinkPropsForContent = (
   query?: { [k: string]: string }
 ): { href: UrlWithParsedQuery; as: UrlWithParsedQuery } => {
   const url = generateLinkHrefForContent(data);
-  const alias = {
-    ...parse(url.pathname),
-    ...(query && { query })
-  };
-  const href = {
-    ...parse('/'),
-    query: {
-      alias: alias.pathname,
-      ...query
-    }
-  };
 
-  return {
-    href,
-    as: alias
-  };
+  if (url) {
+    const alias = {
+      ...parse(url.pathname),
+      ...(query && { query })
+    };
+    const href = {
+      ...parse('/'),
+      query: {
+        alias: alias.pathname,
+        ...query
+      }
+    };
+
+    return {
+      href,
+      as: alias
+    };
+  }
 };

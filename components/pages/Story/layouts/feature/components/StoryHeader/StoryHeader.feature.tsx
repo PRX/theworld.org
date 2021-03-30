@@ -10,7 +10,6 @@ import ReactMarkdown from 'react-markdown';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
-import { AudioPlayer } from '@components/AudioPlayer';
 import { ContentLink } from '@components/ContentLink';
 import { Image } from '@components/Image';
 import {
@@ -24,16 +23,13 @@ interface Props {
 
 export const StoryHeader = ({ data }: Props) => {
   const {
-    audio,
     byline,
     dateBroadcast,
     datePublished,
     image,
     primaryCategory,
     program,
-    title,
-    embeddedPlayerUrl,
-    popoutPlayerUrl
+    title
   } = data;
   const { caption, credit } = image || {};
   const hasCaption = caption && !!caption.length;
@@ -98,14 +94,6 @@ export const StoryHeader = ({ data }: Props) => {
                   </ul>
                 )}
               </Box>
-              {audio && (
-                <AudioPlayer
-                  data={audio}
-                  message="Listen to the story."
-                  embeddedPlayerUrl={embeddedPlayerUrl}
-                  popoutPlayerUrl={popoutPlayerUrl}
-                />
-              )}
             </Box>
           </Container>
         </Box>
