@@ -20,6 +20,15 @@ export const storyTheme = (theme: Theme) =>
           fontSize: theme.typography.pxToRem(36)
         }
       }
+    },
+    overrides: {
+      MuiContainer: {
+        maxWidthLg: {
+          [theme.breakpoints.up('md')]: {
+            maxWidth: '960px'
+          }
+        }
+      }
     }
   });
 

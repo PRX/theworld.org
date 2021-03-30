@@ -41,7 +41,7 @@ export const storyBodyMediaStyles = (theme: Theme) =>
           position: 'relative',
           left: '50%',
           width: '100vw',
-          maxWidth: '1600px'
+          maxWidth: '1200px'
         }
       },
 

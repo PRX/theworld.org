@@ -87,7 +87,7 @@ export const storyBodyTypography = (theme: Theme) =>
         fontSize: '1.75rem',
         textAlign: 'center',
         '& > *': {
-          maxWidth: '1600px',
+          maxWidth: '1200px',
           marginLeft: 'auto',
           marginRight: 'auto'
         },

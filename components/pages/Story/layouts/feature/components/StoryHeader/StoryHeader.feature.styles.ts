@@ -21,6 +21,10 @@ export const storyHeaderTheme = (theme: Theme) =>
           theme.palette.common.black,
           0.3
         )}, 1px 1px 3px ${addCssColorAlpha(theme.palette.common.black, 0.4)}`
+      },
+      subtitle1: {
+        fontSize: theme.typography.pxToRem(24),
+        lineHeight: theme.typography.pxToRem(30)
       }
     },
     overrides: {
@@ -86,6 +90,9 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       zIndex: 1
+    },
+    teaser: {
+      marginTop: theme.typography.pxToRem(theme.spacing(2))
     },
     byline: {
       padding: 0,

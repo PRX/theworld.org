@@ -11,6 +11,7 @@ import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
 import { ContentLink } from '@components/ContentLink';
+import { HtmlContent } from '@components/HtmlContent';
 import { Image } from '@components/Image';
 import {
   storyHeaderStyles,
@@ -29,7 +30,8 @@ export const StoryHeader = ({ data }: Props) => {
     image,
     primaryCategory,
     program,
-    title
+    title,
+    teaser
   } = data;
   const { caption, credit } = image || {};
   const hasCaption = caption && !!caption.length;
@@ -66,6 +68,11 @@ export const StoryHeader = ({ data }: Props) => {
             )}
             <Box mb={3}>
               <Typography variant="h1">{title}</Typography>
+              {teaser && (
+                <Typography variant="subtitle1" className={classes.teaser}>
+                  <HtmlContent html={teaser} />
+                </Typography>
+              )}
             </Box>
             <Box className={classes.meta} mb={2}>
               <Box className={classes.info}>
