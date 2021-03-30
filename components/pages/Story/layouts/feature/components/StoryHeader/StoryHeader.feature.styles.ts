@@ -16,15 +16,18 @@ export const storyHeaderTheme = (theme: Theme) =>
     typography: {
       h1: {
         color: theme.palette.primary.contrastText,
-        fontSize: theme.typography.pxToRem(48),
-        textShadow: `1px 1px 6px ${addCssColorAlpha(
-          theme.palette.common.black,
-          0.3
-        )}, 1px 1px 3px ${addCssColorAlpha(theme.palette.common.black, 0.4)}`
+        fontSize: theme.typography.pxToRem(28),
+        [theme.breakpoints.up('sm')]: {
+          fontSize: theme.typography.pxToRem(48)
+        }
       },
       subtitle1: {
-        fontSize: theme.typography.pxToRem(24),
-        lineHeight: theme.typography.pxToRem(30)
+        fontSize: theme.typography.pxToRem(20),
+        lineHeight: theme.typography.pxToRem(24),
+        [theme.breakpoints.up('sm')]: {
+          fontSize: theme.typography.pxToRem(24),
+          lineHeight: theme.typography.pxToRem(30)
+        }
       }
     },
     overrides: {
@@ -48,35 +51,50 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       display: 'grid',
       gridTemplateRows: 'max-content max-content',
-      alignItems: 'end',
-      maxHeight: '75vh',
+      alignContent: 'end',
       overflow: 'hidden',
+      minHeight: '75vh',
       backgroundColor: theme.palette.primary.light,
       marginBottom: theme.typography.pxToRem(theme.spacing(2)),
       color: theme.palette.primary.contrastText,
-      fontSize: '1.2rem'
+      fontSize: '1.2rem',
+      [theme.breakpoints.up('md')]: {
+        minHeight: 'auto',
+        maxHeight: '75vh'
+      }
     },
     imageWrapper: {
-      gridColumn: '1 / -1',
-      gridRow: '1 / -1',
-      height: '100%',
-      zIndex: 0
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      width: '100%',
+      zIndex: 0,
+      [theme.breakpoints.up('md')]: {
+        position: 'initial',
+        alignSelf: 'start',
+        gridColumn: '1 / -1',
+        gridRow: '1 / -1',
+        height: '100%'
+      }
     },
     image: {
-      height: '100%',
-      maxHeight: '75vh'
+      height: '100%'
     },
     content: {
       position: 'relative',
       gridColumn: '1 / -1',
       gridRow: '1 / -1',
       display: 'grid',
-      alignItems: 'end',
+      alignContent: 'end',
       // gridTemplateColumns: '1fr 100vw 1fr',
       gridGap: theme.typography.pxToRem(theme.spacing(2)),
       width: '100%',
       minHeight: '33.33333%',
       padding: theme.typography.pxToRem(theme.spacing(3)),
+      textShadow: `1px 1px 6px ${addCssColorAlpha(
+        theme.palette.common.black,
+        0.3
+      )}, 1px 1px 3px ${addCssColorAlpha(theme.palette.common.black, 0.4)}`,
       [theme.breakpoints.up('md')]: {
         '$withImage &': {
           position: 'absolute',
@@ -129,7 +147,8 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
         marginTop: '1rem'
       },
       '& a': {
-        '&, &:visitied': {
+        color: theme.palette.primary.main,
+        '&:visited': {
           color: theme.palette.primary.main
         },
         '&:hover': {

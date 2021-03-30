@@ -13,14 +13,6 @@ import { storyBodyStyles } from './styles/Story.body';
 
 export const storyTheme = (theme: Theme) =>
   createMuiTheme(theme, {
-    typography: {
-      h1: {
-        fontSize: theme.typography.pxToRem(46),
-        [theme.breakpoints.down('sm')]: {
-          fontSize: theme.typography.pxToRem(36)
-        }
-      }
-    },
     overrides: {
       MuiContainer: {
         maxWidthLg: {

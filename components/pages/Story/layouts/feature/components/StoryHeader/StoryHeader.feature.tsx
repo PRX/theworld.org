@@ -106,7 +106,7 @@ export const StoryHeader = ({ data }: Props) => {
         </Box>
       </Box>
       {hasFooter && (
-        <Container fixed className={cx('footer')}>
+        <Container fixed className={classes.footer}>
           <Typography variant="caption" component="div">
             {hasCaption && (
               <ReactMarkdown

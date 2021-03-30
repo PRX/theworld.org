@@ -33,7 +33,8 @@ export const ledeImageStyles = makeStyles((theme: Theme) =>
         marginTop: '1rem'
       },
       '& a': {
-        '&, &:visitied': {
+        color: theme.palette.primary.main,
+        '&:visited': {
           color: theme.palette.primary.main
         },
         '&:hover': {
