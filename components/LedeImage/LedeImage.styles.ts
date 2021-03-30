@@ -3,9 +3,9 @@
  * Styles for LedeImage.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-export const ledeImageStyles = makeStyles(() =>
+export const ledeImageStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'grid',
@@ -31,6 +31,14 @@ export const ledeImageStyles = makeStyles(() =>
       },
       '& p + p': {
         marginTop: '1rem'
+      },
+      '& a': {
+        '&, &:visitied': {
+          color: theme.palette.primary.main
+        },
+        '&:hover': {
+          color: theme.palette.primary.dark
+        }
       }
     },
     caption: {},

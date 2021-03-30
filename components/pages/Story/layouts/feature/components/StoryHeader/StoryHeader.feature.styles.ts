@@ -127,6 +127,14 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       },
       '& p + p': {
         marginTop: '1rem'
+      },
+      '& a': {
+        '&, &:visitied': {
+          color: theme.palette.primary.main
+        },
+        '&:hover': {
+          color: theme.palette.primary.dark
+        }
       }
     },
     caption: {},
