@@ -26,23 +26,27 @@ export const LedeImage = ({ data, widths = null }: ILedeImageProps) => {
 
   return (
     <figure className={classes.root}>
-      <Image
-        className={classes.image}
-        data={data}
-        width={widths}
-      />
+      <Image className={classes.image} data={data} width={widths} />
       {hasFooter && (
-        <Typography variant="caption" component="figcaption" className={classes.footer}>
-          {hasCaption && (<ReactMarkdown
-            {...mdProps}
-            className={classes.caption}
-            source={caption}
-          />)}
-          {hasCredit && (<ReactMarkdown
-            {...mdProps}
-            className={classes.credit}
-            source={credit}
-          />)}
+        <Typography
+          variant="caption"
+          component="figcaption"
+          className={classes.footer}
+        >
+          {hasCaption && (
+            <ReactMarkdown
+              {...mdProps}
+              className={classes.caption}
+              source={caption}
+            />
+          )}
+          {hasCredit && (
+            <ReactMarkdown
+              {...mdProps}
+              className={classes.credit}
+              source={credit}
+            />
+          )}
         </Typography>
       )}
     </figure>

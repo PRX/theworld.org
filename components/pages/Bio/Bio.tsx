@@ -179,7 +179,9 @@ export const Bio = () => {
               <Box mt={index ? 2 : 3} key={item.id}>
                 <StoryCard
                   data={item}
-                  feature={item.displayTemplate !== 'standard'}
+                  feature={
+                    item.displayTemplate && item.displayTemplate !== 'standard'
+                  }
                 />
               </Box>
             ))}

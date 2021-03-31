@@ -20,10 +20,10 @@ export type ContentLinkRef = HTMLAnchorElement;
 export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
   ({ children, data, query, ...other }: ContentLinkProps, ref) => {
     const { title } = data || ({} as IPriApiResource);
-    const { href, as: alias } = generateLinkPropsForContent(data, query);
+    const { href, as: alias } = generateLinkPropsForContent(data, query) || {};
     const classes = contentLinkStyles({});
 
-    return (
+    return href ? (
       <Link href={href} as={alias} passHref>
         <MuiLink
           ref={ref}
@@ -35,6 +35,8 @@ export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
           {children || title}
         </MuiLink>
       </Link>
+    ) : (
+      <>{children}</>
     );
   }
 );

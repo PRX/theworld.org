@@ -17,7 +17,7 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     },
 
     // Reset for img tag dimension attributes.
-    '& img': {
+    '& img:not([width="1"])': {
       width: '100%',
       maxWidth: '100%',
       height: 'auto',
@@ -27,16 +27,41 @@ export const storyBodyMediaStyles = (theme: Theme) =>
 
     // Media styles.
     '& .media': {
+      position: 'relative',
       clear: 'both',
       width: '100%',
       marginTop: theme.typography.pxToRem(theme.spacing(4)),
-      marginBottom: theme.typography.pxToRem(theme.spacing(4))
+      marginBottom: theme.typography.pxToRem(theme.spacing(4)),
+
+      '&.media-full_width': {
+        position: 'relative',
+
+        '& .file-full-width-wrapper': {
+          transform: 'translateX(-50%)',
+          position: 'relative',
+          left: '50%',
+          width: '100vw',
+          maxWidth: '1200px'
+        }
+      },
+
+      '&.media-browser_width': {
+        position: 'relative',
+
+        '& .file-browser-width-wrapper': {
+          transform: 'translateX(-50%)',
+          position: 'relative',
+          left: '50%',
+          width: '100vw'
+        }
+      }
     },
     '& .file-image': {
       '& .content': {
         ...theme.typography.caption,
-        display: 'grid',
-        rowGap: '0.5rem',
+        '& > * + *': {
+          marginTop: theme.typography.pxToRem(theme.spacing(2))
+        },
         '& p': {
           margin: 0
         },
@@ -102,17 +127,23 @@ export const storyBodyMediaStyles = (theme: Theme) =>
         float: 'left',
         clear: 'left',
         width: '44%',
-        margin: `${theme.typography.pxToRem(7)} ${theme.typography.pxToRem(
-          30
-        )} 0.5rem 0`
+        margin: `${[
+          theme.typography.pxToRem(theme.spacing(1)),
+          theme.typography.pxToRem(theme.spacing(6)),
+          theme.typography.pxToRem(theme.spacing(4)),
+          0
+        ].join(' ')}`
       },
       '& .media-wysiwyg-align-right, & .media-image_on_right': {
         float: 'right',
         clear: 'right',
         width: '44%',
-        margin: `${theme.typography.pxToRem(
-          7
-        )} 0 0.5rem ${theme.typography.pxToRem(30)}`
+        margin: `${[
+          theme.typography.pxToRem(theme.spacing(1)),
+          0,
+          theme.typography.pxToRem(theme.spacing(4)),
+          theme.typography.pxToRem(theme.spacing(6))
+        ].join(' ')}`
       }
     }
   } as CreateCSSProperties<{}>);

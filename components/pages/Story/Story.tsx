@@ -37,6 +37,8 @@ export const Story = () => {
   const LayoutComponent =
     layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
 
+  console.log('layout:', displayTemplate);
+
   useEffect(() => {
     if (!data.complete) {
       (async () => {
