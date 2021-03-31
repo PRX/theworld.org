@@ -15,7 +15,7 @@ interface Props {
 export const StoryLede = ({ data }: Props) => {
   const { image, video } = data;
 
-  return (
+  return image || video ? (
     <>
       {(video && <LedeVideo data={video[0]} />) || (
         <LedeImage
@@ -30,5 +30,5 @@ export const StoryLede = ({ data }: Props) => {
         />
       )}
     </>
-  );
+  ) : null;
 };

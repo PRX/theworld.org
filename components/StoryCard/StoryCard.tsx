@@ -62,7 +62,7 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
 
   return (
     <ThemeProvider theme={storyCardTheme}>
-      <Card square elevation={1} className={cx({ feature })}>
+      <Card square elevation={1} className={cx({ feature: feature || !image })}>
         <CardActionArea classes={{ root: classes.MuiCardActionAreaRoot }}>
           {image && (
             <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
