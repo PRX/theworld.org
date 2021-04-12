@@ -16,7 +16,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
     root: {},
     title: {
       [theme.breakpoints.down('xs')]: {
-        fontSize: '16px',
+        fontSize: theme.typography.pxToRem(16),
         '$feature &': {
           fontSize: theme.typography.pxToRem(22)
         }
@@ -55,6 +55,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
         gridTemplateColumns: '100px 1fr',
         alignItems: 'center'
       },
+      '$noImage &': {},
       '$feature &': {
         display: 'flex',
         gridGap: 0,
