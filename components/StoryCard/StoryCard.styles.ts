@@ -81,7 +81,9 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
         }
       }
     },
-    feature: {}
+    feature: {},
+    isLoading: {},
+    noImage: {}
   })
 );
 

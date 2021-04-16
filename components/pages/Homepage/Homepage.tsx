@@ -2,7 +2,7 @@
  * @file Homepage.tsx
  * Component for Homepage.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -204,6 +204,16 @@ export const Homepage = () => {
     }
   ];
 
+  useEffect(() => {
+    // Get CTA message data.
+    const context = ['node:3704'];
+    (async () => {
+      await store.dispatch<any>(
+        fetchCtaData('tw_cta_regions_landing', 'homepage', undefined, context)
+      );
+    })();
+  });
+
   return (
     <>
       <Head>
@@ -222,10 +232,4 @@ Homepage.fetchData = (
 ): Promise<void> => {
   // Fetch App Data
   await dispatch<any>(fetchHomepageData(req));
-
-  // Get CTA message data.
-  const context = ['node:3704'];
-  await dispatch<any>(
-    fetchCtaData('tw_cta_regions_landing', 'homepage', undefined, context, req)
-  );
 };

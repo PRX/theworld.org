@@ -4,6 +4,7 @@ import * as fromAliasData from './aliasData';
 import * as fromCollections from './collections';
 import * as fromContentData from './contentData';
 import * as fromCtaData from './ctaData';
+import * as fromLoading from './loading';
 import * as fromMenusData from './menusData';
 
 export const initialState: RootState = {
@@ -11,6 +12,7 @@ export const initialState: RootState = {
   contentData: {},
   collections: {},
   ctaData: {},
+  loading: {},
   menusData: {}
 };
 
@@ -19,6 +21,7 @@ export const reducers = combineReducers({
   contentData: fromContentData.contentData,
   collections: fromCollections.collections,
   ctaData: fromCtaData.ctaData,
+  loading: fromLoading.loading,
   menusData: fromMenusData.menusData
 });
 
@@ -70,6 +73,9 @@ export const getCtaRegionGroup = (
   id: string,
   group: string
 ) => fromCtaData.getCtaRegionGroup(state.ctaData, type, id, group);
+
+export const getLoading = (state: RootState) => state.loading;
+export const getLoadingStage = (state: RootState) => state.loading?.stage;
 
 export const getMenusData = (state: RootState, menu: string) =>
   fromMenusData.getMenusData(state.menusData, menu);

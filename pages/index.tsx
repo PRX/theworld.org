@@ -76,6 +76,7 @@ ContentProxy.getInitialProps = async (
     // Use content component to fetch its data.
     if (ContentComponent) {
       // Dispatch action returned from content component fetchData.
+      store.dispatch({ type: 'LOADING_CONTENT_DATA' });
       await store.dispatch<any>(ContentComponent.fetchData(resourceId, req));
       return { type: resourceType, id: resourceId };
     }

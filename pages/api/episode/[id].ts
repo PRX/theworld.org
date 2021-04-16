@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       if (segments && segments.length) {
         stories = (await Promise.all(
           segments
-            .filter((item: IPriApiResource) => !!item.usage.story)
+            .filter((item: IPriApiResource) => !!item.usage?.story)
             .map((item: IPriApiResource) => item.usage.story[0])
             .map((item: IPriApiResource) =>
               fetchPriApiItem('node--stories', item.id, basicStoryParams).then(
