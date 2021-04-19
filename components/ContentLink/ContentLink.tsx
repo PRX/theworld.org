@@ -24,7 +24,8 @@ export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
     const store = useStore();
     const { loading } = store.getState();
     const { type, id, title } = data || ({} as IPriApiResource);
-    const { href, as: alias } = generateLinkPropsForContent(data, query) || {};
+    const props = generateLinkPropsForContent(data, query);
+    const { href, as: alias } = props || {};
     const isLoading =
       (loading?.type === type && loading?.id === id) ||
       loading.alias === alias?.pathname;
