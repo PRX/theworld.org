@@ -194,7 +194,6 @@ export const Image = ({
     ) as IImageStyle[];
 
   const handleLoad = () => {
-    console.log('Image loaded', url);
     setIsLoading(false);
   };
 
