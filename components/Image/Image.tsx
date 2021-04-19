@@ -3,7 +3,7 @@
  * Component file for Image.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTheme, Theme } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
 import _ from 'lodash';
@@ -156,7 +156,8 @@ export const Image = ({
   className,
   ...other
 }: IImageComponentProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const rootElm = useRef<HTMLImageElement>(null);
+  const [isLoading, setIsLoading] = useState(!rootElm.current?.complete);
   const theme = useTheme();
   const isResponsive = determineIfIResponsiveConfig(propWidth);
   const {
@@ -218,13 +219,15 @@ export const Image = ({
   };
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(!rootElm.current?.complete);
   }, [id]);
 
   return (
-    (!isResponsive && <img alt={alt} {...imgAttrs} loading="lazy" />) || (
+    (!isResponsive && (
+      <img ref={rootElm} alt={alt} {...imgAttrs} loading="lazy" />
+    )) || (
       <div className={cx(wrapperClassName, 'imageWrapper')}>
-        <img alt={alt} {...imgAttrs} loading="lazy" />
+        <img ref={rootElm} alt={alt} {...imgAttrs} loading="lazy" />
       </div>
     )
   );

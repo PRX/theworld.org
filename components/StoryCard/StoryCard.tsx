@@ -115,8 +115,8 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
             >
               {teaser}
             </Typography>
-            <ContentLink data={data} className={cx('link')} />
           </CardContent>
+          <ContentLink data={data} className={cx('link')} />
         </CardActionArea>
         {feature && !!(crossLinks && crossLinks.length) && (
           <CardActions>
