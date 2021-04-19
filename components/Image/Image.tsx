@@ -222,9 +222,9 @@ export const Image = ({
   }, [id]);
 
   return (
-    (!isResponsive && <img alt={alt} {...imgAttrs} />) || (
+    (!isResponsive && <img alt={alt} {...imgAttrs} loading="lazy" />) || (
       <div className={cx(wrapperClassName, 'imageWrapper')}>
-        <img alt={alt} {...imgAttrs} />
+        <img alt={alt} {...imgAttrs} loading="lazy" />
       </div>
     )
   );
