@@ -3,7 +3,7 @@
  * Component file for Image.
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme, Theme } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
 import _ from 'lodash';
@@ -156,9 +156,11 @@ export const Image = ({
   className,
   ...other
 }: IImageComponentProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const theme = useTheme();
   const isResponsive = determineIfIResponsiveConfig(propWidth);
   const {
+    id,
     styles,
     alt,
     url,
@@ -191,9 +193,21 @@ export const Image = ({
       wa < wb ? -1 : 1
     ) as IImageStyle[];
 
+  const handleLoad = () => {
+    console.log('Image loaded', url);
+    setIsLoading(false);
+  };
+
   const imgAttrs = {
-    className: [className, cx('root', { responsive: isResponsive })].join(' '),
+    className: [
+      className,
+      cx(classes.root, {
+        [classes.responsive]: isResponsive,
+        [classes.isLoading]: isLoading
+      })
+    ].join(' '),
     src: defaultSrc,
+    onLoad: handleLoad,
     ...other,
     ...(isResponsive
       ? generateResponsiveAttributes(
@@ -203,6 +217,10 @@ export const Image = ({
         )
       : generateStaticAttributes(propWidth as number, imageSrcs))
   };
+
+  useEffect(() => {
+    setIsLoading(true);
+  }, [id]);
 
   return (
     (!isResponsive && <img alt={alt} {...imgAttrs} />) || (

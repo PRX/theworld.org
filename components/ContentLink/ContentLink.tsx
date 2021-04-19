@@ -4,7 +4,9 @@
  */
 
 import React, { forwardRef } from 'react';
+import { useStore } from 'react-redux';
 import Link from 'next/link';
+import classNames from 'classnames/bind';
 import { Link as MuiLink, LinkProps } from '@material-ui/core';
 import { IPriApiResource } from 'pri-api-library/types';
 import { generateLinkPropsForContent } from '@lib/routing';
@@ -18,10 +20,16 @@ export interface ContentLinkProps extends LinkProps {
 export type ContentLinkRef = HTMLAnchorElement;
 
 export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
-  ({ children, data, query, ...other }: ContentLinkProps, ref) => {
-    const { title } = data || ({} as IPriApiResource);
+  ({ children, data, query, className, ...other }: ContentLinkProps, ref) => {
+    const store = useStore();
+    const { loading } = store.getState();
+    const { type, id, title } = data || ({} as IPriApiResource);
     const { href, as: alias } = generateLinkPropsForContent(data, query) || {};
+    const isLoading =
+      (loading?.type === type && loading?.id === id) ||
+      loading.alias === alias?.pathname;
     const classes = contentLinkStyles({});
+    const cx = classNames.bind(classes);
 
     return href ? (
       <Link href={href} as={alias} passHref>
@@ -29,7 +37,9 @@ export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
           ref={ref}
           component="a"
           underline="none"
-          classes={classes}
+          className={cx(className, classes.root, {
+            [classes.isLoading]: isLoading
+          })}
           {...other}
         >
           {children || title}

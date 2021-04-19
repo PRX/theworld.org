@@ -14,6 +14,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  LinearProgress,
   Link as MuiLink,
   List,
   ListItem,
@@ -69,7 +70,10 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
       <Card
         square
         elevation={1}
-        className={cx({ feature: feature || !image, isLoading })}
+        className={cx({
+          [classes.feature]: feature || !image,
+          [classes.isLoading]: isLoading
+        })}
       >
         <CardActionArea classes={{ root: classes.MuiCardActionAreaRoot }}>
           {image && (
@@ -82,6 +86,12 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
             </CardMedia>
           )}
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
+            <LinearProgress
+              className={cx(classes.loadingBar, {
+                [classes.isLoading]: isLoading
+              })}
+              color="secondary"
+            />
             {primaryCategory && (
               <Typography variant="overline" gutterBottom>
                 <ContentLink data={primaryCategory}>

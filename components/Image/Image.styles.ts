@@ -25,7 +25,11 @@ export const imageStyles = makeStyles(() =>
       height: '100%'
     },
     root: {
+      transition: 'opacity 400ms linear',
       objectFit: 'cover'
+    },
+    isLoading: {
+      opacity: 0
     }
   })
 );

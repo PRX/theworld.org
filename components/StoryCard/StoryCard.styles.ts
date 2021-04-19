@@ -45,6 +45,17 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
       textIndent: '-2000vw'
     },
+    loadingBar: {
+      transition: 'transform 400ms ease-out',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      transform: 'translateY(-100%)',
+      '&.$isLoading': {
+        transform: 'translateY(0)'
+      }
+    },
     MuiCardActionAreaRoot: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
@@ -67,6 +78,8 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       }
     },
     MuiCardContentRoot: {
+      position: 'relative',
+      overflow: 'hidden',
       padding: 0,
       '$feature &': {
         padding: `${theme.spacing(2)}px`

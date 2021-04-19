@@ -181,14 +181,6 @@ export const StoryDefault = ({ data }: Props) => {
     return undefined;
   };
 
-  // TODO: Parse body...
-  //    -x- Insert mobile CTA positions
-  //    -x- Remove empty <p> tags
-  //    -x- Convert local links to ContentLinks
-  //    - Replace GP video embeds with player that works (API?)
-  //    - Replace older GP image embeds with image in attribute with Image (API?)
-  //    - Replace GP pullquotes with symantic markup (API?)
-
   return (
     <ThemeProvider theme={storyTheme}>
       <Container fixed>
