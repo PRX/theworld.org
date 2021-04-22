@@ -26,6 +26,7 @@ export interface IContentComponentProxyProps {
   type?: string;
   id?: string;
   errorCode?: number;
+  redirect?: string;
 }
 
 export interface IContentContext {
