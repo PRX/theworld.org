@@ -3,7 +3,7 @@
  * Component file for Image.
  */
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTheme, Theme } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
 import _ from 'lodash';
@@ -156,9 +156,12 @@ export const Image = ({
   className,
   ...other
 }: IImageComponentProps) => {
+  const rootElm = useRef<HTMLImageElement>(null);
+  const [isLoading, setIsLoading] = useState(!rootElm.current?.complete);
   const theme = useTheme();
   const isResponsive = determineIfIResponsiveConfig(propWidth);
   const {
+    id,
     styles,
     alt,
     url,
@@ -191,9 +194,20 @@ export const Image = ({
       wa < wb ? -1 : 1
     ) as IImageStyle[];
 
+  const handleLoad = () => {
+    setIsLoading(false);
+  };
+
   const imgAttrs = {
-    className: [className, cx('root', { responsive: isResponsive })].join(' '),
+    className: [
+      className,
+      cx(classes.root, {
+        [classes.responsive]: isResponsive,
+        [classes.isLoading]: isLoading
+      })
+    ].join(' '),
     src: defaultSrc,
+    onLoad: handleLoad,
     ...other,
     ...(isResponsive
       ? generateResponsiveAttributes(
@@ -204,10 +218,16 @@ export const Image = ({
       : generateStaticAttributes(propWidth as number, imageSrcs))
   };
 
+  useEffect(() => {
+    setIsLoading(!rootElm.current?.complete);
+  }, [id]);
+
   return (
-    (!isResponsive && <img alt={alt} {...imgAttrs} />) || (
+    (!isResponsive && (
+      <img ref={rootElm} alt={alt} {...imgAttrs} loading="lazy" />
+    )) || (
       <div className={cx(wrapperClassName, 'imageWrapper')}>
-        <img alt={alt} {...imgAttrs} />
+        <img ref={rootElm} alt={alt} {...imgAttrs} loading="lazy" />
       </div>
     )
   );

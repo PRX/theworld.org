@@ -13,6 +13,7 @@ import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppHeader } from '@components/AppHeader';
 import { AppFooter } from '@components/AppFooter';
+import { AppLoadingBar } from '@components/AppLoadingBar';
 import { wrapper } from '@store';
 import { fetchAppData, fetchCtaData } from '@store/actions';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
@@ -40,7 +41,7 @@ const TwApp = ({ Component, pageProps }: TwAppProps) => {
         fetchCtaData('tw_cta_regions_site', type, id, context)
       );
     })();
-  }, [type, id]);
+  });
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -56,6 +57,7 @@ const TwApp = ({ Component, pageProps }: TwAppProps) => {
       <ThemeProvider theme={appTheme}>
         <AppContext.Provider value={contextValue}>
           <Box minHeight="100vh" display="flex" flexDirection="column">
+            <AppLoadingBar />
             <AppCtaBanner />
             <AppHeader />
             <Box flexGrow={1}>
@@ -74,18 +76,13 @@ const TwApp = ({ Component, pageProps }: TwAppProps) => {
 TwApp.getInitialProps = async (ctx: NextAppContext) => {
   const { req, store } = ctx.ctx;
   const initialProps = await App.getInitialProps(ctx);
-  const {
-    pageProps: { type, id }
-  } = initialProps;
+
+  store.dispatch({ type: 'LOADING_APP_DATA' });
 
   // Fetch App Data
   await store.dispatch<any>(fetchAppData(req));
 
-  // Fetch CTA Messages
-  const context = getCtaContext(store.getState(), type, id);
-  await store.dispatch<any>(
-    fetchCtaData('tw_cta_regions_site', type, id, context, req)
-  );
+  store.dispatch({ type: 'LOADING_COMPLETE' });
 
   return {
     ...initialProps,

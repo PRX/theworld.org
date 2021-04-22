@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { useStore } from 'react-redux';
 import { parse } from 'url';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -13,6 +14,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  LinearProgress,
   Link as MuiLink,
   List,
   ListItem,
@@ -31,7 +33,10 @@ export interface StoryCardProps {
 }
 
 export const StoryCard = ({ data, feature }: StoryCardProps) => {
-  const { teaser, title, image, primaryCategory, crossLinks } = data;
+  const store = useStore();
+  const { loading } = store.getState();
+  const { type, id, teaser, title, image, primaryCategory, crossLinks } = data;
+  const isLoading = loading && loading.type === type && loading.id === id;
   const classes = storyCardStyles({});
   const cx = classNames.bind(classes);
   const imageWidth = {
@@ -62,7 +67,14 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
 
   return (
     <ThemeProvider theme={storyCardTheme}>
-      <Card square elevation={1} className={cx({ feature: feature || !image })}>
+      <Card
+        square
+        elevation={1}
+        className={cx({
+          [classes.feature]: feature || !image,
+          [classes.isLoading]: isLoading
+        })}
+      >
         <CardActionArea classes={{ root: classes.MuiCardActionAreaRoot }}>
           {image && (
             <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
@@ -74,6 +86,12 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
             </CardMedia>
           )}
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
+            <LinearProgress
+              className={cx(classes.loadingBar, {
+                [classes.isLoading]: isLoading
+              })}
+              color="secondary"
+            />
             {primaryCategory && (
               <Typography variant="overline" gutterBottom>
                 <ContentLink data={primaryCategory}>
@@ -97,8 +115,8 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
             >
               {teaser}
             </Typography>
-            <ContentLink data={data} className={cx('link')} />
           </CardContent>
+          <ContentLink data={data} className={cx('link')} />
         </CardActionArea>
         {feature && !!(crossLinks && crossLinks.length) && (
           <CardActions>

@@ -6,12 +6,15 @@
 
 import { AnyAction } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
+import { UrlWithParsedQuery } from 'url';
 import { ContentDataState, RootState } from '@interfaces/state';
 import { generateLinkHrefForContent } from '@lib/routing/content';
 
 type State = ContentDataState | RootState;
 
 export const aliasData = (state: State = {}, action: AnyAction) => {
+  let href: UrlWithParsedQuery;
+
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload.aliasData };
@@ -21,11 +24,13 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
         [action.alias]: action.data
       };
     case 'FETCH_CONTENT_DATA_SUCCESS':
+      href = generateLinkHrefForContent(action.payload);
       return {
         ...state,
-        ...(action.payload && {
-          [generateLinkHrefForContent(action.payload).pathname]: action.payload
-        })
+        ...(action.payload &&
+          href && {
+            [href.pathname]: action.payload
+          })
       };
 
     default:

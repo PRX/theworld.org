@@ -36,5 +36,11 @@ export const fetchAliasData = (
     });
   }
 
+  dispatch({
+    type: 'FETCH_ALIAS_DATA_COMPLETE',
+    alias,
+    data
+  });
+
   return data;
 };

@@ -3,10 +3,21 @@
  * Styles for ContentLink.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-export const contentLinkStyles = makeStyles(() =>
+export const contentLinkStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {}
+    root: {},
+    isLoading: {
+      animation: '$colorCycle 500ms linear 0s alternate infinite'
+    },
+    '@keyframes colorCycle': {
+      from: {
+        color: theme.palette.secondary.main
+      },
+      to: {
+        color: theme.palette.primary.main
+      }
+    }
   })
 );

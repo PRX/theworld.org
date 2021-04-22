@@ -46,7 +46,7 @@ export const basicEpisodeParams = {
 
 export const fullEpisodeParams = {
   include: [
-    ...fullAudioParams.include.map(p => `audio.${p}`),
+    ...basicAudioParams.include.map(p => `audio.${p}`),
     'image',
     'program',
     'hosts.image.license',
