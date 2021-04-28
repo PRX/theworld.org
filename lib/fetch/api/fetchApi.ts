@@ -407,6 +407,19 @@ export const fetchApiPage = async (
 ): Promise<IPriApiResource> => fetchApi(`page/${id}`, req);
 
 /**
+ * Method that simplifies GET queries for team data.
+ *
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Person data object.
+ */
+export const fetchApiTeam = async (
+  req?: IncomingMessage
+): Promise<IPriApiResource> => fetchApi('team', req);
+
+/**
  * Method that simplifies GET queries for person data.
  *
  * @param id

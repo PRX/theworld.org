@@ -76,20 +76,12 @@ export const Bio = () => {
     'featured story'
   );
   const featuredStory = featuredStoryState.items[1][0];
-  const { items: featuredStories } = getCollectionData(
-    state,
-    type,
-    id,
-    'featured stories'
-  );
+  const { items: featuredStories } =
+    getCollectionData(state, type, id, 'featured stories') || {};
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page, next } = storiesState;
-  const { items: latestStories } = getCollectionData(
-    state,
-    'app',
-    undefined,
-    'latest'
-  );
+  const { items: stories, page, next } = storiesState || {};
+  const { items: latestStories } =
+    getCollectionData(state, 'app', undefined, 'latest') || {};
   const segmentsState = getCollectionData(state, type, id, 'segments');
   const { items: segments, count: segmentsCount, size: segmentsSize } =
     segmentsState || {};
@@ -324,7 +316,7 @@ Bio.fetchData = (
   const data = getDataByResource(state, type, id);
 
   // Get missing content data.
-  if (!data) {
+  if (!data?.complete) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -343,7 +335,10 @@ Bio.fetchData = (
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload
+      payload: {
+        ...payload,
+        complete: true
+      }
     });
 
     dispatch(

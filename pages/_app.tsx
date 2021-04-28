@@ -52,6 +52,10 @@ const TwApp = ({ Component, pageProps }: TwAppProps) => {
     }
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0 });
+  }, [type, id]);
+
   return (
     <ThemeProvider theme={baseMuiTheme}>
       <ThemeProvider theme={appTheme}>
