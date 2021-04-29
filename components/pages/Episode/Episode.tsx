@@ -5,14 +5,12 @@
 import React, { useContext, useEffect } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
-import Link from 'next/link';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
-  Button,
   Container,
   Divider,
   Grid,
@@ -21,11 +19,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import {
-  EqualizerRounded,
-  MenuBookRounded,
-  NavigateNext
-} from '@material-ui/icons';
+import { EqualizerRounded } from '@material-ui/icons';
 import { AudioPlayer } from '@components/AudioPlayer';
 import { HtmlContent } from '@components/HtmlContent';
 import {
@@ -34,7 +28,8 @@ import {
   SidebarCta,
   SidebarHeader,
   SidebarFooter,
-  SidebarList
+  SidebarList,
+  SidebarLatestStories
 } from '@components/Sidebar';
 import { SpotifyPlayer } from '@components/SpotifyPlayer';
 import { StoryCard } from '@components/StoryCard';
@@ -103,12 +98,6 @@ export const Episode = () => {
     type,
     id as string,
     'tw_cta_region_content_sidebar_02'
-  );
-  const { items: latestStories } = getCollectionData(
-    state,
-    'app',
-    null,
-    'latest'
   );
 
   useEffect(() => {
@@ -251,29 +240,7 @@ export const Episode = () => {
                     </Sidebar>
                   </Hidden>
                 )}
-                {latestStories && (
-                  <Sidebar item elevated>
-                    <SidebarHeader>
-                      <Typography variant="h2">
-                        <MenuBookRounded /> Latest world news headlines
-                      </Typography>
-                    </SidebarHeader>
-                    <SidebarList disablePadding data={latestStories[1]} />
-                    <SidebarFooter>
-                      <Link href="/latest/stories" passHref>
-                        <Button
-                          component="a"
-                          color="primary"
-                          variant="contained"
-                          fullWidth
-                          disableElevation
-                        >
-                          More stories <NavigateNext />
-                        </Button>
-                      </Link>
-                    </SidebarFooter>
-                  </Sidebar>
-                )}
+                <SidebarLatestStories />
                 {ctaSidebarBottom && (
                   <Hidden smDown>
                     <Sidebar item>

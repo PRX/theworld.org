@@ -6,18 +6,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { IncomingMessage } from 'http';
 import classNames from 'classnames/bind';
 import Head from 'next/head';
-import Link from 'next/link';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Button, Hidden, Typography } from '@material-ui/core';
-import {
-  EqualizerRounded,
-  MenuBookRounded,
-  NavigateNext,
-  PublicRounded
-} from '@material-ui/icons';
+import { EqualizerRounded, PublicRounded } from '@material-ui/icons';
 import Pagination from '@material-ui/lab/Pagination';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
@@ -28,6 +22,7 @@ import {
   SidebarCta,
   SidebarFooter,
   SidebarHeader,
+  SidebarLatestStories,
   SidebarList
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
@@ -80,8 +75,6 @@ export const Bio = () => {
     getCollectionData(state, type, id, 'featured stories') || {};
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories, page, next } = storiesState || {};
-  const { items: latestStories } =
-    getCollectionData(state, 'app', undefined, 'latest') || {};
   const segmentsState = getCollectionData(state, type, id, 'segments');
   const { items: segments, count: segmentsCount, size: segmentsSize } =
     segmentsState || {};
@@ -251,27 +244,7 @@ export const Bio = () => {
       key: 'sidebar bottom',
       children: (
         <Box mt={3}>
-          <Sidebar item elevated>
-            <SidebarHeader>
-              <Typography variant="h2">
-                <MenuBookRounded /> Latest world news headlines
-              </Typography>
-            </SidebarHeader>
-            <SidebarList disablePadding data={latestStories[1]} />
-            <SidebarFooter>
-              <Link href="/latest/stories" passHref>
-                <Button
-                  component="a"
-                  color="primary"
-                  variant="contained"
-                  fullWidth
-                  disableElevation
-                >
-                  More stories <NavigateNext />
-                </Button>
-              </Link>
-            </SidebarFooter>
-          </Sidebar>
+          <SidebarLatestStories />
           {ctaSidebarBottom && (
             <Box mt={3}>
               <Hidden only="sm">
