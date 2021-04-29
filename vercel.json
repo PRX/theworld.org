@@ -5,7 +5,8 @@
   },
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/_next/.*",
+    {
+      "src": "/_next/.*",
       "headers": {
         "x-control-type-options": "nosniff",
         "X-frame-options": "DENY",
@@ -13,12 +14,14 @@
       }
     },
     { "src": "/.+\\.[^/]+$" },
-    { "src": "/api/.*",
+    {
+      "src": "/api/.*",
       "headers": {
         "cache-control": "public, max-age=0, must-revalidate"
       }
     },
-    { "src": "(/.+)$",
+    {
+      "src": "(/.+)$",
       "dest": "/?alias=$1",
       "headers": {
         "cache-control": "public, max-age=900, s-maxage=900, stale-while-revalidate"

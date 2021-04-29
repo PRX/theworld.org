@@ -30,7 +30,7 @@ export const AppLoadingBar = () => {
   });
 
   useEffect(() => {
-    if (!isLoading && !wasLoading) {
+    if (!isLoading && !wasLoading && progress > 0) {
       setTimeout(() => {
         setBuffer(0);
         setProgress(0);
