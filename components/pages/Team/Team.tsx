@@ -39,7 +39,7 @@ export const Team = () => {
   const state = store.getState();
   const classes = teamStyles({});
   const cx = classNames.bind(classes);
-  const title = 'The World Team';
+  const title = "The World's Team";
   const { items } = getCollectionData(state, type, id, 'members');
   const loading = getLoading(state);
   const isLoading = (item: IPriApiResource) =>
