@@ -3,7 +3,7 @@
  * Exports the Home component.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { NextPageContext } from 'next';
 import Error from 'next/error';
@@ -23,12 +23,16 @@ interface StateProps extends RootState {}
 type Props = StateProps & DispatchProps & IContentComponentProxyProps;
 
 const ContentProxy = (props: Props) => {
-  const { errorCode } = props;
-  let output: JSX.Element;
+  const { errorCode, redirect } = props;
+  let output: JSX.Element = <></>;
 
   if (errorCode) {
     // Render error page.
     output = <Error statusCode={errorCode} />;
+  } else if (redirect) {
+    useEffect(() => {
+      window.location.assign(redirect);
+    });
   } else {
     // Render content component.
     const { type, id } = props;
@@ -51,7 +55,7 @@ ContentProxy.getInitialProps = async (
   } = ctx;
   let resourceId: string;
   let resourceType: string = 'homepage';
-  // let state = store.getState() as RootState;
+  let redirect: string;
 
   // Get data for alias.
   if (alias) {
@@ -67,7 +71,9 @@ ContentProxy.getInitialProps = async (
         );
 
         // Update resource id and type.
-        if (aliasData?.id) {
+        if (aliasData?.type === 'redirect--external') {
+          redirect = aliasData.url;
+        } else if (aliasData?.id) {
           const { id, type } = aliasData as IPriApiResource;
           resourceId = id as string;
           resourceType = type;
@@ -77,6 +83,11 @@ ContentProxy.getInitialProps = async (
         break;
       }
     }
+  }
+
+  // Return object with redirect url.
+  if (redirect) {
+    return { redirect };
   }
 
   // Preload content component.
