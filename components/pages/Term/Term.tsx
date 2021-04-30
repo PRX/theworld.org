@@ -5,7 +5,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -18,19 +17,11 @@ import {
   Container,
   Hidden,
   Tab,
-  Tabs,
-  Typography
+  Tabs
 } from '@material-ui/core';
-import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
-import {
-  Sidebar,
-  SidebarCta,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarList
-} from '@components/Sidebar';
+import { SidebarCta, SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import {
@@ -101,12 +92,6 @@ export const Term = () => {
   );
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories, page, next, count } = storiesState;
-  const { items: latestStories } = getCollectionData(
-    state,
-    'app',
-    undefined,
-    'latest'
-  );
   const hasStories = count > 0;
   const episodesState = getCollectionData(state, type, id, 'episodes');
   const {
@@ -307,27 +292,7 @@ export const Term = () => {
       key: 'sidebar bottom',
       children: (
         <Box mt={3}>
-          <Sidebar item elevated>
-            <SidebarHeader>
-              <Typography variant="h2">
-                <MenuBookRounded /> Latest world news headlines
-              </Typography>
-            </SidebarHeader>
-            <SidebarList disablePadding data={latestStories[1]} />
-            <SidebarFooter>
-              <Link href="/latest/stories" passHref>
-                <Button
-                  component="a"
-                  color="primary"
-                  variant="contained"
-                  fullWidth
-                  disableElevation
-                >
-                  More stories <NavigateNext />
-                </Button>
-              </Link>
-            </SidebarFooter>
-          </Sidebar>
+          <SidebarLatestStories />
           {ctaSidebarBottom && (
             <Box mt={3}>
               <Hidden only="sm">

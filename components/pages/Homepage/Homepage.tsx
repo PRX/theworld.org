@@ -5,21 +5,13 @@
 import React, { useEffect } from 'react';
 import { IncomingMessage } from 'http';
 import Head from 'next/head';
-import Link from 'next/link';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { Box, Button, Hidden, Typography } from '@material-ui/core';
-import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
+import { Box, Hidden } from '@material-ui/core';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
-import {
-  Sidebar,
-  SidebarCta,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarList
-} from '@components/Sidebar';
+import { SidebarCta, SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -168,27 +160,7 @@ export const Homepage = () => {
       key: 'sidebar bottom',
       children: (
         <Box mt={3}>
-          <Sidebar item elevated>
-            <SidebarHeader>
-              <Typography variant="h2">
-                <MenuBookRounded /> Latest world news headlines
-              </Typography>
-            </SidebarHeader>
-            <SidebarList disablePadding data={latestStories[1]} />
-            <SidebarFooter>
-              <Link href="/latest/stories" passHref>
-                <Button
-                  component="a"
-                  color="primary"
-                  variant="contained"
-                  fullWidth
-                  disableElevation
-                >
-                  More stories <NavigateNext />
-                </Button>
-              </Link>
-            </SidebarFooter>
-          </Sidebar>
+          <SidebarLatestStories data={latestStories[1]} />
           {sidebarBottom && (
             <Box mt={3}>
               <Hidden only="sm">
