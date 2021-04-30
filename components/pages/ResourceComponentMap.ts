@@ -10,6 +10,7 @@ const DynamicNewsletter = dynamic(() => import('./Newsletter') as any);
 const DynamicPage = dynamic(() => import('./Page') as any);
 const DynamicProgram = dynamic(() => import('./Program') as any);
 const DynamicStory = dynamic(() => import('./Story') as any);
+const DynamicTeam = dynamic(() => import('./Team') as any);
 const DynamicTerm = dynamic(() => import('./Term') as any);
 
 // Map dyanmic component to a data/resource type.
@@ -23,5 +24,6 @@ export const ResourceComponentMap = {
   'node--programs': DynamicProgram,
   'node--stories': DynamicStory,
   'taxonomy_term--categories': DynamicCategory,
-  'taxonomy_term--terms': DynamicTerm
+  'taxonomy_term--terms': DynamicTerm,
+  team: DynamicTeam
 };

@@ -59,19 +59,29 @@ ContentProxy.getInitialProps = async (
 
   // Get data for alias.
   if (alias) {
-    const aliasData = await store.dispatch<any>(
-      fetchAliasData(alias as string, req)
-    );
+    switch (alias) {
+      case '/programs/the-world/team':
+        resourceId = 'the_world';
+        resourceType = 'team';
+        break;
 
-    // Update resource id and type.
-    if (aliasData?.type === 'redirect--external') {
-      redirect = aliasData.url;
-    } else if (aliasData?.id) {
-      const { id, type } = aliasData as IPriApiResource;
-      resourceId = id as string;
-      resourceType = type;
-    } else {
-      resourceType = null;
+      default: {
+        const aliasData = await store.dispatch<any>(
+          fetchAliasData(alias as string, req)
+        );
+
+        // Update resource id and type.
+        if (aliasData?.type === 'redirect--external') {
+          redirect = aliasData.url;
+        } else if (aliasData?.id) {
+          const { id, type } = aliasData as IPriApiResource;
+          resourceId = id as string;
+          resourceType = type;
+        } else {
+          resourceType = null;
+        }
+        break;
+      }
     }
   }
 

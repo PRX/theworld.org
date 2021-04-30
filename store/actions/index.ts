@@ -7,3 +7,4 @@ export * from './fetchEpisodeData';
 export * from './fetchHomepageData';
 export * from './fetchPageData';
 export * from './fetchStoryData';
+export * from './fetchTeamData';
