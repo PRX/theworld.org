@@ -2,7 +2,8 @@
  * @file Story.tsx
  * Component for Story.
  */
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { useStore } from 'react-redux';
 import { IncomingMessage } from 'http';
 import classNames from 'classnames/bind';
 import Head from 'next/head';
@@ -16,25 +17,32 @@ import {
   Typography
 } from '@material-ui/core';
 import { CheckCircleOutlineSharp } from '@material-ui/icons';
+import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { Image } from '@components/Image';
 import { NewsletterForm } from '@components/NewsletterForm';
-import { IContentComponentProps } from '@interfaces/content';
 import { IPriApiNewsletter } from '@interfaces/newsletter';
 import { RootState } from '@interfaces/state';
-import { fetchApiNewsletter } from '@lib/fetch';
 import { parseNewsletterOptions } from '@lib/parse/cta';
+import { fetchNewsletterData } from '@store/actions';
 import { getDataByResource } from '@store/reducers';
-import { getContentData } from '@store/reducers/contentData';
 import { newsletterTheme, newsletterStyles } from './Newsletter.styles';
 
-interface StateProps extends RootState {}
+export const Newsletter = () => {
+  const {
+    page: {
+      resource: { type, id }
+    }
+  } = useContext(AppContext);
+  const store = useStore();
+  const state = store.getState();
+  let data = getDataByResource(state, type, id);
 
-type Props = StateProps & IContentComponentProps;
+  if (!data) {
+    return null;
+  }
 
-export const Newsletter = ({ id, contentData }: Props) => {
   const [subscribed, setSubscribed] = useState(false);
-  const data = getContentData(contentData, 'node--newsletter_sign_ups', id);
   const { title, body, buttonLabel, summary, image } = data;
   const options = parseNewsletterOptions(
     data as IPriApiNewsletter,
@@ -46,6 +54,16 @@ export const Newsletter = ({ id, contentData }: Props) => {
   const handleSubscribed = () => {
     setSubscribed(true);
   };
+
+  useEffect(() => {
+    if (!data.complete) {
+      (async () => {
+        // Get content data.
+        await store.dispatch<any>(fetchNewsletterData(id));
+        data = getDataByResource(state, type, id);
+      })();
+    }
+  }, [id]);
 
   return (
     <>
@@ -138,24 +156,11 @@ Newsletter.fetchData = (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ) => {
-  const state = getState();
-  const data = getDataByResource(state, 'node--newsletter_sign_ups', id);
+  const type = 'node--newsletter_sign_ups';
+  const data = getDataByResource(getState(), type, id);
 
-  // Get missing content data.
   if (!data) {
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_REQUEST',
-      payload: {
-        type: 'node--newsletter_sign_ups',
-        id
-      }
-    });
-
-    const apiData = await fetchApiNewsletter(id, req);
-
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload: apiData
-    });
+    // Get content data.
+    await dispatch<any>(fetchNewsletterData(id, req));
   }
 };
