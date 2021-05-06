@@ -3,6 +3,7 @@
  * Interfaces for button.
  */
 
+import { PropTypes } from '@material-ui/core';
 import { Url } from 'url';
 
 export interface IButton {
@@ -10,7 +11,7 @@ export interface IButton {
   name: string;
   url?: Url;
   itemLinkClass?: string;
-  color?: string;
+  color?: PropTypes.Color;
   icon?: string;
   title?: string;
   children?: IButton[];
