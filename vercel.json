@@ -13,7 +13,12 @@
         "x-xss-protextion": "1; mode=block"
       }
     },
-    { "src": "/.+\\.[^/]+$" },
+    { "src": "/.+\\.[^/]+$",
+      "headers":         {
+        "key": "Permissions-Policy",
+        "value": "interest-cohort=()"
+      }
+    },
     {
       "src": "/api/.*",
       "headers": {
@@ -26,17 +31,6 @@
       "headers": {
         "cache-control": "public, max-age=900, s-maxage=900, stale-while-revalidate"
       }
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers" : [
-         {
-           "key": "Permissions-Policy",
-           "value": "interest-cohort=()"
-         }
-      ]
     }
   ]
 }
