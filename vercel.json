@@ -13,7 +13,8 @@
         "x-xss-protextion": "1; mode=block"
       }
     },
-    { "src": "/.+\\.[^/]+$",
+    {
+      "src": "/.+\\.[^/]+$",
       "headers":         {
         "key": "Permissions-Policy",
         "value": "interest-cohort=()"
