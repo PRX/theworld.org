@@ -10,25 +10,33 @@
       "headers": {
         "x-control-type-options": "nosniff",
         "X-frame-options": "DENY",
-        "x-xss-protextion": "1; mode=block",
-        "Permissions-Policy": "interest-cohort=()"
+        "x-xss-protextion": "1; mode=block"
       }
     },
     { "src": "/.+\\.[^/]+$" },
     {
       "src": "/api/.*",
       "headers": {
-        "cache-control": "public, max-age=0, must-revalidate",
-        "Permissions-Policy": "interest-cohort=()"
+        "cache-control": "public, max-age=0, must-revalidate"
       }
     },
     {
       "src": "(/.+)$",
       "dest": "/?alias=$1",
       "headers": {
-        "cache-control": "public, max-age=900, s-maxage=900, stale-while-revalidate",
-        "Permissions-Policy": "interest-cohort=()"
+        "cache-control": "public, max-age=900, s-maxage=900, stale-while-revalidate"
       }
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers" : [
+         {
+           "key": "Permissions-Policy",
+           "value": "interest-cohort=()",
+         }
+      ]
     }
   ]
 }
