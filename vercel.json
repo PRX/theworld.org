@@ -24,17 +24,16 @@
       "src": "(/.+)$",
       "dest": "/?alias=$1",
       "headers": {
-        "cache-control": "public, max-age=900, s-maxage=900, stale-while-revalidate"
+        "cache-control": "public, max-age=900, s-maxage=900, stale-while-revalidate",
+        "Permissions-Policy": "interest-cohort=()"
       }
     },
     {
-      "source": "/(.*)",
-      "headers" : [
-         {
-           "key": "Permissions-Policy",
-           "value": "interest-cohort=()"
-         }
-      ]
-     }
+      "src": "/",
+      "headers": {
+        "cache-control": "public, max-age=900, s-maxage=900, stale-while-revalidate",
+        "Permissions-Policy": "interest-cohort=()"
+      }
+    }
   ]
 }
