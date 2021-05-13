@@ -4,6 +4,7 @@
  */
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Block } from '@material-ui/icons';
 
 export const appFooterStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,7 +53,9 @@ export const appFooterStyles = makeStyles((theme: Theme) =>
         content: ':'
       }
     },
-    logoLink: {},
+    logoLink: {
+      display: 'block'
+    },
     logo: {
       width: '100%',
       height: 'auto'
