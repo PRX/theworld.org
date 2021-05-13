@@ -73,7 +73,7 @@ export const AppHeader = () => {
           </NoSsr>
 
           <Link href="/">
-            <a href="/">
+            <a href="/" aria-label="The World">
               <Logo className={cx({ twLogo: true })} />
             </a>
           </Link>
