@@ -12,6 +12,7 @@ class TwDocument extends Document {
     return (
       <Html>
         <Head>
+          <html lang="en">
           <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Sans+Pro:400,700,400italic|Montserrat:400,700|Alegreya:400,400italic|Roboto|Roboto+Slab|Sanchez"
             rel="stylesheet"
