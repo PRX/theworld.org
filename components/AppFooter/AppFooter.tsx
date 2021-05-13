@@ -44,7 +44,7 @@ export const AppFooter = () => {
             <Link href="https://prx.org/" aria-label="PRX">
               <PrxLogo className={producedByLogoClasses} />
             </Link>
-            <Link href="https://gbh.org/" aria-label="PRX">
+            <Link href="https://gbh.org/" aria-label="GBH">
               <WGBHLogo className={producedByLogoClasses} />
             </Link>
           </Breadcrumbs>
@@ -60,7 +60,7 @@ export const AppFooter = () => {
               separator: classes.fundedByMuiSeparator
             }}
           >
-            <a className={classes.logoLink} href="https://www.carnegie.org/" title="Carnegie Corporation of New York">
+            <a className={classes.logoLink} href="https://www.carnegie.org/" aria-label="Carnegie Corporation of New York">
               <img
                 className={classes.logo}
                 alt="Carnegie Corporation of New York"
@@ -70,7 +70,7 @@ export const AppFooter = () => {
                 height="131"
               />
             </a>
-            <a className={classes.logoLink} href="https://www.macfound.org/" title="MacArthur Foundation">
+            <a className={classes.logoLink} href="https://www.macfound.org/" aria-label="MacArthur Foundation">
               <img
                 className={classes.logo}
                 alt="MacArthur Foundation"
@@ -83,7 +83,7 @@ export const AppFooter = () => {
             <a
               className={classes.logoLink}
               href="https://www.fordfoundation.org/"
-              title="Ford Foundation"
+              aria-label="Ford Foundation"
             >
               <img
                 className={classes.logo}
@@ -94,7 +94,7 @@ export const AppFooter = () => {
                 height="52"
               />
             </a>
-            <a className={classes.logoLink} href="https://cpb.org/" title="Corporation for Public Broadcasting">
+            <a className={classes.logoLink} href="https://cpb.org/" aria-label="Corporation for Public Broadcasting">
               <img
                 className={classes.logo}
                 alt="Corporation for Public Broadcasting"
