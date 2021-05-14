@@ -38,6 +38,7 @@ export const AppHeaderNav = () => {
               variant="contained"
               color={color || 'default'}
               disableRipple
+              disableElevation
               {...(icon && { startIcon: renderIcon(icon) })}
             >
               {name}

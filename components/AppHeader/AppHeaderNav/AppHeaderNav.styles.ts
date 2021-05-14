@@ -12,13 +12,7 @@ import {
 
 export const appHeaderNavTheme = (theme: Theme) =>
   createMuiTheme(theme, {
-    overrides: {
-      MuiButton: {
-        root: {
-          borderRadius: '0.25em'
-        }
-      }
-    }
+    overrides: {}
   });
 
 export const appHeaderNavStyles = makeStyles((theme: Theme) =>
