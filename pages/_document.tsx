@@ -10,7 +10,7 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 class TwDocument extends Document {
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
           <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Sans+Pro:400,700,400italic|Montserrat:400,700|Alegreya:400,400italic|Roboto|Roboto+Slab|Sanchez"
