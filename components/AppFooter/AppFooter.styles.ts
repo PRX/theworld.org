@@ -4,7 +4,6 @@
  */
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Block } from '@material-ui/icons';
 
 export const appFooterStyles = makeStyles((theme: Theme) =>
   createStyles({
