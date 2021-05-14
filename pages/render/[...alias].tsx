@@ -35,12 +35,10 @@ const ContentProxy = (props: Props) => {
     });
   } else {
     // Render content component.
-    const { type, id } = props;
+    const { type } = props;
     const ContentComponent = importComponent(type);
 
-    console.log(type, id, ContentComponent);
-
-    output = <ContentComponent id={id} />;
+    output = <ContentComponent />;
   }
 
   return !redirect && output;
@@ -63,8 +61,6 @@ ContentProxy.getInitialProps = async (
   if (alias) {
     const aliasPath = (alias as string[]).join('/');
 
-    console.log(alias, aliasPath);
-
     switch (aliasPath) {
       case '/programs/the-world/team':
         resourceId = 'the_world';
@@ -73,8 +69,6 @@ ContentProxy.getInitialProps = async (
 
       default: {
         const aliasData = await store.dispatch(fetchAliasData(aliasPath, req));
-
-        console.log(aliasData);
 
         // Update resource id and type.
         if (aliasData?.type === 'redirect--external') {
