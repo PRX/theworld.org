@@ -29,7 +29,7 @@ export const AppHeaderNav = () => {
     (headerNav?.length && (
       <ThemeProvider theme={appHeaderNavTheme}>
         <div className={classes.root}>
-          {headerNav.map(({ color, icon, name, url, key }) => (
+          {headerNav.map(({ color, icon, name, url, key, attributes }) => (
             <Button
               component="a"
               href={url.href}
@@ -40,6 +40,7 @@ export const AppHeaderNav = () => {
               disableRipple
               disableElevation
               {...(icon && { startIcon: renderIcon(icon) })}
+              {...attributes}
             >
               {name}
             </Button>

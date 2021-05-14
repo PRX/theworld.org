@@ -45,7 +45,7 @@ export const parseMenu = (data: ILink[]): IButton[] => {
               ({ id: childId, ...attributes } as ILink)
           )
         ),
-      attrinbutes: otherAttributes
+      attributes: otherAttributes
     })
   );
 };
