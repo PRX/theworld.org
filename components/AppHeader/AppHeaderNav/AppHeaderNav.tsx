@@ -31,6 +31,8 @@ export const AppHeaderNav = () => {
         <div className={classes.root}>
           {headerNav.map(({ color, icon, name, url, key }) => (
             <Button
+              component="a"
+              href={url.href}
               onClick={handleButtonClick(url)}
               key={key}
               variant="contained"
