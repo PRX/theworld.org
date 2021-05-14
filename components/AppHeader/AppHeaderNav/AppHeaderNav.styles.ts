@@ -9,10 +9,24 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
+import { addCssColorAlpha } from '@lib/parse/color';
 
 export const appHeaderNavTheme = (theme: Theme) =>
   createMuiTheme(theme, {
-    overrides: {}
+    overrides: {
+      MuiButton: {
+        text: {
+          color: theme.palette.primary.contrastText,
+          fontWeight: theme.typography.fontWeightBold,
+          '&:hover, &:focus': {
+            backgroundColor: addCssColorAlpha(
+              theme.palette.primary.contrastText,
+              0.1
+            )
+          }
+        }
+      }
+    }
   });
 
 export const appHeaderNavStyles = makeStyles((theme: Theme) =>

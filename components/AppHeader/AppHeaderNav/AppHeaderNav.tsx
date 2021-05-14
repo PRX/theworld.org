@@ -29,22 +29,28 @@ export const AppHeaderNav = () => {
     (headerNav?.length && (
       <ThemeProvider theme={appHeaderNavTheme}>
         <div className={classes.root}>
-          {headerNav.map(({ color, icon, name, url, key, attributes }) => (
-            <Button
-              component="a"
-              href={url.href}
-              onClick={handleButtonClick(url)}
-              key={key}
-              variant="contained"
-              color={color || 'default'}
-              disableRipple
-              disableElevation
-              {...(icon && { startIcon: renderIcon(icon) })}
-              {...attributes}
-            >
-              {name}
-            </Button>
-          ))}
+          {headerNav.map(
+            ({ color, icon, name, url, key, attributes, itemLinkClass }) => (
+              <Button
+                component="a"
+                href={url.href}
+                onClick={handleButtonClick(url)}
+                key={key}
+                variant={
+                  /\bbtn-(text|link)\b/.test(itemLinkClass)
+                    ? 'text'
+                    : 'contained'
+                }
+                color={color || 'default'}
+                disableRipple
+                disableElevation
+                {...(icon && { startIcon: renderIcon(icon) })}
+                {...attributes}
+              >
+                {name}
+              </Button>
+            )
+          )}
         </div>
       </ThemeProvider>
     )) ||
