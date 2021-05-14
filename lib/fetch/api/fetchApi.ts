@@ -82,7 +82,7 @@ export const fetchApi = async (
 export const fetchApiQueryAlias = async (
   alias: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`query/alias${alias}`, req);
+): Promise<IPriApiResource> => fetchApi(`query/alias/${alias}`, req);
 
 /**
  * Method that simplifies GET queries for app data.

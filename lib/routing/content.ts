@@ -29,7 +29,7 @@ export const generateLinkHrefForContent = (
 export const generateLinkPropsForContent = (
   data: IPriApiResource,
   query?: { [k: string]: string }
-): { href: UrlWithParsedQuery; as: UrlWithParsedQuery } => {
+): { href: UrlWithParsedQuery; as: UrlWithParsedQuery } | false => {
   const url = generateLinkHrefForContent(data);
 
   if (url) {
@@ -38,9 +38,9 @@ export const generateLinkPropsForContent = (
       ...(query && { query })
     };
     const href = {
-      ...parse('/'),
+      ...parse('/render/[...alias]'),
       query: {
-        alias: alias.pathname,
+        alias: alias.pathname.split('/'),
         ...query
       }
     };
@@ -50,4 +50,6 @@ export const generateLinkPropsForContent = (
       as: alias
     };
   }
+
+  return false;
 };

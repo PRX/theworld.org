@@ -18,7 +18,7 @@ export const fetchAppData = (
   getState: () => RootState
 ): Promise<void> => {
   const state = getState();
-  const latest = getCollectionData(state, 'app', null, 'latest');
+  const latest = getCollectionData(state, 'app', undefined, 'latest');
 
   if (!latest) {
     dispatch({

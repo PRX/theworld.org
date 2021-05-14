@@ -10,9 +10,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const path = (slugs as string[]).join('/');
 
   if (path.length) {
+    console.log('fetching alias data: ', path);
+
     const apiResp = await fetchPriApiQueryAlias(path, {
       fields: ['id']
     });
+
+    console.log(apiResp);
 
     if (apiResp) {
       res.status(200).json(apiResp.data);

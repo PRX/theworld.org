@@ -1,39 +1,58 @@
 {
-  "version": 2,
-  "env": {
-    "CM_API_KEY": "@cm-api-key"
-  },
-  "routes": [
-    { "handle": "filesystem" },
+  "headers": [
     {
-      "src": "/_next/.*",
-      "headers": {
-        "x-control-type-options": "nosniff",
-        "X-frame-options": "DENY",
-        "x-xss-protextion": "1; mode=block"
-      }
-    },
-    { "src": "/.+\\.[^/]+$" },
-    {
-      "src": "/api/.*",
-      "headers": {
-        "cache-control": "public, max-age=0, must-revalidate"
-      }
+      "source": "/_next/(.*)",
+      "headers": [
+        {
+          "key": "x-control-type-options",
+          "value": "nosniff"
+        },
+        {
+          "key": "x-frame-options",
+          "value": "DENY"
+        },
+        {
+          "key": "x-xss-protection",
+          "value": "1; mode=block"
+        }
+      ]
     },
     {
-      "src": "(/.+)$",
-      "dest": "/?alias=$1",
-      "headers": {
-        "cache-control": "public, max-age=900, s-maxage=900, stale-while-revalidate",
-        "Permissions-Policy": "interest-cohort=()"
-      }
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=900, s-maxage=900, stale-while-revalidate"
+        }
+      ]
     },
     {
-      "src": "/",
-      "headers": {
-        "cache-control": "public, max-age=900, s-maxage=900, stale-while-revalidate",
-        "Permissions-Policy": "interest-cohort=()"
-      }
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=900, s-maxage=900, stale-while-revalidate"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "interest-cohort=()"
+        },
+        {
+          "key": "x-frame-options",
+          "value": "DENY"
+        },
+        {
+          "key": "x-xss-protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "(/.+\\.[^/]+$)", "destination": "$1" },
+    {
+      "source": "/((?!_next/|__nextjs_original-stack-frame|api/).+)",
+      "destination": "/render/$1"
     }
   ]
 }

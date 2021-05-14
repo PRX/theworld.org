@@ -38,10 +38,12 @@ const ContentProxy = (props: Props) => {
     const { type, id } = props;
     const ContentComponent = importComponent(type);
 
+    console.log(type, id, ContentComponent);
+
     output = <ContentComponent id={id} />;
   }
 
-  return output;
+  return !redirect && output;
 };
 
 ContentProxy.getInitialProps = async (
@@ -57,20 +59,22 @@ ContentProxy.getInitialProps = async (
   let resourceType: string = 'homepage';
   let redirect: string;
 
-  console.log(alias);
-
   // Get data for alias.
   if (alias) {
-    switch (alias) {
+    const aliasPath = (alias as string[]).join('/');
+
+    console.log(alias, aliasPath);
+
+    switch (aliasPath) {
       case '/programs/the-world/team':
         resourceId = 'the_world';
         resourceType = 'team';
         break;
 
       default: {
-        const aliasData = await store.dispatch(
-          fetchAliasData(`/${alias}` as string, req)
-        );
+        const aliasData = await store.dispatch(fetchAliasData(aliasPath, req));
+
+        console.log(aliasData);
 
         // Update resource id and type.
         if (aliasData?.type === 'redirect--external') {
@@ -104,6 +108,7 @@ ContentProxy.getInitialProps = async (
       await store.dispatch(ContentComponent.fetchData(resourceId, req));
 
       store.dispatch({ type: 'LOADING_COMPLETE' });
+
       return { type: resourceType, id: resourceId };
     }
   }
@@ -120,7 +125,7 @@ ContentProxy.getInitialProps = async (
   };
 };
 
-const mapStateToProps = (state: RootState): StateProps => state;
+const mapStateToProps = (state: RootState) => state;
 
 export const config = { amp: 'hybrid' };
 export default connect<StateProps, DispatchProps, IContentComponentProxyProps>(

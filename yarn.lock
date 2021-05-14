@@ -8080,10 +8080,10 @@ next-fonts@^0.17.0:
     file-loader "^2.0.0"
     url-loader "^1.1.1"
 
-next-redux-wrapper@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-6.0.2.tgz#b8dcd214e7b5cedd7a2a611ddb60422384d24374"
-  integrity sha512-I9CnIYhQwI/qEoNdc9VAPjIyuq4rFFhCTa4rKhoDHWEVHGB1DXZy8TAyGpwvWizESd8IoTI/OKlP6bFpCbXsOw==
+next-redux-wrapper@7.0.0-rc.2:
+  version "7.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-7.0.0-rc.2.tgz#8d6673ea2a1f1dbd98de710d928f739241fa2e37"
+  integrity sha512-3djAs4zdmwHJhA3vg7uhVazJcDlubsrU1qRm96GxFmuRHC3/2+lOh4q/1CnQHnBz9dQLNmTNcR6k22PSCYXpFg==
 
 next-tick@~1.0.0:
   version "1.0.0"
