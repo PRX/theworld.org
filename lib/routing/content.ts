@@ -29,7 +29,7 @@ export const generateLinkHrefForContent = (
 export const generateLinkPropsForContent = (
   data: IPriApiResource,
   query?: { [k: string]: string }
-): { href: UrlWithParsedQuery; as: UrlWithParsedQuery } | false => {
+): { href: UrlWithParsedQuery; as: UrlWithParsedQuery } => {
   const url = generateLinkHrefForContent(data);
 
   if (url) {
@@ -51,5 +51,8 @@ export const generateLinkPropsForContent = (
     };
   }
 
-  return false;
+  return {
+    href: null,
+    as: null
+  };
 };
