@@ -22,7 +22,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=900, s-maxage=900, stale-while-revalidate"
+          "value": "public, max-age=900, s-maxage=900, stale-while-revalidate, stale-if-error"
         }
       ]
     },
@@ -31,7 +31,7 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=900, s-maxage=900, stale-while-revalidate"
+          "value": "public, max-age=86400, s-maxage=86400, stale-while-revalidate, stale-if-error"
         },
         {
           "key": "Permissions-Policy",
