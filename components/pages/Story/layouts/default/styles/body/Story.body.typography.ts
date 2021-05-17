@@ -16,7 +16,7 @@ export const storyBodyTypography = (theme: Theme) =>
       color: theme.palette.primary.main,
       textDecoration: 'none',
       '&:hover': {
-        color: theme.palette.secondary.main
+        color: theme.palette.secondary.dark
       }
     },
 
@@ -52,8 +52,8 @@ export const storyBodyTypography = (theme: Theme) =>
       margin: 0,
       padding: theme.typography.pxToRem(theme.spacing(3)),
       color: theme.palette.grey[700],
-      fontSize: '0.9rem',
-      lineHeight: '1.1rem',
+      fontSize: '1.2rem',
+      lineHeight: '1.2rem',
       '& p': {
         margin: 0,
         '& + p': {
@@ -71,7 +71,7 @@ export const storyBodyTypography = (theme: Theme) =>
       },
       '&.pullquote': {
         background: 'none',
-        color: theme.palette.secondary.main,
+        color: theme.palette.secondary.dark,
         fontFamily: '"Alegreya", serif',
         fontSize: '1.5rem',
         textAlign: 'center',
@@ -79,15 +79,15 @@ export const storyBodyTypography = (theme: Theme) =>
           lineHeight: theme.typography.pxToRem(32.4)
         },
         '& footer': {
-          color: theme.palette.grey[600],
-          fontSize: '0.9rem'
+          color: theme.palette.grey[700],
+          fontSize: '1rem'
         }
       }
     },
 
     '& [gp-pullquote]': {
       padding: theme.typography.pxToRem(theme.spacing(3)),
-      color: theme.palette.secondary.main,
+      color: theme.palette.secondary.dark,
       fontFamily: '"Alegreya", serif',
       fontSize: '1.5rem',
       textAlign: 'center'
@@ -96,7 +96,7 @@ export const storyBodyTypography = (theme: Theme) =>
       content: '"- " attr(gp-pullquote-source)',
       display: 'block',
       marginTop: '0.75rem',
-      color: theme.palette.grey[600],
-      fontSize: '0.9rem'
+      color: theme.palette.grey[700],
+      fontSize: '1rem'
     }
   } as CreateCSSProperties<{}>);

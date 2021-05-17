@@ -26,7 +26,8 @@ export const baseMuiTheme = createMuiTheme({
     secondary: {
       light: orange[400],
       main: orange[500],
-      contrastText: common.white
+      dark: orange[700],
+      contrastText: common.black
     },
     error: {
       main: red[500]

@@ -83,9 +83,9 @@ export const audioPlayerTheme = (theme: Theme) => {
         },
         valueLabel: {
           left: 'auto',
-          color: theme.palette.secondary.main,
+          color: theme.palette.secondary.dark,
           '& [class*="label"]': {
-            color: theme.palette.secondary.contrastText
+            color: theme.palette.secondary.main
           }
         }
       }

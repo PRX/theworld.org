@@ -42,7 +42,8 @@ export const appCtaBannerTheme = (theme: Theme) =>
         label: {
           paddingTop: theme.spacing(2),
           paddingBottom: theme.spacing(2),
-          textAlign: 'left'
+          textAlign: 'left',
+          color: theme.palette.grey[600]
         }
       },
       MuiIconButton: {

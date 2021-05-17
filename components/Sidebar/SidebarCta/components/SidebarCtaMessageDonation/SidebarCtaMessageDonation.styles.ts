@@ -10,7 +10,7 @@ export const sidebarCtaMessageDonationTheme = (theme: Theme) =>
     overrides: {
       MuiCard: {
         root: {
-          borderLeftColor: theme.palette.secondary.main
+          borderLeftColor: theme.palette.secondary.dark
         }
       }
     }
