@@ -6,7 +6,7 @@
 import { MouseEvent } from 'react';
 import Router from 'next/router';
 import { Url } from 'url';
-import { isLocalUrl } from '@lib/parse/url';
+import { isLocalUrl } from '../parse/url';
 
 /**
  * Helper function to convert generic Url object for use in app relative aliseed
@@ -19,10 +19,14 @@ import { isLocalUrl } from '@lib/parse/url';
  *    Url object with alias query relative to app.
  */
 export const generateLinkHrefFromUrl = (url: Url) => {
-  const query = url.pathname !== '/' ? { alias: url.pathname } : null;
+  const pathname = url.pathname !== '/' ? '/render/[...alias]' : '/';
+  const query =
+    url.pathname !== '/'
+      ? { alias: url.pathname.replace(/^\/+|\/+$/g, '').split('/') }
+      : null;
 
   return {
-    pathname: '/',
+    pathname,
     query
   };
 };
