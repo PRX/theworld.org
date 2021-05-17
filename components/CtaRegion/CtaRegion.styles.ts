@@ -51,7 +51,7 @@ export const ctaRegionTheme = (theme: Theme) =>
           color: 'inherit'
         }
       },
-      MuiFormControlLabel: {
+      Mui: {
         root: {
           paddingLeft: theme.spacing(2)
         },
@@ -59,7 +59,7 @@ export const ctaRegionTheme = (theme: Theme) =>
           paddingTop: theme.spacing(2),
           paddingBottom: theme.spacing(2),
           textAlign: 'left',
-          color: theme.palette.grey[600]
+          color: theme.palette.grey[700]
         }
       },
       MuiIconButton: {
