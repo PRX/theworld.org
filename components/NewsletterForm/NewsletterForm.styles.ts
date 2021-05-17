@@ -7,7 +7,8 @@ import {
   createMuiTheme,
   Theme,
   makeStyles,
-  createStyles
+  createStyles,
+  withTheme
 } from '@material-ui/core/styles';
 
 export const newsletterFormTheme = (theme: Theme) => {
@@ -22,6 +23,11 @@ export const newsletterFormTheme = (theme: Theme) => {
 
   return createMuiTheme(tempTheme, {
     overrides: {
+      MuiInputBase: {
+        input: {
+          color: theme.palette.grey[700]
+        }
+      },
       MuiButton: {
         containedPrimary: {
           '&:hover': {
