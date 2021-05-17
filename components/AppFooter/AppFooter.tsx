@@ -41,10 +41,10 @@ export const AppFooter = () => {
               li: classes.producedByMuiLi
             }}
           >
-            <Link href="https://prx.org/">
+            <Link href="https://prx.org/" aria-label="PRX">
               <PrxLogo className={producedByLogoClasses} />
             </Link>
-            <Link href="https://gbh.org/">
+            <Link href="https://gbh.org/" aria-label="GBH">
               <WGBHLogo className={producedByLogoClasses} />
             </Link>
           </Breadcrumbs>
@@ -60,39 +60,48 @@ export const AppFooter = () => {
               separator: classes.fundedByMuiSeparator
             }}
           >
-            <a className={classes.logoLink} href="https://www.carnegie.org/">
+            <a className={classes.logoLink} href="https://www.carnegie.org/" aria-label="Carnegie Corporation of New York">
               <img
                 className={classes.logo}
                 alt="Carnegie Corporation of New York"
                 title="Carnegie Corporation of New York"
                 src="https://media.pri.org/s3fs-public/styles/original_image/public/images/2018/09/carnegie.jpg"
+                width="376"
+                height="131"
               />
             </a>
-            <a className={classes.logoLink} href="https://www.macfound.org/">
+            <a className={classes.logoLink} href="https://www.macfound.org/" aria-label="MacArthur Foundation">
               <img
                 className={classes.logo}
                 alt="MacArthur Foundation"
                 title="MacArthur Foundation"
                 src="https://media.pri.org/s3fs-public/logo-macarthur-color.jpg"
+                width="149"
+                height="52"
               />
             </a>
             <a
               className={classes.logoLink}
               href="https://www.fordfoundation.org/"
+              aria-label="Ford Foundation"
             >
               <img
                 className={classes.logo}
                 alt="Ford Foundation"
                 title="Ford Foundation"
                 src="https://media.pri.org/s3fs-public/styles/original_image/public/images/2018/09/ford.jpg"
+                width="149"
+                height="52"
               />
             </a>
-            <a className={classes.logoLink} href="https://cpb.org/">
+            <a className={classes.logoLink} href="https://cpb.org/" aria-label="Corporation for Public Broadcasting">
               <img
                 className={classes.logo}
                 alt="Corporation for Public Broadcasting"
                 title="Corporation for Public Broadcasting"
                 src="https://media.pri.org/s3fs-public/images/2020/01/cpb-logo.png"
+                width="304"
+                height="104"
               />
             </a>
           </Breadcrumbs>

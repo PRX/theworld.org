@@ -32,6 +32,9 @@ export const appFooterStyles = makeStyles((theme: Theme) =>
       color: theme.palette.primary.main,
       '&:is(a)': {
         textDecoration: 'none',
+        display: 'block',
+        minHeight: '48px',
+        minWidth: '48px',
         '&:hover': {
           textDecoration: 'underline'
         }
@@ -52,7 +55,9 @@ export const appFooterStyles = makeStyles((theme: Theme) =>
         content: ':'
       }
     },
-    logoLink: {},
+    logoLink: {
+      display: 'block'
+    },
     logo: {
       width: '100%',
       height: 'auto'
