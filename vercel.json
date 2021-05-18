@@ -49,9 +49,8 @@
     }
   ],
   "rewrites": [
-    { "source": "(/.+\\.[^/]+$)", "destination": "$1" },
     {
-      "source": "/((?!_next/|__nextjs_original-stack-frame|api/).+)",
+      "source": "/((?!_next/|__nextjs_original-stack-frame|api/|images/)(?:[^/.]+/?)+$)",
       "destination": "/render/$1"
     }
   ]
