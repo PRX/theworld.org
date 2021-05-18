@@ -16,7 +16,7 @@ export const storyBodyTypography = (theme: Theme) =>
       color: theme.palette.primary.main,
       textDecoration: 'none',
       '&:hover': {
-        color: theme.palette.secondary.dark
+        color: theme.palette.primary.dark
       }
     },
 
@@ -71,7 +71,7 @@ export const storyBodyTypography = (theme: Theme) =>
       },
       '&.pullquote': {
         background: 'none',
-        color: theme.palette.secondary.dark,
+        color: theme.palette.primary.dark,
         fontFamily: '"Alegreya", serif',
         fontSize: '1.5rem',
         textAlign: 'center',
@@ -87,7 +87,7 @@ export const storyBodyTypography = (theme: Theme) =>
 
     '& [gp-pullquote]': {
       padding: theme.typography.pxToRem(theme.spacing(3)),
-      color: theme.palette.secondary.dark,
+      color: theme.palette.primary.dark,
       fontFamily: '"Alegreya", serif',
       fontSize: '1.5rem',
       textAlign: 'center'
