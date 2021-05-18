@@ -172,6 +172,7 @@ export const AudioPlayer = ({
         <div ref={rootElm} className={rootClasses}>
           <IconButton
             className={playBtnClasses}
+            aria-label={playing ? 'Pause' : 'Play'}
             onClick={() =>
               dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_PLAYING })
             }
@@ -201,6 +202,7 @@ export const AudioPlayer = ({
               </Box>
               <Box className={classes.volumeControls}>
                 <IconButton
+                  aria-label={muted ? 'Mute' : 'Unmute'}
                   onClick={() =>
                     dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_MUTED })
                   }
@@ -218,6 +220,7 @@ export const AudioPlayer = ({
             {!!embeddedPlayerUrl && (
               <IconButton
                 className={classes.embedBtn}
+                aria-label={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
                 onClick={() =>
                   dispatch({
                     type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
@@ -235,6 +238,7 @@ export const AudioPlayer = ({
                 component="a"
                 href={popoutPlayerUrl}
                 target="_blank"
+                aria-label="Open player in new window"
                 disableRipple
               >
                 <OpenInNewSharp titleAccess="Open player in new window" />
@@ -244,6 +248,7 @@ export const AudioPlayer = ({
               component="a"
               href={url}
               download={audioDownloadFilename}
+              aria-label="Download audio"
               disableRipple
             >
               <GetAppSharp titleAccess="Download audio" />
