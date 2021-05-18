@@ -24,7 +24,7 @@ export const ctaMessageNewsletterTheme = (theme: Theme) => {
         }
       },
       MuiInputLabel: {
-        root: {
+        outlinedPrimary: {
           color: theme.palette.grey[700]
         }
       },

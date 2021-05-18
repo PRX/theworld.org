@@ -33,7 +33,8 @@ export const baseMuiTheme = createMuiTheme({
       main: red[500]
     },
     success: {
-      main: green[700]
+      main: green[500],
+      dark: green[700]
     },
     grey,
     common: {
