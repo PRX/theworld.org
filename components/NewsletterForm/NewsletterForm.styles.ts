@@ -24,7 +24,12 @@ export const newsletterFormTheme = (theme: Theme) => {
   return createMuiTheme(tempTheme, {
     overrides: {
       MuiInputBase: {
-        input: {
+        root: {
+          color: theme.palette.grey[700]
+        }
+      },
+      MuiInputLabel: {
+        root: {
           color: theme.palette.grey[700]
         }
       },

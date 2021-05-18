@@ -18,6 +18,16 @@ export const ctaMessageNewsletterTheme = (theme: Theme) => {
 
   return createMuiTheme(tempTheme, {
     overrides: {
+      MuiInputBase: {
+        root: {
+          color: theme.palette.grey[700]
+        }
+      },
+      MuiInputLabel: {
+        root: {
+          color: theme.palette.grey[700]
+        }
+      },
       MuiButton: {
         containedPrimary: {
           backgroundColor: theme.palette.success.main,
