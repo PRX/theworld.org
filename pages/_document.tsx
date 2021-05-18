@@ -9,23 +9,27 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 
 class TwDocument extends Document {
   render() {
+    const googleFontDomain = 'https://fonts.gstatic.com';
+    const googleFontsUrl =
+      'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Sans+Pro:400,700,400italic|Montserrat:400,700|Alegreya:400,400italic|Roboto|Roboto+Slab|Sanchez&display=swap';
     return (
       <Html lang="en">
         <Head>
           <link
-            href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Sans+Pro:400,700,400italic|Montserrat:400,700|Alegreya:400,400italic|Roboto|Roboto+Slab|Sanchez"
-            rel="stylesheet"
-            type="text/css"
-            defer
+            rel="preconnect"
+            href={googleFontDomain}
+            crossOrigin="use-credentials"
           />
-          <link href="/images/apple-touch-icon.png" rel="apple-touch-icon" />
+          <link rel="preload" as="style" href={googleFontsUrl} />
+          <link rel="stylesheet" type="text/css" href={googleFontsUrl} />
+          <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
           <link
-            href="/opensearch.xml"
             rel="search"
             title="priorg"
             type="application/opensearchdescription+xml"
+            href="/opensearch.xml"
           />
-          <link href="/images/favicon.png" rel="icon" />
+          <link rel="icon" href="/images/favicon.png" />
         </Head>
         <body>
           <Main />
