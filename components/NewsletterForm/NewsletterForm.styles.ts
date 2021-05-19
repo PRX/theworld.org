@@ -7,8 +7,7 @@ import {
   createMuiTheme,
   Theme,
   makeStyles,
-  createStyles,
-  withTheme
+  createStyles
 } from '@material-ui/core/styles';
 
 export const newsletterFormTheme = (theme: Theme) => {
