@@ -19,6 +19,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import classNames from 'classnames/bind';
 import { ReactComponent as Logo } from '@svg/tw-white.svg';
+import { AppHeaderNav } from './AppHeaderNav';
 import { DrawerTopNav } from './DrawerTopNav';
 import { DrawerMainNav } from './DrawerMainNav';
 import { DrawerSocialNav } from './DrawerSocialNav';
@@ -78,9 +79,12 @@ export const AppHeader = () => {
             </a>
           </Link>
 
+          <div className={cx('grow')} />
+
           {/* Subscribe Button */}
 
           {/* Header Nav */}
+          <AppHeaderNav />
         </Toolbar>
       </AppBar>
       <Drawer open={open} onClose={handleDrawerClose()}>

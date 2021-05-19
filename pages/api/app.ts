@@ -16,11 +16,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     headerNav,
     latestStories
   ] = await Promise.all([
-    fetchPriApiQueryMenu('menu-drawer-main-nav'),
-    fetchPriApiQueryMenu('menu-drawer-social-nav'),
-    fetchPriApiQueryMenu('menu-drawer-top-nav'),
-    fetchPriApiQueryMenu('menu-footer'),
-    fetchPriApiQueryMenu('menu-header-nav'),
+    fetchPriApiQueryMenu('menu-tw-main-nav'),
+    fetchPriApiQueryMenu('menu-tw-social-nav'),
+    fetchPriApiQueryMenu('menu-tw-top-nav'),
+    fetchPriApiQueryMenu('menu-tw-footer-nav'),
+    fetchPriApiQueryMenu('menu-tw-header-nav'),
     fetchPriApiQuery('node--stories', {
       ...basicStoryParams,
       'filter[status]': 1,

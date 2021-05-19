@@ -34,7 +34,8 @@ export const parseMenu = (data: ILink[]): IButton[] => {
       icon:
         className &&
         className.reduce(
-          (icon, cn) => icon || (cn.indexOf('icon-') > -1 && cn.split('-')[1]),
+          (icon: string, cn: string) =>
+            icon || (cn.indexOf('icon-') > -1 && cn.split('-')[1]),
           undefined
         ),
       children:
@@ -45,7 +46,7 @@ export const parseMenu = (data: ILink[]): IButton[] => {
               ({ id: childId, ...attributes } as ILink)
           )
         ),
-      attrinbutes: otherAttributes
+      attributes: otherAttributes
     })
   );
 };
