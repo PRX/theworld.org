@@ -10,7 +10,7 @@ export const tagsStyles = makeStyles((theme: Theme) =>
     root: {
       marginTop: '1rem',
       marginBottom: '1rem',
-      color: theme.palette.text.hint
+      color: theme.palette.grey[700]
     },
     label: {
       display: 'inline',

@@ -5,7 +5,7 @@
 
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { common } from '@material-ui/core/colors';
-import { blue, orange, red, grey, yellow } from './colors';
+import { blue, orange, red, green, grey, yellow } from './colors';
 
 const buttonBorderRadius = '3px';
 const buttonBorderWidth = '2px';
@@ -26,10 +26,15 @@ export const baseMuiTheme = createMuiTheme({
     secondary: {
       light: orange[400],
       main: orange[500],
-      contrastText: common.white
+      dark: orange[700],
+      contrastText: common.black
     },
     error: {
       main: red[500]
+    },
+    success: {
+      main: green[500],
+      dark: green[700]
     },
     grey,
     common: {

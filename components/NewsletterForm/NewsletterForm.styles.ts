@@ -22,6 +22,16 @@ export const newsletterFormTheme = (theme: Theme) => {
 
   return createMuiTheme(tempTheme, {
     overrides: {
+      MuiInputBase: {
+        root: {
+          color: theme.palette.grey[700]
+        }
+      },
+      MuiInputLabel: {
+        root: {
+          color: theme.palette.grey[700]
+        }
+      },
       MuiButton: {
         containedPrimary: {
           '&:hover': {
@@ -42,14 +52,14 @@ export const newsletterFormStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       textAlign: 'initial',
       '& a': {
-        color: theme.palette.success.main,
+        color: theme.palette.success.dark,
         '&:hover': {
-          color: theme.palette.success.light
+          color: theme.palette.success.main
         },
         '&:visited': {
-          color: theme.palette.success.main,
+          color: theme.palette.success.dark,
           '&:hover': {
-            color: theme.palette.success.light
+            color: theme.palette.success.main
           }
         }
       }
