@@ -24,8 +24,15 @@ export const DrawerTopNav = () => {
         fullWidth
         disableRipple
       >
-        {drawerTopNav.map(({ name, url, key }) => (
-          <Button onClick={handleButtonClick(url)} key={key} disableRipple>
+        {drawerTopNav.map(({ name, url, key, attributes }) => (
+          <Button
+            component="a"
+            href={url.href}
+            onClick={handleButtonClick(url)}
+            key={key}
+            disableRipple
+            {...attributes}
+          >
             {name}
           </Button>
         ))}

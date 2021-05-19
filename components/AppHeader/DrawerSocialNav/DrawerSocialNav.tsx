@@ -17,16 +17,15 @@ import {
 import { getMenusData } from '@store/reducers';
 import { drawerTopNavStyles } from './DrawerSocialNav.styles';
 
-export const iconComponentMap = {
-  facebook: Facebook,
-  twitter: Twitter,
-  rss: RssFeed,
-  instagram: Instagram,
-  whatsapp: WhatsApp
-};
+const iconComponentMap = new Map();
+iconComponentMap.set('facebook', Facebook);
+iconComponentMap.set('twitter', Twitter);
+iconComponentMap.set('rss', RssFeed);
+iconComponentMap.set('instagram', Instagram);
+iconComponentMap.set('whatsapp', WhatsApp);
 
-export const renderIcon = (icon: string, label: string) => {
-  const IconComponent = iconComponentMap[icon];
+const renderIcon = (icon: string, label: string) => {
+  const IconComponent = iconComponentMap.get(icon);
 
   return (IconComponent && <IconComponent aria-label={label} />) || label;
 };

@@ -5,7 +5,7 @@
 
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { common } from '@material-ui/core/colors';
-import { blue, orange, red, green, grey } from './colors';
+import { blue, orange, red, green, grey, yellow } from './colors';
 
 const buttonBorderRadius = '3px';
 const buttonBorderWidth = '2px';
@@ -96,8 +96,18 @@ export const appTheme = (theme: Theme) =>
         }
       },
       MuiButton: {
+        root: {
+          borderRadius: '0.25em',
+          fontSize: '1rem'
+        },
         contained: {
           fontWeight: 'bold'
+        },
+        containedSecondary: {
+          border: `1px solid ${yellow[500]}`,
+          '&:hover': {
+            backgroundColor: yellow[500]
+          }
         },
         label: {
           textTransform: 'none'
