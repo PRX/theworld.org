@@ -16,7 +16,12 @@ export const parseMenu = (data: ILink[]): IButton[] => {
       id,
       name,
       url,
-      attributes: { class: className, title, ...otherAttributes },
+      attributes: {
+        class: className,
+        title,
+        referrerpolicy,
+        ...otherAttributes
+      },
       children
     }) => ({
       key: id,
@@ -46,7 +51,10 @@ export const parseMenu = (data: ILink[]): IButton[] => {
               ({ id: childId, ...attributes } as ILink)
           )
         ),
-      attributes: otherAttributes
+      attributes: {
+        ...otherAttributes,
+        ...(referrerpolicy && { referrerPolicy: referrerpolicy })
+      }
     })
   );
 };
