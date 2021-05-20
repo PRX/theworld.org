@@ -33,7 +33,9 @@ export const appHeaderNavStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
-      columnGap: theme.typography.pxToRem(theme.spacing(1))
+      alignItems: 'center',
+      columnGap: theme.typography.pxToRem(theme.spacing(1)),
+      lineHeight: 0
     }
   })
 );

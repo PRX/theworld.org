@@ -5,11 +5,13 @@
 
 import React from 'react';
 import { useStore } from 'react-redux';
-import { Button } from '@material-ui/core';
+import { Button, NoSsr } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { FavoriteSharp } from '@material-ui/icons';
+import { SubscribeButton } from '@components/SubscribeButton';
 import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';
+import { blue } from '@theme/colors';
 import { appHeaderNavStyles, appHeaderNavTheme } from './AppHeaderNav.styles';
 
 const iconComponentMap = new Map();
@@ -29,6 +31,19 @@ export const AppHeaderNav = () => {
     (headerNav?.length && (
       <ThemeProvider theme={appHeaderNavTheme}>
         <div className={classes.root}>
+          {/* Subscribe Button */}
+          <NoSsr>
+            <SubscribeButton
+              title="The World: Latest Edition"
+              feedUrl="http://feeds.feedburner.com/pri/theworld"
+              itunesLinkUrl="https://itunes.apple.com/us/podcast/pris-the-world-latest-edition/id278196007?mt=2"
+              coverImageUrl="https://f.prxu.org/299/images/24f4a36e-7038-42dc-8464-2eee24774457/tw-podcast-3000.png"
+              size="medium"
+              variant="filled"
+              color={blue[500]}
+            />
+          </NoSsr>
+
           {headerNav.map(
             ({ color, icon, name, url, key, attributes, itemLinkClass }) => (
               <Button

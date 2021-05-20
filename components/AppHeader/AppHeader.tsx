@@ -81,8 +81,6 @@ export const AppHeader = () => {
 
           <div className={cx('grow')} />
 
-          {/* Subscribe Button */}
-
           {/* Header Nav */}
           <AppHeaderNav />
         </Toolbar>
