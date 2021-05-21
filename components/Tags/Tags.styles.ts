@@ -5,36 +5,32 @@
 
 import { common } from '@material-ui/core/colors';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Block } from '@material-ui/icons';
 
 export const tagsStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: '0.5rem',
-      marginBottom: '0.5rem',
+      display: 'flex',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      margin: '.5rem 0',
       color: theme.palette.grey[700]
     },
     label: {
-      display: 'inline',
+      margin: '0',
+      padding: '0',
       fontWeight: theme.typography.fontWeightRegular,
       '&::after': {
         content: '":\x20"'
       }
     },
     link: {
-      display: 'block',
-      background: common.white,
       fontWeight: theme.typography.fontWeightBold,
-      padding: '1rem .5rem',
-      borderRadius: '5px',
-      '&:hover': {
-        background: theme.palette.primary.main,
-        color: common.white
-      }
+      margin: '0 2px',
+      color: theme.palette.primary.main
     },
     tag: {
-      display: 'inline-block',
-      textTransform: 'capitalize',
-      margin: '.25rem'
+      textTransform: 'capitalize'
     }
   })
 );

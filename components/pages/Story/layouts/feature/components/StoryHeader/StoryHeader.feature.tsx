@@ -46,17 +46,7 @@ export const StoryHeader = ({ data }: Props) => {
   return (
     <ThemeProvider theme={storyHeaderTheme}>
       <Box className={cx('root', { withImage: !!image })}>
-        {image && (
-          <>
-            <Image
-              className={cx('image')}
-              wrapperClassName={cx('imageWrapper')}
-              data={image}
-              width={{ xl: '100vw' }}
-            />
-          </>
-        )}
-        <Box className={cx('content')}>
+      <Box className={cx('content')}>
           <Container fixed className={cx('header')}>
             {primaryCategory && (
               <Box mb={2}>
@@ -104,6 +94,16 @@ export const StoryHeader = ({ data }: Props) => {
             </Box>
           </Container>
         </Box>
+        {image && (
+          <>
+            <Image
+              className={cx('image')}
+              wrapperClassName={cx('imageWrapper')}
+              data={image}
+              width={{ xl: '100vw' }}
+            />
+          </>
+        )}
       </Box>
       {hasFooter && (
         <Container fixed className={classes.footer}>
