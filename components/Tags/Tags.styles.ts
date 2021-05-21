@@ -3,13 +3,14 @@
  * Styles for Sidebar.
  */
 
+import { common } from '@material-ui/core/colors';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 export const tagsStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: '1rem',
-      marginBottom: '1rem',
+      marginTop: '0.5rem',
+      marginBottom: '0.5rem',
       color: theme.palette.grey[700]
     },
     label: {
@@ -20,30 +21,20 @@ export const tagsStyles = makeStyles((theme: Theme) =>
       }
     },
     link: {
-      fontWeight: theme.typography.fontWeightBold
+      display: 'block',
+      background: common.white,
+      fontWeight: theme.typography.fontWeightBold,
+      padding: '1rem .5rem',
+      borderRadius: '5px',
+      '&:hover': {
+        background: theme.palette.primary.main,
+        color: common.white
+      }
     },
     tag: {
+      display: 'inline-block',
       textTransform: 'capitalize',
-      '&::after': {
-        content: '",\x20"'
-      },
-      '&:last-child:not(:only-of-type)': {
-        '&:before': {
-          content: '"and\x20"',
-          textTransform: 'none'
-        },
-        '&::after': {
-          content: 'none'
-        }
-      },
-      '&:only-of-type': {
-        '&::before': {
-          content: 'none'
-        },
-        '&::after': {
-          content: 'none'
-        }
-      }
+      margin: '.25rem'
     }
   })
 );
