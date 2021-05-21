@@ -3,9 +3,7 @@
  * Styles for Sidebar.
  */
 
-import { common } from '@material-ui/core/colors';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Block } from '@material-ui/icons';
 
 export const tagsStyles = makeStyles((theme: Theme) =>
   createStyles({
