@@ -8,42 +8,26 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 export const tagsStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: '1rem',
-      marginBottom: '1rem',
+      display: 'flex',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      margin: `${theme.typography.pxToRem(theme.spacing(1))} 0`,
+      gap: theme.typography.pxToRem(theme.spacing(1)),
       color: theme.palette.grey[700]
     },
     label: {
-      display: 'inline',
+      margin: '0',
       fontWeight: theme.typography.fontWeightRegular,
       '&::after': {
         content: '":\x20"'
       }
     },
     link: {
-      fontWeight: theme.typography.fontWeightBold
+      fontWeight: theme.typography.fontWeightBold,
+      color: theme.palette.primary.main
     },
     tag: {
-      textTransform: 'capitalize',
-      '&::after': {
-        content: '",\x20"'
-      },
-      '&:last-child:not(:only-of-type)': {
-        '&:before': {
-          content: '"and\x20"',
-          textTransform: 'none'
-        },
-        '&::after': {
-          content: 'none'
-        }
-      },
-      '&:only-of-type': {
-        '&::before': {
-          content: 'none'
-        },
-        '&::after': {
-          content: 'none'
-        }
-      }
+      textTransform: 'capitalize'
     }
   })
 );

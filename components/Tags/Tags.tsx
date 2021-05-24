@@ -6,7 +6,7 @@
 import React, { HTMLAttributes } from 'react';
 import { Box } from '@material-ui/core';
 import { IPriApiResource } from 'pri-api-library/types';
-import { ContentLink } from '@components/ContentLink';
+import { ContentButton } from '@components/ContentButton';
 import { tagsStyles } from './Tags.styles';
 
 interface ITagsProps extends HTMLAttributes<{}> {
@@ -24,7 +24,7 @@ export const Tags = ({ data, label }: ITagsProps) => {
         item =>
           item && (
             <span className={classes.tag} key={item.id}>
-              <ContentLink className={classes.link} data={item} />
+              <ContentButton className={classes.link} data={item} />
             </span>
           )
       )}
