@@ -12,6 +12,7 @@ export const tagsStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       flexWrap: 'wrap',
       margin: `${theme.typography.pxToRem(theme.spacing(1))} 0`,
+      gap: theme.typography.pxToRem(theme.spacing(1)),
       color: theme.palette.grey[700]
     },
     label: {
@@ -23,7 +24,6 @@ export const tagsStyles = makeStyles((theme: Theme) =>
     },
     link: {
       fontWeight: theme.typography.fontWeightBold,
-      gap: theme.typography.pxToRem(theme.spacing(1)),
       color: theme.palette.primary.main
     },
     tag: {
