@@ -43,7 +43,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
-    "next": "^9.1.5",
+    "next": "^10.2.3",
     "next-absolute-url": "^1.0.2",
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^0.17.0",
