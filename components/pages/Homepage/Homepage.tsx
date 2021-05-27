@@ -3,7 +3,6 @@
  * Component for Homepage.
  */
 import React, { useEffect } from 'react';
-import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -196,12 +195,9 @@ export const Homepage = () => {
   );
 };
 
-Homepage.fetchData = (
-  id: string,
-  req: IncomingMessage
-): ThunkAction<void, {}, {}, AnyAction> => async (
+Homepage.fetchData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ): Promise<void> => {
   // Fetch App Data
-  await dispatch<any>(fetchHomepageData(req));
+  await dispatch<any>(fetchHomepageData());
 };
