@@ -4,73 +4,75 @@
  */
 
 import React from 'react';
-import { connect } from 'react-redux';
-import { NextPageContext } from 'next';
-import Error from 'next/error';
-import { IncomingMessage } from 'http';
 import { IContentComponentProxyProps } from '@interfaces/content';
 import { importComponent, preloadComponent } from '@lib/import/component';
-import { RootState } from '@interfaces/state';
+import { wrapper } from '@store';
 
-interface DispatchProps {
-  fetchAliasData: (alias: string, req: IncomingMessage) => void;
-}
+const resourceType: string = 'homepage';
 
-interface StateProps extends RootState {}
+type Props = IContentComponentProxyProps;
 
-type Props = StateProps & DispatchProps & IContentComponentProxyProps;
+const IndexPage = ({ type }: Props) => {
+  const ContentComponent = importComponent(type);
 
-const IndexPage = (props: Props) => {
-  const { errorCode } = props;
-  let output: JSX.Element = <></>;
-
-  if (errorCode) {
-    // Render error page.
-    output = <Error statusCode={errorCode} />;
-  } else {
-    // Render content component.
-    const { type } = props;
-    const ContentComponent = importComponent(type);
-
-    output = <ContentComponent />;
-  }
-
-  return output;
+  return <ContentComponent />;
 };
 
-IndexPage.getInitialProps = async (
-  ctx: NextPageContext
-): Promise<IContentComponentProxyProps> => {
-  const { res, req, store } = ctx;
-  const resourceType: string = 'homepage';
+export const getStaticProps = wrapper.getStaticProps(store => async () => {
   const ContentComponent = await preloadComponent(resourceType);
+
+  // await store.dispatch<any>(fetchAppData());
 
   // Use content component to fetch its data.
   if (ContentComponent) {
     // Dispatch action returned from content component fetchData.
     store.dispatch({ type: 'LOADING_CONTENT_DATA' });
 
-    await store.dispatch(ContentComponent.fetchData(undefined, req));
+    await store.dispatch(ContentComponent.fetchData());
 
     store.dispatch({ type: 'LOADING_COMPLETE' });
-    return { type: resourceType, id: undefined };
+    return { props: { type: resourceType }, revalidate: 10 };
   }
 
-  // There was a problem locating components.
-  const statusCode = 404;
+  return { notFound: true };
+});
 
-  if (res) {
-    res.statusCode = statusCode;
-  }
+// IndexPage.getInitialProps = wrapper.getInitialPageProps(
+//   store => async (
+//     ctx: NextPageContext
+//   ): Promise<IContentComponentProxyProps> => {
+//     const { res, req } = ctx;
+//     const ContentComponent = await preloadComponent(resourceType);
 
-  return {
-    errorCode: statusCode
-  };
-};
+//     // Use content component to fetch its data.
+//     if (ContentComponent) {
+//       // Dispatch action returned from content component fetchData.
+//       store.dispatch({ type: 'LOADING_CONTENT_DATA' });
 
-const mapStateToProps = (state: RootState): StateProps => state;
+//       await store.dispatch(ContentComponent.fetchData(undefined, req));
 
-export const config = { amp: 'hybrid' };
-export default connect<StateProps, DispatchProps, IContentComponentProxyProps>(
-  mapStateToProps
-)(IndexPage); // eslint-disable-line import/no-default-export
+//       store.dispatch({ type: 'LOADING_COMPLETE' });
+//       return { type: resourceType, id: undefined };
+//     }
+
+//     // There was a problem locating components.
+//     const statusCode = 404;
+
+//     if (res) {
+//       res.statusCode = statusCode;
+//     }
+
+//     return {
+//       errorCode: statusCode
+//     };
+//   }
+// );
+
+export default IndexPage;
+
+// const mapStateToProps = (state: RootState): StateProps => state;
+
+// export const config = { amp: 'hybrid' };
+// export default connect<StateProps, DispatchProps, IContentComponentProxyProps>(
+//   mapStateToProps
+// )(IndexPage); // eslint-disable-line import/no-default-export

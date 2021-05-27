@@ -3,7 +3,7 @@
  * Override the main app component.
  */
 
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { AppProps } from 'next/app';
 import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
@@ -18,7 +18,7 @@ import { wrapper } from '@store';
 import { getCtaContext } from '@store/reducers';
 import { fetchAppData, fetchCtaData } from '@store/actions';
 
-const TwApp = ({ Component, pageProps }: AppProps) => {
+const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   const store = useStore();
   const { type, id } = pageProps;
   const contextValue = {
@@ -34,6 +34,7 @@ const TwApp = ({ Component, pageProps }: AppProps) => {
     (async () => {
       // Fetch CTA Messages
       const context = getCtaContext(store.getState(), type, id);
+      await store.dispatch<any>(fetchAppData());
       await store.dispatch<any>(
         fetchCtaData('tw_cta_regions_site', type, id, context)
       );
@@ -74,26 +75,26 @@ const TwApp = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-TwApp.getInitialProps = wrapper.getInitialAppProps(
-  store => async ({ Component, ctx }) => {
-    const { req } = ctx;
+// TwApp.getInitialProps = wrapper.getInitialAppProps(
+//   store => async ({ Component, ctx }) => {
+//     const { req } = ctx;
 
-    store.dispatch({ type: 'LOADING_APP_DATA' });
+//     store.dispatch({ type: 'LOADING_APP_DATA' });
 
-    // Fetch App Data
-    await store.dispatch<any>(fetchAppData(req));
+//     // Fetch App Data
+//     await store.dispatch<any>(fetchAppData(req));
 
-    return {
-      pageProps: {
-        // Call page-level getInitialProps
-        // DON'T FORGET TO PROVIDE STORE TO PAGE
-        ...(Component.getInitialProps
-          ? await Component.getInitialProps({ ...ctx, store })
-          : {})
-      }
-    };
-  }
-);
+//     return {
+//       pageProps: {
+//         // Call page-level getInitialProps
+//         // DON'T FORGET TO PROVIDE STORE TO PAGE
+//         ...(Component.getInitialProps
+//           ? await Component.getInitialProps({ ...ctx, store })
+//           : {})
+//       }
+//     };
+//   }
+// );
 
 // class MyApp extends App<AppInitialProps> {
 //   public static getInitialProps = wrapper.getInitialAppProps(

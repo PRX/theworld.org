@@ -12,7 +12,7 @@ import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
 export const fetchAppData = (
-  req: IncomingMessage
+  req?: IncomingMessage
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
