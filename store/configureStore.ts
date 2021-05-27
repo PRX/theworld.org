@@ -9,8 +9,14 @@ import thunkMiddleware from 'redux-thunk';
 import { RootState } from '@interfaces/state';
 import { reducers } from './reducers';
 
+const { NODE_ENV } = process.env;
 const makeStore: MakeStore<Store<RootState>> = () =>
-  createStore(reducers, composeWithDevTools(applyMiddleware(thunkMiddleware)));
+  NODE_ENV === 'development'
+    ? createStore(
+        reducers,
+        composeWithDevTools(applyMiddleware(thunkMiddleware))
+      )
+    : createStore(reducers, applyMiddleware(thunkMiddleware));
 
 export const wrapper = createWrapper<Store<RootState>>(makeStore, {
   debug: false
