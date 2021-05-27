@@ -3,17 +3,14 @@
  *
  * Actions to fetch data for app.
  */
-import { IncomingMessage } from 'http';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from '@interfaces/state';
-import { fetchApiApp } from '@lib/fetch/api';
+import { fetchApp } from '@lib/fetch';
 import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
-export const fetchAppData = (
-  req?: IncomingMessage
-): ThunkAction<void, {}, {}, AnyAction> => async (
+export const fetchAppData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {
@@ -25,7 +22,7 @@ export const fetchAppData = (
       type: 'FETCH_APP_DATA_REQUEST'
     });
 
-    const apiResp = await fetchApiApp(req);
+    const apiResp = await fetchApp();
     const { latestStories, menus } = apiResp;
 
     dispatch(

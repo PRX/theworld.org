@@ -4,7 +4,6 @@
  */
 
 import React, { FC, useEffect } from 'react';
-import { useStore } from 'react-redux';
 import { AppProps } from 'next/app';
 import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
 import { AppCtaBanner } from '@components/AppCtaBanner';
@@ -15,11 +14,8 @@ import { AppLoadingBar } from '@components/AppLoadingBar';
 import { AppContext } from '@contexts/AppContext';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
-import { getCtaContext } from '@store/reducers';
-import { fetchAppData, fetchCtaData } from '@store/actions';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
-  const store = useStore();
   const { type, id } = pageProps;
   const contextValue = {
     page: {
@@ -29,17 +25,6 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       }
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      // Fetch CTA Messages
-      const context = getCtaContext(store.getState(), type, id);
-      await store.dispatch<any>(fetchAppData());
-      await store.dispatch<any>(
-        fetchCtaData('tw_cta_regions_site', type, id, context)
-      );
-    })();
-  });
 
   useEffect(() => {
     // Remove the server-side injected CSS.

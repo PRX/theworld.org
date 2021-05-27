@@ -7,6 +7,7 @@ import React from 'react';
 import { IContentComponentProxyProps } from '@interfaces/content';
 import { importComponent, preloadComponent } from '@lib/import/component';
 import { wrapper } from '@store';
+import { fetchAppData } from '@store/actions';
 
 const resourceType: string = 'homepage';
 
@@ -21,16 +22,14 @@ const IndexPage = ({ type }: Props) => {
 export const getStaticProps = wrapper.getStaticProps(store => async () => {
   const ContentComponent = await preloadComponent(resourceType);
 
-  // await store.dispatch<any>(fetchAppData());
-
-  // Use content component to fetch its data.
   if (ContentComponent) {
-    // Dispatch action returned from content component fetchData.
-    store.dispatch({ type: 'LOADING_CONTENT_DATA' });
+    await Promise.all([
+      // Fetch App data (latest stories, menus, etc.)
+      store.dispatch<any>(fetchAppData()),
+      // Use content component to fetch its data.
+      store.dispatch(ContentComponent.fetchData())
+    ]);
 
-    await store.dispatch(ContentComponent.fetchData());
-
-    store.dispatch({ type: 'LOADING_COMPLETE' });
     return { props: { type: resourceType }, revalidate: 10 };
   }
 

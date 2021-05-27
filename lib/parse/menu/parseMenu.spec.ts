@@ -74,11 +74,11 @@ describe('parseMenu', () => {
   });
 
   test('should not have a `color` value.', () => {
-    expect(result[1].color).toBeUndefined();
+    expect(result[1].color).toBeNull();
   });
 
   test('should not have a `icon` value.', () => {
-    expect(result[1].icon).toBeUndefined();
+    expect(result[1].icon).toBeNull();
   });
 
   test('should have `children`.', () => {
@@ -87,9 +87,12 @@ describe('parseMenu', () => {
     expect(result[1].children[0]).toHaveProperty('key');
     expect(result[1].children[0].key).toEqual(data[1].children[0].id);
     expect(result[1].children[0]).toHaveProperty('name');
-    expect(result[1].children[0].name).toEqual(data[1].children[0].attributes.name);
+    expect(result[1].children[0].name).toEqual(
+      data[1].children[0].attributes.name
+    );
     expect(result[1].children[0]).toHaveProperty('url');
-    expect(result[1].children[0].url.href).toEqual(data[1].children[0].attributes.url);
+    expect(result[1].children[0].url.href).toEqual(
+      data[1].children[0].attributes.url
+    );
   });
-
 });

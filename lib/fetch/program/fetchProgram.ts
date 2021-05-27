@@ -34,22 +34,15 @@ export const fetchProgram = async (
   if (program) {
     const { data } = program;
     const { featuredStories } = data as IPriApiResource;
-
-    // Fetch list of stories. Paginated.
-    const stories = (await fetchProgramStories(
-      data as IPriApiResource,
-      1,
-      undefined,
-      undefined
-    )) as IPriApiCollectionResponse;
-
-    // Fetch list of episodes. Paginated.
-    const episodes = (await fetchProgramEpisodes(
-      data as IPriApiResource,
-      1,
-      undefined,
-      undefined
-    )) as IPriApiCollectionResponse;
+    const [stories, episodes] = await Promise.all([
+      fetchProgramStories(
+        data as IPriApiResource,
+        1,
+        undefined,
+        undefined
+      ).then((resp: IPriApiCollectionResponse) => resp),
+      fetchProgramEpisodes(data as IPriApiResource, 1, undefined, undefined)
+    ]);
 
     // Build response object.
     const resp = {
