@@ -131,7 +131,7 @@ export const getStaticPaths = async () => {
     featuredStory,
     ...featuredStories,
     ...stories.data,
-    // ...episodes.data,
+    ...episodes.data,
     ...latestStories.data,
     ...latestAppStories.data
   ];
