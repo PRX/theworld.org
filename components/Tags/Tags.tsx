@@ -19,7 +19,7 @@ export const Tags = ({ data, label }: ITagsProps) => {
 
   return (
     <Box component="aside" className={classes.root}>
-      {label && <h4 className={classes.label}>{label}</h4>}
+      {label && <h2 className={classes.label}>{label}</h2>}
       {data.map(
         item =>
           item && (
