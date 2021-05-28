@@ -36,42 +36,4 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
   return { notFound: true };
 });
 
-// IndexPage.getInitialProps = wrapper.getInitialPageProps(
-//   store => async (
-//     ctx: NextPageContext
-//   ): Promise<IContentComponentProxyProps> => {
-//     const { res, req } = ctx;
-//     const ContentComponent = await preloadComponent(resourceType);
-
-//     // Use content component to fetch its data.
-//     if (ContentComponent) {
-//       // Dispatch action returned from content component fetchData.
-//       store.dispatch({ type: 'LOADING_CONTENT_DATA' });
-
-//       await store.dispatch(ContentComponent.fetchData(undefined, req));
-
-//       store.dispatch({ type: 'LOADING_COMPLETE' });
-//       return { type: resourceType, id: undefined };
-//     }
-
-//     // There was a problem locating components.
-//     const statusCode = 404;
-
-//     if (res) {
-//       res.statusCode = statusCode;
-//     }
-
-//     return {
-//       errorCode: statusCode
-//     };
-//   }
-// );
-
 export default IndexPage;
-
-// const mapStateToProps = (state: RootState): StateProps => state;
-
-// export const config = { amp: 'hybrid' };
-// export default connect<StateProps, DispatchProps, IContentComponentProxyProps>(
-//   mapStateToProps
-// )(IndexPage); // eslint-disable-line import/no-default-export
