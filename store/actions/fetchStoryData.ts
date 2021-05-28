@@ -3,16 +3,16 @@
  *
  * Actions to fetch data for a story resource.
  */
-import { IncomingMessage } from 'http';
+
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from '@interfaces/state';
-import { fetchApiStory } from '@lib/fetch/api';
+import { fetchStory } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
+import { IPriApiResourceResponse } from 'pri-api-library/types';
 
 export const fetchStoryData = (
-  id: string,
-  req?: IncomingMessage
+  id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -30,7 +30,9 @@ export const fetchStoryData = (
       }
     });
 
-    data = await fetchApiStory(id, req);
+    data = await fetchStory(id).then(
+      (resp: IPriApiResourceResponse) => resp && resp.data
+    );
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',

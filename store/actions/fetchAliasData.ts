@@ -3,17 +3,19 @@
  *
  * Actions to fetch basic data for a URL alias.
  */
-import { IncomingMessage } from 'http';
+
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
-import { fetchApiQueryAlias } from '@lib/fetch/api';
 import { getDataByAlias } from '@store/reducers';
+import { fetchQueryAlias } from '@lib/fetch';
 
 export const fetchAliasData = (
-  alias: string,
-  req: IncomingMessage
+  alias: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -27,7 +29,9 @@ export const fetchAliasData = (
       alias
     });
 
-    data = await fetchApiQueryAlias(alias, req);
+    data = await fetchQueryAlias(alias).then(
+      (resp: IPriApiResourceResponse) => resp && resp.data
+    );
 
     dispatch({
       type: 'FETCH_ALIAS_DATA_SUCCESS',
