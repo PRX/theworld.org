@@ -16,7 +16,7 @@ import { importComponent, preloadComponent } from '@lib/import/component';
 import { RootState } from '@interfaces/state';
 import { fetchAliasData, fetchAppData } from '@store/actions';
 import { wrapper } from '@store';
-import { fetchHomepage } from '@lib/fetch';
+import { fetchApp, fetchHomepage } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 
 interface DispatchProps {
@@ -113,8 +113,9 @@ export const getStaticProps = wrapper.getStaticProps(
 );
 
 export const getStaticPaths = async () => {
-  const [homepage] = await Promise.all([
-    fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data)
+  const [homepage, app] = await Promise.all([
+    fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data),
+    fetchApp()
   ]);
   const {
     featuredStory,
@@ -124,12 +125,16 @@ export const getStaticPaths = async () => {
     latestStories,
     ...program
   } = homepage;
-  const resources = [program, featuredStory].concat(
-    featuredStories,
-    stories.data,
-    episodes.data,
-    latestStories.data
-  );
+  const { latestStories: latestAppStories } = app;
+  const resources = [
+    // program,
+    featuredStory,
+    ...featuredStories,
+    ...stories.data,
+    // ...episodes.data,
+    ...latestStories.data,
+    ...latestAppStories.data
+  ];
   const paths = resources.map(resource => ({
     params: {
       alias: generateLinkHrefForContent(resource)
