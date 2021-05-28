@@ -2,8 +2,8 @@
  * @file Episode.tsx
  * Component for Episode.
  */
+
 import React, { useContext, useEffect } from 'react';
-import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -258,8 +258,7 @@ export const Episode = () => {
 };
 
 Episode.fetchData = (
-  id: string,
-  req: IncomingMessage
+  id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -268,7 +267,7 @@ Episode.fetchData = (
   const data = getDataByResource(getState(), type, id);
 
   if (!data) {
-    await dispatch<any>(fetchEpisodeData(id, req));
+    await dispatch<any>(fetchEpisodeData(id));
     const { stories } = getDataByResource(getState(), type, id);
 
     if (stories) {
