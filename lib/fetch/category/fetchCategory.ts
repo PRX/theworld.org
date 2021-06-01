@@ -1,7 +1,7 @@
 /**
- * Fetch program data from CMS API.
+ * Fetch category data from CMS API.
  *
- * @param id Program identifier.
+ * @param id Category identifier.
  */
 
 import {
@@ -12,39 +12,37 @@ import {
 } from 'pri-api-library/types';
 import { fetchPriApiItem } from '../api/fetchPriApi';
 import { basicStoryParams } from '../api/params';
-import { fetchProgramEpisodes } from './fetchProgramEpisodes';
-import { fetchProgramStories } from './fetchProgramStories';
+import { fetchCategoryStories } from './fetchCategoryStories';
 
-export const fetchProgram = async (
+export const fetchCategory = async (
   id: string
 ): Promise<PriApiResourceResponse> => {
   const params = {
     include: [
       'banner_image',
-      'hosts.image',
       'logo',
-      'podcast_logo',
-      ...(basicStoryParams.include || []).map(
-        param => `featured_stories.${param}`
-      )
+      ...(basicStoryParams.include || [])
+        .filter(param => param !== 'primary_category')
+        .map(param => `featured_stories.${param}`)
     ]
   };
-  const program = await fetchPriApiItem('node--programs', id as string, params);
+  const category = await fetchPriApiItem(
+    'taxonomy_term--categories',
+    id as string,
+    params
+  );
 
-  if (program) {
-    const { data } = program;
+  if (category) {
+    const { data } = category;
     const { featuredStories } = data as IPriApiResource;
-    const [stories, episodes] = await Promise.all([
-      fetchProgramStories(data as IPriApiResource).then(
-        (resp: IPriApiCollectionResponse) => resp
-      ),
-      fetchProgramEpisodes(data as IPriApiResource)
-    ]);
+    const stories = await fetchCategoryStories(data as IPriApiResource).then(
+      (resp: IPriApiCollectionResponse) => resp
+    );
 
     // Build response object.
     const resp = {
       data: {
-        ...program.data,
+        ...category.data,
         featuredStory: featuredStories
           ? featuredStories.shift()
           : stories.data.shift(),
@@ -53,8 +51,7 @@ export const fetchProgram = async (
               stories.data.splice(0, 4 - featuredStories.length)
             )
           : stories.data.splice(0, 4),
-        stories,
-        episodes
+        stories
       }
     } as IPriApiResourceResponse;
 

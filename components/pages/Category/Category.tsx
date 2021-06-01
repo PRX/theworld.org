@@ -3,7 +3,6 @@
  * Component for Category.
  */
 import React, { useContext, useEffect, useState } from 'react';
-import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -20,13 +19,17 @@ import {
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { fetchApiCategory, fetchApiCategoryStories } from '@lib/fetch';
+import { fetchApiCategoryStories } from '@lib/fetch';
 import { HtmlContent } from '@components/HtmlContent';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import { appendResourceCollection, fetchCtaData } from '@store/actions';
+import {
+  appendResourceCollection,
+  fetchCategoryData,
+  fetchCtaData
+} from '@store/actions';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -40,7 +43,10 @@ export const Category = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const data = getDataByResource(state, type, id);
   const ctaInlineTop = getCtaRegionData(
     state,
@@ -90,6 +96,18 @@ export const Category = () => {
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
+
+    (async () => {
+      // Get CTA message data.
+      const context = [`term:${id}`];
+      await store.dispatch<any>(
+        fetchCtaData('tw_cta_regions_landing', type, id, context)
+      );
+    })();
+
+    return () => {
+      unsub();
+    };
   }, [page]);
 
   const loadMoreStories = async () => {
@@ -255,8 +273,7 @@ export const Category = () => {
 };
 
 Category.fetchData = (
-  id: string,
-  req: IncomingMessage
+  id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -267,50 +284,7 @@ Category.fetchData = (
 
   // Get missing content data.
   if (!data) {
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_REQUEST',
-      payload: {
-        type,
-        id
-      }
-    });
-
-    const {
-      featuredStory,
-      featuredStories,
-      stories,
-      ...payload
-    } = await fetchApiCategory(id, req);
-
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload
-    });
-
-    dispatch(
-      appendResourceCollection(
-        { data: [featuredStory], meta: { count: 1 } },
-        type,
-        id,
-        'featured story'
-      )
-    );
-
-    dispatch(
-      appendResourceCollection(
-        { data: [...featuredStories], meta: { count: featuredStories.length } },
-        type,
-        id,
-        'featured stories'
-      )
-    );
-
-    dispatch(appendResourceCollection(stories, type, id, 'stories'));
+    // Get content data.
+    await dispatch<any>(fetchCategoryData(id));
   }
-
-  // Get CTA message data.
-  const context = [`term:${id}`];
-  await dispatch<any>(
-    fetchCtaData('tw_cta_regions_landing', type, id, context, req)
-  );
 };

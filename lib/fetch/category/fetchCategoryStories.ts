@@ -1,7 +1,7 @@
 /**
- * Fetch stories for a program from CMS API.
+ * Fetch stories for a category from CMS API.
  *
- * @param id Program data or identifier.
+ * @param id Category data or identifier.
  */
 
 import {
@@ -12,24 +12,25 @@ import {
 import { fetchPriApiItem, fetchPriApiQuery } from '../api/fetchPriApi';
 import { basicStoryParams } from '../api/params';
 
-export const fetchProgramStories = async (
+export const fetchCategoryStories = async (
   id: string | IPriApiResource,
   page: number = 1,
   range: number = 15,
+  field = 'categories',
   exclude: string[] | string = null
 ): Promise<PriApiResourceResponse> => {
-  let program: IPriApiResource;
+  let category: IPriApiResource;
 
   if (typeof id === 'string') {
-    program = await fetchPriApiItem('node--programs', id).then(
+    category = await fetchPriApiItem('taxonomy_term--categories', id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
   } else {
-    program = id;
+    category = id;
   }
 
-  if (program) {
-    const { featuredStories } = program;
+  if (category) {
+    const { featuredStories } = category;
     const excluded = (exclude || featuredStories) && [
       ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
       ...(featuredStories && featuredStories.map(({ id: i }) => i))
@@ -39,7 +40,7 @@ export const fetchProgramStories = async (
     return fetchPriApiQuery('node--stories', {
       ...basicStoryParams,
       'filter[status]': 1,
-      'filter[program]': program.id,
+      [`filter[${field}]`]: category.id,
       ...(excluded && {
         'filter[id][value]': excluded,
         'filter[id][operator]': '<>'

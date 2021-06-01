@@ -133,7 +133,10 @@ export const getStaticPaths = async () => {
     ...stories.data,
     ...episodes.data,
     ...latestStories.data,
-    ...latestAppStories.data
+    ...latestAppStories.data,
+    ...[featuredStory, ...featuredStories, ...stories.data]
+      .map(story => story.primaryCategory)
+      .filter(v => !!v)
   ];
   const paths = resources.map(resource => ({
     params: {
