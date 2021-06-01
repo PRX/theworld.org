@@ -10,7 +10,7 @@ import {
   IPriApiResourceResponse
 } from 'pri-api-library/types';
 import { fetchPriApiItem, fetchPriApiQuery } from '../api/fetchPriApi';
-import { basicStoryParams } from '../api/params';
+import { basicEpisodeParams } from '../api/params';
 
 export const fetchProgramEpisodes = async (
   id: string | IPriApiResource,
@@ -37,7 +37,7 @@ export const fetchProgramEpisodes = async (
 
     // Fetch list of stories. Paginated.
     return fetchPriApiQuery('node--episodes', {
-      ...basicStoryParams,
+      ...basicEpisodeParams,
       'filter[status]': 1,
       'filter[program]': program.id,
       ...(excluded && {
