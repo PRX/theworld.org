@@ -1,14 +1,14 @@
 /**
  * @file fetchProgramData.ts
  *
- * Actions to fetch data for homepage.
+ * Actions to fetch data for program page.
  */
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
 import { fetchProgram } from '@lib/fetch';
-import { getCollectionData } from '@store/reducers';
+import { getDataByResource } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
 export const fetchProgramData = (
@@ -19,9 +19,9 @@ export const fetchProgramData = (
 ): Promise<void> => {
   const state = getState();
   const type = 'node--programs';
-  const dataCheck = getCollectionData(state, type, id, 'featured story');
+  const data = getDataByResource(state, type, id);
 
-  if (!dataCheck) {
+  if (!data) {
     dispatch({
       type: 'FETCH_HOMEPAGE_DATA_REQUEST'
     });

@@ -6,7 +6,6 @@
 
 import {
   PriApiResourceResponse,
-  IPriApiResource,
   IPriApiResourceResponse,
   IPriApiCollectionResponse
 } from 'pri-api-library/types';
@@ -29,22 +28,27 @@ export const fetchProgram = async (
       )
     ]
   };
-  const program = await fetchPriApiItem('node--programs', id as string, params);
+  const program = await fetchPriApiItem(
+    'node--programs',
+    id as string,
+    params
+  ).then((resp: IPriApiResourceResponse) => resp && resp.data);
 
   if (program) {
-    const { data } = program;
-    const { featuredStories } = data as IPriApiResource;
+    const { featuredStories } = program;
     const [stories, episodes] = await Promise.all([
-      fetchProgramStories(data as IPriApiResource).then(
+      fetchProgramStories(program).then(
         (resp: IPriApiCollectionResponse) => resp
       ),
-      fetchProgramEpisodes(data as IPriApiResource)
+      fetchProgramEpisodes(program).then(
+        (resp: IPriApiCollectionResponse) => resp
+      )
     ]);
 
     // Build response object.
     const resp = {
       data: {
-        ...program.data,
+        ...program,
         featuredStory: featuredStories
           ? featuredStories.shift()
           : stories.data.shift(),

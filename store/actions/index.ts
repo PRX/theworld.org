@@ -11,3 +11,4 @@ export * from './fetchPageData';
 export * from './fetchProgramData';
 export * from './fetchStoryData';
 export * from './fetchTeamData';
+export * from './fetchTermData';

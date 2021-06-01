@@ -1,7 +1,7 @@
 /**
- * Fetch category data from CMS API.
+ * Fetch term data from CMS API.
  *
- * @param id Category identifier.
+ * @param id Term identifier.
  */
 
 import {
@@ -10,37 +10,30 @@ import {
   IPriApiCollectionResponse
 } from 'pri-api-library/types';
 import { fetchPriApiItem } from '../api/fetchPriApi';
-import { basicStoryParams } from '../api/params';
-import { fetchCategoryStories } from './fetchCategoryStories';
+import { fetchTermEpisodes } from './fetchTermEpisodes';
+import { fetchTermStories } from './fetchTermStories';
 
-export const fetchCategory = async (
+export const fetchTerm = async (
   id: string
 ): Promise<PriApiResourceResponse> => {
-  const params = {
-    include: [
-      'banner_image',
-      'logo',
-      ...(basicStoryParams.include || [])
-        .filter(param => param !== 'primary_category')
-        .map(param => `featured_stories.${param}`)
-    ]
-  };
-  const category = await fetchPriApiItem(
-    'taxonomy_term--categories',
+  const params = {};
+  const term = await fetchPriApiItem(
+    'taxonomy_term--terms',
     id as string,
     params
   ).then((resp: IPriApiResourceResponse) => resp && resp.data);
 
-  if (category) {
-    const { featuredStories } = category;
-    const stories = await fetchCategoryStories(category).then(
-      (resp: IPriApiCollectionResponse) => resp
-    );
+  if (term) {
+    const { featuredStories } = term;
+    const [stories, episodes] = await Promise.all([
+      fetchTermStories(term).then((resp: IPriApiCollectionResponse) => resp),
+      fetchTermEpisodes(term).then((resp: IPriApiCollectionResponse) => resp)
+    ]);
 
     // Build response object.
     const resp = {
       data: {
-        ...category,
+        ...term,
         featuredStory: featuredStories
           ? featuredStories.shift()
           : stories.data.shift(),
@@ -49,7 +42,8 @@ export const fetchCategory = async (
               stories.data.splice(0, 4 - featuredStories.length)
             )
           : stories.data.splice(0, 4),
-        stories
+        stories,
+        episodes
       }
     } as IPriApiResourceResponse;
 
