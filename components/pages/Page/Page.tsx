@@ -2,8 +2,8 @@
  * @file Page.tsx
  * Component for Pages.
  */
+
 import React, { useContext, useEffect } from 'react';
-import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -65,10 +65,7 @@ export const Page = () => {
   );
 };
 
-Page.fetchData = (
-  id: string,
-  req: IncomingMessage
-): ThunkAction<void, {}, {}, AnyAction> => async (
+Page.fetchData = (id: string): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {
@@ -76,6 +73,6 @@ Page.fetchData = (
   const data = getDataByResource(getState(), type, id);
 
   if (!data) {
-    await dispatch<any>(fetchPageData(id, req));
+    await dispatch<any>(fetchPageData(id));
   }
 };
