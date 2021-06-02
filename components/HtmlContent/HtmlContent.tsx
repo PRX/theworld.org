@@ -29,7 +29,7 @@ export interface IHtmlContentProps {
 
 export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
   const cleanHtml = (dirtyHtml: string) => {
-    return [h => h.replace('<p></p>', '')].reduce(
+    return [(h: string) => h.replace('<p></p>', '')].reduce(
       (acc, func) => func(acc),
       dirtyHtml
     );
