@@ -165,7 +165,7 @@ export const getStaticPaths = async () => {
           alias: pathname.slice(1).split('/')
         }
       }))
-  ].filter(({ params: { alias } }) => !!alias.length);
+  ].filter(({ params: { alias } }) => !!alias.filter(s => !!s.length).length);
 
   return { paths, fallback: 'blocking' };
 };
