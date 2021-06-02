@@ -160,13 +160,12 @@ export const getStaticPaths = async () => {
         ({ hostname }) =>
           !hostname || /^(www\.)?(pri|theworld)\.org$/.test(hostname)
       )
-      .filter(({ pathname }) => !(pathname && /^\/.+/.test(pathname)))
       .map(({ pathname }) => ({
         params: {
           alias: pathname.slice(1).split('/')
         }
       }))
-  ];
+  ].filter(({ params: { alias } }) => !!alias.length);
 
   return { paths, fallback: 'blocking' };
 };
