@@ -59,7 +59,7 @@ export const getStaticProps = wrapper.getStaticProps(
     const aliasPath = (alias as string[]).join('/');
 
     switch (aliasPath) {
-      case '/programs/the-world/team':
+      case 'programs/the-world/team':
         resourceId = 'the_world';
         resourceType = 'team';
         break;

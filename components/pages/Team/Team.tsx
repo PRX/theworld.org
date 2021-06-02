@@ -2,8 +2,8 @@
  * @file Team.tsx
  * Component for Team.
  */
+
 import React, { useContext } from 'react';
-import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -100,11 +100,8 @@ export const Team = () => {
   );
 };
 
-Team.fetchData = (
-  id: string,
-  req: IncomingMessage
-): ThunkAction<void, {}, {}, AnyAction> => async (
+Team.fetchData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ): Promise<void> => {
-  await dispatch<any>(fetchTeamData(req));
+  await dispatch<any>(fetchTeamData());
 };

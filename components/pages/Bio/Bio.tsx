@@ -2,8 +2,8 @@
  * @file Category.tsx
  * Component for Category.
  */
+
 import React, { useContext, useEffect, useState } from 'react';
-import { IncomingMessage } from 'http';
 import classNames from 'classnames/bind';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
@@ -26,14 +26,14 @@ import {
   SidebarList
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
-import {
-  fetchApiPerson,
-  fetchApiPersonAudio,
-  fetchApiPersonStories
-} from '@lib/fetch';
+import { fetchApiPersonAudio, fetchApiPersonStories } from '@lib/fetch';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import { appendResourceCollection, fetchCtaData } from '@store/actions';
+import {
+  appendResourceCollection,
+  fetchCtaData,
+  fetchPersonData
+} from '@store/actions';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -50,7 +50,10 @@ export const Bio = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const data = getDataByResource(state, type, id);
   const ctaSidebarTop = getCtaRegionData(
     state,
@@ -102,6 +105,18 @@ export const Bio = () => {
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
+
+    (async () => {
+      // Get CTA message data.
+      const context = [`node:${id}`];
+      await store.dispatch<any>(
+        fetchCtaData('tw_cta_regions_landing', type, id, context)
+      );
+    })();
+
+    return () => {
+      unsub();
+    };
   }, [page]);
 
   const loadMoreStories = async () => {
@@ -277,10 +292,7 @@ export const Bio = () => {
   );
 };
 
-Bio.fetchData = (
-  id: string,
-  req: IncomingMessage
-): ThunkAction<void, {}, {}, AnyAction> => async (
+Bio.fetchData = (id: string): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {
@@ -290,60 +302,7 @@ Bio.fetchData = (
 
   // Get missing content data.
   if (!data?.complete) {
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_REQUEST',
-      payload: {
-        type,
-        id
-      }
-    });
-
-    const {
-      featuredStory,
-      featuredStories,
-      stories,
-      segments,
-      ...payload
-    } = await fetchApiPerson(id, req);
-
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload: {
-        ...payload,
-        complete: true
-      }
-    });
-
-    dispatch(
-      appendResourceCollection(
-        { data: [featuredStory], meta: { count: 1 } },
-        type,
-        id,
-        'featured story'
-      )
-    );
-
-    dispatch(
-      appendResourceCollection(
-        { data: [...featuredStories], meta: { count: featuredStories.length } },
-        type,
-        id,
-        'featured stories'
-      )
-    );
-
-    if (stories) {
-      dispatch(appendResourceCollection(stories, type, id, 'stories'));
-    }
-
-    if (segments) {
-      dispatch(appendResourceCollection(segments, type, id, 'segments'));
-    }
+    // Get content data.
+    await dispatch<any>(fetchPersonData(id));
   }
-
-  // Get CTA message data.
-  const context = [`node:${id}`];
-  await dispatch<any>(
-    fetchCtaData('tw_cta_regions_landing', type, id, context, req)
-  );
 };

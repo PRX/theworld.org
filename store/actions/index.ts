@@ -8,6 +8,7 @@ export * from './fetchEpisodeData';
 export * from './fetchHomepageData';
 export * from './fetchNewsletterData';
 export * from './fetchPageData';
+export * from './fetchPersonData';
 export * from './fetchProgramData';
 export * from './fetchStoryData';
 export * from './fetchTeamData';

@@ -39,7 +39,10 @@ export const fetchTermData = (
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload
+      payload: {
+        ...payload,
+        complete: true
+      }
     });
 
     dispatch(
