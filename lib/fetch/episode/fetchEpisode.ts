@@ -1,5 +1,5 @@
 /**
- * Fetch Story data from CMS API.
+ * Fetch Episode data from CMS API.
  */
 
 import {
@@ -7,12 +7,12 @@ import {
   PriApiResourceResponse
 } from 'pri-api-library/types';
 import { fetchPriApiItem } from '../api/fetchPriApi';
-import { fullStoryParams } from '../api/params';
+import { fullEpisodeParams } from '../api/params';
 
-export const fetchStory = async (
+export const fetchEpisode = async (
   id: string
 ): Promise<PriApiResourceResponse> => {
-  return fetchPriApiItem('node--stories', id, {
-    ...fullStoryParams
+  return fetchPriApiItem('node--episodes', id, {
+    ...fullEpisodeParams
   }).then((resp: IPriApiResourceResponse) => resp);
 };

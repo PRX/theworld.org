@@ -8,6 +8,7 @@ import { GetStaticPropsResult } from 'next';
 import Error from 'next/error';
 import { IncomingMessage } from 'http';
 import {
+  IPriApiCollectionResponse,
   IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
@@ -16,8 +17,9 @@ import { importComponent, preloadComponent } from '@lib/import/component';
 import { RootState } from '@interfaces/state';
 import { fetchAliasData, fetchAppData } from '@store/actions';
 import { wrapper } from '@store';
-import { fetchApp, fetchHomepage } from '@lib/fetch';
+import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
+import { Url } from 'url';
 
 interface DispatchProps {
   fetchAliasData: (alias: string, req: IncomingMessage) => void;
@@ -113,9 +115,12 @@ export const getStaticProps = wrapper.getStaticProps(
 );
 
 export const getStaticPaths = async () => {
-  const [homepage, app] = await Promise.all([
+  const [homepage, app, team] = await Promise.all([
     fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data),
-    fetchApp()
+    fetchApp(),
+    fetchTeam('the_world').then(
+      (resp: IPriApiCollectionResponse) => resp && resp.data
+    )
   ]);
   const {
     featuredStory,
@@ -125,7 +130,7 @@ export const getStaticPaths = async () => {
     latestStories,
     ...program
   } = homepage;
-  const { latestStories: latestAppStories } = app;
+  const { latestStories: latestAppStories, menus } = app;
   const resources = [
     program,
     featuredStory,
@@ -134,17 +139,33 @@ export const getStaticPaths = async () => {
     ...episodes.data,
     ...latestStories.data,
     ...latestAppStories.data,
+    ...team,
     ...[featuredStory, ...featuredStories, ...stories.data]
       .map(story => story.primaryCategory)
       .filter(v => !!v)
   ];
-  const paths = resources.map(resource => ({
-    params: {
-      alias: generateLinkHrefForContent(resource)
-        ?.pathname.slice(1)
-        .split('/')
-    }
-  }));
+  const paths = [
+    ...resources.map(resource => ({
+      params: {
+        alias: generateLinkHrefForContent(resource)
+          ?.pathname.slice(1)
+          .split('/')
+      }
+    })),
+    ...Object.values(menus)
+      // Gather all memus' url's into one array.
+      .reduce((a, m) => [...a, ...m.map(({ url }) => url)], [] as Url[])
+      // Filter out any external url's.
+      .filter(
+        ({ hostname }) =>
+          !hostname || /^(www\.)?(pri|theworld)\.org$/.test(hostname)
+      )
+      .map(({ pathname }) => ({
+        params: {
+          alias: pathname.slice(1).split('/')
+        }
+      }))
+  ];
 
   return { paths, fallback: 'blocking' };
 };
