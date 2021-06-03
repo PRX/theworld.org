@@ -39,7 +39,7 @@ export const SidebarLatestStories = ({
       <SidebarList disablePadding data={listItems} />
       <SidebarFooter>
         <Link
-          href="/?alias=/programs/the-world"
+          href="/render?alias=/programs/the-world"
           as="/programs/the-world"
           passHref
         >

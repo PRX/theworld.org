@@ -220,7 +220,9 @@ export const AudioPlayer = ({
             {!!embeddedPlayerUrl && (
               <IconButton
                 className={classes.embedBtn}
-                aria-label={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
+                aria-label={
+                  embedCodeShown ? 'Hide embed code' : 'Show embed code'
+                }
                 onClick={() =>
                   dispatch({
                     type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN

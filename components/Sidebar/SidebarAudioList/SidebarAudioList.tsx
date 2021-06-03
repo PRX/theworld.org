@@ -5,10 +5,10 @@
 
 import React, { useEffect } from 'react';
 import { useStore } from 'react-redux';
-import { ListProps } from '@material-ui/core';
 import { IPriApiResource } from 'pri-api-library/types';
-import { SidebarList } from '../SidebarList';
+import { ListProps } from '@material-ui/core';
 import { fetchStoryData } from '@store/actions';
+import { SidebarList } from '../SidebarList';
 
 interface ISidebarAudioListProps extends ListProps {
   data: IPriApiResource[];

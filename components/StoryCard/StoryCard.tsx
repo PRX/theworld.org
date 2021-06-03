@@ -3,8 +3,8 @@
  * Component for story card links.
  */
 
-import React from 'react';
-import { useStore } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { parse } from 'url';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -25,6 +25,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
 import { Image } from '@components/Image';
 import { ILink } from '@interfaces/link';
+import { generateLinkHrefForContent } from '@lib/routing';
 import { storyCardStyles, storyCardTheme } from './StoryCard.styles';
 
 export interface StoryCardProps {
@@ -33,11 +34,11 @@ export interface StoryCardProps {
 }
 
 export const StoryCard = ({ data, feature }: StoryCardProps) => {
-  const store = useStore();
-  const { loading } = store.getState();
-  const { type, id, teaser, title, image, primaryCategory, crossLinks } = data;
-  const isLoading = loading && loading.type === type && loading.id === id;
-  const classes = storyCardStyles({});
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const { teaser, title, image, primaryCategory, crossLinks } = data;
+  const { pathname } = generateLinkHrefForContent(data);
+  const classes = storyCardStyles({ isLoading });
   const cx = classNames.bind(classes);
   const imageWidth = {
     xs: '100vw',
@@ -65,6 +66,25 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
     );
   };
 
+  useEffect(() => {
+    const handleRouteChangeStart = (url: string) => {
+      setIsLoading(url === pathname);
+    };
+    const handleRouteChangeEnd = () => {
+      setIsLoading(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on('routeChangeComplete', handleRouteChangeEnd);
+    router.events.on('routeChangeError', handleRouteChangeEnd);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleRouteChangeEnd);
+      router.events.off('routeChangeError', handleRouteChangeEnd);
+    };
+  }, []);
+
   return (
     <ThemeProvider theme={storyCardTheme}>
       <Card
@@ -83,15 +103,13 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
                 width={imageWidth}
                 wrapperClassName={classes.imageWrapper}
               />
+              <LinearProgress
+                className={classes.loadingBar}
+                color="secondary"
+              />
             </CardMedia>
           )}
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
-            <LinearProgress
-              className={cx(classes.loadingBar, {
-                [classes.isLoading]: isLoading
-              })}
-              color="secondary"
-            />
             {primaryCategory && (
               <Typography variant="overline" gutterBottom>
                 <ContentLink data={primaryCategory}>

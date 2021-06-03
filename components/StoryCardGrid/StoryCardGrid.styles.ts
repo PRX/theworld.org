@@ -24,6 +24,17 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
           marginTop: 0
         }
       }
+    },
+    loadingBar: {
+      transition: 'transform 400ms ease-out',
+      position: 'absolute',
+      top: '100%',
+      left: 0,
+      width: '100%',
+      transform: 'translateY(0)'
+    },
+    isLoading: {
+      transform: 'translateY(-100%)'
     }
   })
 );
