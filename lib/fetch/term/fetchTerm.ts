@@ -10,13 +10,20 @@ import {
   IPriApiCollectionResponse
 } from 'pri-api-library/types';
 import { fetchPriApiItem } from '../api/fetchPriApi';
+import { basicStoryParams } from '../api/params';
 import { fetchTermEpisodes } from './fetchTermEpisodes';
 import { fetchTermStories } from './fetchTermStories';
 
 export const fetchTerm = async (
   id: string
 ): Promise<PriApiResourceResponse> => {
-  const params = {};
+  const params = {
+    include: [
+      ...(basicStoryParams.include || []).map(
+        param => `featured_stories.${param}`
+      )
+    ]
+  };
   const term = await fetchPriApiItem(
     'taxonomy_term--terms',
     id as string,

@@ -20,9 +20,9 @@ export const fetchCategory = async (
     include: [
       'banner_image',
       'logo',
-      ...(basicStoryParams.include || [])
-        .filter(param => param !== 'primary_category')
-        .map(param => `featured_stories.${param}`)
+      ...(basicStoryParams.include || []).map(
+        param => `featured_stories.${param}`
+      )
     ]
   };
   const category = await fetchPriApiItem(
