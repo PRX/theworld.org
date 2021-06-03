@@ -2,8 +2,8 @@
  * @file Audio.tsx
  * Component for Episode.
  */
+
 import React, { useContext, useEffect } from 'react';
-import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -84,10 +84,7 @@ export const Audio = () => {
   );
 };
 
-Audio.fetchData = (
-  id: string,
-  req: IncomingMessage
-): ThunkAction<void, {}, {}, AnyAction> => async (
+Audio.fetchData = (id: string): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {
@@ -95,6 +92,6 @@ Audio.fetchData = (
   const data = getDataByResource(getState(), type, id);
 
   if (!data) {
-    await dispatch<any>(fetchAudioData(id, req));
+    await dispatch<any>(fetchAudioData(id));
   }
 };

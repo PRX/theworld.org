@@ -1,15 +1,15 @@
 /**
- * Fetch Story data from CMS API.
+ * Fetch Audio data from CMS API.
  */
 
 import { PriApiResourceResponse } from 'pri-api-library/types';
 import { fetchPriApiItem } from '../api/fetchPriApi';
-import { fullStoryParams } from '../api/params';
+import { fullAudioParams } from '../api/params';
 
-export const fetchStory = async (
+export const fetchAudio = async (
   id: string
 ): Promise<PriApiResourceResponse> => {
-  return fetchPriApiItem('node--stories', id, {
-    ...fullStoryParams
+  return fetchPriApiItem('file--audio', id, {
+    ...fullAudioParams
   });
 };

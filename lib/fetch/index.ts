@@ -1,5 +1,6 @@
 export * from './api';
 export * from './app';
+export * from './audio';
 export * from './category';
 export * from './episode';
 export * from './homepage';
