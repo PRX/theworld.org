@@ -23,6 +23,18 @@ export const fetchCategory = async (
       ...(basicStoryParams.include || []).map(
         param => `featured_stories.${param}`
       )
+    ],
+    fields: [
+      'title',
+      'teaser',
+      'bannerImage',
+      'logo',
+      'hosts',
+      'sponsors',
+      'body',
+      ...(basicStoryParams.fields || []).map(
+        param => `featured_stories.${param}`
+      )
     ]
   };
   const category = await fetchPriApiItem(

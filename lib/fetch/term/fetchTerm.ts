@@ -22,6 +22,13 @@ export const fetchTerm = async (
       ...(basicStoryParams.include || []).map(
         param => `featured_stories.${param}`
       )
+    ],
+    fields: [
+      'title',
+      'description',
+      ...(basicStoryParams.fields || []).map(
+        param => `featured_stories.${param}`
+      )
     ]
   };
   const term = await fetchPriApiItem(
