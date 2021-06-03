@@ -137,6 +137,13 @@ export const getStaticPaths = async () => {
     ...featuredStories,
     ...stories.data,
     ...episodes.data,
+    ...episodes.data.reduce(
+      (acc: any, { audio }) => [
+        ...acc,
+        ...(audio?.segments ? [...audio.segments] : [])
+      ],
+      [] as any[]
+    ),
     ...latestStories.data,
     ...latestAppStories.data,
     ...team,
