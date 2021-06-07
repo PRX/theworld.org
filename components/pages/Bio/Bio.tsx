@@ -101,11 +101,19 @@ export const Bio = () => {
   const cx = classNames.bind(classes);
 
   useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  useEffect(() => {
     // Something wants to keep the last interacted element in view.
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
+  }, [page]);
 
+  useEffect(() => {
     (async () => {
       // Get CTA message data.
       const context = [`node:${id}`];
@@ -113,11 +121,7 @@ export const Bio = () => {
         fetchCtaData('tw_cta_regions_landing', type, id, context)
       );
     })();
-
-    return () => {
-      unsub();
-    };
-  }, [page]);
+  }, [id]);
 
   const loadMoreStories = async () => {
     setLoading(true);

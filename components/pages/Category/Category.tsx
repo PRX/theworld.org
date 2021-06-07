@@ -8,12 +8,20 @@ import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Button, Hidden, ListSubheader } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Hidden,
+  ListSubheader,
+  Typography
+} from '@material-ui/core';
+import { ListAltRounded } from '@material-ui/icons';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import {
   Sidebar,
   SidebarCta,
+  SidebarHeader,
   SidebarLatestStories,
   SidebarList
 } from '@components/Sidebar';
@@ -87,16 +95,33 @@ export const Category = () => {
   );
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories, page, next } = storiesState;
-  const { title, teaser, bannerImage, logo, hosts, sponsors, body } = data;
+  const {
+    title,
+    teaser,
+    bannerImage,
+    logo,
+    hosts,
+    sponsors,
+    body,
+    children
+  } = data;
   const [loading, setLoading] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
+
+  useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
+  }, [page]);
 
+  useEffect(() => {
     (async () => {
       // Get CTA message data.
       const context = [`term:${id}`];
@@ -104,11 +129,7 @@ export const Category = () => {
         fetchCtaData('tw_cta_regions_landing', type, id, context)
       );
     })();
-
-    return () => {
-      unsub();
-    };
-  }, [page]);
+  }, [id]);
 
   const loadMoreStories = async () => {
     setLoading(true);
@@ -219,6 +240,18 @@ export const Category = () => {
                 <SidebarList
                   data={sponsors}
                   subheader={<ListSubheader>Supported by</ListSubheader>}
+                />
+              )}
+              {!!children.length && (
+                <SidebarList
+                  data={children}
+                  subheader={
+                    <SidebarHeader>
+                      <Typography variant="h2">
+                        <ListAltRounded /> Subcategories
+                      </Typography>
+                    </SidebarHeader>
+                  }
                 />
               )}
             </Sidebar>

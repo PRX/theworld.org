@@ -133,11 +133,19 @@ export const Program = () => {
   const [oldscrollY, setOldScrollY] = useState(0);
 
   useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  useEffect(() => {
     // Something wants to keep the last interacted element in view.
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
+  }, [page, episodesPage]);
 
+  useEffect(() => {
     (async () => {
       // Get CTA message data.
       const context = [`node:${id}`];
@@ -145,11 +153,7 @@ export const Program = () => {
         fetchCtaData('tw_cta_regions_landing', type, id, context)
       );
     })();
-
-    return () => {
-      unsub();
-    };
-  }, [page, episodesPage]);
+  }, [id]);
 
   const loadMoreStories = async () => {
     setLoadingStories(true);
