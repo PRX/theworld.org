@@ -26,6 +26,7 @@ export const fetchTerm = async (
     fields: [
       'title',
       'description',
+      'metatags',
       ...(basicStoryParams.fields || []).map(
         param => `featured_stories.${param}`
       )

@@ -35,7 +35,7 @@ export const fetchTermStories = async (
       ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
       ...(featuredStories && featuredStories.map(({ id: i }) => i))
     ];
-    const { pathname } = generateLinkHrefForContent(term);
+    const { pathname } = generateLinkHrefForContent(term) || {};
     const [, fn] = pathname.split('/');
     const fieldName = fn === 'tags' ? fn : `opencalais_${fn}`;
 
