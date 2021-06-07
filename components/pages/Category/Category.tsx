@@ -242,7 +242,7 @@ export const Category = () => {
                   subheader={<ListSubheader>Supported by</ListSubheader>}
                 />
               )}
-              {!!children.length && (
+              {children && !!children.length && (
                 <SidebarList
                   data={children}
                   subheader={
