@@ -44,6 +44,7 @@ export const DrawerSocialNav = () => {
               color="inherit"
               href={url.href}
               target="_blank"
+              rel="noopener noreferrer"
               key={key}
               disableRipple
               {...attributes}

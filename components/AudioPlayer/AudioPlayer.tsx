@@ -240,6 +240,7 @@ export const AudioPlayer = ({
                 component="a"
                 href={popoutPlayerUrl}
                 target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Open player in new window"
                 disableRipple
               >

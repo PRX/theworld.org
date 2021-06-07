@@ -69,7 +69,7 @@ export const StoryHeader = ({ data }: Props) => {
             <Box mb={3}>
               <Typography variant="h1">{title}</Typography>
               {teaser && (
-                <Typography variant="subtitle1" className={classes.teaser}>
+                <Typography className={classes.teaser}>
                   <HtmlContent html={teaser} />
                 </Typography>
               )}
