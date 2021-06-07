@@ -110,7 +110,9 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       zIndex: 1
     },
     teaser: {
-      marginTop: theme.typography.pxToRem(theme.spacing(2))
+      marginTop: theme.typography.pxToRem(theme.spacing(2)),
+      fontSize: theme.typography.pxToRem(24),
+      lineHeight: theme.typography.pxToRem(30)
     },
     byline: {
       padding: 0,

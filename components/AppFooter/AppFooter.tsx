@@ -60,7 +60,11 @@ export const AppFooter = () => {
               separator: classes.fundedByMuiSeparator
             }}
           >
-            <a className={classes.logoLink} href="https://www.carnegie.org/" aria-label="Carnegie Corporation of New York">
+            <a
+              className={classes.logoLink}
+              href="https://www.carnegie.org/"
+              aria-label="Carnegie Corporation of New York"
+            >
               <img
                 className={classes.logo}
                 alt="Carnegie Corporation of New York"
@@ -70,7 +74,11 @@ export const AppFooter = () => {
                 height="131"
               />
             </a>
-            <a className={classes.logoLink} href="https://www.macfound.org/" aria-label="MacArthur Foundation">
+            <a
+              className={classes.logoLink}
+              href="https://www.macfound.org/"
+              aria-label="MacArthur Foundation"
+            >
               <img
                 className={classes.logo}
                 alt="MacArthur Foundation"
@@ -94,7 +102,11 @@ export const AppFooter = () => {
                 height="52"
               />
             </a>
-            <a className={classes.logoLink} href="https://cpb.org/" aria-label="Corporation for Public Broadcasting">
+            <a
+              className={classes.logoLink}
+              href="https://cpb.org/"
+              aria-label="Corporation for Public Broadcasting"
+            >
               <img
                 className={classes.logo}
                 alt="Corporation for Public Broadcasting"
