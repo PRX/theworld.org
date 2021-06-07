@@ -17,6 +17,7 @@ export const tagsStyles = makeStyles((theme: Theme) =>
     },
     label: {
       margin: '0',
+      fontSize: theme.typography.pxToRem(14),
       fontWeight: theme.typography.fontWeightRegular,
       '&::after': {
         content: '":\x20"'
