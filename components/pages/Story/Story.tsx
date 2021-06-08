@@ -35,8 +35,6 @@ export const Story = () => {
     layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
 
   useEffect(() => {
-    console.log(data);
-
     if (!data.complete) {
       (async () => {
         // Get content data.
