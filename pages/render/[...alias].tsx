@@ -3,17 +3,16 @@
  * Exports the Home component.
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { GetStaticPropsResult } from 'next';
-import Error from 'next/error';
-import { IncomingMessage } from 'http';
+import dynamic from 'next/dynamic';
 import {
   IPriApiCollectionResponse,
   IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
-import { importComponent, preloadComponent } from '@lib/import/component';
+import { preloadComponent } from '@lib/import/component';
 import { RootState } from '@interfaces/state';
 import { fetchAliasData, fetchAppData } from '@store/actions';
 import { wrapper } from '@store';
@@ -21,34 +20,65 @@ import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { Url } from 'url';
 
-interface DispatchProps {
-  fetchAliasData: (alias: string, req: IncomingMessage) => void;
-}
+// Define dynamic component imports.
+const DynamicAudio = dynamic(() => import('@components/pages/Audio') as any);
+const DynamicBio = dynamic(() => import('@components/pages/Bio') as any);
+const DynamicCategory = dynamic(
+  () => import('@components/pages/Category') as any
+);
+const DynamicEpisode = dynamic(
+  () => import('@components/pages/Episode') as any
+);
+const DynamicNewsletter = dynamic(
+  () => import('@components/pages/Newsletter') as any
+);
+const DynamicPage = dynamic(() => import('@components/pages/Page') as any);
+const DynamicProgram = dynamic(
+  () => import('@components/pages/Program') as any
+);
+const DynamicStory = dynamic(() => import('@components/pages/Story') as any);
+const DynamicTeam = dynamic(() => import('@components/pages/Team') as any);
+const DynamicTerm = dynamic(() => import('@components/pages/Term') as any);
 
 interface StateProps extends RootState {}
 
-type Props = StateProps & DispatchProps & IContentComponentProxyProps;
+type Props = StateProps & IContentComponentProxyProps;
 
-const ContentProxy = (props: Props) => {
-  const { errorCode, redirect } = props;
-  let output: JSX.Element = <></>;
+const ContentProxy = ({ type }: Props) => {
+  switch (type) {
+    case 'file--audio':
+      return <DynamicAudio />;
 
-  if (errorCode) {
-    // Render error page.
-    output = <Error statusCode={errorCode} />;
-  } else if (redirect) {
-    useEffect(() => {
-      window.location.assign(redirect);
-    });
-  } else {
-    // Render content component.
-    const { type } = props;
-    const ContentComponent = importComponent(type);
+    case 'node--episodes':
+      return <DynamicEpisode />;
 
-    output = <ContentComponent />;
+    case 'node--newsletter_sign_ups':
+      return <DynamicNewsletter />;
+
+    case 'node--pages':
+      return <DynamicPage />;
+
+    case 'node--people':
+      return <DynamicBio />;
+
+    case 'node--programs':
+      return <DynamicProgram />;
+
+    case 'node--stories':
+      return <DynamicStory />;
+
+    case 'taxonomy_term--categories':
+      return <DynamicCategory />;
+
+    case 'taxonomy_term--terms':
+      return <DynamicTerm />;
+
+    case 'team':
+      return <DynamicTeam />;
+
+    default:
+      return <></>;
   }
-
-  return !redirect && output;
 };
 
 export const getStaticProps = wrapper.getStaticProps(
