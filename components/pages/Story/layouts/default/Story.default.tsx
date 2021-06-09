@@ -11,7 +11,6 @@ import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Box, Container, Grid, Hidden } from '@material-ui/core';
 import { Sidebar, SidebarLatestStories } from '@components/Sidebar';
-import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { IContentComponentProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
@@ -21,6 +20,10 @@ import { StoryHeader, StoryLede } from './components';
 
 const AudioPlayer = dynamic(() =>
   import('@components/AudioPlayer').then(mod => mod.AudioPlayer)
+) as any;
+
+const CtaRegion = dynamic(
+  () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
 ) as any;
 
 const SidebarCta = dynamic(
