@@ -5,25 +5,19 @@
 
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Box, IconButton, NoSsr, Slider } from '@material-ui/core';
+import { Box, IconButton, NoSsr } from '@material-ui/core';
 import {
   CloseSharp,
   CodeSharp,
   GetAppSharp,
   OpenInNewSharp,
-  PlayArrowSharp,
-  PauseSharp,
-  VolumeDownSharp,
-  VolumeMuteSharp,
-  VolumeOffSharp,
-  VolumeUpSharp
+  PlayArrowSharp
 } from '@material-ui/icons';
 import ReactPlayer from 'react-player/lazy';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
 import { formatDuration } from '@lib/parse/time';
 import { generateAudioDownloadFilename } from '@lib/parse/audio';
-import { Duration } from '@components/Duration';
 import { AudioPlayerActionTypes as ActionTypes } from './AudioPlayer.actions';
 import { IAudioPlayerProps, IProgressState } from './AudioPlayer.interfaces';
 import {
@@ -31,9 +25,40 @@ import {
   audioPlayerInitialState
 } from './AudioPlayer.reducer';
 import { audioPlayerStyles, audioPlayerTheme } from './AudioPlayer.styles';
-import { SliderValueLabel } from './SliderValueLabel';
 
-const EmbedCode: any = dynamic(() => import('./EmbedCode') as any);
+const Duration = dynamic(() =>
+  import('@components/Duration').then(mod => mod.Duration)
+) as any;
+
+const EmbedCode = dynamic(() =>
+  import('./EmbedCode').then(mod => mod.EmbedCode)
+) as any;
+
+const Slider = dynamic(() => import('@material-ui/core/Slider')) as any;
+
+const SliderValueLabel = dynamic(() =>
+  import('./SliderValueLabel').then(mod => mod.SliderValueLabel)
+) as any;
+
+const PauseSharp = dynamic(() =>
+  import('@material-ui/icons/PauseSharp')
+) as any;
+
+const VolumeDownSharp = dynamic(() =>
+  import('@material-ui/icons/VolumeDownSharp')
+) as any;
+
+const VolumeMuteSharp = dynamic(() =>
+  import('@material-ui/icons/VolumeMuteSharp')
+) as any;
+
+const VolumeOffSharp = dynamic(() =>
+  import('@material-ui/icons/VolumeOffSharp')
+) as any;
+
+const VolumeUpSharp = dynamic(() =>
+  import('@material-ui/icons/VolumeUpSharp')
+) as any;
 
 export const AudioPlayer = ({
   className,
@@ -130,7 +155,7 @@ export const AudioPlayer = ({
         payload: value as number
       });
     },
-    ValueLabelComponent: SliderValueLabel
+    ValueLabelComponent: mounted ? SliderValueLabel : null
   };
 
   const volumeAdjustAttrs = {
