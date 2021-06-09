@@ -17,7 +17,7 @@ import {
   VolumeOffSharp,
   VolumeUpSharp
 } from '@material-ui/icons';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player/lazy';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
 import { formatDuration } from '@lib/parse/time';
@@ -80,8 +80,7 @@ export const AudioPlayer = ({
       file: {
         forceAudio: true,
         attributes: {
-          autoPlay: false,
-          preload: 'auto'
+          autoPlay: false
         }
       }
     },
