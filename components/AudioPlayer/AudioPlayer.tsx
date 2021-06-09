@@ -44,20 +44,29 @@ const OpenInNewSharp = dynamic(() =>
   import('@material-ui/icons/OpenInNewSharp')
 ) as any;
 
-const PauseSharp = dynamic(() =>
-  import('@material-ui/icons/PauseSharp')
+const PauseSharp = dynamic(() => import('@material-ui/icons/PauseSharp'), {
+  loading: () => <PlayArrowSharp />
+}) as any;
+
+const VolumeDownSharp = dynamic(
+  () => import('@material-ui/icons/VolumeDownSharp'),
+  {
+    loading: () => <VolumeUpSharp />
+  }
 ) as any;
 
-const VolumeDownSharp = dynamic(() =>
-  import('@material-ui/icons/VolumeDownSharp')
+const VolumeMuteSharp = dynamic(
+  () => import('@material-ui/icons/VolumeMuteSharp'),
+  {
+    loading: () => <VolumeUpSharp />
+  }
 ) as any;
 
-const VolumeMuteSharp = dynamic(() =>
-  import('@material-ui/icons/VolumeMuteSharp')
-) as any;
-
-const VolumeOffSharp = dynamic(() =>
-  import('@material-ui/icons/VolumeOffSharp')
+const VolumeOffSharp = dynamic(
+  () => import('@material-ui/icons/VolumeOffSharp'),
+  {
+    loading: () => <VolumeDownSharp />
+  }
 ) as any;
 
 const VolumeUpSharp = dynamic(() =>
