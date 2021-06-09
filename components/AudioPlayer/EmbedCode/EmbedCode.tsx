@@ -20,7 +20,7 @@ export interface IEmbedCodeState {
   failed: boolean;
 }
 
-export const EmbedCode = ({ src, className }: IEmbedCodeProps) => {
+const EmbedCode = ({ src, className }: IEmbedCodeProps) => {
   const classes = embedCodeStyles({});
   const cx = classNames.bind(classes);
   const elmRef = useRef<HTMLElement>(null);
@@ -57,3 +57,6 @@ export const EmbedCode = ({ src, className }: IEmbedCodeProps) => {
     </ThemeProvider>
   );
 };
+
+// eslint-disable-next-line import/no-default-export
+export default EmbedCode;

@@ -3,7 +3,8 @@
  * Component for audio player.
  */
 
-import React, { useEffect, useReducer, useRef } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Box, IconButton, NoSsr, Slider } from '@material-ui/core';
 import {
   CloseSharp,
@@ -30,8 +31,9 @@ import {
   audioPlayerInitialState
 } from './AudioPlayer.reducer';
 import { audioPlayerStyles, audioPlayerTheme } from './AudioPlayer.styles';
-import { EmbedCode } from './EmbedCode';
 import { SliderValueLabel } from './SliderValueLabel';
+
+const EmbedCode: any = dynamic(() => import('./EmbedCode') as any);
 
 export const AudioPlayer = ({
   className,
@@ -62,6 +64,7 @@ export const AudioPlayer = ({
     },
     dispatch
   ] = useReducer(audioPlayerStateReducer, audioPlayerInitialState);
+  const [mounted, setMounted] = useState(false);
 
   const showMessage = !hasPlayed && !embedCodeShown;
   const showControls = hasPlayed && !embedCodeShown;
@@ -154,6 +157,8 @@ export const AudioPlayer = ({
   };
 
   useEffect(() => {
+    setMounted(true);
+
     window.addEventListener('scroll', handleScroll);
 
     return () => {
@@ -167,7 +172,7 @@ export const AudioPlayer = ({
       fallback={<audio className={classes.fallbackPlayer} src={url} controls />}
     >
       <ThemeProvider theme={audioPlayerTheme}>
-        <ReactPlayer {...playerAttrs} />
+        {mounted && <ReactPlayer {...playerAttrs} />}
         <div ref={rootElm} className={rootClasses}>
           <IconButton
             className={playBtnClasses}
