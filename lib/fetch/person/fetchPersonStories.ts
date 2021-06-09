@@ -7,7 +7,7 @@
  * @param exclude Array of id strings to not exclude from query.
  */
 
-import _ from 'lodash';
+import { uniq, orderBy } from 'lodash';
 import {
   PriApiResourceResponse,
   IPriApiResource,
@@ -49,10 +49,10 @@ export const fetchPersonStories = async (
       }
     ).then((resp: IPriApiCollectionResponse) => resp);
     const { data: fcData, ...other } = fcForPerson;
-    const fcIds = _.uniq(fcData.map(fc => fc.id as string));
+    const fcIds = uniq(fcData.map(fc => fc.id as string));
 
     // Fetch list of stories. Paginated.
-    const data = _.orderBy(
+    const data = orderBy(
       (await Promise.all(
         fcIds.map(fcId =>
           fetchPriApiQuery('node--stories', {

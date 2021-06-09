@@ -6,7 +6,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTheme, Theme } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
-import _ from 'lodash';
+import { reduceRight, last } from 'lodash';
 import { imageStyles } from './Image.styles';
 
 export interface IResponsiveConfig {
@@ -64,11 +64,11 @@ export const determineIfIResponsiveConfig = (
  *    Smallest image style larger than the provided width.
  */
 export const findBestStyle = (width: number, styles: IImageStyle[]) =>
-  _.reduceRight(
+  reduceRight(
     styles,
     (best: IImageStyle, style: IImageStyle) =>
       style.info.width >= width ? style : best,
-    _.last(styles)
+    last(styles)
   );
 
 /**
@@ -95,7 +95,7 @@ export const generateStaticAttributes = (
     .toString();
   const {
     style: { src }
-  } = _.last(srcSetStyles);
+  } = last(srcSetStyles);
 
   return {
     srcSet,
@@ -138,7 +138,7 @@ export const generateResponsiveAttributes = (
     })
     .filter(val => !!val)
     .toString();
-  const { src } = _.last(imageSrcs);
+  const { src } = last(imageSrcs);
 
   return {
     src,
