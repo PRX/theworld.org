@@ -6,13 +6,7 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Box, IconButton, NoSsr } from '@material-ui/core';
-import {
-  CloseSharp,
-  CodeSharp,
-  GetAppSharp,
-  OpenInNewSharp,
-  PlayArrowSharp
-} from '@material-ui/icons';
+import { GetAppSharp, PlayArrowSharp } from '@material-ui/icons';
 import ReactPlayer from 'react-player/lazy';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
@@ -38,6 +32,16 @@ const Slider = dynamic(() => import('@material-ui/core/Slider')) as any;
 
 const SliderValueLabel = dynamic(() =>
   import('./SliderValueLabel').then(mod => mod.SliderValueLabel)
+) as any;
+
+const CloseSharp = dynamic(() =>
+  import('@material-ui/icons/CloseSharp')
+) as any;
+
+const CodeSharp = dynamic(() => import('@material-ui/icons/CodeSharp')) as any;
+
+const OpenInNewSharp = dynamic(() =>
+  import('@material-ui/icons/OpenInNewSharp')
 ) as any;
 
 const PauseSharp = dynamic(() =>
