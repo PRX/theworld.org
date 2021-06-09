@@ -12,13 +12,13 @@ import {
   IPriApiResourceResponse
 } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
-import { preloadComponent } from '@lib/import/component';
 import { RootState } from '@interfaces/state';
 import { fetchAliasData, fetchAppData } from '@store/actions';
 import { wrapper } from '@store';
 import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { Url } from 'url';
+import { getResourceFetchData } from '@lib/import/fetchData';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio') as any);
@@ -125,15 +125,15 @@ export const getStaticProps = wrapper.getStaticProps(
 
     // Preload content component.
     if (resourceType) {
-      const ContentComponent = await preloadComponent(resourceType);
+      const fetchData = getResourceFetchData(resourceType);
 
       // Use content component to fetch its data.
-      if (ContentComponent) {
+      if (fetchData) {
         await Promise.all([
           // Fetch App data (latest stories, menus, etc.)
           store.dispatch<any>(fetchAppData()),
           // Use content component to fetch its data.
-          store.dispatch(ContentComponent.fetchData(resourceId))
+          store.dispatch(fetchData(resourceId))
         ]);
 
         return { props: { type: resourceType, id: resourceId } };

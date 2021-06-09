@@ -195,7 +195,7 @@ export const Homepage = () => {
   );
 };
 
-Homepage.fetchData = (): ThunkAction<void, {}, {}, AnyAction> => async (
+export const fetchData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ): Promise<void> => {
   // Fetch App Data

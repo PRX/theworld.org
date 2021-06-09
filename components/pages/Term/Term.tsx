@@ -349,7 +349,9 @@ export const Term = () => {
   );
 };
 
-Term.fetchData = (id: string): ThunkAction<void, {}, {}, AnyAction> => async (
+export const fetchData = (
+  id: string
+): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {

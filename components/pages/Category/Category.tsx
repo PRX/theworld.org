@@ -272,7 +272,7 @@ export const Category = () => {
   );
 };
 
-Category.fetchData = (
+export const fetchData = (
   id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,

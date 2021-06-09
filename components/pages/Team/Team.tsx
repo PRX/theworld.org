@@ -125,7 +125,7 @@ export const Team = () => {
   );
 };
 
-Team.fetchData = (): ThunkAction<void, {}, {}, AnyAction> => async (
+export const fetchData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ): Promise<void> => {
   await dispatch<any>(fetchTeamData());

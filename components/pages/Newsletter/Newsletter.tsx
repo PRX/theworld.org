@@ -149,7 +149,7 @@ export const Newsletter = () => {
   );
 };
 
-Newsletter.fetchData = (
+export const fetchData = (
   id: string,
   req: IncomingMessage
 ): ThunkAction<void, {}, {}, AnyAction> => async (
