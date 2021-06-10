@@ -5,8 +5,8 @@
 
 import React from 'react';
 import { Homepage, fetchData } from '@components/pages/Homepage';
-import { wrapper } from '@store';
-import { fetchAppData } from '@store/actions';
+import { wrapper } from '@store/configureStore';
+import { fetchAppData } from '@store/actions/fetchAppData';
 
 const IndexPage = () => {
   return <Homepage />;

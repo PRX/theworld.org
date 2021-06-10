@@ -6,8 +6,8 @@
 import React, { FC, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
-import { AppCtaBanner } from '@components/AppCtaBanner';
-import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
+// import { AppCtaBanner } from '@components/AppCtaBanner';
+// import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppFooter } from '@components/AppFooter';
 import { AppHeader } from '@components/AppHeader';
 import { AppLoadingBar } from '@components/AppLoadingBar';
@@ -45,13 +45,13 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
         <AppContext.Provider value={contextValue}>
           <Box minHeight="100vh" display="flex" flexDirection="column">
             <AppLoadingBar />
-            <AppCtaBanner />
+            {/* <AppCtaBanner /> */}
             <AppHeader />
             <Box flexGrow={1}>
               <Component {...pageProps} />
             </Box>
             <AppFooter />
-            <AppCtaLoadUnder />
+            {/* <AppCtaLoadUnder /> */}
           </Box>
         </AppContext.Provider>
         <CssBaseline />
