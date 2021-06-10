@@ -3,7 +3,8 @@
  * Gather program stories data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { uniq, orderBy } from 'lodash';
+import _uniq from 'lodash/uniq';
+import _orderBy from 'lodash/orderBy';
 import {
   IPriApiResource,
   IPriApiCollectionResponse,
@@ -37,10 +38,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
       )) as IPriApiCollectionResponse;
       const { data: fcData, ...other } = fcForPerson;
-      const fcIds = uniq(fcData.map(fc => fc.id as string));
+      const fcIds = _uniq(fcData.map(fc => fc.id as string));
 
       // Fetch list of stories. Paginated.
-      const data = orderBy(
+      const data = _orderBy(
         (await Promise.all(
           fcIds.map(fcId =>
             fetchPriApiQuery('node--stories', {
