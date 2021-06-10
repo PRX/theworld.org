@@ -21,24 +21,16 @@ import { Url } from 'url';
 import { getResourceFetchData } from '@lib/import/fetchData';
 
 // Define dynamic component imports.
-const DynamicAudio = dynamic(() => import('@components/pages/Audio') as any);
-const DynamicBio = dynamic(() => import('@components/pages/Bio') as any);
-const DynamicCategory = dynamic(
-  () => import('@components/pages/Category') as any
-);
-const DynamicEpisode = dynamic(
-  () => import('@components/pages/Episode') as any
-);
-const DynamicNewsletter = dynamic(
-  () => import('@components/pages/Newsletter') as any
-);
-const DynamicPage = dynamic(() => import('@components/pages/Page') as any);
-const DynamicProgram = dynamic(
-  () => import('@components/pages/Program') as any
-);
-const DynamicStory = dynamic(() => import('@components/pages/Story') as any);
-const DynamicTeam = dynamic(() => import('@components/pages/Team') as any);
-const DynamicTerm = dynamic(() => import('@components/pages/Term') as any);
+const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
+const DynamicBio = dynamic(() => import('@components/pages/Bio'));
+const DynamicCategory = dynamic(() => import('@components/pages/Category'));
+const DynamicEpisode = dynamic(() => import('@components/pages/Episode'));
+const DynamicNewsletter = dynamic(() => import('@components/pages/Newsletter'));
+const DynamicPage = dynamic(() => import('@components/pages/Page'));
+const DynamicProgram = dynamic(() => import('@components/pages/Program'));
+const DynamicStory = dynamic(() => import('@components/pages/Story'));
+const DynamicTeam = dynamic(() => import('@components/pages/Team'));
+const DynamicTerm = dynamic(() => import('@components/pages/Term'));
 
 interface StateProps extends RootState {}
 

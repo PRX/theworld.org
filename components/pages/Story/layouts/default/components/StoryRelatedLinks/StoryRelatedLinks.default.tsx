@@ -20,11 +20,13 @@ import {
   storyRelatedLinksTheme
 } from './StoryRelatedLinks.default.styles';
 
-interface Props {
+export interface IStoryRelatedLinksProps {
   data: IPriApiResource[];
 }
 
-export const StoryRelatedLinks = ({ data: related }: Props) => {
+export const StoryRelatedLinks = ({
+  data: related
+}: IStoryRelatedLinksProps) => {
   const classes = storyRelatedLinksStyles({});
 
   return (

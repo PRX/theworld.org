@@ -2,23 +2,32 @@
  * @file Homepage.tsx
  * Component for Homepage.
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Hidden } from '@material-ui/core';
 import { LandingPage } from '@components/LandingPage';
-import { CtaRegion } from '@components/CtaRegion';
-import { SidebarCta, SidebarLatestStories } from '@components/Sidebar';
+import { SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { IPriApiResource } from 'pri-api-library/types';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
+import { ICtaRegionProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
 import { IContentComponentProps } from '@interfaces/content';
 import { fetchCtaData, fetchHomepageData } from '@store/actions';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
+
+const CtaRegion = dynamic(
+  () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
+) as React.FC<ICtaRegionProps>;
+
+const SidebarCta = dynamic(
+  () => import('@components/Sidebar').then(mod => mod.SidebarCta) as any
+) as React.FC<ICtaRegionProps>;
 
 interface StateProps extends RootState {}
 
@@ -26,7 +35,10 @@ type Props = StateProps & IContentComponentProps;
 
 export const Homepage = () => {
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const featuredStoryState = getCollectionData(
     state,
     'homepage',
@@ -183,7 +195,11 @@ export const Homepage = () => {
         fetchCtaData('tw_cta_regions_landing', 'homepage', undefined, context)
       );
     })();
-  });
+
+    return () => {
+      unsub();
+    };
+  }, []);
 
   return (
     <>
