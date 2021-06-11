@@ -33,6 +33,20 @@ module.exports = withPlugins([
       if (!isServer) {
         newConfig.optimization.splitChunks.cacheGroups = {
           ...newConfig.optimization.splitChunks.cacheGroups,
+          reactCommon: {
+            test: /[\\/]node_modules[\\/]react-(cookies|copy-to-clipboard|html-parser|markdown|moment|player|redux)[\\/]/,
+            name: (module, chunks, cacheGroupKey) => {
+              const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight(item => item);
+              const allChunksNames = chunks.map(item => item.name).join('~');
+              return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+            },
+            priority: 20,
+            reuseExistingChunk: true,
+            enforce: true
+          },
           moment: {
             test: /[\\/]node_modules[\\/]moment(-[^\\/]+)?[\\/]/,
             name: 'moment',
