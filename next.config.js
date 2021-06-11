@@ -34,7 +34,8 @@ module.exports = withPlugins([
         newConfig.optimization.splitChunks.cacheGroups = {
           ...newConfig.optimization.splitChunks.cacheGroups,
           reactCommon: {
-            test: /[\\/]node_modules[\\/]react-(cookies|copy-to-clipboard|html-parser|markdown|moment|player|redux)[\\/]/,
+            chunks: 'all',
+            test: /(?<!node_modules.*)[\\/]node_modules[\\/]react-(cookies|copy-to-clipboard|html-parser|markdown|moment|player|redux)[\\/]/,
             name: (module, chunks, cacheGroupKey) => {
               const moduleFileName = module
                 .identifier()
@@ -43,18 +44,20 @@ module.exports = withPlugins([
               const allChunksNames = chunks.map(item => item.name).join('~');
               return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
             },
-            priority: 20,
+            priority: 30,
             reuseExistingChunk: true,
             enforce: true
           },
           moment: {
+            chunks: 'all',
             test: /[\\/]node_modules[\\/]moment(-[^\\/]+)?[\\/]/,
             name: 'moment',
-            priority: 20,
+            priority: 30,
             reuseExistingChunk: true,
             enforce: true
           },
           materialui: {
+            chunks: 'all',
             test: /[\\/]node_modules[\\/]@material-ui[\\/]/,
             name: 'material-ui',
             priority: 30,
@@ -62,6 +65,7 @@ module.exports = withPlugins([
             enforce: true
           },
           pages: {
+            chunks: 'all',
             test: /[\\/]components[\\/]pages[\\/]/,
             name: (module, chunks, cacheGroupKey) => {
               const moduleFileName = module
