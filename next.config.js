@@ -47,8 +47,8 @@ module.exports = withPlugins([
             reuseExistingChunk: true,
             enforce: true
           },
-          sidebar: {
-            test: /[\\/]components[\\/]Sidebar[\\/]/,
+          pages: {
+            test: /[\\/]components[\\/]pages[\\/]/,
             name: (module, chunks, cacheGroupKey) => {
               const moduleFileName = module
                 .identifier()
