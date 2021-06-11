@@ -8,8 +8,11 @@ const withPlugins = require('next-compose-plugins');
 
 module.exports = withPlugins([
   {
-    webpack(config) {
-      return {
+    future: {
+      webpack5: true
+    },
+    webpack(config, { isServer }) {
+      const newConfig = {
         ...config,
         resolve: {
           ...config.resolve,
@@ -26,6 +29,26 @@ module.exports = withPlugins([
           }
         }
       };
+
+      if (!isServer) {
+        newConfig.optimization.splitChunks.cacheGroups = {
+          ...newConfig.optimization.splitChunks.cacheGroups,
+          moment: {
+            test: /[\\/]node_modules[\\/]moment(-[^\\/]+)?[\\/]/,
+            name: 'moment',
+            priority: 20,
+            reuseExistingChunk: true
+          },
+          materialui: {
+            test: /[\\/]node_modules[\\/]@material-ui[\\/]/,
+            name: 'material-ui',
+            priority: 30,
+            reuseExistingChunk: true
+          }
+        };
+      }
+
+      return newConfig;
     }
   }
 ]);
