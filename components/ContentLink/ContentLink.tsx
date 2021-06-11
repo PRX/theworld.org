@@ -15,15 +15,15 @@ import {
 } from '@lib/routing';
 import { contentLinkStyles } from './ContentLink.styles';
 
-export interface ContentLinkProps extends LinkProps {
+export interface IContentLinkProps extends LinkProps {
   data: IPriApiResource;
   query?: { [k: string]: string };
 }
 
 export type ContentLinkRef = HTMLAnchorElement;
 
-export const ContentLink = forwardRef<ContentLinkRef, ContentLinkProps>(
-  ({ children, data, query, className, ...other }: ContentLinkProps, ref) => {
+export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
+  ({ children, data, query, className, ...other }: IContentLinkProps, ref) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const { pathname } = generateLinkHrefForContent(data) || {};

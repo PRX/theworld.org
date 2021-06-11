@@ -4,13 +4,13 @@
  */
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import 'moment-timezone';
-import Moment from 'react-moment';
 import ReactMarkdown from 'react-markdown';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
-import { ContentLink } from '@components/ContentLink';
+import { IContentLinkProps } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
 import { Image } from '@components/Image';
 import {
@@ -18,6 +18,11 @@ import {
   storyHeaderTheme
 } from './StoryHeader.feature.styles';
 
+const Moment = dynamic(() => import('react-moment')) as any;
+
+const ContentLink = dynamic(() =>
+  import('@components/ContentLink').then(mod => mod.ContentLink)
+) as React.FC<IContentLinkProps>;
 interface Props {
   data: IPriApiResource;
 }

@@ -3,11 +3,11 @@
  * Component for audio player.
  */
 
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import ReactPlayer from 'react-player/file';
 import { Box, IconButton, NoSsr } from '@material-ui/core';
 import { GetAppSharp, PlayArrowSharp } from '@material-ui/icons';
-import ReactPlayer from 'react-player/lazy';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
 import { IDuarationProps } from '@components/Duration';
@@ -83,7 +83,7 @@ export const AudioPlayer = ({
   const { url } = data;
   const audioDownloadFilename =
     downloadFilename || generateAudioDownloadFilename(data);
-  const playerElm = useRef<ReactPlayer>(null);
+  const playerElm = useRef(null);
   const rootElm = useRef<HTMLDivElement>(null);
   const [
     {
@@ -101,7 +101,6 @@ export const AudioPlayer = ({
     },
     dispatch
   ] = useReducer(audioPlayerStateReducer, audioPlayerInitialState);
-  const [mounted, setMounted] = useState(false);
 
   const showMessage = !hasPlayed && !embedCodeShown;
   const showControls = hasPlayed && !embedCodeShown;
@@ -167,7 +166,7 @@ export const AudioPlayer = ({
         payload: value as number
       });
     },
-    ValueLabelComponent: mounted ? SliderValueLabel : null
+    ValueLabelComponent: SliderValueLabel
   };
 
   const volumeAdjustAttrs = {
@@ -194,8 +193,6 @@ export const AudioPlayer = ({
   };
 
   useEffect(() => {
-    setMounted(true);
-
     window.addEventListener('scroll', handleScroll);
 
     return () => {
@@ -209,7 +206,7 @@ export const AudioPlayer = ({
       fallback={<audio className={classes.fallbackPlayer} src={url} controls />}
     >
       <ThemeProvider theme={audioPlayerTheme}>
-        {mounted && <ReactPlayer {...playerAttrs} />}
+        <ReactPlayer {...playerAttrs} />
         <div ref={rootElm} className={rootClasses}>
           <IconButton
             className={playBtnClasses}

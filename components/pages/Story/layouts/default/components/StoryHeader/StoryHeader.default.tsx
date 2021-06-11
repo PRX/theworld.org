@@ -8,13 +8,14 @@ import dynamic from 'next/dynamic';
 import 'moment-timezone';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Typography } from '@material-ui/core';
+import { IContentLinkProps } from '@components/ContentLink';
 import { storyHeaderStyles } from './StoryHeader.default.styles';
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const ContentLink = dynamic(() =>
   import('@components/ContentLink').then(mod => mod.ContentLink)
-) as any;
+) as React.FC<IContentLinkProps>;
 interface Props {
   data: IPriApiResource;
 }
