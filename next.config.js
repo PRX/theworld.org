@@ -37,13 +37,29 @@ module.exports = withPlugins([
             test: /[\\/]node_modules[\\/]moment(-[^\\/]+)?[\\/]/,
             name: 'moment',
             priority: 20,
-            reuseExistingChunk: true
+            reuseExistingChunk: true,
+            enforce: true
           },
           materialui: {
             test: /[\\/]node_modules[\\/]@material-ui[\\/]/,
             name: 'material-ui',
             priority: 30,
-            reuseExistingChunk: true
+            reuseExistingChunk: true,
+            enforce: true
+          },
+          sidebar: {
+            test: /[\\/]components[\\/]Sidebar[\\/]/,
+            name: (module, chunks, cacheGroupKey) => {
+              const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight(item => item);
+              const allChunksNames = chunks.map(item => item.name).join('~');
+              return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+            },
+            priority: 40,
+            reuseExistingChunk: true,
+            enforce: true
           }
         };
       }
