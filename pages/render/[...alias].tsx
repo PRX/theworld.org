@@ -6,6 +6,7 @@
 import React from 'react';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';
+import { Url } from 'url';
 import {
   IPriApiCollectionResponse,
   IPriApiResource,
@@ -17,7 +18,6 @@ import { fetchAliasData, fetchAppData } from '@store/actions';
 import { wrapper } from '@store';
 import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
-import { Url } from 'url';
 import { getResourceFetchData } from '@lib/import/fetchData';
 
 // Define dynamic component imports.

@@ -200,13 +200,11 @@ First instinct would be to setup a catch-all route that can lookup content by al
 
 ### The Solution
 
-Let's work with what we have. Vercel CLI offers a dev env that mirrors deployment behavior, so if it works with that dev env, it should work on deploy. Lets start with routes setup via `./vercel.json`.
+Let's work with what we have. Vercel CLI offers a dev env that mirrors deployment behavior, so if it works with that dev env, it should work on deploy. Lets start with rewrites setup via `./vercel.json`.
 
-But what routes do we need? None of our content URL's adhere to any one pattern. There is one characteristic of a URL that makes things a little easier: they are _unique_ to the content they deliver from a data perspective. With a few exceptions for local app files and assets, we can assume all other URLs' pathnames are an alias for a page normally found on our Drupal CMS driven site. (This also assumes only requests for relevent front facing pages have been forward to this application. We shouldn't have to worry about admin pages, files, feeds, etc.) Now all we have to do is provide that alias as a query parameter to the one page that always works, `./pages/index.tsx`.
+But what rewrites do we need? None of our content URL's adhere to any one pattern. There is one characteristic of a URL that makes things a little easier: they are _unique_ to the content they deliver from a data perspective. With a few exceptions for local app files and assets, we can assume all other URLs' pathnames are an alias for a page normally found on our Drupal CMS driven site. (This also assumes only requests for relevent front facing pages have been forward to this application. We shouldn't have to worry about admin pages, files, feeds, etc.) All we need is one rewrite to a [catch-all](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes) render page, `./pages/render/[...alias].tsx`.
 
-The index page will be our whole app. Instead of routing to another page, it will be a proxy for our content components, dynamically loading and rendering the content component for the data associated with the alias. This will require mapping to get the right content component loaded.
-
-Mapping is handled in `./components/ResourceComponentMap.ts`. Content compnents are loaded using `next/dynamic` so pages don't have to import all pages components, just the one for that resource type. Simply add a dynamic import for your component, then add it to the `ResourceComponentMap` object, using the resource type as the key.
+The `render/[...alias].tsx` page will be our whole app, appart from the homepage, which remains our `index.tsx` page. Instead of routing to another page, it will be a proxy for our content components, dynamically loading and rendering the content component for the data type associated with the alias.
 
 ---
 
@@ -215,10 +213,6 @@ Mapping is handled in `./components/ResourceComponentMap.ts`. Content compnents 
 Content components are our top level component for a page. It is responsible for defining its render output, and a fetcher for the data it intends to render.
 
 Content components should be written as function components. Lifecylce methods can be implemented using [`useEffect` hook](https://reactjs.org/docs/hooks-reference.html#useeffect). It is also much easier to use multiple contexts with the [`useContext` hook](https://reactjs.org/docs/hooks-reference.html#usecontext).
-
-### Content Context
-
-Data fetched during alias resolution will be passed via the `data` property on the `ContentConext`. This allows any submodule components to gain access to the data without coupling via component properties.
 
 ### Properties and Methods
 
