@@ -16,11 +16,12 @@ const LedeImage = dynamic(
 const LedeVideo = dynamic(
   () => import('@components/LedeVideo').then(mod => mod.LedeVideo) as any
 ) as React.FC<ILedeVideoProps>;
-interface Props {
+
+export interface IStoryLedeProps {
   data: IPriApiResource;
 }
 
-export const StoryLede = ({ data }: Props) => {
+export const StoryLede = ({ data }: IStoryLedeProps) => {
   const { image, video } = data;
 
   return (
