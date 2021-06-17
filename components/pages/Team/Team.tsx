@@ -86,7 +86,7 @@ export const Team = () => {
                         aria-label="Progress Bar"
                       />
                       <Typography variant="h4">{item.title}</Typography>
-                      <Typography variant="subtitle1">
+                      <Typography variant="subtitle1" component="p">
                         {item.position}
                       </Typography>
                     </CardContent>
