@@ -214,7 +214,7 @@ export const StoryDefault = ({ data }: Props) => {
                 {hasRelated && (
                   <aside>
                     <header>
-                      <h3>Related Content</h3>
+                      <h2>Related Content</h2>
                     </header>
                     <StoryRelatedLinks data={related} />
                   </aside>

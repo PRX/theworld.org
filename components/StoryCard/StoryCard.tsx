@@ -106,6 +106,7 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
               <LinearProgress
                 className={classes.loadingBar}
                 color="secondary"
+                aria-label="Progress Bar"
               />
             </CardMedia>
           )}
@@ -119,7 +120,7 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
             )}
             <Typography
               variant="h5"
-              component="h3"
+              component="h2"
               gutterBottom
               className={classes.title}
             >

@@ -128,7 +128,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                         </ContentLink>
                       </Typography>
                     )}
-                    <Typography variant="h5" component="h3" gutterBottom>
+                    <Typography variant="h5" component="h2" gutterBottom>
                       {title}
                     </Typography>
                     <ContentLink data={item} className={cxCard('link')} />

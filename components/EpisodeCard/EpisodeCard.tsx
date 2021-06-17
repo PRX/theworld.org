@@ -59,7 +59,7 @@ export const EpisodeCard = ({ data, label }: EpisodeCardProps) => {
             )}
             <Typography
               variant="h5"
-              component="h3"
+              component="h2"
               gutterBottom
               className={cx('title')}
             >

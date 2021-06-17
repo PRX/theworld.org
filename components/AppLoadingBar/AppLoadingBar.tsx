@@ -47,6 +47,7 @@ export const AppLoadingBar = () => {
         color="secondary"
         variant="indeterminate"
         className={className}
+        aria-label="Progress Bar"
       />
     </ThemeProvider>
   );

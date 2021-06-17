@@ -65,7 +65,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
             )}
             <Typography
               variant="h5"
-              component="h3"
+              component="h2"
               gutterBottom
               className={cx('title')}
             >

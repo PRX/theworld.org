@@ -13,7 +13,7 @@ import {
 export const appCtaBannerTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     typography: {
-      h3: {
+      h2: {
         color: theme.palette.primary.contrastText,
         fontSize: '1.5rem'
       },
