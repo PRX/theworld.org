@@ -19,7 +19,7 @@ export const storyBodyQAStyles = (theme: Theme) =>
         theme.palette.primary.main
       }`,
 
-      '& h2': {
+      '& h3': {
         margin: '1rem 0 1rem',
         paddingBottom: '1.25rem',
         borderBottom: `${theme.typography.pxToRem(2)} solid ${
