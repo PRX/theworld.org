@@ -40,7 +40,7 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
 
   return (
     <Box textAlign="center">
-      {heading && <Typography variant="h3">{heading}</Typography>}
+      {heading && <Typography variant="h2">{heading}</Typography>}
       {message && (
         <Typography component="div" variant="body1">
           <HtmlContent html={message} />

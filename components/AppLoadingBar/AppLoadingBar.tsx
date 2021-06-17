@@ -89,6 +89,7 @@ export const AppLoadingBar = () => {
         value={progress}
         valueBuffer={buffer}
         className={className}
+        aria-label="Progress Bar"
       />
     </ThemeProvider>
   );

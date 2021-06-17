@@ -83,9 +83,10 @@ export const Team = () => {
                       <LinearProgress
                         className={classes.loadingBar}
                         color="secondary"
+                        aria-label="Progress Bar"
                       />
                       <Typography variant="h4">{item.title}</Typography>
-                      <Typography variant="subtitle1">
+                      <Typography variant="subtitle1" component="p">
                         {item.position}
                       </Typography>
                     </CardContent>

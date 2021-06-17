@@ -111,6 +111,7 @@ export const NewsletterForm = ({
           <Box>
             <TextField
               type="email"
+              id="email"
               label="Email Address"
               value={data.emailAddress}
               onChange={handleChangeEmailAddress}
@@ -128,6 +129,7 @@ export const NewsletterForm = ({
                 size="small"
                 onClick={handleSubmit}
                 disabled={!readyToSubmit}
+                aria-hidden="true"
               >
                 {icon}
               </IconButton>
@@ -140,6 +142,7 @@ export const NewsletterForm = ({
                 disableElevation={submitted}
                 endIcon={icon}
                 onClick={handleSubmit}
+                aria-label="Subscribe"
               >
                 {label || 'Subscribe'}
               </Button>
