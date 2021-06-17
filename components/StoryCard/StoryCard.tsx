@@ -91,6 +91,7 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
                 [classes.isLoading]: isLoading
               })}
               color="secondary"
+              aria-label="Progress Bar"
             />
             {primaryCategory && (
               <Typography variant="overline" gutterBottom>
@@ -101,7 +102,7 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
             )}
             <Typography
               variant="h5"
-              component="h3"
+              component="h2"
               gutterBottom
               className={classes.title}
             >

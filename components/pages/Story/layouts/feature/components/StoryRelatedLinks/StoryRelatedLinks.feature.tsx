@@ -48,7 +48,7 @@ export const StoryRelatedLinks = ({ data: related }: Props) => {
                   <CardActionArea>
                     <CardMedia image={src} title={imageTitle} />
                     <CardContent>
-                      <Typography variant="h5" component="h3">
+                      <Typography variant="h5" component="h2">
                         {title}
                       </Typography>
                     </CardContent>
