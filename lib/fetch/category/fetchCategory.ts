@@ -32,6 +32,7 @@ export const fetchCategory = async (
       'hosts',
       'sponsors',
       'body',
+      'children',
       ...(basicStoryParams.fields || []).map(
         param => `featured_stories.${param}`
       )
