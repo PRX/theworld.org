@@ -3,7 +3,6 @@
  * Component for Term.
  */
 import React, { useContext, useEffect, useState } from 'react';
-import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { AnyAction } from 'redux';
@@ -24,16 +23,16 @@ import { CtaRegion } from '@components/CtaRegion';
 import { SidebarCta, SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import {
-  fetchApiTerm,
-  fetchApiTermEpisodes,
-  fetchApiTermStories
-} from '@lib/fetch';
+import { fetchApiTermEpisodes, fetchApiTermStories } from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import { appendResourceCollection, fetchCtaData } from '@store/actions';
+import {
+  appendResourceCollection,
+  fetchCtaData,
+  fetchTermData
+} from '@store/actions';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -51,7 +50,10 @@ export const Term = () => {
   const router = useRouter();
   const { query } = router;
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const data = getDataByResource(state, type, id);
   const ctaInlineTop = getCtaRegionData(
     state,
@@ -114,6 +116,18 @@ export const Term = () => {
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
+
+    (async () => {
+      // Get CTA message data.
+      const context = [`term:${id}`];
+      await store.dispatch<any>(
+        fetchCtaData('tw_cta_regions_landing', type, id, context)
+      );
+    })();
+
+    return () => {
+      unsub();
+    };
   }, [page]);
 
   const loadMoreStories = async () => {
@@ -335,9 +349,8 @@ export const Term = () => {
   );
 };
 
-Term.fetchData = (
-  id: string,
-  req: IncomingMessage
+export const fetchData = (
+  id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -348,53 +361,7 @@ Term.fetchData = (
 
   // Get missing content data.
   if (!data) {
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_REQUEST',
-      payload: {
-        type,
-        id
-      }
-    });
-
-    const {
-      featuredStory,
-      featuredStories,
-      stories,
-      episodes,
-      ...payload
-    } = await fetchApiTerm(id, req);
-
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload
-    });
-
-    dispatch(
-      appendResourceCollection(
-        { data: [featuredStory], meta: { count: 1 } },
-        type,
-        id,
-        'featured story'
-      )
-    );
-
-    dispatch(
-      appendResourceCollection(
-        { data: [...featuredStories], meta: { count: featuredStories.length } },
-        type,
-        id,
-        'featured stories'
-      )
-    );
-
-    dispatch(appendResourceCollection(stories, type, id, 'stories'));
-
-    dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
+    // Get content data.
+    await dispatch<any>(fetchTermData(id));
   }
-
-  // Get CTA message data.
-  const context = [`term:${id}`];
-  await dispatch<any>(
-    fetchCtaData('tw_cta_regions_landing', type, id, context, req)
-  );
 };

@@ -3,7 +3,8 @@
  * Component for story card links grid.
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { parse } from 'url';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -15,6 +16,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  LinearProgress,
   Link as MuiLink,
   List,
   ListItem,
@@ -29,6 +31,7 @@ import {
   storyCardStyles,
   storyCardTheme
 } from '@components/StoryCard/StoryCard.styles';
+import { generateLinkHrefForContent } from '@lib/routing';
 import {
   storyCardGridStyles,
   storyCardGridTheme
@@ -39,6 +42,8 @@ export interface StoryCardGridProps extends BoxProps {
 }
 
 export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
+  const router = useRouter();
+  const [loadingUrl, setLoadingUrl] = useState(null);
   const classes = storyCardGridStyles({});
   const cardClasses = storyCardStyles({});
   const cx = classNames.bind(classes);
@@ -70,12 +75,33 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
     );
   };
 
+  useEffect(() => {
+    const handleRouteChangeStart = (url: string) => {
+      setLoadingUrl(url);
+    };
+    const handleRouteChangeEnd = () => {
+      setLoadingUrl(null);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChangeStart);
+    router.events.on('routeChangeComplete', handleRouteChangeEnd);
+    router.events.on('routeChangeError', handleRouteChangeEnd);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChangeStart);
+      router.events.off('routeChangeComplete', handleRouteChangeEnd);
+      router.events.off('routeChangeError', handleRouteChangeEnd);
+    };
+  }, []);
+
   return (
     <ThemeProvider theme={storyCardTheme}>
       <ThemeProvider theme={storyCardGridTheme}>
         <Box className={cx('root')} {...other}>
           {data.map(item => {
             const { id, title, image, primaryCategory, crossLinks } = item;
+            const { pathname } = generateLinkHrefForContent(item);
+            const isLoading = pathname === loadingUrl;
             return (
               <Card square elevation={1} key={id}>
                 <CardActionArea>
@@ -85,6 +111,12 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                         data={image}
                         width={imageWidth}
                         wrapperClassName={cxCard('imageWrapper')}
+                      />
+                      <LinearProgress
+                        className={cx(classes.loadingBar, {
+                          isLoading
+                        })}
+                        color="secondary"
                       />
                     </CardMedia>
                   )}

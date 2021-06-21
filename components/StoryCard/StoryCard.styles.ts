@@ -34,6 +34,11 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       }
     },
     imageWrapper: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
       paddingTop: 'unset'
     },
     link: {
@@ -45,17 +50,14 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
       textIndent: '-2000vw'
     },
-    loadingBar: {
+    loadingBar: ({ isLoading }: any) => ({
       transition: 'transform 400ms ease-out',
       position: 'absolute',
-      top: 0,
+      top: '100%',
       left: 0,
       width: '100%',
-      transform: 'translateY(-100%)',
-      '&.$isLoading': {
-        transform: 'translateY(0)'
-      }
-    },
+      transform: `translateY(${!isLoading ? 0 : '-100%'})`
+    }),
     MuiCardActionAreaRoot: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
@@ -78,7 +80,6 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       }
     },
     MuiCardContentRoot: {
-      position: 'relative',
       overflow: 'hidden',
       padding: 0,
       '$feature &': {
@@ -146,14 +147,7 @@ export const storyCardTheme = (theme: Theme) =>
           overflow: 'hidden',
           width: '100%',
           height: 0,
-          paddingTop: `${(9 / 16) * 100}%`,
-          '& > :only-child': {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%'
-          }
+          paddingTop: `${(9 / 16) * 100}%`
         }
       },
       MuiList: {

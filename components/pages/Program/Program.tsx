@@ -2,8 +2,8 @@
  * @file Program.tsx
  * Component for Program.
  */
+
 import React, { useContext, useEffect, useState } from 'react';
-import { IncomingMessage } from 'http';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { AnyAction } from 'redux';
@@ -34,16 +34,16 @@ import {
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import {
-  fetchApiProgram,
-  fetchApiProgramEpisodes,
-  fetchApiProgramStories
-} from '@lib/fetch';
+import { fetchApiProgramEpisodes, fetchApiProgramStories } from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { EpisodeCard } from '@components/EpisodeCard';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import { appendResourceCollection, fetchCtaData } from '@store/actions';
+import {
+  appendResourceCollection,
+  fetchCtaData,
+  fetchProgramData
+} from '@store/actions';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -61,7 +61,10 @@ export const Program = () => {
   const router = useRouter();
   const { query } = router;
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const classes = programStyles({});
   const data = getDataByResource(state, type, id);
   const ctaInlineTop = getCtaRegionData(
@@ -134,6 +137,18 @@ export const Program = () => {
     // When we have loaded a new page, we want to counter this scoll change.
     window.scrollBy({ top: oldscrollY - window.scrollY });
     setOldScrollY(window.scrollY);
+
+    (async () => {
+      // Get CTA message data.
+      const context = [`node:${id}`];
+      await store.dispatch<any>(
+        fetchCtaData('tw_cta_regions_landing', type, id, context)
+      );
+    })();
+
+    return () => {
+      unsub();
+    };
   }, [page, episodesPage]);
 
   const loadMoreStories = async () => {
@@ -385,9 +400,8 @@ export const Program = () => {
   );
 };
 
-Program.fetchData = (
-  id: string,
-  req: IncomingMessage
+export const fetchData = (
+  id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -398,53 +412,7 @@ Program.fetchData = (
 
   // Get missing content data.
   if (!data) {
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_REQUEST',
-      payload: {
-        type,
-        id
-      }
-    });
-
-    const {
-      featuredStory,
-      featuredStories,
-      stories,
-      episodes,
-      ...payload
-    } = await fetchApiProgram(id, req);
-
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload
-    });
-
-    dispatch(
-      appendResourceCollection(
-        { data: [featuredStory], meta: { count: 1 } },
-        type,
-        id,
-        'featured story'
-      )
-    );
-
-    dispatch(
-      appendResourceCollection(
-        { data: [...featuredStories], meta: { count: featuredStories.length } },
-        type,
-        id,
-        'featured stories'
-      )
-    );
-
-    dispatch(appendResourceCollection(stories, type, id, 'stories'));
-
-    dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
+    // Get content data.
+    await dispatch<any>(fetchProgramData(id));
   }
-
-  // Get CTA message data.
-  const context = [`node:${id}`];
-  await dispatch<any>(
-    fetchCtaData('tw_cta_regions_landing', type, id, context, req)
-  );
 };

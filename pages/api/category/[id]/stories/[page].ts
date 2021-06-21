@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     id,
     page = '1',
-    range = 15,
+    range = '15',
     field = 'categories',
     exclude
   } = req.query;

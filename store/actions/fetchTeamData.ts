@@ -3,17 +3,16 @@
  *
  * Actions to fetch data for homepage.
  */
-import { IncomingMessage } from 'http';
+
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { IPriApiCollectionResponse } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
-import { fetchApiTeam } from '@lib/fetch/api';
+import { fetchTeam } from '@lib/fetch';
 import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
-export const fetchTeamData = (
-  req: IncomingMessage
-): ThunkAction<void, {}, {}, AnyAction> => async (
+export const fetchTeamData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {
@@ -27,8 +26,9 @@ export const fetchTeamData = (
       type: 'FETCH_TEAM_DATA_REQUEST'
     });
 
-    const apiResp = await fetchApiTeam(req);
-    const { teamMembers } = apiResp;
+    const teamMembers = await fetchTeam(id).then(
+      (resp: IPriApiCollectionResponse) => resp
+    );
 
     dispatch(appendResourceCollection(teamMembers, type, id, 'members'));
 

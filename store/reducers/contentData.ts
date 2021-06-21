@@ -23,7 +23,12 @@ export const contentData = (state: State = {}, action: AnyAction) => {
       return {
         ...state,
         ...(action.payload && {
-          [key]: state[key] && state[key].complete ? state[key] : action.payload
+          [key]:
+            state[key] && state[key].complete
+              ? state[key]
+              : {
+                  ...action.payload
+                }
         })
       };
 

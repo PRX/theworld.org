@@ -4,25 +4,15 @@
  */
 
 import React, { useEffect, useReducer, useRef } from 'react';
-import { Box, IconButton, NoSsr, Slider } from '@material-ui/core';
-import {
-  CloseSharp,
-  CodeSharp,
-  GetAppSharp,
-  OpenInNewSharp,
-  PlayArrowSharp,
-  PauseSharp,
-  VolumeDownSharp,
-  VolumeMuteSharp,
-  VolumeOffSharp,
-  VolumeUpSharp
-} from '@material-ui/icons';
-import ReactPlayer from 'react-player';
+import dynamic from 'next/dynamic';
+import ReactPlayer from 'react-player/file';
+import { Box, IconButton, NoSsr } from '@material-ui/core';
+import { GetAppSharp, PlayArrowSharp } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
+import { IDuarationProps } from '@components/Duration';
 import { formatDuration } from '@lib/parse/time';
 import { generateAudioDownloadFilename } from '@lib/parse/audio';
-import { Duration } from '@components/Duration';
 import { AudioPlayerActionTypes as ActionTypes } from './AudioPlayer.actions';
 import { IAudioPlayerProps, IProgressState } from './AudioPlayer.interfaces';
 import {
@@ -30,8 +20,57 @@ import {
   audioPlayerInitialState
 } from './AudioPlayer.reducer';
 import { audioPlayerStyles, audioPlayerTheme } from './AudioPlayer.styles';
-import { EmbedCode } from './EmbedCode';
-import { SliderValueLabel } from './SliderValueLabel';
+import { IEmbedCodeProps } from './EmbedCode';
+import { ISliderValueLabelProps } from './SliderValueLabel';
+
+const Duration = dynamic(() =>
+  import('@components/Duration').then(mod => mod.Duration)
+) as React.FC<IDuarationProps>;
+
+const EmbedCode = dynamic(() =>
+  import('./EmbedCode').then(mod => mod.EmbedCode)
+) as React.FC<IEmbedCodeProps>;
+
+const Slider = dynamic(() => import('@material-ui/core/Slider'));
+
+const SliderValueLabel = dynamic(() =>
+  import('./SliderValueLabel').then(mod => mod.SliderValueLabel)
+) as React.FC<ISliderValueLabelProps>;
+
+const CloseSharp = dynamic(() => import('@material-ui/icons/CloseSharp'));
+
+const CodeSharp = dynamic(() => import('@material-ui/icons/CodeSharp'));
+
+const OpenInNewSharp = dynamic(() =>
+  import('@material-ui/icons/OpenInNewSharp')
+);
+
+const PauseSharp = dynamic(() => import('@material-ui/icons/PauseSharp'), {
+  loading: () => <PlayArrowSharp />
+});
+
+const VolumeDownSharp = dynamic(
+  () => import('@material-ui/icons/VolumeDownSharp'),
+  {
+    loading: () => <VolumeUpSharp />
+  }
+);
+
+const VolumeMuteSharp = dynamic(
+  () => import('@material-ui/icons/VolumeMuteSharp'),
+  {
+    loading: () => <VolumeDownSharp />
+  }
+);
+
+const VolumeOffSharp = dynamic(
+  () => import('@material-ui/icons/VolumeOffSharp'),
+  {
+    loading: () => <VolumeUpSharp />
+  }
+);
+
+const VolumeUpSharp = dynamic(() => import('@material-ui/icons/VolumeUpSharp'));
 
 export const AudioPlayer = ({
   className,
@@ -44,7 +83,7 @@ export const AudioPlayer = ({
   const { url } = data;
   const audioDownloadFilename =
     downloadFilename || generateAudioDownloadFilename(data);
-  const playerElm = useRef<ReactPlayer>(null);
+  const playerElm = useRef(null);
   const rootElm = useRef<HTMLDivElement>(null);
   const [
     {
@@ -80,8 +119,7 @@ export const AudioPlayer = ({
       file: {
         forceAudio: true,
         attributes: {
-          autoPlay: false,
-          preload: 'auto'
+          autoPlay: false
         }
       }
     },
@@ -220,7 +258,9 @@ export const AudioPlayer = ({
             {!!embeddedPlayerUrl && (
               <IconButton
                 className={classes.embedBtn}
-                aria-label={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
+                aria-label={
+                  embedCodeShown ? 'Hide embed code' : 'Show embed code'
+                }
                 onClick={() =>
                   dispatch({
                     type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN

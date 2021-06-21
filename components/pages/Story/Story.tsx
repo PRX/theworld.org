@@ -2,8 +2,7 @@
  * @file Story.tsx
  * Component for Story.
  */
-import React, { useContext, useEffect } from 'react';
-import { IncomingMessage } from 'http';
+import React, { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -26,13 +25,11 @@ export const Story = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const state = store.getState();
+  const [state, updateForce] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    updateForce(store.getState());
+  });
   let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
-
   const { title, displayTemplate } = data;
   const LayoutComponent =
     layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
@@ -99,6 +96,10 @@ export const Story = () => {
         fetchCtaData('tw_cta_regions_content', type, id, context)
       );
     })();
+
+    return () => {
+      unsub();
+    };
   }, [id]);
 
   return (
@@ -112,9 +113,8 @@ export const Story = () => {
   );
 };
 
-Story.fetchData = (
-  id: string,
-  req: IncomingMessage
+export const fetchData = (
+  id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -124,6 +124,6 @@ Story.fetchData = (
 
   if (!data) {
     // Get content data.
-    await dispatch<any>(fetchStoryData(id, req));
+    await dispatch<any>(fetchStoryData(id));
   }
 };

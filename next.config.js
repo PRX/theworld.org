@@ -4,34 +4,15 @@
  */
 
 const path = require('path');
-const withCss = require('@zeit/next-css');
-const withSass = require('@zeit/next-sass');
-const withFonts = require('next-fonts');
 const withPlugins = require('next-compose-plugins');
 
 module.exports = withPlugins([
-  [
-    withSass,
-    {
-      cssModules: true,
-      cssLoaderOptions: {
-        importLoaders: true,
-        camelCase: true,
-        localIdentName: '[local]___[hash:base64:5]'
-      },
-      plugins: {}
-    }
-  ],
-  [withCss],
-  [
-    withFonts,
-    {
-      enableSvg: true
-    }
-  ],
   {
-    webpack(config) {
-      return {
+    future: {
+      webpack5: true
+    },
+    webpack(config, { isServer }) {
+      const newConfig = {
         ...config,
         resolve: {
           ...config.resolve,
@@ -48,6 +29,60 @@ module.exports = withPlugins([
           }
         }
       };
+
+      if (!isServer) {
+        newConfig.optimization.splitChunks.cacheGroups = {
+          ...newConfig.optimization.splitChunks.cacheGroups,
+          reactCommon: {
+            chunks: 'all',
+            test: /(?<!node_modules.*)[\\/]node_modules[\\/]react-(cookies|copy-to-clipboard|html-parser|markdown|moment|player|redux)[\\/]/,
+            name: (module, chunks, cacheGroupKey) => {
+              const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight(item => item);
+              const allChunksNames = chunks.map(item => item.name).join('~');
+              return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+            },
+            priority: 30,
+            reuseExistingChunk: true,
+            enforce: true
+          },
+          moment: {
+            chunks: 'all',
+            test: /[\\/]node_modules[\\/]moment(-[^\\/]+)?[\\/]/,
+            name: 'moment',
+            priority: 30,
+            reuseExistingChunk: true,
+            enforce: true
+          },
+          materialui: {
+            chunks: 'all',
+            test: /[\\/]node_modules[\\/]@material-ui[\\/]/,
+            name: 'material-ui',
+            priority: 30,
+            reuseExistingChunk: true,
+            enforce: true
+          },
+          pages: {
+            chunks: 'all',
+            test: /[\\/]components[\\/]pages[\\/]/,
+            name: (module, chunks, cacheGroupKey) => {
+              const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight(item => item);
+              const allChunksNames = chunks.map(item => item.name).join('~');
+              return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+            },
+            priority: 40,
+            reuseExistingChunk: true,
+            enforce: true
+          }
+        };
+      }
+
+      return newConfig;
     }
   }
 ]);

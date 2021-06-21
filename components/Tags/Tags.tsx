@@ -9,7 +9,7 @@ import { IPriApiResource } from 'pri-api-library/types';
 import { ContentButton } from '@components/ContentButton';
 import { tagsStyles } from './Tags.styles';
 
-interface ITagsProps extends HTMLAttributes<{}> {
+export interface ITagsProps extends HTMLAttributes<{}> {
   data: IPriApiResource[];
   label?: string;
 }

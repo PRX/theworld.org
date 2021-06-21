@@ -18,7 +18,7 @@ import { IPriApiResource } from 'pri-api-library/types';
 import { ContentLink } from '@components/ContentLink';
 import { sidebarListStyles, sidebarListTheme } from './SidebarList.styles';
 
-interface ISidebarListProps extends ListProps {
+export interface ISidebarListProps extends ListProps {
   data: IPriApiResource[];
   formatTitle?: (data: IPriApiResource) => string;
 }

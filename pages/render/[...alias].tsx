@@ -3,72 +3,93 @@
  * Exports the Home component.
  */
 
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { NextPageContext } from 'next';
-import Error from 'next/error';
-import { IncomingMessage } from 'http';
-import { IPriApiResource } from 'pri-api-library/types';
+import React from 'react';
+import { GetStaticPropsResult } from 'next';
+import dynamic from 'next/dynamic';
+import { Url } from 'url';
+import {
+  IPriApiCollectionResponse,
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
-import { importComponent, preloadComponent } from '@lib/import/component';
 import { RootState } from '@interfaces/state';
-import { fetchAliasData } from '@store/actions';
+import { fetchAliasData, fetchAppData } from '@store/actions';
+import { wrapper } from '@store';
+import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
+import { generateLinkHrefForContent } from '@lib/routing';
+import { getResourceFetchData } from '@lib/import/fetchData';
 
-interface DispatchProps {
-  fetchAliasData: (alias: string, req: IncomingMessage) => void;
-}
+// Define dynamic component imports.
+const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
+const DynamicBio = dynamic(() => import('@components/pages/Bio'));
+const DynamicCategory = dynamic(() => import('@components/pages/Category'));
+const DynamicEpisode = dynamic(() => import('@components/pages/Episode'));
+const DynamicNewsletter = dynamic(() => import('@components/pages/Newsletter'));
+const DynamicPage = dynamic(() => import('@components/pages/Page'));
+const DynamicProgram = dynamic(() => import('@components/pages/Program'));
+const DynamicStory = dynamic(() => import('@components/pages/Story'));
+const DynamicTeam = dynamic(() => import('@components/pages/Team'));
+const DynamicTerm = dynamic(() => import('@components/pages/Term'));
 
 interface StateProps extends RootState {}
 
-type Props = StateProps & DispatchProps & IContentComponentProxyProps;
+type Props = StateProps & IContentComponentProxyProps;
 
-const ContentProxy = (props: Props) => {
-  const { errorCode, redirect } = props;
-  let output: JSX.Element = <></>;
+const ContentProxy = ({ type }: Props) => {
+  switch (type) {
+    case 'file--audio':
+      return <DynamicAudio />;
 
-  if (errorCode) {
-    // Render error page.
-    output = <Error statusCode={errorCode} />;
-  } else if (redirect) {
-    useEffect(() => {
-      window.location.assign(redirect);
-    });
-  } else {
-    // Render content component.
-    const { type } = props;
-    const ContentComponent = importComponent(type);
+    case 'node--episodes':
+      return <DynamicEpisode />;
 
-    output = <ContentComponent />;
+    case 'node--newsletter_sign_ups':
+      return <DynamicNewsletter />;
+
+    case 'node--pages':
+      return <DynamicPage />;
+
+    case 'node--people':
+      return <DynamicBio />;
+
+    case 'node--programs':
+      return <DynamicProgram />;
+
+    case 'node--stories':
+      return <DynamicStory />;
+
+    case 'taxonomy_term--categories':
+      return <DynamicCategory />;
+
+    case 'taxonomy_term--terms':
+      return <DynamicTerm />;
+
+    case 'team':
+      return <DynamicTeam />;
+
+    default:
+      return <></>;
   }
-
-  return !redirect && output;
 };
 
-ContentProxy.getInitialProps = async (
-  ctx: NextPageContext
-): Promise<IContentComponentProxyProps> => {
-  const {
-    res,
-    req,
-    store,
-    query: { alias }
-  } = ctx;
-  let resourceId: string;
-  let resourceType: string = 'homepage';
-  let redirect: string;
-
-  // Get data for alias.
-  if (alias) {
+export const getStaticProps = wrapper.getStaticProps(
+  store => async ({
+    params: { alias }
+  }): Promise<GetStaticPropsResult<any>> => {
+    let resourceId: string;
+    let resourceType: string = 'homepage';
+    let redirect: string;
     const aliasPath = (alias as string[]).join('/');
 
     switch (aliasPath) {
-      case '/programs/the-world/team':
+      case 'programs/the-world/team':
         resourceId = 'the_world';
         resourceType = 'team';
         break;
 
       default: {
-        const aliasData = await store.dispatch(fetchAliasData(aliasPath, req));
+        const aliasData = await store.dispatch<any>(fetchAliasData(aliasPath));
 
         // Update resource id and type.
         if (aliasData?.type === 'redirect--external') {
@@ -83,45 +104,99 @@ ContentProxy.getInitialProps = async (
         break;
       }
     }
-  }
 
-  // Return object with redirect url.
-  if (redirect) {
-    return { redirect };
-  }
-
-  // Preload content component.
-  if (resourceType) {
-    const ContentComponent = await preloadComponent(resourceType);
-
-    // Use content component to fetch its data.
-    if (ContentComponent) {
-      // Dispatch action returned from content component fetchData.
-      store.dispatch({ type: 'LOADING_CONTENT_DATA' });
-
-      await store.dispatch(ContentComponent.fetchData(resourceId, req));
-
-      store.dispatch({ type: 'LOADING_COMPLETE' });
-
-      return { type: resourceType, id: resourceId };
+    // Return object with redirect url.
+    if (redirect) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: redirect
+        }
+      };
     }
+
+    // Preload content component.
+    if (resourceType) {
+      const fetchData = getResourceFetchData(resourceType);
+
+      // Use content component to fetch its data.
+      if (fetchData) {
+        await Promise.all([
+          // Fetch App data (latest stories, menus, etc.)
+          store.dispatch<any>(fetchAppData()),
+          // Use content component to fetch its data.
+          store.dispatch(fetchData(resourceId))
+        ]);
+
+        return { props: { type: resourceType, id: resourceId } };
+      }
+    }
+
+    return { notFound: true };
   }
+);
 
-  // There was a problem locating components or data.
-  const statusCode = 404;
+export const getStaticPaths = async () => {
+  const [homepage, app, team] = await Promise.all([
+    fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data),
+    fetchApp(),
+    fetchTeam('the_world').then(
+      (resp: IPriApiCollectionResponse) => resp && resp.data
+    )
+  ]);
+  const {
+    featuredStory,
+    featuredStories,
+    stories,
+    episodes,
+    latestStories,
+    ...program
+  } = homepage;
+  const { latestStories: latestAppStories, menus } = app;
+  const resources = [
+    program,
+    featuredStory,
+    ...featuredStories,
+    ...stories.data,
+    ...episodes.data,
+    ...episodes.data.reduce(
+      (acc: any, { audio }) => [
+        ...acc,
+        ...(audio?.segments ? [...audio.segments] : [])
+      ],
+      [] as any[]
+    ),
+    ...latestStories.data,
+    ...latestAppStories.data,
+    ...team,
+    ...[featuredStory, ...featuredStories, ...stories.data]
+      .map(story => story.primaryCategory)
+      .filter(v => !!v)
+  ];
+  const paths = [
+    ...resources.map(resource => ({
+      params: {
+        alias: generateLinkHrefForContent(resource)
+          ?.pathname.slice(1)
+          .split('/')
+      }
+    })),
+    ...Object.values(menus)
+      // Gather all memus' url's into one array.
+      .reduce((a, m) => [...a, ...m.map(({ url }) => url)], [] as Url[])
+      // Filter out any external url's.
+      .filter(
+        ({ hostname }) =>
+          !hostname || /^(www\.)?(pri|theworld)\.org$/.test(hostname)
+      )
+      .map(({ pathname }) => ({
+        params: {
+          alias: pathname.slice(1).split('/')
+        }
+      }))
+  ].filter(({ params: { alias } }) => !!alias.filter(s => !!s.length).length);
 
-  if (res) {
-    res.statusCode = statusCode;
-  }
-
-  return {
-    errorCode: statusCode
-  };
+  return { paths, fallback: 'blocking' };
 };
 
-const mapStateToProps = (state: RootState) => state;
-
-export const config = { amp: 'hybrid' };
-export default connect<StateProps, DispatchProps, IContentComponentProxyProps>(
-  mapStateToProps
-)(ContentProxy); // eslint-disable-line import/no-default-export
+export default ContentProxy;

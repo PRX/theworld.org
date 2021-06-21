@@ -3,23 +3,19 @@
  * Override the main app component.
  */
 
-import React, { useEffect } from 'react';
-import { useStore } from 'react-redux';
+import React, { FC, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
-import { AppCtaBanner } from '@components/AppCtaBanner';
-import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
+// import { AppCtaBanner } from '@components/AppCtaBanner';
+// import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppFooter } from '@components/AppFooter';
 import { AppHeader } from '@components/AppHeader';
 import { AppLoadingBar } from '@components/AppLoadingBar';
 import { AppContext } from '@contexts/AppContext';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
-import { getCtaContext } from '@store/reducers';
-import { fetchAppData, fetchCtaData } from '@store/actions';
 
-const TwApp = ({ Component, pageProps }: AppProps) => {
-  const store = useStore();
+const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   const { type, id } = pageProps;
   const contextValue = {
     page: {
@@ -29,16 +25,6 @@ const TwApp = ({ Component, pageProps }: AppProps) => {
       }
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      // Fetch CTA Messages
-      const context = getCtaContext(store.getState(), type, id);
-      await store.dispatch<any>(
-        fetchCtaData('tw_cta_regions_site', type, id, context)
-      );
-    })();
-  });
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -59,13 +45,13 @@ const TwApp = ({ Component, pageProps }: AppProps) => {
         <AppContext.Provider value={contextValue}>
           <Box minHeight="100vh" display="flex" flexDirection="column">
             <AppLoadingBar />
-            <AppCtaBanner />
+            {/* <AppCtaBanner /> */}
             <AppHeader />
             <Box flexGrow={1}>
               <Component {...pageProps} />
             </Box>
             <AppFooter />
-            <AppCtaLoadUnder />
+            {/* <AppCtaLoadUnder /> */}
           </Box>
         </AppContext.Provider>
         <CssBaseline />
@@ -74,26 +60,26 @@ const TwApp = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-TwApp.getInitialProps = wrapper.getInitialAppProps(
-  store => async ({ Component, ctx }) => {
-    const { req } = ctx;
+// TwApp.getInitialProps = wrapper.getInitialAppProps(
+//   store => async ({ Component, ctx }) => {
+//     const { req } = ctx;
 
-    store.dispatch({ type: 'LOADING_APP_DATA' });
+//     store.dispatch({ type: 'LOADING_APP_DATA' });
 
-    // Fetch App Data
-    await store.dispatch<any>(fetchAppData(req));
+//     // Fetch App Data
+//     await store.dispatch<any>(fetchAppData(req));
 
-    return {
-      pageProps: {
-        // Call page-level getInitialProps
-        // DON'T FORGET TO PROVIDE STORE TO PAGE
-        ...(Component.getInitialProps
-          ? await Component.getInitialProps({ ...ctx, store })
-          : {})
-      }
-    };
-  }
-);
+//     return {
+//       pageProps: {
+//         // Call page-level getInitialProps
+//         // DON'T FORGET TO PROVIDE STORE TO PAGE
+//         ...(Component.getInitialProps
+//           ? await Component.getInitialProps({ ...ctx, store })
+//           : {})
+//       }
+//     };
+//   }
+// );
 
 // class MyApp extends App<AppInitialProps> {
 //   public static getInitialProps = wrapper.getInitialAppProps(

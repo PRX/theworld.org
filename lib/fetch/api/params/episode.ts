@@ -4,7 +4,7 @@
  * Query parameters needed to requests data for an episode.
  */
 
-import { basicAudioParams, fullAudioParams } from './audio';
+import { basicAudioParams } from './audio';
 
 export const basicEpisodeParams = {
   include: [

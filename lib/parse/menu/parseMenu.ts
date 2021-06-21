@@ -22,27 +22,25 @@ export const parseMenu = (data: ILink[]): IButton[] => {
         referrerpolicy,
         ...otherAttributes
       },
-      children
+      children = null
     }) => ({
       key: id,
       name,
-      title,
-      url: parse(url),
-      itemLinkClass: (className && className.join(' ')) || undefined,
-      color:
-        className &&
-        className.reduce(
+      ...(title && { title }),
+      url: { ...parse(url) },
+      ...(className && {
+        itemLinkClass: className.join(' '),
+        color: className.reduce(
           (color: string, cn: string) =>
             color || (cn === 'btn-danger' && 'secondary'),
-          undefined
+          null
         ),
-      icon:
-        className &&
-        className.reduce(
+        icon: className.reduce(
           (icon: string, cn: string) =>
             icon || (cn.indexOf('icon-') > -1 && cn.split('-')[1]),
-          undefined
-        ),
+          null
+        )
+      }),
       children:
         children &&
         parseMenu(

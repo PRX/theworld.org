@@ -15,12 +15,7 @@ class TwDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link
-            rel="preconnect"
-            href={googleFontDomain}
-            crossOrigin="use-credentials"
-          />
-          <link rel="preload" as="style" href={googleFontsUrl} />
+          <link rel="preconnect" href={googleFontDomain} crossOrigin="" />
           <link rel="stylesheet" type="text/css" href={googleFontsUrl} />
           <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
           <link

@@ -6,11 +6,11 @@
 import React, { Fragment, ReactNode } from 'react';
 import { Container, Grid, Hidden } from '@material-ui/core';
 
-interface ILandingPageItem {
+export interface ILandingPageItem {
   key: string;
   children: ReactNode;
 }
-interface ILandingPageProps {
+export interface ILandingPageProps {
   main: ILandingPageItem[];
   sidebar: ILandingPageItem[];
 }

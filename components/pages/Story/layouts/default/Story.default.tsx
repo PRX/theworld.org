@@ -4,21 +4,46 @@
  */
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { convertNodeToElement, Transform } from 'react-html-parser';
 import { DomElement } from 'htmlparser2';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Box, Container, Grid, Hidden } from '@material-ui/core';
-import { AudioPlayer } from '@components/AudioPlayer';
-import { Sidebar, SidebarCta, SidebarLatestStories } from '@components/Sidebar';
-import { CtaRegion } from '@components/CtaRegion';
+import { Sidebar, SidebarLatestStories } from '@components/Sidebar';
+import { IAudioPlayerProps } from '@components/AudioPlayer/AudioPlayer.interfaces';
 import { HtmlContent } from '@components/HtmlContent';
-import { Tags } from '@components/Tags';
+import { ITagsProps } from '@components/Tags';
 import { IContentComponentProps } from '@interfaces/content';
+import { ICtaRegionProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { storyStyles, storyTheme } from './Story.default.styles';
-import { StoryHeader, StoryLede, StoryRelatedLinks } from './components';
+import { IStoryRelatedLinksProps, StoryHeader, StoryLede } from './components';
+
+const AudioPlayer = dynamic(() =>
+  import('@components/AudioPlayer').then(mod => mod.AudioPlayer)
+) as React.FC<IAudioPlayerProps>;
+
+const CtaRegion = dynamic(
+  () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
+) as React.FC<ICtaRegionProps>;
+
+const SidebarCta = dynamic(
+  () =>
+    import('@components/Sidebar/SidebarCta').then(mod => mod.SidebarCta) as any
+) as React.FC<ICtaRegionProps>;
+
+const StoryRelatedLinks = dynamic(
+  () =>
+    import('./components/StoryRelatedLinks').then(
+      mod => mod.StoryRelatedLinks
+    ) as any
+) as React.FC<IStoryRelatedLinksProps>;
+
+const Tags = dynamic(() =>
+  import('@components/Tags').then(mod => mod.Tags)
+) as React.FC<ITagsProps>;
 
 interface StateProps extends RootState {}
 

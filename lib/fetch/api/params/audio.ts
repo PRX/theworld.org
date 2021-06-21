@@ -5,9 +5,19 @@
  */
 
 export const basicAudioParams = {
-  include: ['program', 'segments']
+  include: ['segments']
 };
 
 export const fullAudioParams = {
-  include: ['audioAuthor', 'program']
+  include: ['audioAuthor', 'program'],
+  fields: [
+    'audioAuthor.title',
+    'audioAuthor.metatags',
+    'audioTitle',
+    'broadcast_date',
+    'description',
+    'program.title',
+    'program.metatags',
+    'url'
+  ]
 };

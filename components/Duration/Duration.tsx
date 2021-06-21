@@ -6,7 +6,7 @@
 import React, { HTMLAttributes } from 'react';
 import { formatDuration } from '@lib/parse/time';
 
-interface IDuarationProps extends HTMLAttributes<{}> {
+export interface IDuarationProps extends HTMLAttributes<{}> {
   seconds: number;
 }
 

@@ -21,7 +21,10 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
     case 'FETCH_ALIAS_DATA_SUCCESS':
       return {
         ...state,
-        [action.alias]: action.data
+        [action.alias]: {
+          id: action.data.id,
+          type: action.data.type
+        }
       };
     case 'FETCH_CONTENT_DATA_SUCCESS':
       href = generateLinkHrefForContent(action.payload);
@@ -29,7 +32,10 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
         ...state,
         ...(action.payload &&
           href && {
-            [href.pathname]: action.payload
+            [href.pathname]: {
+              id: action.payload.id,
+              type: action.payload.type
+            }
           })
       };
 

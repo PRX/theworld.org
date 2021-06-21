@@ -3,17 +3,20 @@
  *
  * Actions to fetch data for homepage.
  */
-import { IncomingMessage } from 'http';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
-import { fetchApiHomepage } from '@lib/fetch/api';
+import { fetchHomepage } from '@lib/fetch/homepage/fetchHomepage';
 import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
-export const fetchHomepageData = (
-  req: IncomingMessage
-): ThunkAction<void, {}, {}, AnyAction> => async (
+export const fetchHomepageData = (): ThunkAction<
+  void,
+  {},
+  {},
+  AnyAction
+> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {
@@ -27,7 +30,9 @@ export const fetchHomepageData = (
       type: 'FETCH_HOMEPAGE_DATA_REQUEST'
     });
 
-    const apiResp = await fetchApiHomepage(req);
+    const apiResp = await fetchHomepage().then(
+      (resp: IPriApiResourceResponse) => resp && resp.data
+    );
     const {
       featuredStory,
       featuredStories,

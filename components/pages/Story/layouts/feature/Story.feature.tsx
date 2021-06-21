@@ -4,20 +4,36 @@
  */
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
-import { convertNodeToElement, Transform } from 'react-html-parser';
-import { DomElement } from 'htmlparser2';
+import { convertNodeToElement } from 'react-html-parser';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Box, Container, Grid } from '@material-ui/core';
-import { AudioPlayer } from '@components/AudioPlayer';
+import { IAudioPlayerProps } from '@components/AudioPlayer/AudioPlayer.interfaces';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
-import { Tags } from '@components/Tags';
+import { ITagsProps } from '@components/Tags';
 import { IContentComponentProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
+import { IStoryRelatedLinksProps } from '../default/components/StoryRelatedLinks';
 import { storyStyles, storyTheme } from './Story.feature.styles';
-import { StoryHeader, StoryRelatedLinks } from './components';
+import { StoryHeader } from './components';
+
+const AudioPlayer = dynamic(() =>
+  import('@components/AudioPlayer').then(mod => mod.AudioPlayer)
+) as React.FC<IAudioPlayerProps>;
+
+const StoryRelatedLinks = dynamic(
+  () =>
+    import('./components/StoryRelatedLinks').then(
+      mod => mod.StoryRelatedLinks
+    ) as any
+) as React.FC<IStoryRelatedLinksProps>;
+
+const Tags = dynamic(() =>
+  import('@components/Tags').then(mod => mod.Tags)
+) as React.FC<ITagsProps>;
 
 interface StateProps extends RootState {}
 
@@ -74,11 +90,7 @@ export const StoryDefault = ({ data }: Props) => {
   ];
   const hasTags = !!allTags.length;
 
-  const wrapBrowserWidthImg = (
-    node: DomElement,
-    transform: Transform,
-    index: number
-  ) => {
+  const wrapBrowserWidthImg = (node, transform, index: number) => {
     if (
       node.type === 'tag' &&
       node.name === 'img' &&
@@ -94,11 +106,7 @@ export const StoryDefault = ({ data }: Props) => {
     return undefined;
   };
 
-  const wrapFullWidthImg = (
-    node: DomElement,
-    transform: Transform,
-    index: number
-  ) => {
+  const wrapFullWidthImg = (node, transform, index: number) => {
     if (
       node.type === 'tag' &&
       node.name === 'img' &&

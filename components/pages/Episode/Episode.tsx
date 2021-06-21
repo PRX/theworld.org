@@ -2,8 +2,8 @@
  * @file Episode.tsx
  * Component for Episode.
  */
-import React, { useContext, useEffect } from 'react';
-import { IncomingMessage } from 'http';
+
+import React, { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -57,7 +57,10 @@ export const Episode = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const classes = episodeStyles({});
   let data = getDataByResource(state, type, id);
 
@@ -116,6 +119,10 @@ export const Episode = () => {
         fetchCtaData('tw_cta_regions_content', type, id, context)
       );
     })();
+
+    return () => {
+      unsub();
+    };
   }, [id]);
 
   return (
@@ -257,9 +264,8 @@ export const Episode = () => {
   );
 };
 
-Episode.fetchData = (
-  id: string,
-  req: IncomingMessage
+export const fetchData = (
+  id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -268,7 +274,7 @@ Episode.fetchData = (
   const data = getDataByResource(getState(), type, id);
 
   if (!data) {
-    await dispatch<any>(fetchEpisodeData(id, req));
+    await dispatch<any>(fetchEpisodeData(id));
     const { stories } = getDataByResource(getState(), type, id);
 
     if (stories) {

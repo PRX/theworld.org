@@ -29,33 +29,31 @@ export const SidebarLatestStories = ({
   const listItems =
     data || getCollectionData(state, 'app', null, 'latest')?.items[1];
 
-  return (
-    listItems?.length && (
-      <Sidebar item elevated>
-        <SidebarHeader>
-          <Typography variant="h2">
-            <MenuBookRounded /> {label || 'Latest world news headlines'}
-          </Typography>
-        </SidebarHeader>
-        <SidebarList disablePadding data={listItems} />
-        <SidebarFooter>
-          <Link
-            href="/?alias=/programs/the-world"
-            as="/programs/the-world"
-            passHref
+  return listItems?.length ? (
+    <Sidebar item elevated>
+      <SidebarHeader>
+        <Typography variant="h2">
+          <MenuBookRounded /> {label || 'Latest world news headlines'}
+        </Typography>
+      </SidebarHeader>
+      <SidebarList disablePadding data={listItems} />
+      <SidebarFooter>
+        <Link
+          href="/render?alias=/programs/the-world"
+          as="/programs/the-world"
+          passHref
+        >
+          <Button
+            component="a"
+            color="primary"
+            variant="contained"
+            fullWidth
+            disableElevation
           >
-            <Button
-              component="a"
-              color="primary"
-              variant="contained"
-              fullWidth
-              disableElevation
-            >
-              More stories <NavigateNext />
-            </Button>
-          </Link>
-        </SidebarFooter>
-      </Sidebar>
-    )
-  );
+            More stories <NavigateNext />
+          </Button>
+        </Link>
+      </SidebarFooter>
+    </Sidebar>
+  ) : null;
 };

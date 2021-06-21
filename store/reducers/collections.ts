@@ -5,7 +5,7 @@
  */
 
 import { AnyAction } from 'redux';
-import _ from 'lodash';
+import _uniq from 'lodash/uniq';
 import { HYDRATE } from 'next-redux-wrapper';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -53,7 +53,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
       };
       newCollection = {
         ...meta,
-        items: addCollectionPage([], _.uniq(refs), action.payload.meta.page)
+        items: addCollectionPage([], _uniq(refs), action.payload.meta.page)
       };
 
       return {
@@ -69,7 +69,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
                         ...meta,
                         items: addCollectionPage(
                           state[key][action.payload.collection].items,
-                          _.uniq(refs),
+                          _uniq(refs),
                           action.payload.meta.page
                         )
                       }
