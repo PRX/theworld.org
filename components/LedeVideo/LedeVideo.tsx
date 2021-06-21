@@ -43,20 +43,34 @@ export const LedeVideo = ({ data }: ILedeVideoProps) => {
   return (
     <figure className={classes.root}>
       <Box className={classes.playerWrapper}>
-        <ReactPlayer className={classes.player} url={url} width="100%" height="100%" config={playerConfig} />
+        <ReactPlayer
+          className={classes.player}
+          url={url}
+          width="100%"
+          height="100%"
+          config={playerConfig}
+        />
       </Box>
       {hasFooter && (
-        <Typography variant="caption" component="figcaption" className={classes.footer}>
-          {hasCaption && (<ReactMarkdown
-            {...mdProps}
-            className={classes.caption}
-            source={description}
-          />)}
-          {hasCredit && (<ReactMarkdown
-            {...mdProps}
-            className={classes.credit}
-            source={credit}
-          />)}
+        <Typography
+          variant="caption"
+          component="figcaption"
+          className={classes.footer}
+        >
+          {hasCaption && (
+            <ReactMarkdown
+              {...mdProps}
+              className={classes.caption}
+              source={description}
+            />
+          )}
+          {hasCredit && (
+            <ReactMarkdown
+              {...mdProps}
+              className={classes.credit}
+              source={credit}
+            />
+          )}
         </Typography>
       )}
     </figure>

@@ -9,7 +9,6 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
-import { storyLayoutStyles } from '@components/pages/Story/layouts/default/styles/Story.layout';
 import { storyBodyStyles } from '@components/pages/Story/layouts/default/styles/Story.body';
 
 export const audioTheme = (theme: Theme) =>
