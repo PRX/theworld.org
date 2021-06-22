@@ -6,17 +6,25 @@
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
+// import { Fonts } from '@components/Fonts';
 
 class TwDocument extends Document {
   render() {
-    const googleFontDomain = 'https://fonts.gstatic.com';
-    const googleFontsUrl =
-      'https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Sans+Pro:400,700,400italic|Montserrat:400,700|Alegreya:400,400italic|Roboto|Roboto+Slab|Sanchez&display=swap';
     return (
       <Html lang="en">
         <Head>
-          <link rel="preconnect" href={googleFontDomain} crossOrigin="" />
-          <link rel="stylesheet" type="text/css" href={googleFontsUrl} />
+          {/* <link rel="preconnect" href={googleFontDomain} crossOrigin="" />
+          <link rel="stylesheet" type="text/css" href={googleFontsUrl} /> */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin=""
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital@0;1&amp;family=Montserrat:wght@400;700&amp;family=Open+Sans:wght@400;700&amp;family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400&amp;display=swap"
+            rel="stylesheet"
+          />
           <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
           <link
             rel="search"
@@ -25,6 +33,7 @@ class TwDocument extends Document {
             href="/opensearch.xml"
           />
           <link rel="icon" href="/images/favicon.png" />
+          {/* <Fonts /> */}
         </Head>
         <body>
           <Main />
