@@ -50,7 +50,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!_next/|__nextjs_original-stack-frame|api/|images/)(?:[^/.]+/?)+$)",
+      "source": "/((?!_next/|__nextjs_original-stack-frame|api/|images/|fonts/)(?:[^/.]+/?)+$)",
       "destination": "/render/$1"
     }
   ]
