@@ -6,15 +6,12 @@
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
-// import { Fonts } from '@components/Fonts';
 
 class TwDocument extends Document {
   render() {
     return (
       <Html lang="en">
         <Head>
-          {/* <link rel="preconnect" href={googleFontDomain} crossOrigin="" />
-          <link rel="stylesheet" type="text/css" href={googleFontsUrl} /> */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
@@ -33,7 +30,6 @@ class TwDocument extends Document {
             href="/opensearch.xml"
           />
           <link rel="icon" href="/images/favicon.png" />
-          {/* <Fonts /> */}
         </Head>
         <body>
           <Main />
