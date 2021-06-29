@@ -52,7 +52,9 @@ export const LandingPageHeader = ({
             <Box className={cx('text')}>
               <Typography variant="h1">{title}</Typography>
               {subhead && (
-                <Typography variant="subtitle1" component="p">{subhead}</Typography>
+                <Typography variant="subtitle1" component="p">
+                  {subhead}
+                </Typography>
               )}
             </Box>
           </Container>

@@ -11,7 +11,7 @@ import { ContentLink } from '@components/ContentLink';
 import { Image } from '@components/Image';
 import { bioHeaderStyles, bioHeaderTheme } from './BioHeader.styles';
 
-interface IBioHeaderProps {
+export interface IBioHeaderProps {
   image?: IPriApiResource;
   program?: IPriApiResource;
   title: string;
@@ -44,11 +44,15 @@ export const BioHeader = ({
             <Box className={cx('text')}>
               <Typography variant="h1">{title}</Typography>
               {position && (
-                <Typography variant="subtitle1" component="p">{position}</Typography>
+                <Typography variant="subtitle1" component="p">
+                  {position}
+                </Typography>
               )}
               {program && <ContentLink className={cx('link')} data={program} />}
               {subhead && (
-                <Typography variant="subtitle1" component="p">{subhead}</Typography>
+                <Typography variant="subtitle1" component="p">
+                  {subhead}
+                </Typography>
               )}
             </Box>
           </Container>

@@ -49,6 +49,8 @@ const PauseSharp = dynamic(() => import('@material-ui/icons/PauseSharp'), {
   loading: () => <PlayArrowSharp />
 });
 
+const VolumeUpSharp = dynamic(() => import('@material-ui/icons/VolumeUpSharp'));
+
 const VolumeDownSharp = dynamic(
   () => import('@material-ui/icons/VolumeDownSharp'),
   {
@@ -69,8 +71,6 @@ const VolumeOffSharp = dynamic(
     loading: () => <VolumeUpSharp />
   }
 );
-
-const VolumeUpSharp = dynamic(() => import('@material-ui/icons/VolumeUpSharp'));
 
 export const AudioPlayer = ({
   className,

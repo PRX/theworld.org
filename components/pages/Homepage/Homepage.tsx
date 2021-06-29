@@ -16,8 +16,6 @@ import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
-import { RootState } from '@interfaces/state';
-import { IContentComponentProps } from '@interfaces/content';
 import { fetchCtaData, fetchHomepageData } from '@store/actions';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
 
@@ -28,10 +26,6 @@ const CtaRegion = dynamic(
 const SidebarCta = dynamic(
   () => import('@components/Sidebar').then(mod => mod.SidebarCta) as any
 ) as React.FC<ICtaRegionProps>;
-
-interface StateProps extends RootState {}
-
-type Props = StateProps & IContentComponentProps;
 
 export const Homepage = () => {
   const store = useStore();

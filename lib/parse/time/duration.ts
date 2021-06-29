@@ -5,7 +5,7 @@
  *    Duration in seconds.
  */
 export const formatDuration = (seconds: number): string => {
-  const pad = (v: number) => (`0${v}`).slice(-2);
+  const pad = (v: number) => `0${v}`.slice(-2);
   const date = new Date(seconds * 1000);
   const hh = date.getUTCHours();
   const mm = date.getUTCMinutes();
@@ -14,4 +14,4 @@ export const formatDuration = (seconds: number): string => {
     return `${hh}:${pad(mm)}:${ss}`;
   }
   return `${mm}:${ss}`;
-}
+};
