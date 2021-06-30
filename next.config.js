@@ -8,6 +8,16 @@ const withPlugins = require('next-compose-plugins');
 
 module.exports = withPlugins([
   {
+    images: {
+      domains: [
+        'media.pri.org',
+        'www.pri.org',
+        'pri9.lndo.site',
+        'media-pri-dev.s3.us-east-1.amazonaws.com'
+      ],
+      deviceSizes: [370, 600, 960, 1280, 1920],
+      imageSizes: [50, 100, 217, 290, 568, 808]
+    },
     future: {
       webpack5: true
     },
