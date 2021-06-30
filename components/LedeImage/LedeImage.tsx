@@ -4,29 +4,26 @@
  */
 
 import React from 'react';
-import ReactMarkdown from 'react-markdown/with-html';
-import { Typography } from '@material-ui/core';
-import { Image, IResponsiveConfig } from '@components/Image';
+import Image from 'next/image';
+import { Box, Typography } from '@material-ui/core';
+import { HtmlContent } from '@components/HtmlContent';
 import { ledeImageStyles } from './LedeImage.styles';
 
 export interface ILedeImageProps {
   data: any;
-  widths: IResponsiveConfig;
 }
 
-export const LedeImage = ({ data, widths = null }: ILedeImageProps) => {
-  const { caption, credit } = data;
+export const LedeImage = ({ data }: ILedeImageProps) => {
+  const { caption, credit, url, metadata } = data;
+  const { width, height } = metadata || {};
   const classes = ledeImageStyles({});
   const hasCaption = caption && !!caption.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;
-  const mdProps = {
-    escapeHtml: false
-  };
 
   return (
     <figure className={classes.root}>
-      <Image className={classes.image} data={data} width={widths} />
+      <Image src={url} width={width} height={height} layout="responsive" />
       {hasFooter && (
         <Typography
           variant="caption"
@@ -34,18 +31,14 @@ export const LedeImage = ({ data, widths = null }: ILedeImageProps) => {
           className={classes.footer}
         >
           {hasCaption && (
-            <ReactMarkdown
-              {...mdProps}
-              className={classes.caption}
-              source={caption}
-            />
+            <Box className={classes.caption}>
+              <HtmlContent html={caption} />
+            </Box>
           )}
           {hasCredit && (
-            <ReactMarkdown
-              {...mdProps}
-              className={classes.credit}
-              source={credit}
-            />
+            <Box className={classes.credit}>
+              <HtmlContent html={credit} />
+            </Box>
           )}
         </Typography>
       )}
