@@ -142,9 +142,9 @@ export const NewsletterForm = ({
                 disableElevation={submitted}
                 endIcon={icon}
                 onClick={handleSubmit}
-                aria-label="Subscribe"
+                aria-label="Sign Up"
               >
-                {label || 'Subscribe'}
+                {label || 'Sign Up'}
               </Button>
             )}
           </Box>
