@@ -71,9 +71,8 @@ export const storyCardGridTheme = (theme: Theme) =>
       },
       MuiCardMedia: {
         root: {
-          [theme.breakpoints.down('xs')]: {
-            paddingTop: '100%'
-          }
+          height: 'auto',
+          paddingTop: 'initial'
         }
       }
     }

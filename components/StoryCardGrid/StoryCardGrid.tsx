@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { parse } from 'url';
 import classNames from 'classnames/bind';
@@ -25,7 +26,6 @@ import {
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
-import { Image } from '@components/Image';
 import { ILink } from '@interfaces/link';
 import {
   storyCardStyles,
@@ -48,12 +48,13 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
   const cardClasses = storyCardStyles({});
   const cx = classNames.bind(classes);
   const cxCard = classNames.bind(cardClasses);
-  const imageWidth = {
-    xs: '100px',
-    sm: '50vw',
-    md: '568px',
-    xl: '808px'
-  };
+  const imageWidth = [
+    ['max-width: 600px', '100px'],
+    ['max-width: 960px', '50vw'],
+    ['max-width: 1280px', '300px'],
+    [null, '400px']
+  ];
+  const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
   const renderLink = ({ title: linkTitle, url }: ILink) => {
     const oUrl = parse(url, true, true);
@@ -108,9 +109,13 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                   {image && (
                     <CardMedia>
                       <Image
-                        data={image}
-                        width={imageWidth}
-                        wrapperClassName={cxCard('imageWrapper')}
+                        src={image.url}
+                        alt={image.alt}
+                        layout="responsive"
+                        width={image.metadata.width}
+                        height={image.metadata.width * (9 / 16)}
+                        objectFit="cover"
+                        sizes={sizes}
                       />
                       <LinearProgress
                         className={cx(classes.loadingBar, {

@@ -145,9 +145,7 @@ export const storyCardTheme = (theme: Theme) =>
         root: {
           position: 'relative',
           overflow: 'hidden',
-          width: '100%',
-          height: 0,
-          paddingTop: `${(9 / 16) * 100}%`
+          width: '100%'
         }
       },
       MuiList: {

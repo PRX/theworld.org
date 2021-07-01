@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { parse } from 'url';
 import classNames from 'classnames/bind';
@@ -23,7 +24,6 @@ import {
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
-import { Image } from '@components/Image';
 import { ILink } from '@interfaces/link';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { storyCardStyles, storyCardTheme } from './StoryCard.styles';
@@ -40,11 +40,13 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
   const { pathname } = generateLinkHrefForContent(data);
   const classes = storyCardStyles({ isLoading });
   const cx = classNames.bind(classes);
-  const imageWidth = {
-    xs: '100vw',
-    md: '568px',
-    xl: '808px'
-  };
+  const imageWidth = [
+    ['max-width: 600px', '100vw'],
+    ['max-width: 960px', '552px'],
+    ['max-width: 1280px', '600px'],
+    [null, '820px']
+  ];
+  const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
   const renderLink = ({ title: linkTitle, url }: ILink) => {
     const oUrl = parse(url, true, true);
@@ -99,9 +101,13 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
           {image && (
             <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
               <Image
-                data={image}
-                width={imageWidth}
-                wrapperClassName={classes.imageWrapper}
+                src={image.url}
+                alt={image.alt}
+                layout="responsive"
+                width={image.metadata.width}
+                height={image.metadata.width * (9 / 16)}
+                objectFit="cover"
+                sizes={sizes}
               />
               <LinearProgress
                 className={classes.loadingBar}

@@ -16,7 +16,7 @@ module.exports = withPlugins([
         'media-pri-dev.s3.us-east-1.amazonaws.com'
       ],
       deviceSizes: [370, 600, 960, 1280, 1920],
-      imageSizes: [50, 100, 217, 290, 568, 808]
+      imageSizes: [50, 100, 300, 400, 568, 808]
     },
     future: {
       webpack5: true
