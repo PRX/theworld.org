@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -19,7 +20,6 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentButton } from '@components/ContentButton';
 import { ContentLink } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
-import { Image } from '@components/Image';
 import {
   sidebarEpisodeStyles,
   sidebarEpisodeTheme
@@ -38,11 +38,13 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
   const { segments } = audio || {};
   const classes = sidebarEpisodeStyles({});
   const cx = classNames.bind(classes);
-  const imageWidth = {
-    xs: '100vw',
-    md: '320px',
-    xl: '400px'
-  };
+  const imageWidth = [
+    ['max-width: 600px', '100vw'],
+    ['max-width: 960px', '552px'],
+    ['max-width: 1280px', '300px'],
+    [null, '400px']
+  ];
+  const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
   return (
     <ThemeProvider theme={sidebarEpisodeTheme}>
@@ -51,9 +53,13 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
           {image && (
             <CardMedia>
               <Image
-                data={image}
-                width={imageWidth}
-                wrapperClassName={classes.imageWrapper}
+                src={image.url}
+                alt={image.alt}
+                layout="responsive"
+                width={image.metadata.width}
+                height={image.metadata.width * (9 / 16)}
+                objectFit="cover"
+                sizes={sizes}
               />
             </CardMedia>
           )}
