@@ -13,6 +13,7 @@ import { Box, Container, Grid, Hidden } from '@material-ui/core';
 import { Sidebar, SidebarLatestStories } from '@components/Sidebar';
 import { IAudioPlayerProps } from '@components/AudioPlayer/AudioPlayer.interfaces';
 import { HtmlContent } from '@components/HtmlContent';
+import { enhanceImage } from '@components/HtmlContent/transforms';
 import { ITagsProps } from '@components/Tags';
 import { IContentComponentProps } from '@interfaces/content';
 import { ICtaRegionProps } from '@interfaces/cta';
@@ -185,6 +186,26 @@ export const StoryDefault = ({ data }: Props) => {
     return undefined;
   };
 
+  const enhanceImages = enhanceImage(node => {
+    switch (true) {
+      case /\bfile-on-the-side\b/.test(node.attribs.class):
+        return [
+          ['max-width: 600px', '100vw'],
+          ['max-width: 960px', '560px'],
+          ['max-width: 1280px', '300px'],
+          [null, '400px']
+        ];
+
+      default:
+        return [
+          ['max-width: 600px', '100vw'],
+          ['max-width: 960px', '560px'],
+          ['max-width: 1280px', '600px'],
+          [null, '920px']
+        ];
+    }
+  });
+
   return (
     <ThemeProvider theme={storyTheme}>
       <Container fixed>
@@ -207,7 +228,11 @@ export const StoryDefault = ({ data }: Props) => {
                 <Box className={classes.body} my={2}>
                   <HtmlContent
                     html={body}
-                    transforms={[insertCtaMobile01, insertCtaMobile02]}
+                    transforms={[
+                      insertCtaMobile01,
+                      insertCtaMobile02,
+                      enhanceImages
+                    ]}
                   />
                 </Box>
                 {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
