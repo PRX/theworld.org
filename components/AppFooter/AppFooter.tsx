@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import Image from 'next/image';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import { Box, Breadcrumbs, Container, Divider, Link } from '@material-ui/core';
@@ -65,7 +66,7 @@ export const AppFooter = () => {
               href="https://www.carnegie.org/"
               aria-label="Carnegie Corporation of New York"
             >
-              <img
+              <Image
                 className={classes.logo}
                 alt="Carnegie Corporation of New York"
                 title="Carnegie Corporation of New York"
@@ -79,7 +80,7 @@ export const AppFooter = () => {
               href="https://www.macfound.org/"
               aria-label="MacArthur Foundation"
             >
-              <img
+              <Image
                 className={classes.logo}
                 alt="MacArthur Foundation"
                 title="MacArthur Foundation"
@@ -93,7 +94,7 @@ export const AppFooter = () => {
               href="https://www.fordfoundation.org/"
               aria-label="Ford Foundation"
             >
-              <img
+              <Image
                 className={classes.logo}
                 alt="Ford Foundation"
                 title="Ford Foundation"
@@ -107,7 +108,7 @@ export const AppFooter = () => {
               href="https://cpb.org/"
               aria-label="Corporation for Public Broadcasting"
             >
-              <img
+              <Image
                 className={classes.logo}
                 alt="Corporation for Public Broadcasting"
                 title="Corporation for Public Broadcasting"
