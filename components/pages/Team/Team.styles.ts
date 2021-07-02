@@ -39,7 +39,8 @@ export const teamTheme = (theme: Theme) =>
       MuiCardMedia: {
         root: {
           position: 'relative',
-          width: '100%'
+          width: '100%',
+          paddingTop: '100%'
         }
       },
       MuiCardContent: {
