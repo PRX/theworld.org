@@ -20,10 +20,23 @@ export const LedeImage = ({ data }: ILedeImageProps) => {
   const hasCaption = caption && !!caption.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;
+  const imageWidth = [
+    ['max-width: 600px', '100vw'],
+    ['max-width: 960px', '560px'],
+    ['max-width: 1280px', '600px'],
+    [null, '920px']
+  ];
+  const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
   return (
     <figure className={classes.root}>
-      <Image src={url} width={width} height={height} layout="responsive" />
+      <Image
+        src={url}
+        width={width}
+        height={height}
+        layout="responsive"
+        sizes={sizes}
+      />
       {hasFooter && (
         <Typography
           variant="caption"
