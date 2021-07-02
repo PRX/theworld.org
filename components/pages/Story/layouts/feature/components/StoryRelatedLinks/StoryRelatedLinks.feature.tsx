@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import Image from 'next/image';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Card,
@@ -26,27 +27,31 @@ interface Props {
 
 export const StoryRelatedLinks = ({ data: related }: Props) => {
   const classes = storyRelatedLinksStyles({});
+  const imageWidth = [
+    ['max-width: 600px', '100vw'],
+    [null, '300px']
+  ];
+  const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
   return (
     <ThemeProvider theme={storyRelatedLinksTheme}>
       <Grid container spacing={2} classes={{ root: classes.root }}>
         {related.map(story => {
-          const {
-            id: storyId,
-            title,
-            image: {
-              title: imageTitle,
-              styles: {
-                card_small: { src }
-              }
-            }
-          } = story;
+          const { id: storyId, title, image } = story;
           return (
-            <Grid item lg={3} xs={6} key={storyId}>
+            <Grid item md={3} sm={6} xs={12} key={storyId}>
               <ContentLink data={story}>
                 <Card square elevation={1}>
                   <CardActionArea>
-                    <CardMedia image={src} title={imageTitle} />
+                    <CardMedia>
+                      <Image
+                        src={image.url}
+                        alt={image.alt}
+                        layout="fill"
+                        objectFit="cover"
+                        sizes={sizes}
+                      />
+                    </CardMedia>
                     <CardContent>
                       <Typography variant="h5" component="h2">
                         {title}
