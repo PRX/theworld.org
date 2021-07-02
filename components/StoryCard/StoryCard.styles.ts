@@ -88,11 +88,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
     },
     MuiCardMediaRoot: {
       [theme.breakpoints.down('xs')]: {
-        alignSelf: 'start',
-        paddingTop: '100%',
-        '$feature &': {
-          paddingTop: `${(9 / 16) * 100}%`
-        }
+        alignSelf: 'start'
       }
     },
     feature: {},
