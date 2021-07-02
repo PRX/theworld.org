@@ -103,9 +103,7 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
               <Image
                 src={image.url}
                 alt={image.alt}
-                layout="responsive"
-                width={image.metadata.width}
-                height={image.metadata.width * (9 / 16)}
+                layout="fill"
                 objectFit="cover"
                 sizes={sizes}
               />
