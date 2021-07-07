@@ -99,7 +99,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
     <ThemeProvider theme={storyCardTheme}>
       <ThemeProvider theme={storyCardGridTheme}>
         <Box className={cx('root')} {...other}>
-          {data.map(item => {
+          {data.map((item, index) => {
             const { id, title, image, primaryCategory, crossLinks } = item;
             const { pathname } = generateLinkHrefForContent(item);
             const isLoading = pathname === loadingUrl;
@@ -114,6 +114,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                         layout="fill"
                         objectFit="cover"
                         sizes={sizes}
+                        priority={index <= 1}
                       />
                       <LinearProgress
                         className={cx(classes.loadingBar, {
