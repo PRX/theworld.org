@@ -201,7 +201,9 @@ export const Program = () => {
           )}
           {!isEpisodesView && (
             <>
-              {featuredStory && <StoryCard data={featuredStory} feature />}
+              {featuredStory && (
+                <StoryCard data={featuredStory} feature priority />
+              )}
               {featuredStories && (
                 <StoryCardGrid data={featuredStories[1]} mt={2} />
               )}

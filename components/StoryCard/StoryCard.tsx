@@ -31,9 +31,10 @@ import { storyCardStyles, storyCardTheme } from './StoryCard.styles';
 export interface StoryCardProps {
   data: IPriApiResource;
   feature?: boolean;
+  priority?: boolean;
 }
 
-export const StoryCard = ({ data, feature }: StoryCardProps) => {
+export const StoryCard = ({ data, feature, priority }: StoryCardProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { teaser, title, image, primaryCategory, crossLinks } = data;
@@ -106,6 +107,7 @@ export const StoryCard = ({ data, feature }: StoryCardProps) => {
                 layout="fill"
                 objectFit="cover"
                 sizes={sizes}
+                priority={priority}
               />
               <LinearProgress
                 className={classes.loadingBar}

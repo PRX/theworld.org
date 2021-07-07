@@ -36,6 +36,7 @@ export const LedeImage = ({ data }: ILedeImageProps) => {
         height={height}
         layout="responsive"
         sizes={sizes}
+        priority
       />
       {hasFooter && (
         <Typography

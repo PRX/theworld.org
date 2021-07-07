@@ -81,7 +81,7 @@ export const Team = () => {
         <Grid container spacing={3}>
           {items
             .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource) => {
+            .map((item: IPriApiResource, index) => {
               const { pathname } = generateLinkHrefForContent(item);
               const isLoading = loadingUrl === pathname;
 
@@ -101,6 +101,7 @@ export const Team = () => {
                             layout="fill"
                             objectFit="cover"
                             sizes={sizes}
+                            priority={index <= 1}
                           />
                         </CardMedia>
                       )}

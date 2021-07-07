@@ -169,7 +169,9 @@ export const Bio = () => {
             </Box>
           </Box>
           <Box mt={bio ? 6 : 3}>
-            {featuredStory && <StoryCard data={featuredStory} feature />}
+            {featuredStory && (
+              <StoryCard data={featuredStory} feature priority />
+            )}
             {featuredStories && (
               <StoryCardGrid data={featuredStories[1]} mt={2} />
             )}

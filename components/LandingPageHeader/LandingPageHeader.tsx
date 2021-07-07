@@ -45,6 +45,7 @@ export const LandingPageHeader = ({
                 src={image.url}
                 layout="fill"
                 objectFit="cover"
+                priority
               />
             </Hidden>
             <Hidden smDown>
@@ -55,6 +56,7 @@ export const LandingPageHeader = ({
                 width={image.metadata.width}
                 height={image.metadata.height}
                 objectFit="cover"
+                priority
               />
             </Hidden>
           </Box>

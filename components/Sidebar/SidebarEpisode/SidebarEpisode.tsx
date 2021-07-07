@@ -58,6 +58,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
                 layout="fill"
                 objectFit="cover"
                 sizes={sizes}
+                priority
               />
             </CardMedia>
           )}

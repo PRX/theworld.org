@@ -149,7 +149,7 @@ export const Category = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
-          {featuredStory && <StoryCard data={featuredStory} feature />}
+          {featuredStory && <StoryCard data={featuredStory} feature priority />}
           {featuredStories && (
             <StoryCardGrid data={featuredStories[1]} mt={2} />
           )}
