@@ -4,6 +4,7 @@
  */
 
 import React, { useContext, useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
@@ -22,7 +23,6 @@ import {
   Typography
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { Image } from '@components/Image';
 import { ContentLink } from '@components/ContentLink';
 import { AppContext } from '@contexts/AppContext';
 import { generateLinkHrefForContent } from '@lib/routing';
@@ -45,6 +45,11 @@ export const Team = () => {
   const cx = classNames.bind(classes);
   const title = "The World's Team";
   const { items } = getCollectionData(state, type, id, 'members');
+  const imageWidth = [
+    ['max-width: 600px', '100wv'],
+    [null, '300px']
+  ];
+  const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
   useEffect(() => {
     const handleRouteChangeStart = (url: string) => {
@@ -76,7 +81,7 @@ export const Team = () => {
         <Grid container spacing={3}>
           {items
             .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource) => {
+            .map((item: IPriApiResource, index) => {
               const { pathname } = generateLinkHrefForContent(item);
               const isLoading = loadingUrl === pathname;
 
@@ -91,15 +96,12 @@ export const Team = () => {
                       {item.image && (
                         <CardMedia>
                           <Image
-                            data={item.image}
-                            width={{
-                              xl: 290,
-                              lg: 290,
-                              md: 288,
-                              sm: 264,
-                              xs: '100vw'
-                            }}
-                            wrapperClassName={classes.imageWrapper}
+                            alt={item.image.alt}
+                            src={item.image.url}
+                            layout="fill"
+                            objectFit="cover"
+                            sizes={sizes}
+                            priority={index <= 1}
                           />
                         </CardMedia>
                       )}

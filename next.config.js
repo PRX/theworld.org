@@ -8,6 +8,16 @@ const withPlugins = require('next-compose-plugins');
 
 module.exports = withPlugins([
   {
+    images: {
+      domains: [
+        'media.pri.org',
+        'www.pri.org',
+        'pri9.lndo.site',
+        'media-pri-dev.s3.us-east-1.amazonaws.com'
+      ],
+      deviceSizes: [370, 600, 960, 1280, 1920],
+      imageSizes: [50, 100, 300, 400, 568, 808]
+    },
     future: {
       webpack5: true
     },
@@ -67,6 +77,59 @@ module.exports = withPlugins([
           pages: {
             chunks: 'all',
             test: /[\\/]components[\\/]pages[\\/]/,
+            name: (module, chunks, cacheGroupKey) => {
+              const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight(item => item);
+              const allChunksNames = chunks.map(item => item.name).join('~');
+              return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+            },
+            priority: 40,
+            reuseExistingChunk: true,
+            enforce: true
+          },
+          audioPlayer: {
+            chunks: 'all',
+            test: /[\\/]components[\\/]Audio[\\/]/,
+            name: 'material-ui',
+            priority: 40,
+            reuseExistingChunk: true,
+            enforce: true
+          },
+          sidebar: {
+            chunks: 'all',
+            test: /[\\/]components[\\/]sidebar[\\/]/,
+            name: (module, chunks, cacheGroupKey) => {
+              const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight(item => item);
+              const allChunksNames = chunks.map(item => item.name).join('~');
+              return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+            },
+            priority: 40,
+            reuseExistingChunk: true,
+            enforce: true
+          },
+          lib: {
+            chunks: 'all',
+            test: /[\\/]lib[\\/]/,
+            name: (module, chunks, cacheGroupKey) => {
+              const moduleFileName = module
+                .identifier()
+                .split('/')
+                .reduceRight(item => item);
+              const allChunksNames = chunks.map(item => item.name).join('~');
+              return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+            },
+            priority: 40,
+            reuseExistingChunk: true,
+            enforce: true
+          },
+          store: {
+            chunks: 'all',
+            test: /[\\/]store[\\/]/,
             name: (module, chunks, cacheGroupKey) => {
               const moduleFileName = module
                 .identifier()

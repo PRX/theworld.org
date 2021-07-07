@@ -4,15 +4,21 @@
  */
 
 import React from 'react';
+import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';
 import ReactMarkdown from 'react-markdown';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
+import {
+  Box,
+  Container,
+  Typography,
+  ThemeProvider,
+  Hidden
+} from '@material-ui/core';
 import { IContentLinkProps } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
-import { Image } from '@components/Image';
 import {
   storyHeaderStyles,
   storyHeaderTheme
@@ -52,14 +58,28 @@ export const StoryHeader = ({ data }: Props) => {
     <ThemeProvider theme={storyHeaderTheme}>
       <Box className={cx('root', { withImage: !!image })}>
         {image && (
-          <>
-            <Image
-              className={cx('image')}
-              wrapperClassName={cx('imageWrapper')}
-              data={image}
-              width={{ xl: '100vw' }}
-            />
-          </>
+          <Box className={cx('imageWrapper')}>
+            <Hidden mdUp>
+              <Image
+                className={cx('image')}
+                src={image.url}
+                layout="fill"
+                objectFit="cover"
+                priority
+              />
+            </Hidden>
+            <Hidden smDown>
+              <Image
+                className={cx('image')}
+                src={image.url}
+                layout="responsive"
+                width={image.metadata.width}
+                height={image.metadata.height}
+                objectFit="cover"
+                priority
+              />
+            </Hidden>
+          </Box>
         )}
         <Box className={cx('content')}>
           <Container fixed className={cx('header')}>

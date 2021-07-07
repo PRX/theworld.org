@@ -94,6 +94,7 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       gridRow: '1 / -1',
       display: 'flex',
       flexDirection: 'column',
+      gap: theme.typography.pxToRem(theme.spacing(2)),
       alignItems: 'center',
       zIndex: 1,
       [theme.breakpoints.up('sm')]: {

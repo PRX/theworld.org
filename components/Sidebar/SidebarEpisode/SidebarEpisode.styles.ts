@@ -90,15 +90,7 @@ export const sidebarEpisodeTheme = (theme: Theme) =>
         root: {
           position: 'relative',
           width: '100%',
-          height: 0,
-          paddingTop: `${(9 / 16) * 100}%`,
-          '& > :only-child': {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%'
-          }
+          paddingTop: `${100 / (16 / 9)}%`
         }
       },
       MuiList: {

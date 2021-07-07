@@ -162,21 +162,27 @@ export const Bio = () => {
     {
       key: 'main top',
       children: bio && (
-        <Box mt={3}>
-          <Box className={cx('body')}>
-            <HtmlContent html={bio} />
+        <>
+          <Box mt={3}>
+            <Box className={cx('body')}>
+              <HtmlContent html={bio} />
+            </Box>
           </Box>
-        </Box>
+          <Box mt={bio ? 6 : 3}>
+            {featuredStory && (
+              <StoryCard data={featuredStory} feature priority />
+            )}
+            {featuredStories && (
+              <StoryCardGrid data={featuredStories[1]} mt={2} />
+            )}
+          </Box>
+        </>
       )
     },
     {
       key: 'main bottom',
       children: stories && (
-        <Box mt={bio ? 6 : 3}>
-          {featuredStory && <StoryCard data={featuredStory} feature />}
-          {featuredStories && (
-            <StoryCardGrid data={featuredStories[1]} mt={2} />
-          )}
+        <>
           {stories
             .reduce((a, p) => [...a, ...p], [])
             .map((item: IPriApiResource, index: number) => (
@@ -205,7 +211,7 @@ export const Bio = () => {
               </Button>
             </Box>
           )}
-        </Box>
+        </>
       )
     }
   ];

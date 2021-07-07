@@ -26,18 +26,7 @@ export const StoryLede = ({ data }: IStoryLedeProps) => {
 
   return (
     <>
-      {(video && <LedeVideo data={video[0]} />) || (
-        <LedeImage
-          data={image}
-          widths={{
-            xs: '90vw',
-            sm: 552,
-            md: 580,
-            lg: 900,
-            xl: 900
-          }}
-        />
-      )}
+      {(video && <LedeVideo data={video[0]} />) || <LedeImage data={image} />}
     </>
   );
 };

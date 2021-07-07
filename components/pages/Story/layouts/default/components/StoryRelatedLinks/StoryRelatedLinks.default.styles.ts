@@ -55,7 +55,8 @@ export const storyRelatedLinksTheme = (theme: Theme) =>
       },
       MuiCardMedia: {
         root: {
-          height: theme.typography.pxToRem(130)
+          position: 'relative',
+          paddingTop: `${100 / (16 / 9)}%`
         }
       }
     }

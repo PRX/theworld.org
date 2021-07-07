@@ -4,10 +4,16 @@
  */
 
 import React from 'react';
+import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
-import { Image } from '@components/Image';
+import {
+  Box,
+  Container,
+  Typography,
+  ThemeProvider,
+  Hidden
+} from '@material-ui/core';
 import {
   landingPageHeaderStyles,
   landingPageHeaderTheme
@@ -32,20 +38,38 @@ export const LandingPageHeader = ({
     <ThemeProvider theme={landingPageHeaderTheme}>
       <Box className={cx('root', { withImage: !!image })}>
         {image && (
-          <Image
-            className={cx('image')}
-            wrapperClassName={cx('imageWrapper')}
-            data={image}
-            width={{ xl: '100vw' }}
-          />
+          <Box className={cx('imageWrapper')}>
+            <Hidden mdUp>
+              <Image
+                className={cx('image')}
+                src={image.url}
+                layout="fill"
+                objectFit="cover"
+                priority
+              />
+            </Hidden>
+            <Hidden smDown>
+              <Image
+                className={cx('image')}
+                src={image.url}
+                layout="responsive"
+                width={image.metadata.width}
+                height={image.metadata.height}
+                objectFit="cover"
+                priority
+              />
+            </Hidden>
+          </Box>
         )}
         <Box className={cx('content')}>
           <Container fixed className={cx('header')}>
             {logo && (
               <Image
-                data={logo}
+                src={logo.url}
+                layout="fixed"
                 width={220}
                 height={220}
+                objectFit="cover"
                 className={cx('logo')}
               />
             )}

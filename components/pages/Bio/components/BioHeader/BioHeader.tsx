@@ -4,11 +4,11 @@
  */
 
 import React from 'react';
+import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
 import { ContentLink } from '@components/ContentLink';
-import { Image } from '@components/Image';
 import { bioHeaderStyles, bioHeaderTheme } from './BioHeader.styles';
 
 export interface IBioHeaderProps {
@@ -35,10 +35,12 @@ export const BioHeader = ({
           <Container fixed className={cx('header')}>
             {image && (
               <Image
-                data={image}
+                src={image.url}
+                layout="fixed"
                 width={220}
                 height={220}
                 className={cx('image')}
+                objectFit="cover"
               />
             )}
             <Box className={cx('text')}>

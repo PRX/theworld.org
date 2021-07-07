@@ -96,7 +96,7 @@ export const Homepage = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
-          <StoryCard data={featuredStory} feature />
+          <StoryCard data={featuredStory} feature priority />
           <StoryCardGrid data={featuredStories[1]} mt={2} />
           {inlineTop && (
             <Box mt={3}>

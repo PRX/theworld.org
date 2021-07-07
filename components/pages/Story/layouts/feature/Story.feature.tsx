@@ -6,12 +6,12 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
-import { convertNodeToElement } from 'react-html-parser';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Box, Container, Grid } from '@material-ui/core';
 import { IAudioPlayerProps } from '@components/AudioPlayer/AudioPlayer.interfaces';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
+import { enhanceImage } from '@components/HtmlContent/transforms';
 import { ITagsProps } from '@components/Tags';
 import { IContentComponentProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
@@ -90,37 +90,26 @@ export const StoryDefault = ({ data }: Props) => {
   ];
   const hasTags = !!allTags.length;
 
-  const wrapBrowserWidthImg = (node, transform, index: number) => {
-    if (
-      node.type === 'tag' &&
-      node.name === 'img' &&
-      'class' in node.attribs &&
-      /file-browser-width/.test(node.attribs.class)
-    ) {
-      return (
-        <div className="file-browser-width-wrapper">
-          {convertNodeToElement(node, index, transform)}
-        </div>
-      );
-    }
-    return undefined;
-  };
+  const enhanceImages = enhanceImage(node => {
+    switch (true) {
+      case /\bfile-on-the-side\b/.test(node.attribs.class):
+        return [
+          ['max-width: 600px', '100vw'],
+          ['max-width: 960px', '560px'],
+          ['max-width: 1280px', '400px'],
+          [null, '400px']
+        ];
 
-  const wrapFullWidthImg = (node, transform, index: number) => {
-    if (
-      node.type === 'tag' &&
-      node.name === 'img' &&
-      'class' in node.attribs &&
-      /file-full-width/.test(node.attribs.class)
-    ) {
-      return (
-        <div className="file-full-width-wrapper">
-          {convertNodeToElement(node, index, transform)}
-        </div>
-      );
+      case /\bfile-browser-width\b/.test(node.attribs.class):
+        return [[null, '100vw']];
+
+      default:
+        return [
+          ['max-width: 600px', '100vw'],
+          [null, '1200px']
+        ];
     }
-    return undefined;
-  };
+  });
 
   return (
     <ThemeProvider theme={storyTheme}>
@@ -137,10 +126,7 @@ export const StoryDefault = ({ data }: Props) => {
               />
             )}
             <Box className={classes.body} my={2}>
-              <HtmlContent
-                html={body}
-                transforms={[wrapBrowserWidthImg, wrapFullWidthImg]}
-              />
+              <HtmlContent html={body} transforms={[enhanceImages]} />
             </Box>
             {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
             {hasRelated && (
