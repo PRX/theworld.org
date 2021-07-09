@@ -12,23 +12,23 @@ describe('Image', () => {
   const mockImageStyles: IImageStyle[] = [
     {
       src: '/images/foo-100px.jpg',
-      info: { width: 100 }
+      width: 100
     },
     {
       src: '/images/foo-200px.jpg',
-      info: { width: 200 }
+      width: 200
     },
     {
       src: '/images/foo-300px.jpg',
-      info: { width: 300 }
+      width: 300
     },
     {
       src: '/images/foo-400px.jpg',
-      info: { width: 400 }
+      width: 400
     },
     {
       src: '/images/foo-500px.jpg',
-      info: { width: 500 }
+      width: 500
     }
   ];
 
@@ -44,7 +44,7 @@ describe('Image', () => {
 
   describe('findBestStyle', () => {
     test('should return image style with width 400', () => {
-      expect(findBestStyle(350, mockImageStyles).info.width).toEqual(400);
+      expect(findBestStyle(350, mockImageStyles).width).toEqual(400);
     });
   });
 
