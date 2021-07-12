@@ -216,6 +216,7 @@ export const Homepage = () => {
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
+        <link rel="canonical" href={url} />
         <OpenGraph {...baseProps} type="webiste" />
         <TwitterCard {...baseProps} type="summary" />
       </Head>
