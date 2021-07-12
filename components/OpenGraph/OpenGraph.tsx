@@ -25,6 +25,7 @@ export const OpenGraph = ({
   children
 }: IOpenGraphProps) => (
   <>
+    <meta property="og:site_name" content="The World from PRX" />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:url" content={url} />

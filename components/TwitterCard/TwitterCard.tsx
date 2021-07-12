@@ -24,6 +24,7 @@ export const TwitterCard = ({
   children
 }: ITwitterCardProps) => (
   <>
+    <meta property="twitter:account_id" content="24953039" />
     <meta property="twitter:card" content={type} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:url" content={url} />
