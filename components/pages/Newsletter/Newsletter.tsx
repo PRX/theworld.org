@@ -4,7 +4,6 @@
  */
 import React, { useContext, useState, useEffect } from 'react';
 import { useStore } from 'react-redux';
-import { IncomingMessage } from 'http';
 import classNames from 'classnames/bind';
 import Head from 'next/head';
 import { AnyAction } from 'redux';
@@ -150,8 +149,7 @@ export const Newsletter = () => {
 };
 
 export const fetchData = (
-  id: string,
-  req: IncomingMessage
+  id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -161,6 +159,6 @@ export const fetchData = (
 
   if (!data) {
     // Get content data.
-    await dispatch<any>(fetchNewsletterData(id, req));
+    await dispatch<any>(fetchNewsletterData(id));
   }
 };
