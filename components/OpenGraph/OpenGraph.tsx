@@ -32,14 +32,14 @@ export const OpenGraph = ({
     {image &&
       (Array.isArray(image) ? image : [image]).map(
         ({ src, type: imageType, width, height }) => (
-          <>
-            <meta property="og:image" content={src} key={`i:${encode(src)}`} />
+          <React.Fragment key={`i:${encode(src)}`}>
+            <meta property="og:image" content={src} />
             {imageType && <meta property="og:image:type" content={imageType} />}
             {width && <meta property="og:image:width" content={`${width}`} />}
             {height && (
               <meta property="og:image:height" content={`${height}`} />
             )}
-          </>
+          </React.Fragment>
         )
       )}
     {children}
