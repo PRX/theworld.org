@@ -19,6 +19,7 @@ import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { fetchCtaData, fetchHomepageData } from '@store/actions';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
+import { TwitterCard } from '@components/TwitterCard';
 
 const CtaRegion = dynamic(
   () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
@@ -197,37 +198,26 @@ export const Homepage = () => {
   }, []);
 
   const title = 'The World';
+  const description =
+    'The World is a public radio program that crosses borders and time zones to bring home the stories that matter. From PRX.';
+  const url = 'https://theworld.org/';
+  const image = {
+    src: 'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg'
+  };
   const baseProps = {
     title,
-    description:
-      'The World is a public radio program that crosses borders and time zones to bring home the stories that matter. From PRX.',
-    url: 'https://theworld.org/'
+    description,
+    url,
+    image
   };
 
   return (
     <>
       <Head>
         <title>{title}</title>
-        {/* Open Graph */}
-        <OpenGraph
-          {...baseProps}
-          type="webiste"
-          image={{
-            src:
-              'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg'
-          }}
-        >
-          <meta property="prx:test" content="foo" />
-        </OpenGraph>
-        {/* Twitter */}
-        {/* <meta property="twitter:card" content="summary" />
-        <meta property="twitter:title" content={metaTitle} />
-        <meta property="twitter:description" content={metaDescription} />
-        <meta property="twitter:url" content={metaUrl} />
-        <meta
-          property="twitter:image"
-          content="https://media.pri.org/s3fs-public/pri_og-default.jpg"
-        /> */}
+        <meta name="description" content={description} />
+        <OpenGraph {...baseProps} type="webiste" />
+        <TwitterCard {...baseProps} type="summary" />
       </Head>
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
