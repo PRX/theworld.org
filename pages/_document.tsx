@@ -30,6 +30,10 @@ class TwDocument extends Document {
             href="/opensearch.xml"
           />
           <link rel="icon" href="/images/favicon.png" />
+          {/* Open Graph */}
+          <meta property="og:site_name" content="The World from PRX" />
+          {/* Twitter */}
+          <meta property="twitter:account_id" content="24953039" />
         </Head>
         <body>
           <Main />

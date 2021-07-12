@@ -11,6 +11,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Hidden } from '@material-ui/core';
 import { LandingPage } from '@components/LandingPage';
+import { OpenGraph } from '@components/OpenGraph';
 import { SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
@@ -195,10 +196,38 @@ export const Homepage = () => {
     };
   }, []);
 
+  const title = 'The World';
+  const baseProps = {
+    title,
+    description:
+      'The World is a public radio program that crosses borders and time zones to bring home the stories that matter. From PRX.',
+    url: 'https://theworld.org/'
+  };
+
   return (
     <>
       <Head>
-        <title>The World</title>
+        <title>{title}</title>
+        {/* Open Graph */}
+        <OpenGraph
+          {...baseProps}
+          type="webiste"
+          image={{
+            src:
+              'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg'
+          }}
+        >
+          <meta property="prx:test" content="foo" />
+        </OpenGraph>
+        {/* Twitter */}
+        {/* <meta property="twitter:card" content="summary" />
+        <meta property="twitter:title" content={metaTitle} />
+        <meta property="twitter:description" content={metaDescription} />
+        <meta property="twitter:url" content={metaUrl} />
+        <meta
+          property="twitter:image"
+          content="https://media.pri.org/s3fs-public/pri_og-default.jpg"
+        /> */}
       </Head>
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
