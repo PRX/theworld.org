@@ -69,7 +69,7 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
           'twitter:url',
           'shortlink'
         ].indexOf(k) === -1 &&
-        (/^og:/.test(k) ? (
+        (/^(og|fb):/.test(k) ? (
           <meta property={k} content={v} key={keyGen(k, v)} />
         ) : (
           <meta name={k} content={v} key={keyGen(k, v)} />
