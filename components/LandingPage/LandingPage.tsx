@@ -41,14 +41,14 @@ export const LandingPage = ({ main, sidebar }: ILandingPageProps) => {
               children && <Fragment key={key}>{children}</Fragment>
           )}
         </Grid>
-        <Hidden smDown>
-          <Grid item xs md={4}>
+        <Grid item xs md={4}>
+          <Hidden smDown implementation="css">
             {sidebar.map(
               ({ key, children }: ILandingPageItem) =>
                 children && <Fragment key={key}>{children}</Fragment>
             )}
-          </Grid>
-        </Hidden>
+          </Hidden>
+        </Grid>
       </Grid>
     </Container>
   );

@@ -7,7 +7,7 @@ import React from 'react';
 import { IImageStyle } from '@interfaces/content';
 
 export interface ITwitterCardProps {
-  type: 'summary' | 'summary_large_image' | 'app' | 'player';
+  type: string;
   title: string;
   url: string;
   description?: string;
@@ -24,14 +24,12 @@ export const TwitterCard = ({
   children
 }: ITwitterCardProps) => (
   <>
-    <meta property="twitter:account_id" content="24953039" />
-    <meta property="twitter:card" content={type} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:url" content={url} />
-    {description && (
-      <meta property="twitter:description" content={description} />
-    )}
-    {image && <meta property="twitter:image" content={image.src} />}
+    <meta name="twitter:account_id" content="24953039" />
+    <meta name="twitter:card" content={type} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:url" content={url} />
+    {description && <meta name="twitter:description" content={description} />}
+    {image && <meta name="twitter:image" content={image.src} />}
     {children}
   </>
 );

@@ -8,7 +8,7 @@ import { encode } from 'base-64';
 import { IImageStyle } from '@interfaces/content';
 
 export interface IOpenGraphProps {
-  type: 'webiste' | 'article' | 'profile';
+  type: string;
   title: string;
   url: string;
   description?: string;

@@ -4,14 +4,12 @@
  */
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Hidden } from '@material-ui/core';
 import { LandingPage } from '@components/LandingPage';
-import { OpenGraph } from '@components/OpenGraph';
 import { SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
@@ -19,7 +17,7 @@ import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { fetchCtaData, fetchHomepageData } from '@store/actions';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
-import { TwitterCard } from '@components/TwitterCard';
+import { MetaTags } from '@components/MetaTags';
 
 const CtaRegion = dynamic(
   () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
@@ -200,26 +198,31 @@ export const Homepage = () => {
   const title = 'The World';
   const description =
     'The World is a public radio program that crosses borders and time zones to bring home the stories that matter. From PRX.';
-  const url = 'https://theworld.org/';
-  const image = {
-    src: 'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg'
-  };
-  const baseProps = {
+  const url = '/';
+  const image =
+    'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg';
+  const metatags = {
     title,
     description,
-    url,
-    image
+    canonical: url,
+    'og:type': 'website',
+    'og:title': title,
+    'og:description': description,
+    'og:url': url,
+    'og:image': image,
+    'og:image:width': '3000',
+    'og:image:height': '3000',
+    'og:local': 'en_US',
+    'twitter:card': 'summary',
+    'twitter:title': title,
+    'twitter:description': description,
+    'twitter:url': url,
+    'twitter:image': image
   };
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <link rel="canonical" href={url} />
-        <OpenGraph {...baseProps} type="webiste" />
-        <TwitterCard {...baseProps} type="summary" />
-      </Head>
+      <MetaTags data={metatags} />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
