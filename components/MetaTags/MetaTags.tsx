@@ -54,7 +54,9 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
     type: twCard,
     image: { src: twImage }
   };
-  const keyGen = (k: string, v: string) => `${k}:${encode(v.slice(0, 16))}`;
+  const keyGen = (k: string, v: string) =>
+    // eslint-disable-next-line no-control-regex
+    `${k}:${encode(v.replace(/[^\x00-\x7F]/g, ''))}`;
   const renderMetaOther = () =>
     Object.entries(metaOther).map(
       ([k, v]) =>
