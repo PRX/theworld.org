@@ -36,10 +36,12 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
     ...metaOther
   } = data;
   const urlCanonical = parse(canonical);
+  const hostname = process.env.NEXT_PUBLIC_VERCEL_URL || 'theworld.org';
+  const pageUrl = `https://${hostname}${urlCanonical.pathname}`;
   const ogProps = {
     title: ogTitle,
     description: ogDescription,
-    url: urlCanonical.pathname,
+    url: pageUrl,
     type: ogType,
     image: {
       src: ogImage,
@@ -50,7 +52,7 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
   const twProps = {
     title: twTitle,
     description: twDescription,
-    url: urlCanonical.pathname,
+    url: pageUrl,
     type: twCard,
     image: { src: twImage }
   };
@@ -78,7 +80,7 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <link rel="canonical" href={urlCanonical.pathname} />
+      <link rel="canonical" href={pageUrl} />
       <OpenGraph {...ogProps} />
       <TwitterCard {...twProps} />
       {renderMetaOther()}
