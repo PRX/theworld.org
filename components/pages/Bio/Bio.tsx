@@ -5,7 +5,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -16,6 +15,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
+import { MetaTags } from '@components/MetaTags';
 import {
   Sidebar,
   SidebarAudioList,
@@ -82,7 +82,16 @@ export const Bio = () => {
   const { items: segments, count: segmentsCount, size: segmentsSize } =
     segmentsState || {};
   const segmentsPageCount = Math.ceil(segmentsCount / segmentsSize);
-  const { title, teaser, image, bio, program, position, socialLinks } = data;
+  const {
+    metatags,
+    title,
+    teaser,
+    image,
+    bio,
+    program,
+    position,
+    socialLinks
+  } = data;
   const { twitter, tumblr, podcast, blog, website, rss, contact } =
     socialLinks || {};
   const followLinks = [
@@ -287,9 +296,7 @@ export const Bio = () => {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-      </Head>
+      <MetaTags data={metatags} />
       <BioHeader
         title={title}
         position={position}
