@@ -18,6 +18,8 @@ export interface IMetaTagsProps {
   data: IMetaTags;
 }
 
+const sanitizeContent = (content: string) => content.replace(/<[^>]+>/g, '');
+
 export const MetaTags = ({ data }: IMetaTagsProps) => {
   const {
     title,
@@ -46,7 +48,7 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
   };
   const ogProps = {
     title: ogTitle,
-    description: ogDescription,
+    description: sanitizeContent(ogDescription),
     url: pageUrl,
     type: ogType,
     image: ogImage
@@ -59,7 +61,7 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
   };
   const twProps = {
     title: twTitle,
-    description: twDescription,
+    description: sanitizeContent(twDescription),
     url: pageUrl,
     type: twCard,
     image: twImage ? { src: twImage } : defaultImage
@@ -80,16 +82,16 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
           'shortlink'
         ].indexOf(k) === -1 &&
         (/^(og|fb):/.test(k) ? (
-          <meta property={k} content={v} key={keyGen(k, v)} />
+          <meta property={k} content={sanitizeContent(v)} key={keyGen(k, v)} />
         ) : (
-          <meta name={k} content={v} key={keyGen(k, v)} />
+          <meta name={k} content={sanitizeContent(v)} key={keyGen(k, v)} />
         ))
     );
 
   return (
     <Head>
       <title>{title}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={sanitizeContent(description)} />
       <link rel="canonical" href={pageUrl} />
       <OpenGraph {...ogProps} />
       <TwitterCard {...twProps} />
