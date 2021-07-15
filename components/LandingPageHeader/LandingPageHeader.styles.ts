@@ -97,6 +97,9 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       gap: theme.typography.pxToRem(theme.spacing(2)),
       alignItems: 'center',
       zIndex: 1,
+      '& > :first-child': {
+        flexShrink: 0
+      },
       [theme.breakpoints.up('sm')]: {
         alignItems: 'flex-start'
       },
