@@ -3,7 +3,6 @@
  * Component for Category.
  */
 import React, { useContext, useEffect, useState } from 'react';
-import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -30,6 +29,7 @@ import { StoryCardGrid } from '@components/StoryCardGrid';
 import { fetchApiCategoryStories } from '@lib/fetch';
 import { HtmlContent } from '@components/HtmlContent';
 import { LandingPageHeader } from '@components/LandingPageHeader';
+import { MetaTags } from '@components/MetaTags';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
@@ -96,6 +96,7 @@ export const Category = () => {
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories, page, next } = storiesState;
   const {
+    metatags,
     title,
     teaser,
     bannerImage,
@@ -291,9 +292,7 @@ export const Category = () => {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-      </Head>
+      <MetaTags data={metatags} />
       <LandingPageHeader
         title={title}
         subhead={teaser}
