@@ -195,7 +195,7 @@ export const Homepage = () => {
     };
   }, []);
 
-  const title = 'The World';
+  const title = 'The World from PRX';
   const description =
     'The World is a public radio program that crosses borders and time zones to bring home the stories that matter. From PRX.';
   const url = '/';

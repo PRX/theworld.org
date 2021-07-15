@@ -38,23 +38,31 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
   const urlCanonical = parse(canonical);
   const hostname = process.env.NEXT_PUBLIC_VERCEL_URL || 'theworld.org';
   const pageUrl = `https://${hostname}${urlCanonical.pathname}`;
+  const defaultImage = {
+    src:
+      'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg',
+    width: 3000,
+    height: 3000
+  };
   const ogProps = {
     title: ogTitle,
     description: ogDescription,
     url: pageUrl,
     type: ogType,
-    image: {
-      src: ogImage,
-      ...(ogImageWidth && { width: parseInt(ogImageWidth, 10) }),
-      ...(ogImageHeight && { height: parseInt(ogImageHeight, 10) })
-    }
+    image: ogImage
+      ? {
+          src: ogImage,
+          ...(ogImageWidth && { width: parseInt(ogImageWidth, 10) }),
+          ...(ogImageHeight && { height: parseInt(ogImageHeight, 10) })
+        }
+      : defaultImage
   };
   const twProps = {
     title: twTitle,
     description: twDescription,
     url: pageUrl,
     type: twCard,
-    image: { src: twImage }
+    image: twImage ? { src: twImage } : defaultImage
   };
   const keyGen = (k: string, v: string) =>
     // eslint-disable-next-line no-control-regex
