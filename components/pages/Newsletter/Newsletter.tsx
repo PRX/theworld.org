@@ -5,7 +5,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
-import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import {
@@ -19,6 +18,7 @@ import { CheckCircleOutlineSharp } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { Image } from '@components/Image';
+import { MetaTags } from '@components/MetaTags';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { IPriApiNewsletter } from '@interfaces/newsletter';
 import { RootState } from '@interfaces/state';
@@ -42,7 +42,7 @@ export const Newsletter = () => {
   }
 
   const [subscribed, setSubscribed] = useState(false);
-  const { title, body, buttonLabel, summary, image } = data;
+  const { metatags, title, body, buttonLabel, summary, image } = data;
   const options = parseNewsletterOptions(
     data as IPriApiNewsletter,
     'newsletter-page'
@@ -66,9 +66,7 @@ export const Newsletter = () => {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-      </Head>
+      <MetaTags data={metatags} />
       <ThemeProvider theme={newsletterTheme}>
         <Container disableGutters={!!image} maxWidth={false}>
           <Grid container justify="center">
