@@ -4,7 +4,6 @@
  */
 
 import React, { useContext, useEffect, useState } from 'react';
-import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -22,6 +21,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { EqualizerRounded } from '@material-ui/icons';
 import { AudioPlayer } from '@components/AudioPlayer';
 import { HtmlContent } from '@components/HtmlContent';
+import { MetaTags } from '@components/MetaTags';
 import {
   Sidebar,
   SidebarAudioList,
@@ -69,7 +69,7 @@ export const Episode = () => {
   }
 
   const {
-    title,
+    metatags,
     body,
     audio,
     embeddedPlayerUrl,
@@ -127,10 +127,7 @@ export const Episode = () => {
 
   return (
     <ThemeProvider theme={episodeTheme}>
-      <Head>
-        <title>{title}</title>
-        {/* TODO: WIRE UP ANALYTICS */}
-      </Head>
+      <MetaTags data={metatags} />
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>

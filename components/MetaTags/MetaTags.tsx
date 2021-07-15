@@ -45,8 +45,8 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
     type: ogType,
     image: {
       src: ogImage,
-      width: parseInt(ogImageWidth, 10),
-      height: parseInt(ogImageHeight, 10)
+      ...(ogImageWidth && { width: parseInt(ogImageWidth, 10) }),
+      ...(ogImageHeight && { height: parseInt(ogImageHeight, 10) })
     }
   };
   const twProps = {
