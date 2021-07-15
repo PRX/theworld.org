@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { encode } from 'base-64';
+import { fb } from '@config';
 import { IImageStyle } from '@interfaces/content';
 
 export interface IOpenGraphProps {
@@ -25,6 +26,8 @@ export const OpenGraph = ({
   children
 }: IOpenGraphProps) => (
   <>
+    <meta property="fb:admins" content={fb.admins} />
+    <meta property="fb:app_id" content={fb.appId} />
     <meta property="og:site_name" content="The World from PRX" />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />

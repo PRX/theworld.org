@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { twitter } from '@config';
 import { IImageStyle } from '@interfaces/content';
 
 export interface ITwitterCardProps {
@@ -24,7 +25,7 @@ export const TwitterCard = ({
   children
 }: ITwitterCardProps) => (
   <>
-    <meta name="twitter:account_id" content="24953039" />
+    <meta name="twitter:account_id" content={twitter.accountId} />
     <meta name="twitter:card" content={type} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:url" content={url} />

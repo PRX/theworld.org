@@ -71,9 +71,11 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
     Object.entries(metaOther).map(
       ([k, v]) =>
         [
+          'fb:admins',
+          'fb:app_id',
           'og:site_name',
-          'twitter:account_id',
           'og:url',
+          'twitter:account_id',
           'twitter:url',
           'shortlink'
         ].indexOf(k) === -1 &&
