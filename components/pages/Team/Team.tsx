@@ -51,7 +51,7 @@ export const Team = () => {
   const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
   const title = "The World's Team";
-  const description = 'Meet the team that makes The World.';
+  const description = 'Meet the team who brings you The World.';
   const metaUrl = '/programs/the-world/team';
   const image =
     'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg';
