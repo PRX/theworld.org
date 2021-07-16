@@ -6,7 +6,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -24,6 +23,7 @@ import {
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
+import { MetaTags } from '@components/MetaTags';
 import { AppContext } from '@contexts/AppContext';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { fetchTeamData } from '@store/actions';
@@ -43,13 +43,36 @@ export const Team = () => {
   const state = store.getState();
   const classes = teamStyles({});
   const cx = classNames.bind(classes);
-  const title = "The World's Team";
   const { items } = getCollectionData(state, type, id, 'members');
   const imageWidth = [
     ['max-width: 600px', '100wv'],
     [null, '300px']
   ];
   const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
+
+  const title = "The World's Team";
+  const description = 'Meet the team that makes The World.';
+  const metaUrl = '/programs/the-world/team';
+  const image =
+    'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg';
+  const metatags = {
+    title,
+    description,
+    canonical: metaUrl,
+    'og:type': 'website',
+    'og:title': title,
+    'og:description': description,
+    'og:url': metaUrl,
+    'og:image': image,
+    'og:image:width': '3000',
+    'og:image:height': '3000',
+    'og:local': 'en_US',
+    'twitter:card': 'summary',
+    'twitter:title': title,
+    'twitter:description': description,
+    'twitter:url': metaUrl,
+    'twitter:image': image
+  };
 
   useEffect(() => {
     const handleRouteChangeStart = (url: string) => {
@@ -72,10 +95,7 @@ export const Team = () => {
 
   return (
     <ThemeProvider theme={teamTheme}>
-      <Head>
-        <title>{title}</title>
-        {/* TODO: WIRE UP ANALYTICS */}
-      </Head>
+      <MetaTags data={metatags} />
       <Container fixed>
         <TeamHeader title={title} />
         <Grid container spacing={3}>
