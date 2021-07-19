@@ -6,9 +6,16 @@
 const path = require('path');
 const withPlugins = require('next-compose-plugins');
 const { withPlausibleProxy } = require('next-plausible');
+const uid = require('uid');
 
 module.exports = withPlugins([
-  [withPlausibleProxy],
+  [
+    withPlausibleProxy,
+    {
+      subdirectory: 'svc',
+      scriptName: uid()
+    }
+  ],
   {
     images: {
       domains: [
