@@ -6,7 +6,7 @@
 const path = require('path');
 const withPlugins = require('next-compose-plugins');
 const { withPlausibleProxy } = require('next-plausible');
-const uid = require('uid');
+const { uid } = require('uid');
 
 module.exports = withPlugins([
   [
