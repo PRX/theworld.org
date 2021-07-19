@@ -41,7 +41,12 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   }, [type, id]);
 
   return (
-    <PlausibleProvider domain="preview.theworld.org" selfHosted enabled>
+    <PlausibleProvider
+      domain="preview.theworld.org"
+      selfHosted
+      trackOutboundLinks
+      enabled
+    >
       <ThemeProvider theme={baseMuiTheme}>
         <ThemeProvider theme={appTheme}>
           <AppContext.Provider value={contextValue}>
