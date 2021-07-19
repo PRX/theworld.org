@@ -6524,6 +6524,11 @@ next-compose-plugins@^2.2.0:
   resolved "https://registry.yarnpkg.com/next-compose-plugins/-/next-compose-plugins-2.2.1.tgz#020fc53f275a7e719d62521bef4300fbb6fde5ab"
   integrity sha512-OjJ+fV15FXO2uQXQagLD4C0abYErBjyjE0I0FHpOEIB8upw0hg1ldFP6cqHTJBH1cZqy96OeR3u1dJ+Ez2D4Bg==
 
+next-plausible@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/next-plausible/-/next-plausible-2.0.0.tgz#2f5536ef3945c9a516471c2d5eda68887d447d74"
+  integrity sha512-NaLrAK+LsnEyXz31qy9OjhXZlppp0aWUdKmBPgthrWeGPwLo7ojSWgWU2BzbbUOqi0XVoWjaMa3oNVDfVkyC5w==
+
 next-redux-wrapper@7.0.0-rc.2:
   version "7.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-7.0.0-rc.2.tgz#8d6673ea2a1f1dbd98de710d928f739241fa2e37"

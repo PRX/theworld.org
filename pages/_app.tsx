@@ -5,6 +5,7 @@
 
 import React, { FC, useEffect } from 'react';
 import { AppProps } from 'next/app';
+import PlausibleProvider from 'next-plausible';
 import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
 // import { AppCtaBanner } from '@components/AppCtaBanner';
 // import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
@@ -39,24 +40,28 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     window.scrollTo({ top: 0, left: 0 });
   }, [type, id]);
 
+  console.log(process.env);
+
   return (
-    <ThemeProvider theme={baseMuiTheme}>
-      <ThemeProvider theme={appTheme}>
-        <AppContext.Provider value={contextValue}>
-          <Box minHeight="100vh" display="flex" flexDirection="column">
-            <AppLoadingBar />
-            {/* <AppCtaBanner /> */}
-            <AppHeader />
-            <Box flexGrow={1}>
-              <Component {...pageProps} />
+    <PlausibleProvider domain="preview.theworld.org" enabled>
+      <ThemeProvider theme={baseMuiTheme}>
+        <ThemeProvider theme={appTheme}>
+          <AppContext.Provider value={contextValue}>
+            <Box minHeight="100vh" display="flex" flexDirection="column">
+              <AppLoadingBar />
+              {/* <AppCtaBanner /> */}
+              <AppHeader />
+              <Box flexGrow={1}>
+                <Component {...pageProps} />
+              </Box>
+              <AppFooter />
+              {/* <AppCtaLoadUnder /> */}
             </Box>
-            <AppFooter />
-            {/* <AppCtaLoadUnder /> */}
-          </Box>
-        </AppContext.Provider>
-        <CssBaseline />
+          </AppContext.Provider>
+          <CssBaseline />
+        </ThemeProvider>
       </ThemeProvider>
-    </ThemeProvider>
+    </PlausibleProvider>
   );
 };
 

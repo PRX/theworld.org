@@ -5,8 +5,10 @@
 
 const path = require('path');
 const withPlugins = require('next-compose-plugins');
+const { withPlausibleProxy } = require('next-plausible');
 
 module.exports = withPlugins([
+  [withPlausibleProxy],
   {
     images: {
       domains: [
