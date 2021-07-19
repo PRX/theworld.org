@@ -40,8 +40,6 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     window.scrollTo({ top: 0, left: 0 });
   }, [type, id]);
 
-  console.log(process.env);
-
   return (
     <PlausibleProvider domain="preview.theworld.org" enabled>
       <ThemeProvider theme={baseMuiTheme}>
