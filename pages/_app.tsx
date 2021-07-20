@@ -3,7 +3,7 @@
  * Override the main app component.
  */
 
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
 import PlausibleProvider from 'next-plausible';
 import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
@@ -17,6 +17,7 @@ import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+  const [enablePlausible, setEnablePlausible] = useState(false);
   const { type, id } = pageProps;
   const contextValue = {
     page: {
@@ -34,6 +35,9 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+
+    // Determine if Plausible was already initialized.
+    setEnablePlausible(!(window as any)?.plausible);
   }, []);
 
   useEffect(() => {
@@ -45,7 +49,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       domain="preview.theworld.org"
       selfHosted
       trackOutboundLinks
-      enabled
+      enabled={enablePlausible}
     >
       <ThemeProvider theme={baseMuiTheme}>
         <ThemeProvider theme={appTheme}>
