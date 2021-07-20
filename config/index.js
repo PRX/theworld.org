@@ -26,8 +26,17 @@ const config = {
   ...defaultConfig,
   ...localConfig,
   analytics: {
+    domain: 'theworld.org',
     ...(defaultConfig.analytics || {}),
     ...(localConfig.analytics || {})
+  },
+  fb: {
+    ...(defaultConfig.fb || {}),
+    ...(localConfig.fb || {})
+  },
+  twitter: {
+    ...(defaultConfig.twitter || {}),
+    ...(localConfig.twitter || {})
   },
   priApi: {
     ...(defaultConfig.priApi || {}),

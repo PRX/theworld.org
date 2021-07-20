@@ -12,13 +12,13 @@ import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
 import { AppFooter } from '@components/AppFooter';
 import { AppHeader } from '@components/AppHeader';
 import { AppLoadingBar } from '@components/AppLoadingBar';
+import { analytics } from '@config';
 import { AppContext } from '@contexts/AppContext';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   const [enablePlausible, setEnablePlausible] = useState(false);
-  const isProd = process.env.NODE_ENV === 'production';
   const { type, id } = pageProps;
   const contextValue = {
     page: {
@@ -37,8 +37,11 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
 
-    // Determine if Plausible was already initialized.
-    setEnablePlausible(!(window as any)?.plausible && isProd);
+    // Determine if Plausible should be enabled.
+    setEnablePlausible(
+      !(window as any)?.plausible &&
+        (window as any)?.location.hostname === analytics.domain
+    );
   }, []);
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
 
   return (
     <PlausibleProvider
-      domain="theworld.org"
+      domain={analytics.domain}
       selfHosted
       trackOutboundLinks
       enabled={enablePlausible}
