@@ -7,6 +7,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { usePlausible } from 'next-plausible';
+import pad from 'lodash/pad';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -51,6 +53,7 @@ import { EpisodeLede } from './components/EpisodeLede';
 import { EpisodeHeader } from './components/EpisodeHeader';
 
 export const Episode = () => {
+  const plausible = usePlausible();
   const {
     page: {
       resource: { type, id }
@@ -70,6 +73,9 @@ export const Episode = () => {
 
   const {
     metatags,
+    title,
+    season,
+    dateBroadcast,
     body,
     audio,
     embeddedPlayerUrl,
@@ -119,6 +125,33 @@ export const Episode = () => {
         fetchCtaData('tw_cta_regions_content', type, id, context)
       );
     })();
+
+    // Plausible Events.
+    const props = {
+      Title: title,
+      ...(season && {
+        Season: season
+      }),
+      ...(dateBroadcast &&
+        (() => {
+          const dt = new Date(dateBroadcast * 1000);
+          const dtYear = dt.getFullYear();
+          const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
+          const dtDate = pad(`${dt.getDate()}`, 2, '0');
+          return {
+            'Broadcast Year': `${dtYear}`,
+            'Broadcast Month': `${dtYear}-${dtMonth}`,
+            'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+          };
+        })())
+    };
+    plausible('Episode', { props });
+
+    [...hosts, ...producers, ...guests, ...reporters].forEach(({ person }) => {
+      plausible(`Person: ${person.title}`, {
+        props: { 'Page Type': 'Episode' }
+      });
+    });
 
     return () => {
       unsub();
