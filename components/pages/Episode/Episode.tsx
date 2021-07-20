@@ -147,7 +147,12 @@ export const Episode = () => {
     };
     plausible('Episode', { props });
 
-    [...hosts, ...producers, ...guests, ...reporters].forEach(({ person }) => {
+    [
+      ...(hosts || []),
+      ...(producers || []),
+      ...(guests || []),
+      ...(reporters || [])
+    ].forEach(person => {
       plausible(`Person: ${person.title}`, {
         props: { 'Page Type': 'Episode' }
       });
