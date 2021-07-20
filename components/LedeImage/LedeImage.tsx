@@ -14,7 +14,7 @@ export interface ILedeImageProps {
 }
 
 export const LedeImage = ({ data }: ILedeImageProps) => {
-  const { caption, credit, url, metadata } = data;
+  const { alt, caption, credit, url, metadata } = data;
   const { width, height } = metadata || {};
   const classes = ledeImageStyles({});
   const hasCaption = caption && !!caption.length;
@@ -37,6 +37,7 @@ export const LedeImage = ({ data }: ILedeImageProps) => {
         layout="responsive"
         sizes={sizes}
         priority
+        alt={alt}
       />
       {hasFooter && (
         <Typography

@@ -43,6 +43,7 @@ export const LandingPageHeader = ({
               <Image
                 className={cx('image')}
                 src={image.url}
+                alt={image.alt}
                 layout="fill"
                 objectFit="cover"
                 priority
@@ -52,6 +53,7 @@ export const LandingPageHeader = ({
               <Image
                 className={cx('image')}
                 src={image.url}
+                alt={image.alt}
                 layout="responsive"
                 width={image.metadata.width}
                 height={image.metadata.height}
@@ -66,6 +68,7 @@ export const LandingPageHeader = ({
             {logo && (
               <Image
                 src={logo.url}
+                alt={logo.alt}
                 layout="fixed"
                 width={220}
                 height={220}

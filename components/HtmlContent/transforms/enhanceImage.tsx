@@ -38,11 +38,11 @@ export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
     }
 
     return wrapperClass ? (
-      <div className={wrapperClass}>
+      <div className={wrapperClass} key={attribs.src}>
         <Image {...attribs} layout="responsive" sizes={sizes} />
       </div>
     ) : (
-      <Image {...attribs} layout="responsive" sizes={sizes} />
+      <Image {...attribs} layout="responsive" sizes={sizes} key={attribs.src} />
     );
   }
 

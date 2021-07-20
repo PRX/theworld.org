@@ -29,10 +29,9 @@ export interface IImageComponentProps {
 
 export interface IImageStyle {
   src: string;
-  info: {
-    width: number;
-    height?: number;
-  };
+  type?: string;
+  width?: number;
+  height?: number;
 }
 
 /**
@@ -68,7 +67,7 @@ export const findBestStyle = (width: number, styles: IImageStyle[]) =>
   _reduceRight(
     styles,
     (best: IImageStyle, style: IImageStyle) =>
-      style.info.width >= width ? style : best,
+      style.width >= width ? style : best,
     _last(styles)
   );
 
@@ -122,7 +121,7 @@ export const generateResponsiveAttributes = (
   theme: Theme
 ) => {
   const srcSet = imageSrcs
-    .map(({ src, info: { width } }) => `${src} ${width}w`)
+    .map(({ src, width }) => `${src} ${width}w`)
     .toString();
   const sizes = ['xs', 'sm', 'md', 'lg', 'xl']
     .map((breakpoint, index, all) => {
@@ -185,13 +184,11 @@ export const Image = ({
     .map(([key, style]) => {
       return {
         ...style,
-        info: style.info || {
-          width: parseInt(key.replace(/^w/, ''), 10)
-        }
+        width: style.width || parseInt(key.replace(/^w/, ''), 10)
       };
     })
-    .filter(({ info }) => !!info)
-    .sort(({ info: { width: wa } }, { info: { width: wb } }) =>
+    .filter(({ width: w }) => !!w)
+    .sort(({ width: wa }, { width: wb }) =>
       wa < wb ? -1 : 1
     ) as IImageStyle[];
 

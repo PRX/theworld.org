@@ -4,7 +4,6 @@
  */
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -18,6 +17,7 @@ import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { fetchCtaData, fetchHomepageData } from '@store/actions';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
+import { MetaTags } from '@components/MetaTags';
 
 const CtaRegion = dynamic(
   () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
@@ -195,11 +195,34 @@ export const Homepage = () => {
     };
   }, []);
 
+  const title = 'The World from PRX';
+  const description =
+    'The World is a public radio program that crosses borders and time zones to bring home the stories that matter. From PRX.';
+  const url = '/';
+  const image =
+    'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg';
+  const metatags = {
+    title,
+    description,
+    canonical: url,
+    'og:type': 'website',
+    'og:title': title,
+    'og:description': description,
+    'og:url': url,
+    'og:image': image,
+    'og:image:width': '3000',
+    'og:image:height': '3000',
+    'og:local': 'en_US',
+    'twitter:card': 'summary',
+    'twitter:title': title,
+    'twitter:description': description,
+    'twitter:url': url,
+    'twitter:image': image
+  };
+
   return (
     <>
-      <Head>
-        <title>The World</title>
-      </Head>
+      <MetaTags data={metatags} />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );

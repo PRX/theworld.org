@@ -3,11 +3,11 @@
  * Component for Story.
  */
 import React, { useContext, useEffect, useState } from 'react';
-import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { AppContext } from '@contexts/AppContext';
+import { MetaTags } from '@components/MetaTags';
 import { RootState } from '@interfaces/state';
 import { fetchApiCategoryStories } from '@lib/fetch';
 import {
@@ -30,7 +30,7 @@ export const Story = () => {
     updateForce(store.getState());
   });
   let data = getDataByResource(state, type, id);
-  const { title, displayTemplate } = data;
+  const { metatags, displayTemplate } = data;
   const LayoutComponent =
     layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
 
@@ -104,10 +104,7 @@ export const Story = () => {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        {/* TODO: WIRE UP ANALYTICS */}
-      </Head>
+      <MetaTags data={metatags} />
       <LayoutComponent data={data} />
     </>
   );

@@ -25,6 +25,7 @@ export const fetchCategory = async (
       )
     ],
     fields: [
+      'metatags',
       'title',
       'teaser',
       'bannerImage',

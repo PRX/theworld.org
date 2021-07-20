@@ -4,7 +4,6 @@
  */
 
 import React, { useContext, useEffect } from 'react';
-import Head from 'next/head';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -14,6 +13,7 @@ import { AudioPlayer } from '@components/AudioPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
+import { MetaTags } from '@components/MetaTags';
 import { RootState } from '@interfaces/state';
 import { fetchCtaData, fetchAudioData } from '@store/actions';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
@@ -35,7 +35,7 @@ export const Audio = () => {
     return null;
   }
 
-  const { audioTitle, description } = data;
+  const { metatags, description } = data;
 
   const ctaInlineEnd = getCtaRegionData(
     state,
@@ -64,10 +64,9 @@ export const Audio = () => {
 
   return (
     <ThemeProvider theme={audioTheme}>
-      <Head>
-        <title>{audioTitle}</title>
-        {/* TODO: WIRE UP ANALYTICS */}
-      </Head>
+      <MetaTags
+        data={{ ...metatags, description: metatags.description || description }}
+      />
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>

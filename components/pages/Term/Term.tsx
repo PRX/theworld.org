@@ -3,7 +3,6 @@
  * Component for Term.
  */
 import React, { useContext, useEffect, useState } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -24,7 +23,9 @@ import { SidebarCta, SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { fetchApiTermEpisodes, fetchApiTermStories } from '@lib/fetch';
+import { EpisodeCard } from '@components/EpisodeCard';
 import { LandingPageHeader } from '@components/LandingPageHeader';
+import { MetaTags } from '@components/MetaTags';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
@@ -39,7 +40,6 @@ import {
   getDataByResource
 } from '@store/reducers';
 import { generateLinkPropsForContent } from '@lib/routing';
-import { EpisodeCard } from '@components/EpisodeCard';
 
 export const Term = () => {
   const {
@@ -106,7 +106,7 @@ export const Term = () => {
   const isEpisodesView =
     (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
   const latestEpisode = episodes && episodes[1].shift();
-  const { title, description } = data;
+  const { metatags, title, description } = data;
   const [loadingStories, setLoadingStories] = useState(false);
   const [loadingEpisodes, setLoadingEpisodes] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
@@ -330,9 +330,7 @@ export const Term = () => {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-      </Head>
+      <MetaTags data={metatags} />
       <LandingPageHeader title={title} subhead={description} />
       {hasStories && hasEpisodes && (
         <AppBar position="static" color="transparent">

@@ -4,7 +4,6 @@
  */
 
 import React, { useContext, useEffect, useState } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -24,6 +23,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { LandingPage } from '@components/LandingPage';
+import { MetaTags } from '@components/MetaTags';
 import {
   Sidebar,
   SidebarContent,
@@ -120,6 +120,7 @@ export const Program = () => {
   const latestEpisode = episodes && episodes[1].shift();
   const hasContentLinks = hasStories || hasEpisodes;
   const {
+    metatags,
     title,
     teaser,
     bannerImage,
@@ -374,11 +375,14 @@ export const Program = () => {
 
   return (
     <ThemeProvider theme={programTheme}>
-      <Head>
-        <title>
-          {title} | {!isEpisodesView ? 'Stories' : 'Episodes'}
-        </title>
-      </Head>
+      <MetaTags
+        data={{
+          ...metatags,
+          title: `${metatags.title} | ${
+            !isEpisodesView ? 'Stories' : 'Episodes'
+          }`
+        }}
+      />
       <LandingPageHeader
         title={title}
         subhead={teaser}

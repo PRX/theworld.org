@@ -11,6 +11,7 @@ export const basicAudioParams = {
 export const fullAudioParams = {
   include: ['audioAuthor', 'program'],
   fields: [
+    'metatags',
     'audioAuthor.title',
     'audioAuthor.metatags',
     'audioTitle',
