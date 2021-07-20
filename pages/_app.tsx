@@ -18,6 +18,7 @@ import { wrapper } from '@store';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   const [enablePlausible, setEnablePlausible] = useState(false);
+  const isProd = process.env.NODE_ENV === 'production';
   const { type, id } = pageProps;
   const contextValue = {
     page: {
@@ -37,7 +38,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     }
 
     // Determine if Plausible was already initialized.
-    setEnablePlausible(!(window as any)?.plausible);
+    setEnablePlausible(!(window as any)?.plausible && isProd);
   }, []);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
 
   return (
     <PlausibleProvider
-      domain="preview.theworld.org"
+      domain="theworld.org"
       selfHosted
       trackOutboundLinks
       enabled={enablePlausible}
