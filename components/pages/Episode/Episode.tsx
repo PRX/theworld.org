@@ -76,6 +76,7 @@ export const Episode = () => {
     title,
     season,
     dateBroadcast,
+    datePublished,
     body,
     audio,
     embeddedPlayerUrl,
@@ -142,6 +143,18 @@ export const Episode = () => {
             'Broadcast Year': `${dtYear}`,
             'Broadcast Month': `${dtYear}-${dtMonth}`,
             'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+          };
+        })()),
+      ...(datePublished &&
+        (() => {
+          const dt = new Date(datePublished * 1000);
+          const dtYear = dt.getFullYear();
+          const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
+          const dtDate = pad(`${dt.getDate()}`, 2, '0');
+          return {
+            'Published Year': `${dtYear}`,
+            'Published Month': `${dtYear}-${dtMonth}`,
+            'Published Date': `${dtYear}-${dtMonth}-${dtDate}`
           };
         })())
     };
