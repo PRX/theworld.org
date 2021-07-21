@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { usePlausible } from 'next-plausible';
 import pad from 'lodash/pad';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -16,6 +15,7 @@ import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
+import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
 import { fetchCtaData, fetchAudioData } from '@store/actions';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
@@ -23,7 +23,6 @@ import { audioStyles, audioTheme } from './Audio.styles';
 import { AudioHeader } from './components/AudioHeader';
 
 export const Audio = () => {
-  const plausible = usePlausible();
   const {
     page: {
       resource: { type, id }
@@ -59,6 +58,38 @@ export const Audio = () => {
     'tw_cta_region_content_inline_end'
   );
 
+  // Plausible Events.
+  const props = {
+    Title: audioTitle,
+    'Audio Type': audioType,
+    'File Name': title,
+    ...(season && {
+      Season: season
+    }),
+    ...(dateBroadcast &&
+      (() => {
+        const dt = new Date(dateBroadcast * 1000);
+        const dtYear = dt.getFullYear();
+        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
+        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        return {
+          'Broadcast Year': `${dtYear}`,
+          'Broadcast Month': `${dtYear}-${dtMonth}`,
+          'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+        };
+      })())
+  };
+  const plausibleEvents: PlausibleEventArgs[] = [['Audio', { props }]];
+
+  [...(audioAuthor || [])].forEach(person => {
+    plausibleEvents.push([
+      `Person: ${person.title}`,
+      {
+        props: { 'Page Type': 'Audio' }
+      }
+    ]);
+  });
+
   useEffect(() => {
     if (!data.complete) {
       (async () => {
@@ -76,35 +107,6 @@ export const Audio = () => {
       );
     })();
 
-    // Plausible Events.
-    const props = {
-      Title: audioTitle,
-      'Audio Type': audioType,
-      'File Name': title,
-      ...(season && {
-        Season: season
-      }),
-      ...(dateBroadcast &&
-        (() => {
-          const dt = new Date(dateBroadcast * 1000);
-          const dtYear = dt.getFullYear();
-          const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-          const dtDate = pad(`${dt.getDate()}`, 2, '0');
-          return {
-            'Broadcast Year': `${dtYear}`,
-            'Broadcast Month': `${dtYear}-${dtMonth}`,
-            'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
-          };
-        })())
-    };
-    plausible('Audio', { props });
-
-    [...(audioAuthor || [])].forEach(person => {
-      plausible(`Person: ${person.title}`, {
-        props: { 'Page Type': 'Audio' }
-      });
-    });
-
     return () => {
       unsub();
     };
@@ -113,8 +115,12 @@ export const Audio = () => {
   return (
     <ThemeProvider theme={audioTheme}>
       <MetaTags
-        data={{ ...metatags, description: metatags.description || description }}
+        data={{
+          ...metatags,
+          description: metatags.description || description
+        }}
       />
+      <Plausible events={plausibleEvents} />
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>

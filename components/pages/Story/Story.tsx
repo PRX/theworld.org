@@ -6,10 +6,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { usePlausible } from 'next-plausible';
 import pad from 'lodash/pad';
 import { AppContext } from '@contexts/AppContext';
 import { MetaTags } from '@components/MetaTags';
+import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
 import { fetchApiCategoryStories } from '@lib/fetch';
 import {
@@ -21,7 +21,6 @@ import { getDataByResource, getCollectionData } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
 
 export const Story = () => {
-  const plausible = usePlausible();
   const {
     page: {
       resource: { type, id }
@@ -44,6 +43,49 @@ export const Story = () => {
   } = data;
   const LayoutComponent =
     layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
+  const props = {
+    Title: title,
+    ...(displayTemplate && { 'Story Format': displayTemplate }),
+    ...(resourceDevelopment && {
+      'Resource Development': resourceDevelopment
+    }),
+    ...(dateBroadcast &&
+      (() => {
+        const dt = new Date(dateBroadcast * 1000);
+        const dtYear = dt.getFullYear();
+        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
+        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        return {
+          'Broadcast Year': `${dtYear}`,
+          'Broadcast Month': `${dtYear}-${dtMonth}`,
+          'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+        };
+      })()),
+    ...(datePublished &&
+      (() => {
+        const dt = new Date(datePublished * 1000);
+        const dtYear = dt.getFullYear();
+        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
+        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        return {
+          'Published Year': `${dtYear}`,
+          'Published Month': `${dtYear}-${dtMonth}`,
+          'Published Date': `${dtYear}-${dtMonth}-${dtDate}`
+        };
+      })())
+  };
+  const plausibleEvents: PlausibleEventArgs[] = [['Story', { props }]];
+
+  if (byline) {
+    byline.forEach(({ person }) => {
+      plausibleEvents.push([
+        `Person: ${person.title}`,
+        {
+          props: { 'Page Type': 'Story' }
+        }
+      ]);
+    });
+  }
 
   useEffect(() => {
     if (!data.complete) {
@@ -108,48 +150,6 @@ export const Story = () => {
       );
     })();
 
-    // Plausible Events.
-    const props = {
-      Title: title,
-      ...(displayTemplate && { 'Story Format': displayTemplate }),
-      ...(resourceDevelopment && {
-        'Resource Development': resourceDevelopment
-      }),
-      ...(dateBroadcast &&
-        (() => {
-          const dt = new Date(dateBroadcast * 1000);
-          const dtYear = dt.getFullYear();
-          const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-          const dtDate = pad(`${dt.getDate()}`, 2, '0');
-          return {
-            'Broadcast Year': `${dtYear}`,
-            'Broadcast Month': `${dtYear}-${dtMonth}`,
-            'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
-          };
-        })()),
-      ...(datePublished &&
-        (() => {
-          const dt = new Date(datePublished * 1000);
-          const dtYear = dt.getFullYear();
-          const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-          const dtDate = pad(`${dt.getDate()}`, 2, '0');
-          return {
-            'Published Year': `${dtYear}`,
-            'Published Month': `${dtYear}-${dtMonth}`,
-            'Published Date': `${dtYear}-${dtMonth}-${dtDate}`
-          };
-        })())
-    };
-    plausible('Story', { props });
-
-    if (byline) {
-      byline.forEach(({ person }) => {
-        plausible(`Person: ${person.title}`, {
-          props: { 'Page Type': 'Story' }
-        });
-      });
-    }
-
     return () => {
       unsub();
     };
@@ -158,6 +158,7 @@ export const Story = () => {
   return (
     <>
       <MetaTags data={metatags} />
+      <Plausible events={plausibleEvents} />
       <LayoutComponent data={data} />
     </>
   );

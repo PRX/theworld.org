@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { usePlausible } from 'next-plausible';
 import pad from 'lodash/pad';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -24,6 +23,7 @@ import { EqualizerRounded } from '@material-ui/icons';
 import { AudioPlayer } from '@components/AudioPlayer';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
+import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import {
   Sidebar,
   SidebarAudioList,
@@ -53,7 +53,6 @@ import { EpisodeLede } from './components/EpisodeLede';
 import { EpisodeHeader } from './components/EpisodeHeader';
 
 export const Episode = () => {
-  const plausible = usePlausible();
   const {
     page: {
       resource: { type, id }
@@ -110,6 +109,53 @@ export const Episode = () => {
     'tw_cta_region_content_sidebar_02'
   );
 
+  // Plausible Events.
+  const props = {
+    Title: title,
+    ...(season && {
+      Season: season
+    }),
+    ...(dateBroadcast &&
+      (() => {
+        const dt = new Date(dateBroadcast * 1000);
+        const dtYear = dt.getFullYear();
+        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
+        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        return {
+          'Broadcast Year': `${dtYear}`,
+          'Broadcast Month': `${dtYear}-${dtMonth}`,
+          'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+        };
+      })()),
+    ...(datePublished &&
+      (() => {
+        const dt = new Date(datePublished * 1000);
+        const dtYear = dt.getFullYear();
+        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
+        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        return {
+          'Published Year': `${dtYear}`,
+          'Published Month': `${dtYear}-${dtMonth}`,
+          'Published Date': `${dtYear}-${dtMonth}-${dtDate}`
+        };
+      })())
+  };
+  const plausibleEvents: PlausibleEventArgs[] = [['Episode', { props }]];
+
+  [
+    ...(hosts || []),
+    ...(producers || []),
+    ...(guests || []),
+    ...(reporters || [])
+  ].forEach(person => {
+    plausibleEvents.push([
+      `Person: ${person.title}`,
+      {
+        props: { 'Page Type': 'Episode' }
+      }
+    ]);
+  });
+
   useEffect(() => {
     if (!data.complete) {
       (async () => {
@@ -127,50 +173,6 @@ export const Episode = () => {
       );
     })();
 
-    // Plausible Events.
-    const props = {
-      Title: title,
-      ...(season && {
-        Season: season
-      }),
-      ...(dateBroadcast &&
-        (() => {
-          const dt = new Date(dateBroadcast * 1000);
-          const dtYear = dt.getFullYear();
-          const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-          const dtDate = pad(`${dt.getDate()}`, 2, '0');
-          return {
-            'Broadcast Year': `${dtYear}`,
-            'Broadcast Month': `${dtYear}-${dtMonth}`,
-            'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
-          };
-        })()),
-      ...(datePublished &&
-        (() => {
-          const dt = new Date(datePublished * 1000);
-          const dtYear = dt.getFullYear();
-          const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-          const dtDate = pad(`${dt.getDate()}`, 2, '0');
-          return {
-            'Published Year': `${dtYear}`,
-            'Published Month': `${dtYear}-${dtMonth}`,
-            'Published Date': `${dtYear}-${dtMonth}-${dtDate}`
-          };
-        })())
-    };
-    plausible('Episode', { props });
-
-    [
-      ...(hosts || []),
-      ...(producers || []),
-      ...(guests || []),
-      ...(reporters || [])
-    ].forEach(person => {
-      plausible(`Person: ${person.title}`, {
-        props: { 'Page Type': 'Episode' }
-      });
-    });
-
     return () => {
       unsub();
     };
@@ -179,6 +181,7 @@ export const Episode = () => {
   return (
     <ThemeProvider theme={episodeTheme}>
       <MetaTags data={metatags} />
+      <Plausible events={plausibleEvents} />
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
