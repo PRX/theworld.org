@@ -18,7 +18,7 @@ import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
-  const [enablePlausible, setEnablePlausible] = useState(false);
+  // const [enablePlausible, setEnablePlausible] = useState(false);
   const [plausibleDomain, setPlausibleDomain] = useState(analytics.domain);
   const { type, id } = pageProps;
   const contextValue = {
@@ -39,7 +39,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     }
 
     // Determine if Plausible should be enabled.
-    setEnablePlausible(!(window as any)?.plausible);
+    // setEnablePlausible(!(window as any)?.plausible);
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
   }, []);
 
@@ -52,7 +52,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       domain={plausibleDomain}
       selfHosted
       trackOutboundLinks
-      enabled={enablePlausible}
+      // enabled={enablePlausible}
     >
       <ThemeProvider theme={baseMuiTheme}>
         <ThemeProvider theme={appTheme}>
