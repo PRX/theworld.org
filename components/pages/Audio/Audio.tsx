@@ -7,6 +7,8 @@ import React, { useContext, useEffect } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { usePlausible } from 'next-plausible';
+import pad from 'lodash/pad';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { AudioPlayer } from '@components/AudioPlayer';
@@ -21,6 +23,7 @@ import { audioStyles, audioTheme } from './Audio.styles';
 import { AudioHeader } from './components/AudioHeader';
 
 export const Audio = () => {
+  const plausible = usePlausible();
   const {
     page: {
       resource: { type, id }
@@ -35,7 +38,16 @@ export const Audio = () => {
     return null;
   }
 
-  const { metatags, description } = data;
+  const {
+    metatags,
+    title,
+    audioAuthor,
+    audioTitle,
+    audioType,
+    season,
+    dateBroadcast,
+    description
+  } = data;
 
   const ctaInlineEnd = getCtaRegionData(
     state,
@@ -60,6 +72,35 @@ export const Audio = () => {
         fetchCtaData('tw_cta_regions_content', type, id, context)
       );
     })();
+
+    // Plausible Events.
+    const props = {
+      Title: audioTitle,
+      'Audio Type': audioType,
+      'File Name': title,
+      ...(season && {
+        Season: season
+      }),
+      ...(dateBroadcast &&
+        (() => {
+          const dt = new Date(dateBroadcast * 1000);
+          const dtYear = dt.getFullYear();
+          const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
+          const dtDate = pad(`${dt.getDate()}`, 2, '0');
+          return {
+            'Broadcast Year': `${dtYear}`,
+            'Broadcast Month': `${dtYear}-${dtMonth}`,
+            'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+          };
+        })())
+    };
+    plausible('Audio', { props });
+
+    [...(audioAuthor || [])].forEach(person => {
+      plausible(`Person: ${person.title}`, {
+        props: { 'Page Type': 'Audio' }
+      });
+    });
   }, [id]);
 
   return (
