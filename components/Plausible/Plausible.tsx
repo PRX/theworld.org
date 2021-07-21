@@ -20,7 +20,7 @@ export const Plausible = ({ events }: IPlausibleProps) => {
   const plausible = usePlausible();
 
   useEffect(() => {
-    (events || []).forEach(args => plausible.call(this, args));
+    (events || []).forEach(args => plausible.apply(this, args));
   }, [events]);
 
   return null;
