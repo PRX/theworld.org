@@ -21,8 +21,9 @@ export const Plausible = ({ events, keys }: IPlausibleProps) => {
   const plausible = usePlausible();
 
   useEffect(() => {
+    console.log('Sending events', events);
     (events || []).forEach(args => plausible.apply(this, args));
   }, keys);
 
-  return null;
+  return <></>;
 };
