@@ -20,8 +20,13 @@ export const Plausible = ({ events }: IPlausibleProps) => {
   const plausible = usePlausible();
 
   useEffect(() => {
+    console.log('did update', !!(window as any).plausible);
+  });
+
+  useEffect(() => {
+    console.log('did mount', !!(window as any).plausible);
     (events || []).forEach(args => plausible.apply(this, args));
-  }, [events]);
+  }, []);
 
   return null;
 };
