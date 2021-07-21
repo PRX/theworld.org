@@ -14,19 +14,15 @@ declare type EventOptions<P extends Props> = {
 export type PlausibleEventArgs = [string, EventOptions<any>];
 export interface IPlausibleProps {
   events: PlausibleEventArgs[];
+  keys: string[];
 }
 
-export const Plausible = ({ events }: IPlausibleProps) => {
+export const Plausible = ({ events, keys }: IPlausibleProps) => {
   const plausible = usePlausible();
 
   useEffect(() => {
-    console.log('did update', !!(window as any).plausible);
-  });
-
-  useEffect(() => {
-    console.log('did mount', !!(window as any).plausible);
     (events || []).forEach(args => plausible.apply(this, args));
-  }, []);
+  }, keys);
 
   return null;
 };
