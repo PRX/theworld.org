@@ -11,10 +11,7 @@ declare type EventOptions<P extends Props> = {
   props: P;
   callback?: VoidFunction;
 };
-declare type EventOptionsTuple<P extends Props> = P extends never
-  ? [Omit<EventOptions<P>, 'props'>?]
-  : [EventOptions<P>];
-export type PlausibleEventArgs = [string, ...EventOptionsTuple<any>];
+export type PlausibleEventArgs = [string, EventOptions<any>];
 export interface IPlausibleProps {
   events: PlausibleEventArgs[];
 }
