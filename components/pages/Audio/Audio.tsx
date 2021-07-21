@@ -3,7 +3,7 @@
  * Component for Episode.
  */
 
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -30,7 +30,10 @@ export const Audio = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const classes = audioStyles({});
   let data = getDataByResource(state, type, id);
 
@@ -101,6 +104,10 @@ export const Audio = () => {
         props: { 'Page Type': 'Audio' }
       });
     });
+
+    return () => {
+      unsub();
+    };
   }, [id]);
 
   return (
