@@ -21,10 +21,18 @@ export const Plausible = ({ events, keys }: IPlausibleProps) => {
   const plausible = usePlausible();
 
   useEffect(() => {
-    setTimeout(() => {
-      console.log('Sending events', events);
-      (events || []).forEach(args => plausible.apply(this, args));
-    }, 0);
+    (window as any).plausible =
+      (window as any).plausible ||
+      function p(...rest: PlausibleEventArgs) {
+        ((window as any).plausible.q = (window as any).plausible.q || []).push(
+          rest
+        );
+      };
+  }, []);
+
+  useEffect(() => {
+    console.log('Sending events', events);
+    (events || []).forEach(args => plausible.apply(this, args));
   }, keys);
 
   return <></>;
