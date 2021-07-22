@@ -27,9 +27,7 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
 
     // Determine if Plausible should be enabled.
-    setEnablePlausible(
-      !(window as any)?.plausible || (window as any)?.plausible
-    );
+    setEnablePlausible(!(window as any)?.plausible);
     // IMPORTANT: Initialize proxy after enabled flag check.
     (window as any).plausible =
       (window as any).plausible ||
