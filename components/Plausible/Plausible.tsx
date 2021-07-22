@@ -26,10 +26,6 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
 
   useEffect(() => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
-    // Determine if Plausible should be enabled.
-    setEnablePlausible(
-      !(window as any)?.plausible || (window as any).plausible.isProxy
-    );
 
     (window as any).plausible =
       (window as any).plausible ||
@@ -38,6 +34,7 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
           rest
         );
       };
+    (window as any).plausible.isProxy = true;
 
     return () => {
       delete (window as any).plausible;
@@ -45,6 +42,10 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
   }, []);
 
   useEffect(() => {
+    // Determine if Plausible should be enabled.
+    setEnablePlausible(
+      !(window as any)?.plausible || (window as any).plausible.isProxy
+    );
     console.log('Enable Plausible', enablePlausible);
     console.log('Sending events', events);
 
@@ -55,7 +56,7 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
     <NoSsr>
       <PlausibleProvider
         domain={plausibleDomain}
-        // enabled={enablePlausible}
+        enabled={enablePlausible}
         selfHosted
         trackOutboundLinks
       >
