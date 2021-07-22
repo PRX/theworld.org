@@ -10,6 +10,8 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Hidden } from '@material-ui/core';
 import { LandingPage } from '@components/LandingPage';
+import { MetaTags } from '@components/MetaTags';
+import { Plausible } from '@components/Plausible';
 import { SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
@@ -17,7 +19,6 @@ import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { fetchCtaData, fetchHomepageData } from '@store/actions';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
-import { MetaTags } from '@components/MetaTags';
 
 const CtaRegion = dynamic(
   () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
@@ -223,6 +224,7 @@ export const Homepage = () => {
   return (
     <>
       <MetaTags data={metatags} />
+      <Plausible />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );

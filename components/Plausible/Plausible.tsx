@@ -3,8 +3,9 @@
  * Component for triggering Plausible events.
  */
 
-import React, { useEffect } from 'react';
-import { usePlausible } from 'next-plausible';
+import React, { useEffect, useState } from 'react';
+import PlausibleProvider, { usePlausible } from 'next-plausible';
+import { analytics } from '@config';
 
 declare type Props = Record<string, unknown> | never;
 declare type EventOptions<P extends Props> = {
@@ -13,14 +14,23 @@ declare type EventOptions<P extends Props> = {
 };
 export type PlausibleEventArgs = [string, EventOptions<any>];
 export interface IPlausibleProps {
-  events: PlausibleEventArgs[];
-  keys: string[];
+  events?: PlausibleEventArgs[];
+  keys?: string[];
 }
 
-export const Plausible = ({ events, keys }: IPlausibleProps) => {
+export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
   const plausible = usePlausible();
+  const [enablePlausible, setEnablePlausible] = useState(false);
+  const [plausibleDomain, setPlausibleDomain] = useState(analytics.domain);
 
   useEffect(() => {
+    setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
+
+    // Determine if Plausible should be enabled.
+    setEnablePlausible(
+      !(window as any)?.plausible || (window as any)?.plausible
+    );
+    // IMPORTANT: Initialize proxy after enabled flag check.
     (window as any).plausible =
       (window as any).plausible ||
       function p(...rest: PlausibleEventArgs) {
@@ -28,6 +38,10 @@ export const Plausible = ({ events, keys }: IPlausibleProps) => {
           rest
         );
       };
+
+    return () => {
+      delete (window as any).plausible;
+    };
   }, []);
 
   useEffect(() => {
@@ -35,5 +49,14 @@ export const Plausible = ({ events, keys }: IPlausibleProps) => {
     (events || []).forEach(args => plausible.apply(this, args));
   }, keys);
 
-  return <></>;
+  return (
+    <PlausibleProvider
+      domain={plausibleDomain}
+      enabled={enablePlausible}
+      selfHosted
+      trackOutboundLinks
+    >
+      <></>
+    </PlausibleProvider>
+  );
 };

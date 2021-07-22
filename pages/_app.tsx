@@ -3,23 +3,19 @@
  * Override the main app component.
  */
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { AppProps } from 'next/app';
-import PlausibleProvider from 'next-plausible';
 import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
 // import { AppCtaBanner } from '@components/AppCtaBanner';
 // import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppFooter } from '@components/AppFooter';
 import { AppHeader } from '@components/AppHeader';
 import { AppLoadingBar } from '@components/AppLoadingBar';
-import { analytics } from '@config';
 import { AppContext } from '@contexts/AppContext';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
-  // const [enablePlausible, setEnablePlausible] = useState(false);
-  const [plausibleDomain, setPlausibleDomain] = useState(analytics.domain);
   const { type, id } = pageProps;
   const contextValue = {
     page: {
@@ -37,10 +33,6 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
-
-    // Determine if Plausible should be enabled.
-    // setEnablePlausible(!(window as any)?.plausible);
-    setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
   }, []);
 
   useEffect(() => {
@@ -48,30 +40,23 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   }, [type, id]);
 
   return (
-    <PlausibleProvider
-      domain={plausibleDomain}
-      selfHosted
-      trackOutboundLinks
-      // enabled={enablePlausible}
-    >
-      <ThemeProvider theme={baseMuiTheme}>
-        <ThemeProvider theme={appTheme}>
-          <AppContext.Provider value={contextValue}>
-            <Box minHeight="100vh" display="flex" flexDirection="column">
-              <AppLoadingBar />
-              {/* <AppCtaBanner /> */}
-              <AppHeader />
-              <Box flexGrow={1}>
-                <Component {...pageProps} />
-              </Box>
-              <AppFooter />
-              {/* <AppCtaLoadUnder /> */}
+    <ThemeProvider theme={baseMuiTheme}>
+      <ThemeProvider theme={appTheme}>
+        <AppContext.Provider value={contextValue}>
+          <Box minHeight="100vh" display="flex" flexDirection="column">
+            <AppLoadingBar />
+            {/* <AppCtaBanner /> */}
+            <AppHeader />
+            <Box flexGrow={1}>
+              <Component {...pageProps} />
             </Box>
-          </AppContext.Provider>
-          <CssBaseline />
-        </ThemeProvider>
+            <AppFooter />
+            {/* <AppCtaLoadUnder /> */}
+          </Box>
+        </AppContext.Provider>
+        <CssBaseline />
       </ThemeProvider>
-    </PlausibleProvider>
+    </ThemeProvider>
   );
 };
 
