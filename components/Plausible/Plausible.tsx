@@ -6,6 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import PlausibleProvider, { usePlausible } from 'next-plausible';
 import { analytics } from '@config';
+import { NoSsr } from '@material-ui/core';
 
 declare type Props = Record<string, unknown> | never;
 declare type EventOptions<P extends Props> = {
@@ -24,13 +25,11 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
   const [plausibleDomain, setPlausibleDomain] = useState(analytics.domain);
 
   useEffect(() => {
-    return () => {
-      delete (window as any).plausible;
-    };
-  });
-
-  useEffect(() => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
+    // Determine if Plausible should be enabled.
+    setEnablePlausible(
+      !(window as any)?.plausible || (window as any).plausible.isProxy
+    );
 
     (window as any).plausible =
       (window as any).plausible ||
@@ -39,24 +38,13 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
           rest
         );
       };
-    (window as any).plausible.isProxy = true;
-
-    const handlePopstate = () => {
-      console.log('popstate >> pathname', (window as any).location.pathname);
-    };
-    (window as any).addEventListener('popstate', handlePopstate);
 
     return () => {
-      (window as any).removeEventListener('popstate', handlePopstate);
+      delete (window as any).plausible;
     };
   }, []);
 
   useEffect(() => {
-    // Determine if Plausible should be enabled.
-    setEnablePlausible(
-      !(window as any)?.plausible || (window as any).plausible.isProxy
-    );
-
     console.log('Enable Plausible', enablePlausible);
     console.log('Sending events', events);
 
@@ -64,13 +52,15 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
   }, keys);
 
   return (
-    <PlausibleProvider
-      domain={plausibleDomain}
-      enabled={enablePlausible}
-      selfHosted
-      trackOutboundLinks
-    >
-      <></>
-    </PlausibleProvider>
+    <NoSsr>
+      <PlausibleProvider
+        domain={plausibleDomain}
+        // enabled={enablePlausible}
+        selfHosted
+        trackOutboundLinks
+      >
+        <></>
+      </PlausibleProvider>
+    </NoSsr>
   );
 };
