@@ -26,9 +26,6 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
   useEffect(() => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
 
-    // Determine if Plausible should be enabled.
-    setEnablePlausible(!(window as any)?.plausible);
-    // IMPORTANT: Initialize proxy after enabled flag check.
     (window as any).plausible =
       (window as any).plausible ||
       function p(...rest: PlausibleEventArgs) {
@@ -36,6 +33,7 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
           rest
         );
       };
+    (window as any).plausible.proxy = true;
 
     return () => {
       delete (window as any).plausible;
@@ -43,7 +41,14 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
   }, []);
 
   useEffect(() => {
+    // Determine if Plausible should be enabled.
+    setEnablePlausible(
+      !(window as any)?.plausible || (window as any).plausible.proxy
+    );
+
+    console.log('Enable Plausible', enablePlausible);
     console.log('Sending events', events);
+
     (events || []).forEach(args => plausible.apply(this, args));
   }, keys);
 
