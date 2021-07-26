@@ -24,6 +24,7 @@ import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { LandingPage } from '@components/LandingPage';
 import { MetaTags } from '@components/MetaTags';
+import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import {
   Sidebar,
   SidebarContent,
@@ -133,6 +134,12 @@ export const Program = () => {
   const [loadingEpisodes, setLoadingEpisodes] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
 
+  // Plausible Events.
+  const props = {
+    Title: title
+  };
+  const plausibleEvents: PlausibleEventArgs[] = [['Page', { props }]];
+
   useEffect(() => {
     return () => {
       unsub();
@@ -142,7 +149,9 @@ export const Program = () => {
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
     // When we have loaded a new page, we want to counter this scoll change.
-    window.scrollBy({ top: oldscrollY - window.scrollY });
+    window.scrollBy({
+      top: oldscrollY - window.scrollY
+    });
     setOldScrollY(window.scrollY);
   }, [page, episodesPage]);
 
@@ -383,6 +392,7 @@ export const Program = () => {
           }`
         }}
       />
+      <Plausible events={plausibleEvents} subject={{ type, id }} />
       <LandingPageHeader
         title={title}
         subhead={teaser}
