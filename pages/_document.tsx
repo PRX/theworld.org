@@ -3,42 +3,54 @@
  * Exports the main document.
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import PlausibleProvider from 'next-plausible';
+import { analytics } from '@config';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 
-class TwDocument extends Document {
-  render() {
-    return (
-      <Html lang="en">
-        <Head>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin=""
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital@0;1&amp;family=Montserrat:wght@400;700&amp;family=Open+Sans:wght@400;700&amp;family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400&amp;display=swap"
-            rel="stylesheet"
-          />
-          <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
-          <link
-            rel="search"
-            title="priorg"
-            type="application/opensearchdescription+xml"
-            href="/opensearch.xml"
-          />
-          <link rel="icon" href="/images/favicon.png" />
-        </Head>
-        <body>
+const TwDocument = () => {
+  const [plausibleDomain, setPlausibleDomain] = useState(analytics.domain);
+
+  useEffect(() => {
+    setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
+  });
+
+  return (
+    <Html lang="en">
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital@0;1&amp;family=Montserrat:wght@400;700&amp;family=Open+Sans:wght@400;700&amp;family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400&amp;display=swap"
+          rel="stylesheet"
+        />
+        <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+        <link
+          rel="search"
+          title="priorg"
+          type="application/opensearchdescription+xml"
+          href="/opensearch.xml"
+        />
+        <link rel="icon" href="/images/favicon.png" />
+      </Head>
+      <body>
+        <PlausibleProvider
+          domain={plausibleDomain}
+          selfHosted
+          trackOutboundLinks
+        >
           <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
-}
+        </PlausibleProvider>
+        <NextScript />
+      </body>
+    </Html>
+  );
+};
 
 TwDocument.getInitialProps = async ctx => {
   // Resolution order

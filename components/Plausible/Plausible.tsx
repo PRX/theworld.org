@@ -3,10 +3,8 @@
  * Component for triggering Plausible events.
  */
 
-import React, { useEffect, useState } from 'react';
-import PlausibleProvider, { usePlausible } from 'next-plausible';
-import { analytics } from '@config';
-import { NoSsr } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { usePlausible } from 'next-plausible';
 
 declare type Props = Record<string, unknown> | never;
 declare type EventOptions<P extends Props> = {
@@ -21,12 +19,8 @@ export interface IPlausibleProps {
 
 export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
   const plausible = usePlausible();
-  const [enablePlausible, setEnablePlausible] = useState(false);
-  const [plausibleDomain, setPlausibleDomain] = useState(analytics.domain);
 
   useEffect(() => {
-    setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
-
     (window as any).plausible =
       (window as any).plausible ||
       function p(...rest: PlausibleEventArgs) {
@@ -42,26 +36,10 @@ export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
   }, []);
 
   useEffect(() => {
-    // Determine if Plausible should be enabled.
-    setEnablePlausible(
-      !(window as any)?.plausible || (window as any).plausible.isProxy
-    );
-    console.log('Enable Plausible', enablePlausible);
     console.log('Sending events', events);
 
     (events || []).forEach(args => plausible.apply(this, args));
   }, keys);
 
-  return (
-    <NoSsr>
-      <PlausibleProvider
-        domain={plausibleDomain}
-        enabled={enablePlausible}
-        selfHosted
-        trackOutboundLinks
-      >
-        <></>
-      </PlausibleProvider>
-    </NoSsr>
-  );
+  return <></>;
 };
