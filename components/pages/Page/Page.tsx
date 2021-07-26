@@ -12,6 +12,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
+import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
 import { fetchPageData } from '@store/actions';
 import { getDataByResource } from '@store/reducers';
@@ -33,7 +34,13 @@ export const Page = () => {
     return null;
   }
 
-  const { metatags, body } = data;
+  const { metatags, title, body } = data;
+
+  // Plausible Events.
+  const props = {
+    Title: title
+  };
+  const plausibleEvents: PlausibleEventArgs[] = [['Page', { props }]];
 
   useEffect(() => {
     if (!data.complete) {
@@ -48,6 +55,7 @@ export const Page = () => {
   return (
     <ThemeProvider theme={pageTheme}>
       <MetaTags data={metatags} />
+      <Plausible events={plausibleEvents} subject={{ type, id }} />
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
