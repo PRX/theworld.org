@@ -24,6 +24,7 @@ import {
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
 import { MetaTags } from '@components/MetaTags';
+import { Plausible } from '@components/Plausible';
 import { AppContext } from '@contexts/AppContext';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { fetchTeamData } from '@store/actions';
@@ -96,6 +97,7 @@ export const Team = () => {
   return (
     <ThemeProvider theme={teamTheme}>
       <MetaTags data={metatags} />
+      <Plausible subject={{ type: 'team', id: 'the_world' }} />
       <Container fixed>
         <TeamHeader title={title} />
         <Grid container spacing={3}>
