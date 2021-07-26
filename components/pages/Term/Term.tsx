@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
+import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { SidebarCta, SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
@@ -111,6 +112,12 @@ export const Term = () => {
   const [loadingEpisodes, setLoadingEpisodes] = useState(false);
   const [oldscrollY, setOldScrollY] = useState(0);
 
+  // Plausible Events.
+  const props = {
+    Title: title
+  };
+  const plausibleEvents: PlausibleEventArgs[] = [['Term', { props }]];
+
   useEffect(() => {
     return () => {
       unsub();
@@ -120,7 +127,9 @@ export const Term = () => {
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
     // When we have loaded a new page, we want to counter this scoll change.
-    window.scrollBy({ top: oldscrollY - window.scrollY });
+    window.scrollBy({
+      top: oldscrollY - window.scrollY
+    });
     setOldScrollY(window.scrollY);
   }, [page]);
 
@@ -331,6 +340,7 @@ export const Term = () => {
   return (
     <>
       <MetaTags data={metatags} />
+      <Plausible events={plausibleEvents} subject={{ type, id }} />
       <LandingPageHeader title={title} subhead={description} />
       {hasStories && hasEpisodes && (
         <AppBar position="static" color="transparent">
