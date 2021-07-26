@@ -29,10 +29,6 @@ export const Plausible = ({ events, keys = [null, null] }: IPlausibleProps) => {
         );
       };
     (window as any).plausible.isProxy = true;
-
-    return () => {
-      delete (window as any).plausible;
-    };
   }, []);
 
   useEffect(() => {
