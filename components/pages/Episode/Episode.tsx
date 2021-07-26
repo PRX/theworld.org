@@ -181,7 +181,7 @@ export const Episode = () => {
   return (
     <ThemeProvider theme={episodeTheme}>
       <MetaTags data={metatags} />
-      <Plausible events={plausibleEvents} keys={[type, id]} />
+      <Plausible events={plausibleEvents} subject={{ type, id }} />
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>

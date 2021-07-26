@@ -120,7 +120,7 @@ export const Audio = () => {
           description: metatags.description || description
         }}
       />
-      <Plausible events={plausibleEvents} keys={[type, id]} />
+      <Plausible events={plausibleEvents} subject={{ type, id }} />
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>

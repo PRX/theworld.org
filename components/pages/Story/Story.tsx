@@ -158,7 +158,7 @@ export const Story = () => {
   return (
     <>
       <MetaTags data={metatags} />
-      <Plausible events={plausibleEvents} keys={[type, id]} />
+      <Plausible events={plausibleEvents} subject={{ type, id }} />
       <LayoutComponent data={data} />
     </>
   );
