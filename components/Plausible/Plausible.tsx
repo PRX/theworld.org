@@ -17,7 +17,7 @@ export interface IPlausibleProps {
   keys?: string[];
 }
 
-export const Plausible = ({ events, keys = [] }: IPlausibleProps) => {
+export const Plausible = ({ events, keys = [null, null] }: IPlausibleProps) => {
   const plausible = usePlausible();
 
   useEffect(() => {

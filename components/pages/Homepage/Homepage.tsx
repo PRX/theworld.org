@@ -224,7 +224,7 @@ export const Homepage = () => {
   return (
     <>
       <MetaTags data={metatags} />
-      <Plausible />
+      <Plausible keys={['homepage', null]} />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
