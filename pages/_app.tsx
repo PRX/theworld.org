@@ -3,9 +3,11 @@
  * Override the main app component.
  */
 
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
+import PlausibleProvider from 'next-plausible';
 import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
+import { analytics } from '@config';
 // import { AppCtaBanner } from '@components/AppCtaBanner';
 // import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppFooter } from '@components/AppFooter';
@@ -16,6 +18,7 @@ import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+  const [plausibleDomain, setPlausibleDomain] = useState(null);
   const { type, id } = pageProps;
   const contextValue = {
     page: {
@@ -27,6 +30,8 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   };
 
   useEffect(() => {
+    setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
+
     // Remove the server-side injected CSS.
     // Fix for https://github.com/mui-org/material-ui/issues/15073
     const jssStyles = document.querySelector('#jss-server-side');
@@ -48,7 +53,14 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
             {/* <AppCtaBanner /> */}
             <AppHeader />
             <Box flexGrow={1}>
-              <Component {...pageProps} />
+              <PlausibleProvider
+                domain={plausibleDomain}
+                selfHosted
+                trackOutboundLinks
+                enabled={!!plausibleDomain}
+              >
+                <Component {...pageProps} />
+              </PlausibleProvider>
             </Box>
             <AppFooter />
             {/* <AppCtaLoadUnder /> */}
