@@ -20,6 +20,7 @@ import { HtmlContent } from '@components/HtmlContent';
 import { Image } from '@components/Image';
 import { MetaTags } from '@components/MetaTags';
 import { NewsletterForm } from '@components/NewsletterForm';
+import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { IPriApiNewsletter } from '@interfaces/newsletter';
 import { RootState } from '@interfaces/state';
 import { parseNewsletterOptions } from '@lib/parse/cta';
@@ -54,6 +55,14 @@ export const Newsletter = () => {
     setSubscribed(true);
   };
 
+  // Plausible Events.
+  const props = {
+    Title: title
+  };
+  const plausibleEvents: PlausibleEventArgs[] = [
+    ['Newsletter Sign Up', { props }]
+  ];
+
   useEffect(() => {
     if (!data.complete) {
       (async () => {
@@ -67,6 +76,7 @@ export const Newsletter = () => {
   return (
     <>
       <MetaTags data={metatags} />
+      <Plausible events={plausibleEvents} subject={{ type, id }} />
       <ThemeProvider theme={newsletterTheme}>
         <Container disableGutters={!!image} maxWidth={false}>
           <Grid container justify="center">
@@ -74,7 +84,9 @@ export const Newsletter = () => {
               item
               xs={12}
               sm={image ? 12 : 9}
-              className={cx('header', { withImage: !!image })}
+              className={cx('header', {
+                withImage: !!image
+              })}
             >
               {image && (
                 <Image
@@ -113,7 +125,9 @@ export const Newsletter = () => {
                           <Box>
                             <CheckCircleOutlineSharp
                               color="primary"
-                              style={{ fontSize: '5rem' }}
+                              style={{
+                                fontSize: '5rem'
+                              }}
                             />
                           </Box>
                           <Box>
