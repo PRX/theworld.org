@@ -3,10 +3,11 @@
  * Component for Episode.
  */
 
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import pad from 'lodash/pad';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { AudioPlayer } from '@components/AudioPlayer';
@@ -14,6 +15,7 @@ import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
+import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
 import { fetchCtaData, fetchAudioData } from '@store/actions';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
@@ -27,7 +29,10 @@ export const Audio = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const classes = audioStyles({});
   let data = getDataByResource(state, type, id);
 
@@ -35,7 +40,16 @@ export const Audio = () => {
     return null;
   }
 
-  const { metatags, description } = data;
+  const {
+    metatags,
+    title,
+    audioAuthor,
+    audioTitle,
+    audioType,
+    season,
+    dateBroadcast,
+    description
+  } = data;
 
   const ctaInlineEnd = getCtaRegionData(
     state,
@@ -43,6 +57,38 @@ export const Audio = () => {
     id as string,
     'tw_cta_region_content_inline_end'
   );
+
+  // Plausible Events.
+  const props = {
+    Title: audioTitle,
+    'Audio Type': audioType,
+    'File Name': title,
+    ...(season && {
+      Season: season
+    }),
+    ...(dateBroadcast &&
+      (() => {
+        const dt = new Date(dateBroadcast * 1000);
+        const dtYear = dt.getFullYear();
+        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
+        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        return {
+          'Broadcast Year': `${dtYear}`,
+          'Broadcast Month': `${dtYear}-${dtMonth}`,
+          'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+        };
+      })())
+  };
+  const plausibleEvents: PlausibleEventArgs[] = [['Audio', { props }]];
+
+  [...(audioAuthor || [])].forEach(person => {
+    plausibleEvents.push([
+      `Person: ${person.title}`,
+      {
+        props: { 'Page Type': 'Audio' }
+      }
+    ]);
+  });
 
   useEffect(() => {
     if (!data.complete) {
@@ -60,13 +106,21 @@ export const Audio = () => {
         fetchCtaData('tw_cta_regions_content', type, id, context)
       );
     })();
+
+    return () => {
+      unsub();
+    };
   }, [id]);
 
   return (
     <ThemeProvider theme={audioTheme}>
       <MetaTags
-        data={{ ...metatags, description: metatags.description || description }}
+        data={{
+          ...metatags,
+          description: metatags.description || description
+        }}
       />
+      <Plausible events={plausibleEvents} subject={{ type, id }} />
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>

@@ -1,6 +1,6 @@
 /**
- * @file Category.tsx
- * Component for Category.
+ * @file Bio.tsx
+ * Component for Bio.
  */
 
 import React, { useContext, useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
+import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import {
   Sidebar,
   SidebarAudioList,
@@ -109,6 +110,12 @@ export const Bio = () => {
   const classes = bioStyles({});
   const cx = classNames.bind(classes);
 
+  // Plausible Events.
+  const props = {
+    Name: title
+  };
+  const plausibleEvents: PlausibleEventArgs[] = [['Person', { props }]];
+
   useEffect(() => {
     return () => {
       unsub();
@@ -118,7 +125,9 @@ export const Bio = () => {
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
     // When we have loaded a new page, we want to counter this scoll change.
-    window.scrollBy({ top: oldscrollY - window.scrollY });
+    window.scrollBy({
+      top: oldscrollY - window.scrollY
+    });
     setOldScrollY(window.scrollY);
   }, [page]);
 
@@ -297,6 +306,7 @@ export const Bio = () => {
   return (
     <>
       <MetaTags data={metatags} />
+      <Plausible events={plausibleEvents} subject={{ type, id }} />
       <BioHeader
         title={title}
         position={position}
