@@ -34,6 +34,11 @@ const config = {
     ...(defaultConfig.fb || {}),
     ...(localConfig.fb || {})
   },
+  search: {
+    cseId: '8fae02a164443be00',
+    ...(defaultConfig.search || {}),
+    ...(localConfig.search || {})
+  },
   twitter: {
     ...(defaultConfig.twitter || {}),
     ...(localConfig.twitter || {})

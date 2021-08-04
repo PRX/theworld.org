@@ -13,6 +13,7 @@ import { analytics } from '@config';
 import { AppFooter } from '@components/AppFooter';
 import { AppHeader } from '@components/AppHeader';
 import { AppLoadingBar } from '@components/AppLoadingBar';
+import { AppSearch } from '@components/AppSearch';
 import { AppContext } from '@contexts/AppContext';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
@@ -63,6 +64,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
               </PlausibleProvider>
             </Box>
             <AppFooter />
+            <AppSearch />
             {/* <AppCtaLoadUnder /> */}
           </Box>
         </AppContext.Provider>

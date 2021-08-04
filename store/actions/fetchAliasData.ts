@@ -12,7 +12,7 @@ import {
 } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
 import { getDataByAlias } from '@store/reducers';
-import { fetchQueryAlias } from '@lib/fetch';
+import { fetchApiQueryAlias, fetchQueryAlias } from '@lib/fetch';
 
 export const fetchAliasData = (
   alias: string
@@ -29,7 +29,9 @@ export const fetchAliasData = (
       alias
     });
 
-    data = await fetchQueryAlias(alias).then(
+    data = await (typeof window === 'undefined'
+      ? fetchQueryAlias
+      : fetchApiQueryAlias)(alias).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 

@@ -10,6 +10,7 @@ export * from './fetchNewsletterData';
 export * from './fetchPageData';
 export * from './fetchPersonData';
 export * from './fetchProgramData';
+export * from './fetchSearchData';
 export * from './fetchStoryData';
 export * from './fetchTeamData';
 export * from './fetchTermData';

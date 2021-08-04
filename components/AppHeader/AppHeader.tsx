@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { useStore } from 'react-redux';
 import Link from 'next/link';
 import Router from 'next/router';
 import {
@@ -17,6 +18,7 @@ import {
 } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
 import classNames from 'classnames/bind';
 import { ReactComponent as Logo } from '@svg/tw-white.svg';
 import { AppHeaderNav } from './AppHeaderNav';
@@ -26,6 +28,7 @@ import { DrawerSocialNav } from './DrawerSocialNav';
 import { appHeaderStyles } from './AppHeader.styles';
 
 export const AppHeader = () => {
+  const store = useStore();
   const classes = appHeaderStyles({});
   const cx = classNames.bind(classes);
   const [{ open }, setState] = useState({ open: false });
@@ -56,10 +59,14 @@ export const AppHeader = () => {
     setOpenState(false);
   };
 
+  const handleSearchOpen = () => {
+    store.dispatch({ type: 'SEARCH_OPEN' });
+  };
+
   return (
     <>
       <AppBar className={cx({ root: true })} position="static">
-        <Toolbar>
+        <Toolbar className={cx('toolbar')}>
           <NoSsr>
             <IconButton
               edge="start"
@@ -85,6 +92,15 @@ export const AppHeader = () => {
 
           {/* Header Nav */}
           <AppHeaderNav />
+
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={handleSearchOpen}
+            aria-label="search"
+          >
+            <SearchIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer open={open} onClose={handleDrawerClose()}>

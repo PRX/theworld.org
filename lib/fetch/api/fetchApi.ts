@@ -6,11 +6,13 @@
 import fetch from 'isomorphic-unfetch';
 import {
   IPriApiCollectionResponse,
-  IPriApiResource
+  IPriApiResource,
+  IPriApiResourceResponse
 } from 'pri-api-library/types';
 import { IncomingMessage } from 'http';
 import { ParsedUrlQuery } from 'querystring';
 import { parse, format } from 'url';
+import { customsearch_v1 } from 'googleapis';
 import { ICtaRegions } from '@interfaces/cta';
 import {
   INewsletterOptions,
@@ -82,7 +84,7 @@ export const fetchApi = async (
 export const fetchApiQueryAlias = async (
   alias: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`query/alias/${alias}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`query/alias/${alias}`, req);
 
 /**
  * Method that simplifies GET queries for app data.
@@ -171,7 +173,7 @@ export const postNewsletterSubsciption = async (
 export const fetchApiStory = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`story/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`story/${id}`, req);
 
 /**
  * Method that simplifies GET queries for episode data.
@@ -513,3 +515,12 @@ export const fetchApiCtaRegionGroup = async (
   fetchApi(`cta/${regionGroup}`, req, undefined, {
     context
   });
+
+export const fetchApiSearch = (
+  q: string,
+  label: string,
+  start: string | number
+) =>
+  fetchApi(`query/search/${label}/${q}`, null, {
+    ...(start && { start: `${start}` })
+  }) as Promise<customsearch_v1.Schema$Search>;
