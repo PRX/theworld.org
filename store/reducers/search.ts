@@ -11,14 +11,14 @@ import { SearchAction, SearchState, RootState } from '@interfaces/state';
 type State = SearchState | RootState;
 
 export const search = (
-  state: State = {
+  state = {
     open: false,
     query: null,
     loading: false,
     searches: {}
   },
   action: SearchAction
-): State => {
+) => {
   let queryHash: string;
   let s: State;
 
