@@ -53,7 +53,7 @@ export const fetchSearchData = (
     type: 'FETCH_SEARCH_REQUEST'
   });
 
-  const requests = facets.map((l: SearchFacet) => {
+  const requests = [...facets].map(async (l: SearchFacet) => {
     const facetData = currentData[l];
     const start: number = [...(facetData || [])].pop()?.queries.nextPage?.[0]
       .startIndex;
