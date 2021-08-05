@@ -74,10 +74,16 @@ export const search = (
           ...s.searches,
           [queryHash]: {
             ...(s.searches[queryHash] || {}),
-            [action.payload.label]: [
-              ...(s.searches[queryHash]?.[action.payload.label] || []),
-              action.payload.data
-            ]
+            ...action.payload.data.reduce(
+              (a: any, { label, data }) => ({
+                ...a,
+                [label]: [
+                  ...((s as SearchState).searches[queryHash]?.[label] || []),
+                  data
+                ]
+              }),
+              []
+            )
           }
         }
       } as SearchState;

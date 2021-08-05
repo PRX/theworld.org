@@ -6,14 +6,21 @@
 
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { customsearch_v1 } from 'googleapis';
 import { parse } from 'url';
-import { IPriApiResource } from 'pri-api-library/types';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse,
+  PriApiResourceResponse
+} from 'pri-api-library/types';
 import { RootState, searchFacetLabels, SearchFacet } from '@interfaces/state';
-import { fetchApiSearch } from '@lib/fetch';
+import {
+  fetchApiEpisode,
+  fetchApiFileAudio,
+  fetchApiSearch,
+  fetchApiStory
+} from '@lib/fetch';
 import { getSearchData } from '@store/reducers';
-import { fetchStoryData } from './fetchStoryData';
-import { fetchAliasData } from './fetchAliasData';
+import { fetchBulkAliasData } from './fetchAliasData';
 
 export const fetchSearchData = (
   query: string,
@@ -26,24 +33,12 @@ export const fetchSearchData = (
   const facets = label === 'all' ? searchFacetLabels : [label];
   const currentData = getSearchData(state, query) || {};
   const q = (query || '').toLowerCase().replace(/^\s+|\s+$/, '');
-  const getItemLinkAliasData = async ({
-    link
-  }: customsearch_v1.Schema$Result): Promise<IPriApiResource> => {
-    const { pathname } = parse(link);
-
-    const data = await dispatch<any>(fetchAliasData(pathname));
-
-    console.log('Link Alias Data', pathname, data);
-
-    return data;
-  };
 
   // Map facet labels to data fetch for content type.
   const funcMap = new Map();
-  funcMap.set('story', async (item: customsearch_v1.Schema$Search) => {
-    const { id: storyId } = await getItemLinkAliasData(item);
-    await dispatch<any>(fetchStoryData(storyId as string));
-  });
+  funcMap.set('story', fetchApiStory);
+  funcMap.set('episode', fetchApiEpisode);
+  funcMap.set('media', fetchApiFileAudio);
 
   if (!q.length) {
     return;
@@ -64,26 +59,39 @@ export const fetchSearchData = (
     }));
   });
 
-  await Promise.all(requests).then(results => {
-    results.forEach(({ l, data }) => {
-      const fetchFunc = funcMap.get(l);
+  const payloadData = await Promise.all(requests).then(async searchResults => {
+    const dataRequests = searchResults.map(async ({ l, data }) => {
+      const aliases = data.items.map(({ link }) => parse(link).pathname);
+      const aliasesData: [string, IPriApiResource][] = await dispatch<any>(
+        fetchBulkAliasData(aliases)
+      );
 
-      if (fetchFunc) {
-        const reqs = data.items.map(item => fetchFunc(item));
-        (async () => {
-          await Promise.all(reqs);
-        })();
-      }
+      const reqs = aliasesData
+        .map(([, { id }]): [
+          string,
+          (id: string) => Promise<PriApiResourceResponse>
+        ] => [id as string, funcMap.get(l)])
+        .map(([id, fetchFunc]) => fetchFunc(id));
 
-      dispatch({
-        type: 'FETCH_SEARCH_SUCCESS',
-        payload: {
-          query,
-          label: l,
-          data
-        }
+      await Promise.all(reqs).then(dataResp => {
+        dispatch<any>({
+          type: 'FETCH_BULK_CONTENT_DATA_SUCCESS',
+          payload: dataResp.map((item: IPriApiResourceResponse) => item.data)
+        });
       });
+
+      return { label: l, data };
     });
+
+    return await Promise.all(dataRequests);
+  });
+
+  dispatch({
+    type: 'FETCH_SEARCH_SUCCESS',
+    payload: {
+      query,
+      data: payloadData
+    }
   });
 
   dispatch({

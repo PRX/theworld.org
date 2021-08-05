@@ -7,6 +7,7 @@
 import { AnyAction } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 import { UrlWithParsedQuery } from 'url';
+import { IPriApiResource } from 'pri-api-library/types';
 import { ContentDataState, RootState } from '@interfaces/state';
 import { generateLinkHrefForContent } from '@lib/routing/content';
 
@@ -18,6 +19,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload.aliasData };
+
     case 'FETCH_ALIAS_DATA_SUCCESS':
       return {
         ...state,
@@ -26,6 +28,22 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
           type: action.data.type
         }
       };
+
+    case 'FETCH_BULK_ALIAS_DATA_SUCCESS':
+      return {
+        ...state,
+        ...action.data.reduce(
+          (
+            a: { [k: string]: { id: string; type: string } },
+            [alias, { id, type }]: [string, IPriApiResource]
+          ) => ({
+            ...a,
+            [alias]: { id, type }
+          }),
+          {}
+        )
+      };
+
     case 'FETCH_CONTENT_DATA_SUCCESS':
       href = generateLinkHrefForContent(action.payload);
       return {
@@ -37,6 +55,28 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
               type: action.payload.type
             }
           })
+      };
+
+    case 'FETCH_BULK_CONTENT_DATA_SUCCESS':
+      return {
+        ...state,
+        ...(action.payload && {
+          ...action.payload
+            .filter(item => !!item)
+            .reduce((a, item) => {
+              const { id, type } = item;
+              const h = generateLinkHrefForContent(item);
+              return !h
+                ? a
+                : {
+                    ...a,
+                    [h.pathname]: {
+                      id,
+                      type
+                    }
+                  };
+            }, {})
+        })
       };
 
     default:

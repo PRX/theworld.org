@@ -35,11 +35,9 @@ import { MetaTags } from '@components/MetaTags';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import {
-  appendResourceCollection,
-  fetchCategoryData,
-  fetchCtaData
-} from '@store/actions';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { fetchCategoryData } from '@store/actions/fetchCategoryData';
 import {
   getCollectionData,
   getCtaRegionData,

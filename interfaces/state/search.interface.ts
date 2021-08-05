@@ -31,6 +31,6 @@ export interface SearchAction extends AnyAction {
     search?: SearchState;
     query: string;
     label: SearchFacet;
-    data: customsearch_v1.Schema$Result;
+    data: { label: string; data: customsearch_v1.Schema$Result }[];
   };
 }

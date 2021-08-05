@@ -38,11 +38,9 @@ import { StoryCard } from '@components/StoryCard';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import {
-  appendResourceCollection,
-  fetchCtaData,
-  fetchEpisodeData
-} from '@store/actions';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
 import {
   getDataByResource,
   getCollectionData,

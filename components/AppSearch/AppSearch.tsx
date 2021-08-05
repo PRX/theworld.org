@@ -23,7 +23,7 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { StoryCard } from '@components/StoryCard';
-import { fetchSearchData } from '@store/actions';
+import { fetchSearchData } from '@store/actions/fetchSearchData';
 import {
   getContentDataByAlias,
   getSearchData,
@@ -36,6 +36,7 @@ import { appSearchStyles, appSearchTheme } from './AppSearch.styles';
 export const AppSearch = () => {
   const store = useStore();
   const [state, setState] = useState(store.getState());
+  const [label, setLabel] = useState('story');
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
@@ -55,7 +56,7 @@ export const AppSearch = () => {
   const queryRef = useRef(null);
   const classes = appSearchStyles({});
 
-  console.log(stories);
+  console.log(query, data, story, stories);
 
   const handleClose = () => {
     store.dispatch({ type: 'SEARCH_CLOSE' });
@@ -64,7 +65,7 @@ export const AppSearch = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    store.dispatch<any>(fetchSearchData(queryRef.current.value, 'all'));
+    store.dispatch<any>(fetchSearchData(queryRef.current.value, label));
   };
 
   const handleClearQuery = () => {
@@ -126,7 +127,7 @@ export const AppSearch = () => {
         </form>
         <DialogContent>
           {!!stories.length &&
-            stories.map(s => <h2>{s?.title || 'Not Loaded'}</h2>)}
+            stories.map(s => <h2 key={s.id}>{s?.title || 'Not Loaded'}</h2>)}
         </DialogContent>
       </Dialog>
     </ThemeProvider>

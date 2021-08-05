@@ -14,7 +14,7 @@ import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
-import { fetchPageData } from '@store/actions';
+import { fetchPageData } from '@store/actions/fetchPageData';
 import { getDataByResource } from '@store/reducers';
 import { pageStyles, pageTheme } from './Page.styles';
 import { PageHeader } from './components/PageHeader';

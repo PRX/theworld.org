@@ -17,7 +17,8 @@ import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
-import { fetchCtaData, fetchHomepageData } from '@store/actions';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { fetchHomepageData } from '@store/actions/fetchHomepageData';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
 
 const CtaRegion = dynamic(

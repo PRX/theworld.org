@@ -24,7 +24,7 @@ import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { IPriApiNewsletter } from '@interfaces/newsletter';
 import { RootState } from '@interfaces/state';
 import { parseNewsletterOptions } from '@lib/parse/cta';
-import { fetchNewsletterData } from '@store/actions';
+import { fetchNewsletterData } from '@store/actions/fetchNewsletterData';
 import { getDataByResource } from '@store/reducers';
 import { newsletterTheme, newsletterStyles } from './Newsletter.styles';
 

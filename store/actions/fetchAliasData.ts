@@ -50,3 +50,44 @@ export const fetchAliasData = (
 
   return data;
 };
+
+export const fetchBulkAliasData = (
+  aliases: string[]
+): ThunkAction<void, {}, {}, AnyAction> => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+): Promise<[string, IPriApiResource][]> => {
+  const fetchFunc =
+    typeof window === 'undefined' ? fetchQueryAlias : fetchApiQueryAlias;
+  const data: [string, IPriApiResource][] = [];
+
+  if (aliases && !!aliases.length) {
+    dispatch({
+      type: 'FETCH_BULK_ALIAS_DATA_REQUEST',
+      aliases
+    });
+
+    await Promise.all(
+      aliases.map(alias =>
+        fetchFunc(alias).then((r: IPriApiResourceResponse) => {
+          if (r) {
+            data.push([alias, r.data]);
+          }
+        })
+      )
+    );
+
+    dispatch({
+      type: 'FETCH_BULK_ALIAS_DATA_SUCCESS',
+      aliases,
+      data
+    });
+  }
+
+  dispatch({
+    type: 'FETCH_BULK_ALIAS_DATA_COMPLETE',
+    aliases,
+    data
+  });
+
+  return data;
+};

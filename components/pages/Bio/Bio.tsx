@@ -30,11 +30,9 @@ import { StoryCard } from '@components/StoryCard';
 import { fetchApiPersonAudio, fetchApiPersonStories } from '@lib/fetch';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import {
-  appendResourceCollection,
-  fetchCtaData,
-  fetchPersonData
-} from '@store/actions';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { fetchPersonData } from '@store/actions/fetchPersonData';
 import {
   getCollectionData,
   getCtaRegionData,
