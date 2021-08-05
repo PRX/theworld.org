@@ -6,7 +6,7 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { useStore } from 'react-redux';
 import { parse } from 'url';
-import { searchFacetLabels } from '@interfaces/state';
+import { SearchFacet, searchFacetLabels } from '@interfaces/state';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -36,7 +36,7 @@ import { appSearchStyles, appSearchTheme } from './AppSearch.styles';
 export const AppSearch = () => {
   const store = useStore();
   const [state, setState] = useState(store.getState());
-  const [label, setLabel] = useState('story');
+  const [label, setLabel] = useState('story' as SearchFacet);
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
