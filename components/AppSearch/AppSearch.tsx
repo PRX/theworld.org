@@ -54,7 +54,7 @@ export const AppSearch = () => {
     setState(store.getState());
   });
   const query = getSearchQuery(state) || queryRef.current?.value;
-  const isOpen = getSearchOpen(state) || true;
+  const isOpen = getSearchOpen(state);
   const isLoading = getSearchLoading(state);
   const data = getSearchData(state, query);
   const hasData = !!data;
