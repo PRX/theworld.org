@@ -189,7 +189,7 @@ export const fetchApiStory = async (
 export const fetchApiEpisode = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`episode/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`episode/${id}`, req);
 
 /**
  * Method that simplifies GET queries for audio file data.
@@ -221,7 +221,7 @@ export const fetchApiFileAudio = async (
 export const fetchApiProgram = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`program/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`program/${id}`, req);
 
 /**
  * Method that simplifies GET queries for program stories data.

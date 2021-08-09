@@ -12,7 +12,11 @@ import {
   IPriApiResourceResponse,
   PriApiResourceResponse
 } from 'pri-api-library/types';
-import { RootState, searchFacetLabels, SearchFacet } from '@interfaces/state';
+import {
+  RootState,
+  searchFacetLabels,
+  SearchFacetAll
+} from '@interfaces/state';
 import {
   fetchApiEpisode,
   fetchApiFileAudio,
@@ -24,7 +28,7 @@ import { fetchBulkAliasData } from './fetchAliasData';
 
 export const fetchSearchData = (
   query: string,
-  label: SearchFacet
+  label: SearchFacetAll
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -48,7 +52,7 @@ export const fetchSearchData = (
     type: 'FETCH_SEARCH_REQUEST'
   });
 
-  const requests = [...facets].map(async (l: SearchFacet) => {
+  const requests = [...facets].map(async (l: SearchFacetAll) => {
     const facetData = currentData[l];
     const start: number = [...(facetData || [])].pop()?.queries.nextPage?.[0]
       .startIndex;

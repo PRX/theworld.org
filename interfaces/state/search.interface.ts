@@ -7,8 +7,9 @@
 import { AnyAction } from 'redux';
 import { customsearch_v1 } from 'googleapis';
 
-export const searchFacetLabels = ['story', 'episode', 'media'] as const;
-export type SearchFacet = typeof searchFacetLabels[number] | 'all';
+export const searchFacetLabels = ['story', 'episode'] as const;
+export type SearchFacet = typeof searchFacetLabels[number];
+export type SearchFacetAll = typeof searchFacetLabels[number] | 'all';
 
 export interface SearchesState {
   // Key: Query signature.
@@ -30,7 +31,7 @@ export interface SearchAction extends AnyAction {
   payload: {
     search?: SearchState;
     query: string;
-    label: SearchFacet;
+    label: SearchFacetAll;
     data: { label: string; data: customsearch_v1.Schema$Result }[];
   };
 }

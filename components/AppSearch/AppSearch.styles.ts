@@ -18,6 +18,24 @@ export const appSearchTheme = (theme: Theme) => {
           color: theme.palette.primary.contrastText
         }
       },
+      MuiCard: {
+        root: {
+          height: '100%'
+        }
+      },
+      MuiCardActionArea: {
+        root: {
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'start'
+        }
+      },
+      MuiDialogContent: {
+        root: {
+          backgroundColor: theme.palette.background.default
+        }
+      },
       MuiInput: {
         root: {
           fontSize: 'clamp(2rem, 10vw, 5rem)',
