@@ -208,7 +208,7 @@ export const AppSearch = () => {
                 {!!episodeData.length && (
                   <Container fixed>
                     <Grid container spacing={3}>
-                      {storyData.map(item => (
+                      {episodeData.map(item => (
                         <Grid item xs={12} md={6} key={item.id}>
                           <EpisodeCard data={item} />
                         </Grid>
