@@ -47,6 +47,7 @@ import { appSearchStyles, appSearchTheme } from './AppSearch.styles';
 
 export const AppSearch = () => {
   const queryRef = useRef(null);
+  const dialogContentRef = useRef(null);
   const store = useStore();
   const [state, setState] = useState(store.getState());
   const [label, setLabel] = useState('story' as SearchFacet);
@@ -106,6 +107,7 @@ export const AppSearch = () => {
 
   const handleFilterChange = (e: object, value: any) => {
     setLabel(value);
+    dialogContentRef.current.scrollTo(0);
   };
 
   useEffect(() => {
@@ -177,7 +179,7 @@ export const AppSearch = () => {
             )}
           </form>
           {!!data && (
-            <DialogContent>
+            <DialogContent ref={dialogContentRef}>
               <TabPanel value="story">
                 {!!storyData.length && (
                   <Container fixed>
