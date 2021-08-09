@@ -107,7 +107,7 @@ export const AppSearch = () => {
 
   const handleFilterChange = (e: object, value: any) => {
     setLabel(value);
-    dialogContentRef.current.scrollTo(0);
+    dialogContentRef.current.scrollTo = 0;
   };
 
   useEffect(() => {
