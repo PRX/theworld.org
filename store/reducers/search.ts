@@ -14,8 +14,6 @@ export const search = (state = {}, action: SearchAction) => {
   let queryHash: string;
   let s: State;
 
-  console.log('State Change', action, state);
-
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload.search };
@@ -56,20 +54,18 @@ export const search = (state = {}, action: SearchAction) => {
       queryHash = encode(action.payload.query);
       s = state as SearchState;
 
-      console.log('FETCH_SEARCH_SUCCESS', action.payload);
-
       return {
         ...state,
         query: action.payload.query,
         searches: {
-          ...s.searches,
+          ...(s.searches || {}),
           [queryHash]: {
-            ...(s.searches[queryHash] || {}),
+            ...(s.searches?.[queryHash] || {}),
             ...action.payload.data.reduce(
               (a: any, { label, data }) => ({
                 ...a,
                 [label]: [
-                  ...((s as SearchState).searches[queryHash]?.[label] || []),
+                  ...((s as SearchState).searches?.[queryHash]?.[label] || []),
                   data
                 ]
               }),
@@ -87,4 +83,4 @@ export const getSearchOpen = (state: SearchState) => state.open;
 export const getSearchLoading = (state: SearchState) => state.loading;
 export const getSearchQuery = (state: SearchState) => state?.query || '';
 export const getSearchData = (state: SearchState, query: string) =>
-  state.searches[encode(query)];
+  state.searches?.[encode(query)];

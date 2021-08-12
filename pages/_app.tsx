@@ -31,7 +31,6 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   };
 
   useEffect(() => {
-    console.log('Mounting app...');
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
 
     // Remove the server-side injected CSS.
@@ -40,10 +39,6 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
-
-    return () => {
-      console.log('Unmounting app...');
-    };
   }, []);
 
   useEffect(() => {

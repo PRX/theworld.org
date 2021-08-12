@@ -12,6 +12,7 @@ import React, {
   useState
 } from 'react';
 import { useStore } from 'react-redux';
+import { useRouter } from 'next/router';
 import { parse } from 'url';
 import { SearchFacet, searchFacetLabels } from '@interfaces/state';
 import AppBar from '@material-ui/core/AppBar';
@@ -46,6 +47,7 @@ import {
 import { appSearchStyles, appSearchTheme } from './AppSearch.styles';
 
 export const AppSearch = () => {
+  const router = useRouter();
   const queryRef = useRef(null);
   const dialogContentRef = useRef(null);
   const store = useStore();
@@ -111,9 +113,16 @@ export const AppSearch = () => {
   };
 
   useEffect(() => {
-    console.log('Mounting App Search...', data, state.search);
+    const handleRouteChangeEnd = () => {
+      store.dispatch({ type: 'SEARCH_CLOSE' });
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChangeEnd);
+    router.events.on('routeChangeError', handleRouteChangeEnd);
+
     return () => {
-      console.log('Unmounting App Search...');
+      router.events.off('routeChangeComplete', handleRouteChangeEnd);
+      router.events.off('routeChangeError', handleRouteChangeEnd);
       unsub();
     };
   }, []);
