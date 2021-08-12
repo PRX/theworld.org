@@ -53,8 +53,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 30,
@@ -84,8 +86,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 40,
@@ -107,8 +111,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 40,
@@ -122,8 +128,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 40,
@@ -137,8 +145,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 40,
