@@ -33,8 +33,7 @@ export const search = (
 
       return {
         ...state,
-        open: true,
-        query: action.payload?.query || s.query
+        open: true
       } as SearchState;
 
     case 'SEARCH_CLOSE':
