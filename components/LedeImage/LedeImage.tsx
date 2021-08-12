@@ -32,8 +32,8 @@ export const LedeImage = ({ data }: ILedeImageProps) => {
     <figure className={classes.root}>
       <Image
         src={url}
-        width={width}
-        height={height}
+        width={width || 16}
+        height={height || 9}
         layout="responsive"
         sizes={sizes}
         priority
