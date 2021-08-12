@@ -54,7 +54,7 @@ export const AppSearch = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const query = getSearchQuery(state) || queryRef.current?.value;
+  const query = getSearchQuery(state);
   const isOpen = getSearchOpen(state);
   const isLoading = getSearchLoading(state);
   const data = getSearchData(state, query);
@@ -111,6 +111,7 @@ export const AppSearch = () => {
   };
 
   useEffect(() => {
+    console.log('Search Data', data);
     return () => {
       unsub();
     };
