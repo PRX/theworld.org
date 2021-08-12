@@ -28,7 +28,8 @@ export const appSearchTheme = (theme: Theme) => {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'start'
+          justifyContent: 'start',
+          alignItems: 'start'
         }
       },
       MuiDialogContent: {

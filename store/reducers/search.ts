@@ -22,7 +22,7 @@ export const search = (
   let queryHash: string;
   let s: State;
 
-  // console.log(action, state);
+  console.log('State Change', action, state);
 
   switch (action.type) {
     case HYDRATE:

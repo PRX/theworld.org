@@ -111,8 +111,9 @@ export const AppSearch = () => {
   };
 
   useEffect(() => {
-    console.log('Search Data', data);
+    console.log('Mounting App Search...', data, state.search);
     return () => {
+      console.log('Unmounting App Search...');
       unsub();
     };
   }, []);
