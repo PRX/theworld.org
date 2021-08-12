@@ -10,15 +10,7 @@ import { SearchAction, SearchState, RootState } from '@interfaces/state';
 
 type State = SearchState | RootState;
 
-export const search = (
-  state = {
-    open: false,
-    query: null,
-    loading: false,
-    searches: {}
-  },
-  action: SearchAction
-) => {
+export const search = (state = {}, action: SearchAction) => {
   let queryHash: string;
   let s: State;
 

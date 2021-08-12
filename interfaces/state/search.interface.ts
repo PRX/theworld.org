@@ -21,10 +21,10 @@ export interface SearchesState {
 }
 
 export interface SearchState {
-  open: boolean;
-  query: string;
-  loading: boolean;
-  searches: SearchesState;
+  open?: boolean;
+  query?: string;
+  loading?: boolean;
+  searches?: SearchesState;
 }
 
 export interface SearchAction extends AnyAction {
