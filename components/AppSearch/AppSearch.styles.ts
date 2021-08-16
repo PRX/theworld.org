@@ -52,6 +52,11 @@ export const appSearchTheme = (theme: Theme) => {
             '"Montserrat","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
           whiteSpace: 'nowrap'
         },
+        formControl: {
+          [`${theme.breakpoints.down(760)}`]: {
+            transform: 'translate(0, 0) scale(0.25)'
+          }
+        },
         shrink: {
           transform: 'translate(0, 0) scale(0.25)'
         }
