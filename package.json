@@ -104,6 +104,6 @@
     "redux-devtools-extension": "^2.13.9",
     "ts-jest": "^27.0.3",
     "typescript": "^3.6.4",
-    "vercel": "^21.3.2"
+    "vercel": "^23.1.2"
   }
 }
