@@ -39,7 +39,7 @@ export const appSearchTheme = (theme: Theme) => {
       },
       MuiInput: {
         root: {
-          fontSize: 'clamp(2rem, 10vw, 5rem)',
+          fontSize: 'clamp(2rem, 10vw, 3rem)',
           fontFamily:
             '"Montserrat","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
           fontWeight: theme.typography.fontWeightBold
@@ -47,18 +47,18 @@ export const appSearchTheme = (theme: Theme) => {
       },
       MuiInputLabel: {
         root: {
-          fontSize: 'clamp(5rem, 10vw, 5rem)',
+          fontSize: 'clamp(3rem, 10vw, 3rem)',
           fontFamily:
             '"Montserrat","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
           whiteSpace: 'nowrap'
         },
         formControl: {
           [`${theme.breakpoints.down(760)}`]: {
-            transform: 'translate(0, 0) scale(0.25)'
+            transform: 'translate(0, 0) scale(0.35)'
           }
         },
         shrink: {
-          transform: 'translate(0, 0) scale(0.25)'
+          transform: 'translate(0, 0) scale(0.35)'
         }
       }
     }

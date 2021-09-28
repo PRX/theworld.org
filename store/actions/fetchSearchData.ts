@@ -65,7 +65,9 @@ export const fetchSearchData = (
 
   const payloadData = await Promise.all(requests).then(async searchResults => {
     const dataRequests = searchResults.map(async ({ l, data }) => {
-      const aliases = data.items.map(({ link }) => parse(link).pathname);
+      const aliases = (data.items || []).map(
+        ({ link }) => parse(link).pathname
+      );
       const aliasesData: [string, IPriApiResource][] = await dispatch<any>(
         fetchBulkAliasData(aliases)
       );

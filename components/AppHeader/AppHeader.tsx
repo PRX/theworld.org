@@ -18,29 +18,30 @@ import {
 } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import classNames from 'classnames/bind';
 import { ReactComponent as Logo } from '@svg/tw-white.svg';
+import { getUiDrawerOpen } from '@store/reducers';
 import { AppHeaderNav } from './AppHeaderNav';
 import { DrawerTopNav } from './DrawerTopNav';
 import { DrawerMainNav } from './DrawerMainNav';
+import { DrawerSearch } from './DrawerSearch';
 import { DrawerSocialNav } from './DrawerSocialNav';
 import { appHeaderStyles } from './AppHeader.styles';
 
 export const AppHeader = () => {
   const store = useStore();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
+  const open = getUiDrawerOpen(state) || false;
   const classes = appHeaderStyles({});
   const cx = classNames.bind(classes);
-  const [{ open }, setState] = useState({ open: false });
-  const setOpenState = (isOpen: boolean) =>
-    setState({
-      open: isOpen
-    });
 
   useEffect(() => {
     function handleRouteChangeComplete() {
       window.setTimeout(() => {
-        setOpenState(false);
+        store.dispatch({ type: 'UI_DRAWER_CLOSE' });
       }, 300);
     }
 
@@ -48,19 +49,16 @@ export const AppHeader = () => {
 
     return function cleanup() {
       Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      unsub();
     };
   }, []);
 
   const handleDrawerOpen = () => () => {
-    setOpenState(true);
+    store.dispatch({ type: 'UI_DRAWER_OPEN' });
   };
 
   const handleDrawerClose = () => () => {
-    setOpenState(false);
-  };
-
-  const handleSearchOpen = () => {
-    store.dispatch({ type: 'SEARCH_OPEN' });
+    store.dispatch({ type: 'UI_DRAWER_CLOSE' });
   };
 
   return (
@@ -92,15 +90,6 @@ export const AppHeader = () => {
 
           {/* Header Nav */}
           <AppHeaderNav />
-
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={handleSearchOpen}
-            aria-label="search"
-          >
-            <SearchIcon />
-          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer open={open} onClose={handleDrawerClose()}>
@@ -126,6 +115,8 @@ export const AppHeader = () => {
               Close
             </Button>
           </Box>
+
+          <DrawerSearch />
 
           <DrawerTopNav />
 

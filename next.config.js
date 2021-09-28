@@ -16,7 +16,8 @@ module.exports = withPlausibleProxy({
       'media.pri.org',
       'www.pri.org',
       'pri9.lndo.site',
-      'media-pri-dev.s3.us-east-1.amazonaws.com'
+      'media-pri-dev.s3.us-east-1.amazonaws.com',
+      'www.loe.org'
     ],
     deviceSizes: [370, 600, 960, 1280, 1920],
     imageSizes: [50, 100, 300, 400, 568, 808]

@@ -6,6 +6,7 @@ import * as fromContentData from './contentData';
 import * as fromCtaData from './ctaData';
 import * as fromMenusData from './menusData';
 import * as fromSearch from './search';
+import * as fromUi from './ui';
 
 export const initialState: RootState = {
   aliasData: {},
@@ -18,6 +19,11 @@ export const initialState: RootState = {
     query: null,
     loading: false,
     searches: {}
+  },
+  ui: {
+    drawer: {
+      open: true
+    }
   }
 };
 
@@ -27,7 +33,8 @@ export const reducers = combineReducers({
   collections: fromCollections.collections,
   ctaData: fromCtaData.ctaData,
   menusData: fromMenusData.menusData,
-  search: fromSearch.search
+  search: fromSearch.search,
+  ui: fromUi.ui
 });
 
 export const getDataByAlias = (state: RootState, alias: string) =>
@@ -95,3 +102,5 @@ export const getSearchQuery = (state: RootState) =>
   fromSearch.getSearchQuery(state.search);
 export const getSearchData = (state: RootState, query: string) =>
   fromSearch.getSearchData(state.search, query);
+export const getUiDrawerOpen = (state: RootState) =>
+  fromUi.getUiDrawerOpen(state.ui);

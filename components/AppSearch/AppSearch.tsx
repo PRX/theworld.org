@@ -32,7 +32,7 @@ import Tab from '@material-ui/core/Tab';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { EpisodeCard } from '@components/EpisodeCard';
 import { StoryCard } from '@components/StoryCard';
@@ -57,20 +57,20 @@ export const AppSearch = () => {
     setState(store.getState());
   });
   const query = getSearchQuery(state);
-  const isOpen = getSearchOpen(state);
-  const isLoading = getSearchLoading(state);
+  const isOpen = getSearchOpen(state) || false;
+  const isLoading = getSearchLoading(state) || false;
   const data = getSearchData(state, query);
   const hasData = !!data;
   const { story, episode } = data || {};
   const storyData = (story || [])
-    .reduce((a, { items }) => [...a, ...items], [])
+    .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
     .map(({ link }) => {
       const { pathname } = parse(link);
       return getContentDataByAlias(state, pathname);
     })
     .filter(item => !!item && item);
   const episodeData = (episode || [])
-    .reduce((a, { items }) => [...a, ...items], [])
+    .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
     .map(({ link }) => {
       const { pathname } = parse(link);
       return getContentDataByAlias(state, pathname);
@@ -196,8 +196,8 @@ export const AppSearch = () => {
                   <Container fixed>
                     <Grid container spacing={3}>
                       {storyData.map(item => (
-                        <Grid item xs={12} md={6} key={item.id}>
-                          <StoryCard data={item} feature />
+                        <Grid item xs={12} key={item.id}>
+                          <StoryCard data={item} short />
                         </Grid>
                       ))}
                     </Grid>

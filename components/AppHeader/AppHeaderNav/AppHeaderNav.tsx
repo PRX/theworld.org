@@ -7,7 +7,6 @@ import React from 'react';
 import { useStore } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { FavoriteSharp } from '@material-ui/icons';
 import { handleButtonClick } from '@lib/routing';
@@ -51,21 +50,26 @@ export const AppHeaderNav = () => {
                   {name}
                 </Button>
               </Hidden>
-              {icon && (
-                <Hidden smUp>
-                  <IconButton
-                    color={color || 'default'}
-                    component="a"
-                    href={url.href}
-                    onClick={handleButtonClick(url)}
-                    disableRipple
-                    aria-label={name}
-                    {...attributes}
-                  >
-                    {renderIcon(icon)}
-                  </IconButton>
-                </Hidden>
-              )}
+              <Hidden smUp>
+                <Button
+                  component="a"
+                  href={url.href}
+                  onClick={handleButtonClick(url)}
+                  variant={
+                    /\bbtn-(text|link)\b/.test(itemLinkClass)
+                      ? 'text'
+                      : 'contained'
+                  }
+                  color={color || 'default'}
+                  size="small"
+                  disableRipple
+                  disableElevation
+                  {...(icon && { startIcon: renderIcon(icon) })}
+                  {...attributes}
+                >
+                  {name}
+                </Button>
+              </Hidden>
             </React.Fragment>
           )
         )}

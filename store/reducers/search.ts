@@ -10,7 +10,7 @@ import { SearchAction, SearchState, RootState } from '@interfaces/state';
 
 type State = SearchState | RootState;
 
-export const search = (state = {}, action: SearchAction) => {
+export const search = (state = {}, action: SearchAction): State => {
   let queryHash: string;
   let s: State;
 
@@ -23,6 +23,7 @@ export const search = (state = {}, action: SearchAction) => {
 
       return {
         ...state,
+        ...(action.payload?.query && { query: action.payload.query }),
         open: true
       } as SearchState;
 
@@ -79,6 +80,7 @@ export const search = (state = {}, action: SearchAction) => {
       return state;
   }
 };
+
 export const getSearchOpen = (state: SearchState) => state.open;
 export const getSearchLoading = (state: SearchState) => state.loading;
 export const getSearchQuery = (state: SearchState) => state?.query || '';
