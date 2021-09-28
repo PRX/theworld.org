@@ -13,7 +13,7 @@ export const storyBodyTypography = (theme: Theme) =>
     fontSize: '1.2rem',
     lineHeight: '1.7rem',
 
-    '& a, & a:visited': {
+    '& :not([class*="Mui"]) a, & :not([class*="Mui"]) a:visited': {
       color: theme.palette.primary.main,
       textDecoration: 'none',
       '&:hover': {
