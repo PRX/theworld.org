@@ -11,7 +11,7 @@ export interface DrawerState {
 }
 
 export interface UiState {
-  drawer: DrawerState;
+  drawer?: DrawerState;
 }
 
 export interface UiAction extends AnyAction {
