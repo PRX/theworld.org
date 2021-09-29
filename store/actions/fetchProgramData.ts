@@ -7,7 +7,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
-import { fetchProgram } from '@lib/fetch';
+import { fetchApiProgram, fetchProgram } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
@@ -26,7 +26,9 @@ export const fetchProgramData = (
       type: 'FETCH_HOMEPAGE_DATA_REQUEST'
     });
 
-    const apiResp = await fetchProgram(id).then(
+    const apiResp = await (typeof window === 'undefined'
+      ? fetchProgram
+      : fetchApiProgram)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
     const {

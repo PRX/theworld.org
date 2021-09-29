@@ -9,6 +9,8 @@ import { CollectionsState } from './collections.interface';
 import { CtaDataState } from './ctaData.interface';
 import { LoadingState } from './loading.interface';
 import { MenusDataState } from './menusData.interface';
+import { SearchState } from './search.interface';
+import { UiState } from './ui.interface';
 
 export interface RootState {
   aliasData?: ContentDataState;
@@ -17,4 +19,6 @@ export interface RootState {
   ctaData?: CtaDataState;
   loading?: LoadingState;
   menusData?: MenusDataState;
+  search?: SearchState;
+  ui?: UiState;
 }

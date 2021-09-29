@@ -27,7 +27,7 @@ import { MetaTags } from '@components/MetaTags';
 import { Plausible } from '@components/Plausible';
 import { AppContext } from '@contexts/AppContext';
 import { generateLinkHrefForContent } from '@lib/routing';
-import { fetchTeamData } from '@store/actions';
+import { fetchTeamData } from '@store/actions/fetchTeamData';
 import { getCollectionData } from '@store/reducers';
 import { teamStyles, teamTheme } from './Team.styles';
 import { TeamHeader } from './components/TeamHeader';

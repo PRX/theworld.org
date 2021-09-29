@@ -40,11 +40,9 @@ import { LandingPageHeader } from '@components/LandingPageHeader';
 import { EpisodeCard } from '@components/EpisodeCard';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import {
-  appendResourceCollection,
-  fetchCtaData,
-  fetchProgramData
-} from '@store/actions';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { fetchProgramData } from '@store/actions/fetchProgramData';
 import {
   getCollectionData,
   getCtaRegionData,

@@ -18,6 +18,7 @@ export const contentData = (state: State = {}, action: AnyAction) => {
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload.contentData };
+
     case 'FETCH_CONTENT_DATA_SUCCESS':
       key = action.payload && makeResourceSignature(action.payload);
       return {
@@ -30,6 +31,20 @@ export const contentData = (state: State = {}, action: AnyAction) => {
                   ...action.payload
                 }
         })
+      };
+
+    case 'FETCH_BULK_CONTENT_DATA_SUCCESS':
+      return {
+        ...state,
+        ...action.payload.reduce((a: any, item: any) => {
+          const k = item && makeResourceSignature(item);
+          return !item
+            ? a
+            : {
+                ...a,
+                [k]: state[k] && state[k].complete ? state[k] : item
+              };
+        }, {})
       };
 
     default:

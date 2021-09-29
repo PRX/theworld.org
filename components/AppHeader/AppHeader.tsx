@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { useStore } from 'react-redux';
 import Link from 'next/link';
 import Router from 'next/router';
 import {
@@ -19,25 +20,28 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import classNames from 'classnames/bind';
 import { ReactComponent as Logo } from '@svg/tw-white.svg';
+import { getUiDrawerOpen } from '@store/reducers';
 import { AppHeaderNav } from './AppHeaderNav';
 import { DrawerTopNav } from './DrawerTopNav';
 import { DrawerMainNav } from './DrawerMainNav';
+import { DrawerSearch } from './DrawerSearch';
 import { DrawerSocialNav } from './DrawerSocialNav';
 import { appHeaderStyles } from './AppHeader.styles';
 
 export const AppHeader = () => {
+  const store = useStore();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
+  const open = getUiDrawerOpen(state) || false;
   const classes = appHeaderStyles({});
   const cx = classNames.bind(classes);
-  const [{ open }, setState] = useState({ open: false });
-  const setOpenState = (isOpen: boolean) =>
-    setState({
-      open: isOpen
-    });
 
   useEffect(() => {
     function handleRouteChangeComplete() {
       window.setTimeout(() => {
-        setOpenState(false);
+        store.dispatch({ type: 'UI_DRAWER_CLOSE' });
       }, 300);
     }
 
@@ -45,21 +49,22 @@ export const AppHeader = () => {
 
     return function cleanup() {
       Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      unsub();
     };
   }, []);
 
   const handleDrawerOpen = () => () => {
-    setOpenState(true);
+    store.dispatch({ type: 'UI_DRAWER_OPEN' });
   };
 
   const handleDrawerClose = () => () => {
-    setOpenState(false);
+    store.dispatch({ type: 'UI_DRAWER_CLOSE' });
   };
 
   return (
     <>
       <AppBar className={cx({ root: true })} position="static">
-        <Toolbar>
+        <Toolbar className={cx('toolbar')}>
           <NoSsr>
             <IconButton
               edge="start"
@@ -110,6 +115,8 @@ export const AppHeader = () => {
               Close
             </Button>
           </Box>
+
+          <DrawerSearch />
 
           <DrawerTopNav />
 

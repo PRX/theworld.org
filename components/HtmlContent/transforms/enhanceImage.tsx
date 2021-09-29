@@ -21,7 +21,7 @@ export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
       .map(([q, w]) => (q ? `(${q}) ${w}` : w))
       .join(', ');
     const { attribs } = node;
-    const { class: className } = attribs;
+    const { class: className, width, height, ...otherAttribs } = attribs;
     let wrapperClass: string;
 
     switch (true) {
@@ -39,10 +39,23 @@ export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
 
     return wrapperClass ? (
       <div className={wrapperClass} key={attribs.src}>
-        <Image {...attribs} layout="responsive" sizes={sizes} />
+        <Image
+          {...otherAttribs}
+          width={width || 16}
+          height={height || 9}
+          layout="responsive"
+          sizes={sizes}
+        />
       </div>
     ) : (
-      <Image {...attribs} layout="responsive" sizes={sizes} key={attribs.src} />
+      <Image
+        {...otherAttribs}
+        width={width || 16}
+        height={height || 9}
+        layout="responsive"
+        sizes={sizes}
+        key={attribs.src}
+      />
     );
   }
 

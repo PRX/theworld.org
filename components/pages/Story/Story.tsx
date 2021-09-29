@@ -12,11 +12,9 @@ import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
 import { fetchApiCategoryStories } from '@lib/fetch';
-import {
-  appendResourceCollection,
-  fetchCtaData,
-  fetchStoryData
-} from '@store/actions';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { getDataByResource, getCollectionData } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
 

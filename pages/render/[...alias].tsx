@@ -14,7 +14,8 @@ import {
 } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
-import { fetchAliasData, fetchAppData } from '@store/actions';
+import { fetchAliasData } from '@store/actions/fetchAliasData';
+import { fetchAppData } from '@store/actions/fetchAppData';
 import { wrapper } from '@store';
 import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';

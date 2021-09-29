@@ -28,6 +28,7 @@
     "autoprefixer": "^10.2.6",
     "base-64": "^0.1.0",
     "classnames": "^2.3.1",
+    "googleapis": "^82.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
@@ -103,6 +104,6 @@
     "redux-devtools-extension": "^2.13.9",
     "ts-jest": "^27.0.3",
     "typescript": "^3.6.4",
-    "vercel": "^21.3.2"
+    "vercel": "^23.1.2"
   }
 }

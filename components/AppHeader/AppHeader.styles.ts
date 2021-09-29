@@ -8,6 +8,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 export const appHeaderStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
+    toolbar: {},
     closeBtn: {
       textTransform: 'capitalize'
     },
@@ -19,9 +20,7 @@ export const appHeaderStyles = makeStyles((theme: Theme) =>
       height: theme.typography.pxToRem(28),
       fill: theme.palette.primary.contrastText
     },
-    menuButton: {
-      marginRight: theme.spacing(2)
-    },
+    menuButton: {},
     grow: {
       flexGrow: 1
     }

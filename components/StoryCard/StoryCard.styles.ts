@@ -69,6 +69,9 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
         alignItems: 'center'
       },
       '$noImage &': {},
+      '$short &': {
+        gridTemplateColumns: '1fr 2fr'
+      },
       '$feature &': {
         display: 'flex',
         gridGap: 0,
@@ -93,6 +96,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       }
     },
     feature: {},
+    short: {},
     isLoading: {},
     noImage: {}
   })

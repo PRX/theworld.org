@@ -76,18 +76,18 @@ export const EpisodeCard = ({ data, label }: EpisodeCardProps) => {
               </Box>
             </Typography>
             <ContentLink data={data} className={cx('link')} />
+            {segments && (
+              <>
+                <Box component="header" className={cx('header')}>
+                  <Typography variant="h2">
+                    <EqualizerRounded /> In this episode:
+                  </Typography>
+                </Box>
+                <SidebarAudioList data={segments} />
+              </>
+            )}
           </CardContent>
         </CardActionArea>
-        {segments && (
-          <>
-            <Box component="header" className={cx('header')}>
-              <Typography variant="h2">
-                <EqualizerRounded /> In this episode:
-              </Typography>
-            </Box>
-            <SidebarAudioList data={segments} />
-          </>
-        )}
       </Card>
     </ThemeProvider>
   );

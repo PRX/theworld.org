@@ -12,7 +12,7 @@ import {
 } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
 import { getDataByAlias } from '@store/reducers';
-import { fetchQueryAlias } from '@lib/fetch';
+import { fetchApiQueryAlias, fetchQueryAlias } from '@lib/fetch';
 
 export const fetchAliasData = (
   alias: string
@@ -29,7 +29,9 @@ export const fetchAliasData = (
       alias
     });
 
-    data = await fetchQueryAlias(alias).then(
+    data = await (typeof window === 'undefined'
+      ? fetchQueryAlias
+      : fetchApiQueryAlias)(alias).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 
@@ -43,6 +45,47 @@ export const fetchAliasData = (
   dispatch({
     type: 'FETCH_ALIAS_DATA_COMPLETE',
     alias,
+    data
+  });
+
+  return data;
+};
+
+export const fetchBulkAliasData = (
+  aliases: string[]
+): ThunkAction<void, {}, {}, AnyAction> => async (
+  dispatch: ThunkDispatch<{}, {}, AnyAction>
+): Promise<[string, IPriApiResource][]> => {
+  const fetchFunc =
+    typeof window === 'undefined' ? fetchQueryAlias : fetchApiQueryAlias;
+  const data: [string, IPriApiResource][] = [];
+
+  if (aliases && !!aliases.length) {
+    dispatch({
+      type: 'FETCH_BULK_ALIAS_DATA_REQUEST',
+      aliases
+    });
+
+    await Promise.all(
+      aliases.map(alias =>
+        fetchFunc(alias).then((r: IPriApiResourceResponse) => {
+          if (r) {
+            data.push([alias, r.data]);
+          }
+        })
+      )
+    );
+
+    dispatch({
+      type: 'FETCH_BULK_ALIAS_DATA_SUCCESS',
+      aliases,
+      data
+    });
+  }
+
+  dispatch({
+    type: 'FETCH_BULK_ALIAS_DATA_COMPLETE',
+    aliases,
     data
   });
 

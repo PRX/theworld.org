@@ -7,7 +7,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from '@interfaces/state';
-import { fetchEpisode } from '@lib/fetch';
+import { fetchApiEpisode, fetchEpisode } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 
@@ -30,7 +30,9 @@ export const fetchEpisodeData = (
       }
     });
 
-    data = await fetchEpisode(id).then(
+    data = await (typeof window === 'undefined'
+      ? fetchEpisode
+      : fetchApiEpisode)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 

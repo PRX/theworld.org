@@ -31,10 +31,16 @@ import { storyCardStyles, storyCardTheme } from './StoryCard.styles';
 export interface StoryCardProps {
   data: IPriApiResource;
   feature?: boolean;
+  short?: boolean;
   priority?: boolean;
 }
 
-export const StoryCard = ({ data, feature, priority }: StoryCardProps) => {
+export const StoryCard = ({
+  data,
+  feature,
+  short,
+  priority
+}: StoryCardProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { teaser, title, image, primaryCategory, crossLinks } = data;
@@ -95,6 +101,7 @@ export const StoryCard = ({ data, feature, priority }: StoryCardProps) => {
         elevation={1}
         className={cx({
           [classes.feature]: feature || !image,
+          [classes.short]: short,
           [classes.isLoading]: isLoading
         })}
       >

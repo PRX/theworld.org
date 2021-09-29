@@ -55,17 +55,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Build response object.
       const apiResp = {
-        ...program.data,
-        featuredStory: featuredStories
-          ? featuredStories.shift()
-          : stories.data.shift(),
-        featuredStories: featuredStories
-          ? featuredStories.concat(
-              stories.data.splice(0, 4 - featuredStories.length)
-            )
-          : stories.data.splice(0, 4),
-        stories,
-        episodes
+        data: {
+          ...program.data,
+          featuredStory: featuredStories
+            ? featuredStories.shift()
+            : stories.data.shift(),
+          featuredStories: featuredStories
+            ? featuredStories.concat(
+                stories.data.splice(0, 4 - featuredStories.length)
+              )
+            : stories.data.splice(0, 4),
+          stories,
+          episodes
+        }
       };
 
       res.status(200).json(apiResp);

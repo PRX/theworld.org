@@ -16,7 +16,8 @@ module.exports = withPlausibleProxy({
       'media.pri.org',
       'www.pri.org',
       'pri9.lndo.site',
-      'media-pri-dev.s3.us-east-1.amazonaws.com'
+      'media-pri-dev.s3.us-east-1.amazonaws.com',
+      'www.loe.org'
     ],
     deviceSizes: [370, 600, 960, 1280, 1920],
     imageSizes: [50, 100, 300, 400, 568, 808]
@@ -53,8 +54,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 30,
@@ -84,8 +87,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 40,
@@ -107,8 +112,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 40,
@@ -122,8 +129,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 40,
@@ -137,8 +146,10 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item);
-            const allChunksNames = chunks.map(item => item.name).join('~');
+              .reduceRight(item => item.toLowerCase());
+            const allChunksNames = chunks
+              .map(item => (item.name || '').toLowerCase())
+              .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
           priority: 40,

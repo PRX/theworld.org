@@ -13,7 +13,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const apiResp = await fetchQueryAlias(path);
 
     if (apiResp) {
-      res.status(200).json(apiResp.data);
+      res.status(200).json(apiResp);
     } else {
       res.status(404).end();
     }

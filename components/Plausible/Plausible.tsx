@@ -37,8 +37,6 @@ export const Plausible = ({
   }, []);
 
   useEffect(() => {
-    console.log('Sending events', events);
-
     (events || []).forEach(args => plausible.apply(this, args));
   }, [type, id]);
 

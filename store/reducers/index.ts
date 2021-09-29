@@ -5,13 +5,26 @@ import * as fromCollections from './collections';
 import * as fromContentData from './contentData';
 import * as fromCtaData from './ctaData';
 import * as fromMenusData from './menusData';
+import * as fromSearch from './search';
+import * as fromUi from './ui';
 
 export const initialState: RootState = {
   aliasData: {},
   contentData: {},
   collections: {},
   ctaData: {},
-  menusData: {}
+  menusData: {},
+  search: {
+    open: false,
+    query: null,
+    loading: false,
+    searches: {}
+  },
+  ui: {
+    drawer: {
+      open: true
+    }
+  }
 };
 
 export const reducers = combineReducers({
@@ -19,7 +32,9 @@ export const reducers = combineReducers({
   contentData: fromContentData.contentData,
   collections: fromCollections.collections,
   ctaData: fromCtaData.ctaData,
-  menusData: fromMenusData.menusData
+  menusData: fromMenusData.menusData,
+  search: fromSearch.search,
+  ui: fromUi.ui
 });
 
 export const getDataByAlias = (state: RootState, alias: string) =>
@@ -27,6 +42,11 @@ export const getDataByAlias = (state: RootState, alias: string) =>
 
 export const getDataByResource = (state: RootState, type: string, id: string) =>
   fromContentData.getContentData(state.contentData, type, id);
+
+export const getContentDataByAlias = (state: RootState, alias: string) => {
+  const { id, type } = fromAliasData.getAliasData(state.aliasData, alias) || {};
+  return fromContentData.getContentData(state.contentData, type, id as string);
+};
 
 export const getCollectionData = (
   state: RootState,
@@ -73,3 +93,14 @@ export const getCtaRegionGroup = (
 
 export const getMenusData = (state: RootState, menu: string) =>
   fromMenusData.getMenusData(state.menusData, menu);
+
+export const getSearchOpen = (state: RootState) =>
+  fromSearch.getSearchOpen(state.search);
+export const getSearchLoading = (state: RootState) =>
+  fromSearch.getSearchLoading(state.search);
+export const getSearchQuery = (state: RootState) =>
+  fromSearch.getSearchQuery(state.search);
+export const getSearchData = (state: RootState, query: string) =>
+  fromSearch.getSearchData(state.search, query);
+export const getUiDrawerOpen = (state: RootState) =>
+  fromUi.getUiDrawerOpen(state.ui);

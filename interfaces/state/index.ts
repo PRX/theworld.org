@@ -4,3 +4,5 @@ export * from './ctaData.interface';
 export * from './loading.interface';
 export * from './menusData.interface';
 export * from './rootState.interface';
+export * from './search.interface';
+export * from './ui.interface';

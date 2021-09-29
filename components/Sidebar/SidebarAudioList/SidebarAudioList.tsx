@@ -7,7 +7,7 @@ import React, { useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ListProps } from '@material-ui/core';
-import { fetchStoryData } from '@store/actions';
+import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { SidebarList } from '../SidebarList';
 
 interface ISidebarAudioListProps extends ListProps {

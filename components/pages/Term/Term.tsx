@@ -30,11 +30,9 @@ import { MetaTags } from '@components/MetaTags';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
-import {
-  appendResourceCollection,
-  fetchCtaData,
-  fetchTermData
-} from '@store/actions';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { fetchTermData } from '@store/actions/fetchTermData';
 import {
   getCollectionData,
   getCtaRegionData,
