@@ -22,6 +22,10 @@ import { fetchCtaData } from '@store/actions/fetchCtaData';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   const store = useStore();
+  const [, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const [plausibleDomain, setPlausibleDomain] = useState(null);
   const { type, id } = pageProps;
   const contextValue = {
@@ -42,6 +46,10 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+
+    return () => {
+      unsub();
+    };
   }, []);
 
   useEffect(() => {

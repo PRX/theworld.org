@@ -18,9 +18,6 @@ import { ctaTypeComponentMap } from './components';
 export const AppCtaBanner = () => {
   const store = useStore();
   const [state, setState] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
   const {
     page: {
       resource: { type, id }
@@ -31,6 +28,10 @@ export const AppCtaBanner = () => {
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);
+  const unsub = store.subscribe(() => {
+    setClosed(false);
+    setState(store.getState());
+  });
   const classes = appCtaBannerStyles({});
   const cx = classNames.bind(classes);
 
@@ -41,7 +42,7 @@ export const AppCtaBanner = () => {
 
     const { name, hash, cookieLifespan } = shownMessage;
     // Set cookie for region message.
-    setCtaCookie(name, hash, +cookieLifespan);
+    setCtaCookie(name, hash, cookieLifespan);
     // Close prompt.
     setClosed(true);
   };
