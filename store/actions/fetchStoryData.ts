@@ -35,6 +35,30 @@ export const fetchStoryData = (
     ).then((resp: IPriApiResourceResponse) => resp && resp.data);
 
     dispatch({
+      type: 'SET_RESOURCE_CONTEXT',
+      payload: {
+        type,
+        id,
+        pageType: 'content',
+        context: [
+          `node:${data.id}`,
+          `node:${data.program?.id}`,
+          `term:${data.primaryCategory?.id}`,
+          ...((data.categories &&
+            !!data.categories.length &&
+            data.categories
+              .filter(v => !!v)
+              .map(({ id: tid }) => `term:${tid}`)) ||
+            []),
+          ...((data.vertical &&
+            !!data.vertical.length &&
+            data.vertical.filter(v => !!v).map(({ tid }) => `term:${tid}`)) ||
+            [])
+        ]
+      }
+    });
+
+    dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
       payload: {
         ...data,

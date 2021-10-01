@@ -13,7 +13,7 @@ import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
 import { fetchApiCategoryStories } from '@lib/fetch';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
+// import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { getDataByResource, getCollectionData } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
@@ -128,25 +128,25 @@ export const Story = () => {
       })();
     }
 
-    // Get CTA message data.
-    const context = [
-      `node:${data.id}`,
-      `node:${data.program?.id}`,
-      `term:${data.primaryCategory?.id}`,
-      ...((data.categories &&
-        !!data.categories.length &&
-        data.categories.filter(v => !!v).map(({ id: tid }) => `term:${tid}`)) ||
-        []),
-      ...((data.vertical &&
-        !!data.vertical.length &&
-        data.vertical.filter(v => !!v).map(({ tid }) => `term:${tid}`)) ||
-        [])
-    ];
-    (async () => {
-      await store.dispatch<any>(
-        fetchCtaData(type, id, 'tw_cta_regions_content', context)
-      );
-    })();
+    // // Get CTA message data.
+    // const context = [
+    //   `node:${data.id}`,
+    //   `node:${data.program?.id}`,
+    //   `term:${data.primaryCategory?.id}`,
+    //   ...((data.categories &&
+    //     !!data.categories.length &&
+    //     data.categories.filter(v => !!v).map(({ id: tid }) => `term:${tid}`)) ||
+    //     []),
+    //   ...((data.vertical &&
+    //     !!data.vertical.length &&
+    //     data.vertical.filter(v => !!v).map(({ tid }) => `term:${tid}`)) ||
+    //     [])
+    // ];
+    // (async () => {
+    //   await store.dispatch<any>(
+    //     fetchCtaData(type, id, 'tw_cta_regions_content', context)
+    //   );
+    // })();
 
     return () => {
       unsub();
