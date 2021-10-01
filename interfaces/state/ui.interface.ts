@@ -1,7 +1,7 @@
 /**
- * @file loading.interface.ts
+ * @file ui.interface.ts
  *
- * Define interfaces for loading state.
+ * Define interfaces for ui state.
  */
 
 import { AnyAction } from 'redux';

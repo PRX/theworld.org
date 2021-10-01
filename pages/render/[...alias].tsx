@@ -116,16 +116,15 @@ export const getStaticProps = wrapper.getStaticProps(
       };
     }
 
-    // Preload content component.
+    // Fetch resource data.
     if (resourceType) {
       const fetchData = getResourceFetchData(resourceType);
 
-      // Use content component to fetch its data.
       if (fetchData) {
         await Promise.all([
           // Fetch App data (latest stories, menus, etc.)
           store.dispatch<any>(fetchAppData()),
-          // Use content component to fetch its data.
+          // Use resources fetch func to fetch its data.
           store.dispatch(fetchData(resourceId))
         ]);
 

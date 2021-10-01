@@ -3,7 +3,7 @@
  * Component for CTA load-under region.
  */
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
@@ -20,7 +20,10 @@ import { ctaTypeComponentMap } from './components';
 
 export const AppCtaLoadUnder = () => {
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const {
     page: {
       resource: { type, id }
@@ -40,16 +43,18 @@ export const AppCtaLoadUnder = () => {
   const cx = classNames.bind(classes);
 
   const handleClose = () => {
-    // Check if cookies allowed.
-
-    // Prompt if saving cookie is ok.
-
     const { name, hash, cookieLifespan } = shownMessage;
     // Set cookie for region message.
     setCtaCookie(name, hash, +cookieLifespan);
     // Close prompt.
     setClosed(true);
   };
+
+  useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
 
   return (
     CtaMessageComponent &&

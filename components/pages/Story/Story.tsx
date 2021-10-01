@@ -144,7 +144,7 @@ export const Story = () => {
     ];
     (async () => {
       await store.dispatch<any>(
-        fetchCtaData('tw_cta_regions_content', type, id, context)
+        fetchCtaData(type, id, 'tw_cta_regions_content', context)
       );
     })();
 

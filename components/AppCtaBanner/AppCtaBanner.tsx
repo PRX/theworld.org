@@ -3,7 +3,7 @@
  * Component for CTA banner region.
  */
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
@@ -17,7 +17,10 @@ import { ctaTypeComponentMap } from './components';
 
 export const AppCtaBanner = () => {
   const store = useStore();
-  const state = store.getState();
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
   const {
     page: {
       resource: { type, id }
@@ -42,6 +45,12 @@ export const AppCtaBanner = () => {
     // Close prompt.
     setClosed(true);
   };
+
+  useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
 
   return (
     CtaMessageComponent &&

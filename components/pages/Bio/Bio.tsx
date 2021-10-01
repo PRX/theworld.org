@@ -134,7 +134,7 @@ export const Bio = () => {
       // Get CTA message data.
       const context = [`node:${id}`];
       await store.dispatch<any>(
-        fetchCtaData('tw_cta_regions_landing', type, id, context)
+        fetchCtaData(type, id, 'tw_cta_regions_landing', context)
       );
     })();
   }, [id]);
