@@ -10,8 +10,8 @@ import { ICtaMessage } from '@interfaces/cta';
 export interface CtaDataState {
   // Key: Resource signature.
   [k: string]: {
-    pageType: string;
-    context: string[];
+    pageType?: string;
+    context?: string[];
     groups?: {
       // Key: CTA region group.
       // Value: array of CTA region keys.
