@@ -3,7 +3,7 @@
  * Component for default Story layout.
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { convertNodeToElement, Transform } from 'react-html-parser';
 import { DomElement } from 'htmlparser2';
@@ -69,7 +69,10 @@ export const StoryDefault = ({ data }: Props) => {
     opencalaisPerson
   } = data;
   const store = useStore();
-  const state = store.getState();
+  const [state, updateForce] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    updateForce(store.getState());
+  });
   const relatedState =
     primaryCategory &&
     getCollectionData(
@@ -205,6 +208,12 @@ export const StoryDefault = ({ data }: Props) => {
         ];
     }
   });
+
+  useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
 
   return (
     <ThemeProvider theme={storyTheme}>

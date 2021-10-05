@@ -3,7 +3,8 @@
  * Exports the Home component.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useStore } from 'react-redux';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';
 import { Url } from 'url';
@@ -20,6 +21,7 @@ import { wrapper } from '@store';
 import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { getResourceFetchData } from '@lib/import/fetchData';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
@@ -37,7 +39,16 @@ interface StateProps extends RootState {}
 
 type Props = StateProps & IContentComponentProxyProps;
 
-const ContentProxy = ({ type }: Props) => {
+const ContentProxy = ({ type, id }: Props) => {
+  const store = useStore();
+
+  useEffect(() => {
+    // Fetch CTA messages for this resource.
+    (async () => {
+      await store.dispatch<any>(fetchCtaData(type, id));
+    })();
+  }, [type, id]);
+
   switch (type) {
     case 'file--audio':
       return <DynamicAudio />;
@@ -116,16 +127,15 @@ export const getStaticProps = wrapper.getStaticProps(
       };
     }
 
-    // Preload content component.
+    // Fetch resource data.
     if (resourceType) {
       const fetchData = getResourceFetchData(resourceType);
 
-      // Use content component to fetch its data.
       if (fetchData) {
         await Promise.all([
           // Fetch App data (latest stories, menus, etc.)
           store.dispatch<any>(fetchAppData()),
-          // Use content component to fetch its data.
+          // Use resources fetch func to fetch its data.
           store.dispatch(fetchData(resourceId))
         ]);
 

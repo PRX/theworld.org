@@ -41,6 +41,16 @@ export const fetchHomepageData = (): ThunkAction<
       episodes
     } = apiResp;
 
+    dispatch({
+      type: 'SET_RESOURCE_CONTEXT',
+      payload: {
+        type,
+        id,
+        pageType: 'landing',
+        context: ['node:3704']
+      }
+    });
+
     dispatch(
       appendResourceCollection(
         { data: [featuredStory], meta: { count: 1 } },

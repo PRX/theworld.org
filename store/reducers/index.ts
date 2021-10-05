@@ -74,6 +74,9 @@ export const getCollectionData = (
 export const getCtaData = (state: RootState, type: string, id: string) =>
   fromCtaData.getCtaData(state.ctaData, type, id);
 
+export const getCtaPageType = (state: RootState, type: string, id: string) =>
+  fromCtaData.getCtaPageType(state.ctaData, type, id);
+
 export const getCtaContext = (state: RootState, type: string, id: string) =>
   fromCtaData.getCtaContext(state.ctaData, type, id);
 

@@ -188,7 +188,7 @@ export const Homepage = () => {
     const context = ['node:3704'];
     (async () => {
       await store.dispatch<any>(
-        fetchCtaData('tw_cta_regions_landing', 'homepage', undefined, context)
+        fetchCtaData('homepage', undefined, 'tw_cta_regions_landing', context)
       );
     })();
 

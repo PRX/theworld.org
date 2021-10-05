@@ -104,7 +104,7 @@ export const Audio = () => {
     const context = [`file:${data.id}`, `node:${data.program.id}`];
     (async () => {
       await store.dispatch<any>(
-        fetchCtaData('tw_cta_regions_content', type, id, context)
+        fetchCtaData(type, id, 'tw_cta_regions_content', context)
       );
     })();
 

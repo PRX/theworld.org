@@ -4,25 +4,40 @@
  * Reducers for handling data by resource signature.
  */
 
-import { AnyAction } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 import { IPriApiResource } from 'pri-api-library/types';
-import { CtaDataState } from '@interfaces/state';
+import { CtaAction, CtaDataState } from '@interfaces/state';
 import { makeResourceSignature } from '@lib/parse/state';
 
 type State = CtaDataState;
 
-export const ctaData = (state: State = {}, action: AnyAction) => {
+export const ctaData = (state: State = {}, action: CtaAction) => {
   let key: string;
+  const makeKey = () =>
+    makeResourceSignature({
+      type: action.payload.type,
+      id: action.payload.id
+    } as IPriApiResource);
 
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload.ctaData };
+
+    case 'SET_RESOURCE_CONTEXT':
+      key = makeKey();
+      console.log(action.type, action.payload, key);
+      return {
+        ...state,
+        [key]: {
+          ...(state[key] || {}),
+          pageType: action.payload.pageType,
+          context: action.payload.context
+        }
+      };
+
     case 'FETCH_CTA_DATA_SUCCESS':
-      key = makeResourceSignature({
-        type: action.payload.type,
-        id: action.payload.id
-      } as IPriApiResource);
+      key = makeKey();
+      console.log(action.type, action.payload, key);
       return {
         ...state,
         ...(state[key]
@@ -30,11 +45,11 @@ export const ctaData = (state: State = {}, action: AnyAction) => {
               [key]: {
                 ...state[key],
                 groups: {
-                  ...state[key].groups,
+                  ...(state[key].groups || {}),
                   ...action.payload.groups
                 },
                 data: {
-                  ...state[key].data,
+                  ...(state[key].data || {}),
                   ...action.payload.data
                 }
               }
@@ -58,6 +73,12 @@ export const getCtaData = (
   type: string,
   id: string
 ) => state[makeResourceSignature({ type, id } as IPriApiResource)];
+
+export const getCtaPageType = (
+  state: CtaDataState = {},
+  type: string,
+  id: string
+) => (getCtaData(state, type, id) || {}).pageType;
 
 export const getCtaContext = (
   state: CtaDataState = {},
