@@ -147,11 +147,11 @@ export const Newsletter = () => {
               </div>
             </Grid>
             {body && (
-              <Grid item xs={10} sm={8}>
+              <Container fixed>
                 <Box className={cx('body')} my={2}>
                   <HtmlContent html={body} />
                 </Box>
-              </Grid>
+              </Container>
             )}
           </Grid>
         </Container>
