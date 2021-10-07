@@ -1,6 +1,6 @@
 /**
- * @file Sidebar.tsx
- * Component for sidebar elements.
+ * @file Tags.tsx
+ * Component for Tags elements.
  */
 
 import React, { HTMLAttributes } from 'react';
