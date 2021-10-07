@@ -34,6 +34,9 @@ export const newsletterFormTheme = (theme: Theme) => {
       },
       MuiButton: {
         containedPrimary: {
+          [theme.breakpoints.down('xs')]: {
+            width: '100%'
+          },
           '&:hover': {
             backgroundColor: tempTheme.palette.primary.dark
           }
@@ -69,12 +72,19 @@ export const newsletterFormStyles = makeStyles((theme: Theme) =>
       gridTemplateColumns: '1fr min-content',
       alignItems: 'center',
       gridGap: ({ compact }: { compact: boolean }) =>
-        `${theme.spacing(compact ? 1 : 2)}px`
+        `${theme.spacing(compact ? 1 : 2)}px`,
+      [theme.breakpoints.down('xs')]: {
+        gridTemplateColumns: '1fr',
+        justifyContent: 'stretch'
+      }
     },
     optin: {
       gridColumn: '1 / -1',
       marginTop: ({ compact }: { compact: boolean }) =>
-        `-${theme.spacing(compact ? 1 : 2)}px`
+        `-${theme.spacing(compact ? 1 : 2)}px`,
+      [theme.breakpoints.down('xs')]: {
+        paddingTop: `${theme.spacing(1)}px`
+      }
     }
   })
 );

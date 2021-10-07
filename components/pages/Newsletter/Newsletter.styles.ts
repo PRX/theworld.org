@@ -27,12 +27,12 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
     header: {
       '&$withImage': {
         display: 'grid',
-        gridTemplateColumns:
-          'minmax(2rem, 1fr) minmax(75vw, 1fr) minmax(2rem, 1fr)',
+        gridTemplateColumns: '1fr minmax(75vw, 1fr) 1fr',
         gridTemplateRows: '2fr max-content 2rem',
         gridGap: '1rem',
-        maxHeight: '75vh',
+        justifyItems: 'center',
         overflow: 'hidden',
+        marginBottom: `-${theme.spacing(3)}px`,
         '& > *': {
           position: 'relative',
           zIndex: 2,
@@ -46,6 +46,7 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
           display: 'block',
           gridColumn: '1 / -1',
           gridRow: '2 / -1',
+          justifySelf: 'stretch',
           zIndex: 1,
           backgroundColor: 'rgba(255, 255, 255, 0.65)',
           transformOrigin: 'center top'
@@ -55,6 +56,9 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
         },
         '&::after': {
           transform: 'scale(2) rotate(6deg) translateY(10%)'
+        },
+        [theme.breakpoints.up('sm')]: {
+          maxHeight: '75vh'
         }
       }
     },
@@ -62,10 +66,14 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
     imageWrapper: {
       gridColumn: '1 / -1',
       gridRow: '1 / -1',
-      maxHeight: '75vh'
+      justifySelf: 'stretch',
+      [theme.breakpoints.up('sm')]: {
+        maxHeight: '75vh'
+      }
     },
     content: {
       '$withImage &': {
+        maxWidth: '960px',
         gridColumn: '2 / -2',
         gridRow: '2 / -2',
         '&::before': {
@@ -80,18 +88,18 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
     },
     title: {
       color: theme.palette.primary.dark,
-      fontSize: '3rem',
+      fontSize: 'clamp(2rem, 10vw, 3rem)',
       lineHeight: '1.1',
       '$withImage &': {
         marginTop: 0
       }
     },
     summary: {
-      fontSize: '1.5rem'
+      fontSize: 'clamp(0.8rem, 5vw, 1.5rem)'
     },
     form: {},
     body: {
-      fontSize: '1.2rem',
+      fontSize: '(1.2rem)',
       lineHeight: '1.7rem',
       marginTop: `${theme.spacing(4)}px`,
       paddingTop: `${theme.spacing(4)}px`,
