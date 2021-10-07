@@ -1,6 +1,6 @@
 /**
- * @file Sidebar.style.ts
- * Styles for Sidebar.
+ * @file Tags.style.ts
+ * Styles for Tags.
  */
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';

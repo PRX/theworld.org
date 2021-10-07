@@ -42,23 +42,27 @@ export const SidebarList = ({
       <List className={listClasses} {...other}>
         {data.map(item =>
           item.id ? (
-            <ListItem button component={ContentLink} data={item} key={item.id}>
-              {item.avatar && (
-                <ListItemAvatar>
-                  <Avatar
-                    alt={getTitle(item)}
-                    src={item.avatar.styles.w128.src}
-                  />
-                </ListItemAvatar>
-              )}
-              <ListItemText className={cx({ noBullet: !!item.avatar })}>
-                {getTitle(item)}
-              </ListItemText>
-            </ListItem>
+            <li key={item.id}>
+              <ListItem button component={ContentLink} data={item}>
+                {item.avatar && (
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={getTitle(item)}
+                      src={item.avatar.styles.w128.src}
+                    />
+                  </ListItemAvatar>
+                )}
+                <ListItemText className={cx({ noBullet: !!item.avatar })}>
+                  {getTitle(item)}
+                </ListItemText>
+              </ListItem>
+            </li>
           ) : (
-            <ListItem button component="a" href={item.url} key={item.url}>
-              <ListItemText>{item.title}</ListItemText>
-            </ListItem>
+            <li key={item.id}>
+              <ListItem button component="a" href={item.url}>
+                <ListItemText>{item.title}</ListItemText>
+              </ListItem>
+            </li>
           )
         )}
       </List>

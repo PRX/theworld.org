@@ -25,7 +25,6 @@ export const ctaData = (state: State = {}, action: CtaAction) => {
 
     case 'SET_RESOURCE_CONTEXT':
       key = makeKey();
-      console.log(action.type, action.payload, key);
       return {
         ...state,
         [key]: {
@@ -37,7 +36,6 @@ export const ctaData = (state: State = {}, action: CtaAction) => {
 
     case 'FETCH_CTA_DATA_SUCCESS':
       key = makeKey();
-      console.log(action.type, action.payload, key);
       return {
         ...state,
         ...(state[key]
