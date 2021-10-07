@@ -121,6 +121,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                           isLoading
                         })}
                         color="secondary"
+                        aria-label="Progress Bar"
                       />
                     </CardMedia>
                   )}

@@ -50,7 +50,7 @@ export const NewsletterForm = ({
     !!error && !!error.message && !!error.message.match(/\bemail\b/i);
   const readyToSubmit = optedIn && validateEmailAddress(data.emailAddress);
   const icon = (submitted && (
-    <CircularProgress color="inherit" size={20} />
+    <CircularProgress color="inherit" size={20} aria-label="Progress Bar" />
   )) || <SendSharp />;
   const isAmp = useAmp();
   const classes = newsletterFormStyles({ compact });
