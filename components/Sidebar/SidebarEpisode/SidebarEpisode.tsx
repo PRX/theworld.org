@@ -4,6 +4,8 @@
  */
 
 import React from 'react';
+import 'moment-timezone';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -13,6 +15,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Grid,
   Typography
 } from '@material-ui/core';
 import { EqualizerRounded, PlayCircleOutlineRounded } from '@material-ui/icons';
@@ -28,13 +31,23 @@ import { SidebarHeader } from '../SidebarHeader';
 import { SidebarAudioList } from '../SidebarAudioList';
 import { SidebarFooter } from '../SidebarFooter';
 
+const Moment = dynamic(() => import('react-moment')) as any;
+
 export interface SidebarEpisodeProps {
   data: IPriApiResource;
   label?: string;
 }
 
 export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
-  const { teaser, title, image, audio, program } = data;
+  const {
+    teaser,
+    title,
+    image,
+    audio,
+    program,
+    dateBroadcast,
+    datePublished
+  } = data;
   const { segments } = audio || {};
   const classes = sidebarEpisodeStyles({});
   const cx = classNames.bind(classes);
@@ -48,7 +61,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
 
   return (
     <ThemeProvider theme={sidebarEpisodeTheme}>
-      <Card square elevation={1}>
+      <Card square elevation={1} className={cx('root')}>
         <CardActionArea>
           {image && (
             <CardMedia>
@@ -63,11 +76,33 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
             </CardMedia>
           )}
           <CardContent>
-            {label && (
-              <Typography variant="overline" gutterBottom>
-                {label}
-              </Typography>
-            )}
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              {label && (
+                <Grid item xs="auto" zeroMinWidth>
+                  <Typography variant="overline" noWrap>
+                    {label}
+                  </Typography>
+                </Grid>
+              )}
+              <Grid item xs="auto" zeroMinWidth>
+                <Typography
+                  variant="subtitle2"
+                  component="div"
+                  color="textSecondary"
+                  gutterBottom
+                  noWrap
+                >
+                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                    {dateBroadcast || datePublished}
+                  </Moment>
+                </Typography>
+              </Grid>
+            </Grid>
             <Typography
               variant="h5"
               component="h2"
@@ -91,6 +126,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
         </CardActionArea>
         {segments && (
           <>
+            <hr />
             <SidebarHeader>
               <Typography variant="h2">
                 <EqualizerRounded /> In this episode:

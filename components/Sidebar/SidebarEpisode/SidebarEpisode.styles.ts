@@ -13,7 +13,15 @@ import {
 
 export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      '& hr': {
+        marginBlockStart: 0,
+        marginBlockEnd: 0,
+        background: 'none',
+        border: 'none',
+        borderTop: `1px solid ${theme.palette.divider}`
+      }
+    },
     imageWrapper: {
       paddingTop: 'unset'
     },
@@ -30,7 +38,8 @@ export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridTemplateColumns: 'min-content 1fr',
       gridGap: `${theme.spacing(1)}px`,
-      alignItems: 'center'
+      alignItems: 'center',
+      marginTop: theme.typography.pxToRem(theme.spacing(1))
     },
     playIcon: {
       alignSelf: 'start',

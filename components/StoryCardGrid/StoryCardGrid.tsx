@@ -4,6 +4,8 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import 'moment-timezone';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { parse } from 'url';
@@ -17,6 +19,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Grid,
   LinearProgress,
   Link as MuiLink,
   List,
@@ -36,6 +39,8 @@ import {
   storyCardGridStyles,
   storyCardGridTheme
 } from './StoryCardGrid.styles';
+
+const Moment = dynamic(() => import('react-moment')) as any;
 
 export interface StoryCardGridProps extends BoxProps {
   data: IPriApiResource[];
@@ -100,7 +105,15 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
       <ThemeProvider theme={storyCardGridTheme}>
         <Box className={cx('root')} {...other}>
           {data.map((item, index) => {
-            const { id, title, image, primaryCategory, crossLinks } = item;
+            const {
+              id,
+              title,
+              image,
+              primaryCategory,
+              crossLinks,
+              dateBroadcast,
+              datePublished
+            } = item;
             const { pathname } = generateLinkHrefForContent(item);
             const isLoading = pathname === loadingUrl;
             return (
@@ -125,14 +138,43 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     </CardMedia>
                   )}
                   <CardContent>
-                    {primaryCategory && (
-                      <Typography variant="overline" gutterBottom>
-                        <ContentLink data={primaryCategory}>
-                          {primaryCategory.title}
-                        </ContentLink>
-                      </Typography>
-                    )}
-                    <Typography variant="h5" component="h2" gutterBottom>
+                    <Grid
+                      container
+                      justify="space-between"
+                      spacing={1}
+                      style={{ marginBottom: 0 }}
+                    >
+                      {primaryCategory && (
+                        <Grid item xs="auto" zeroMinWidth>
+                          <Typography variant="overline" noWrap>
+                            <ContentLink data={primaryCategory}>
+                              {primaryCategory.title}
+                            </ContentLink>
+                          </Typography>
+                        </Grid>
+                      )}
+                      <Grid item xs="auto" zeroMinWidth>
+                        <Typography
+                          variant="subtitle2"
+                          color="textSecondary"
+                          noWrap
+                        >
+                          <Moment
+                            format="MMM. D, YYYY"
+                            tz="America/New_York"
+                            unix
+                          >
+                            {dateBroadcast || datePublished}
+                          </Moment>
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Typography
+                      variant="h5"
+                      component="h2"
+                      gutterBottom
+                      className={cxCard('title')}
+                    >
                       {title}
                     </Typography>
                     <ContentLink data={item} className={cxCard('link')} />
