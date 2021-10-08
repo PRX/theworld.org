@@ -15,7 +15,11 @@ export interface IImageWidthsFunc {
 export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
   node: DomElement
 ) => {
-  if (node.type === 'tag' && node.name === 'img') {
+  if (
+    node.type === 'tag' &&
+    node.name === 'img' &&
+    !(node.attribs.width === '1' && node.attribs.height === '1')
+  ) {
     const imageWidths = getImageWidths(node);
     const sizes = imageWidths
       .map(([q, w]) => (q ? `(${q}) ${w}` : w))
