@@ -15,6 +15,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
     title: {
+      marginTop: theme.typography.pxToRem(theme.spacing(1)),
       [theme.breakpoints.down('xs')]: {
         fontSize: theme.typography.pxToRem(16),
         '$feature &': {

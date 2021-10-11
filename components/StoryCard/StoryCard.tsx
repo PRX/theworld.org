@@ -4,6 +4,8 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import 'moment-timezone';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { parse } from 'url';
@@ -15,6 +17,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Grid,
   LinearProgress,
   Link as MuiLink,
   List,
@@ -27,6 +30,8 @@ import { ContentLink } from '@components/ContentLink';
 import { ILink } from '@interfaces/link';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { storyCardStyles, storyCardTheme } from './StoryCard.styles';
+
+const Moment = dynamic(() => import('react-moment')) as any;
 
 export interface StoryCardProps {
   data: IPriApiResource;
@@ -43,7 +48,15 @@ export const StoryCard = ({
 }: StoryCardProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { teaser, title, image, primaryCategory, crossLinks } = data;
+  const {
+    teaser,
+    title,
+    image,
+    primaryCategory,
+    crossLinks,
+    dateBroadcast,
+    datePublished
+  } = data;
   const { pathname } = generateLinkHrefForContent(data);
   const classes = storyCardStyles({ isLoading });
   const cx = classNames.bind(classes);
@@ -124,13 +137,29 @@ export const StoryCard = ({
             </CardMedia>
           )}
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
-            {primaryCategory && (
-              <Typography variant="overline" gutterBottom>
-                <ContentLink data={primaryCategory}>
-                  {primaryCategory.title}
-                </ContentLink>
-              </Typography>
-            )}
+            <Grid
+              container
+              justify="space-between"
+              spacing={1}
+              style={{ marginBottom: 0 }}
+            >
+              {primaryCategory && (
+                <Grid item xs="auto" zeroMinWidth>
+                  <Typography variant="overline" noWrap>
+                    <ContentLink data={primaryCategory}>
+                      {primaryCategory.title}
+                    </ContentLink>
+                  </Typography>
+                </Grid>
+              )}
+              <Grid item xs="auto" zeroMinWidth>
+                <Typography variant="subtitle2" color="textSecondary" noWrap>
+                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                    {dateBroadcast || datePublished}
+                  </Moment>
+                </Typography>
+              </Grid>
+            </Grid>
             <Typography
               variant="h5"
               component="h2"
