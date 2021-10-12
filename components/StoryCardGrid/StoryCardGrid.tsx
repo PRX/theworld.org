@@ -157,6 +157,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                       <Grid item xs="auto" zeroMinWidth>
                         <Typography
                           variant="subtitle2"
+                          component="span"
                           color="textSecondary"
                           noWrap
                         >

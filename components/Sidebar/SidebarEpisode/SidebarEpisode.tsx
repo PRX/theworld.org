@@ -80,7 +80,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
               container
               justify="space-between"
               alignItems="center"
-              style={{ whiteSpace: 'nowrap' }}
+              spacing={1}
             >
               {label && (
                 <Grid item xs="auto" zeroMinWidth>
@@ -92,7 +92,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
               <Grid item xs="auto" zeroMinWidth>
                 <Typography
                   variant="subtitle2"
-                  component="div"
+                  component="span"
                   color="textSecondary"
                   gutterBottom
                   noWrap
