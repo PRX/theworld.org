@@ -28,6 +28,14 @@ export const storyHeaderTheme = (theme: Theme) =>
           fontSize: theme.typography.pxToRem(24),
           lineHeight: theme.typography.pxToRem(30)
         }
+      },
+      subtitle2: {
+        fontSize: theme.typography.pxToRem(16),
+        lineHeight: theme.typography.pxToRem(24),
+        [theme.breakpoints.up('sm')]: {
+          fontSize: theme.typography.pxToRem(18),
+          lineHeight: theme.typography.pxToRem(30)
+        }
       }
     },
     overrides: {

@@ -20,7 +20,7 @@ export const EpisodeHeader = ({ data }: Props) => {
   const classes = episodeHeaderStyles({});
 
   return (
-    <Box className={classes.root} mt={4} mb={2}>
+    <Box component="header" className={classes.root} mt={4} mb={2}>
       <Box mb={3}>
         <Typography variant="h1">{title}</Typography>
       </Box>
