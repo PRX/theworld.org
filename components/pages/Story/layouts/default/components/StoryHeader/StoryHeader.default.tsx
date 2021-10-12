@@ -61,7 +61,7 @@ export const StoryHeader = ({ data }: Props) => {
           </Typography>
           {dateUpdated && (
             <Typography
-              variant="subtitle2"
+              variant="subtitle1"
               component="div"
               className={classes.date}
             >
