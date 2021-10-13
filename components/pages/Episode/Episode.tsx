@@ -203,7 +203,9 @@ export const Episode = () => {
                 {spotifyPlaylist && !!spotifyPlaylist.length && (
                   <Box my={3}>
                     <Divider />
-                    <Typography variant="h4">Music heard on air</Typography>
+                    <Typography variant="h4" component="h2">
+                      Music heard on air
+                    </Typography>
                     <Grid container spacing={2}>
                       {spotifyPlaylist.map(({ uri }) => (
                         <Grid item xs={12} sm={6} lg={4} key={uri}>
