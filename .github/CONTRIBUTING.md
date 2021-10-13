@@ -4,8 +4,9 @@ This project makes use of the [Gitflow](https://www.atlassian.com/git/tutorials/
 
 ### Branch naming conventions
 
-- `master` - The master branch is for code ready to be released to the production environment.
-- `{feat|fix|docs}/{issue-number}--{short-description}` - Work branches for issue specific work. Should branck off `master` and PR's merge back into `master`.
+- `productions` - The master branch is for code ready to be released to the production environment.
+- `preview` - The staging branch is for new, larger feature or changes introduced by one or more PR's that needs ongoing, external review at `preview.theworld.org`. If more than one major project is in progress, new "preview" domains and branches will need to be made for those projects.
+- `{feat|fix|docs}/{issue-number}--{short-description}` - Work branches for issue specific work. Bug fixes and minor new features branch off `master` and PR's merge back into `master`. Issues related to larger feature projects should branch of of `preview` (or the develop branch created for that project) and merge back into that branch.
 
 ### Pull requests
 
