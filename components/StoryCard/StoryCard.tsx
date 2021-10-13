@@ -153,7 +153,12 @@ export const StoryCard = ({
                 </Grid>
               )}
               <Grid item xs="auto" zeroMinWidth>
-                <Typography variant="subtitle2" color="textSecondary" noWrap>
+                <Typography
+                  variant="subtitle2"
+                  component="span"
+                  color="textSecondary"
+                  noWrap
+                >
                   <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
                     {dateBroadcast || datePublished}
                   </Moment>
