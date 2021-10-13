@@ -45,7 +45,7 @@ export const StoryHeader = ({ data }: Props) => {
     title,
     teaser
   } = data;
-  const { caption, credit } = image || {};
+  const { alt, caption, credit } = image || {};
   const hasCaption = caption && !!caption.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;
@@ -62,6 +62,7 @@ export const StoryHeader = ({ data }: Props) => {
           <Box className={cx('imageWrapper')}>
             <Hidden mdUp>
               <Image
+                alt={alt}
                 className={cx('image')}
                 src={image.url}
                 layout="fill"
@@ -71,6 +72,7 @@ export const StoryHeader = ({ data }: Props) => {
             </Hidden>
             <Hidden smDown>
               <Image
+                alt={alt}
                 className={cx('image')}
                 src={image.url}
                 layout="responsive"
