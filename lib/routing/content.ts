@@ -45,8 +45,6 @@ export const generateLinkPropsForContent = (
       }
     };
 
-    console.log(url.pathname, href);
-
     return {
       href,
       as: alias
