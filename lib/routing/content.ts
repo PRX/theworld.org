@@ -38,7 +38,7 @@ export const generateLinkPropsForContent = (
       ...(query && { query })
     };
     const href = {
-      ...parse('/render/[...alias]'),
+      ...parse('/[...alias]'),
       query: {
         alias: alias.pathname.substr(1).split('/'),
         ...query

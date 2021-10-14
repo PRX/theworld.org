@@ -19,7 +19,7 @@ import { isLocalUrl } from '../parse/url';
  *    Url object with alias query relative to app.
  */
 export const generateLinkHrefFromUrl = (url: Url) => {
-  const pathname = url.pathname !== '/' ? '/render/[...alias]' : '/';
+  const pathname = url.pathname !== '/' ? '/[...alias]' : '/';
   const query =
     url.pathname !== '/'
       ? { alias: url.pathname.replace(/^\/+|\/+$/g, '').split('/') }

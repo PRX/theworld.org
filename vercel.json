@@ -47,11 +47,5 @@
         }
       ]
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/((?!_next/|__nextjs_original-stack-frame|(?:[^/]+/)?api/|(?:cache/)?images/)(?:[^/.]+/?)+$)",
-      "destination": "/render/$1"
-    }
   ]
 }
