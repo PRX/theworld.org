@@ -38,13 +38,14 @@ export const StoryHeader = ({ data }: Props) => {
     byline,
     dateBroadcast,
     datePublished,
+    dateUpdated,
     image,
     primaryCategory,
     program,
     title,
     teaser
   } = data;
-  const { caption, credit } = image || {};
+  const { alt, caption, credit } = image || {};
   const hasCaption = caption && !!caption.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;
@@ -56,11 +57,12 @@ export const StoryHeader = ({ data }: Props) => {
 
   return (
     <ThemeProvider theme={storyHeaderTheme}>
-      <Box className={cx('root', { withImage: !!image })}>
+      <Box component="header" className={cx('root', { withImage: !!image })}>
         {image && (
           <Box className={cx('imageWrapper')}>
             <Hidden mdUp>
               <Image
+                alt={alt}
                 className={cx('image')}
                 src={image.url}
                 layout="fill"
@@ -70,6 +72,7 @@ export const StoryHeader = ({ data }: Props) => {
             </Hidden>
             <Hidden smDown>
               <Image
+                alt={alt}
                 className={cx('image')}
                 src={image.url}
                 layout="responsive"
@@ -104,14 +107,36 @@ export const StoryHeader = ({ data }: Props) => {
                 {program && (
                   <ContentLink data={program} className={classes.programLink} />
                 )}
-                <Moment
+                <Typography
+                  variant="subtitle1"
+                  component="div"
                   className={classes.date}
-                  format="MMM. D, YYYY · h:mm A z"
-                  tz="America/New_York"
-                  unix
                 >
-                  {dateBroadcast || datePublished}
-                </Moment>
+                  <Moment
+                    format="MMMM D, YYYY · h:mm A z"
+                    tz="America/New_York"
+                    unix
+                  >
+                    {dateBroadcast || datePublished}
+                  </Moment>
+                </Typography>
+                {dateUpdated && (
+                  <Typography
+                    variant="subtitle1"
+                    component="div"
+                    className={classes.date}
+                  >
+                    {' '}
+                    Updated on{' '}
+                    <Moment
+                      format="MMM. D, YYYY · h:mm A z"
+                      tz="America/New_York"
+                      unix
+                    >
+                      {dateUpdated}
+                    </Moment>
+                  </Typography>
+                )}
                 {byline && (
                   <ul className={classes.byline}>
                     {byline.map(({ id, creditType, person }) => (
