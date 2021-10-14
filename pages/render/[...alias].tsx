@@ -165,28 +165,24 @@ export const getStaticPaths = async () => {
   } = homepage;
   const { latestStories: latestAppStories, menus } = app;
   const resources = [
-    // Always include content in main section of homepage.
     program,
     featuredStory,
     ...featuredStories,
     ...stories.data,
     ...episodes.data,
-    // Only inlcude deeper content in production builds.
-    ...(process.env.AWS_BRANCH === 'production' && [
-      ...episodes.data.reduce(
-        (acc: any, { audio }) => [
-          ...acc,
-          ...(audio?.segments ? [...audio.segments] : [])
-        ],
-        [] as any[]
-      ),
-      ...latestStories.data,
-      ...latestAppStories.data,
-      ...team,
-      ...[featuredStory, ...featuredStories, ...stories.data]
-        .map(story => story.primaryCategory)
-        .filter(v => !!v)
-    ])
+    ...episodes.data.reduce(
+      (acc: any, { audio }) => [
+        ...acc,
+        ...(audio?.segments ? [...audio.segments] : [])
+      ],
+      [] as any[]
+    ),
+    ...latestStories.data,
+    ...latestAppStories.data,
+    ...team,
+    ...[featuredStory, ...featuredStories, ...stories.data]
+      .map(story => story.primaryCategory)
+      .filter(v => !!v)
   ];
   const paths = [
     ...resources.map(resource => ({
