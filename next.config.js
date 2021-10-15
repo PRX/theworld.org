@@ -11,6 +11,11 @@ module.exports = withPlausibleProxy({
   subdirectory: uid(6),
   scriptName: uid()
 })({
+  env: {
+    CM_API_KEY: process.env.CM_API_KEY,
+    CSE_API_KEY: process.env.CSE_API_KEY,
+    FB_ACCESS_TOKEN: process.env.FB_ACCESS_TOKEN
+  },
   images: {
     domains: [
       'media.pri.org',
