@@ -6,6 +6,7 @@
 const path = require('path');
 const { withPlausibleProxy } = require('next-plausible');
 const { uid } = require('uid');
+const { priApi } = require('./config');
 
 module.exports = withPlausibleProxy({
   subdirectory: uid(6),
@@ -14,7 +15,8 @@ module.exports = withPlausibleProxy({
   env: {
     CM_API_KEY: process.env.CM_API_KEY,
     CSE_API_KEY: process.env.CSE_API_KEY,
-    FB_ACCESS_TOKEN: process.env.FB_ACCESS_TOKEN
+    FB_ACCESS_TOKEN: process.env.FB_ACCESS_TOKEN,
+    PRI_API_CONFIG: priApi
   },
   images: {
     domains: [
