@@ -150,6 +150,7 @@ export const getStaticProps = wrapper.getStaticProps(
 export const getStaticPaths = async () => {
   const { AWS_BRANCH, VERCEL_ENV } = process.env;
   const isProduction = [AWS_BRANCH, VERCEL_ENV].indexOf('production') !== -1;
+  console.log(isProduction, AWS_BRANCH, VERCEL_ENV);
   const [homepage, app, team] = await Promise.all([
     fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data),
     fetchApp(),
@@ -185,7 +186,7 @@ export const getStaticPaths = async () => {
       ...team,
       ...[featuredStory, ...featuredStories, ...stories.data]
         .map(story => story.primaryCategory)
-        .filter(v => !!v)
+        ?.filter(v => !!v)
     ])
   ];
   const paths = [
