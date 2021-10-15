@@ -148,6 +148,8 @@ export const getStaticProps = wrapper.getStaticProps(
 );
 
 export const getStaticPaths = async () => {
+  const { AWS_BRANCH, VERCEL_ENV } = process.env;
+  const isProduction = [AWS_BRANCH, VERCEL_ENV].indexOf('production') !== -1;
   const [homepage, app, team] = await Promise.all([
     fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data),
     fetchApp(),
@@ -170,19 +172,21 @@ export const getStaticPaths = async () => {
     ...featuredStories,
     ...stories.data,
     ...episodes.data,
-    ...episodes.data.reduce(
-      (acc: any, { audio }) => [
-        ...acc,
-        ...(audio?.segments ? [...audio.segments] : [])
-      ],
-      [] as any[]
-    ),
-    ...latestStories.data,
-    ...latestAppStories.data,
-    ...team,
-    ...[featuredStory, ...featuredStories, ...stories.data]
-      .map(story => story.primaryCategory)
-      .filter(v => !!v)
+    ...(isProduction && [
+      ...episodes.data.reduce(
+        (acc: any, { audio }) => [
+          ...acc,
+          ...(audio?.segments ? [...audio.segments] : [])
+        ],
+        [] as any[]
+      ),
+      ...latestStories.data,
+      ...latestAppStories.data,
+      ...team,
+      ...[featuredStory, ...featuredStories, ...stories.data]
+        .map(story => story.primaryCategory)
+        .filter(v => !!v)
+    ])
   ];
   const paths = [
     ...resources.map(resource => ({
