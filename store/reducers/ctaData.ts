@@ -21,7 +21,7 @@ export const ctaData = (state: State = {}, action: CtaAction) => {
 
   switch (action.type) {
     case HYDRATE:
-      return { ...state, ...action.payload.ctaData };
+      return { ...action.payload.ctaData, ...state };
 
     case 'SET_RESOURCE_CONTEXT':
       key = makeKey();

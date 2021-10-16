@@ -23,7 +23,11 @@ export const fetchTermData = (
 
   if (!data) {
     dispatch({
-      type: 'FETCH_HOMEPAGE_DATA_REQUEST'
+      type: 'FETCH_CONTENT_DATA_REQUEST',
+      payload: {
+        type,
+        id
+      }
     });
 
     const apiResp = await fetchTerm(id).then(
