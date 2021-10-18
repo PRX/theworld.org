@@ -1,3 +1,4 @@
 Sitemap: https://www.pri.org/sitemap.xml
-User-agent:*
+
+User-agent: *
 Disallow:
