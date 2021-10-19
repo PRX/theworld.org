@@ -31,7 +31,9 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
         gridTemplateRows: '2fr max-content 2rem',
         gridGap: '1rem',
         justifyItems: 'center',
+        alignContent: 'end',
         overflow: 'hidden',
+        minHeight: '75vh',
         marginBottom: `-${theme.spacing(3)}px`,
         '& > *': {
           position: 'relative',
@@ -56,9 +58,6 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
         },
         '&::after': {
           transform: 'scale(2) rotate(6deg) translateY(10%)'
-        },
-        [theme.breakpoints.up('sm')]: {
-          maxHeight: '75vh'
         }
       }
     },
@@ -66,10 +65,7 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
     imageWrapper: {
       gridColumn: '1 / -1',
       gridRow: '1 / -1',
-      justifySelf: 'stretch',
-      [theme.breakpoints.up('sm')]: {
-        maxHeight: '75vh'
-      }
+      justifySelf: 'stretch'
     },
     content: {
       '$withImage &': {
