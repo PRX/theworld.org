@@ -26,5 +26,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     latestStories
   };
 
-  res.status(200).json(apiResp);
+  return res.status(200).json(apiResp);
 };

@@ -52,12 +52,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         stories
       };
 
-      res.status(200).json(apiResp);
-      res.end();
-    } else {
-      res.status(404);
+      return res.status(200).json(apiResp);
     }
+
+    return res.status(404);
   }
 
-  res.status(400);
+  return res.status(400);
 };
