@@ -17,8 +17,7 @@ export const contentData = (state: State = {}, action: AnyAction) => {
 
   switch (action.type) {
     case HYDRATE:
-      console.log(state, action.payload);
-      return { ...action.payload.contentData, ...state };
+      return { ...state, ...action.payload.contentData };
 
     case 'FETCH_CONTENT_DATA_SUCCESS':
       key = action.payload && makeResourceSignature(action.payload);

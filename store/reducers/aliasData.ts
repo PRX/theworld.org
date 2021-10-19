@@ -18,7 +18,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
 
   switch (action.type) {
     case HYDRATE:
-      return { ...action.payload.aliasData, ...state };
+      return { ...state, ...action.payload.aliasData };
 
     case 'FETCH_ALIAS_DATA_SUCCESS':
       return {

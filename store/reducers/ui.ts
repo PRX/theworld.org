@@ -12,7 +12,7 @@ type State = UiState | RootState;
 export const ui = (state = {}, action: UiAction): State => {
   switch (action.type) {
     case HYDRATE:
-      return { ...action.payload.ui, ...state };
+      return { ...state, ...action.payload.ui };
 
     case 'UI_DRAWER_OPEN':
       return {
