@@ -15,6 +15,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     field = 'categories',
     exclude
   } = req.query;
+  let code = 400;
+  let apiResp: any;
 
   if (id) {
     const { data: category } = (await fetchPriApiItem(
@@ -44,13 +46,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       })) as PriApiResponseBody;
 
       // Build response object.
-      const apiResp = stories;
-
-      res.status(200).json(apiResp);
+      code = 200;
+      apiResp = stories;
     } else {
-      res.status(404).end();
+      code = 404;
     }
   }
 
-  res.status(500).end();
+  switch (code) {
+    case 200:
+      res.status(code).json(apiResp);
+      break;
+
+    default:
+      res.status(code).end();
+      break;
+  }
 };
