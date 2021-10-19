@@ -37,7 +37,6 @@ export const collections = (state: State = {}, action: AnyAction) => {
 
   switch (action.type) {
     case HYDRATE:
-      console.log(action.type, state, action.payload);
       return { ...state, ...action.payload.collections };
 
     case 'APPEND_REFS_TO_COLLECTION':
