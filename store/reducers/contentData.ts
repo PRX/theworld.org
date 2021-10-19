@@ -17,6 +17,7 @@ export const contentData = (state: State = {}, action: AnyAction) => {
 
   switch (action.type) {
     case HYDRATE:
+      console.log(state, action.payload);
       return { ...action.payload.contentData, ...state };
 
     case 'FETCH_CONTENT_DATA_SUCCESS':
