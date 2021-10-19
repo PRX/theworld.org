@@ -19,11 +19,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )) as IPriApiResourceResponse;
 
     if (newsletter) {
-      res.status(200).json(newsletter.data);
-    } else {
-      res.status(404);
+      return res.status(200).json(newsletter.data);
     }
+
+    return res.status(404);
   }
 
-  res.status(400);
+  return res.status(400);
 };

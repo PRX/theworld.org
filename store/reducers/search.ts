@@ -16,7 +16,7 @@ export const search = (state = {}, action: SearchAction): State => {
 
   switch (action.type) {
     case HYDRATE:
-      return { ...action.payload.search, ...state };
+      return { ...state, ...action.payload.search };
 
     case 'SEARCH_OPEN':
       s = state as SearchState;

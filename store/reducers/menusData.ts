@@ -13,7 +13,7 @@ type State = MenusDataState | RootState;
 export const menusData = (state: State = {}, action: AnyAction) => {
   switch (action.type) {
     case HYDRATE:
-      return { ...action.payload.menusData, ...state };
+      return { ...state, ...action.payload.menusData };
     case 'FETCH_MENUS_DATA_SUCCESS':
       return {
         ...state,

@@ -37,7 +37,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
 
   switch (action.type) {
     case HYDRATE:
-      return { ...action.payload.collections, ...state };
+      return { ...state, ...action.payload.collections };
 
     case 'APPEND_REFS_TO_COLLECTION':
       key = makeResourceSignature(action.payload.resource);

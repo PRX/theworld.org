@@ -56,11 +56,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         episodes
       };
 
-      res.status(200).json(apiResp);
-    } else {
-      res.status(404);
+      return res.status(200).json(apiResp);
     }
+
+    return res.status(404).end();
   }
 
-  res.status(400);
+  return res.status(400).end();
 };
