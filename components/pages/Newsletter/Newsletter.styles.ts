@@ -58,6 +58,9 @@ export const newsletterStyles = makeStyles((theme: Theme) =>
         },
         '&::after': {
           transform: 'scale(2) rotate(6deg) translateY(10%)'
+        },
+        [theme.breakpoints.up('lg')]: {
+          maxHeight: '75vh'
         }
       }
     },
