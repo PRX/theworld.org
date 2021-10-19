@@ -37,7 +37,7 @@ module.exports = withPlausibleProxy({
       ...config,
       optimization: {
         ...config.optimization,
-        minimizer: false
+        minimizer: []
       },
       resolve: {
         ...config.resolve,
