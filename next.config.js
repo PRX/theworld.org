@@ -35,6 +35,10 @@ module.exports = withPlausibleProxy({
   webpack(config, { isServer }) {
     const newConfig = {
       ...config,
+      optimization: {
+        ...config.optimization,
+        minimizer: false
+      },
       resolve: {
         ...config.resolve,
         alias: {
