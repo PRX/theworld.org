@@ -33,5 +33,9 @@ export const fetchAppData = (): ThunkAction<void, {}, {}, AnyAction> => async (
       type: 'FETCH_MENUS_DATA_SUCCESS',
       payload: menus
     });
+
+    dispatch({
+      type: 'FETCH_APP_DATA_SUCCESS'
+    });
   }
 };

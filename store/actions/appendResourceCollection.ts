@@ -5,10 +5,7 @@
  */
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import {
-  IPriApiCollectionResponse,
-  IPriApiResource
-} from 'pri-api-library/types';
+import { IPriApiCollectionResponse } from 'pri-api-library/types';
 
 export const appendResourceCollection = (
   resp: IPriApiCollectionResponse,
@@ -20,11 +17,9 @@ export const appendResourceCollection = (
 ): void => {
   const payloadItems = resp.data.filter(v => !!v);
 
-  payloadItems.forEach((item: IPriApiResource) => {
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload: item
-    });
+  dispatch({
+    type: 'FETCH_BULK_CONTENT_DATA_SUCCESS',
+    payload: payloadItems
   });
 
   dispatch({

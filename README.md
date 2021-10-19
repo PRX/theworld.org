@@ -202,9 +202,9 @@ First instinct would be to setup a catch-all route that can lookup content by al
 
 Let's work with what we have. Vercel CLI offers a dev env that mirrors deployment behavior, so if it works with that dev env, it should work on deploy. Lets start with rewrites setup via `./vercel.json`.
 
-But what rewrites do we need? None of our content URL's adhere to any one pattern. There is one characteristic of a URL that makes things a little easier: they are _unique_ to the content they deliver from a data perspective. With a few exceptions for local app files and assets, we can assume all other URLs' pathnames are an alias for a page normally found on our Drupal CMS driven site. (This also assumes only requests for relevent front facing pages have been forward to this application. We shouldn't have to worry about admin pages, files, feeds, etc.) All we need is one rewrite to a [catch-all](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes) render page, `./pages/render/[...alias].tsx`.
+But what rewrites do we need? None of our content URL's adhere to any one pattern. There is one characteristic of a URL that makes things a little easier: they are _unique_ to the content they deliver from a data perspective. With a few exceptions for local app files and assets, we can assume all other URLs' pathnames are an alias for a page normally found on our Drupal CMS driven site. (This also assumes only requests for relevent front facing pages have been forward to this application. We shouldn't have to worry about admin pages, files, feeds, etc.) All we need is one rewrite to a [catch-all](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes) render page, `./pages/[...alias].tsx`.
 
-The `render/[...alias].tsx` page will be our whole app, appart from the homepage, which remains our `index.tsx` page. Instead of routing to another page, it will be a proxy for our content components, dynamically loading and rendering the content component for the data type associated with the alias.
+The `[...alias].tsx` page will be our whole app, appart from the homepage, which remains our `index.tsx` page. Instead of routing to another page, it will be a proxy for our content components, dynamically loading and rendering the content component for the data type associated with the alias.
 
 ---
 

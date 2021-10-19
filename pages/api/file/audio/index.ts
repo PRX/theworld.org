@@ -16,5 +16,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     ...query
   })) as IPriApiCollectionResponse;
 
-  res.status(200).json(stories);
+  return res.status(200).json(stories);
 };

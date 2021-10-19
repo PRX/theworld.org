@@ -6,9 +6,11 @@
 const productionConfig = require('./production');
 const developmentConfig = require('./development');
 
-const { NODE_ENV } = process.env;
+const { NODE_ENV, AWS_BRANCH } = process.env;
 const defaultConfig =
-  NODE_ENV === 'production' ? productionConfig : developmentConfig;
+  [NODE_ENV, AWS_BRANCH].indexOf('production') !== -1
+    ? productionConfig
+    : developmentConfig;
 
 // Try to get local overrides.
 // NOTE: Copy ./local.example.js to ./local.js.

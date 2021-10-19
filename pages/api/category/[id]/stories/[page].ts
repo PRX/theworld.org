@@ -43,14 +43,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         page
       })) as PriApiResponseBody;
 
-      // Build response object.
-      const apiResp = stories;
-
-      res.status(200).json(apiResp);
-    } else {
-      res.status(404).end();
+      return res.status(200).json(stories);
     }
+
+    return res.status(404).end();
   }
 
-  res.status(400).end();
+  return res.status(500).end();
 };

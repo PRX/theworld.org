@@ -1,7 +1,7 @@
 module.exports = {
   priApi: {
     protocol: 'https',
-    domain: 'dev-pri9.pantheonsite.io',
+    domain: 'www.pri.org',
     apiPath: 'api',
     apiVersion: '1.0'
   },

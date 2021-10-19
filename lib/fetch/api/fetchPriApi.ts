@@ -20,7 +20,9 @@ import * as JSONAPI from 'jsonapi-typescript';
 import { ILink } from '@interfaces/link';
 import { parseCtaMessage } from '@lib/parse/cta';
 // eslint-disable-next-line import/no-unresolved
-import { priApi as priApiConfig } from '@config';
+import { priApi as configPriApi } from '@config';
+
+const priApiConfig = configPriApi || process.env.PRI_API_CONFIG;
 
 /**
  * Method that simplifies GET requests.

@@ -28,15 +28,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     switch (apiResp.status) {
       case 200:
-        res.status(200).json(apiResp.data);
+        return res.status(200).json(apiResp.data);
         break;
 
       default:
-        res.status(400).json(apiResp);
+        return res.status(400).json(apiResp);
     }
-
-    return;
   }
 
-  res.status(400).end();
+  return res.status(400).end();
 };

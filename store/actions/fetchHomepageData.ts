@@ -74,5 +74,9 @@ export const fetchHomepageData = (): ThunkAction<
     dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
 
     dispatch(appendResourceCollection(latestStories, type, id, 'latest'));
+
+    dispatch({
+      type: 'FETCH_HOMEPAGE_DATA_SUCCESS'
+    });
   }
 };
