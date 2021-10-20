@@ -1,4 +1,4 @@
-Sitemap: https://www.pri.org/sitemap.xml
+Sitemap: https://admin.theworld.org/sitemap.xml
 
 User-agent: *
 Disallow:
