@@ -24,7 +24,8 @@ export const appFooterStyles = makeStyles((theme: Theme) =>
       }
     },
     twLogo: {
-      width: theme.typography.pxToRem(250),
+      width: '100%',
+      maxWidth: theme.typography.pxToRem(250),
       height: 'auto',
       fill: theme.palette.grey.A200
     },
