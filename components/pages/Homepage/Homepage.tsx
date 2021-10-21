@@ -9,7 +9,6 @@ import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Hidden, Typography } from '@material-ui/core';
-import CategoryRounded from '@material-ui/icons/Category';
 import StyleRounded from '@material-ui/icons/Style';
 import { LandingPage } from '@components/LandingPage';
 import { MetaTags } from '@components/MetaTags';
