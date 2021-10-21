@@ -4,6 +4,8 @@
  */
 
 import React from 'react';
+import 'moment-timezone';
+import dynamic from 'next/dynamic';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -12,6 +14,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Grid,
   Typography
 } from '@material-ui/core';
 import { EqualizerRounded, PlayCircleOutlineRounded } from '@material-ui/icons';
@@ -22,13 +25,15 @@ import { Image } from '@components/Image';
 import { SidebarAudioList } from '@components/Sidebar/SidebarAudioList';
 import { episodeCardStyles, episodeCardTheme } from './EpisodeCard.styles';
 
+const Moment = dynamic(() => import('react-moment')) as any;
+
 export interface EpisodeCardProps {
   data: IPriApiResource;
   label?: string;
 }
 
 export const EpisodeCard = ({ data, label }: EpisodeCardProps) => {
-  const { teaser, title, image, audio } = data;
+  const { teaser, title, image, audio, dateBroadcast, datePublished } = data;
   const { segments } = audio || {};
   const classes = episodeCardStyles({});
   const cx = classNames.bind(classes);
@@ -52,11 +57,33 @@ export const EpisodeCard = ({ data, label }: EpisodeCardProps) => {
             </CardMedia>
           )}
           <CardContent>
-            {label && (
-              <Typography variant="overline" gutterBottom>
-                {label}
-              </Typography>
-            )}
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              spacing={1}
+            >
+              {label && (
+                <Grid item xs="auto" zeroMinWidth>
+                  <Typography variant="overline" noWrap>
+                    {label}
+                  </Typography>
+                </Grid>
+              )}
+              <Grid item xs="auto" zeroMinWidth>
+                <Typography
+                  variant="subtitle2"
+                  component="span"
+                  color="textSecondary"
+                  gutterBottom
+                  noWrap
+                >
+                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                    {dateBroadcast || datePublished}
+                  </Moment>
+                </Typography>
+              </Grid>
+            </Grid>
             <Typography
               variant="h5"
               component="h2"

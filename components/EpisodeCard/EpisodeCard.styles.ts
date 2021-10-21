@@ -61,7 +61,8 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
       display: 'grid',
       gridTemplateColumns: 'min-content 1fr',
       gridGap: `${theme.spacing(1)}px`,
-      alignItems: 'center'
+      alignItems: 'center',
+      marginTop: theme.typography.pxToRem(theme.spacing(1))
     },
     playIcon: {
       alignSelf: 'start',
