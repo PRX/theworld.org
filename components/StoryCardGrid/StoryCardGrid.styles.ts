@@ -71,6 +71,7 @@ export const storyCardGridTheme = (theme: Theme) =>
       },
       MuiCardMedia: {
         root: {
+          alignSelf: 'start',
           height: 'auto',
           paddingTop: `${100 / (16 / 9)}%`
         }

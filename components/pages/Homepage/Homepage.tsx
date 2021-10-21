@@ -8,18 +8,29 @@ import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Hidden } from '@material-ui/core';
+import { Box, Hidden, Typography } from '@material-ui/core';
+import CategoryRounded from '@material-ui/icons/Category';
 import { LandingPage } from '@components/LandingPage';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible } from '@components/Plausible';
-import { SidebarLatestStories } from '@components/Sidebar';
+import {
+  Sidebar,
+  SidebarHeader,
+  SidebarLatestStories,
+  SidebarList
+} from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchHomepageData } from '@store/actions/fetchHomepageData';
-import { getCollectionData, getCtaRegionData } from '@store/reducers';
+import {
+  getCollectionData,
+  getCtaRegionData,
+  getMenusData
+} from '@store/reducers';
+import { IButton } from '@interfaces';
 
 const CtaRegion = dynamic(
   () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
@@ -74,6 +85,20 @@ export const Homepage = () => {
     undefined,
     'tw_cta_region_landing_inline_01'
   );
+  const drawerMainNav = getMenusData(store.getState(), 'drawerMainNav');
+  const categoriesMenu = drawerMainNav
+    ?.filter((item: IButton) => item.name === 'Categories')?.[0]
+    .children.map(
+      item =>
+        ({
+          id: item.key,
+          type: 'link',
+          title: item.name,
+          metatags: {
+            canonical: item.url.href
+          }
+        } as IPriApiResource)
+    );
   const inlineBottom = getCtaRegionData(
     state,
     'homepage',
@@ -160,6 +185,16 @@ export const Homepage = () => {
               </Hidden>
             </Box>
           )}
+          <Box mt={3}>
+            <Sidebar item elevated>
+              <SidebarHeader>
+                <Typography variant="h2">
+                  <CategoryRounded /> Categories
+                </Typography>
+              </SidebarHeader>
+              <SidebarList data={categoriesMenu} />
+            </Sidebar>
+          </Box>
         </Box>
       )
     },
