@@ -33,7 +33,7 @@ export const SidebarLatestStories = ({
     <Sidebar item elevated>
       <SidebarHeader>
         <Typography variant="h2">
-          <MenuBookRounded /> {label || 'Latest world news headlines'}
+          <MenuBookRounded /> {label || 'Latest from our partners'}
         </Typography>
       </SidebarHeader>
       <SidebarList disablePadding data={listItems} />
