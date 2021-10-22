@@ -9,7 +9,7 @@ import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Hidden, Typography } from '@material-ui/core';
-import StyleRounded from '@material-ui/icons/Style';
+import StyleRounded from '@material-ui/icons/StyleRounded';
 import { LandingPage } from '@components/LandingPage';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible } from '@components/Plausible';
