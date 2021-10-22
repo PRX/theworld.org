@@ -16,9 +16,13 @@ export const appHeaderStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(0.5)
     },
     twLogo: {
+      display: 'block',
       width: 'auto',
       height: theme.typography.pxToRem(28),
-      fill: theme.palette.primary.contrastText
+      fill: theme.palette.primary.contrastText,
+      [theme.breakpoints.down('xs')]: {
+        height: theme.typography.pxToRem(22)
+      }
     },
     menuButton: {},
     grow: {

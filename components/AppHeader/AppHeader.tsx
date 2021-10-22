@@ -18,6 +18,7 @@ import {
 } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
 import classNames from 'classnames/bind';
 import { ReactComponent as Logo } from '@svg/tw-white.svg';
 import { getUiDrawerOpen } from '@store/reducers';
@@ -61,6 +62,10 @@ export const AppHeader = () => {
     store.dispatch({ type: 'UI_DRAWER_CLOSE' });
   };
 
+  const handleSearchOpen = () => () => {
+    store.dispatch({ type: 'SEARCH_OPEN' });
+  };
+
   return (
     <>
       <AppBar className={cx({ root: true })} position="static">
@@ -80,7 +85,7 @@ export const AppHeader = () => {
 
           <Link href="/">
             <a href="/" aria-label="The World">
-              <Logo className={cx({ twLogo: true })} />
+              <Logo className={cx('twLogo')} />
             </a>
           </Link>
 
@@ -90,6 +95,20 @@ export const AppHeader = () => {
 
           {/* Header Nav */}
           <AppHeaderNav />
+
+          {/* Search Button */}
+          <NoSsr>
+            <IconButton
+              edge="end"
+              className={cx('searchButton')}
+              disableRipple
+              color="inherit"
+              aria-label="site search"
+              onClick={handleSearchOpen()}
+            >
+              <SearchIcon />
+            </IconButton>
+          </NoSsr>
         </Toolbar>
       </AppBar>
       <Drawer open={open} onClose={handleDrawerClose()}>
