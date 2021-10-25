@@ -520,8 +520,9 @@ export const fetchApiCtaRegionGroup = async (
 export const fetchApiSearch = (
   q: string,
   label: string,
-  start: string | number
+  start: string | number,
+  req?: IncomingMessage
 ) =>
-  fetchApi(`query/search/${label}/${q}`, null, {
+  fetchApi(`query/search/${label}/${q}`, req, {
     ...(start && { start: `${start}` })
   }) as Promise<customsearch_v1.Schema$Search>;

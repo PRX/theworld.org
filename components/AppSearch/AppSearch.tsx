@@ -46,7 +46,12 @@ import {
 } from '@store/reducers';
 import { appSearchStyles, appSearchTheme } from './AppSearch.styles';
 
-export const AppSearch = () => {
+export interface AppSearchProps {
+  static?: boolean;
+  q?: string;
+}
+
+export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
   const router = useRouter();
   const queryRef = useRef(null);
   const dialogContentRef = useRef(null);
@@ -56,12 +61,15 @@ export const AppSearch = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const query = getSearchQuery(state);
-  const isOpen = getSearchOpen(state) || false;
+  const query = getSearchQuery(state) || q;
+  const isOpen = staticPage || getSearchOpen(state) || false;
   const isLoading = getSearchLoading(state) || false;
   const data = getSearchData(state, query);
   const hasData = !!data;
   const { story, episode } = data || {};
+  const { nextPage: nextPageStory } = story?.[story.length - 1].queries || {};
+  const { nextPage: nextPageEpisode } =
+    episode?.[episode.length - 1].queries || {};
   const storyData = (story || [])
     .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
     .map(({ link }) => {
@@ -127,6 +135,16 @@ export const AppSearch = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (staticPage && !hasData) {
+      if (queryRef.current) {
+        queryRef.current.focus();
+        queryRef.current.value = query;
+      }
+      store.dispatch<any>(fetchSearchData(query, 'all'));
+    }
+  }, [query]);
+
   return (
     <ThemeProvider theme={appSearchTheme}>
       <Dialog fullScreen open={isOpen}>
@@ -136,14 +154,16 @@ export const AppSearch = () => {
               <Typography variant="h2" className={classes.title}>
                 Search
               </Typography>
-              <IconButton
-                edge="end"
-                color="inherit"
-                onClick={handleClose}
-                aria-label="close"
-              >
-                <CloseIcon />
-              </IconButton>
+              {!staticPage && (
+                <IconButton
+                  edge="end"
+                  color="inherit"
+                  onClick={handleClose}
+                  aria-label="close"
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
             </Toolbar>
           </AppBar>
           <form onSubmit={handleSubmit} autoComplete="off">
@@ -153,14 +173,19 @@ export const AppSearch = () => {
                 id="standard-basic"
                 className={classes.query}
                 label="I am looking for&hellip;"
-                defaultValue={query}
                 size="medium"
                 fullWidth
+                defaultValue={query}
+                {...(staticPage && {
+                  InputLabelProps: {
+                    shrink: !!query?.length || !!queryRef.current?.value?.length
+                  }
+                })}
                 InputProps={{
                   endAdornment: !isLoading ? (
                     <InputAdornment position="end">
                       <IconButton
-                        aria-label="toggle password visibility"
+                        aria-label="clear search query"
                         onClick={handleClearQuery}
                       >
                         <CloseIcon />
@@ -189,62 +214,68 @@ export const AppSearch = () => {
               </AppBar>
             )}
           </form>
-          {!!data && (
-            <DialogContent ref={dialogContentRef}>
-              <TabPanel value="story">
-                {!!storyData.length && (
-                  <Container fixed>
-                    <Grid container spacing={3}>
-                      {storyData.map(item => (
-                        <Grid item xs={12} key={item.id}>
-                          <StoryCard data={item} short />
-                        </Grid>
-                      ))}
-                    </Grid>
-                    <Box mt={3}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        onClick={handleLoadMore('story')}
-                        fullWidth
-                        disabled={isLoading}
-                        disableElevation={isLoading}
-                      >
-                        Load More Stories
-                      </Button>
-                    </Box>
-                  </Container>
-                )}
-              </TabPanel>
-              <TabPanel value="episode">
-                {!!episodeData.length && (
-                  <Container fixed>
-                    <Grid container spacing={3}>
-                      {episodeData.map(item => (
-                        <Grid item xs={12} md={6} key={item.id}>
-                          <EpisodeCard data={item} />
-                        </Grid>
-                      ))}
-                    </Grid>
-                    <Box mt={3}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        onClick={handleLoadMore('episode')}
-                        fullWidth
-                        disabled={isLoading}
-                        disableElevation={isLoading}
-                      >
-                        Load More Episodes
-                      </Button>
-                    </Box>
-                  </Container>
-                )}
-              </TabPanel>
-            </DialogContent>
-          )}
+          <DialogContent ref={dialogContentRef}>
+            {!!data && (
+              <>
+                <TabPanel value="story">
+                  {!!storyData.length && (
+                    <Container fixed>
+                      <Grid container spacing={3}>
+                        {storyData.map(item => (
+                          <Grid item xs={12} key={item.id}>
+                            <StoryCard data={item} short />
+                          </Grid>
+                        ))}
+                      </Grid>
+                      {nextPageStory && (
+                        <Box mt={3}>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            onClick={handleLoadMore('story')}
+                            fullWidth
+                            disabled={isLoading}
+                            disableElevation={isLoading}
+                          >
+                            Load More Stories
+                          </Button>
+                        </Box>
+                      )}
+                    </Container>
+                  )}
+                </TabPanel>
+                <TabPanel value="episode">
+                  {!!episodeData.length && (
+                    <Container fixed>
+                      <Grid container spacing={3}>
+                        {episodeData.map(item => (
+                          <Grid item xs={12} md={6} key={item.id}>
+                            <EpisodeCard data={item} />
+                          </Grid>
+                        ))}
+                      </Grid>
+                      {nextPageEpisode && (
+                        <Box mt={3}>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            onClick={handleLoadMore('episode')}
+                            fullWidth
+                            disabled={isLoading}
+                            disableElevation={isLoading}
+                          >
+                            Load More Episodes
+                          </Button>
+                        </Box>
+                      )}
+                    </Container>
+                  )}
+                </TabPanel>
+              </>
+            )}
+          </DialogContent>
         </TabContext>
       </Dialog>
     </ThemeProvider>

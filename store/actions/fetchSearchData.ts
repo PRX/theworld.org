@@ -6,6 +6,7 @@
 
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { IncomingMessage } from 'http';
 import { parse } from 'url';
 import {
   IPriApiResource,
@@ -28,7 +29,8 @@ import { fetchBulkAliasData } from './fetchAliasData';
 
 export const fetchSearchData = (
   query: string,
-  label: SearchFacetAll
+  label: SearchFacetAll,
+  req?: IncomingMessage
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -57,7 +59,7 @@ export const fetchSearchData = (
     const start: number = [...(facetData || [])].pop()?.queries.nextPage?.[0]
       .startIndex;
 
-    return fetchApiSearch(query, l, start).then(data => ({
+    return fetchApiSearch(query, l, start, req).then(data => ({
       l,
       data
     }));
@@ -75,9 +77,9 @@ export const fetchSearchData = (
       const reqs = aliasesData
         .map(([, { id }]): [
           string,
-          (id: string) => Promise<PriApiResourceResponse>
+          (id: string, req: IncomingMessage) => Promise<PriApiResourceResponse>
         ] => [id as string, funcMap.get(l)])
-        .map(([id, fetchFunc]) => fetchFunc(id));
+        .map(([id, fetchFunc]) => fetchFunc(id, req));
 
       await Promise.all(reqs).then(dataResp => {
         dispatch<any>({
