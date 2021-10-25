@@ -56,7 +56,7 @@ export const fetchSearchData = (
 
   const requests = [...facets].map(async (l: SearchFacetAll) => {
     const facetData = currentData[l];
-    const start: number = [...(facetData || [])].pop()?.queries.nextPage?.[0]
+    const start: number = [...(facetData || [])].pop()?.queries?.nextPage?.[0]
       .startIndex;
 
     return fetchApiSearch(query, l, start, req).then(data => ({
