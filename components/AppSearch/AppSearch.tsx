@@ -87,7 +87,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
   const classes = appSearchStyles({});
 
   const formatTabLabel = (l: SearchFacet) =>
-    `${l} (${data[l]?.[0].searchInformation.totalResults || 0})`;
+    `${l} (${data[l]?.[0].searchInformation?.totalResults || 0})`;
 
   const handleClose = () => {
     store.dispatch({ type: 'SEARCH_CLOSE' });
