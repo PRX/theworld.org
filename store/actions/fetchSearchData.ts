@@ -8,6 +8,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IncomingMessage } from 'http';
 import { parse } from 'url';
+import { customsearch_v1 } from 'googleapis/build/src/apis/customsearch/v1';
 import {
   IPriApiResource,
   IPriApiResourceResponse,
@@ -24,6 +25,7 @@ import {
   fetchApiSearch,
   fetchApiStory
 } from '@lib/fetch';
+import { fetchGoogleCustomSearch } from '@lib/fetch/search/fetchGoogleCustomSearch';
 import { getSearchData } from '@store/reducers';
 import { fetchBulkAliasData } from './fetchAliasData';
 
@@ -58,14 +60,21 @@ export const fetchSearchData = (
     const facetData = currentData[l];
     const start: number = [...(facetData || [])].pop()?.queries?.nextPage?.[0]
       .startIndex;
+    let resp: Promise<customsearch_v1.Schema$Search>;
 
-    return fetchApiSearch(query, l, start, req)
+    if (typeof window !== 'undefined') {
+      resp = fetchApiSearch(query, l, start, req);
+    } else {
+      resp = fetchGoogleCustomSearch(query, l, start);
+    }
+
+    return resp
       .then(data => ({
         l,
         data
       }))
       .then(r => {
-        console.log(r);
+        console.log('fetchApiSearch >> ', r);
         return r;
       });
   });

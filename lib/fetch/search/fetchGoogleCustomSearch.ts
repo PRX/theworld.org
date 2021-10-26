@@ -26,5 +26,5 @@ export const fetchGoogleCustomSearch = async (
   };
   const results = await gcs.cse.siterestrict.list(listParams);
 
-  return results;
+  return results.data;
 };
