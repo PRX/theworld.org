@@ -64,7 +64,7 @@ export const fetchSearchData = (
     if (req) {
       // eslint-disable-next-line no-eval
       const fetchGoogleCustomSearch = eval(
-        "require('@lib/fetch/search/fetchGoogleCustomSearch')"
+        "require('../../lib/fetch/search/fetchGoogleCustomSearch')"
       );
       results = fetchGoogleCustomSearch(query, l, start);
     } else {
