@@ -56,7 +56,7 @@ export const fetchApi = async (
     }
   });
 
-  if (path.indexOf('query/search') > -1) {
+  if (req && path.indexOf('query/search') > -1) {
     console.log('fetchApi >> ', baseUrl, url, req.headers);
   }
 
