@@ -25,7 +25,6 @@ import {
   fetchApiSearch,
   fetchApiStory
 } from '@lib/fetch';
-import { fetchGoogleCustomSearch } from '@lib/fetch/search/fetchGoogleCustomSearch';
 import { getSearchData } from '@store/reducers';
 import { fetchBulkAliasData } from './fetchAliasData';
 
@@ -65,7 +64,11 @@ export const fetchSearchData = (
     if (typeof window !== 'undefined') {
       resp = fetchApiSearch(query, l, start, req);
     } else {
-      resp = fetchGoogleCustomSearch(query, l, start);
+      await import('@lib/fetch/search/fetchGoogleCustomSearch').then(
+        ({ fetchGoogleCustomSearch }) => {
+          resp = fetchGoogleCustomSearch(query, l, start);
+        }
+      );
     }
 
     return resp
