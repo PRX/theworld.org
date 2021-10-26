@@ -59,10 +59,15 @@ export const fetchSearchData = (
     const start: number = [...(facetData || [])].pop()?.queries?.nextPage?.[0]
       .startIndex;
 
-    return fetchApiSearch(query, l, start, req).then(data => ({
-      l,
-      data
-    }));
+    return fetchApiSearch(query, l, start, req)
+      .then(data => ({
+        l,
+        data
+      }))
+      .then(r => {
+        console.log(r);
+        return r;
+      });
   });
 
   const payloadData = await Promise.all(requests).then(async searchResults => {
