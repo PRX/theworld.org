@@ -6,6 +6,7 @@
 const path = require('path');
 const { withPlausibleProxy } = require('next-plausible');
 const { uid } = require('uid');
+const { IgnorePlugin } = require('webpack');
 const { priApi } = require('./config');
 
 module.exports = withPlausibleProxy({
@@ -36,6 +37,7 @@ module.exports = withPlausibleProxy({
   webpack(config, { isServer }) {
     const newConfig = {
       ...config,
+      plugins: [...config.plugins, new IgnorePlugin(/fetchGoogleCustomSearch/)],
       resolve: {
         ...config.resolve,
         alias: {
