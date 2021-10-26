@@ -25,7 +25,6 @@ import {
   fetchApiSearch,
   fetchApiStory
 } from '@lib/fetch';
-import { fetchGoogleCustomSearch } from '@lib/fetch/search/fetchGoogleCustomSearch';
 import { getSearchData } from '@store/reducers';
 import { fetchBulkAliasData } from './fetchAliasData';
 
@@ -63,6 +62,10 @@ export const fetchSearchData = (
     let results: Promise<customsearch_v1.Schema$Search>;
 
     if (req) {
+      // eslint-disable-next-line no-eval
+      const fetchGoogleCustomSearch = eval(
+        "require('@lib/fetch/search/fetchGoogleCustomSearch')"
+      );
       results = fetchGoogleCustomSearch(query, l, start);
     } else {
       results = fetchApiSearch(query, l, start);
