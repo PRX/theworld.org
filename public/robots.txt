@@ -1,4 +1,4 @@
-Sitemap: https://pri.org/sitemap.xml
+Sitemap: https://www.pri.org/sitemap.xml
 
 User-agent: *
 Disallow:
