@@ -3,5 +3,6 @@
   <ShortName>theworld.org</ShortName>
   <Description>Search theworld.org</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Url method="get" type="text/html" template="http://admin.theworld.org/search/node/{searchTerms}" />
+  <Url method="get" type="text/html"
+      template="http://www.pri.org/search/node/{searchTerms}"/>
 </OpenSearchDescription>
