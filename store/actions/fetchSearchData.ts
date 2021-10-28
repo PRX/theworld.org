@@ -6,32 +6,22 @@
 
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IncomingMessage } from 'http';
 import { parse } from 'url';
-import { customsearch_v1 } from 'googleapis/build/src/apis/customsearch/v1';
-import {
-  IPriApiResource,
-  IPriApiResourceResponse,
-  PriApiResourceResponse
-} from 'pri-api-library/types';
+import { IPriApiResource } from 'pri-api-library/types';
 import {
   RootState,
   searchFacetLabels,
   SearchFacetAll
 } from '@interfaces/state';
-import {
-  fetchApiEpisode,
-  fetchApiFileAudio,
-  fetchApiSearch,
-  fetchApiStory
-} from '@lib/fetch';
+import { fetchApiSearch } from '@lib/fetch';
 import { getSearchData } from '@store/reducers';
 import { fetchBulkAliasData } from './fetchAliasData';
+import { fetchStoryData } from './fetchStoryData';
+import { fetchEpisodeData } from './fetchEpisodeData';
 
 export const fetchSearchData = (
   query: string,
-  label: SearchFacetAll,
-  req?: IncomingMessage
+  label: SearchFacetAll
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -43,9 +33,8 @@ export const fetchSearchData = (
 
   // Map facet labels to data fetch for content type.
   const funcMap = new Map();
-  funcMap.set('story', fetchApiStory);
-  funcMap.set('episode', fetchApiEpisode);
-  funcMap.set('media', fetchApiFileAudio);
+  funcMap.set('story', fetchStoryData);
+  funcMap.set('episode', fetchEpisodeData);
 
   if (!q.length) {
     return;
@@ -59,25 +48,13 @@ export const fetchSearchData = (
     const facetData = currentData[l];
     const start: number = [...(facetData || [])].pop()?.queries?.nextPage?.[0]
       .startIndex;
-    let results: Promise<customsearch_v1.Schema$Search>;
 
-    if (req) {
-      // eslint-disable-next-line no-eval
-      const fetchGoogleCustomSearch = eval(
-        "require('../../lib/fetch/search/fetchGoogleCustomSearch')"
-      );
-      results = fetchGoogleCustomSearch(query, l, start);
-    } else {
-      results = fetchApiSearch(query, l, start);
-    }
-
-    return results
+    return fetchApiSearch(query, l, start)
       .then(data => ({
         l,
         data
       }))
       .then(r => {
-        console.log('fetchApiSearch >> ', r);
         return r;
       });
   });
@@ -94,16 +71,11 @@ export const fetchSearchData = (
       const reqs = aliasesData
         .map(([, { id }]): [
           string,
-          (id: string, req: IncomingMessage) => Promise<PriApiResourceResponse>
+          (id: string) => ThunkAction<void, {}, {}, AnyAction>
         ] => [id as string, funcMap.get(l)])
-        .map(([id, fetchFunc]) => fetchFunc(id, req));
+        .map(([id, fetchFunc]) => dispatch<any>(fetchFunc(id)));
 
-      await Promise.all(reqs).then(dataResp => {
-        dispatch<any>({
-          type: 'FETCH_BULK_CONTENT_DATA_SUCCESS',
-          payload: dataResp.map((item: IPriApiResourceResponse) => item.data)
-        });
-      });
+      await Promise.all(reqs);
 
       return { label: l, data };
     });

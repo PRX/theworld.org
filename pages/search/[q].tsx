@@ -13,9 +13,9 @@ const SearchPage = ({ q }: { q: string }) => {
 };
 
 SearchPage.getInitialProps = wrapper.getInitialPageProps(
-  store => async ({ query, req }): Promise<any> => {
+  store => async ({ query }): Promise<any> => {
     const { q } = query;
-    await store.dispatch<any>(fetchSearchData(q as string, 'all', req));
+    await store.dispatch<any>(fetchSearchData(q as string, 'all'));
 
     return { q };
   }
