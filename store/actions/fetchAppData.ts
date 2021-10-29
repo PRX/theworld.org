@@ -6,7 +6,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from '@interfaces/state';
-import { fetchApp } from '@lib/fetch';
+import { fetchApiApp, fetchApp } from '@lib/fetch';
 import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
@@ -22,7 +22,9 @@ export const fetchAppData = (): ThunkAction<void, {}, {}, AnyAction> => async (
       type: 'FETCH_APP_DATA_REQUEST'
     });
 
-    const apiResp = await fetchApp();
+    const apiResp = await (typeof window === 'undefined'
+      ? fetchApp
+      : fetchApiApp)();
     const { latestStories, menus } = apiResp;
 
     dispatch(
