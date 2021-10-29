@@ -7,24 +7,17 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { parse } from 'url';
-import {
-  IPriApiResource,
-  IPriApiResourceResponse,
-  PriApiResourceResponse
-} from 'pri-api-library/types';
+import { IPriApiResource } from 'pri-api-library/types';
 import {
   RootState,
   searchFacetLabels,
   SearchFacetAll
 } from '@interfaces/state';
-import {
-  fetchApiEpisode,
-  fetchApiFileAudio,
-  fetchApiSearch,
-  fetchApiStory
-} from '@lib/fetch';
+import { fetchApiSearch } from '@lib/fetch';
 import { getSearchData } from '@store/reducers';
 import { fetchBulkAliasData } from './fetchAliasData';
+import { fetchStoryData } from './fetchStoryData';
+import { fetchEpisodeData } from './fetchEpisodeData';
 
 export const fetchSearchData = (
   query: string,
@@ -40,9 +33,8 @@ export const fetchSearchData = (
 
   // Map facet labels to data fetch for content type.
   const funcMap = new Map();
-  funcMap.set('story', fetchApiStory);
-  funcMap.set('episode', fetchApiEpisode);
-  funcMap.set('media', fetchApiFileAudio);
+  funcMap.set('story', fetchStoryData);
+  funcMap.set('episode', fetchEpisodeData);
 
   if (!q.length) {
     return;
@@ -54,13 +46,17 @@ export const fetchSearchData = (
 
   const requests = [...facets].map(async (l: SearchFacetAll) => {
     const facetData = currentData[l];
-    const start: number = [...(facetData || [])].pop()?.queries.nextPage?.[0]
+    const start: number = [...(facetData || [])].pop()?.queries?.nextPage?.[0]
       .startIndex;
 
-    return fetchApiSearch(query, l, start).then(data => ({
-      l,
-      data
-    }));
+    return fetchApiSearch(query, l, start)
+      .then(data => ({
+        l,
+        data
+      }))
+      .then(r => {
+        return r;
+      });
   });
 
   const payloadData = await Promise.all(requests).then(async searchResults => {
@@ -75,16 +71,11 @@ export const fetchSearchData = (
       const reqs = aliasesData
         .map(([, { id }]): [
           string,
-          (id: string) => Promise<PriApiResourceResponse>
+          (id: string) => ThunkAction<void, {}, {}, AnyAction>
         ] => [id as string, funcMap.get(l)])
-        .map(([id, fetchFunc]) => fetchFunc(id));
+        .map(([id, fetchFunc]) => dispatch<any>(fetchFunc(id)));
 
-      await Promise.all(reqs).then(dataResp => {
-        dispatch<any>({
-          type: 'FETCH_BULK_CONTENT_DATA_SUCCESS',
-          payload: dataResp.map((item: IPriApiResourceResponse) => item.data)
-        });
-      });
+      await Promise.all(reqs);
 
       return { label: l, data };
     });

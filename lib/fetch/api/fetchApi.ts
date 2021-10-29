@@ -522,6 +522,17 @@ export const fetchApiSearch = (
   label: string,
   start: string | number
 ) =>
-  fetchApi(`query/search/${label}/${q}`, null, {
-    ...(start && { start: `${start}` })
-  }) as Promise<customsearch_v1.Schema$Search>;
+  fetch(
+    format({
+      protocol: 'https',
+      hostname: '7mll7u30kh.execute-api.us-east-1.amazonaws.com', // TODO: Update to `search.theworld.org` when DNS is ready.
+      pathname: 'query',
+      query: {
+        ...(q && { q }),
+        ...(label && { l: `${label}` }),
+        ...(start && { s: `${start}` })
+      }
+    })
+  ).then(r => r.status === 200 && r.json()) as Promise<
+    customsearch_v1.Schema$Search
+  >;

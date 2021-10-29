@@ -4,5 +4,5 @@
   <Description>Search theworld.org</Description>
   <InputEncoding>UTF-8</InputEncoding>
   <Url method="get" type="text/html"
-      template="http://www.pri.org/search/node/{searchTerms}"/>
+      template="http://theworld.org/search/{searchTerms}"/>
 </OpenSearchDescription>
