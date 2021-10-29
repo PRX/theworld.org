@@ -145,16 +145,134 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
     }
   }, [query]);
 
+  const renderSearchForm = () => (
+    <form onSubmit={handleSubmit} autoComplete="off">
+      <Box className={classes.searchForm}>
+        <TextField
+          inputRef={queryRef}
+          id="standard-basic"
+          className={classes.query}
+          label="I am looking for&hellip;"
+          size="medium"
+          fullWidth
+          defaultValue={query}
+          {...(staticPage && {
+            InputLabelProps: {
+              shrink: !!query?.length || !!queryRef.current?.value?.length
+            }
+          })}
+          InputProps={{
+            endAdornment: !isLoading ? (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="clear search query"
+                  onClick={handleClearQuery}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </InputAdornment>
+            ) : (
+              <CircularProgress size="2rem" />
+            )
+          }}
+        />
+      </Box>
+      {hasData && (
+        <AppBar position="static" color="transparent">
+          <Container fixed>
+            <TabList
+              indicatorColor="primary"
+              centered
+              onChange={handleFilterChange}
+              aria-label="filter results"
+            >
+              {searchFacetLabels.map(l => (
+                <Tab label={formatTabLabel(l)} value={l} key={l} />
+              ))}
+            </TabList>
+          </Container>
+        </AppBar>
+      )}
+    </form>
+  );
+
+  const renderSearchResults = () =>
+    !!data && (
+      <>
+        <TabPanel value="story">
+          {!!storyData.length && (
+            <Container fixed>
+              <Grid container spacing={3}>
+                {storyData.map(item => (
+                  <Grid item xs={12} key={item.id}>
+                    <StoryCard data={item} short />
+                  </Grid>
+                ))}
+              </Grid>
+              {nextPageStory && (
+                <Box mt={3}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={handleLoadMore('story')}
+                    fullWidth
+                    disabled={isLoading}
+                    disableElevation={isLoading}
+                  >
+                    Load More Stories
+                  </Button>
+                </Box>
+              )}
+            </Container>
+          )}
+        </TabPanel>
+        <TabPanel value="episode">
+          {!!episodeData.length && (
+            <Container fixed>
+              <Grid container spacing={3}>
+                {episodeData.map(item => (
+                  <Grid item xs={12} md={6} key={item.id}>
+                    <EpisodeCard data={item} />
+                  </Grid>
+                ))}
+              </Grid>
+              {nextPageEpisode && (
+                <Box mt={3}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={handleLoadMore('episode')}
+                    fullWidth
+                    disabled={isLoading}
+                    disableElevation={isLoading}
+                  >
+                    Load More Episodes
+                  </Button>
+                </Box>
+              )}
+            </Container>
+          )}
+        </TabPanel>
+      </>
+    );
+
   return (
     <ThemeProvider theme={appSearchTheme}>
-      <Dialog fullScreen open={isOpen}>
+      {staticPage ? (
         <TabContext value={label}>
-          <AppBar position="sticky">
-            <Toolbar>
-              <Typography variant="h2" className={classes.title}>
-                Search
-              </Typography>
-              {!staticPage && (
+          {renderSearchForm()}
+          {renderSearchResults()}
+        </TabContext>
+      ) : (
+        <Dialog fullScreen open={isOpen}>
+          <TabContext value={label}>
+            <AppBar position="sticky">
+              <Toolbar>
+                <Typography variant="h2" className={classes.title}>
+                  Search
+                </Typography>
                 <IconButton
                   edge="end"
                   color="inherit"
@@ -163,121 +281,15 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
                 >
                   <CloseIcon />
                 </IconButton>
-              )}
-            </Toolbar>
-          </AppBar>
-          <form onSubmit={handleSubmit} autoComplete="off">
-            <Box className={classes.searchForm}>
-              <TextField
-                inputRef={queryRef}
-                id="standard-basic"
-                className={classes.query}
-                label="I am looking for&hellip;"
-                size="medium"
-                fullWidth
-                defaultValue={query}
-                {...(staticPage && {
-                  InputLabelProps: {
-                    shrink: !!query?.length || !!queryRef.current?.value?.length
-                  }
-                })}
-                InputProps={{
-                  endAdornment: !isLoading ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="clear search query"
-                        onClick={handleClearQuery}
-                      >
-                        <CloseIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ) : (
-                    <CircularProgress size="2rem" />
-                  )
-                }}
-              />
-            </Box>
-            {hasData && (
-              <AppBar position="static" color="transparent">
-                <Container fixed>
-                  <TabList
-                    indicatorColor="primary"
-                    centered
-                    onChange={handleFilterChange}
-                    aria-label="filter results"
-                  >
-                    {searchFacetLabels.map(l => (
-                      <Tab label={formatTabLabel(l)} value={l} key={l} />
-                    ))}
-                  </TabList>
-                </Container>
-              </AppBar>
-            )}
-          </form>
-          <DialogContent ref={dialogContentRef}>
-            {!!data && (
-              <>
-                <TabPanel value="story">
-                  {!!storyData.length && (
-                    <Container fixed>
-                      <Grid container spacing={3}>
-                        {storyData.map(item => (
-                          <Grid item xs={12} key={item.id}>
-                            <StoryCard data={item} short />
-                          </Grid>
-                        ))}
-                      </Grid>
-                      {nextPageStory && (
-                        <Box mt={3}>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            size="large"
-                            onClick={handleLoadMore('story')}
-                            fullWidth
-                            disabled={isLoading}
-                            disableElevation={isLoading}
-                          >
-                            Load More Stories
-                          </Button>
-                        </Box>
-                      )}
-                    </Container>
-                  )}
-                </TabPanel>
-                <TabPanel value="episode">
-                  {!!episodeData.length && (
-                    <Container fixed>
-                      <Grid container spacing={3}>
-                        {episodeData.map(item => (
-                          <Grid item xs={12} md={6} key={item.id}>
-                            <EpisodeCard data={item} />
-                          </Grid>
-                        ))}
-                      </Grid>
-                      {nextPageEpisode && (
-                        <Box mt={3}>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            size="large"
-                            onClick={handleLoadMore('episode')}
-                            fullWidth
-                            disabled={isLoading}
-                            disableElevation={isLoading}
-                          >
-                            Load More Episodes
-                          </Button>
-                        </Box>
-                      )}
-                    </Container>
-                  )}
-                </TabPanel>
-              </>
-            )}
-          </DialogContent>
-        </TabContext>
-      </Dialog>
+              </Toolbar>
+            </AppBar>
+            {renderSearchForm()}
+            <DialogContent ref={dialogContentRef}>
+              {renderSearchResults()}
+            </DialogContent>
+          </TabContext>
+        </Dialog>
+      )}
     </ThemeProvider>
   );
 };
