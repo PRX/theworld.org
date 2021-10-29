@@ -1,7 +1,7 @@
 module.exports = {
   priApi: {
     protocol: 'https',
-    domain: 'www.pri.org',
+    domain: 'api.pri.org',
     apiPath: 'api',
     apiVersion: '1.0'
   },
