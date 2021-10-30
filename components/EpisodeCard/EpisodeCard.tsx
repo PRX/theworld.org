@@ -6,6 +6,7 @@
 import React from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -21,7 +22,6 @@ import { EqualizerRounded, PlayCircleOutlineRounded } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
-import { Image } from '@components/Image';
 import { SidebarAudioList } from '@components/Sidebar/SidebarAudioList';
 import { episodeCardStyles, episodeCardTheme } from './EpisodeCard.styles';
 
@@ -30,18 +30,20 @@ const Moment = dynamic(() => import('react-moment')) as any;
 export interface EpisodeCardProps {
   data: IPriApiResource;
   label?: string;
+  priority?: boolean;
 }
 
-export const EpisodeCard = ({ data, label }: EpisodeCardProps) => {
+export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
   const { teaser, title, image, audio, dateBroadcast, datePublished } = data;
   const { segments } = audio || {};
   const classes = episodeCardStyles({});
   const cx = classNames.bind(classes);
-  const imageWidth = {
-    xs: '100vw',
-    md: '568px',
-    xl: '808px'
-  };
+  const imageWidth = [
+    ['max-width: 600px', '100vw'],
+    ['max-width: 960px', '568px'],
+    [null, '808px']
+  ];
+  const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
   return (
     <ThemeProvider theme={episodeCardTheme}>
@@ -50,9 +52,12 @@ export const EpisodeCard = ({ data, label }: EpisodeCardProps) => {
           {image && (
             <CardMedia>
               <Image
-                data={image}
-                width={imageWidth}
-                wrapperClassName={classes.imageWrapper}
+                src={image.url}
+                alt={image.alt}
+                layout="fill"
+                objectFit="cover"
+                sizes={sizes}
+                priority={priority}
               />
             </CardMedia>
           )}
