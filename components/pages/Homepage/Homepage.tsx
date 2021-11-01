@@ -202,7 +202,10 @@ export const Homepage = () => {
       key: 'sidebar bottom',
       children: (
         <Box mt={3}>
-          <SidebarLatestStories data={latestStories[1]} />
+          <SidebarLatestStories
+            data={latestStories[1]}
+            label="Latest from our partners"
+          />
           {sidebarBottom && (
             <Box mt={3}>
               <Hidden only="sm">
