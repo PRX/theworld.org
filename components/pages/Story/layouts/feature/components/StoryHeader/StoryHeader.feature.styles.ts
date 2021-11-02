@@ -50,18 +50,14 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
     root: {
       position: 'relative',
       display: 'grid',
-      gridTemplateRows: 'max-content max-content',
+      gridTemplateRows: '1fr max-content',
       alignContent: 'end',
       overflow: 'hidden',
       minHeight: '75vh',
       backgroundColor: theme.palette.primary.light,
       marginBottom: theme.typography.pxToRem(theme.spacing(2)),
       color: theme.palette.primary.contrastText,
-      fontSize: '1.2rem',
-      [theme.breakpoints.up('md')]: {
-        minHeight: 'auto',
-        maxHeight: '75vh'
-      }
+      fontSize: '1.2rem'
     },
     imageWrapper: {
       position: 'absolute',
@@ -70,7 +66,6 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       width: '100%',
       zIndex: 0,
       [theme.breakpoints.up('md')]: {
-        position: 'initial',
         alignSelf: 'start',
         gridColumn: '1 / -1',
         gridRow: '1 / -1',
@@ -89,19 +84,11 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       // gridTemplateColumns: '1fr 100vw 1fr',
       gridGap: theme.typography.pxToRem(theme.spacing(2)),
       width: '100%',
-      minHeight: '33.33333%',
       padding: theme.typography.pxToRem(theme.spacing(3)),
       textShadow: `1px 1px 6px ${addCssColorAlpha(
         theme.palette.common.black,
         0.3
-      )}, 1px 1px 3px ${addCssColorAlpha(theme.palette.common.black, 0.4)}`,
-      [theme.breakpoints.up('md')]: {
-        '$withImage &': {
-          position: 'absolute',
-          bottom: 0,
-          gridRow: 'unset'
-        }
-      }
+      )}, 1px 1px 3px ${addCssColorAlpha(theme.palette.common.black, 0.4)}`
     },
     header: {
       gridRow: '1 / -1',
