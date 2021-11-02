@@ -10,13 +10,7 @@ import 'moment-timezone';
 import ReactMarkdown from 'react-markdown';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
-import {
-  Box,
-  Container,
-  Typography,
-  ThemeProvider,
-  Hidden
-} from '@material-ui/core';
+import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
 import { IContentLinkProps } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
 import {
@@ -60,28 +54,14 @@ export const StoryHeader = ({ data }: Props) => {
       <Box component="header" className={cx('root', { withImage: !!image })}>
         {image && (
           <Box className={cx('imageWrapper')}>
-            <Hidden mdUp>
-              <Image
-                alt={alt}
-                className={cx('image')}
-                src={image.url}
-                layout="fill"
-                objectFit="cover"
-                priority
-              />
-            </Hidden>
-            <Hidden smDown>
-              <Image
-                alt={alt}
-                className={cx('image')}
-                src={image.url}
-                layout="responsive"
-                width={image.metadata.width}
-                height={image.metadata.height}
-                objectFit="cover"
-                priority
-              />
-            </Hidden>
+            <Image
+              alt={alt}
+              className={cx('image')}
+              src={image.url}
+              layout="fill"
+              objectFit="cover"
+              priority
+            />
           </Box>
         )}
         <Box className={cx('content')}>
