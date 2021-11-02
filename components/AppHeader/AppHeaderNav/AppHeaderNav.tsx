@@ -57,6 +57,7 @@ export const AppHeaderNav = () => {
                     component="a"
                     href={url.href}
                     onClick={handleButtonClick(url)}
+                    aria-label={name}
                     color={color || 'default'}
                     size="small"
                     disableRipple
