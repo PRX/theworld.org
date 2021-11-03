@@ -139,7 +139,10 @@ export const getStaticProps = wrapper.getStaticProps(
           store.dispatch(fetchData(resourceId))
         ]);
 
-        return { props: { type: resourceType, id: resourceId } };
+        return {
+          props: { type: resourceType, id: resourceId },
+          revalidate: 10
+        };
       }
     }
 
