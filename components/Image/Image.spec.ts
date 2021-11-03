@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import {
   IImageStyle,
   determineIfIResponsiveConfig,
@@ -8,7 +8,7 @@ import {
 } from './index';
 
 describe('Image', () => {
-  const theme = createMuiTheme({});
+  const theme = createTheme({});
   const mockImageStyles: IImageStyle[] = [
     {
       src: '/images/foo-100px.jpg',

@@ -3,7 +3,6 @@
  * Exports the Home component.
  */
 
-import React from 'react';
 import { Homepage, fetchData } from '@components/pages/Homepage';
 import { wrapper } from '@store/configureStore';
 import { fetchAppData } from '@store/actions/fetchAppData';

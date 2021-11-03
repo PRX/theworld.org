@@ -3,7 +3,6 @@
  * Component for sidebar latest story links list.
  */
 
-import React from 'react';
 import { useStore } from 'react-redux';
 import Link from 'next/link';
 import { IPriApiResource } from 'pri-api-library/types';

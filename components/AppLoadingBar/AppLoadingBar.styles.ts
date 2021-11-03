@@ -6,13 +6,13 @@
 import {
   createStyles,
   makeStyles,
-  createMuiTheme,
+  createTheme,
   Theme
 } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
 
 export const appLoadingBarTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     overrides: {
       MuiLinearProgress: {
         dashed: {

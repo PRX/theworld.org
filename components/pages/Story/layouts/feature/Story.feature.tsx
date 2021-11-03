@@ -3,7 +3,6 @@
  * Component for default Story layout.
  */
 
-import React from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';

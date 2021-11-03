@@ -3,7 +3,6 @@
  * Component for default story header.
  */
 
-import React from 'react';
 import 'moment-timezone';
 import Moment from 'react-moment';
 import { IPriApiResource } from 'pri-api-library/types';

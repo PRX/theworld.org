@@ -3,7 +3,6 @@
  * Component for lede image.
  */
 
-import React from 'react';
 import Image from 'next/image';
 import { Box, Typography } from '@material-ui/core';
 import { HtmlContent } from '@components/HtmlContent';

@@ -3,7 +3,7 @@
  * Component for sidebar info CTA messages.
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Button,
   ButtonProps,

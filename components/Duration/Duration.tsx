@@ -3,7 +3,7 @@
  * Component for displaying formatted time.
  */
 
-import React, { HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 import { formatDuration } from '@lib/parse/time';
 
 export interface IDuarationProps extends HTMLAttributes<{}> {

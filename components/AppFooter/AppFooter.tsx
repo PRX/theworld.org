@@ -3,7 +3,6 @@
  * Component for links to content page.
  */
 
-import React from 'react';
 import Image from 'next/image';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';

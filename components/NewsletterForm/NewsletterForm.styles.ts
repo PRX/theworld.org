@@ -4,14 +4,14 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   Theme,
   makeStyles,
   createStyles
 } from '@material-ui/core/styles';
 
 export const newsletterFormTheme = (theme: Theme) => {
-  const tempTheme = createMuiTheme(theme, {
+  const tempTheme = createTheme(theme, {
     palette: {
       primary: {
         ...theme.palette.success,
@@ -20,7 +20,7 @@ export const newsletterFormTheme = (theme: Theme) => {
     }
   });
 
-  return createMuiTheme(tempTheme, {
+  return createTheme(tempTheme, {
     overrides: {
       MuiInputBase: {
         root: {

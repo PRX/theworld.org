@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -12,7 +12,7 @@ import {
 import { blue } from '@theme/colors';
 
 export const appCtaMessageOptInTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     overrides: {
       MuiPaper: {
         root: {

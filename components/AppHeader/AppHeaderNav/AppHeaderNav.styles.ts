@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -12,7 +12,7 @@ import {
 import { addCssColorAlpha } from '@lib/parse/color';
 
 export const appHeaderNavTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     overrides: {
       MuiButton: {
         text: {

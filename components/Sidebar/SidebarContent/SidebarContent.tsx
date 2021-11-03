@@ -3,7 +3,7 @@
  * Component for Footers in sidebar items.
  */
 
-import React, { HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 import { CardContent } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';

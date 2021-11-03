@@ -3,7 +3,6 @@
  *
  * Transform for rendering facebook post embeds.
  */
-import React from 'react';
 import { FacebookProvider, EmbeddedPost } from 'react-facebook';
 import { DomElement } from 'htmlparser2';
 import { fb } from '@config';

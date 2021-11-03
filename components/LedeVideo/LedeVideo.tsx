@@ -3,7 +3,6 @@
  * Component for lede video.
  */
 
-import React from 'react';
 import ReactMarkdown from 'react-markdown/with-html';
 import ReactPlayer from 'react-player';
 import { Box, Typography } from '@material-ui/core';

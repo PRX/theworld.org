@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -13,7 +13,7 @@ import { orange, yellow, cyan } from '@theme/colors';
 import { hexToRgb } from '@lib/parse/color';
 
 export const drawerMainNavTheme = (theme: Theme) =>
-  createMuiTheme(
+  createTheme(
     {
       overrides: {
         MuiList: {

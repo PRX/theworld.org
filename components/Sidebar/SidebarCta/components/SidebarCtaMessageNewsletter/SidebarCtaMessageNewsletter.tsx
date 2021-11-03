@@ -3,7 +3,7 @@
  * Component for sidebar newsletter CTA messages.
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Card,
@@ -56,7 +56,12 @@ export const SidebarCtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
             />
           )}
           {subscribed && (
-            <Grid container spacing={4} justify="center" alignContent="center">
+            <Grid
+              container
+              spacing={4}
+              justifyContent="center"
+              alignContent="center"
+            >
               <Grid item xs={12}>
                 <Box
                   display="grid"

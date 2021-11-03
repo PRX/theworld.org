@@ -3,7 +3,6 @@
  *
  * Converts an anchor tag with a local URL to Link component.
  */
-import React from 'react';
 import { convertNodeToElement, Transform } from 'react-html-parser';
 import Link from 'next/link';
 import { DomElement } from 'htmlparser2';

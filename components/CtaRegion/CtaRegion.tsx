@@ -3,7 +3,6 @@
  * Component for sidebar elements.
  */
 
-import React from 'react';
 import { NoSsr, ThemeProvider } from '@material-ui/core';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { getShownMessage } from '@lib/cta';

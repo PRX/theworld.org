@@ -3,7 +3,7 @@
  * Component for story card links.
  */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -139,7 +139,7 @@ export const StoryCard = ({
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
             <Grid
               container
-              justify="space-between"
+              justifyContent="space-between"
               spacing={1}
               style={{ marginBottom: 0 }}
             >

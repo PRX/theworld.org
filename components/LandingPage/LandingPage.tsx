@@ -3,7 +3,7 @@
  * Component for sidebar elements.
  */
 
-import React, { Fragment, ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { Container, Grid, Hidden } from '@material-ui/core';
 
 export interface ILandingPageItem {

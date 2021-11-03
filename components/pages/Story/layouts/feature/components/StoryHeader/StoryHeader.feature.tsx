@@ -3,7 +3,6 @@
  * Component for sidebar elements.
  */
 
-import React from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';

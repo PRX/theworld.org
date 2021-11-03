@@ -3,7 +3,6 @@
  *
  * Convert placeholder markup with twitter embed component.
  */
-import React from 'react';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { DomElement } from 'htmlparser2';
 import { parse } from 'url';

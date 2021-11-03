@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -40,7 +40,7 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
 );
 
 export const storyCardGridTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h5: {
         fontSize: theme.typography.pxToRem(16)

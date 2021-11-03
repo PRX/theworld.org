@@ -3,7 +3,7 @@
  * Component for triggering Plausible events.
  */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { usePlausible } from 'next-plausible';
 
 declare type Props = Record<string, unknown> | never;

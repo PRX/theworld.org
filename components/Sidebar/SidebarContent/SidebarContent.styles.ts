@@ -4,14 +4,14 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
 
 export const sidebarContentTheme = (theme: Theme) => {
-  return createMuiTheme(theme, {});
+  return createTheme(theme, {});
 };
 
 export const sidebarContentStyles = makeStyles((theme: Theme) =>

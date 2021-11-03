@@ -2,7 +2,6 @@
  * @file enhanceImage.ts
  * Converts img tags to Image components.
  */
-import React from 'react';
 import { DomElement } from 'htmlparser2';
 import Image from 'next/image';
 

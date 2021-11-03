@@ -3,7 +3,6 @@
  * Component for default story related links.
  */
 
-import React from 'react';
 import Image from 'next/image';
 import { IPriApiResource } from 'pri-api-library/types';
 import {

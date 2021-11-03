@@ -3,7 +3,7 @@
  * Component for showing loading progress of data requests.
  */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { LinearProgress } from '@material-ui/core';

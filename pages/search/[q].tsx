@@ -3,7 +3,6 @@
  * Exports the search page component.
  */
 
-import React from 'react';
 import { AppSearch } from '@components/AppSearch';
 import { wrapper } from '@store';
 import { fetchSearchData } from '@store/actions/fetchSearchData';

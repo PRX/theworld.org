@@ -3,7 +3,7 @@
  * Component for story card links grid.
  */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -141,7 +141,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                   <CardContent>
                     <Grid
                       container
-                      justify="space-between"
+                      justifyContent="space-between"
                       spacing={1}
                       style={{ marginBottom: 0 }}
                     >

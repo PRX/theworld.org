@@ -3,7 +3,7 @@
  * Component for CTA load-under region.
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
@@ -74,7 +74,12 @@ export const AppCtaLoadUnder = () => {
               <CtaMessageComponent data={shownMessage} onClose={handleClose} />
             </Container>
             <Box position="absolute" top={0} right={0}>
-              <IconButton aria-label="close" color="inherit" disableRipple onClick={handleClose}>
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                disableRipple
+                onClick={handleClose}
+              >
                 <CloseSharp />
               </IconButton>
             </Box>

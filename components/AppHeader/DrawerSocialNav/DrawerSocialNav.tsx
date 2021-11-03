@@ -3,7 +3,6 @@
  * Component for app drawer social nav.
  */
 
-import React from 'react';
 import { useStore } from 'react-redux';
 import { IButton } from '@interfaces';
 import { IconButton, Toolbar } from '@material-ui/core';

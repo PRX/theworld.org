@@ -117,8 +117,6 @@ Component files should be organized in a module directory in `./components`. The
 <small>_./components/MyComponent/MyComponent.tsx_</small>
 
 ```tsx
-import React from 'react';
-
 export const MyComponent = () => {
   return <h1>Hello World</h1>;
 };
@@ -133,7 +131,6 @@ export * from './MyComponent';
 <small>_./components/OtherComponent/OtherComponent.tsx_</small>
 
 ```tsx
-import React from 'react';
 import { MyComponent } from '@components/MyComponent';
 
 export const OtherComponent = () => {
@@ -146,8 +143,6 @@ Component files can include additional exports. Those exports should also be exp
 <small>_./components/MyComponent/MyComponent.tsx_</small>
 
 ```tsx
-import React from 'react';
-
 export interface MyComponentProps {
   title: string;
 }
@@ -166,7 +161,6 @@ export * from './MyComponent';
 <small>_./components/OtherComponent/OtherComponent.tsx_</small>
 
 ```tsx
-import React from 'react';
 import { MyComponent, MyComponentProps } from '@components/MyComponent';
 
 export const OtherComponent = () => {
@@ -224,7 +218,7 @@ Content components should be written as function components. Lifecylce methods c
 ### Example
 
 ```typescript
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import Head from 'next/head';
 import ContentContext from '@contexts/ContentContext';
 import { fetchPriApiItem } from '@lib/fetch';

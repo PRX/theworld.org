@@ -3,7 +3,6 @@
  * Component for button to link content page.
  */
 
-import React from 'react';
 import Link from 'next/link';
 import { Button, ButtonProps } from '@material-ui/core';
 import { IPriApiResource } from 'pri-api-library/types';

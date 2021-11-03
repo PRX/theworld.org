@@ -3,7 +3,6 @@
  * Component for info CTA messages.
  */
 
-import React from 'react';
 import {
   Card,
   CardHeader,

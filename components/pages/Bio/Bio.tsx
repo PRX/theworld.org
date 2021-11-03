@@ -3,7 +3,7 @@
  * Component for Bio.
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';

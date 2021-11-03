@@ -30,9 +30,6 @@ module.exports = withPlausibleProxy({
     deviceSizes: [370, 600, 960, 1280, 1920],
     imageSizes: [50, 100, 300, 400, 568, 808]
   },
-  future: {
-    webpack5: true
-  },
   webpack(config, { isServer }) {
     const newConfig = {
       ...config,

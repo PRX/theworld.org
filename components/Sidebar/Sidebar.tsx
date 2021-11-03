@@ -3,7 +3,7 @@
  * Component for sidebar elements.
  */
 
-import React, { HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 import { Box } from '@material-ui/core';
 import classNames from 'classnames/bind';
 import { sidebarStyles } from './Sidebar.styles';

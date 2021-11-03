@@ -3,7 +3,6 @@
  * Component for app banner donation CTA messages.
  */
 
-import React from 'react';
 import {
   Box,
   Button,

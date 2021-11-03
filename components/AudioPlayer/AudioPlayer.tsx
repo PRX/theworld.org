@@ -3,7 +3,7 @@
  * Component for audio player.
  */
 
-import React, { useEffect, useReducer, useRef } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import ReactPlayer from 'react-player/file';
 import { Box, IconButton, NoSsr } from '@material-ui/core';

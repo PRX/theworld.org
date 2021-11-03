@@ -3,7 +3,6 @@
  * Component for default story lede.
  */
 
-import React from 'react';
 import dynamic from 'next/dynamic';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ILedeImageProps } from '@components/LedeImage';

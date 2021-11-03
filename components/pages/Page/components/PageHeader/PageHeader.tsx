@@ -3,7 +3,6 @@
  * Component for page header.
  */
 
-import React from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { IPriApiResource } from 'pri-api-library/types';
 import { pageHeaderStyles } from './PageHeader.styles';

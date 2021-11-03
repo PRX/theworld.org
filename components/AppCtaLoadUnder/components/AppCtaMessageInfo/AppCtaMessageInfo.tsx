@@ -3,7 +3,6 @@
  * Component for app banner info CTA messages.
  */
 
-import React from 'react';
 import {
   Box,
   Button,
@@ -41,7 +40,7 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
 
   return (
     <Box textAlign="center">
-      <Grid container justify="center" alignItems="center">
+      <Grid container justifyContent="center" alignItems="center">
         <Grid item sm={12} md={8}>
           {heading && <Typography variant="h2">{heading}</Typography>}
           {message && (

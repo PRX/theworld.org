@@ -5,7 +5,7 @@
 import { addCssColorAlpha } from '@lib/parse/color';
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -72,7 +72,7 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
 });
 
 export const episodeCardTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       body1: {
         fontSize: theme.typography.pxToRem(16)
@@ -124,6 +124,7 @@ export const episodeCardTheme = (theme: Theme) =>
           width: '100%',
           height: 0,
           paddingTop: `${(9 / 16) * 100}%`,
+          background: theme.palette.grey[300],
           '& > :only-child': {
             position: 'absolute',
             top: 0,

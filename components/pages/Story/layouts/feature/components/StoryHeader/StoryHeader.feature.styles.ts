@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   Theme,
   makeStyles,
   createStyles
@@ -12,7 +12,7 @@ import {
 import { addCssColorAlpha } from '@lib/parse/color';
 
 export const storyHeaderTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h1: {
         color: theme.palette.primary.contrastText,

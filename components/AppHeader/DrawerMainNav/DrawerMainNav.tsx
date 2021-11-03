@@ -3,7 +3,7 @@
  * Component for app drawer top nav.
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useStore } from 'react-redux';
 import { handleButtonClick } from '@lib/routing';
 import { IButton } from '@interfaces';

@@ -3,7 +3,6 @@
  * Component for displaying formatted time.
  */
 
-import React from 'react';
 import { twitter } from '@config';
 import { IImageStyle } from '@interfaces/content';
 

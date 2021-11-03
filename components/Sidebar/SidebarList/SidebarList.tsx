@@ -3,7 +3,6 @@
  * Component for link lists in sidebar.
  */
 
-import React from 'react';
 import {
   List,
   ListProps,

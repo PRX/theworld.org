@@ -3,7 +3,7 @@
  * Component for displaying formatted time.
  */
 
-import React from 'react';
+import { Fragment } from 'react';
 import { encode } from 'base-64';
 import { fb } from '@config';
 import { IImageStyle } from '@interfaces/content';
@@ -36,14 +36,14 @@ export const OpenGraph = ({
     {image &&
       (Array.isArray(image) ? image : [image]).map(
         ({ src, type: imageType, width, height }) => (
-          <React.Fragment key={`i:${encode(src)}`}>
+          <Fragment key={`i:${encode(src)}`}>
             <meta property="og:image" content={src} />
             {imageType && <meta property="og:image:type" content={imageType} />}
             {width && <meta property="og:image:width" content={`${width}`} />}
             {height && (
               <meta property="og:image:height" content={`${height}`} />
             )}
-          </React.Fragment>
+          </Fragment>
         )
       )}
     {children}

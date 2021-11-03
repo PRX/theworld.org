@@ -3,7 +3,6 @@
  *
  * Convert placeholder markup with instagram embed component.
  */
-import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
 import { DomElement } from 'htmlparser2';
 import { fb } from '@config';

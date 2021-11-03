@@ -3,7 +3,6 @@
  * Component for generating meta tags.
  */
 
-import React from 'react';
 import { parse } from 'url';
 import Head from 'next/head';
 import { encode } from 'base-64';

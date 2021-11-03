@@ -3,7 +3,7 @@
  * Component for newsletter  elements.
  */
 
-import React, { ChangeEvent, FormEvent, useState, HTMLAttributes } from 'react';
+import { ChangeEvent, FormEvent, useState, HTMLAttributes } from 'react';
 import classNames from 'classnames/bind';
 import {
   Box,

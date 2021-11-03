@@ -3,7 +3,7 @@
  * Component for headers in sidebar items.
  */
 
-import React, { HTMLAttributes, useRef, useState } from 'react';
+import { HTMLAttributes, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Box, IconButton } from '@material-ui/core';
 import { CheckSharp, SelectAllSharp, WarningSharp } from '@material-ui/icons';

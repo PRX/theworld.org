@@ -4,14 +4,14 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
 
 export const sidebarFooterTheme = (theme: Theme) => {
-  return createMuiTheme(theme, {
+  return createTheme(theme, {
     overrides: {
       MuiPagination: {
         ul: {

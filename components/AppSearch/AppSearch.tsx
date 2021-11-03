@@ -3,7 +3,7 @@
  * Component for Category.
  */
 
-import React, {
+import {
   FormEvent,
   MouseEvent,
   MouseEventHandler,

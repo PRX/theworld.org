@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -16,7 +16,7 @@ export const sidebarHeaderTheme = (theme: Theme) => {
     fontWeight: 400
   };
 
-  return createMuiTheme(theme, {
+  return createTheme(theme, {
     overrides: {
       MuiSvgIcon: {
         root: {

@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -104,7 +104,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
 );
 
 export const storyCardTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h5: {
         lineHeight: 1.1
@@ -147,7 +147,8 @@ export const storyCardTheme = (theme: Theme) =>
         root: {
           position: 'relative',
           overflow: 'hidden',
-          width: '100%'
+          width: '100%',
+          background: theme.palette.grey[300]
         }
       },
       MuiList: {

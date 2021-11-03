@@ -13,5 +13,5 @@ export const formatDuration = (seconds: number): string => {
   if (hh) {
     return `${hh}:${pad(mm)}:${ss}`;
   }
-  return `${mm}:${ss}`;
+  return `${!mm ? '00' : mm}:${ss}`;
 };

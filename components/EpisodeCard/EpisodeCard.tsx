@@ -3,7 +3,6 @@
  * Component for story card links.
  */
 
-import React from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -64,7 +63,7 @@ export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
           <CardContent>
             <Grid
               container
-              justify="space-between"
+              justifyContent="space-between"
               alignItems="center"
               spacing={1}
             >

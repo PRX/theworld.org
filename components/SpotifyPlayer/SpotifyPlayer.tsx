@@ -3,8 +3,6 @@
  * Component for displaying formatted time.
  */
 
-import React from 'react';
-
 interface ISpotifyPlayerProps {
   uri: string;
   size?: 'compact' | 'large';

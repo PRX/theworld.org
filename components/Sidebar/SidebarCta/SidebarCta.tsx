@@ -3,7 +3,6 @@
  * Component for sidebar CTA elements.
  */
 
-import React from 'react';
 import { NoSsr } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ICtaRegionProps } from '@interfaces/cta';

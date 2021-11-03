@@ -3,7 +3,6 @@
  *
  * Convert placeholder markup with twitter embed component.
  */
-import React from 'react';
 import { DomElement } from 'htmlparser2';
 import { findDescendant } from '@lib/parse/html';
 import { makeVimeoEmbedUrl, makeYoutubeEmbedUrl } from '@lib/parse/url';

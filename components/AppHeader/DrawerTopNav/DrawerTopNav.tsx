@@ -3,7 +3,6 @@
  * Component for app drawer top nav.
  */
 
-import React from 'react';
 import { useStore } from 'react-redux';
 import { Button, ButtonGroup } from '@material-ui/core';
 import { handleButtonClick } from '@lib/routing';

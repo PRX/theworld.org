@@ -3,7 +3,7 @@
  * Component for headers in sidebar items.
  */
 
-import React, { HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 import { Box } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';

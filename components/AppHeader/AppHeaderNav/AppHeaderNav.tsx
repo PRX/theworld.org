@@ -3,7 +3,7 @@
  * Component for app header nav.
  */
 
-import React from 'react';
+import { Fragment } from 'react';
 import { useStore } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
@@ -31,7 +31,7 @@ export const AppHeaderNav = () => {
       <ThemeProvider theme={appHeaderNavTheme}>
         {headerNav.map(
           ({ color, icon, name, url, key, attributes, itemLinkClass }) => (
-            <React.Fragment key={key}>
+            <Fragment key={key}>
               <Hidden xsDown>
                 <Button
                   component="a"
@@ -84,7 +84,7 @@ export const AppHeaderNav = () => {
                   </Button>
                 )}
               </Hidden>
-            </React.Fragment>
+            </Fragment>
           )
         )}
       </ThemeProvider>

@@ -2,7 +2,7 @@
  * @file Story.tsx
  * Component for Story.
  */
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import { AnyAction } from 'redux';
@@ -79,7 +79,7 @@ export const Newsletter = () => {
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <ThemeProvider theme={newsletterTheme}>
         <Container disableGutters={!!image} maxWidth={false}>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <Grid
               item
               xs={12}
@@ -111,7 +111,7 @@ export const Newsletter = () => {
                     <Grid
                       container
                       spacing={4}
-                      justify="center"
+                      justifyContent="center"
                       alignContent="center"
                     >
                       <Grid item xs={12}>

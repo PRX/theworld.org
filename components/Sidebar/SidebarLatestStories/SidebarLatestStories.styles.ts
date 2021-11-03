@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -17,4 +17,4 @@ export const sidebarLatestStoriesStyles = makeStyles(() =>
 );
 
 export const sidebarLatestStoriesTheme = (theme: Theme) =>
-  createMuiTheme(theme, {});
+  createTheme(theme, {});

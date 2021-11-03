@@ -3,7 +3,7 @@
  * Component for audio list in sidebar items.
  */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ListProps } from '@material-ui/core';

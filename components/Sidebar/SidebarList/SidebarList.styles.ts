@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -12,7 +12,7 @@ import {
 import { addCssColorAlpha } from '@lib/parse/color';
 
 export const sidebarListTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       body2: {
         fontSize: theme.typography.pxToRem(18)

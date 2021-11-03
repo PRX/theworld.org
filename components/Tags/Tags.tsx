@@ -3,7 +3,7 @@
  * Component for Tags elements.
  */
 
-import React, { HTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 import { Box } from '@material-ui/core';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ContentButton } from '@components/ContentButton';

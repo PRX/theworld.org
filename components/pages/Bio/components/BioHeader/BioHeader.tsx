@@ -3,7 +3,6 @@
  * Component for bio header elements.
  */
 
-import React from 'react';
 import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';

@@ -3,7 +3,6 @@
  * Component for ream header.
  */
 
-import React from 'react';
 import { Box, Typography } from '@material-ui/core';
 import { teamHeaderStyles } from './TeamHeader.styles';
 

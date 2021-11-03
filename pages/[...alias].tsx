@@ -3,7 +3,7 @@
  * Exports the Home component.
  */
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';

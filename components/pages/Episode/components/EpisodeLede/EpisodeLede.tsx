@@ -3,7 +3,6 @@
  * Component for episode lede.
  */
 
-import React from 'react';
 import { LedeImage } from '@components/LedeImage';
 import { LedeVideo } from '@components/LedeVideo';
 import { IPriApiResource } from 'pri-api-library/types';

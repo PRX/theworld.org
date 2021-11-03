@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -13,7 +13,7 @@ import { storyLayoutStyles } from '@components/pages/Story/layouts/default/style
 import { storyBodyStyles } from '@components/pages/Story/layouts/default/styles/Story.body';
 
 export const programTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h1: {
         fontSize: theme.typography.pxToRem(46)

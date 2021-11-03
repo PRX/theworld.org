@@ -3,7 +3,7 @@
  * Component for rendering HTML content.
  */
 
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { DomElement } from 'htmlparser2';
 import ReactHtmlParser, { Transform } from 'react-html-parser';
 import {

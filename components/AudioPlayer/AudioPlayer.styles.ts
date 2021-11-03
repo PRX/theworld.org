@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme,
@@ -15,7 +15,7 @@ import { blue } from '@theme/colors';
 const playerHeight = 50;
 
 export const audioPlayerTheme = (theme: Theme) => {
-  return createMuiTheme(theme, {
+  return createTheme(theme, {
     overrides: {
       MuiIconButton: {
         root: {

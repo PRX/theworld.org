@@ -35,7 +35,6 @@ rules:
   strict: 0
   no-unused-vars:
     - error
-    - varsIgnorePattern: 'React'
   import/no-extraneous-dependencies: 0
   import/prefer-default-export: 0
   import/no-default-export: error
@@ -48,15 +47,13 @@ rules:
   react/jsx-filename-extension:
     [1, { 'extensions': ['.js', '.jsx', '.ts', '.tsx', '.svg'] }]
   react/jsx-props-no-spreading: 0
-  react/jsx-uses-react: 2
   react/jsx-uses-vars: 2
   react/prefer-stateless-function: 0
-  react/react-in-jsx-scope: 2
+  react/react-in-jsx-scope: 0
   '@typescript-eslint/comma-dangle': 0
   '@typescript-eslint/indent': 0
   '@typescript-eslint/no-unused-vars':
     - error
-    - varsIgnorePattern: 'React'
   prettier/prettier: 'error'
 overrides:
   - 'files': ['./pages/**/*', './pages/*']
