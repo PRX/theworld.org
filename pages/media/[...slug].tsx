@@ -52,9 +52,18 @@ export const getStaticProps = wrapper.getStaticProps(
     let resourceId: string;
     let resourceType: string = 'homepage';
     let redirect: string;
-    const aliasPath = ['file', ...(slug as string[])].join('/');
+    const aliasPath = ['media', ...(slug as string[])];
 
-    const aliasData = await store.dispatch<any>(fetchAliasData(aliasPath));
+    let aliasData = await store.dispatch<any>(
+      fetchAliasData(aliasPath.join('/'))
+    );
+
+    if (!aliasData?.type) {
+      aliasPath[0] = 'file';
+      aliasData = await store.dispatch<any>(
+        fetchAliasData(aliasPath.join('/'))
+      );
+    }
 
     // Update resource id, type. or redirect.
     if (aliasData?.type === 'redirect--external') {
@@ -117,14 +126,19 @@ export const getStaticPaths = async () => {
       .filter((item: IPriApiResource) => item.type === 'file--audio')
   ];
   const paths = [
-    ...resources.map(resource => ({
-      params: {
-        slug: generateLinkHrefForContent(resource)
-          ?.pathname.replace(/^\/?file\//, '')
-          .split('/')
-      }
-    }))
-  ].filter(({ params: { slug } }) => !!slug?.join('/').length);
+    ...resources
+      .map(resource => ({
+        params: {
+          slug: generateLinkHrefForContent(resource)?.pathname
+        }
+      }))
+      .filter(({ params: { slug } }) => !!slug?.length)
+      .map(({ params: { slug } }) => ({
+        params: {
+          slug: slug?.split('/').slice(1)
+        }
+      }))
+  ];
 
   return { paths, fallback: 'blocking' };
 };
