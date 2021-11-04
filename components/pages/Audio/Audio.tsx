@@ -3,7 +3,7 @@
  * Component for Episode.
  */
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -22,7 +22,6 @@ import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { audioStyles, audioTheme } from './Audio.styles';
 import { AudioHeader } from './components/AudioHeader';
-import { useRef } from 'react-transition-group/node_modules/@types/react';
 
 export const Audio = () => {
   const {
