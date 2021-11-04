@@ -98,7 +98,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [router.events]);
 
   return (
     <ThemeProvider theme={storyCardTheme}>

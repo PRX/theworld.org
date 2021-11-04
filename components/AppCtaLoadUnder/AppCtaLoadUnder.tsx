@@ -54,7 +54,7 @@ export const AppCtaLoadUnder = () => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [unsub]);
 
   return (
     CtaMessageComponent &&

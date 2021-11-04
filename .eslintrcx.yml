@@ -9,6 +9,7 @@ extends:
   - airbnb-typescript
   - plugin:prettier/recommended
   - prettier/react
+  - nextjs
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
@@ -31,6 +32,7 @@ plugins:
   - '@typescript-eslint'
   - import
   - prettier
+  - nextjs
 rules:
   strict: 0
   no-unused-vars:

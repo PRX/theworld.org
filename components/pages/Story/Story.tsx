@@ -2,7 +2,7 @@
  * @file Story.tsx
  * Component for Story.
  */
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -29,8 +29,9 @@ export const Story = () => {
   const unsub = store.subscribe(() => {
     updateForce(store.getState());
   });
-  let data = getDataByResource(state, type, id);
+  let data = useRef(getDataByResource(state, type, id));
   const {
+    complete,
     metatags,
     title,
     byline,
@@ -38,7 +39,7 @@ export const Story = () => {
     datePublished,
     displayTemplate,
     resourceDevelopment
-  } = data;
+  } = data.current;
   const LayoutComponent =
     layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
   const props = {
@@ -86,17 +87,17 @@ export const Story = () => {
   }
 
   useEffect(() => {
-    if (!data.complete) {
+    if (!complete) {
       (async () => {
         // Get content data.
         await store.dispatch<any>(fetchStoryData(id));
-        data = getDataByResource(state, type, id);
+        data.current = getDataByResource(state, type, id);
       })();
     }
 
     // Get missing related stories data.
     const collection = 'related';
-    const { primaryCategory } = data;
+    const { primaryCategory } = data.current;
     const related =
       primaryCategory &&
       getCollectionData(
@@ -128,36 +129,16 @@ export const Story = () => {
       })();
     }
 
-    // // Get CTA message data.
-    // const context = [
-    //   `node:${data.id}`,
-    //   `node:${data.program?.id}`,
-    //   `term:${data.primaryCategory?.id}`,
-    //   ...((data.categories &&
-    //     !!data.categories.length &&
-    //     data.categories.filter(v => !!v).map(({ id: tid }) => `term:${tid}`)) ||
-    //     []),
-    //   ...((data.vertical &&
-    //     !!data.vertical.length &&
-    //     data.vertical.filter(v => !!v).map(({ tid }) => `term:${tid}`)) ||
-    //     [])
-    // ];
-    // (async () => {
-    //   await store.dispatch<any>(
-    //     fetchCtaData(type, id, 'tw_cta_regions_content', context)
-    //   );
-    // })();
-
     return () => {
       unsub();
     };
-  }, [id]);
+  }, [complete, id, state, store, type, unsub]);
 
   return (
     <>
       <MetaTags data={metatags} />
       <Plausible events={plausibleEvents} subject={{ type, id }} />
-      <LayoutComponent data={data} />
+      <LayoutComponent data={data.current} />
     </>
   );
 };

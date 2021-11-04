@@ -3,7 +3,7 @@
  * Component for Pages.
  */
 
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -28,13 +28,9 @@ export const Page = () => {
   const store = useStore();
   const state = store.getState();
   const classes = pageStyles({});
-  let data = getDataByResource(state, type, id);
+  let data = useRef(getDataByResource(state, type, id));
 
-  if (!data) {
-    return null;
-  }
-
-  const { metatags, title, body } = data;
+  const { complete, metatags, title, body } = data.current;
 
   // Plausible Events.
   const props = {
@@ -43,14 +39,14 @@ export const Page = () => {
   const plausibleEvents: PlausibleEventArgs[] = [['Page', { props }]];
 
   useEffect(() => {
-    if (!data.complete) {
+    if (!complete) {
       (async () => {
         // Get content data.
         await store.dispatch<any>(fetchPageData(id));
-        data = getDataByResource(state, type, id);
+        data.current = getDataByResource(state, type, id);
       })();
     }
-  }, [id]);
+  }, [complete, id, state, store, type]);
 
   return (
     <ThemeProvider theme={pageTheme}>
@@ -59,7 +55,7 @@ export const Page = () => {
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
-            <PageHeader data={data} />
+            <PageHeader data={data.current} />
             <Box className={classes.body} my={2}>
               <HtmlContent html={body} />
             </Box>

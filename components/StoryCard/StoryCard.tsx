@@ -105,7 +105,7 @@ export const StoryCard = ({
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [pathname, router.events]);
 
   return (
     <ThemeProvider theme={storyCardTheme}>

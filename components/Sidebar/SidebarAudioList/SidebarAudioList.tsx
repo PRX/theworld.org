@@ -43,7 +43,7 @@ export const SidebarAudioList = ({
           break;
       }
     });
-  }, []);
+  }, [dispatch, linksList]);
 
   return (
     linksList && (

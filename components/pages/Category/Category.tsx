@@ -119,7 +119,7 @@ export const Category = () => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [unsub]);
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -128,7 +128,7 @@ export const Category = () => {
       top: oldscrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [page]);
+  }, [oldscrollY, page]);
 
   useEffect(() => {
     (async () => {
@@ -138,7 +138,7 @@ export const Category = () => {
         fetchCtaData(type, id, 'tw_cta_regions_landing', context)
       );
     })();
-  }, [id]);
+  }, [id, store, type]);
 
   const loadMoreStories = async () => {
     setLoading(true);

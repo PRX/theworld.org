@@ -120,7 +120,7 @@ export const Term = () => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [unsub]);
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -129,7 +129,7 @@ export const Term = () => {
       top: oldscrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [page]);
+  }, [oldscrollY, page]);
 
   useEffect(() => {
     (async () => {
@@ -139,7 +139,7 @@ export const Term = () => {
         fetchCtaData('tw_cta_regions_landing', type, id, context)
       );
     })();
-  }, [id]);
+  }, [id, store, type]);
 
   const loadMoreStories = async () => {
     setLoadingStories(true);

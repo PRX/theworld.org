@@ -133,7 +133,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
       router.events.off('routeChangeError', handleRouteChangeEnd);
       unsub();
     };
-  }, []);
+  }, [router.events, store, unsub]);
 
   useEffect(() => {
     if (staticPage && !hasData) {
@@ -143,7 +143,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
       }
       store.dispatch<any>(fetchSearchData(query, 'all'));
     }
-  }, [query]);
+  }, [hasData, query, staticPage, store]);
 
   const renderSearchForm = () => (
     <form onSubmit={handleSubmit} autoComplete="off">

@@ -14,17 +14,18 @@ export interface IImageWidthsFunc {
 export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
   node: DomElement
 ) => {
+  const { type, name, attribs } = node;
+
   if (
-    node.type === 'tag' &&
-    node.name === 'img' &&
-    !(node.attribs.width === '1' && node.attribs.height === '1')
+    type === 'tag' &&
+    name === 'img' &&
+    !(attribs.width === '1' && attribs.height === '1')
   ) {
     const imageWidths = getImageWidths(node);
     const sizes = imageWidths
       .map(([q, w]) => (q ? `(${q}) ${w}` : w))
       .join(', ');
-    const { attribs } = node;
-    const { class: className, width, height, ...otherAttribs } = attribs;
+    const { alt, class: className, width, height, ...otherAttribs } = attribs;
     let wrapperClass: string;
 
     switch (true) {
@@ -44,6 +45,7 @@ export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
       <div className={wrapperClass} key={attribs.src}>
         <Image
           {...otherAttribs}
+          alt={alt}
           width={width || 16}
           height={height || 9}
           layout="responsive"
@@ -53,6 +55,7 @@ export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
     ) : (
       <Image
         {...otherAttribs}
+        alt={alt}
         width={width || 16}
         height={height || 9}
         layout="responsive"
@@ -64,3 +67,5 @@ export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
 
   return undefined;
 };
+
+enhanceImage.displayName = 'EnhancedImage';

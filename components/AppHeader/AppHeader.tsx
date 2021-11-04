@@ -52,7 +52,7 @@ export const AppHeader = () => {
       Router.events.off('routeChangeComplete', handleRouteChangeComplete);
       unsub();
     };
-  }, []);
+  }, [store, unsub]);
 
   const handleDrawerOpen = () => () => {
     store.dispatch({ type: 'UI_DRAWER_OPEN' });
@@ -83,10 +83,8 @@ export const AppHeader = () => {
             </IconButton>
           </NoSsr>
 
-          <Link href="/">
-            <a href="/" aria-label="The World">
-              <Logo className={cx('twLogo')} />
-            </a>
+          <Link href="/" aria-label="The World" passHref>
+            <Logo className={cx('twLogo')} />
           </Link>
 
           <div className={cx('grow')} />

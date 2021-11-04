@@ -118,7 +118,7 @@ export const Bio = () => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [unsub]);
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -127,7 +127,7 @@ export const Bio = () => {
       top: oldscrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [page]);
+  }, [oldscrollY, page]);
 
   useEffect(() => {
     (async () => {
@@ -137,7 +137,7 @@ export const Bio = () => {
         fetchCtaData(type, id, 'tw_cta_regions_landing', context)
       );
     })();
-  }, [id]);
+  }, [id, store, type]);
 
   const loadMoreStories = async () => {
     setLoading(true);

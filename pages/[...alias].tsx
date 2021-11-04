@@ -47,7 +47,7 @@ const ContentProxy = ({ type, id }: Props) => {
     (async () => {
       await store.dispatch<any>(fetchCtaData(type, id));
     })();
-  }, [type, id]);
+  }, [type, id, store]);
 
   switch (type) {
     case 'file--audio':

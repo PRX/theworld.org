@@ -213,7 +213,7 @@ export const StoryDefault = ({ data }: Props) => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [unsub]);
 
   return (
     <ThemeProvider theme={storyTheme}>

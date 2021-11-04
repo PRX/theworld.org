@@ -51,7 +51,7 @@ export const AppCtaBanner = () => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [unsub]);
 
   return (
     CtaMessageComponent &&

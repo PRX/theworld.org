@@ -2,11 +2,12 @@
  * @file Story.tsx
  * Component for Story.
  */
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import Image from 'next/image';
 import {
   Box,
   Container,
@@ -17,7 +18,6 @@ import {
 import { CheckCircleOutlineSharp } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
-import { Image } from '@components/Image';
 import { MetaTags } from '@components/MetaTags';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -36,16 +36,20 @@ export const Newsletter = () => {
   } = useContext(AppContext);
   const store = useStore();
   const state = store.getState();
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
+  let data = useRef(getDataByResource(state, type, id));
 
   const [subscribed, setSubscribed] = useState(false);
-  const { metatags, title, body, buttonLabel, summary, image } = data;
+  const {
+    complete,
+    metatags,
+    title,
+    body,
+    buttonLabel,
+    summary,
+    image
+  } = data.current;
   const options = parseNewsletterOptions(
-    data as IPriApiNewsletter,
+    data.current as IPriApiNewsletter,
     'newsletter-page'
   );
   const classes = newsletterStyles({});
@@ -64,14 +68,14 @@ export const Newsletter = () => {
   ];
 
   useEffect(() => {
-    if (!data.complete) {
+    if (!complete) {
       (async () => {
         // Get content data.
         await store.dispatch<any>(fetchNewsletterData(id));
-        data = getDataByResource(state, type, id);
+        data.current = getDataByResource(state, type, id);
       })();
     }
-  }, [id]);
+  }, [complete, id, state, store, type]);
 
   return (
     <>
@@ -91,9 +95,11 @@ export const Newsletter = () => {
               {image && (
                 <Image
                   className={cx('image')}
-                  wrapperClassName={cx('imageWrapper')}
-                  data={image}
-                  width={{ xl: '100vw' }}
+                  src={image.url}
+                  alt={image.alt}
+                  layout="fill"
+                  objectFit="cover"
+                  priority
                 />
               )}
               <div className={cx('content')}>

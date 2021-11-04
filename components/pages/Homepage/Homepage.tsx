@@ -233,7 +233,7 @@ export const Homepage = () => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [store, unsub]);
 
   const title = 'The World from PRX';
   const description =

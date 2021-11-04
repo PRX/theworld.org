@@ -51,7 +51,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [unsub]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0 });
@@ -64,7 +64,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
         store.dispatch<any>(fetchCtaData(type, id, 'tw_cta_regions_site'))
       ]);
     })();
-  }, [type, id]);
+  }, [type, id, store]);
 
   return (
     <ThemeProvider theme={baseMuiTheme}>

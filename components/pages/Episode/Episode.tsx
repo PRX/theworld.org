@@ -3,7 +3,7 @@
  * Component for Episode.
  */
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
@@ -62,13 +62,10 @@ export const Episode = () => {
     setState(store.getState());
   });
   const classes = episodeStyles({});
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
+  let data = useRef(getDataByResource(state, type, id));
 
   const {
+    complete,
     metatags,
     title,
     season,
@@ -80,10 +77,11 @@ export const Episode = () => {
     popoutPlayerUrl,
     hosts,
     producers,
+    program,
     guests,
     reporters,
     spotifyPlaylist
-  } = data;
+  } = data.current;
   const { segments } = audio || {};
 
   const storiesState = getCollectionData(state, type, id, 'stories');
@@ -155,16 +153,16 @@ export const Episode = () => {
   });
 
   useEffect(() => {
-    if (!data.complete) {
+    if (!complete) {
       (async () => {
         // Get content data.
         await store.dispatch<any>(fetchEpisodeData(id));
-        data = getDataByResource(state, type, id);
+        data.current = getDataByResource(state, type, id);
       })();
     }
 
     // Get CTA message data.
-    const context = [`node:${data.id}`, `node:${data.program.id}`];
+    const context = [`node:${id}`, `node:${program.id}`];
     (async () => {
       await store.dispatch<any>(
         fetchCtaData(type, id, 'tw_cta_regions_content', context)
@@ -174,7 +172,7 @@ export const Episode = () => {
     return () => {
       unsub();
     };
-  }, [id]);
+  }, [complete, id, program.id, state, store, type, unsub]);
 
   return (
     <ThemeProvider theme={episodeTheme}>
@@ -183,7 +181,7 @@ export const Episode = () => {
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
-            <EpisodeHeader data={data} />
+            <EpisodeHeader data={data.current} />
           </Grid>
           <Grid item xs={12}>
             {audio && (
@@ -196,7 +194,7 @@ export const Episode = () => {
             )}
             <Box className={classes.main}>
               <Box className={classes.content}>
-                <EpisodeLede data={data} />
+                <EpisodeLede data={data.current} />
                 <Box className={classes.body} my={2}>
                   <HtmlContent html={body} />
                 </Box>

@@ -34,6 +34,7 @@ export const BioHeader = ({
           <Container fixed className={cx('header')}>
             {image && (
               <Image
+                alt={image.alt}
                 src={image.url}
                 layout="fixed"
                 width={220}

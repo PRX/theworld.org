@@ -22,6 +22,7 @@ import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { audioStyles, audioTheme } from './Audio.styles';
 import { AudioHeader } from './components/AudioHeader';
+import { useRef } from 'react-transition-group/node_modules/@types/react';
 
 export const Audio = () => {
   const {
@@ -35,13 +36,10 @@ export const Audio = () => {
     setState(store.getState());
   });
   const classes = audioStyles({});
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
+  const data = useRef(getDataByResource(state, type, id));
 
   const {
+    complete,
     metatags,
     title,
     audioAuthor,
@@ -49,8 +47,9 @@ export const Audio = () => {
     audioType,
     season,
     dateBroadcast,
-    description
-  } = data;
+    description,
+    program
+  } = data.current;
 
   const ctaInlineEnd = getCtaRegionData(
     state,
@@ -92,16 +91,16 @@ export const Audio = () => {
   });
 
   useEffect(() => {
-    if (!data.complete) {
+    if (!complete) {
       (async () => {
         // Get content data.
         await store.dispatch<any>(fetchAudioData(id));
-        data = getDataByResource(state, type, id);
+        data.current = getDataByResource(state, type, id);
       })();
     }
 
     // Get CTA message data.
-    const context = [`file:${data.id}`, `node:${data.program.id}`];
+    const context = [`file:${id}`, `node:${program.id}`];
     (async () => {
       await store.dispatch<any>(
         fetchCtaData(type, id, 'tw_cta_regions_content', context)
@@ -111,7 +110,7 @@ export const Audio = () => {
     return () => {
       unsub();
     };
-  }, [id]);
+  }, [complete, id, program.id, state, store, type, unsub]);
 
   return (
     <ThemeProvider theme={audioTheme}>
@@ -125,8 +124,8 @@ export const Audio = () => {
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
-            <AudioHeader data={data} />
-            <AudioPlayer data={data} />
+            <AudioHeader data={data.current} />
+            <AudioPlayer data={data.current} />
             <Box className={classes.body} my={2}>
               <HtmlContent html={description} />
             </Box>

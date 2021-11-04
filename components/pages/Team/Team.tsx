@@ -92,7 +92,7 @@ export const Team = () => {
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [router.events]);
 
   return (
     <ThemeProvider theme={teamTheme}>

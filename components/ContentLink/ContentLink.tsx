@@ -50,7 +50,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
         router.events.off('routeChangeComplete', handleRouteChangeEnd);
         router.events.off('routeChangeError', handleRouteChangeEnd);
       };
-    }, []);
+    }, [pathname, router.events]);
 
     return href ? (
       <Link href={href} as={alias} passHref>

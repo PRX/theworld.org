@@ -48,7 +48,7 @@ export const DrawerSearch = () => {
     return () => {
       unsub();
     };
-  }, []);
+  }, [unsub]);
 
   return (
     <ThemeProvider theme={appDrawerSearchTheme}>
