@@ -33,6 +33,15 @@ module.exports = withPlausibleProxy({
   future: {
     webpack5: true
   },
+  async redirects() {
+    return [
+      {
+        source: '/file/:slug',
+        destination: '/media/:slug',
+        permanent: true
+      }
+    ];
+  },
   webpack(config, { isServer }) {
     const newConfig = {
       ...config,

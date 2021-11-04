@@ -173,13 +173,15 @@ export const getStaticPaths = async () => {
     ...featuredStories,
     ...stories.data,
     ...episodes.data,
-    ...episodes.data.reduce(
-      (acc: any, { audio }) => [
-        ...acc,
-        ...(audio?.segments ? [...audio.segments] : [])
-      ],
-      [] as any[]
-    ),
+    ...episodes.data
+      .reduce(
+        (acc: IPriApiResource[], { audio }) => [
+          ...acc,
+          ...((audio?.segments ? [...audio.segments] : []) as IPriApiResource[])
+        ],
+        [] as IPriApiResource[][]
+      )
+      .filter((item: IPriApiResource) => item.type !== 'file--audio'),
     ...latestStories.data,
     ...latestAppStories.data,
     ...team,
@@ -208,7 +210,7 @@ export const getStaticPaths = async () => {
           alias: pathname.slice(1).split('/')
         }
       }))
-  ].filter(({ params: { alias } }) => !!alias.filter(s => !!s.length).length);
+  ].filter(({ params: { alias } }) => !!alias?.join('/').length);
 
   return { paths, fallback: 'blocking' };
 };
