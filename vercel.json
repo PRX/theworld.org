@@ -47,5 +47,11 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/file/:alias*",
+      "destination": "/media/:alias*"
+    }
   ]
 }
