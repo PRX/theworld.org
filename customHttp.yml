@@ -13,19 +13,23 @@ customHeaders:
         value: 'nosniff'
       - key: 'Permissions-Policy'
         value: 'interest-cohort=()'
-  - pattern: '/_next/image?*'
+  - pattern: '/_next/image*'
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
-  - pattern: '/static/image?*'
+  - pattern: '/static/**/*'
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
-  - pattern: '/_next/static/chunks/*'
+  - pattern: '/_next/static/chunks/**/*'
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
-  - pattern: '/_next/data/*'
+  - pattern: '/_next/data/**/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
+  - pattern: '/api/**/*'
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
