@@ -2,7 +2,7 @@ customHeaders:
   - pattern: '**/*'
     headers:
       - key: 'Cache-Control'
-        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
+        value: 'public, max-age=0, s-maxage=1, stale-while-revalidate'
       - key: 'Strict-Transport-Security'
         value: 'max-age=63072000; includeSubDomains; preload'
       - key: 'X-Frame-Options'
@@ -13,7 +13,23 @@ customHeaders:
         value: 'nosniff'
       - key: 'Permissions-Policy'
         value: 'interest-cohort=()'
-  - pattern: '/_next/static/*'
+  - pattern: '/_next/image?*'
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
+  - pattern: '/static/image?*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
+  - pattern: '/_next/static/chunks/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
+  - pattern: '/_next/data/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
+  - pattern: '/api/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
