@@ -19,9 +19,10 @@ export const fetchEpisodeData = (
 ): Promise<void> => {
   const state = getState();
   const type = 'node--episodes';
+  const isOnServer = typeof window === 'undefined';
   let data = getDataByResource(state, type, id);
 
-  if (!data || !data.complete) {
+  if (!data || !data.complete || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,9 +31,7 @@ export const fetchEpisodeData = (
       }
     });
 
-    data = await (typeof window === 'undefined'
-      ? fetchEpisode
-      : fetchApiEpisode)(id).then(
+    data = await (isOnServer ? fetchEpisode : fetchApiEpisode)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 

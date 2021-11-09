@@ -7,7 +7,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
-import { fetchTerm } from '@lib/fetch';
+import { fetchApiTerm, fetchTerm } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
@@ -19,9 +19,10 @@ export const fetchTermData = (
 ): Promise<void> => {
   const state = getState();
   const type = 'taxonomy_term--terms';
+  const isOnServer = typeof window === 'undefined';
   const data = getDataByResource(state, type, id);
 
-  if (!data) {
+  if (!data || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,7 +31,7 @@ export const fetchTermData = (
       }
     });
 
-    const apiResp = await fetchTerm(id).then(
+    const apiResp = await (isOnServer ? fetchTerm : fetchApiTerm)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
     const {

@@ -7,7 +7,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
-import { fetchPerson } from '@lib/fetch';
+import { fetchApiPerson, fetchPerson } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
@@ -19,9 +19,10 @@ export const fetchPersonData = (
 ): Promise<void> => {
   const state = getState();
   const type = 'node--people';
+  const isOnServer = typeof window === 'undefined';
   const data = getDataByResource(state, type, id);
 
-  if (!data) {
+  if (!data || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,7 +31,7 @@ export const fetchPersonData = (
       }
     });
 
-    const apiResp = await fetchPerson(id).then(
+    const apiResp = await (isOnServer ? fetchPerson : fetchApiPerson)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
     const {

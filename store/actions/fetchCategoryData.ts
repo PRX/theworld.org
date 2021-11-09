@@ -7,7 +7,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
-import { fetchCategory } from '@lib/fetch';
+import { fetchApiCategory, fetchCategory } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
@@ -19,9 +19,10 @@ export const fetchCategoryData = (
 ): Promise<void> => {
   const state = getState();
   const type = 'taxonomy_term--categories';
+  const isOnServer = typeof window === 'undefined';
   const data = getDataByResource(state, type, id);
 
-  if (!data) {
+  if (!data || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -35,7 +36,7 @@ export const fetchCategoryData = (
       featuredStories,
       stories,
       ...payload
-    } = await fetchCategory(id).then(
+    } = await (isOnServer ? fetchCategory : fetchApiCategory)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 

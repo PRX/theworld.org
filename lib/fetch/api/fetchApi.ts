@@ -6,7 +6,6 @@
 import fetch from 'isomorphic-unfetch';
 import {
   IPriApiCollectionResponse,
-  IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
 import { IncomingMessage } from 'http';
@@ -206,7 +205,7 @@ export const fetchApiEpisode = async (
 export const fetchApiFileAudio = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`file/audio/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`file/audio/${id}`, req);
 
 /**
  * Method that simplifies GET queries for program data.
@@ -284,7 +283,7 @@ export const fetchApiProgramEpisodes = async (
 export const fetchApiCategory = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`category/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`category/${id}`, req);
 
 /**
  * Method that simplifies GET queries for category stories data.
@@ -333,7 +332,7 @@ export const fetchApiCategoryStories = async (
 export const fetchApiTerm = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`term/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`term/${id}`, req);
 
 /**
  * Method that simplifies GET queries for term stories data.
@@ -407,7 +406,7 @@ export const fetchApiTermEpisodes = async (
 export const fetchApiPage = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`page/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`page/${id}`, req);
 
 /**
  * Method that simplifies GET queries for team data.
@@ -420,7 +419,7 @@ export const fetchApiPage = async (
  */
 export const fetchApiTeam = async (
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi('team', req);
+): Promise<IPriApiResourceResponse> => fetchApi('team', req);
 
 /**
  * Method that simplifies GET queries for person data.
@@ -436,7 +435,7 @@ export const fetchApiTeam = async (
 export const fetchApiPerson = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`person/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`person/${id}`, req);
 
 /**
  * Method that simplifies GET queries for person stories data.
