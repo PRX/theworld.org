@@ -4,23 +4,29 @@
  */
 
 import React from 'react';
-import { Homepage, fetchData } from '@components/pages/Homepage';
+import { Homepage } from '@components/pages/Homepage';
 import { wrapper } from '@store/configureStore';
 import { fetchAppData } from '@store/actions/fetchAppData';
+import { fetchHomepageData } from '@store/actions/fetchHomepageData';
 
 const IndexPage = () => {
   return <Homepage />;
 };
 
 export const getStaticProps = wrapper.getStaticProps(store => async () => {
-  await Promise.all([
+  const [, data] = await Promise.all([
     // Fetch App data (latest stories, menus, etc.)
     store.dispatch<any>(fetchAppData()),
     // Use content component to fetch its data.
-    store.dispatch<any>(fetchData())
+    store.dispatch<any>(fetchHomepageData())
   ]);
 
-  return { props: {}, revalidate: 10 };
+  return {
+    props: {
+      ...data
+    },
+    revalidate: 10
+  };
 });
 
 export default IndexPage;

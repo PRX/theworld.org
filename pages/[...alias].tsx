@@ -22,6 +22,7 @@ import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { getResourceFetchData } from '@lib/import/fetchData';
 import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { getDataByResource } from '@store/reducers';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
@@ -139,8 +140,14 @@ export const getStaticProps = wrapper.getStaticProps(
           store.dispatch(fetchData(resourceId))
         ]);
 
+        const data = getDataByResource(
+          store.getState(),
+          resourceType,
+          resourceId
+        );
+
         return {
-          props: { type: resourceType, id: resourceId },
+          props: { ...data },
           revalidate: 10
         };
       }
