@@ -23,4 +23,8 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
   return { props: {}, revalidate: 10 };
 });
 
+export const getStaticPaths = async () => {
+  return { paths: [{ params: {} }], fallback: 'blocking' };
+};
+
 export default IndexPage;
