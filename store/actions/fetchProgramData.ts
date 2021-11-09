@@ -19,9 +19,10 @@ export const fetchProgramData = (
 ): Promise<void> => {
   const state = getState();
   const type = 'node--programs';
+  const isOnServer = typeof window === 'undefined';
   const data = getDataByResource(state, type, id);
 
-  if (!data) {
+  if (!data || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,11 +31,9 @@ export const fetchProgramData = (
       }
     });
 
-    const apiResp = await (typeof window === 'undefined'
-      ? fetchProgram
-      : fetchApiProgram)(id).then(
-      (resp: IPriApiResourceResponse) => resp && resp.data
-    );
+    const apiResp = await (isOnServer ? fetchProgram : fetchApiProgram)(
+      id
+    ).then((resp: IPriApiResourceResponse) => resp && resp.data);
     const {
       featuredStory,
       featuredStories,

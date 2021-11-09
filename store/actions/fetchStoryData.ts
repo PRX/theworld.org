@@ -19,9 +19,10 @@ export const fetchStoryData = (
 ): Promise<void> => {
   const state = getState();
   const type = 'node--stories';
+  const isOnServer = typeof window === 'undefined';
   let data = getDataByResource(state, type, id);
 
-  if (!data || !data.complete) {
+  if (!data || !data.complete || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,9 +31,9 @@ export const fetchStoryData = (
       }
     });
 
-    data = await (typeof window === 'undefined' ? fetchStory : fetchApiStory)(
-      id
-    ).then((resp: IPriApiResourceResponse) => resp && resp.data);
+    data = await (isOnServer ? fetchStory : fetchApiStory)(id).then(
+      (resp: IPriApiResourceResponse) => resp && resp.data
+    );
 
     dispatch({
       type: 'SET_RESOURCE_CONTEXT',

@@ -7,7 +7,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from '@interfaces/state';
-import { fetchPage } from '@lib/fetch';
+import { fetchApiPage, fetchPage } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 
@@ -19,9 +19,10 @@ export const fetchPageData = (
 ): Promise<void> => {
   const state = getState();
   const type = 'node--pages';
+  const isOnServer = typeof window === 'undefined';
   let data = getDataByResource(state, type, id);
 
-  if (!data || !data.complete) {
+  if (!data || !data.complete || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,7 +31,7 @@ export const fetchPageData = (
       }
     });
 
-    data = await fetchPage(id).then(
+    data = await (isOnServer ? fetchPage : fetchApiPage)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 

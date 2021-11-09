@@ -22,8 +22,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   })) as IPriApiCollectionResponse;
 
   const apiResp = {
-    ...program,
-    latestStories
+    data: {
+      ...program,
+      latestStories
+    }
   };
 
   return res.status(200).json(apiResp);

@@ -7,7 +7,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { RootState } from '@interfaces/state';
 import { getDataByResource } from '@store/reducers';
-import { fetchNewsletter } from '@lib/fetch';
+import { fetchApiNewsletter, fetchNewsletter } from '@lib/fetch';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 
 export const fetchNewsletterData = (
@@ -18,9 +18,10 @@ export const fetchNewsletterData = (
 ): Promise<void> => {
   const state = getState();
   const type = 'node--newsletter_sign_ups';
+  const isOnServer = typeof window === 'undefined';
   let data = getDataByResource(state, type, id);
 
-  if (!data || !data.complete) {
+  if (!data || !data.complete || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -29,7 +30,7 @@ export const fetchNewsletterData = (
       }
     });
 
-    data = await fetchNewsletter(id).then(
+    data = await (isOnServer ? fetchNewsletter : fetchApiNewsletter)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 

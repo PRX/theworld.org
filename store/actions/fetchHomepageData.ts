@@ -7,8 +7,9 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
+import { fetchApiHomepage } from '@lib/fetch/api';
 import { fetchHomepage } from '@lib/fetch/homepage/fetchHomepage';
-import { getCollectionData } from '@store/reducers';
+import { getHomepageData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
 export const fetchHomepageData = (): ThunkAction<
@@ -19,18 +20,22 @@ export const fetchHomepageData = (): ThunkAction<
 > => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
-): Promise<void> => {
+): Promise<{ [k: string]: any }> => {
   const state = getState();
   const type = 'homepage';
   const id = undefined;
-  const dataCheck = getCollectionData(state, type, id, 'featured story');
+  const isOnServer = typeof window === 'undefined';
+  const data = getHomepageData(state);
+  const dataCheck = Object.values(data).filter(v => !!v).length > 0;
 
-  if (!dataCheck) {
+  if (!dataCheck || isOnServer) {
     dispatch({
       type: 'FETCH_HOMEPAGE_DATA_REQUEST'
     });
 
-    const apiResp = await fetchHomepage().then(
+    const apiResp = await (isOnServer
+      ? fetchHomepage
+      : fetchApiHomepage)().then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
     const {
@@ -78,5 +83,9 @@ export const fetchHomepageData = (): ThunkAction<
     dispatch({
       type: 'FETCH_HOMEPAGE_DATA_SUCCESS'
     });
+
+    return { ...apiResp };
   }
+
+  return { ...data };
 };

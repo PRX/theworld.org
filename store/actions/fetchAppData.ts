@@ -15,16 +15,15 @@ export const fetchAppData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   getState: () => RootState
 ): Promise<void> => {
   const state = getState();
+  const isOnServer = typeof window === 'undefined';
   const latest = getCollectionData(state, 'app', undefined, 'latest');
 
-  if (!latest) {
+  if (!latest || isOnServer) {
     dispatch({
       type: 'FETCH_APP_DATA_REQUEST'
     });
 
-    const apiResp = await (typeof window === 'undefined'
-      ? fetchApp
-      : fetchApiApp)();
+    const apiResp = await (isOnServer ? fetchApp : fetchApiApp)();
     const { latestStories, menus } = apiResp;
 
     dispatch(
