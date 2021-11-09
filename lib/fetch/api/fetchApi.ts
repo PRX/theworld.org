@@ -525,7 +525,7 @@ export const fetchApiSearch = (
   fetch(
     format({
       protocol: 'https',
-      hostname: '7mll7u30kh.execute-api.us-east-1.amazonaws.com', // TODO: Update to `search.theworld.org` when DNS is ready.
+      hostname: 'search.theworld.org', // TODO: Update to `search.theworld.org` when DNS is ready.
       pathname: 'query',
       query: {
         ...(q && { q }),
