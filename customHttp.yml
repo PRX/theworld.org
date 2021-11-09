@@ -1,23 +1,39 @@
 customHeaders:
-  - pattern: /_next/*
+  - pattern: '**/*'
     headers:
-      - key: x-control-type-options
-        value: nosniff
-      - key: x-frame-options
-        value: DENY
-      - key: x-xss-protection
-        value: 1; mode=block
-  - pattern: /api/*
-    headers:
-      - key: Cache-Control
+      - key: 'Cache-Control'
         value: 'public, max-age=0, s-maxage=1, stale-while-revalidate'
-  - pattern: /*
+      - key: 'Strict-Transport-Security'
+        value: 'max-age=63072000; includeSubDomains; preload'
+      - key: 'X-Frame-Options'
+        value: 'SAMEORIGIN'
+      - key: 'X-XSS-Protection'
+        value: '1; mode=block'
+      - key: 'X-Content-Type-Options'
+        value: 'nosniff'
+      - key: 'Permissions-Policy'
+        value: 'interest-cohort=()'
+  - pattern: '/_next/image*'
     headers:
-      - key: Cache-Control
-        value: 'public, max-age=0, s-maxage=1, stale-while-revalidate'
-      - key: Permissions-Policy
-        value: interest-cohort=()
-      - key: x-frame-options
-        value: DENY
-      - key: x-xss-protection
-        value: 1; mode=block
+      - key: 'Cache-Control'
+        value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
+  - pattern: '/static/**/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
+  - pattern: '/_next/static/chunks/**/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
+  - pattern: '/_next/data/**/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
+  - pattern: '/api/**/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
+  - pattern: '/api/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=600'
