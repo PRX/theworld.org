@@ -15,7 +15,7 @@ import { appendResourceCollection } from './appendResourceCollection';
 export const fetchTeamData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
-): Promise<void> => {
+): Promise<any> => {
   const state = getState();
   const type = 'team';
   const id = 'the_world';
@@ -37,5 +37,9 @@ export const fetchTeamData = (): ThunkAction<void, {}, {}, AnyAction> => async (
     dispatch({
       type: 'FETCH_TEAM_DATA_SUCCESS'
     });
+
+    return { ...teamMembers };
   }
+
+  return { ...dataCheck };
 };

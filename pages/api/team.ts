@@ -17,9 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     range: 100
   })) as IPriApiCollectionResponse;
 
-  const apiResp = {
-    teamMembers
-  };
+  const apiResp = teamMembers;
 
   return res.status(200).json(apiResp);
 };

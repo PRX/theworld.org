@@ -133,21 +133,19 @@ export const getStaticProps = wrapper.getStaticProps(
       const fetchData = getResourceFetchData(resourceType);
 
       if (fetchData) {
-        await Promise.all([
+        let [, data] = await Promise.all([
           // Fetch App data (latest stories, menus, etc.)
           store.dispatch<any>(fetchAppData()),
           // Use resources fetch func to fetch its data.
           store.dispatch(fetchData(resourceId))
         ]);
 
-        const data = getDataByResource(
-          store.getState(),
-          resourceType,
-          resourceId
-        );
+        if (!data) {
+          data = getDataByResource(store.getState(), resourceType, resourceId);
+        }
 
         return {
-          props: { ...data },
+          props: { type: resourceType, id: resourceId, ...data },
           revalidate: 10
         };
       }
