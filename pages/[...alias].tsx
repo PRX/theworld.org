@@ -150,7 +150,7 @@ export const getStaticProps = wrapper.getStaticProps(
             type: resourceType,
             id: resourceId,
             dataHash: crypto
-              .createHash('md5')
+              .createHash('sha256')
               .update(JSON.stringify(data))
               .digest('hex')
           },

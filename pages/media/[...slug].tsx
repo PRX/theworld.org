@@ -109,7 +109,7 @@ export const getStaticProps = wrapper.getStaticProps(
         return {
           props: {
             dataHash: crypto
-              .createHash('md5')
+              .createHash('sha256')
               .update(JSON.stringify(data))
               .digest('hex'),
             revalidate: 10

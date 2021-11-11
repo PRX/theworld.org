@@ -25,7 +25,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
   return {
     props: {
       dataHash: crypto
-        .createHash('md5')
+        .createHash('sha256')
         .update(JSON.stringify(data))
         .digest('hex')
     },
