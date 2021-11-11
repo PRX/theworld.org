@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { encode } from 'base-64';
 import { Homepage } from '@components/pages/Homepage';
 import { wrapper } from '@store/configureStore';
 import { fetchAppData } from '@store/actions/fetchAppData';
@@ -23,7 +24,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
 
   return {
     props: {
-      ...data
+      dataHash: encode(JSON.stringify(data))
     },
     revalidate: 10
   };
