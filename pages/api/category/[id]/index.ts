@@ -37,19 +37,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         undefined,
         req
       );
+      const storiesData = [...stories.data];
 
       // Build response object.
       const apiResp = {
         ...category,
         featuredStory: featuredStories
           ? featuredStories.shift()
-          : stories.data.shift(),
+          : storiesData.shift(),
         featuredStories: featuredStories
           ? featuredStories.concat(
-              stories.data.splice(0, 4 - featuredStories.length)
+              storiesData.splice(0, 4 - featuredStories.length)
             )
-          : stories.data.splice(0, 4),
-        stories
+          : storiesData.splice(0, 4),
+        stories: {
+          ...stories,
+          data: storiesData
+        }
       };
 
       return res.status(200).json(apiResp);
