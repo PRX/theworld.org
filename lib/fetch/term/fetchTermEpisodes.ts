@@ -30,10 +30,14 @@ export const fetchTermEpisodes = async (
 
   if (term) {
     const { featuredStories } = term;
-    const excluded = (exclude || featuredStories) && [
-      ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
-      ...(featuredStories && featuredStories.map(({ id: i }) => i))
-    ];
+    const excluded =
+      (exclude || featuredStories) &&
+      [
+        ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
+        ...(featuredStories && featuredStories.map(({ id: i }) => i))
+      ]
+        .filter((v: string) => !!v)
+        .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
 
     // Fetch list of stories. Paginated.
     return fetchPriApiQuery('node--episodes', {
@@ -41,8 +45,8 @@ export const fetchTermEpisodes = async (
       'filter[status]': 1,
       'filter[tags]': term.id,
       ...(excluded && {
-        'filter[id][value]': excluded,
-        'filter[id][operator]': '<>'
+        ...excluded,
+        'filter[id][operator]': 'NOT IN'
       }),
       sort: '-date_published',
       range,

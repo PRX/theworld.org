@@ -24,10 +24,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (category) {
       const { featuredStories } = category as IPriApiResource;
-      const excluded = (exclude || featuredStories) && [
-        ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
-        ...(featuredStories ? featuredStories.map(({ id: i }) => i) : [])
-      ];
+      const excluded =
+        (exclude || featuredStories) &&
+        [
+          ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
+          ...(featuredStories ? featuredStories.map(({ id: i }) => i) : [])
+        ]
+          .filter((v: string) => !!v)
+          .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
 
       // Fetch list of stories. Paginated.
       const stories = (await fetchPriApiQuery('node--stories', {
@@ -35,8 +39,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'filter[status]': 1,
         [`filter[${field}]`]: id,
         ...(excluded && {
-          'filter[id][value]': excluded,
-          'filter[id][operator]': '<>'
+          ...excluded,
+          'filter[id][operator]': 'NOT IN'
         }),
         sort: '-date_published',
         range,

@@ -20,9 +20,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )) as IPriApiResourceResponse;
 
     if (program) {
-      const excluded = exclude && [
-        ...(exclude && Array.isArray(exclude) ? exclude : [exclude])
-      ];
+      const excluded =
+        exclude &&
+        [...(exclude && Array.isArray(exclude) ? exclude : [exclude])]
+          .filter((v: string) => !!v)
+          .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
 
       // Fetch list of episodes. Paginated.
       const episodes = (await fetchPriApiQuery('node--episodes', {
@@ -30,8 +32,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'filter[status]': 1,
         'filter[program]': id,
         ...(excluded && {
-          'filter[id][value]': excluded,
-          'filter[id][operator]': '<>'
+          ...excluded,
+          'filter[id][operator]': 'NOT IN'
         }),
         sort: '-date_published',
         range,
