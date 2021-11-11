@@ -7,7 +7,8 @@ import React, { useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';
-import { encode } from 'base-64';
+import base64 from 'base-64';
+import utf8 from 'utf8';
 import {
   IPriApiResource,
   IPriApiResourceResponse
@@ -107,7 +108,7 @@ export const getStaticProps = wrapper.getStaticProps(
         );
 
         return {
-          props: { dataHash: encode(JSON.stringify(data)) },
+          props: { dataHash: base64.encode(utf8.encode(JSON.stringify(data))) },
           revalidate: 10
         };
       }
