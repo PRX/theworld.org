@@ -4,8 +4,7 @@
  */
 
 import React from 'react';
-import base64 from 'base-64';
-import utf8 from 'utf8';
+import crypto from 'crypto';
 import { Homepage } from '@components/pages/Homepage';
 import { wrapper } from '@store/configureStore';
 import { fetchAppData } from '@store/actions/fetchAppData';
@@ -25,7 +24,10 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
 
   return {
     props: {
-      dataHash: base64.encode(utf8.encode(JSON.stringify(data)))
+      dataHash: crypto
+        .createHash('md5')
+        .update(JSON.stringify(data))
+        .digest('hex')
     },
     revalidate: 10
   };
