@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import crypto from 'crypto';
 import { Homepage } from '@components/pages/Homepage';
 import { wrapper } from '@store/configureStore';
 import { fetchAppData } from '@store/actions/fetchAppData';
@@ -23,7 +24,10 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
 
   return {
     props: {
-      ...data
+      dataHash: crypto
+        .createHash('sha256')
+        .update(JSON.stringify(data))
+        .digest('hex')
     },
     revalidate: 10
   };

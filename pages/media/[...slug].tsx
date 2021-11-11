@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';
+import crypto from 'crypto';
 import {
   IPriApiResource,
   IPriApiResourceResponse
@@ -106,8 +107,13 @@ export const getStaticProps = wrapper.getStaticProps(
         );
 
         return {
-          props: { ...data },
-          revalidate: 10
+          props: {
+            dataHash: crypto
+              .createHash('sha256')
+              .update(JSON.stringify(data))
+              .digest('hex'),
+            revalidate: 10
+          }
         };
       }
     }

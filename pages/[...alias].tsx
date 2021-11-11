@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';
+import crypto from 'crypto';
 import { Url } from 'url';
 import {
   IPriApiCollectionResponse,
@@ -145,7 +146,14 @@ export const getStaticProps = wrapper.getStaticProps(
         }
 
         return {
-          props: { type: resourceType, id: resourceId, ...data },
+          props: {
+            type: resourceType,
+            id: resourceId,
+            dataHash: crypto
+              .createHash('sha256')
+              .update(JSON.stringify(data))
+              .digest('hex')
+          },
           revalidate: 10
         };
       }
