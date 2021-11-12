@@ -108,12 +108,14 @@ export const getStaticProps = wrapper.getStaticProps(
 
         return {
           props: {
+            type: resourceType,
+            id: resourceId,
             dataHash: crypto
               .createHash('sha256')
               .update(JSON.stringify(data))
-              .digest('hex'),
-            revalidate: 10
-          }
+              .digest('hex')
+          },
+          revalidate: 10
         };
       }
     }
