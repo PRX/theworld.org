@@ -1,6 +1,6 @@
 # theworld.org
 
-React/Next.js Frontend for theworld.org.
+React/Next.js Frontend for theworld.org. A daily world news public media program.
 
 ## Gettings Started
 
