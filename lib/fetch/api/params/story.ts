@@ -42,6 +42,7 @@ export const fullStoryParams = {
     'opencalais_region',
     'opencalais_person',
     'tags',
+    'format',
     'video'
   ],
   fields: [
@@ -88,6 +89,7 @@ export const fullStoryParams = {
     'opencalais_person.metatags',
     'tags.title',
     'tags.metatags',
+    'format.title',
     'video'
   ]
 };
