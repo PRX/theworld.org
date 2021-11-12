@@ -37,13 +37,14 @@ export const Story = () => {
     dateBroadcast,
     datePublished,
     displayTemplate,
+    format,
     resourceDevelopment
   } = data;
   const LayoutComponent =
     layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
   const props = {
     Title: title,
-    ...(displayTemplate && { 'Story Format': displayTemplate }),
+    ...(format && { 'Story Format': format.title }),
     ...(resourceDevelopment && {
       'Resource Development': resourceDevelopment
     }),
