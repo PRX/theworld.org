@@ -6,17 +6,20 @@
 
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
 import { fetchApiEpisode, fetchEpisode } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
 
 export const fetchEpisodeData = (
   id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
-): Promise<void> => {
+): Promise<IPriApiResource> => {
   const state = getState();
   const type = 'node--episodes';
   const isOnServer = typeof window === 'undefined';
@@ -43,4 +46,6 @@ export const fetchEpisodeData = (
       }
     });
   }
+
+  return data;
 };

@@ -7,7 +7,6 @@ import React from 'react';
 import crypto from 'crypto';
 import { Homepage } from '@components/pages/Homepage';
 import { wrapper } from '@store/configureStore';
-import { fetchAppData } from '@store/actions/fetchAppData';
 import { fetchHomepageData } from '@store/actions/fetchHomepageData';
 
 const IndexPage = () => {
@@ -15,12 +14,7 @@ const IndexPage = () => {
 };
 
 export const getStaticProps = wrapper.getStaticProps(store => async () => {
-  const [, data] = await Promise.all([
-    // Fetch App data (latest stories, menus, etc.)
-    store.dispatch<any>(fetchAppData()),
-    // Use content component to fetch its data.
-    store.dispatch<any>(fetchHomepageData())
-  ]);
+  const data = await store.dispatch<any>(fetchHomepageData());
 
   return {
     props: {
@@ -29,7 +23,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
         .update(JSON.stringify(data))
         .digest('hex')
     },
-    revalidate: 10
+    revalidate: parseInt(process.env.ISR_REVALIDATE || '1', 10)
   };
 });
 

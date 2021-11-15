@@ -7,6 +7,6 @@
  * @param url URL string.
  */
 export const isLocalUrl = (url: string) =>
-  /^\/[^/]+?|\/\/((www\.)?(pri|theworld)\.org|(\w+-)?pri9.(lndo.site|pantheonsite.io))/.test(
+  /^\/[^/]+?|\/\/(((www|admin)\.)?(pri|theworld)\.org|(\w+-)?pri9.(lndo.site|pantheonsite.io))/.test(
     url
   );
