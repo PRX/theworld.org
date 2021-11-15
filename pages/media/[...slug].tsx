@@ -115,7 +115,7 @@ export const getStaticProps = wrapper.getStaticProps(
               .update(JSON.stringify(data))
               .digest('hex')
           },
-          revalidate: 10
+          revalidate: parseInt(process.env.ISR_REVALIDATE || '10', 10)
         };
       }
     }
