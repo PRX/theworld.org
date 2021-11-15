@@ -5,17 +5,20 @@
  */
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
 import { getDataByResource } from '@store/reducers';
 import { fetchApiNewsletter, fetchNewsletter } from '@lib/fetch';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
 
 export const fetchNewsletterData = (
   id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
-): Promise<void> => {
+): Promise<IPriApiResource> => {
   const state = getState();
   const type = 'node--newsletter_sign_ups';
   const isOnServer = typeof window === 'undefined';
@@ -42,4 +45,6 @@ export const fetchNewsletterData = (
       }
     });
   }
+
+  return data;
 };

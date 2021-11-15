@@ -15,13 +15,11 @@ import {
 import { IContentComponentProxyProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
 import { fetchAliasData } from '@store/actions/fetchAliasData';
-import { fetchAppData } from '@store/actions/fetchAppData';
 import { wrapper } from '@store';
 import { fetchHomepage } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { getResourceFetchData } from '@lib/import/fetchData';
 import { fetchCtaData } from '@store/actions/fetchCtaData';
-import { getDataByResource } from '@store/reducers';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
@@ -93,18 +91,7 @@ export const getStaticProps = wrapper.getStaticProps(
       const fetchData = getResourceFetchData(resourceType);
 
       if (fetchData) {
-        await Promise.all([
-          // Fetch App data (latest stories, menus, etc.)
-          store.dispatch<any>(fetchAppData()),
-          // Use resources fetch func to fetch its data.
-          store.dispatch(fetchData(resourceId))
-        ]);
-
-        const data = getDataByResource(
-          store.getState(),
-          resourceType,
-          resourceId
-        );
+        const data = await store.dispatch(fetchData(resourceId));
 
         return {
           props: {
@@ -115,7 +102,7 @@ export const getStaticProps = wrapper.getStaticProps(
               .update(JSON.stringify(data))
               .digest('hex')
           },
-          revalidate: parseInt(process.env.ISR_REVALIDATE || '10', 10)
+          revalidate: parseInt(process.env.ISR_REVALIDATE || '1', 10)
         };
       }
     }
