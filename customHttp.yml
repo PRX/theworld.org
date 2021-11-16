@@ -13,6 +13,10 @@ customHeaders:
         value: 'nosniff'
       - key: 'Permissions-Policy'
         value: 'interest-cohort=()'
+  - pattern: 'api/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate'
   - pattern: '_next/image*'
     headers:
       - key: 'Cache-Control'
@@ -29,7 +33,3 @@ customHeaders:
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=0, s-maxage=2, stale-while-revalidate'
-  - pattern: 'api/*'
-    headers:
-      - key: 'Cache-Control'
-        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate'
