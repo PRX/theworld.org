@@ -50,7 +50,7 @@ module.exports = withPlausibleProxy({
         ]
       },
       {
-        source: '/api/*',
+        source: '/api/:path*',
         headers: [
           {
             key: 'cache-control',
