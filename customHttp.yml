@@ -1,8 +1,8 @@
 customHeaders:
   - pattern: '**/*'
     headers:
-      - key: 'Cache-Control'
-        value: 'public, max-age=0, s-maxage=1, stale-while-revalidate'
+      # - key: 'Cache-Control'
+      #   value: 'public, max-age=0, s-maxage=1, stale-while-revalidate'
       - key: 'Strict-Transport-Security'
         value: 'max-age=63072000; includeSubDomains; preload'
       - key: 'X-Frame-Options'
