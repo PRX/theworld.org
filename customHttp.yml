@@ -21,14 +21,14 @@ customHeaders:
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
-  - pattern: '_next/static/chunks/**/*'
+  - pattern: '_next/static/*'
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400'
   - pattern: '_next/data/*'
     headers:
       - key: 'Cache-Control'
-        value: 'public, max-age=3600, s-maxage=3600, stale-while-revalidate'
+        value: 'public, max-age=0, s-maxage=2, stale-while-revalidate'
   - pattern: 'api/*'
     headers:
       - key: 'Cache-Control'
