@@ -34,6 +34,36 @@ module.exports = withPlausibleProxy({
   future: {
     webpack5: true
   },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'cache-control',
+            value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate'
+          },
+          {
+            key: 'X-TW-FE-CUSTOM-NEXT-CONFIG-ALL',
+            value: 'SET IN next.config.js'
+          }
+        ]
+      },
+      {
+        source: '/api/*',
+        headers: [
+          {
+            key: 'cache-control',
+            value: 'public, max-age=3600, s-maxage=3, stale-while-revalidate'
+          },
+          {
+            key: 'X-TW-FE-CUSTOM-NEXT-CONFIG-API',
+            value: 'SET IN next.config.js'
+          }
+        ]
+      }
+    ];
+  },
   async redirects() {
     return [
       {
