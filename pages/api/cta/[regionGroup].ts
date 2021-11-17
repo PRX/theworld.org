@@ -36,7 +36,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json(regionGroupData.data.subqueues);
     }
     // No region group name provided.
-    return res.status(400);
+    return res
+      .status(400)
+      .json({ errorCode: 400, error: 'Invalid Region Group Name.' });
   } catch (err) {
     return res.status(500).json({
       errorCode: 500,
