@@ -21,7 +21,8 @@ module.exports = withPlausibleProxy({
     TW_API_RESOURCE_CACHE_CONTROL: process.env.TW_API_RESOURCE_CACHE_CONTROL,
     TW_API_COLLECTION_CACHE_CONTROL:
       process.env.TW_API_COLLECTION_CACHE_CONTROL,
-    TW_API_CTA_CACHE_CONTROL: process.env.TW_API_CTA_CACHE_CONTROL
+    TW_API_CTA_CACHE_CONTROL: process.env.TW_API_CTA_CACHE_CONTROL,
+    TW_STATIC_PREBUILD: process.env.TW_STATIC_PREBUILD
   },
   images: {
     domains: [
