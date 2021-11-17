@@ -46,6 +46,10 @@ module.exports = withPlausibleProxy({
           {
             key: 'X-TW-FE-CUSTOM-NEXT-CONFIG-ALL',
             value: 'SET IN next.config.js'
+          },
+          {
+            key: 'X-TW-FE-CUSTOM-NEXT-CONFIG-NODE_ENV',
+            value: process.env.NODE_ENV
           }
         ]
       },
