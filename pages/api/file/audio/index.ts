@@ -10,11 +10,17 @@ import { basicAudioParams } from '@lib/fetch/api/params';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const query = req.query || {};
 
-  const stories = (await fetchPriApiQuery('file--audio', {
+  const files = (await fetchPriApiQuery('file--audio', {
     ...basicAudioParams,
     sort: '-broadcast_date',
     ...query
   })) as IPriApiCollectionResponse;
 
-  return res.status(200).json(stories);
+  res.setHeader(
+    'Cache-Control',
+    process.env.TW_API_COLLECTION_CACHE_CONTROL ||
+      'public, s-maxage=300, stale-while-revalidate'
+  );
+
+  return res.status(200).json(files);
 };

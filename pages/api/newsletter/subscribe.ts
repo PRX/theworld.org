@@ -43,6 +43,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
 
+    res.setHeader(
+      'Cache-Control',
+      'no-cache, no-store, max-age=0, must-revalidate'
+    );
+
     return res.status(200).json({
       success: true
     });

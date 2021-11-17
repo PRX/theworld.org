@@ -13,6 +13,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const apiResp = await fetchQueryAlias(path);
 
     if (apiResp) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+
       return res.status(200).json(apiResp);
     }
 

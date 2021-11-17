@@ -17,7 +17,11 @@ module.exports = withPlausibleProxy({
     CSE_API_KEY: process.env.CSE_API_KEY,
     FB_ACCESS_TOKEN: process.env.FB_ACCESS_TOKEN,
     PRI_API_CONFIG: priApi,
-    ISR_REVALIDATE: process.env.ISR_REVALIDATE
+    ISR_REVALIDATE: process.env.ISR_REVALIDATE,
+    TW_API_RESOURCE_CACHE_CONTROL: process.env.TW_API_RESOURCE_CACHE_CONTROL,
+    TW_API_COLLECTION_CACHE_CONTROL:
+      process.env.TW_API_COLLECTION_CACHE_CONTROL,
+    TW_API_CTA_CACHE_CONTROL: process.env.TW_API_CTA_CACHE_CONTROL
   },
   images: {
     domains: [
@@ -33,40 +37,6 @@ module.exports = withPlausibleProxy({
   },
   future: {
     webpack5: true
-  },
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'cache-control',
-            value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate'
-          },
-          {
-            key: 'X-TW-FE-CUSTOM-NEXT-CONFIG-ALL',
-            value: 'SET IN next.config.js'
-          },
-          {
-            key: 'X-TW-FE-CUSTOM-NEXT-CONFIG-NODE_ENV',
-            value: process.env.NODE_ENV
-          }
-        ]
-      },
-      {
-        source: '/api/:path*',
-        headers: [
-          {
-            key: 'cache-control',
-            value: 'public, max-age=3600, s-maxage=3, stale-while-revalidate'
-          },
-          {
-            key: 'X-TW-FE-CUSTOM-NEXT-CONFIG-API',
-            value: 'SET IN next.config.js'
-          }
-        ]
-      }
-    ];
   },
   async redirects() {
     return [

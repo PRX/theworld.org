@@ -26,6 +26,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // OK. Return region group subqueues.
+      res.setHeader(
+        'Cache-Control',
+        process.env.TW_API_CTA_CACHE_CONTROL ||
+          'public, s-maxage=2, stale-while-revalidate'
+      );
+
       return res.status(200).json(regionGroupData.data.subqueues);
     }
     // No region group name provided.

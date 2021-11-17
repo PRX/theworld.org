@@ -18,5 +18,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     'filter[status]': 1
   })) as IPriApiCollectionResponse;
 
+  res.setHeader(
+    'Cache-Control',
+    process.env.TW_API_COLLECTION_CACHE_CONTROL ||
+      'public, s-maxage=300, stale-while-revalidate'
+  );
+
   return res.status(200).json(stories);
 };
