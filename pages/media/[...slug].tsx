@@ -112,7 +112,7 @@ export const getStaticProps = wrapper.getStaticProps(
 );
 
 export const getStaticPaths = async () => {
-  let paths = [];
+  let paths: any = false;
 
   // Check if env wants static pages built.
   if (process.env.TW_STATIC_PREBUILD === 'BUILD') {
