@@ -10,8 +10,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { regionGroup } = req.query;
     const { context = [] } = req.body;
+    const allNumericRegex = /^\d+$/;
 
-    if (regionGroup) {
+    if (regionGroup && !allNumericRegex.test(regionGroup as string)) {
       // Fetch CTA Messages.
       const regionGroupData = (await postJsonPriApiCtaRegion(
         regionGroup as string,
