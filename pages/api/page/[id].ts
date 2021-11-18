@@ -17,11 +17,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     )) as IPriApiResourceResponse;
 
     if (page) {
-      const apiResp = {
-        ...page.data
-      };
+      res.setHeader(
+        'Cache-Control',
+        process.env.TW_API_RESOURCE_CACHE_CONTROL ||
+          'public, s-maxage=600, stale-while-revalidate'
+      );
 
-      return res.status(200).json(apiResp);
+      return res.status(200).json(page.data);
     }
 
     return res.status(404).end();

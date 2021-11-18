@@ -7,7 +7,6 @@ import React from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';
-import ReactMarkdown from 'react-markdown';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
@@ -45,9 +44,6 @@ export const StoryHeader = ({ data }: Props) => {
   const hasFooter = hasCaption || hasCredit;
   const classes = storyHeaderStyles({});
   const cx = classNames.bind(classes);
-  const mdProps = {
-    escapeHtml: false
-  };
 
   return (
     <ThemeProvider theme={storyHeaderTheme}>
@@ -139,18 +135,14 @@ export const StoryHeader = ({ data }: Props) => {
         <Container fixed className={classes.footer}>
           <Typography variant="caption" component="div">
             {hasCaption && (
-              <ReactMarkdown
-                {...mdProps}
-                className={classes.caption}
-                source={caption}
-              />
+              <Box className={classes.caption}>
+                <HtmlContent html={caption} />
+              </Box>
             )}
             {hasCredit && (
-              <ReactMarkdown
-                {...mdProps}
-                className={classes.credit}
-                source={credit}
-              />
+              <Box className={classes.credit}>
+                <HtmlContent html={credit} />
+              </Box>
             )}
           </Typography>
         </Container>

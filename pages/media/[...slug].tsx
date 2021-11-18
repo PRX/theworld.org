@@ -112,37 +112,47 @@ export const getStaticProps = wrapper.getStaticProps(
 );
 
 export const getStaticPaths = async () => {
-  const [homepage] = await Promise.all([
-    fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data)
-  ]);
-  const { episodes } = homepage;
-  const resources = [
-    ...episodes.data
-      .reduce(
-        (acc: IPriApiResource[], { audio }) => [
-          ...acc,
-          ...((audio?.segments ? [...audio.segments] : []) as IPriApiResource[])
-        ],
-        [] as IPriApiResource[]
-      )
-      .filter((item: IPriApiResource) => item.type === 'file--audio')
-  ];
-  const paths = [
-    ...resources
-      .map(resource => ({
-        params: {
-          slug: generateLinkHrefForContent(resource)?.pathname
-        }
-      }))
-      .filter(({ params: { slug } }) => !!slug?.length)
-      .map(({ params: { slug } }) => ({
-        params: {
-          slug: slug?.split('/').slice(1)
-        }
-      }))
-  ];
+  let paths = [];
 
-  return { paths, fallback: 'blocking' };
+  // Check if env wants static pages built.
+  if (process.env.TW_STATIC_PREBUILD === 'BUILD') {
+    const [homepage] = await Promise.all([
+      fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data)
+    ]);
+    const { episodes } = homepage;
+    const resources = [
+      ...episodes.data
+        .reduce(
+          (acc: IPriApiResource[], { audio }) => [
+            ...acc,
+            ...((audio?.segments
+              ? [...audio.segments]
+              : []) as IPriApiResource[])
+          ],
+          [] as IPriApiResource[]
+        )
+        .filter((item: IPriApiResource) => item.type === 'file--audio')
+    ];
+    paths = [
+      ...resources
+        .map(resource => ({
+          params: {
+            slug: generateLinkHrefForContent(resource)?.pathname
+          }
+        }))
+        .filter(({ params: { slug } }) => !!slug?.length)
+        .map(({ params: { slug } }) => ({
+          params: {
+            slug: slug?.split('/').slice(1)
+          }
+        }))
+    ];
+  }
+
+  return {
+    paths,
+    fallback: 'blocking'
+  };
 };
 
 export default ContentProxy;

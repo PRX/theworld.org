@@ -153,66 +153,75 @@ export const getStaticProps = wrapper.getStaticProps(
 );
 
 export const getStaticPaths = async () => {
-  const [homepage, app, team] = await Promise.all([
-    fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data),
-    fetchApp(),
-    fetchTeam('the_world').then(
-      (resp: IPriApiCollectionResponse) => resp && resp.data
-    )
-  ]);
-  const {
-    featuredStory,
-    featuredStories,
-    stories,
-    episodes,
-    latestStories,
-    ...program
-  } = homepage;
-  const { latestStories: latestAppStories, menus } = app;
-  const resources = [
-    program,
-    featuredStory,
-    ...featuredStories,
-    ...stories.data,
-    ...episodes.data,
-    ...episodes.data
-      .reduce(
-        (acc: IPriApiResource[], { audio }) => [
-          ...acc,
-          ...((audio?.segments ? [...audio.segments] : []) as IPriApiResource[])
-        ],
-        [] as IPriApiResource[][]
+  let paths = [];
+
+  // Check if env wants static pages built.
+  if (process.env.TW_STATIC_PREBUILD === 'BUILD') {
+    const [homepage, app, team] = await Promise.all([
+      fetchHomepage().then(
+        (resp: IPriApiResourceResponse) => resp && resp.data
+      ),
+      fetchApp(),
+      fetchTeam('the_world').then(
+        (resp: IPriApiCollectionResponse) => resp && resp.data
       )
-      .filter((item: IPriApiResource) => item.type !== 'file--audio'),
-    ...latestStories.data,
-    ...latestAppStories.data,
-    ...team,
-    ...[featuredStory, ...featuredStories, ...stories.data]
-      .map(story => story.primaryCategory)
-      .filter(v => !!v)
-  ];
-  const paths = [
-    ...resources.map(resource => ({
-      params: {
-        alias: generateLinkHrefForContent(resource)
-          ?.pathname.slice(1)
-          .split('/')
-      }
-    })),
-    ...Object.values(menus)
-      // Gather all memus' url's into one array.
-      .reduce((a, m) => [...a, ...m.map(({ url }) => url)], [] as Url[])
-      // Filter out any external url's.
-      .filter(
-        ({ hostname }) =>
-          !hostname || /^(www\.)?(pri|theworld)\.org$/.test(hostname)
-      )
-      .map(({ pathname }) => ({
+    ]);
+    const {
+      featuredStory,
+      featuredStories,
+      stories,
+      episodes,
+      latestStories,
+      ...program
+    } = homepage;
+    const { latestStories: latestAppStories, menus } = app;
+    const resources = [
+      program,
+      featuredStory,
+      ...featuredStories,
+      ...stories.data,
+      ...episodes.data,
+      ...episodes.data
+        .reduce(
+          (acc: IPriApiResource[], { audio }) => [
+            ...acc,
+            ...((audio?.segments
+              ? [...audio.segments]
+              : []) as IPriApiResource[])
+          ],
+          [] as IPriApiResource[][]
+        )
+        .filter((item: IPriApiResource) => item.type !== 'file--audio'),
+      ...latestStories.data,
+      ...latestAppStories.data,
+      ...team,
+      ...[featuredStory, ...featuredStories, ...stories.data]
+        .map(story => story.primaryCategory)
+        .filter(v => !!v)
+    ];
+    paths = [
+      ...resources.map(resource => ({
         params: {
-          alias: pathname.slice(1).split('/')
+          alias: generateLinkHrefForContent(resource)
+            ?.pathname.slice(1)
+            .split('/')
         }
-      }))
-  ].filter(({ params: { alias } }) => !!alias?.join('/').length);
+      })),
+      ...Object.values(menus)
+        // Gather all memus' url's into one array.
+        .reduce((a, m) => [...a, ...m.map(({ url }) => url)], [] as Url[])
+        // Filter out any external url's.
+        .filter(
+          ({ hostname }) =>
+            !hostname || /^(www\.)?(pri|theworld)\.org$/.test(hostname)
+        )
+        .map(({ pathname }) => ({
+          params: {
+            alias: pathname.slice(1).split('/')
+          }
+        }))
+    ].filter(({ params: { alias } }) => !!alias?.join('/').length);
+  }
 
   return { paths, fallback: 'blocking' };
 };

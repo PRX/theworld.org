@@ -13,6 +13,7 @@ export const fullImageParams = {
   fields: [
     'title',
     'url',
+    'alt',
     'metadata',
     'credit',
     'caption',
