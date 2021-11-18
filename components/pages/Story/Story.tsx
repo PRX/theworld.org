@@ -77,12 +77,14 @@ export const Story = () => {
 
   if (byline) {
     byline.forEach(({ person }) => {
-      plausibleEvents.push([
-        `Person: ${person.title}`,
-        {
-          props: { 'Page Type': 'Story' }
-        }
-      ]);
+      if (person) {
+        plausibleEvents.push([
+          `Person: ${person.title}`,
+          {
+            props: { 'Page Type': 'Story' }
+          }
+        ]);
+      }
     });
   }
 

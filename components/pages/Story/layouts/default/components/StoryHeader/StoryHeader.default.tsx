@@ -78,12 +78,14 @@ export const StoryHeader = ({ data }: Props) => {
           )}
           {byline && (
             <ul className={classes.byline}>
-              {byline.map(({ id, creditType, person }) => (
-                <li className={classes.bylineItem} key={id}>
-                  {creditType ? creditType.title : 'By'}{' '}
-                  <ContentLink className={classes.bylineLink} data={person} />
-                </li>
-              ))}
+              {byline
+                .filter(({ person }) => !!person)
+                .map(({ id, creditType, person }) => (
+                  <li className={classes.bylineItem} key={id}>
+                    {creditType ? creditType.title : 'By'}{' '}
+                    <ContentLink className={classes.bylineLink} data={person} />
+                  </li>
+                ))}
             </ul>
           )}
         </Box>
