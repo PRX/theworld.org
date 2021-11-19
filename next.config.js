@@ -16,8 +16,11 @@ module.exports = withPlausibleProxy({
     CM_API_KEY: process.env.CM_API_KEY,
     CSE_API_KEY: process.env.CSE_API_KEY,
     FB_ACCESS_TOKEN: process.env.FB_ACCESS_TOKEN,
+    FB_ADMINS: process.env.FB_ADMINS,
+    FB_APP_ID: process.env.FB_APP_ID,
     PRI_API_CONFIG: priApi,
     ISR_REVALIDATE: process.env.ISR_REVALIDATE,
+    TWITTER_ACCOUNT_ID: process.env.TWITTER_ACCOUNT_ID,
     TW_API_RESOURCE_CACHE_CONTROL: process.env.TW_API_RESOURCE_CACHE_CONTROL,
     TW_API_COLLECTION_CACHE_CONTROL:
       process.env.TW_API_COLLECTION_CACHE_CONTROL,
