@@ -13,18 +13,19 @@ const IndexPage = () => {
   return <Homepage />;
 };
 
-export const getStaticProps = wrapper.getStaticProps(store => async () => {
-  const data = await store.dispatch<any>(fetchHomepageData());
+export const getServerSideProps = wrapper.getServerSideProps(
+  store => async () => {
+    const data = await store.dispatch<any>(fetchHomepageData());
 
-  return {
-    props: {
-      dataHash: crypto
-        .createHash('sha256')
-        .update(JSON.stringify(data))
-        .digest('hex')
-    },
-    revalidate: parseInt(process.env.ISR_REVALIDATE || '1', 10)
-  };
-});
+    return {
+      props: {
+        dataHash: crypto
+          .createHash('sha256')
+          .update(JSON.stringify(data))
+          .digest('hex')
+      }
+    };
+  }
+);
 
 export default IndexPage;
