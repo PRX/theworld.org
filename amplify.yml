@@ -1,4 +1,13 @@
 version: 1
+test:
+  phases:
+    preTest:
+      commands:
+        - yarn install
+    test:
+      commands:
+        - yarn lint
+        - yarn test
 frontend:
   phases:
     preBuild:
@@ -17,12 +26,3 @@ frontend:
     paths:
       - 'node_modules/**/*'
       - '.next/cache/**/*'
-test:
-  phases:
-    preTest:
-      commands:
-        - yarn install
-    test:
-      commands:
-        - yarn lint
-        - yarn test
