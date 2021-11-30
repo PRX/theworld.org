@@ -16,7 +16,7 @@
         "svgo": {
           "plugins": [
             {
-              "removeAttrs": {  }
+              "removeAttrs": { "attrs": "(data-name)" }
             },
             {
               "cleanupIDs": true
