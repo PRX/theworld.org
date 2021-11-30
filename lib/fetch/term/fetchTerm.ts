@@ -44,7 +44,7 @@ export const fetchTerm = async (
       fetchTermStories(term).then((resp: IPriApiCollectionResponse) => resp),
       fetchTermEpisodes(term).then((resp: IPriApiCollectionResponse) => resp)
     ]);
-    const storiesData = [...stories.data];
+    const storiesData = stories ? [...stories.data] : [];
 
     // Build response object.
     const resp = {

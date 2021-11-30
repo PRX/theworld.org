@@ -17,3 +17,11 @@ frontend:
     paths:
       - 'node_modules/**/*'
       - '.next/cache/**/*'
+test:
+  preTest:
+    commands:
+      - yarn install
+  test:
+    commands:
+      - yarn lint
+      - yarn test
