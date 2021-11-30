@@ -7,7 +7,12 @@ test:
     test:
       commands:
         - yarn lint
-        - yarn test
+        - yarn test --json --outputFile=.jest/reports/jestReport.json
+  artifacts:
+    baseDirectory: .jest
+    configFilePath: '**/jestReport.json'
+    files:
+      - '**/*'
 frontend:
   phases:
     preBuild:
