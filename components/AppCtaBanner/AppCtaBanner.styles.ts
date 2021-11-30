@@ -57,7 +57,6 @@ export const appCtaBannerTheme = (theme: Theme) =>
           justifyContent: 'center',
           marginTop: 0,
           marginBottom: 0,
-          minHeight: '48px',
           '& > * + *': {
             marginLeft: theme.spacing(2)
           }

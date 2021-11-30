@@ -64,7 +64,7 @@ export const AppCtaBanner = () => {
             className={cx('root')}
             display="flex"
             alignItems="center"
-            minHeight="230"
+            minHeight={230}
             px={2}
             py={2}
           >
