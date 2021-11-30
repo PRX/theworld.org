@@ -64,9 +64,9 @@ export const AppCtaBanner = () => {
             className={cx('root')}
             display="flex"
             alignItems="center"
-            minHeight={300}
-            px={4}
-            py={3}
+            minHeight="230"
+            px={2}
+            py={2}
           >
             <Container maxWidth="md">
               <CtaMessageComponent data={shownMessage} onClose={handleClose} />
