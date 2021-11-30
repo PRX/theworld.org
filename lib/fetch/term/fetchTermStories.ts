@@ -13,6 +13,21 @@ import { generateLinkHrefForContent } from '@lib/routing';
 import { fetchPriApiItem, fetchPriApiQuery } from '../api/fetchPriApi';
 import { basicStoryParams } from '../api/params';
 
+export const generateFieldNameFromPath = (pathname: string): string => {
+  const [, vocabSlug] = pathname.split('/');
+  const fn = (slug => {
+    switch (slug) {
+      case 'province-or-state':
+        return 'province';
+
+      default:
+        return slug.replace(/\W+/, '');
+    }
+  })(vocabSlug);
+  const fieldName = fn === 'tags' ? fn : `opencalais_${fn}`;
+  return fieldName;
+};
+
 export const fetchTermStories = async (
   id: string | IPriApiResource,
   page: number = 1,
@@ -40,8 +55,7 @@ export const fetchTermStories = async (
         .filter((v: string) => !!v)
         .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
     const { pathname } = generateLinkHrefForContent(term) || {};
-    const [, fn] = pathname.split('/');
-    const fieldName = fn === 'tags' ? fn : `opencalais_${fn}`;
+    const fieldName = generateFieldNameFromPath(pathname);
 
     // Fetch list of stories. Paginated.
     return fetchPriApiQuery('node--stories', {

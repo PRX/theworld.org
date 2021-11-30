@@ -72,7 +72,12 @@ export const AppCtaBanner = () => {
               <CtaMessageComponent data={shownMessage} onClose={handleClose} />
             </Container>
             <Box position="absolute" top={0} right={0}>
-              <IconButton aria-label="close" color="inherit" disableRipple onClick={handleClose}>
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                disableRipple
+                onClick={handleClose}
+              >
                 <CloseSharp />
               </IconButton>
             </Box>

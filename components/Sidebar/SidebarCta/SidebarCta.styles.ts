@@ -4,9 +4,7 @@
  */
 
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
-import { BlockRounded } from '@material-ui/icons';
 import { blue, grey } from '@theme/colors';
-import { NONAME } from 'dns';
 
 export const sidebarCtaTheme = (theme: Theme) =>
   createMuiTheme(theme, {
