@@ -3,14 +3,15 @@ test:
   phases:
     preTest:
       commands:
+        - mkdir .jest
         - yarn install
     test:
       commands:
         - yarn lint
-        - yarn test --json --outputFile=.jest/reports/jestReport.json
+        - yarn test --json --outputFile=.jest/jestReport.json
   artifacts:
     baseDirectory: .jest
-    configFilePath: '**/jestReport.json'
+    configFilePath: 'jestReport.json'
     files:
       - '**/*'
 frontend:
