@@ -29,14 +29,16 @@ export const AudioHeader = ({ data }: Props) => {
           {program?.metatags && (
             <ContentLink data={program} className={classes.programLink} />
           )}
-          <Moment
-            className={classes.date}
-            format="MMM. D, YYYY · h:mm A z"
-            tz="America/New_York"
-            unix
-          >
-            {broadcastDate}
-          </Moment>
+          {broadcastDate && (
+            <Moment
+              className={classes.date}
+              format="MMM. D, YYYY · h:mm A z"
+              tz="America/New_York"
+              unix
+            >
+              {broadcastDate}
+            </Moment>
+          )}
           {audioAuthor && !!audioAuthor.length && (
             <ul className={classes.byline}>
               {audioAuthor.map(
