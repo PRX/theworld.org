@@ -18,7 +18,8 @@ export interface IMetaTagsProps {
   data: IMetaTags;
 }
 
-const sanitizeContent = (content: string) => content.replace(/<[^>]+>/g, '');
+export const sanitizeContent = (content: string) =>
+  content?.replace(/<[^>]+>/g, '');
 
 export const MetaTags = ({ data }: IMetaTagsProps) => {
   const {

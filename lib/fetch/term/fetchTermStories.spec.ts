@@ -1,7 +1,7 @@
 import { generateFieldNameFromPath } from './fetchTermStories';
 
 describe('lib/fetch/term', () => {
-  describe(generateFieldNameFromPath, () => {
+  describe('generateFieldNameFromPath', () => {
     test('should generate `tags` path.', () => {
       const result = generateFieldNameFromPath('/tags/foo');
 
