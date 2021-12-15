@@ -4,7 +4,7 @@ describe('store/actions/fetchStoryData', () => {
   describe('decorateBylines', () => {
     test('should add bylines prop w/ null value', () => {
       const result = decorateWithBylines({
-        id: '1224',
+        id: '1337',
         type: 'node--stories',
         byline: null,
         bylines: null
@@ -16,7 +16,7 @@ describe('store/actions/fetchStoryData', () => {
 
     test('should add bylines prop w/ "By" credits', () => {
       const result = decorateWithBylines({
-        id: '1224',
+        id: '1337',
         type: 'node--stories',
         byline: [
           {
@@ -34,9 +34,32 @@ describe('store/actions/fetchStoryData', () => {
       expect(result.bylines[0][1][0].id).toEqual('2345');
     });
 
+    test('should add bylines prop w/ "By" credits using old byline model, before API update', () => {
+      const result = decorateWithBylines({
+        id: '1337',
+        type: 'node--stories',
+        byline: [
+          {
+            id: '4321',
+            creditType: { title: 'By' },
+            person: {
+              id: '2345',
+              type: 'node--peaple',
+              title: 'John Doe'
+            }
+          }
+        ]
+      });
+
+      expect(result).toHaveProperty('bylines');
+      expect(result.bylines[0][0]).toEqual('By');
+      expect(result.bylines[0][1]).toBeInstanceOf(Array);
+      expect(result.bylines[0][1][0].id).toEqual('2345');
+    });
+
     test('should add bylines prop w/ "By" credits using old byline model', () => {
       const result = decorateWithBylines({
-        id: '1224',
+        id: '1337',
         type: 'node--stories',
         byline: null,
         bylines: [
@@ -59,7 +82,7 @@ describe('store/actions/fetchStoryData', () => {
 
     test('should add bylines prop w/ "By" credits uniquely combining byline props', () => {
       const result = decorateWithBylines({
-        id: '1224',
+        id: '1337',
         type: 'node--stories',
         byline: [
           {
@@ -111,7 +134,7 @@ describe('store/actions/fetchStoryData', () => {
 
     test('should add bylines prop w/ "By" credits using old byline model, missing creditType', () => {
       const result = decorateWithBylines({
-        id: '1224',
+        id: '1337',
         type: 'node--stories',
         byline: null,
         bylines: [
@@ -134,7 +157,7 @@ describe('store/actions/fetchStoryData', () => {
 
     test('should add bylines prop w/ "By" credits using old byline model, keeping credits w/ person', () => {
       const result = decorateWithBylines({
-        id: '1224',
+        id: '1337',
         type: 'node--stories',
         byline: null,
         bylines: [

@@ -16,12 +16,15 @@ import { fetchApiStory, fetchStory } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 
 export const decorateWithBylines = (story: IPriApiResource) => {
-  const { byline, bylines: bs, ...other } = story;
+  const { byline: b, bylines: bs, ...other } = story;
   const bylinesMap: { [k: string]: IPriApiResource[] } = [
-    ...(byline?.reduce(
-      (a: any, person: IPriApiResource) => [
+    ...(b?.reduce(
+      (a: any, item: IPriApiResource) => [
         ...a,
-        { creditType: { title: 'By' }, person }
+        {
+          creditType: item.creditType || { title: 'By' },
+          person: item.person || item
+        }
       ],
       []
     ) || []),
