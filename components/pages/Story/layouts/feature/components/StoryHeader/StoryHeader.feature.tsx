@@ -28,7 +28,7 @@ interface Props {
 
 export const StoryHeader = ({ data }: Props) => {
   const {
-    byline,
+    bylines,
     dateBroadcast,
     datePublished,
     dateUpdated,
@@ -113,19 +113,27 @@ export const StoryHeader = ({ data }: Props) => {
                     </Moment>
                   </Typography>
                 )}
-                {byline && (
+                {bylines && (
                   <ul className={classes.byline}>
-                    {byline
-                      .filter(({ person }) => !!person)
-                      .map(({ id, creditType, person }) => (
-                        <li className={classes.bylineItem} key={id}>
-                          {creditType ? creditType.title : 'By'}{' '}
-                          <ContentLink
-                            className={classes.bylineLink}
-                            data={person}
-                          />
-                        </li>
-                      ))}
+                    {bylines.map(([creditTitle, people]) => (
+                      <li className={classes.bylineItem} key={creditTitle}>
+                        {creditTitle}{' '}
+                        <Box className={classes.bylinePeople} component="span">
+                          {people.map((person: IPriApiResource) => (
+                            <Box
+                              className={classes.bylinePerson}
+                              component="span"
+                            >
+                              <ContentLink
+                                className={classes.bylineLink}
+                                data={person}
+                                key={person.id}
+                              />
+                            </Box>
+                          ))}
+                        </Box>
+                      </li>
+                    ))}
                   </ul>
                 )}
               </Box>

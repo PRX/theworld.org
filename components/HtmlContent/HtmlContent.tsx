@@ -29,10 +29,9 @@ export interface IHtmlContentProps {
 
 export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
   const cleanHtml = (dirtyHtml: string) => {
-    return [(h: string) => h.replace(/<[^>/]+>\s*<\/[^>]+>/, '')].reduce(
-      (acc, func) => func(acc),
-      dirtyHtml
-    );
+    return [
+      (h: string) => h.replace(/<[^>/]+>(\s|&nbsp;)*<\/[^>]+>/g, '')
+    ].reduce((acc, func) => func(acc), dirtyHtml);
   };
   const transform = (node: DomElement, index: number) => {
     return [
