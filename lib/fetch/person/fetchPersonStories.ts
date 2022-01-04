@@ -36,14 +36,21 @@ export const fetchPersonStories = async (
 
   if (person) {
     const { featuredStories } = person;
-    const excluded = (exclude || featuredStories) && [
-      ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
-      ...(featuredStories && featuredStories.map(({ id: i }) => i))
-    ];
+    const excluded =
+      (exclude || featuredStories) &&
+      [
+        ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
+        ...(featuredStories && featuredStories.map(({ id: i }) => i))
+      ]
+        .filter((v: string) => !!v)
+        .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
+
     const fcForPerson = await fetchPriApiQuery(
       'field_collection--story_creators',
       {
-        'filter[person]': person.id,
+        'filter[person][value]': person.id,
+        'filter[person][operator]': '"CONTAINS"',
+        fields: 'id',
         sort: '-id',
         range: range || 15,
         page
@@ -53,24 +60,23 @@ export const fetchPersonStories = async (
     const fcIds = _uniq(fcData.map(fc => fc.id as string));
 
     // Fetch list of stories. Paginated.
-    const data = _orderBy(
-      (await Promise.all(
-        fcIds.map(fcId =>
-          fetchPriApiQuery('node--stories', {
-            ...basicStoryParams,
-            'filter[status]': 1,
-            'filter[byline][value]': fcId,
-            'filter[byline][operator]': '"CONTAINS"',
-            ...(excluded && {
-              'filter[id][value]': excluded,
-              'filter[id][operator]': '<>'
-            })
-          }).then((resp: IPriApiCollectionResponse) => resp.data[0])
-        )
-      )) as IPriApiResource[],
-      story => story.datePublished,
-      'desc'
-    );
+    const stories = (await Promise.all(
+      fcIds.map(fcId =>
+        fetchPriApiQuery('node--stories', {
+          ...basicStoryParams,
+          'filter[status]': 1,
+          'filter[byline][value]': fcId,
+          'filter[byline][operator]': '"CONTAINS"',
+          ...(excluded && {
+            ...excluded,
+            'filter[id][operator]': 'NOT IN'
+          }),
+          sort: '-id'
+        }).then((resp: IPriApiCollectionResponse) => resp.data[0])
+      )
+    )) as IPriApiResource[];
+
+    const data = _orderBy(stories, story => story.datePublished, 'desc');
 
     // Build response object.
     const apiResp = {

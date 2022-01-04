@@ -31,7 +31,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const fcForPerson = (await fetchPriApiQuery(
         'field_collection--story_creators',
         {
-          'filter[person]': id as string,
+          'filter[person][value]': id as string,
+          'filter[person][operator]': '"CONTAINS"',
           sort: '-id',
           range: range || 15,
           page
@@ -41,24 +42,23 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const fcIds = _uniq(fcData.map(fc => fc.id as string));
 
       // Fetch list of stories. Paginated.
-      const data = _orderBy(
-        (await Promise.all(
-          fcIds.map(fcId =>
-            fetchPriApiQuery('node--stories', {
-              ...basicStoryParams,
-              'filter[status]': 1,
-              'filter[byline][value]': fcId,
-              'filter[byline][operator]': '"CONTAINS"',
-              ...(excluded && {
-                'filter[id][value]': excluded,
-                'filter[id][operator]': '<>'
-              })
-            }).then((resp: IPriApiCollectionResponse) => resp.data[0])
-          )
-        )) as IPriApiResource[],
-        story => story.datePublished,
-        'desc'
-      );
+      const stories = (await Promise.all(
+        fcIds.map(fcId =>
+          fetchPriApiQuery('node--stories', {
+            ...basicStoryParams,
+            'filter[status]': 1,
+            'filter[byline][value]': fcId,
+            'filter[byline][operator]': '"CONTAINS"',
+            ...(excluded && {
+              ...excluded,
+              'filter[id][operator]': 'NOT IN'
+            }),
+            sort: '-id'
+          }).then((resp: IPriApiCollectionResponse) => resp.data[0])
+        )
+      )) as IPriApiResource[];
+
+      const data = _orderBy(stories, story => story.datePublished, 'desc');
 
       // Build response object.
       const apiResp = {
