@@ -15,19 +15,21 @@ export const appendResourceCollection = (
 ): ThunkAction<void, {}, {}, AnyAction> => (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
 ): void => {
-  const payloadItems = resp.data.filter(v => !!v);
+  const payloadItems = resp.data?.filter(v => !!v);
 
-  dispatch({
-    type: 'FETCH_BULK_CONTENT_DATA_SUCCESS',
-    payload: payloadItems
-  });
+  if (payloadItems) {
+    dispatch({
+      type: 'FETCH_BULK_CONTENT_DATA_SUCCESS',
+      payload: payloadItems
+    });
 
-  dispatch({
-    type: 'APPEND_REFS_TO_COLLECTION',
-    payload: {
-      resource: { type, id },
-      collection,
-      ...resp
-    }
-  });
+    dispatch({
+      type: 'APPEND_REFS_TO_COLLECTION',
+      payload: {
+        resource: { type, id },
+        collection,
+        ...resp
+      }
+    });
+  }
 };
