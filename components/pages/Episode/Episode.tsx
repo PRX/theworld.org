@@ -37,7 +37,7 @@ import { SpotifyPlayer } from '@components/SpotifyPlayer';
 import { StoryCard } from '@components/StoryCard';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
-import { RootState } from '@interfaces/state';
+import { RootState, UiAction } from '@interfaces/state';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
@@ -163,6 +163,44 @@ export const Episode = () => {
       })();
     }
 
+    // Show social hare menu.
+    const { shareLinks } = data;
+    store.dispatch<UiAction>({
+      type: 'UI_SHOW_SOCIAL_SHARE_MENU',
+      payload: {
+        ui: {
+          socialShareMenu: {
+            links: [
+              {
+                key: 'facebook',
+                link: shareLinks.facebook
+              },
+              {
+                key: 'twitter',
+                link: shareLinks.twitter
+              },
+              {
+                key: 'linkedin',
+                link: shareLinks.linkedin
+              },
+              {
+                key: 'flipboard',
+                link: shareLinks.flipboard
+              },
+              {
+                key: 'whatsapp',
+                link: shareLinks.whatsapp
+              },
+              {
+                key: 'email',
+                link: shareLinks.email
+              }
+            ]
+          }
+        }
+      }
+    });
+
     // Get CTA message data.
     const context = [`node:${data.id}`, `node:${data.program.id}`];
     (async () => {
@@ -172,6 +210,10 @@ export const Episode = () => {
     })();
 
     return () => {
+      // Hide social hare menu.
+      store.dispatch<UiAction>({
+        type: 'UI_HIDE_SOCIAL_SHARE_MENU'
+      });
       unsub();
     };
   }, [id]);

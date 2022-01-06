@@ -10,10 +10,9 @@ import pad from 'lodash/pad';
 import { AppContext } from '@contexts/AppContext';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { RootState } from '@interfaces/state';
+import { RootState, UiAction } from '@interfaces/state';
 import { fetchApiCategoryStories } from '@lib/fetch';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-// import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { getDataByResource, getCollectionData } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
@@ -97,6 +96,44 @@ export const Story = () => {
       })();
     }
 
+    // Show social hare menu.
+    const { shareLinks } = data;
+    store.dispatch<UiAction>({
+      type: 'UI_SHOW_SOCIAL_SHARE_MENU',
+      payload: {
+        ui: {
+          socialShareMenu: {
+            links: [
+              {
+                key: 'facebook',
+                link: shareLinks.facebook
+              },
+              {
+                key: 'twitter',
+                link: shareLinks.twitter
+              },
+              {
+                key: 'linkedin',
+                link: shareLinks.linkedin
+              },
+              {
+                key: 'flipboard',
+                link: shareLinks.flipboard
+              },
+              {
+                key: 'whatsapp',
+                link: shareLinks.whatsapp
+              },
+              {
+                key: 'email',
+                link: shareLinks.email
+              }
+            ]
+          }
+        }
+      }
+    });
+
     // Get missing related stories data.
     const collection = 'related';
     const { primaryCategory } = data;
@@ -131,27 +168,11 @@ export const Story = () => {
       })();
     }
 
-    // // Get CTA message data.
-    // const context = [
-    //   `node:${data.id}`,
-    //   `node:${data.program?.id}`,
-    //   `term:${data.primaryCategory?.id}`,
-    //   ...((data.categories &&
-    //     !!data.categories.length &&
-    //     data.categories.filter(v => !!v).map(({ id: tid }) => `term:${tid}`)) ||
-    //     []),
-    //   ...((data.vertical &&
-    //     !!data.vertical.length &&
-    //     data.vertical.filter(v => !!v).map(({ tid }) => `term:${tid}`)) ||
-    //     [])
-    // ];
-    // (async () => {
-    //   await store.dispatch<any>(
-    //     fetchCtaData(type, id, 'tw_cta_regions_content', context)
-    //   );
-    // })();
-
     return () => {
+      // Show social hare menu.
+      store.dispatch<UiAction>({
+        type: 'UI_HIDE_SOCIAL_SHARE_MENU'
+      });
       unsub();
     };
   }, [id]);

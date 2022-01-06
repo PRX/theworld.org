@@ -23,6 +23,9 @@ export const initialState: RootState = {
   ui: {
     drawer: {
       open: true
+    },
+    socialShareMenu: {
+      shown: false
     }
   }
 };
@@ -123,5 +126,8 @@ export const getSearchQuery = (state: RootState) =>
   fromSearch.getSearchQuery(state.search);
 export const getSearchData = (state: RootState, query: string) =>
   fromSearch.getSearchData(state.search, query);
+
 export const getUiDrawerOpen = (state: RootState) =>
   fromUi.getUiDrawerOpen(state.ui);
+export const getUiSocialShareMenu = (state: RootState) =>
+  fromUi.getUiSocialShareMenu(state.ui);

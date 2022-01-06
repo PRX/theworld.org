@@ -84,6 +84,7 @@ export const fullEpisodeParams = {
     'stories.image',
     'stories.primary_category.title',
     'stories.primary_category.metatags',
-    'spotify_playlist'
+    'spotify_playlist',
+    'share_links'
   ]
 };
