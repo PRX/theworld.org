@@ -14,6 +14,7 @@ import {
   faFlipboard,
   faWhatsapp
 } from '@fortawesome/free-brands-svg-icons';
+import Backdrop from '@material-ui/core/Backdrop';
 import Box from '@material-ui/core/Box';
 import NoSsr from '@material-ui/core/NoSsr';
 import CloseRounded from '@material-ui/icons/CloseRounded';
@@ -105,6 +106,9 @@ export const SocialShareMenu = () => {
             {links.map(({ key, link: { title, url } }, index) => (
               <SpeedDialAction
                 key={key}
+                classes={{
+                  staticTooltipLabel: cx('staticTooltipLabel')
+                }}
                 icon={<SvgIcon color="primary">{iconsMap.get(key)}</SvgIcon>}
                 tooltipTitle={title}
                 delay={index * 50}
@@ -113,6 +117,14 @@ export const SocialShareMenu = () => {
               />
             ))}
           </SpeedDial>
+          {isTouch && (
+            <Backdrop
+              classes={{
+                root: cx('backdropRoot')
+              }}
+              open={open}
+            />
+          )}
         </Box>
       </NoSsr>
     )
