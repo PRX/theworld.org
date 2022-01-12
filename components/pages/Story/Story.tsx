@@ -105,12 +105,12 @@ export const Story = () => {
           socialShareMenu: {
             links: [
               {
-                key: 'facebook',
-                link: shareLinks.facebook
-              },
-              {
                 key: 'twitter',
                 link: shareLinks.twitter
+              },
+              {
+                key: 'facebook',
+                link: shareLinks.facebook
               },
               {
                 key: 'linkedin',
