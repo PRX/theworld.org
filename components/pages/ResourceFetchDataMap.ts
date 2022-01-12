@@ -1,6 +1,7 @@
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { fetchCategoryData } from '@store/actions/fetchCategoryData';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
+import { fetchImageData } from '@store/actions/fetchImageData';
 import { fetchNewsletterData } from '@store/actions/fetchNewsletterData';
 import { fetchPageData } from '@store/actions/fetchPageData';
 import { fetchPersonData } from '@store/actions/fetchPersonData';
@@ -12,6 +13,7 @@ import { fetchTermData } from '@store/actions/fetchTermData';
 export const ResourceFetchDataMap = new Map();
 
 ResourceFetchDataMap.set('file--audio', fetchAudioData);
+ResourceFetchDataMap.set('file--images', fetchImageData);
 ResourceFetchDataMap.set('node--episodes', fetchEpisodeData);
 ResourceFetchDataMap.set('node--newsletter_sign_ups', fetchNewsletterData);
 ResourceFetchDataMap.set('node--pages', fetchPageData);

@@ -4,6 +4,7 @@ export * from './audio';
 export * from './category';
 export * from './episode';
 export * from './homepage';
+export * from './image';
 export * from './newsletter';
 export * from './page';
 export * from './person';
