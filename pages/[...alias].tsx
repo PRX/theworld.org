@@ -107,8 +107,6 @@ export const getStaticProps = wrapper.getStaticProps(
       default: {
         const aliasData = await store.dispatch<any>(fetchAliasData(aliasPath));
 
-        console.log(aliasData);
-
         // Update resource id and type.
         if (aliasData?.type === 'redirect--external') {
           redirect = aliasData.url;
