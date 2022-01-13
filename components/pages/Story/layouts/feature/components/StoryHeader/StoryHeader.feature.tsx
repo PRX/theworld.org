@@ -123,11 +123,11 @@ export const StoryHeader = ({ data }: Props) => {
                             <Box
                               className={classes.bylinePerson}
                               component="span"
+                              key={person.id}
                             >
                               <ContentLink
                                 className={classes.bylineLink}
                                 data={person}
-                                key={person.id}
                               />
                             </Box>
                           ))}

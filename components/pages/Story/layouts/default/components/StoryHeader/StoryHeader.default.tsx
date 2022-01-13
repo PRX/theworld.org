@@ -83,11 +83,14 @@ export const StoryHeader = ({ data }: Props) => {
                   {creditTitle}{' '}
                   <Box className={classes.bylinePeople} component="span">
                     {people.map((person: IPriApiResource) => (
-                      <Box className={classes.bylinePerson} component="span">
+                      <Box
+                        className={classes.bylinePerson}
+                        component="span"
+                        key={person.id}
+                      >
                         <ContentLink
                           className={classes.bylineLink}
                           data={person}
-                          key={person.id}
                         />
                       </Box>
                     ))}
