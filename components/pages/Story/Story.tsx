@@ -76,15 +76,13 @@ export const Story = () => {
   const plausibleEvents: PlausibleEventArgs[] = [['Story', { props }]];
 
   if (byline) {
-    byline.forEach(({ person }) => {
-      if (person) {
-        plausibleEvents.push([
-          `Person: ${person.title}`,
-          {
-            props: { 'Page Type': 'Story' }
-          }
-        ]);
-      }
+    byline.forEach(({ title: name }) => {
+      plausibleEvents.push([
+        `Person: ${name}`,
+        {
+          props: { 'Page Type': 'Story' }
+        }
+      ]);
     });
   }
 
