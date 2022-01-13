@@ -25,6 +25,7 @@ import { fetchCtaData } from '@store/actions/fetchCtaData';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
+const DynamicImage = dynamic(() => import('@components/pages/Image'));
 const DynamicBio = dynamic(() => import('@components/pages/Bio'));
 const DynamicCategory = dynamic(() => import('@components/pages/Category'));
 const DynamicEpisode = dynamic(() => import('@components/pages/Episode'));
@@ -52,6 +53,9 @@ const ContentProxy = ({ type, id }: Props) => {
   switch (type) {
     case 'file--audio':
       return <DynamicAudio />;
+
+    case 'file--images':
+      return <DynamicImage />;
 
     case 'node--episodes':
       return <DynamicEpisode />;
