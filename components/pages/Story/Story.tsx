@@ -33,7 +33,7 @@ export const Story = () => {
   const {
     metatags,
     title,
-    byline,
+    bylines,
     dateBroadcast,
     datePublished,
     displayTemplate,
@@ -75,15 +75,21 @@ export const Story = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Story', { props }]];
 
-  if (byline) {
-    byline.forEach(({ title: name }) => {
-      plausibleEvents.push([
-        `Person: ${name}`,
-        {
-          props: { 'Page Type': 'Story' }
-        }
-      ]);
+  if (bylines) {
+    bylines.forEach(([, persons]) => {
+      persons.forEach(({ title: name }) => {
+        plausibleEvents.push([
+          `Person: ${name}`,
+          {
+            props: { 'Page Type': 'Story' }
+          }
+        ]);
+      });
     });
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(plausibleEvents);
   }
 
   useEffect(() => {
