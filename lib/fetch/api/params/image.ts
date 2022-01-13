@@ -15,6 +15,7 @@ export const fullImageParams = {
     'url',
     'alt',
     'metadata',
+    'metatags',
     'credit',
     'caption',
     'license.title'

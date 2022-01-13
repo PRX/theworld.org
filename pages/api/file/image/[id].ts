@@ -1,18 +1,18 @@
 /**
- * @file file/audio/[id].ts
- * Gather audio file data from CMS API.
+ * @file file/image/[id].ts
+ * Gather image file data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { fetchPriApiItem } from '@lib/fetch/api';
-import { fullAudioParams } from '@lib/fetch/api/params';
+import { fullImageParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   if (id) {
-    const file = (await fetchPriApiItem('file--audio', id as string, {
-      ...fullAudioParams
+    const file = (await fetchPriApiItem('file--images', id as string, {
+      ...fullImageParams
     })) as IPriApiResourceResponse;
 
     if (file) {

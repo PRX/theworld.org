@@ -52,7 +52,7 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
   };
 
   return (
-    html && (
+    !!html && (
       <>
         {ReactHtmlParser(cleanHtml(html), {
           transform: transform as Transform

@@ -6,6 +6,7 @@
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
+import { blue } from '@theme/colors';
 
 class TwDocument extends Document {
   render() {
@@ -30,6 +31,7 @@ class TwDocument extends Document {
             href="/opensearch.xml"
           />
           <link rel="icon" href="/images/favicon.png" />
+          <style>{`html { background: ${blue[600]}; }`}</style>
         </Head>
         <body>
           <Main />
