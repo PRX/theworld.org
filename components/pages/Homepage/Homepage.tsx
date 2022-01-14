@@ -88,7 +88,7 @@ export const Homepage = () => {
   const drawerMainNav = getMenusData(store.getState(), 'drawerMainNav');
   const categoriesMenu = drawerMainNav
     ?.filter((item: IButton) => item.name === 'Categories')?.[0]
-    .children.map(
+    ?.children.map(
       item =>
         ({
           id: item.key,
@@ -185,16 +185,18 @@ export const Homepage = () => {
               </Hidden>
             </Box>
           )}
-          <Box mt={3}>
-            <Sidebar item elevated>
-              <SidebarHeader>
-                <Typography variant="h2">
-                  <StyleRounded /> Categories
-                </Typography>
-              </SidebarHeader>
-              <SidebarList data={categoriesMenu} />
-            </Sidebar>
-          </Box>
+          {categoriesMenu && (
+            <Box mt={3}>
+              <Sidebar item elevated>
+                <SidebarHeader>
+                  <Typography variant="h2">
+                    <StyleRounded /> Categories
+                  </Typography>
+                </SidebarHeader>
+                <SidebarList data={categoriesMenu} />
+              </Sidebar>
+            </Box>
+          )}
         </Box>
       )
     },

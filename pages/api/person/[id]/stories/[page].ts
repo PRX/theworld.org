@@ -3,10 +3,7 @@
  * Gather program stories data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import _uniq from 'lodash/uniq';
-import _orderBy from 'lodash/orderBy';
 import {
-  IPriApiResource,
   IPriApiCollectionResponse,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
@@ -24,47 +21,32 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (person) {
       const { featuredStories } = person.data;
-      const excluded = (exclude || featuredStories) && [
-        ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
-        ...(featuredStories && featuredStories.map(({ id: i }) => i))
-      ];
-      const fcForPerson = (await fetchPriApiQuery(
-        'field_collection--story_creators',
-        {
-          'filter[person][value]': id as string,
-          'filter[person][operator]': '"CONTAINS"',
-          sort: '-id',
-          range: range || 15,
-          page
-        }
-      )) as IPriApiCollectionResponse;
-      const { data: fcData, ...other } = fcForPerson;
-      const fcIds = _uniq(fcData.map(fc => fc.id as string));
+      const excluded =
+        (exclude || featuredStories) &&
+        [
+          ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
+          ...(featuredStories && featuredStories.map(({ id: i }) => i))
+        ]
+          .filter((v: string) => !!v)
+          .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
 
       // Fetch list of stories. Paginated.
-      const stories = (await Promise.all(
-        fcIds.map(fcId =>
-          fetchPriApiQuery('node--stories', {
-            ...basicStoryParams,
-            'filter[status]': 1,
-            'filter[byline][value]': fcId,
-            'filter[byline][operator]': '"CONTAINS"',
-            ...(excluded && {
-              ...excluded,
-              'filter[id][operator]': 'NOT IN'
-            }),
-            sort: '-id'
-          }).then((resp: IPriApiCollectionResponse) => resp.data[0])
-        )
-      )) as IPriApiResource[];
-
-      const data = _orderBy(stories, story => story.datePublished, 'desc');
+      const stories = (await fetchPriApiQuery('node--stories', {
+        ...basicStoryParams,
+        'filter[status]': 1,
+        'filter[byline][value]': id,
+        'filter[byline][operator]': '"CONTAINS"',
+        ...(excluded && {
+          ...excluded,
+          'filter[id][operator]': 'NOT IN'
+        }),
+        sort: '-date_published',
+        range,
+        page
+      })) as IPriApiCollectionResponse;
 
       // Build response object.
-      const apiResp = {
-        data,
-        ...other
-      };
+      const apiResp = stories;
 
       res.setHeader(
         'Cache-Control',

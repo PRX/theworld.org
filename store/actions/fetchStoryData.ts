@@ -4,6 +4,7 @@
  * Actions to fetch data for a story resource.
  */
 
+import _uniqBy from 'lodash/uniqBy';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import {
@@ -13,6 +14,37 @@ import {
 import { RootState } from '@interfaces/state';
 import { fetchApiStory, fetchStory } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
+
+export const decorateWithBylines = (story: IPriApiResource) => {
+  const { byline: b, bylines: bs, ...other } = story;
+  const bylinesMap: { [k: string]: IPriApiResource[] } = [
+    ...(b?.reduce(
+      (a: any, item: IPriApiResource) => [
+        ...a,
+        {
+          creditType: item.creditType || { title: 'By' },
+          person: item.person || item
+        }
+      ],
+      []
+    ) || []),
+    ...(bs?.filter(({ person }) => !!person) || [])
+  ].reduce((a, { creditType, person }) => {
+    const key = creditType?.title || 'By';
+    return {
+      ...a,
+      [key]: [...(a[key] || []), person]
+    };
+  }, {});
+  const bylines: [string, IPriApiResource[]][] = Object.entries(
+    bylinesMap
+  ).map(([title, people]) => [title, _uniqBy(people, 'id')]);
+
+  return {
+    bylines: bylines?.length ? bylines : null,
+    ...other
+  };
+};
 
 export const fetchStoryData = (
   id: string
@@ -34,9 +66,9 @@ export const fetchStoryData = (
       }
     });
 
-    data = await (isOnServer ? fetchStory : fetchApiStory)(id).then(
-      (resp: IPriApiResourceResponse) => resp && resp.data
-    );
+    data = await (isOnServer ? fetchStory : fetchApiStory)(id)
+      .then((resp: IPriApiResourceResponse) => resp && resp.data)
+      .then(story => decorateWithBylines(story));
 
     dispatch({
       type: 'SET_RESOURCE_CONTEXT',

@@ -86,6 +86,8 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     '& .media-youtube-video': {
       position: 'relative',
       height: 0,
+      marginBlockStart: theme.typography.pxToRem(theme.spacing(3)),
+      marginBlockEnd: theme.typography.pxToRem(theme.spacing(3)),
       paddingTop: `${(9 / 16) * 100}%`,
       '& iframe': {
         display: 'block',

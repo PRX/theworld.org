@@ -7,7 +7,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { Box, Container, Grid } from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 import { IAudioPlayerProps } from '@components/AudioPlayer/AudioPlayer.interfaces';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
@@ -115,32 +115,28 @@ export const StoryDefault = ({ data }: Props) => {
     <ThemeProvider theme={storyTheme}>
       <StoryHeader data={data} />
       <Container fixed>
-        <Grid container>
-          <Grid item xs={12}>
-            {audio && (
-              <AudioPlayer
-                data={audio}
-                message="Listen to the story."
-                embeddedPlayerUrl={embeddedPlayerUrl}
-                popoutPlayerUrl={popoutPlayerUrl}
-              />
-            )}
-            <Box className={classes.body} my={2}>
-              <HtmlContent html={body} transforms={[enhanceImages]} />
-            </Box>
-            {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
-            {hasRelated && (
-              <aside>
-                <header>
-                  <h2>Related Content</h2>
-                </header>
-                <StoryRelatedLinks data={related} />
-              </aside>
-            )}
-            {hasCategories && <Tags data={categories} label="Categories" />}
-            {hasTags && <Tags data={allTags} label="Tags" />}
-          </Grid>
-        </Grid>
+        {audio && (
+          <AudioPlayer
+            data={audio}
+            message="Listen to the story."
+            embeddedPlayerUrl={embeddedPlayerUrl}
+            popoutPlayerUrl={popoutPlayerUrl}
+          />
+        )}
+        <Box className={classes.body} my={2}>
+          <HtmlContent html={body} transforms={[enhanceImages]} />
+        </Box>
+        {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
+        {hasRelated && (
+          <aside>
+            <header>
+              <h2>Related Content</h2>
+            </header>
+            <StoryRelatedLinks data={related} />
+          </aside>
+        )}
+        {hasCategories && <Tags data={categories} label="Categories" />}
+        {hasTags && <Tags data={allTags} label="Tags" />}
       </Container>
     </ThemeProvider>
   );

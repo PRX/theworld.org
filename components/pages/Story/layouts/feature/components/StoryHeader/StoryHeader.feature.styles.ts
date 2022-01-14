@@ -110,6 +110,18 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
     bylineLink: {
       fontWeight: theme.typography.fontWeightBold
     },
+    bylinePeople: {},
+    bylinePerson: {
+      '&::after': {
+        content: "', '"
+      },
+      '&:last-of-type:not(:only-child)::before': {
+        content: "' and '"
+      },
+      '&:last-of-type::after': {
+        content: "''"
+      }
+    },
     date: {
       fontStyle: 'italic'
     },
