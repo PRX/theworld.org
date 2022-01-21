@@ -19,8 +19,7 @@ export const fetchPersonAudio = async (
 ): Promise<PriApiResourceResponse> =>
   fetchPriApiQuery('file--audio', {
     ...basicAudioParams,
-    'filter[audioAuthor][value]': id,
-    'filter[audioAuthor][operator]': '"CONTAINS"',
+    'filter[audioAuthor]': id,
     sort: '-broadcast_date',
     ...(audioType && { 'filter[type]': audioType }),
     ...(page && { page: `${page}` }),

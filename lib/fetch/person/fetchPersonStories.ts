@@ -46,8 +46,7 @@ export const fetchPersonStories = async (
     return fetchPriApiQuery('node--stories', {
       ...basicStoryParams,
       'filter[status]': 1,
-      'filter[byline][value]': person.id,
-      'filter[byline][operator]': '"CONTAINS"',
+      'filter[byline]': person.id,
       ...(excluded && {
         ...excluded,
         'filter[id][operator]': 'NOT IN'
