@@ -34,8 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const stories = (await fetchPriApiQuery('node--stories', {
         ...basicStoryParams,
         'filter[status]': 1,
-        'filter[byline][value]': id,
-        'filter[byline][operator]': '"CONTAINS"',
+        'filter[byline]': id,
         ...(excluded && {
           ...excluded,
           'filter[id][operator]': 'NOT IN'

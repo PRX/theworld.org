@@ -501,8 +501,7 @@ export const fetchApiPersonAudio = async (
   req?: IncomingMessage
 ): Promise<IPriApiCollectionResponse> =>
   fetchApi('file/audio', req, {
-    'filter[audioAuthor][value]': id,
-    'filter[audioAuthor][operator]': '"CONTAINS"',
+    'filter[audioAuthor]': id,
     sort: '-broadcast_date',
     ...(audioType && { 'filter[type]': audioType }),
     ...(page && { page: `${page}` }),
