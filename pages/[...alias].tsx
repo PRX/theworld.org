@@ -97,58 +97,63 @@ export const getStaticProps = wrapper.getStaticProps(
     let resourceType: string = 'homepage';
     let redirect: string;
     const aliasPath = (alias as string[]).join('/');
+    const rgxFileExt = /\.\w+$/;
 
-    switch (aliasPath) {
-      case 'programs/the-world/team':
-        resourceId = 'the_world';
-        resourceType = 'team';
-        break;
+    if (!rgxFileExt.test(aliasPath)) {
+      switch (aliasPath) {
+        case 'programs/the-world/team':
+          resourceId = 'the_world';
+          resourceType = 'team';
+          break;
 
-      default: {
-        const aliasData = await store.dispatch<any>(fetchAliasData(aliasPath));
+        default: {
+          const aliasData = await store.dispatch<any>(
+            fetchAliasData(aliasPath)
+          );
 
-        // Update resource id and type.
-        if (aliasData?.type === 'redirect--external') {
-          redirect = aliasData.url;
-        } else if (aliasData?.id) {
-          const { id, type } = aliasData as IPriApiResource;
-          resourceId = id as string;
-          resourceType = type;
-        } else {
-          resourceType = null;
+          // Update resource id and type.
+          if (aliasData?.type === 'redirect--external') {
+            redirect = aliasData.url;
+          } else if (aliasData?.id) {
+            const { id, type } = aliasData as IPriApiResource;
+            resourceId = id as string;
+            resourceType = type;
+          } else {
+            resourceType = null;
+          }
+          break;
         }
-        break;
       }
-    }
 
-    // Return object with redirect url.
-    if (redirect) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: redirect
-        }
-      };
-    }
-
-    // Fetch resource data.
-    if (resourceType) {
-      const fetchData = getResourceFetchData(resourceType);
-
-      if (fetchData) {
-        const data = await store.dispatch(fetchData(resourceId));
-
+      // Return object with redirect url.
+      if (redirect) {
         return {
-          props: {
-            type: resourceType,
-            id: resourceId,
-            dataHash: crypto
-              .createHash('sha256')
-              .update(JSON.stringify(data))
-              .digest('hex')
-          },
-          revalidate: parseInt(process.env.ISR_REVALIDATE || '1', 10)
+          redirect: {
+            permanent: false,
+            destination: redirect
+          }
         };
+      }
+
+      // Fetch resource data.
+      if (resourceType) {
+        const fetchData = getResourceFetchData(resourceType);
+
+        if (fetchData) {
+          const data = await store.dispatch(fetchData(resourceId));
+
+          return {
+            props: {
+              type: resourceType,
+              id: resourceId,
+              dataHash: crypto
+                .createHash('sha256')
+                .update(JSON.stringify(data))
+                .digest('hex')
+            },
+            revalidate: parseInt(process.env.ISR_REVALIDATE || '1', 10)
+          };
+        }
       }
     }
 
