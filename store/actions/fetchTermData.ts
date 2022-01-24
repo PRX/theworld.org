@@ -53,27 +53,38 @@ export const fetchTermData = (
       }
     });
 
-    dispatch(
-      appendResourceCollection(
-        { data: [featuredStory], meta: { count: 1 } },
-        type,
-        id,
-        'featured story'
-      )
-    );
+    if (featuredStory) {
+      dispatch(
+        appendResourceCollection(
+          { data: [featuredStory], meta: { count: 1 } },
+          type,
+          id,
+          'featured story'
+        )
+      );
+    }
 
-    dispatch(
-      appendResourceCollection(
-        { data: [...featuredStories], meta: { count: featuredStories.length } },
-        type,
-        id,
-        'featured stories'
-      )
-    );
+    if (featuredStories?.length) {
+      dispatch(
+        appendResourceCollection(
+          {
+            data: [...featuredStories],
+            meta: { count: featuredStories.length }
+          },
+          type,
+          id,
+          'featured stories'
+        )
+      );
+    }
 
-    dispatch(appendResourceCollection(stories, type, id, 'stories'));
+    if (stories?.data?.length) {
+      dispatch(appendResourceCollection(stories, type, id, 'stories'));
+    }
 
-    dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
+    if (episodes?.data?.length) {
+      dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
+    }
   }
 
   return data;

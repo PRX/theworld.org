@@ -13,19 +13,39 @@ import { generateLinkHrefForContent } from '@lib/routing';
 import { fetchPriApiItem, fetchPriApiQuery } from '../api/fetchPriApi';
 import { basicStoryParams } from '../api/params';
 
-export const generateFieldNameFromPath = (pathname: string): string => {
+export const generateFieldNameFromPath = (pathname: string): string | false => {
   const [, vocabSlug] = pathname.split('/');
   const fn = (slug => {
     switch (slug) {
+      case 'countries-regions':
+        return false;
+
       case 'province-or-state':
         return 'province';
+
+      case 'social-tags':
+        return 'social';
+
+      case 'story-format':
+        return 'format';
 
       default:
         return slug.replace(/\W+/, '');
     }
   })(vocabSlug);
-  const fieldName = fn === 'tags' ? fn : `opencalais_${fn}`;
-  return fieldName;
+
+  if (fn) {
+    switch (fn) {
+      case 'format':
+      case 'tags':
+        return fn;
+
+      default:
+        return `opencalais_${fn}`;
+    }
+  }
+
+  return false;
 };
 
 export const fetchTermStories = async (
@@ -57,19 +77,21 @@ export const fetchTermStories = async (
     const { pathname } = generateLinkHrefForContent(term) || {};
     const fieldName = generateFieldNameFromPath(pathname);
 
-    // Fetch list of stories. Paginated.
-    return fetchPriApiQuery('node--stories', {
-      ...basicStoryParams,
-      'filter[status]': 1,
-      [`filter[${fieldName}]`]: term.id,
-      ...(excluded && {
-        ...excluded,
-        'filter[id][operator]': 'NOT IN'
-      }),
-      sort: '-date_published',
-      range,
-      page
-    });
+    if (fieldName) {
+      // Fetch list of stories. Paginated.
+      return fetchPriApiQuery('node--stories', {
+        ...basicStoryParams,
+        'filter[status]': 1,
+        [`filter[${fieldName}]`]: term.id,
+        ...(excluded && {
+          ...excluded,
+          'filter[id][operator]': 'NOT IN'
+        }),
+        sort: '-date_published',
+        range,
+        page
+      });
+    }
   }
 
   return false;
