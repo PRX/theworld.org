@@ -84,15 +84,11 @@ export const Term = () => {
     id,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[1][0];
-  const { items: featuredStories } = getCollectionData(
-    state,
-    type,
-    id,
-    'featured stories'
-  );
+  const featuredStory = featuredStoryState?.items[1][0];
+  const { items: featuredStories } =
+    getCollectionData(state, type, id, 'featured stories') || {};
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page, next, count } = storiesState;
+  const { items: stories, page, next, count } = storiesState || {};
   const hasStories = count > 0;
   const episodesState = getCollectionData(state, type, id, 'episodes');
   const {
