@@ -34,16 +34,9 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
     date: {
       fontStyle: 'italic'
     },
-    meta: {
-      display: 'grid',
-      gridTemplateColumns: 'max-content',
-      gridTemplateAreas: "'INFO'",
-      justifyContent: 'space-between'
-    },
     info: {
       display: 'grid',
       alignContent: 'start',
-      gridArea: 'INFO',
       gridGap: theme.typography.pxToRem(4)
     },
     programLink: {

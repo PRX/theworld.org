@@ -125,7 +125,6 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
     date: {
       fontStyle: 'italic'
     },
-    meta: {},
     info: {
       display: 'grid',
       alignContent: 'start',
