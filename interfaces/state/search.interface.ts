@@ -7,7 +7,7 @@
 import { AnyAction } from 'redux';
 import { customsearch_v1 } from 'googleapis';
 
-export const searchFacetLabels = ['story', 'episode'] as const;
+export const searchFacetLabels = ['story', 'episode', 'media'] as const;
 export type SearchFacet = typeof searchFacetLabels[number];
 export type SearchFacetAll = typeof searchFacetLabels[number] | 'all';
 
