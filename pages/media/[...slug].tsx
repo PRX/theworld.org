@@ -66,8 +66,6 @@ export const getStaticProps = wrapper.getStaticProps(
       fetchAliasData(aliasPath.join('/'))
     );
 
-    console.log(aliasData);
-
     if (!aliasData?.type) {
       aliasPath[0] = 'file';
       aliasData = await store.dispatch<any>(
@@ -110,8 +108,6 @@ export const getStaticProps = wrapper.getStaticProps(
 
       if (fetchData) {
         const data = await store.dispatch(fetchData(resourceId));
-
-        console.log(resourceType, resourceId, data);
 
         return {
           props: {

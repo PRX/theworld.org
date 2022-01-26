@@ -74,8 +74,6 @@ export const fetchSearchData = (
         fetchBulkAliasData(aliases)
       );
 
-      console.log(aliasesData);
-
       const reqs = aliasesData
         .map(([, { id, type }]): [
           string,

@@ -36,6 +36,7 @@ import TabPanel from '@material-ui/lab/TabPanel';
 import Grid from '@material-ui/core/Grid';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { EpisodeCard } from '@components/EpisodeCard';
+import { MediaCard } from '@components/MediaCard';
 import { StoryCard } from '@components/StoryCard';
 import { fetchSearchData } from '@store/actions/fetchSearchData';
 import {
@@ -260,7 +261,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
               <Grid container spacing={3}>
                 {mediaData.map(item => (
                   <Grid item xs={12} md={6} key={item.id}>
-                    {item.metatags.title}
+                    <MediaCard data={item} />
                   </Grid>
                 ))}
               </Grid>

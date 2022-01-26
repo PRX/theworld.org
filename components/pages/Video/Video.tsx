@@ -37,8 +37,6 @@ export const Video = () => {
   const classes = videoStyles({});
   let data = getDataByResource(state, type, id);
 
-  console.log('Video', type, id, data);
-
   if (!data) {
     return null;
   }
