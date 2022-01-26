@@ -20,6 +20,7 @@ import { fetchStoryData } from './fetchStoryData';
 import { fetchEpisodeData } from './fetchEpisodeData';
 import { fetchAudioData } from './fetchAudioData';
 import { fetchImageData } from './fetchImageData';
+import { fetchVideoData } from './fetchVideoData';
 
 export const fetchSearchData = (
   query: string,
@@ -39,6 +40,7 @@ export const fetchSearchData = (
   funcMap.set('node--episodes', fetchEpisodeData);
   funcMap.set('file--audio', fetchAudioData);
   funcMap.set('file--images', fetchImageData);
+  funcMap.set('file--videos', fetchVideoData);
 
   if (!q.length) {
     return;

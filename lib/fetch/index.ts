@@ -13,3 +13,4 @@ export * from './query';
 export * from './story';
 export * from './team';
 export * from './term';
+export * from './video';

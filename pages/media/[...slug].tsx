@@ -24,6 +24,7 @@ import { fetchCtaData } from '@store/actions/fetchCtaData';
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
 const DynamicImage = dynamic(() => import('@components/pages/Image'));
+const DynamicVideo = dynamic(() => import('@components/pages/Video'));
 
 interface StateProps extends RootState {}
 
@@ -46,6 +47,9 @@ const ContentProxy = ({ type, id }: Props) => {
     case 'file--images':
       return <DynamicImage />;
 
+    case 'file--videos':
+      return <DynamicVideo />;
+
     default:
       return <></>;
   }
@@ -62,11 +66,21 @@ export const getStaticProps = wrapper.getStaticProps(
       fetchAliasData(aliasPath.join('/'))
     );
 
+    console.log(aliasData);
+
     if (!aliasData?.type) {
       aliasPath[0] = 'file';
       aliasData = await store.dispatch<any>(
         fetchAliasData(aliasPath.join('/'))
       );
+      if (aliasData) {
+        // Update media alias with file alias data.
+        store.dispatch<any>({
+          type: 'FETCH_ALIAS_DATA_SUCCESS',
+          alias: `media/${aliasPath.slice(1)}`,
+          data: aliasData
+        });
+      }
     }
 
     // Update resource id, type. or redirect.
@@ -96,6 +110,8 @@ export const getStaticProps = wrapper.getStaticProps(
 
       if (fetchData) {
         const data = await store.dispatch(fetchData(resourceId));
+
+        console.log(resourceType, resourceId, data);
 
         return {
           props: {
