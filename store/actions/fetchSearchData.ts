@@ -18,6 +18,9 @@ import { getSearchData } from '@store/reducers';
 import { fetchBulkAliasData } from './fetchAliasData';
 import { fetchStoryData } from './fetchStoryData';
 import { fetchEpisodeData } from './fetchEpisodeData';
+import { fetchAudioData } from './fetchAudioData';
+import { fetchImageData } from './fetchImageData';
+import { fetchVideoData } from './fetchVideoData';
 
 export const fetchSearchData = (
   query: string,
@@ -33,8 +36,11 @@ export const fetchSearchData = (
 
   // Map facet labels to data fetch for content type.
   const funcMap = new Map();
-  funcMap.set('story', fetchStoryData);
-  funcMap.set('episode', fetchEpisodeData);
+  funcMap.set('node--stories', fetchStoryData);
+  funcMap.set('node--episodes', fetchEpisodeData);
+  funcMap.set('file--audio', fetchAudioData);
+  funcMap.set('file--images', fetchImageData);
+  funcMap.set('file--videos', fetchVideoData);
 
   if (!q.length) {
     return;
@@ -69,10 +75,11 @@ export const fetchSearchData = (
       );
 
       const reqs = aliasesData
-        .map(([, { id }]): [
+        .map(([, { id, type }]): [
           string,
           (id: string) => ThunkAction<void, {}, {}, AnyAction>
-        ] => [id as string, funcMap.get(l)])
+        ] => [id as string, funcMap.get(type)])
+        .filter(([, fetchFunc]) => !!fetchFunc)
         .map(([id, fetchFunc]) => dispatch<any>(fetchFunc(id)));
 
       await Promise.all(reqs);

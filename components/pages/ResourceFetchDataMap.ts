@@ -9,11 +9,13 @@ import { fetchProgramData } from '@store/actions/fetchProgramData';
 import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { fetchTeamData } from '@store/actions/fetchTeamData';
 import { fetchTermData } from '@store/actions/fetchTermData';
+import { fetchVideoData } from '@store/actions/fetchVideoData';
 
 export const ResourceFetchDataMap = new Map();
 
 ResourceFetchDataMap.set('file--audio', fetchAudioData);
 ResourceFetchDataMap.set('file--images', fetchImageData);
+ResourceFetchDataMap.set('file--videos', fetchVideoData);
 ResourceFetchDataMap.set('node--episodes', fetchEpisodeData);
 ResourceFetchDataMap.set('node--newsletter_sign_ups', fetchNewsletterData);
 ResourceFetchDataMap.set('node--pages', fetchPageData);

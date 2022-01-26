@@ -14,6 +14,7 @@ import React, {
 import { useStore } from 'react-redux';
 import { useRouter } from 'next/router';
 import { parse } from 'url';
+import { customsearch_v1 } from 'googleapis';
 import { SearchFacet, searchFacetLabels } from '@interfaces/state';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
@@ -35,6 +36,7 @@ import TabPanel from '@material-ui/lab/TabPanel';
 import Grid from '@material-ui/core/Grid';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { EpisodeCard } from '@components/EpisodeCard';
+import { MediaCard } from '@components/MediaCard';
 import { StoryCard } from '@components/StoryCard';
 import { fetchSearchData } from '@store/actions/fetchSearchData';
 import {
@@ -66,24 +68,22 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
   const isLoading = getSearchLoading(state) || false;
   const data = getSearchData(state, query);
   const hasData = !!data;
-  const { story, episode } = data || {};
+  const { story, episode, media } = data || {};
   const { nextPage: nextPageStory } = story?.[story.length - 1].queries || {};
   const { nextPage: nextPageEpisode } =
     episode?.[episode.length - 1].queries || {};
-  const storyData = (story || [])
-    .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
-    .map(({ link }) => {
-      const { pathname } = parse(link);
-      return getContentDataByAlias(state, pathname);
-    })
-    .filter(item => !!item && item);
-  const episodeData = (episode || [])
-    .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
-    .map(({ link }) => {
-      const { pathname } = parse(link);
-      return getContentDataByAlias(state, pathname);
-    })
-    .filter(item => !!item && item);
+  const { nextPage: nextPageMedia } = media?.[media.length - 1].queries || {};
+  const getContentData = (results: customsearch_v1.Schema$Search[]) =>
+    (results || [])
+      .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
+      .map(({ link }) => {
+        const { pathname } = parse(link);
+        return getContentDataByAlias(state, pathname);
+      })
+      .filter(item => !!item && item);
+  const storyData = getContentData(story);
+  const episodeData = getContentData(episode);
+  const mediaData = getContentData(media);
   const classes = appSearchStyles({});
 
   const formatTabLabel = (l: SearchFacet) =>
@@ -249,6 +249,34 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
                     disableElevation={isLoading}
                   >
                     Load More Episodes
+                  </Button>
+                </Box>
+              )}
+            </Container>
+          )}
+        </TabPanel>
+        <TabPanel value="media">
+          {!!mediaData.length && (
+            <Container fixed>
+              <Grid container spacing={3}>
+                {mediaData.map(item => (
+                  <Grid item xs={12} md={6} key={item.id}>
+                    <MediaCard data={item} />
+                  </Grid>
+                ))}
+              </Grid>
+              {nextPageMedia && (
+                <Box mt={3}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={handleLoadMore('media')}
+                    fullWidth
+                    disabled={isLoading}
+                    disableElevation={isLoading}
+                  >
+                    Load More Media
                   </Button>
                 </Box>
               )}

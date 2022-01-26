@@ -208,6 +208,22 @@ export const fetchApiFileAudio = async (
 ): Promise<IPriApiResourceResponse> => fetchApi(`file/audio/${id}`, req);
 
 /**
+ * Method that simplifies GET queries for video file data.
+ *
+ * @param id
+ *    API id of video file.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Video file data object.
+ */
+export const fetchApiFileVideo = async (
+  id: string,
+  req?: IncomingMessage
+): Promise<IPriApiResourceResponse> => fetchApi(`file/video/${id}`, req);
+
+/**
  * Method that simplifies GET queries for image file data.
  *
  * @param id
