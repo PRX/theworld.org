@@ -286,8 +286,6 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
       </>
     );
 
-  console.log(mediaData);
-
   return (
     <ThemeProvider theme={appSearchTheme}>
       {staticPage ? (
