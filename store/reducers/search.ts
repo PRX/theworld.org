@@ -84,4 +84,4 @@ export const getSearchOpen = (state: SearchState) => state.open;
 export const getSearchLoading = (state: SearchState) => state.loading;
 export const getSearchQuery = (state: SearchState) => state?.query || '';
 export const getSearchData = (state: SearchState, query: string) =>
-  state.searches?.[query.toLowerCase()];
+  query && state.searches?.[query.toLowerCase()];
