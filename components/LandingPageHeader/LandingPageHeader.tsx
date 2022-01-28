@@ -66,15 +66,15 @@ export const LandingPageHeader = ({
         <Box className={cx('content')}>
           <Container fixed className={cx('header')}>
             {logo && (
-              <Image
-                src={logo.url}
-                alt={logo.alt}
-                layout="fixed"
-                width={220}
-                height={220}
-                objectFit="cover"
-                className={cx('logo')}
-              />
+              <Box className={cx('logo')}>
+                <Image
+                  src={logo.url}
+                  alt={logo.alt}
+                  layout="fill"
+                  objectFit="cover"
+                  className={cx('logo')}
+                />
+              </Box>
             )}
             <Box className={cx('text')}>
               <Typography variant="h1">{title}</Typography>
