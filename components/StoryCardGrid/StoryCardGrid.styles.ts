@@ -55,8 +55,6 @@ export const storyCardGridTheme = (theme: Theme) =>
           alignItems: 'stretch',
           height: '100%',
           [theme.breakpoints.down('xs')]: {
-            display: 'grid',
-            gridTemplateColumns: '100px 1fr',
             gridGap: `${theme.spacing(2)}px`,
             padding: `${theme.spacing(2)}px`
           }

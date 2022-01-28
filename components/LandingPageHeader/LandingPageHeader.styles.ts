@@ -15,7 +15,9 @@ export const landingPageHeaderTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     typography: {
       h1: {
-        fontSize: theme.typography.pxToRem(48)
+        fontSize: `clamp(${theme.typography.pxToRem(
+          18
+        )}, 10vw, ${theme.typography.pxToRem(48)})`
       },
       subtitle1: {
         fontSize: '1.5rem',
@@ -31,7 +33,6 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridTemplateRows: 'max-content max-content',
       alignItems: 'end',
-      maxHeight: '75vh',
       overflow: 'hidden',
       backgroundColor: theme.palette.primary.light,
       marginBottom: theme.typography.pxToRem(theme.spacing(2))
@@ -113,11 +114,13 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       gridGap: theme.typography.pxToRem(theme.spacing(2))
     },
     logo: {
+      position: 'relative',
       flexShrink: 0,
-      margin: theme.typography.pxToRem(theme.spacing(3)),
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: 0
-      },
+      ...((min, size, max) => ({
+        width: `clamp(${min}, ${size}, ${max})`,
+        height: `clamp(${min}, ${size}, ${max})`
+      }))(theme.typography.pxToRem(80), '60vw', theme.typography.pxToRem(200)),
+      margin: `${theme.typography.pxToRem(theme.spacing(3))} 0`,
       [theme.breakpoints.up('md')]: {
         margin: 0,
         marginRight: theme.typography.pxToRem(theme.spacing(3))

@@ -66,8 +66,8 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       alignItems: 'start',
       padding: `${theme.spacing(2)}px`,
       [theme.breakpoints.down('xs')]: {
-        gridTemplateColumns: '100px 1fr',
-        alignItems: 'center'
+        display: 'flex',
+        flexDirection: 'column'
       },
       '$noImage &': {},
       '$short &': {
