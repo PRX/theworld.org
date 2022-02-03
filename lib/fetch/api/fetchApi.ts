@@ -561,7 +561,8 @@ export const fetchApiSearch = (
       query: {
         ...(q && { q }),
         ...(label && { l: `${label}` }),
-        ...(start && { s: `${start}` })
+        ...(start && { s: `${start}` }),
+        t: 'date:d:s'
       }
     })
   ).then(r => r.status === 200 && r.json()) as Promise<
