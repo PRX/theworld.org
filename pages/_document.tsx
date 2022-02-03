@@ -13,16 +13,7 @@ class TwDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin=""
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital@0;1&amp;family=Montserrat:wght@400;700&amp;family=Open+Sans:wght@400;700&amp;family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400&amp;display=swap"
-            rel="stylesheet"
-          />
+          <link href="/css/fonts.css" rel="stylesheet" />
           <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
           <link
             rel="search"
