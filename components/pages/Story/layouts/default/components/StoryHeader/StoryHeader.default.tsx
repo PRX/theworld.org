@@ -49,15 +49,17 @@ export const StoryHeader = ({ data }: Props) => {
         {program && (
           <ContentLink data={program} className={classes.programLink} />
         )}
-        <Typography
-          variant="subtitle1"
-          component="div"
-          className={classes.date}
-        >
-          <Moment format="MMMM D, YYYY · h:mm A z" tz="America/New_York" unix>
-            {dateBroadcast || datePublished}
-          </Moment>
-        </Typography>
+        {(dateBroadcast || datePublished) && (
+          <Typography
+            variant="subtitle1"
+            component="div"
+            className={classes.date}
+          >
+            <Moment format="MMMM D, YYYY · h:mm A z" tz="America/New_York" unix>
+              {dateBroadcast || datePublished}
+            </Moment>
+          </Typography>
+        )}
         {dateUpdated && (
           <Typography
             variant="subtitle1"
