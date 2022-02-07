@@ -7,3 +7,4 @@ Disallow: /field-collection
 Disallow: /license
 Disallow: /node
 Disallow: /taxonomy/term
+Disallow: /api
