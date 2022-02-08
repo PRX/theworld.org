@@ -101,7 +101,10 @@ export const Audio = () => {
     }
 
     // Get CTA message data.
-    const context = [`file:${data.id}`, `node:${data.program.id}`];
+    const context = [
+      `file:${data.id}`,
+      ...(data.program ? [`node:${data.program.id}`] : [])
+    ];
     (async () => {
       await store.dispatch<any>(
         fetchCtaData(type, id, 'tw_cta_regions_content', context)

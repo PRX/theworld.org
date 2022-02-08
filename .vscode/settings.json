@@ -11,5 +11,6 @@
     // For ESLint
     "source.fixAll.eslint": false
   },
-  "editor.formatOnPaste": true
+  "editor.formatOnPaste": true,
+  "cSpell.words": ["metatags", "unsub"]
 }
