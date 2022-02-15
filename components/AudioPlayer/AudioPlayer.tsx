@@ -10,7 +10,7 @@ import { Box, IconButton, NoSsr } from '@material-ui/core';
 import { GetAppSharp, PlayArrowSharp } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import classNames from 'classnames/bind';
-import { IDuarationProps } from '@components/Duration';
+import { IDurationProps } from '@components/Duration';
 import { formatDuration } from '@lib/parse/time';
 import { generateAudioDownloadFilename } from '@lib/parse/audio';
 import { AudioPlayerActionTypes as ActionTypes } from './AudioPlayer.actions';
@@ -25,7 +25,7 @@ import { ISliderValueLabelProps } from './SliderValueLabel';
 
 const Duration = dynamic(() =>
   import('@components/Duration').then(mod => mod.Duration)
-) as React.FC<IDuarationProps>;
+) as React.FC<IDurationProps>;
 
 const EmbedCode = dynamic(() =>
   import('./EmbedCode').then(mod => mod.EmbedCode)
@@ -77,7 +77,7 @@ export const AudioPlayer = ({
   data,
   downloadFilename,
   embeddedPlayerUrl,
-  message = 'Hear a different voice.',
+  message,
   popoutPlayerUrl
 }: IAudioPlayerProps) => {
   const { url } = data;
@@ -102,8 +102,8 @@ export const AudioPlayer = ({
     dispatch
   ] = useReducer(audioPlayerStateReducer, audioPlayerInitialState);
 
-  const showMessage = !hasPlayed && !embedCodeShown;
-  const showControls = hasPlayed && !embedCodeShown;
+  const showMessage = !!message?.length && !hasPlayed && !embedCodeShown;
+  const showControls = !message?.length || (hasPlayed && !embedCodeShown);
 
   const classes = audioPlayerStyles({ loaded, playing, hasPlayed, stuck });
   const cx = classNames.bind(classes);
