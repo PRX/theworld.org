@@ -2,7 +2,7 @@
 
 React/Next.js Frontend for theworld.org.
 
-## Gettings Started
+## Getting Started
 
 Make sure you have **node**, **NPM**, **yarn**, and **now** installed and/or updated. Tested and required versions:
 
