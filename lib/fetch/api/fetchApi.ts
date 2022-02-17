@@ -130,7 +130,7 @@ export const fetchApiNewsletter = async (id: string, req?: IncomingMessage) =>
  * @param newsletter Newsletter data object.
  * @param options Newsletter subscription options.
  */
-export const postNewsletterSubsciption = async (
+export const postNewsletterSubscription = async (
   newsletter: INewsletterData,
   options: INewsletterOptions
 ) => {
@@ -562,7 +562,7 @@ export const fetchApiSearch = (
         ...(q && { q }),
         ...(label && { l: `${label}` }),
         ...(start && { s: `${start}` }),
-        t: 'date:d:s'
+        t: 'metatags-pubdate:d,date:d:s'
       }
     })
   ).then(r => r.status === 200 && r.json()) as Promise<

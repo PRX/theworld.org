@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import pad from 'lodash/pad';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -38,6 +37,7 @@ import { StoryCard } from '@components/StoryCard';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { RootState, UiAction } from '@interfaces/state';
+import { parseUtcDate } from '@lib/parse/date';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
@@ -69,7 +69,7 @@ export const Episode = () => {
   }
 
   const {
-    metatags,
+    metatags: dataMetatags,
     title,
     season,
     dateBroadcast,
@@ -84,6 +84,12 @@ export const Episode = () => {
     reporters,
     spotifyPlaylist
   } = data;
+  const metatags = {
+    ...dataMetatags,
+    ...((dateBroadcast || datePublished) && {
+      pubdate: parseUtcDate((dateBroadcast || datePublished) * 1000).join('-')
+    })
+  };
   const { segments } = audio || {};
 
   const storiesState = getCollectionData(state, type, id, 'stories');
@@ -115,26 +121,20 @@ export const Episode = () => {
     }),
     ...(dateBroadcast &&
       (() => {
-        const dt = new Date(dateBroadcast * 1000);
-        const dtYear = dt.getFullYear();
-        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        const dt = parseUtcDate(dateBroadcast * 1000);
         return {
-          'Broadcast Year': `${dtYear}`,
-          'Broadcast Month': `${dtYear}-${dtMonth}`,
-          'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+          'Broadcast Year': dt[0],
+          'Broadcast Month': dt.slice(0, 1).join('-'),
+          'Broadcast Date': dt.join('-')
         };
       })()),
     ...(datePublished &&
       (() => {
-        const dt = new Date(datePublished * 1000);
-        const dtYear = dt.getFullYear();
-        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        const dt = parseUtcDate(datePublished * 1000);
         return {
-          'Published Year': `${dtYear}`,
-          'Published Month': `${dtYear}-${dtMonth}`,
-          'Published Date': `${dtYear}-${dtMonth}-${dtDate}`
+          'Published Year': dt[0],
+          'Published Month': dt.slice(0, 1).join('-'),
+          'Published Date': dt.join('-')
         };
       })())
   };

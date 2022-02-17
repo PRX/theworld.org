@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import pad from 'lodash/pad';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { AudioPlayer } from '@components/AudioPlayer';
@@ -17,6 +16,7 @@ import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
+import { parseUtcDate } from '@lib/parse/date';
 import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
@@ -42,15 +42,21 @@ export const Audio = () => {
   }
 
   const {
-    metatags,
+    metatags: dataMetatags,
     title,
     audioAuthor,
     audioTitle,
     audioType,
     season,
-    dateBroadcast,
+    broadcastDate,
     description
   } = data;
+  const metatags = {
+    ...dataMetatags,
+    ...(broadcastDate && {
+      pubdate: parseUtcDate(broadcastDate * 1000).join('-')
+    })
+  };
 
   const ctaInlineEnd = getCtaRegionData(
     state,
@@ -67,16 +73,13 @@ export const Audio = () => {
     ...(season && {
       Season: season
     }),
-    ...(dateBroadcast &&
+    ...(broadcastDate &&
       (() => {
-        const dt = new Date(dateBroadcast * 1000);
-        const dtYear = dt.getFullYear();
-        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        const dt = parseUtcDate(broadcastDate * 1000);
         return {
-          'Broadcast Year': `${dtYear}`,
-          'Broadcast Month': `${dtYear}-${dtMonth}`,
-          'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+          'Broadcast Year': dt[0],
+          'Broadcast Month': dt.slice(0, 1).join('-'),
+          'Broadcast Date': dt.join('-')
         };
       })())
   };
