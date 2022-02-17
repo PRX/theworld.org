@@ -18,7 +18,7 @@ import {
 import { useAmp } from 'next/amp';
 import { SendSharp } from '@material-ui/icons';
 import { INewsletterOptions, INewsletterData } from '@interfaces/newsletter';
-import { postNewsletterSubsciption } from '@lib/fetch/api';
+import { postNewsletterSubscription } from '@lib/fetch/api';
 import { validateEmailAddress } from '@lib/validate';
 import {
   newsletterFormTheme,
@@ -68,7 +68,7 @@ export const NewsletterForm = ({
   };
 
   const handleSubscribe = async () => {
-    const resp = await postNewsletterSubsciption(data, {
+    const resp = await postNewsletterSubscription(data, {
       ...options,
       ...(isAmp && { 'source-position': `${options['source-position']}-amp` })
     });

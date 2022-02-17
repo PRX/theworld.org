@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import pad from 'lodash/pad';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { LedeVideo } from '@components/LedeVideo';
@@ -41,7 +40,7 @@ export const Video = () => {
     return null;
   }
 
-  const { metatags, title, date, description } = data;
+  const { metatags, title, description } = data;
 
   const ctaInlineEnd = getCtaRegionData(
     state,
@@ -52,21 +51,9 @@ export const Video = () => {
 
   // Plausible Events.
   const props = {
-    Title: title,
-    ...(date &&
-      (() => {
-        const dt = new Date(date * 1000);
-        const dtYear = dt.getFullYear();
-        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-        const dtDate = pad(`${dt.getDate()}`, 2, '0');
-        return {
-          'Broadcast Year': `${dtYear}`,
-          'Broadcast Month': `${dtYear}-${dtMonth}`,
-          'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
-        };
-      })())
+    Title: title
   };
-  const plausibleEvents: PlausibleEventArgs[] = [['Audio', { props }]];
+  const plausibleEvents: PlausibleEventArgs[] = [['Video', { props }]];
 
   useEffect(() => {
     if (!data.complete) {
