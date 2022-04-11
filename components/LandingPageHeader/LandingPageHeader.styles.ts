@@ -31,21 +31,31 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
     root: {
       position: 'relative',
       display: 'grid',
-      gridTemplateRows: 'max-content max-content',
+      gridTemplateRows: '1fr max-content',
       alignItems: 'end',
       overflow: 'hidden',
+      minHeight: '15vh',
       backgroundColor: theme.palette.primary.light,
-      marginBottom: theme.typography.pxToRem(theme.spacing(2))
+      marginBottom: theme.typography.pxToRem(theme.spacing(2)),
+      '&$withImage': {
+        minHeight: '35vh'
+      }
     },
     imageWrapper: {
-      gridColumn: '1 / -1',
-      gridRow: '1 / -1',
-      height: '100%',
-      zIndex: 0
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      width: '100%',
+      zIndex: 0,
+      [theme.breakpoints.up('md')]: {
+        alignSelf: 'start',
+        gridColumn: '1 / -1',
+        gridRow: '1 / -1',
+        height: '100%'
+      }
     },
     image: {
-      height: '100%',
-      maxHeight: '75vh'
+      height: '100%'
     },
     content: {
       position: 'relative',
@@ -56,7 +66,6 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       // gridTemplateColumns: '1fr 100vw 1fr',
       gridGap: theme.typography.pxToRem(theme.spacing(2)),
       width: '100%',
-      minHeight: '33.33333%',
       padding: theme.typography.pxToRem(theme.spacing(3)),
       '&::before, &::after': {
         content: '""',
@@ -81,13 +90,6 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
         height: '150%',
         [theme.breakpoints.down('sm')]: {
           height: '80%'
-        }
-      },
-      [theme.breakpoints.up('md')]: {
-        '$withImage &': {
-          position: 'absolute',
-          bottom: 0,
-          gridRow: 'unset'
         }
       }
     },
