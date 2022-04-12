@@ -24,13 +24,6 @@ export const storyBodyTypography = (theme: Theme) =>
       ...headingProps
     },
 
-    '& > p:first-of-type': {
-      fontSize: '1.35rem',
-      fontWeight: 300,
-      lineHeight: '2.15rem',
-      marginBottom: '1.5rem'
-    },
-
     '& hr': {
       display: 'flex',
       justifyContent: 'center',
