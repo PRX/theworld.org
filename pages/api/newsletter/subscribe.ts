@@ -52,7 +52,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             [key.replace(/^[A-Z]/, m => m.toLowerCase())]: value
           }),
           {}
-        )
+        ),
+        debug: {
+          clientId,
+          listId,
+          ...details
+        }
       });
     }
 
