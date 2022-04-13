@@ -10,7 +10,20 @@ import { encode } from 'base-64';
 // eslint-disable-next-line import/no-default-export
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { listId, emailAddress, name, customFields } = req.body;
+    const {
+      listId: listIdSubmitted,
+      emailAddress,
+      name,
+      customFields
+    } = req.body;
+    const [clientId, listId] =
+      !listIdSubmitted || listIdSubmitted.indexOf(':') === -1
+        ? [undefined, listIdSubmitted]
+        : listIdSubmitted.split(':');
+    const apiKey =
+      clientId && process.env[`CM_API_KEY_${clientId}`]
+        ? process.env[`CM_API_KEY_${clientId}`]
+        : process.env.CM_API_KEY;
     const details = {
       EmailAddress: emailAddress,
       Name: name,
@@ -22,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       {
         method: 'POST',
         headers: new Headers({
-          Authorization: `Basic ${encode(`${process.env.CM_API_KEY}:magic`)}`,
+          Authorization: `Basic ${encode(`${apiKey}:magic`)}`,
           'Content-Type': 'application/json'
         }),
         body: JSON.stringify(details)
