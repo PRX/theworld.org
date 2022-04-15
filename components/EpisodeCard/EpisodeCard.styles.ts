@@ -58,15 +58,7 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
       textIndent: '-2000vw'
     },
     title: {
-      display: 'grid',
-      gridTemplateColumns: 'min-content 1fr',
-      gridGap: `${theme.spacing(1)}px`,
-      alignItems: 'center',
       marginTop: theme.typography.pxToRem(theme.spacing(1))
-    },
-    playIcon: {
-      alignSelf: 'start',
-      fontSize: theme.typography.pxToRem(48)
     }
   });
 });

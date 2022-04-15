@@ -13,15 +13,6 @@ import {
 
 export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      '& hr': {
-        marginBlockStart: 0,
-        marginBlockEnd: 0,
-        background: 'none',
-        border: 'none',
-        borderTop: `1px solid ${theme.palette.divider}`
-      }
-    },
     imageWrapper: {
       paddingTop: 'unset'
     },
@@ -35,15 +26,8 @@ export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
       textIndent: '-2000vw'
     },
     title: {
-      display: 'grid',
-      gridTemplateColumns: 'min-content 1fr',
-      gridGap: `${theme.spacing(1)}px`,
-      alignItems: 'center',
-      marginTop: theme.typography.pxToRem(theme.spacing(1))
-    },
-    playIcon: {
-      alignSelf: 'start',
-      fontSize: theme.typography.pxToRem(48)
+      marginTop: theme.typography.pxToRem(theme.spacing(1.5)),
+      marginBottom: '0'
     }
   })
 );

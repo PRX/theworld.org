@@ -10,7 +10,6 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
-  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -18,10 +17,8 @@ import {
   Grid,
   Typography
 } from '@material-ui/core';
-import { EqualizerRounded, PlayCircleOutlineRounded } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
-import { HtmlContent } from '@components/HtmlContent';
 import { SidebarAudioList } from '@components/Sidebar/SidebarAudioList';
 import { episodeCardStyles, episodeCardTheme } from './EpisodeCard.styles';
 
@@ -34,7 +31,7 @@ export interface EpisodeCardProps {
 }
 
 export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
-  const { teaser, title, image, audio, dateBroadcast, datePublished } = data;
+  const { title, image, audio, dateBroadcast, datePublished } = data;
   const { segments } = audio || {};
   const classes = episodeCardStyles({});
   const cx = classNames.bind(classes);
@@ -95,26 +92,12 @@ export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
               gutterBottom
               className={cx('title')}
             >
-              <PlayCircleOutlineRounded
-                color="primary"
-                fontSize="large"
-                className={cx('playIcon')}
-              />{' '}
+              {' '}
               {title}
-            </Typography>
-            <Typography variant="body1" component="div" color="textSecondary">
-              <Box className={cx('body')}>
-                <HtmlContent html={teaser} />
-              </Box>
             </Typography>
             <ContentLink data={data} className={cx('link')} />
             {segments && (
               <>
-                <Box component="header" className={cx('header')}>
-                  <Typography variant="h2">
-                    <EqualizerRounded /> In this episode:
-                  </Typography>
-                </Box>
                 <SidebarAudioList data={segments} />
               </>
             )}
