@@ -27,6 +27,7 @@ import {
   ListItemText,
   Typography
 } from '@material-ui/core';
+import { Label } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
 import { ILink } from '@interfaces/link';
@@ -139,38 +140,6 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     </CardMedia>
                   )}
                   <CardContent>
-                    <Grid
-                      container
-                      justify="space-between"
-                      spacing={1}
-                      style={{ marginBottom: 0 }}
-                    >
-                      {primaryCategory && (
-                        <Grid item xs="auto" zeroMinWidth>
-                          <Typography variant="overline" noWrap>
-                            <ContentLink data={primaryCategory}>
-                              {primaryCategory.title}
-                            </ContentLink>
-                          </Typography>
-                        </Grid>
-                      )}
-                      <Grid item xs="auto" zeroMinWidth>
-                        <Typography
-                          variant="subtitle2"
-                          component="span"
-                          color="textSecondary"
-                          noWrap
-                        >
-                          <Moment
-                            format="MMM. D, YYYY"
-                            tz="America/New_York"
-                            unix
-                          >
-                            {dateBroadcast || datePublished}
-                          </Moment>
-                        </Typography>
-                      </Grid>
-                    </Grid>
                     <Typography
                       variant="h5"
                       component="h2"
@@ -179,6 +148,30 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     >
                       {title}
                     </Typography>
+                    <Grid
+                      container
+                      justify="flex-start"
+                      spacing={1}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <Grid item xs="auto" zeroMinWidth>
+                        <Typography component="span">
+                          <Moment format="MMMM D, YYYY" tz="America/New_York"  unix>
+                            {dateBroadcast || datePublished}
+                          </Moment>
+                        </Typography>
+                      </Grid>
+                      {primaryCategory && (
+                        <Grid item xs="auto" zeroMinWidth>
+                          <Typography variant="overline" noWrap>
+                            <Label color="secondary" className={cx('labelIcon')} />
+                            <ContentLink data={primaryCategory}>
+                              {primaryCategory.title}
+                            </ContentLink>
+                          </Typography>
+                        </Grid>
+                      )}
+                    </Grid>
                     <ContentLink data={item} className={cxCard('link')} />
                   </CardContent>
                 </CardActionArea>

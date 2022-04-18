@@ -25,6 +25,7 @@ import {
   ListItemText,
   Typography
 } from '@material-ui/core';
+import { Label } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
 import { ILink } from '@interfaces/link';
@@ -49,7 +50,6 @@ export const StoryCard = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {
-    teaser,
     title,
     image,
     primaryCategory,
@@ -152,12 +152,7 @@ export const StoryCard = ({
               style={{ marginBottom: 0 }}
             >
               <Grid item xs="auto" zeroMinWidth>
-                <Typography
-                  variant="subtitle2"
-                  component="span"
-                  color="textSecondary"
-                  noWrap
-                >
+                <Typography component="span">
                   <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
                     {dateBroadcast || datePublished}
                   </Moment>
@@ -166,6 +161,7 @@ export const StoryCard = ({
               {primaryCategory && (
                 <Grid item xs="auto" zeroMinWidth>
                   <Typography variant="overline" noWrap>
+                    <Label color="secondary" className={cx('labelIcon')} />
                     <ContentLink data={primaryCategory}>
                       {primaryCategory.title}
                     </ContentLink>
