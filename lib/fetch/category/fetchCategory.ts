@@ -28,7 +28,7 @@ export const fetchCategory = async (
       'metatags',
       'title',
       'teaser',
-      'bannerImage',
+      'banner_image',
       'logo',
       'hosts',
       'sponsors',
