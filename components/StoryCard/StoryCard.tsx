@@ -137,21 +137,20 @@ export const StoryCard = ({
             </CardMedia>
           )}
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
+            <Typography
+              variant="h5"
+              component="h2"
+              gutterBottom
+              className={classes.title}
+            >
+              {title}
+            </Typography>
             <Grid
               container
-              justify="space-between"
+              justify="flex-start"
               spacing={1}
               style={{ marginBottom: 0 }}
             >
-              {primaryCategory && (
-                <Grid item xs="auto" zeroMinWidth>
-                  <Typography variant="overline" noWrap>
-                    <ContentLink data={primaryCategory}>
-                      {primaryCategory.title}
-                    </ContentLink>
-                  </Typography>
-                </Grid>
-              )}
               <Grid item xs="auto" zeroMinWidth>
                 <Typography
                   variant="subtitle2"
@@ -164,23 +163,16 @@ export const StoryCard = ({
                   </Moment>
                 </Typography>
               </Grid>
+              {primaryCategory && (
+                <Grid item xs="auto" zeroMinWidth>
+                  <Typography variant="overline" noWrap>
+                    <ContentLink data={primaryCategory}>
+                      {primaryCategory.title}
+                    </ContentLink>
+                  </Typography>
+                </Grid>
+              )}
             </Grid>
-            <Typography
-              variant="h5"
-              component="h2"
-              gutterBottom
-              className={classes.title}
-            >
-              {title}
-            </Typography>
-            <Typography
-              variant="body1"
-              component="p"
-              color="textSecondary"
-              className={classes.teaser}
-            >
-              {teaser}
-            </Typography>
           </CardContent>
           <ContentLink data={data} className={cx('link')} />
         </CardActionArea>

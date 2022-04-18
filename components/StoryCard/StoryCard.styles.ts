@@ -15,7 +15,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
     title: {
-      marginTop: theme.typography.pxToRem(theme.spacing(1)),
+      marginTop: '0',
       [theme.breakpoints.down('xs')]: {
         fontSize: theme.typography.pxToRem(16),
         '$feature &': {
@@ -61,37 +61,23 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
     }),
     MuiCardActionAreaRoot: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
+      gridTemplateColumns: '150px 2fr',
       gridGap: `${theme.spacing(2)}px`,
-      alignItems: 'start',
+      alignItems: 'center',
       padding: `${theme.spacing(2)}px`,
-      [theme.breakpoints.down('xs')]: {
-        display: 'flex',
-        flexDirection: 'column'
-      },
-      '$noImage &': {},
-      '$short &': {
-        gridTemplateColumns: '1fr 2fr'
-      },
       '$feature &': {
-        display: 'flex',
-        gridGap: 0,
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        justifyContent: 'start',
-        height: '100%',
-        padding: 0
+        gridTemplateColumns: '1fr 1fr'
       }
     },
     MuiCardContentRoot: {
       overflow: 'hidden',
-      padding: 0,
-      '$feature &': {
-        padding: `${theme.spacing(2)}px`
-      }
+      padding: 0
     },
     MuiCardMediaRoot: {
-      paddingTop: `${100 / (16 / 9)}%`,
+      paddingTop: `${100 / (1 / 1)}%`,
+      '$feature &': {
+        paddingTop: `${100 / (16 / 9)}%`
+      },
       [theme.breakpoints.down('xs')]: {
         alignSelf: 'start'
       }
