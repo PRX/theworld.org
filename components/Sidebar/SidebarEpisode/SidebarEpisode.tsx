@@ -36,14 +36,7 @@ export interface SidebarEpisodeProps {
 }
 
 export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
-  const {
-    title,
-    image,
-    audio,
-    program,
-    dateBroadcast,
-    datePublished
-  } = data;
+  const { image, audio, program, dateBroadcast, datePublished } = data;
   const { segments } = audio || {};
   const classes = sidebarEpisodeStyles({});
   const cx = classNames.bind(classes);
@@ -78,6 +71,18 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
               alignItems="center"
               spacing={1}
             >
+              <Grid item xs="auto" zeroMinWidth>
+                <Typography
+                  variant="h5"
+                  component="h2"
+                  gutterBottom
+                  className={cx('title')}
+                >
+                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                    {dateBroadcast || datePublished}
+                  </Moment>
+                </Typography>
+              </Grid>
               {label && (
                 <Grid item xs="auto" zeroMinWidth>
                   <Typography variant="overline" noWrap>
@@ -85,29 +90,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
                   </Typography>
                 </Grid>
               )}
-              <Grid item xs="auto" zeroMinWidth>
-                <Typography
-                  variant="subtitle2"
-                  component="span"
-                  color="textSecondary"
-                  gutterBottom
-                  noWrap
-                >
-                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
-                    {dateBroadcast || datePublished}
-                  </Moment>
-                </Typography>
-              </Grid>
             </Grid>
-            <Typography
-              variant="h5"
-              component="h2"
-              gutterBottom
-              className={cx('title')}
-            >
-              {' '}
-              {title}
-            </Typography>
             <ContentLink data={data} className={cx('link')} />
           </CardContent>
         </CardActionArea>

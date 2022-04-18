@@ -10,6 +10,7 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -31,7 +32,7 @@ export interface EpisodeCardProps {
 }
 
 export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
-  const { title, image, audio, dateBroadcast, datePublished } = data;
+  const { image, audio, dateBroadcast, datePublished } = data;
   const { segments } = audio || {};
   const classes = episodeCardStyles({});
   const cx = classNames.bind(classes);
@@ -65,6 +66,18 @@ export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
               alignItems="center"
               spacing={1}
             >
+              <Grid item xs="auto" zeroMinWidth>
+                <Typography
+                  variant="h5"
+                  component="h2"
+                  gutterBottom
+                  className={cx('title')}
+                >
+                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                    {dateBroadcast || datePublished}
+                  </Moment>
+                </Typography>
+              </Grid>
               {label && (
                 <Grid item xs="auto" zeroMinWidth>
                   <Typography variant="overline" noWrap>
@@ -72,29 +85,7 @@ export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
                   </Typography>
                 </Grid>
               )}
-              <Grid item xs="auto" zeroMinWidth>
-                <Typography
-                  variant="subtitle2"
-                  component="span"
-                  color="textSecondary"
-                  gutterBottom
-                  noWrap
-                >
-                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
-                    {dateBroadcast || datePublished}
-                  </Moment>
-                </Typography>
-              </Grid>
             </Grid>
-            <Typography
-              variant="h5"
-              component="h2"
-              gutterBottom
-              className={cx('title')}
-            >
-              {' '}
-              {title}
-            </Typography>
             <ContentLink data={data} className={cx('link')} />
             {segments && (
               <>

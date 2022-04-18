@@ -26,7 +26,7 @@ export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
       textIndent: '-2000vw'
     },
     title: {
-      marginTop: theme.typography.pxToRem(theme.spacing(1.5)),
+      marginTop: '0',
       marginBottom: '0'
     }
   })
@@ -76,7 +76,8 @@ export const sidebarEpisodeTheme = (theme: Theme) =>
       MuiCardContent: {
         root: {
           color: theme.palette.text.primary,
-          fontWeight: theme.typography.fontWeightBold
+          fontWeight: theme.typography.fontWeightBold,
+          paddingBottom: '8px'
         }
       },
       MuiCardMedia: {
