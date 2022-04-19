@@ -9,7 +9,6 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
-import { yellow } from '@theme/colors';
 
 export const storyCardGridStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,7 +58,7 @@ export const storyCardGridTheme = (theme: Theme) =>
           gridTemplateColumns: '1fr 2fr',
           gridGap: `${theme.spacing(2)}px`,
           alignItems: 'center',
-          padding: `${theme.spacing(2)}px`,
+          padding: `${theme.spacing(2)}px`
         }
       },
       MuiCardContent: {

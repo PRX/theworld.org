@@ -156,7 +156,11 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     >
                       <Grid item xs="auto" zeroMinWidth>
                         <Typography component="span">
-                          <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                          <Moment
+                            format="MMMM D, YYYY"
+                            tz="America/New_York"
+                            unix
+                          >
                             {dateBroadcast || datePublished}
                           </Moment>
                         </Typography>
