@@ -108,7 +108,9 @@ export const storyCardTheme = (theme: Theme) =>
       },
       MuiCard: {
         root: {
-          color: theme.palette.primary.main
+          color: theme.palette.primary.main,
+          marginTop: 0,
+          borderTop: `1px solid ${theme.palette.grey[200]}`
         }
       },
       MuiCardActions: {

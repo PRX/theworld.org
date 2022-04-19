@@ -156,7 +156,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     >
                       <Grid item xs="auto" zeroMinWidth>
                         <Typography component="span">
-                          <Moment format="MMMM D, YYYY" tz="America/New_York"  unix>
+                          <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
                             {dateBroadcast || datePublished}
                           </Moment>
                         </Typography>
@@ -164,7 +164,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                       {primaryCategory && (
                         <Grid item xs="auto" zeroMinWidth>
                           <Typography variant="overline" noWrap>
-                            <Label color="secondary" className={cx('labelIcon')} />
+                            <Label color="secondary" />
                             <ContentLink data={primaryCategory}>
                               {primaryCategory.title}
                             </ContentLink>

@@ -9,18 +9,20 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
+import { yellow } from '@theme/colors';
 
 export const storyCardGridStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       '& > * + *': {
         display: 'grid',
-        marginTop: `${theme.spacing(0)}px`
+        marginTop: 0
       },
       [theme.breakpoints.up('sm')]: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gridGap: `${theme.spacing(0)}px`,
+        marginTop: 0,
+        gridGap: 0,
         '& > * + *': {
           marginTop: 0
         }
@@ -42,12 +44,15 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
 
 export const storyCardGridTheme = (theme: Theme) =>
   createMuiTheme(theme, {
-    typography: {
-      h5: {
-        fontSize: theme.typography.pxToRem(16)
-      }
-    },
     overrides: {
+      MuiCard: {
+        root: {
+          borderTop: `1px solid ${theme.palette.grey[200]}`,
+          '&:nth-child( odd )': {
+            borderRight: `1px solid ${theme.palette.grey[200]}`
+          }
+        }
+      },
       MuiCardActionArea: {
         root: {
           display: 'grid',
