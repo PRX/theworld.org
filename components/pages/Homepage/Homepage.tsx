@@ -127,7 +127,7 @@ export const Homepage = () => {
           <StoryCard data={featuredStory} feature priority />
           <StoryCardGrid data={featuredStories[1]} mt={0} />
           {inlineTop && (
-            <Box mt={1} mb={1}>
+            <Box mt={3}>
               <Hidden xsDown>
                 <CtaRegion data={inlineTop} />
               </Hidden>
@@ -142,7 +142,7 @@ export const Homepage = () => {
     {
       key: 'main bottom',
       children: (
-        <Box mt={0}>
+        <Box mt={3}>
           {stories
             .reduce((a, p) => [...a, ...p], [])
             .map((item: IPriApiResource) => (
