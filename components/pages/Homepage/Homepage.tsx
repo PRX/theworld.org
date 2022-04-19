@@ -156,7 +156,7 @@ export const Homepage = () => {
               </Box>
             ))}
           {inlineBottom && (
-            <Box mt={1} mb={1}>
+            <Box mt={3}>
               <Hidden xsDown>
                 <CtaRegion data={inlineBottom} />
               </Hidden>
