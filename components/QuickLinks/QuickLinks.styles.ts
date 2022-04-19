@@ -9,21 +9,18 @@ import {
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
 
 export const QuickLinksTheme = (theme: Theme) =>
   createMuiTheme(theme, {
     overrides: {
-      MuiButton: {
-        text: {
-          color: theme.palette.primary.contrastText,
-          fontWeight: theme.typography.fontWeightBold,
-          '&:hover, &:focus': {
-            backgroundColor: addCssColorAlpha(
-              theme.palette.primary.contrastText,
-              0.1
-            )
-          }
+      MuiBreadcrumbs: {
+        root: {
+          display: 'flex',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          maxHeight: theme.typography.pxToRem(theme.spacing(6)),
+          marginTop: theme.typography.pxToRem(theme.spacing(1)),
+          marginBottom: theme.typography.pxToRem(theme.spacing(-3))
         }
       }
     }
@@ -32,8 +29,31 @@ export const QuickLinksTheme = (theme: Theme) =>
 export const QuickLinksStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      textAlign: 'center'
+    },
+    container: {
       display: 'flex',
-      columnGap: theme.typography.pxToRem(theme.spacing(1))
+      justifyContent: 'center'
+    },
+    label: {
+      display: 'flex'
+    },
+    link: {
+      color: theme.palette.primary.main,
+      '&:is(a)': {
+        display: 'flex',
+        alignItems: 'center',
+        textDecoration: 'none',
+        fontWeight: 'bold',
+        minHeight: '48px',
+        minWidth: '48px',
+        '&:hover': {
+          textDecoration: 'underline'
+        }
+      },
+      '&:visited': {
+        color: theme.palette.primary.main
+      }
     }
   })
 );

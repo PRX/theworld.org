@@ -124,7 +124,6 @@ export const Homepage = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
-          <QuickLinks />
           <StoryCard data={featuredStory} feature priority />
           <StoryCardGrid data={featuredStories[1]} mt={0} />
           {inlineTop && (
@@ -268,6 +267,7 @@ export const Homepage = () => {
     <>
       <MetaTags data={metatags} />
       <Plausible subject={{ type: 'homepage', id: null }} />
+      <QuickLinks />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
