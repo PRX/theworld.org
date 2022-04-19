@@ -10,7 +10,6 @@ import Image from 'next/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
-  Box,
   Card,
   CardActionArea,
   CardContent,

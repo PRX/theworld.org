@@ -24,7 +24,6 @@ import {
   sidebarEpisodeStyles,
   sidebarEpisodeTheme
 } from './SidebarEpisode.styles';
-import { SidebarHeader } from '../SidebarHeader';
 import { SidebarAudioList } from '../SidebarAudioList';
 import { SidebarFooter } from '../SidebarFooter';
 

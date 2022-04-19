@@ -11,7 +11,7 @@ import {
   Theme
 } from '@material-ui/core/styles';
 
-export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
+export const sidebarEpisodeStyles = makeStyles(() =>
   createStyles({
     imageWrapper: {
       paddingTop: 'unset'
@@ -26,8 +26,7 @@ export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
       textIndent: '-2000vw'
     },
     title: {
-      marginTop: '0',
-      marginBottom: '0'
+      marginBlock: 0
     }
   })
 );
@@ -77,7 +76,7 @@ export const sidebarEpisodeTheme = (theme: Theme) =>
         root: {
           color: theme.palette.text.primary,
           fontWeight: theme.typography.fontWeightBold,
-          paddingBottom: '8px'
+          paddingBottom: `${theme.spacing(1)}px`
         }
       },
       MuiCardMedia: {
