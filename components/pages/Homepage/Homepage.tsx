@@ -19,6 +19,7 @@ import {
   SidebarLatestStories,
   SidebarList
 } from '@components/Sidebar';
+import { QuickLinks } from '@components/QuickLinks';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
@@ -123,10 +124,11 @@ export const Homepage = () => {
       key: 'main top',
       children: (
         <Box mt={3}>
+          <QuickLinks />
           <StoryCard data={featuredStory} feature priority />
-          <StoryCardGrid data={featuredStories[1]} mt={2} />
+          <StoryCardGrid data={featuredStories[1]} mt={0} />
           {inlineTop && (
-            <Box mt={3}>
+            <Box mt={1} mb={1}>
               <Hidden xsDown>
                 <CtaRegion data={inlineTop} />
               </Hidden>
@@ -141,11 +143,11 @@ export const Homepage = () => {
     {
       key: 'main bottom',
       children: (
-        <Box mt={3}>
+        <Box mt={0}>
           {stories
             .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource, index: number) => (
-              <Box mt={index ? 2 : 0} key={item.id}>
+            .map((item: IPriApiResource) => (
+              <Box mt={0} key={item.id}>
                 <StoryCard
                   data={item}
                   feature={
@@ -155,7 +157,7 @@ export const Homepage = () => {
               </Box>
             ))}
           {inlineBottom && (
-            <Box mt={3}>
+            <Box mt={1} mb={1}>
               <Hidden xsDown>
                 <CtaRegion data={inlineBottom} />
               </Hidden>
