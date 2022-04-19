@@ -125,7 +125,7 @@ export const Homepage = () => {
       children: (
         <Box mt={3}>
           <StoryCard data={featuredStory} feature priority />
-          <StoryCardGrid data={featuredStories[1]} mt={0} />
+          <StoryCardGrid data={featuredStories[1]} mt={2} />
           {inlineTop && (
             <Box mt={3}>
               <Hidden xsDown>
@@ -145,8 +145,8 @@ export const Homepage = () => {
         <Box mt={3}>
           {stories
             .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource) => (
-              <Box mt={0} key={item.id}>
+            .map((item: IPriApiResource, index: number) => (
+              <Box mt={index ? 2 : 0} key={item.id}>
                 <StoryCard
                   data={item}
                   feature={
