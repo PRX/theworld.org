@@ -13,7 +13,12 @@ import { addCssColorAlpha } from '@lib/parse/color';
 
 export const storyCardStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      '& > * + *': {
+        display: 'grid',
+        marginTop: 0
+      }
+    },
     title: {
       marginTop: 0,
       fontSize: theme.typography.pxToRem(20),
@@ -58,7 +63,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down('sm')]: {
         gridTemplateColumns: '1fr 2fr',
         '$feature &': {
-          gridTemplateColumns: '1fr 2fr'
+          gridTemplateColumns: '1fr'
         }
       }
     },
@@ -71,7 +76,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       '$feature &': {
         paddingTop: `${100 / (16 / 9)}%`
       },
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         alignSelf: 'start'
       }
     },
