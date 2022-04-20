@@ -13,18 +13,10 @@ import {
 export const storyCardGridStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      '& > * + *': {
-        display: 'grid',
-        marginTop: 0
-      },
+      display: 'grid',
+      gridTemplateColumns: '1fr',
       [theme.breakpoints.up('sm')]: {
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        marginTop: 0,
-        gridGap: 0,
-        '& > * + *': {
-          marginTop: 0
-        }
+        gridTemplateColumns: '1fr 1fr'
       }
     },
     loadingBar: {
@@ -37,6 +29,9 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
     },
     isLoading: {
       transform: 'translateY(-100%)'
+    },
+    title: {
+      fontSize: theme.typography.pxToRem(18)
     }
   })
 );
@@ -46,10 +41,7 @@ export const storyCardGridTheme = (theme: Theme) =>
     overrides: {
       MuiCard: {
         root: {
-          borderTop: `1px solid ${theme.palette.grey[200]}`,
-          '&:nth-child( odd )': {
-            borderRight: `1px solid ${theme.palette.grey[200]}`
-          }
+          display: 'grid'
         }
       },
       MuiCardActionArea: {
@@ -70,7 +62,7 @@ export const storyCardGridTheme = (theme: Theme) =>
         root: {
           alignSelf: 'center',
           height: 'auto',
-          paddingTop: `${100 / (1 / 1)}%`
+          paddingTop: '100%'
         }
       }
     }
