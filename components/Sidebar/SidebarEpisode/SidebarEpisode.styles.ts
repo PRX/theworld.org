@@ -11,17 +11,8 @@ import {
   Theme
 } from '@material-ui/core/styles';
 
-export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
+export const sidebarEpisodeStyles = makeStyles(() =>
   createStyles({
-    root: {
-      '& hr': {
-        marginBlockStart: 0,
-        marginBlockEnd: 0,
-        background: 'none',
-        border: 'none',
-        borderTop: `1px solid ${theme.palette.divider}`
-      }
-    },
     imageWrapper: {
       paddingTop: 'unset'
     },
@@ -35,15 +26,7 @@ export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
       textIndent: '-2000vw'
     },
     title: {
-      display: 'grid',
-      gridTemplateColumns: 'min-content 1fr',
-      gridGap: `${theme.spacing(1)}px`,
-      alignItems: 'center',
-      marginTop: theme.typography.pxToRem(theme.spacing(1))
-    },
-    playIcon: {
-      alignSelf: 'start',
-      fontSize: theme.typography.pxToRem(48)
+      marginBlock: 0
     }
   })
 );
@@ -92,7 +75,8 @@ export const sidebarEpisodeTheme = (theme: Theme) =>
       MuiCardContent: {
         root: {
           color: theme.palette.text.primary,
-          fontWeight: theme.typography.fontWeightBold
+          fontWeight: theme.typography.fontWeightBold,
+          paddingBottom: `${theme.spacing(1)}px`
         }
       },
       MuiCardMedia: {
