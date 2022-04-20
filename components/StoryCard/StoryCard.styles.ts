@@ -15,23 +15,10 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
     title: {
-      marginTop: theme.typography.pxToRem(theme.spacing(1)),
-      [theme.breakpoints.down('xs')]: {
-        fontSize: theme.typography.pxToRem(16),
-        '$feature &': {
-          fontSize: theme.typography.pxToRem(22)
-        }
-      }
-    },
-    teaser: {
-      '$feature &': {
+      marginTop: 0,
+      fontSize: theme.typography.pxToRem(20),
+      [theme.breakpoints.down('sm')]: {
         fontSize: theme.typography.pxToRem(18)
-      },
-      [theme.breakpoints.down('xs')]: {
-        display: 'none',
-        '$feature &': {
-          display: 'initial'
-        }
       }
     },
     imageWrapper: {
@@ -61,37 +48,29 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
     }),
     MuiCardActionAreaRoot: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
+      gridTemplateColumns: '1fr 3fr',
       gridGap: `${theme.spacing(2)}px`,
-      alignItems: 'start',
+      alignItems: 'center',
       padding: `${theme.spacing(2)}px`,
-      [theme.breakpoints.down('xs')]: {
-        display: 'flex',
-        flexDirection: 'column'
-      },
-      '$noImage &': {},
-      '$short &': {
-        gridTemplateColumns: '1fr 2fr'
-      },
       '$feature &': {
-        display: 'flex',
-        gridGap: 0,
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        justifyContent: 'start',
-        height: '100%',
-        padding: 0
+        gridTemplateColumns: '1fr 1fr'
+      },
+      [theme.breakpoints.down('sm')]: {
+        gridTemplateColumns: '1fr 2fr',
+        '$feature &': {
+          gridTemplateColumns: '1fr 2fr'
+        }
       }
     },
     MuiCardContentRoot: {
       overflow: 'hidden',
-      padding: 0,
-      '$feature &': {
-        padding: `${theme.spacing(2)}px`
-      }
+      padding: 0
     },
     MuiCardMediaRoot: {
-      paddingTop: `${100 / (16 / 9)}%`,
+      paddingTop: `${100 / (1 / 1)}%`,
+      '$feature &': {
+        paddingTop: `${100 / (16 / 9)}%`
+      },
       [theme.breakpoints.down('xs')]: {
         alignSelf: 'start'
       }
@@ -110,8 +89,9 @@ export const storyCardTheme = (theme: Theme) =>
         lineHeight: 1.1
       },
       overline: {
-        display: 'block',
+        display: 'flex',
         position: 'relative',
+        alignItems: 'center',
         zIndex: 1,
         fontFamily:
           '"Open Sans","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
@@ -128,7 +108,9 @@ export const storyCardTheme = (theme: Theme) =>
       },
       MuiCard: {
         root: {
-          color: theme.palette.primary.main
+          color: theme.palette.primary.main,
+          marginTop: 0,
+          borderTop: `1px solid ${theme.palette.grey[200]}`
         }
       },
       MuiCardActions: {
@@ -188,7 +170,7 @@ export const storyCardTheme = (theme: Theme) =>
       },
       MuiTypography: {
         gutterBottom: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(1.5))
+          marginBottom: theme.typography.pxToRem(theme.spacing(0.5))
         }
       }
     }

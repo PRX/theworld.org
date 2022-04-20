@@ -160,10 +160,10 @@ export const Category = () => {
         <Box mt={3}>
           {featuredStory && <StoryCard data={featuredStory} feature priority />}
           {featuredStories && (
-            <StoryCardGrid data={featuredStories[1]} mt={2} />
+            <StoryCardGrid data={featuredStories[1]} mt={0} />
           )}
           {ctaInlineTop && (
-            <Box mt={3}>
+            <Box mt={1} mb={1}>
               <Hidden xsDown>
                 <CtaRegion data={ctaInlineTop} />
               </Hidden>
@@ -178,12 +178,12 @@ export const Category = () => {
     {
       key: 'main bottom',
       children: (
-        <Box mt={3}>
+        <Box mt={0}>
           {stories &&
             stories
               .reduce((a, p) => [...a, ...p], [])
-              .map((item: IPriApiResource, index: number) => (
-                <Box mt={index ? 2 : 0} key={item.id}>
+              .map((item: IPriApiResource) => (
+                <Box mt={0} key={item.id}>
                   <StoryCard
                     data={item}
                     feature={
@@ -194,7 +194,7 @@ export const Category = () => {
                 </Box>
               ))}
           {next && (
-            <Box mt={3}>
+            <Box mt={1}>
               <Button
                 variant="contained"
                 size="large"
@@ -210,7 +210,7 @@ export const Category = () => {
             </Box>
           )}
           {ctaInlineBottom && (
-            <Box mt={3}>
+            <Box mt={1} mb={1}>
               <Hidden xsDown>
                 <CtaRegion data={ctaInlineBottom} />
               </Hidden>
