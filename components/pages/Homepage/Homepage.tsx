@@ -20,6 +20,7 @@ import {
   SidebarList
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
+import { QuickLinks } from '@components/QuickLinks';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
@@ -268,6 +269,7 @@ export const Homepage = () => {
     <>
       <MetaTags data={metatags} />
       <Plausible subject={{ type: 'homepage', id: null }} />
+      <QuickLinks />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
