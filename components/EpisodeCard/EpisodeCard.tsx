@@ -30,8 +30,8 @@ export interface EpisodeCardProps {
   priority?: boolean;
 }
 
-export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
-  const { image, audio, dateBroadcast, datePublished } = data;
+export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
+  const { title, image, audio, dateBroadcast, datePublished } = data;
   const { segments } = audio || {};
   const classes = episodeCardStyles({});
   const cx = classNames.bind(classes);
@@ -72,18 +72,16 @@ export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
                   gutterBottom
                   className={cx('title')}
                 >
-                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                  <Moment
+                    format="dddd, MMMM D, YYYY"
+                    tz="America/New_York"
+                    unix
+                  >
                     {dateBroadcast || datePublished}
                   </Moment>
+                  : {title}
                 </Typography>
               </Grid>
-              {label && (
-                <Grid item xs="auto" zeroMinWidth>
-                  <Typography variant="overline" noWrap>
-                    {label}
-                  </Typography>
-                </Grid>
-              )}
             </Grid>
             <ContentLink data={data} className={cx('link')} />
             {segments && (

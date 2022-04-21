@@ -42,16 +42,6 @@ export const sidebarEpisodeTheme = (theme: Theme) =>
       },
       h5: {
         fontSize: theme.typography.pxToRem(18)
-      },
-      overline: {
-        display: 'inline-block',
-        padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
-        background: theme.palette.grey[200],
-        border: `1px solid ${theme.palette.grey[300]}`,
-        borderRadius: '12px',
-        fontSize: theme.typography.pxToRem(14),
-        fontWeight: theme.typography.fontWeightRegular,
-        lineHeight: 1
       }
     },
     overrides: {
@@ -76,7 +66,7 @@ export const sidebarEpisodeTheme = (theme: Theme) =>
         root: {
           color: theme.palette.text.primary,
           fontWeight: theme.typography.fontWeightBold,
-          paddingBottom: `${theme.spacing(1)}px`
+          paddingBlock: `${theme.spacing(1)}px`
         }
       },
       MuiCardMedia: {
