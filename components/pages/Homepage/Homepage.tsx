@@ -186,10 +186,10 @@ export const Homepage = () => {
             </Box>
           )}
           <Box>
-            <SidebarLatestStories>
+            <SidebarLatestStories
               data={latestStories[1]}
               label="Latest from our partners"
-            </SidebarLatestStories>
+            />
           </Box>
         </Box>
       )
