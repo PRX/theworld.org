@@ -19,7 +19,6 @@ import {
   SidebarLatestStories,
   SidebarList
 } from '@components/Sidebar';
-import { QuickLinks } from '@components/QuickLinks';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
@@ -125,9 +124,9 @@ export const Homepage = () => {
       children: (
         <Box mt={3}>
           <StoryCard data={featuredStory} feature priority />
-          <StoryCardGrid data={featuredStories[1]} mt={0} />
+          <StoryCardGrid data={featuredStories[1]} mt={2} />
           {inlineTop && (
-            <Box mt={1} mb={1}>
+            <Box mt={3}>
               <Hidden xsDown>
                 <CtaRegion data={inlineTop} />
               </Hidden>
@@ -142,11 +141,11 @@ export const Homepage = () => {
     {
       key: 'main bottom',
       children: (
-        <Box mt={0}>
+        <Box mt={3}>
           {stories
             .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource) => (
-              <Box mt={0} key={item.id}>
+            .map((item: IPriApiResource, index: number) => (
+              <Box mt={index ? 2 : 0} key={item.id}>
                 <StoryCard
                   data={item}
                   feature={
@@ -156,7 +155,7 @@ export const Homepage = () => {
               </Box>
             ))}
           {inlineBottom && (
-            <Box mt={1} mb={1}>
+            <Box mt={3}>
               <Hidden xsDown>
                 <CtaRegion data={inlineBottom} />
               </Hidden>
@@ -186,11 +185,11 @@ export const Homepage = () => {
               </Hidden>
             </Box>
           )}
-          <Box mt={3}>
-            <SidebarLatestStories
+          <Box>
+            <SidebarLatestStories>
               data={latestStories[1]}
               label="Latest from our partners"
-            />
+            </SidebarLatestStories>
           </Box>
         </Box>
       )
@@ -269,7 +268,6 @@ export const Homepage = () => {
     <>
       <MetaTags data={metatags} />
       <Plausible subject={{ type: 'homepage', id: null }} />
-      <QuickLinks />
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );

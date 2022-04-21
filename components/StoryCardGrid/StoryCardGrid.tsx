@@ -118,7 +118,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
             const { pathname } = generateLinkHrefForContent(item);
             const isLoading = pathname === loadingUrl;
             return (
-              <Card square elevation={1} key={id}>
+              <Card square key={id}>
                 <CardActionArea>
                   {image && (
                     <CardMedia>
@@ -144,7 +144,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                       variant="h5"
                       component="h2"
                       gutterBottom
-                      className={cxCard('title')}
+                      className={cx('title')}
                     >
                       {title}
                     </Typography>

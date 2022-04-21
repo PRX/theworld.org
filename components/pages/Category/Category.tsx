@@ -157,44 +157,46 @@ export const Category = () => {
     {
       key: 'main top',
       children: (
-        <Box mt={3}>
-          {featuredStory && <StoryCard data={featuredStory} feature priority />}
-          {featuredStories && (
-            <StoryCardGrid data={featuredStories[1]} mt={0} />
-          )}
+        <>
+          <Box display="grid" gridGap={8}>
+            {featuredStory && (
+              <StoryCard data={featuredStory} feature priority />
+            )}
+            {featuredStories && (
+              <StoryCardGrid data={featuredStories[1]} gridGap={8} />
+            )}
+          </Box>
           {ctaInlineTop && (
-            <Box mt={1} mb={1}>
+            <>
               <Hidden xsDown>
                 <CtaRegion data={ctaInlineTop} />
               </Hidden>
               <Hidden smUp>
                 <SidebarCta data={ctaInlineTop} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     },
     {
       key: 'main bottom',
       children: (
-        <Box mt={0}>
+        <>
           {stories &&
             stories
               .reduce((a, p) => [...a, ...p], [])
               .map((item: IPriApiResource) => (
-                <Box mt={0} key={item.id}>
-                  <StoryCard
-                    data={item}
-                    feature={
-                      item.displayTemplate &&
-                      item.displayTemplate !== 'standard'
-                    }
-                  />
-                </Box>
+                <StoryCard
+                  data={item}
+                  feature={
+                    item.displayTemplate && item.displayTemplate !== 'standard'
+                  }
+                  key={item.id}
+                />
               ))}
           {next && (
-            <Box mt={1}>
+            <Box>
               <Button
                 variant="contained"
                 size="large"
@@ -210,16 +212,16 @@ export const Category = () => {
             </Box>
           )}
           {ctaInlineBottom && (
-            <Box mt={1} mb={1}>
+            <>
               <Hidden xsDown>
                 <CtaRegion data={ctaInlineBottom} />
               </Hidden>
               <Hidden smUp>
                 <SidebarCta data={ctaInlineBottom} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     }
   ];
@@ -228,72 +230,70 @@ export const Category = () => {
     {
       key: 'sidebar top',
       children: (
-        <Box mt={3}>
-          <Box mt={2}>
-            <Sidebar item elevated>
-              {body && (
-                <SidebarContent>
-                  <HtmlContent html={body} />
-                </SidebarContent>
-              )}
-              {hosts && !!hosts.length && (
-                <SidebarList
-                  data={hosts.map((item: IPriApiResource) => ({
-                    ...item,
-                    avatar: item.image
-                  }))}
-                  subheader={<ListSubheader>Hosted by</ListSubheader>}
-                />
-              )}
-              {sponsors && !!sponsors.length && (
-                <SidebarList
-                  data={sponsors}
-                  subheader={<ListSubheader>Supported by</ListSubheader>}
-                />
-              )}
-              {children && !!children.length && (
-                <SidebarList
-                  data={children}
-                  subheader={
-                    <SidebarHeader>
-                      <Typography variant="h2">
-                        <ListAltRounded /> Subcategories
-                      </Typography>
-                    </SidebarHeader>
-                  }
-                />
-              )}
-            </Sidebar>
-          </Box>
+        <>
+          <Sidebar item elevated>
+            {body && (
+              <SidebarContent>
+                <HtmlContent html={body} />
+              </SidebarContent>
+            )}
+            {hosts && !!hosts.length && (
+              <SidebarList
+                data={hosts.map((item: IPriApiResource) => ({
+                  ...item,
+                  avatar: item.image
+                }))}
+                subheader={<ListSubheader>Hosted by</ListSubheader>}
+              />
+            )}
+            {sponsors && !!sponsors.length && (
+              <SidebarList
+                data={sponsors}
+                subheader={<ListSubheader>Supported by</ListSubheader>}
+              />
+            )}
+            {children && !!children.length && (
+              <SidebarList
+                data={children}
+                subheader={
+                  <SidebarHeader>
+                    <Typography variant="h2">
+                      <ListAltRounded /> Subcategories
+                    </Typography>
+                  </SidebarHeader>
+                }
+              />
+            )}
+          </Sidebar>
           {ctaSidebarTop && (
-            <Box mt={3}>
+            <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarTop} />
               </Hidden>
               <Hidden xsDown mdUp>
                 <CtaRegion data={ctaSidebarTop} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     },
     {
       key: 'sidebar bottom',
       children: (
-        <Box mt={3}>
+        <>
           <SidebarLatestStories />
           {ctaSidebarBottom && (
-            <Box mt={3}>
+            <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarBottom} />
               </Hidden>
               <Hidden xsDown mdUp>
                 <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     }
   ];
@@ -308,7 +308,12 @@ export const Category = () => {
         image={bannerImage}
         logo={logo}
       />
-      <LandingPage main={mainElements} sidebar={sidebarElements} />
+      <LandingPage
+        main={mainElements}
+        sidebar={sidebarElements}
+        mt={3}
+        gridGap={8}
+      />
     </>
   );
 };
