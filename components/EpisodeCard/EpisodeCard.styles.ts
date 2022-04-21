@@ -116,6 +116,9 @@ export const episodeCardTheme = (theme: Theme) =>
           width: '100%',
           height: 0,
           paddingTop: `${(9 / 16) * 100}%`,
+          [theme.breakpoints.up('sm')]: {
+            paddingTop: `${(1 / 3) * 100}%`
+          },
           '& > :only-child': {
             position: 'absolute',
             top: 0,

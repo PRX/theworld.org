@@ -174,7 +174,7 @@ export const Homepage = () => {
       key: 'sidebar top',
       children: (
         <Box mt={3}>
-          <SidebarEpisode data={latestEpisode} label="Latest Edition" />
+          <SidebarEpisode data={latestEpisode} label="Latest Episode" />
           {sidebarTop && (
             <Box mt={3}>
               <Hidden only="sm">
@@ -185,6 +185,19 @@ export const Homepage = () => {
               </Hidden>
             </Box>
           )}
+          <Box mt={3}>
+            <SidebarLatestStories
+              data={latestStories[1]}
+              label="Latest from our partners"
+            />
+          </Box>
+        </Box>
+      )
+    },
+    {
+      key: 'sidebar bottom',
+      children: (
+        <Box mt={3}>
           {categoriesMenu && (
             <Box mt={3}>
               <Sidebar item elevated>
@@ -197,17 +210,6 @@ export const Homepage = () => {
               </Sidebar>
             </Box>
           )}
-        </Box>
-      )
-    },
-    {
-      key: 'sidebar bottom',
-      children: (
-        <Box mt={3}>
-          <SidebarLatestStories
-            data={latestStories[1]}
-            label="Latest from our partners"
-          />
           {sidebarBottom && (
             <Box mt={3}>
               <Hidden only="sm">

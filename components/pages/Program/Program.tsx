@@ -218,7 +218,7 @@ export const Program = () => {
             </>
           )}
           {isEpisodesView && (
-            <EpisodeCard data={latestEpisode} label="Latest Edition" />
+            <EpisodeCard data={latestEpisode} label="Latest Episode" />
           )}
           {ctaInlineTop && (
             <Box mt={3}>
@@ -321,7 +321,7 @@ export const Program = () => {
       children: (
         <Box mt={3}>
           {latestEpisode && !isEpisodesView && (
-            <SidebarEpisode data={latestEpisode} label="Latest Edition" />
+            <SidebarEpisode data={latestEpisode} label="Latest Episode" />
           )}
           <Box mt={2}>
             <Sidebar item elevated>
