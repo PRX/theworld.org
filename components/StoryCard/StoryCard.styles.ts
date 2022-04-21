@@ -58,13 +58,10 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       padding: `${theme.spacing(2)}px`,
       '$feature &': {
-        gridTemplateColumns: '1fr 1fr'
+        gridTemplateColumns: '1fr'
       },
       [theme.breakpoints.down('sm')]: {
-        gridTemplateColumns: '1fr 2fr',
-        '$feature &': {
-          gridTemplateColumns: '1fr'
-        }
+        gridTemplateColumns: '1fr 2fr'
       }
     },
     MuiCardContentRoot: {
@@ -74,10 +71,13 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
     MuiCardMediaRoot: {
       paddingTop: `${100 / (1 / 1)}%`,
       '$feature &': {
-        paddingTop: `${100 / (16 / 9)}%`
+        paddingTop: `${100 / (3 / 1)}%`
       },
       [theme.breakpoints.down('sm')]: {
-        alignSelf: 'start'
+        alignSelf: 'start',
+        '$feature &': {
+          paddingTop: `${100 / (16 / 9)}%`
+        }
       }
     },
     feature: {},
