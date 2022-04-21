@@ -31,7 +31,7 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
       transform: 'translateY(-100%)'
     },
     title: {
-      fontSize: theme.typography.pxToRem(18)
+      fontSize: theme.typography.pxToRem(16)
     }
   })
 );
