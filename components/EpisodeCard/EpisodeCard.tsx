@@ -59,30 +59,19 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
             </CardMedia>
           )}
           <CardContent>
-            <Grid
-              container
-              justify="space-between"
-              alignItems="center"
-              spacing={1}
+            <Typography component="span">
+              <Moment format="dddd, MMMM D, YYYY" tz="America/New_York" unix>
+                {dateBroadcast || datePublished}
+              </Moment>
+            </Typography>
+            <Typography
+              variant="h5"
+              component="h2"
+              gutterBottom
+              className={cx('title')}
             >
-              <Grid item xs="auto" zeroMinWidth>
-                <Typography
-                  variant="h5"
-                  component="h2"
-                  gutterBottom
-                  className={cx('title')}
-                >
-                  <Moment
-                    format="dddd, MMMM D, YYYY"
-                    tz="America/New_York"
-                    unix
-                  >
-                    {dateBroadcast || datePublished}
-                  </Moment>
-                  : {title}
-                </Typography>
-              </Grid>
-            </Grid>
+              {title}
+            </Typography>
             <ContentLink data={data} className={cx('link')} />
             {segments && (
               <>
