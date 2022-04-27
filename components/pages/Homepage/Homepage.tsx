@@ -19,6 +19,7 @@ import {
   SidebarLatestStories,
   SidebarList
 } from '@components/Sidebar';
+import { QuickLinks } from '@components/QuickLinks';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
@@ -265,6 +266,7 @@ export const Homepage = () => {
     <>
       <MetaTags data={metatags} />
       <Plausible subject={{ type: 'homepage', id: null }} />
+      <QuickLinks />
       <LandingPage
         main={mainElements}
         sidebar={sidebarElements}
