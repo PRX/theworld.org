@@ -25,6 +25,7 @@ import {
   ListItemText,
   Typography
 } from '@material-ui/core';
+import { Label } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
 import { ILink } from '@interfaces/link';
@@ -49,8 +50,8 @@ export const StoryCard = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {
-    teaser,
     title,
+    teaser,
     image,
     primaryCategory,
     crossLinks,
@@ -137,34 +138,6 @@ export const StoryCard = ({
             </CardMedia>
           )}
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
-            <Grid
-              container
-              justify="space-between"
-              spacing={1}
-              style={{ marginBottom: 0 }}
-            >
-              {primaryCategory && (
-                <Grid item xs="auto" zeroMinWidth>
-                  <Typography variant="overline" noWrap>
-                    <ContentLink data={primaryCategory}>
-                      {primaryCategory.title}
-                    </ContentLink>
-                  </Typography>
-                </Grid>
-              )}
-              <Grid item xs="auto" zeroMinWidth>
-                <Typography
-                  variant="subtitle2"
-                  component="span"
-                  color="textSecondary"
-                  noWrap
-                >
-                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
-                    {dateBroadcast || datePublished}
-                  </Moment>
-                </Typography>
-              </Grid>
-            </Grid>
             <Typography
               variant="h5"
               component="h2"
@@ -173,12 +146,31 @@ export const StoryCard = ({
             >
               {title}
             </Typography>
-            <Typography
-              variant="body1"
-              component="p"
-              color="textSecondary"
-              className={classes.teaser}
+            <Grid
+              container
+              justify="flex-start"
+              spacing={1}
+              style={{ marginBottom: 0 }}
             >
+              <Grid item xs="auto" zeroMinWidth>
+                <Typography component="span">
+                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                    {dateBroadcast || datePublished}
+                  </Moment>
+                </Typography>
+              </Grid>
+              {primaryCategory && (
+                <Grid item xs="auto" zeroMinWidth>
+                  <Typography variant="overline" noWrap>
+                    <Label color="secondary" className={cx('labelIcon')} />
+                    <ContentLink data={primaryCategory}>
+                      {primaryCategory.title}
+                    </ContentLink>
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
+            <Typography variant="body1" component="p" color="textSecondary">
               {teaser}
             </Typography>
           </CardContent>

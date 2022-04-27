@@ -27,6 +27,7 @@ import {
   ListItemText,
   Typography
 } from '@material-ui/core';
+import { Label } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
 import { ILink } from '@interfaces/link';
@@ -117,7 +118,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
             const { pathname } = generateLinkHrefForContent(item);
             const isLoading = pathname === loadingUrl;
             return (
-              <Card square elevation={1} key={id}>
+              <Card square key={id}>
                 <CardActionArea>
                   {image && (
                     <CardMedia>
@@ -139,30 +140,24 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     </CardMedia>
                   )}
                   <CardContent>
+                    <Typography
+                      variant="h5"
+                      component="h2"
+                      gutterBottom
+                      className={cx('title')}
+                    >
+                      {title}
+                    </Typography>
                     <Grid
                       container
-                      justify="space-between"
+                      justify="flex-start"
                       spacing={1}
                       style={{ marginBottom: 0 }}
                     >
-                      {primaryCategory && (
-                        <Grid item xs="auto" zeroMinWidth>
-                          <Typography variant="overline" noWrap>
-                            <ContentLink data={primaryCategory}>
-                              {primaryCategory.title}
-                            </ContentLink>
-                          </Typography>
-                        </Grid>
-                      )}
                       <Grid item xs="auto" zeroMinWidth>
-                        <Typography
-                          variant="subtitle2"
-                          component="span"
-                          color="textSecondary"
-                          noWrap
-                        >
+                        <Typography component="span">
                           <Moment
-                            format="MMM. D, YYYY"
+                            format="MMMM D, YYYY"
                             tz="America/New_York"
                             unix
                           >
@@ -170,15 +165,17 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                           </Moment>
                         </Typography>
                       </Grid>
+                      {primaryCategory && (
+                        <Grid item xs="auto" zeroMinWidth>
+                          <Typography variant="overline" noWrap>
+                            <Label color="secondary" />
+                            <ContentLink data={primaryCategory}>
+                              {primaryCategory.title}
+                            </ContentLink>
+                          </Typography>
+                        </Grid>
+                      )}
                     </Grid>
-                    <Typography
-                      variant="h5"
-                      component="h2"
-                      gutterBottom
-                      className={cxCard('title')}
-                    >
-                      {title}
-                    </Typography>
                     <ContentLink data={item} className={cxCard('link')} />
                   </CardContent>
                 </CardActionArea>
