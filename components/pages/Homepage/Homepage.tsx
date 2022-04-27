@@ -176,7 +176,7 @@ export const Homepage = () => {
       key: 'sidebar top',
       children: (
         <>
-          <SidebarEpisode data={latestEpisode} label="Latest Edition" />
+          <SidebarEpisode data={latestEpisode} label="Latest Episode" />
           {sidebarTop && (
             <>
               <Hidden only="sm">
