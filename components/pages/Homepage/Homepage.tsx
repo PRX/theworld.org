@@ -197,7 +197,7 @@ export const Homepage = () => {
     {
       key: 'sidebar bottom',
       children: (
-        <Box>
+        <>
           {categoriesMenu && (
             <Sidebar item elevated>
               <SidebarHeader>
@@ -208,7 +208,7 @@ export const Homepage = () => {
               <SidebarList data={categoriesMenu} />
             </Sidebar>
           )}
-        </Box>
+        </>
       )
     },
     {
