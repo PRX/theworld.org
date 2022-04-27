@@ -51,6 +51,7 @@ export const StoryCard = ({
   const [isLoading, setIsLoading] = useState(false);
   const {
     title,
+    teaser,
     image,
     primaryCategory,
     crossLinks,
@@ -169,6 +170,14 @@ export const StoryCard = ({
                 </Grid>
               )}
             </Grid>
+            <Typography
+              variant="body1"
+              component="p"
+              color="textSecondary"
+              className={classes.teaser}
+            >
+              {teaser}
+            </Typography>
           </CardContent>
           <ContentLink data={data} className={cx('link')} />
         </CardActionArea>

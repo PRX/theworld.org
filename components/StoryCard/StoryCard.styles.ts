@@ -24,7 +24,8 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       fontSize: theme.typography.pxToRem(20),
       [theme.breakpoints.down('sm')]: {
         fontSize: theme.typography.pxToRem(18)
-      }
+      },
+      lineHeight: '1.3'
     },
     imageWrapper: {
       position: 'absolute',
@@ -71,7 +72,7 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
     MuiCardMediaRoot: {
       paddingTop: `${100 / (1 / 1)}%`,
       '$feature &': {
-        paddingTop: `${100 / (3 / 1)}%`
+        paddingTop: `${100 / (16 / 9)}%`
       },
       [theme.breakpoints.down('sm')]: {
         alignSelf: 'start',
