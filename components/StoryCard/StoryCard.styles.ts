@@ -70,15 +70,12 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       padding: 0
     },
     MuiCardMediaRoot: {
-      paddingTop: `${100 / (1 / 1)}%`,
+      paddingTop: '100%',
       '$feature &': {
         paddingTop: `${100 / (16 / 9)}%`
       },
       [theme.breakpoints.down('sm')]: {
-        alignSelf: 'start',
-        '$feature &': {
-          paddingTop: `${100 / (16 / 9)}%`
-        }
+        alignSelf: 'start'
       }
     },
     feature: {},
