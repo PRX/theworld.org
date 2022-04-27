@@ -170,12 +170,7 @@ export const StoryCard = ({
                 </Grid>
               )}
             </Grid>
-            <Typography
-              variant="body1"
-              component="p"
-              color="textSecondary"
-              className={classes.teaser}
-            >
+            <Typography variant="body1" component="p" color="textSecondary">
               {teaser}
             </Typography>
           </CardContent>
