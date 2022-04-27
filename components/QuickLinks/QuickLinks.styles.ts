@@ -16,6 +16,7 @@ export const QuickLinksTheme = (theme: Theme) =>
       MuiBreadcrumbs: {
         root: {
           display: 'flex',
+          position: 'relative',
           justifyContent: 'center',
           overflow: 'hidden',
           maxHeight: theme.typography.pxToRem(theme.spacing(6)),
