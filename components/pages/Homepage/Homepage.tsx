@@ -182,11 +182,24 @@ export const Homepage = () => {
               <Hidden only="sm">
                 <SidebarCta data={sidebarTop} />
               </Hidden>
+              <Box mt={3}>
+                <SidebarLatestStories
+                  data={latestStories[1]}
+                  label="Latest from our partners"
+                />
+              </Box>
               <Hidden xsDown mdUp>
                 <CtaRegion data={sidebarTop} />
               </Hidden>
             </>
           )}
+        </Box>
+      )
+    },
+    {
+      key: 'sidebar bottom',
+      children: (
+        <Box mt={3}>
           {categoriesMenu && (
             <Sidebar item elevated>
               <SidebarHeader>

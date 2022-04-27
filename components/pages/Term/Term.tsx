@@ -187,7 +187,7 @@ export const Term = () => {
             </Box>
           )}
           {isEpisodesView && (
-            <EpisodeCard data={latestEpisode} label="Latest Edition" />
+            <EpisodeCard data={latestEpisode} label="Latest Episode" />
           )}
           {ctaInlineTop && (
             <>
@@ -292,7 +292,7 @@ export const Term = () => {
                 ...latestEpisode,
                 program: data
               }}
-              label="Latest Edition"
+              label="Latest Episode"
             />
           )}
           {ctaSidebarTop && (
