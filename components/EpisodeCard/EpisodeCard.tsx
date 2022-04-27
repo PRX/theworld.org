@@ -14,7 +14,6 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Grid,
   Typography
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
