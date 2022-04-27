@@ -181,25 +181,23 @@ export const Homepage = () => {
             <>
               <Hidden only="sm">
                 <SidebarCta data={sidebarTop} />
-              </Hidden>
-              <Box mt={3}>
                 <SidebarLatestStories
                   data={latestStories[1]}
                   label="Latest from our partners"
                 />
-              </Box>
+              </Hidden>
               <Hidden xsDown mdUp>
                 <CtaRegion data={sidebarTop} />
               </Hidden>
             </>
           )}
-        </Box>
+        </>
       )
     },
     {
       key: 'sidebar bottom',
       children: (
-        <Box mt={3}>
+        <Box>
           {categoriesMenu && (
             <Sidebar item elevated>
               <SidebarHeader>
@@ -210,17 +208,13 @@ export const Homepage = () => {
               <SidebarList data={categoriesMenu} />
             </Sidebar>
           )}
-        </>
+        </Box>
       )
     },
     {
       key: 'sidebar bottom',
       children: (
         <>
-          <SidebarLatestStories
-            data={latestStories[1]}
-            label="Latest from our partners"
-          />
           {sidebarBottom && (
             <>
               <Hidden only="sm">
