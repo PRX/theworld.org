@@ -10,6 +10,7 @@ import {
   fetchPriApiQuery,
   fetchPriApiQueryMenu
 } from '@lib/fetch';
+import { parseMenu } from '@lib/parse/menu';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const [program, latestStories, quickLinks] = await Promise.all([
@@ -30,7 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ...program,
       latestStories,
       menus: {
-        quickLinks
+        quickLinks: parseMenu(quickLinks)
       }
     }
   };

@@ -2,6 +2,7 @@
  * Fetch homepage data from CMS API.
  */
 
+import { parseMenu } from '@lib/parse/menu';
 import {
   IPriApiCollectionResponse,
   IPriApiResourceResponse,
@@ -32,7 +33,7 @@ export const fetchHomepage = async (): Promise<PriApiResourceResponse> => {
       ...program,
       latestStories,
       menus: {
-        quickLinks
+        quickLinks: parseMenu(quickLinks)
       }
     }
   } as IPriApiResourceResponse;
