@@ -14,7 +14,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     drawerTopNav,
     footerNav,
     headerNav,
-    quickLinks,
     latestStories
   ] = await Promise.all([
     fetchPriApiQueryMenu('menu-tw-main-nav'),
@@ -22,7 +21,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     fetchPriApiQueryMenu('menu-tw-top-nav'),
     fetchPriApiQueryMenu('menu-tw-footer-nav'),
     fetchPriApiQueryMenu('menu-tw-header-nav'),
-    fetchPriApiQueryMenu('menu-the-world-quick-links'),
     fetchPriApiQuery('node--stories', {
       ...basicStoryParams,
       'filter[status]': 1,
@@ -37,8 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       drawerSocialNav: parseMenu(drawerSocialNav),
       drawerTopNav: parseMenu(drawerTopNav),
       footerNav: parseMenu(footerNav),
-      headerNav: parseMenu(headerNav),
-      quickLinks: parseMenu(quickLinks)
+      headerNav: parseMenu(headerNav)
     }
   };
 

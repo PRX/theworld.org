@@ -43,7 +43,8 @@ export const fetchHomepageData = (): ThunkAction<
       featuredStories,
       latestStories,
       stories,
-      episodes
+      episodes,
+      menus
     } = apiResp;
 
     dispatch({
@@ -82,6 +83,11 @@ export const fetchHomepageData = (): ThunkAction<
 
     dispatch({
       type: 'FETCH_HOMEPAGE_DATA_SUCCESS'
+    });
+
+    dispatch({
+      type: 'FETCH_MENUS_DATA_SUCCESS',
+      payload: menus
     });
 
     return { ...apiResp };
