@@ -19,8 +19,8 @@ export const QuickLinks = () => {
   const classes = QuickLinksStyles({});
 
   return (
-    <ThemeProvider theme={QuickLinksTheme}>
-      {quickLinks && (
+    quickLinks && (
+      <ThemeProvider theme={QuickLinksTheme}>
         <Container>
           <Breadcrumbs separator=" " aria-label="Quick Links">
             <Label
@@ -52,7 +52,7 @@ export const QuickLinks = () => {
             )}
           </Breadcrumbs>
         </Container>
-      )}
-    </ThemeProvider>
+      </ThemeProvider>
+    )
   );
 };
