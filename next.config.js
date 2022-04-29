@@ -29,6 +29,7 @@ module.exports = withPlausibleProxy({
   },
   images: {
     domains: [
+      'theworld.org',
       'media.pri.org',
       'www.pri.org',
       'pri9.lndo.site',
