@@ -23,6 +23,9 @@ export const initialState: RootState = {
   ui: {
     drawer: {
       open: true
+    },
+    socialShareMenu: {
+      shown: false
     }
   }
 };
@@ -71,6 +74,24 @@ export const getCollectionData = (
   );
 };
 
+export const getHomepageData = (state: RootState) => ({
+  featuredStory: getCollectionData(
+    state,
+    'homepage',
+    undefined,
+    'featured story'
+  ),
+  featuredStories: getCollectionData(
+    state,
+    'homepage',
+    undefined,
+    'featured stories'
+  ),
+  stories: getCollectionData(state, 'homepage', undefined, 'stories'),
+  episodes: getCollectionData(state, 'homepage', undefined, 'episodes'),
+  latestStories: getCollectionData(state, 'homepage', undefined, 'latest')
+});
+
 export const getCtaData = (state: RootState, type: string, id: string) =>
   fromCtaData.getCtaData(state.ctaData, type, id);
 
@@ -105,5 +126,8 @@ export const getSearchQuery = (state: RootState) =>
   fromSearch.getSearchQuery(state.search);
 export const getSearchData = (state: RootState, query: string) =>
   fromSearch.getSearchData(state.search, query);
+
 export const getUiDrawerOpen = (state: RootState) =>
   fromUi.getUiDrawerOpen(state.ui);
+export const getUiSocialShareMenu = (state: RootState) =>
+  fromUi.getUiSocialShareMenu(state.ui);

@@ -21,7 +21,7 @@ interface Props {
 
 export const StoryHeader = ({ data }: Props) => {
   const {
-    byline,
+    bylines,
     dateBroadcast,
     datePublished,
     dateUpdated,
@@ -44,11 +44,11 @@ export const StoryHeader = ({ data }: Props) => {
       <Box mb={3}>
         <Typography variant="h1">{title}</Typography>
       </Box>
-      <Box className={classes.meta} mb={2}>
-        <Box className={classes.info}>
-          {program && (
-            <ContentLink data={program} className={classes.programLink} />
-          )}
+      <Box className={classes.info} mb={2}>
+        {program && (
+          <ContentLink data={program} className={classes.programLink} />
+        )}
+        {(dateBroadcast || datePublished) && (
           <Typography
             variant="subtitle1"
             component="div"
@@ -58,34 +58,43 @@ export const StoryHeader = ({ data }: Props) => {
               {dateBroadcast || datePublished}
             </Moment>
           </Typography>
-          {dateUpdated && (
-            <Typography
-              variant="subtitle1"
-              component="div"
-              className={classes.date}
-            >
-              {' '}
-              Updated on{' '}
-              <Moment
-                format="MMM. D, YYYY · h:mm A z"
-                tz="America/New_York"
-                unix
-              >
-                {dateUpdated}
-              </Moment>
-            </Typography>
-          )}
-          {byline && (
-            <ul className={classes.byline}>
-              {byline.map(({ id, creditType, person }) => (
-                <li className={classes.bylineItem} key={id}>
-                  {creditType ? creditType.title : 'By'}{' '}
-                  <ContentLink className={classes.bylineLink} data={person} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </Box>
+        )}
+        {dateUpdated && (
+          <Typography
+            variant="subtitle1"
+            component="div"
+            className={classes.date}
+          >
+            {' '}
+            Updated on{' '}
+            <Moment format="MMM. D, YYYY · h:mm A z" tz="America/New_York" unix>
+              {dateUpdated}
+            </Moment>
+          </Typography>
+        )}
+        {bylines && (
+          <ul className={classes.byline}>
+            {bylines.map(([creditTitle, people]) => (
+              <li className={classes.bylineItem} key={creditTitle}>
+                {creditTitle}{' '}
+                <Box className={classes.bylinePeople} component="span">
+                  {people.map((person: IPriApiResource) => (
+                    <Box
+                      className={classes.bylinePerson}
+                      component="span"
+                      key={person.id}
+                    >
+                      <ContentLink
+                        className={classes.bylineLink}
+                        data={person}
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </li>
+            ))}
+          </ul>
+        )}
       </Box>
     </Box>
   );

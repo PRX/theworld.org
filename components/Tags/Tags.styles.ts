@@ -16,7 +16,7 @@ export const tagsStyles = makeStyles((theme: Theme) =>
       color: theme.palette.grey[700]
     },
     label: {
-      margin: '0',
+      margin: 0,
       fontSize: theme.typography.pxToRem(14),
       fontWeight: theme.typography.fontWeightRegular,
       '&::after': {

@@ -12,7 +12,7 @@ import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';
 import { ReactComponent as TwLogo } from '@svg/tw-white.svg';
 import { ReactComponent as PrxLogo } from '@svg/PRX-Logo-Horizontal-Color.svg';
-import { ReactComponent as WGBHLogo } from '@svg/WGBH-Logo.svg';
+import { ReactComponent as GBHLogo } from '@svg/GBH-Logo-Purple.svg';
 import { appFooterStyles } from './AppFooter.styles';
 
 export const AppFooter = () => {
@@ -45,7 +45,7 @@ export const AppFooter = () => {
               <PrxLogo className={producedByLogoClasses} />
             </Link>
             <Link href="https://gbh.org/" aria-label="GBH">
-              <WGBHLogo className={producedByLogoClasses} />
+              <GBHLogo className={producedByLogoClasses} />
             </Link>
           </Breadcrumbs>
         </Box>

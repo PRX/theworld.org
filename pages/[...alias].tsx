@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useStore } from 'react-redux';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';
+import crypto from 'crypto';
 import { Url } from 'url';
 import {
   IPriApiCollectionResponse,
@@ -16,7 +17,6 @@ import {
 import { IContentComponentProxyProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
 import { fetchAliasData } from '@store/actions/fetchAliasData';
-import { fetchAppData } from '@store/actions/fetchAppData';
 import { wrapper } from '@store';
 import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
@@ -25,6 +25,8 @@ import { fetchCtaData } from '@store/actions/fetchCtaData';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
+const DynamicImage = dynamic(() => import('@components/pages/Image'));
+const DynamicVideo = dynamic(() => import('@components/pages/Video'));
 const DynamicBio = dynamic(() => import('@components/pages/Bio'));
 const DynamicCategory = dynamic(() => import('@components/pages/Category'));
 const DynamicEpisode = dynamic(() => import('@components/pages/Episode'));
@@ -52,6 +54,12 @@ const ContentProxy = ({ type, id }: Props) => {
   switch (type) {
     case 'file--audio':
       return <DynamicAudio />;
+
+    case 'file--images':
+      return <DynamicImage />;
+
+    case 'file--videos':
+      return <DynamicVideo />;
 
     case 'node--episodes':
       return <DynamicEpisode />;
@@ -93,56 +101,63 @@ export const getStaticProps = wrapper.getStaticProps(
     let resourceType: string = 'homepage';
     let redirect: string;
     const aliasPath = (alias as string[]).join('/');
+    const rgxFileExt = /\.\w+$/;
 
-    switch (aliasPath) {
-      case 'programs/the-world/team':
-        resourceId = 'the_world';
-        resourceType = 'team';
-        break;
+    if (!rgxFileExt.test(aliasPath)) {
+      switch (aliasPath) {
+        case 'programs/the-world/team':
+          resourceId = 'the_world';
+          resourceType = 'team';
+          break;
 
-      default: {
-        const aliasData = await store.dispatch<any>(fetchAliasData(aliasPath));
+        default: {
+          const aliasData = await store.dispatch<any>(
+            fetchAliasData(aliasPath)
+          );
 
-        // Update resource id and type.
-        if (aliasData?.type === 'redirect--external') {
-          redirect = aliasData.url;
-        } else if (aliasData?.id) {
-          const { id, type } = aliasData as IPriApiResource;
-          resourceId = id as string;
-          resourceType = type;
-        } else {
-          resourceType = null;
+          // Update resource id and type.
+          if (aliasData?.type === 'redirect--external') {
+            redirect = aliasData.url;
+          } else if (aliasData?.id) {
+            const { id, type } = aliasData as IPriApiResource;
+            resourceId = id as string;
+            resourceType = type;
+          } else {
+            resourceType = null;
+          }
+          break;
         }
-        break;
       }
-    }
 
-    // Return object with redirect url.
-    if (redirect) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: redirect
-        }
-      };
-    }
-
-    // Fetch resource data.
-    if (resourceType) {
-      const fetchData = getResourceFetchData(resourceType);
-
-      if (fetchData) {
-        await Promise.all([
-          // Fetch App data (latest stories, menus, etc.)
-          store.dispatch<any>(fetchAppData()),
-          // Use resources fetch func to fetch its data.
-          store.dispatch(fetchData(resourceId))
-        ]);
-
+      // Return object with redirect url.
+      if (redirect) {
         return {
-          props: { type: resourceType, id: resourceId },
-          revalidate: 10
+          redirect: {
+            permanent: false,
+            destination: redirect
+          }
         };
+      }
+
+      // Fetch resource data.
+      if (resourceType) {
+        const fetchData = getResourceFetchData(resourceType);
+
+        if (fetchData) {
+          const data = await store.dispatch(fetchData(resourceId));
+
+          return {
+            props: {
+              type: resourceType,
+              id: resourceId,
+              dataHash: crypto
+                .createHash('sha256')
+                .update(JSON.stringify(data))
+                .digest('hex')
+            },
+            revalidate: parseInt(process.env.ISR_REVALIDATE || '1', 10)
+          };
+        }
       }
     }
 
@@ -151,64 +166,75 @@ export const getStaticProps = wrapper.getStaticProps(
 );
 
 export const getStaticPaths = async () => {
-  const [homepage, app, team] = await Promise.all([
-    fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data),
-    fetchApp(),
-    fetchTeam('the_world').then(
-      (resp: IPriApiCollectionResponse) => resp && resp.data
-    )
-  ]);
-  const {
-    featuredStory,
-    featuredStories,
-    stories,
-    episodes,
-    latestStories,
-    ...program
-  } = homepage;
-  const { latestStories: latestAppStories, menus } = app;
-  const resources = [
-    program,
-    featuredStory,
-    ...featuredStories,
-    ...stories.data,
-    ...episodes.data,
-    ...episodes.data.reduce(
-      (acc: any, { audio }) => [
-        ...acc,
-        ...(audio?.segments ? [...audio.segments] : [])
-      ],
-      [] as any[]
-    ),
-    ...latestStories.data,
-    ...latestAppStories.data,
-    ...team,
-    ...[featuredStory, ...featuredStories, ...stories.data]
-      .map(story => story.primaryCategory)
-      .filter(v => !!v)
-  ];
-  const paths = [
-    ...resources.map(resource => ({
-      params: {
-        alias: generateLinkHrefForContent(resource)
-          ?.pathname.slice(1)
-          .split('/')
-      }
-    })),
-    ...Object.values(menus)
-      // Gather all memus' url's into one array.
-      .reduce((a, m) => [...a, ...m.map(({ url }) => url)], [] as Url[])
-      // Filter out any external url's.
-      .filter(
-        ({ hostname }) =>
-          !hostname || /^(www\.)?(pri|theworld)\.org$/.test(hostname)
+  let paths = [];
+
+  // Check if env wants static pages built.
+  if (process.env.TW_STATIC_PREBUILD === 'BUILD') {
+    const [homepage, app, team] = await Promise.all([
+      fetchHomepage().then(
+        (resp: IPriApiResourceResponse) => resp && resp.data
+      ),
+      fetchApp(),
+      fetchTeam('the_world').then(
+        (resp: IPriApiCollectionResponse) => resp && resp.data
       )
-      .map(({ pathname }) => ({
+    ]);
+    const {
+      featuredStory,
+      featuredStories,
+      stories,
+      episodes,
+      latestStories,
+      ...program
+    } = homepage;
+    const { latestStories: latestAppStories, menus } = app;
+    const resources = [
+      program,
+      featuredStory,
+      ...featuredStories,
+      ...stories.data,
+      ...episodes.data,
+      ...episodes.data
+        .reduce(
+          (acc: IPriApiResource[], { audio }) => [
+            ...acc,
+            ...((audio?.segments
+              ? [...audio.segments]
+              : []) as IPriApiResource[])
+          ],
+          [] as IPriApiResource[][]
+        )
+        .filter((item: IPriApiResource) => item.type !== 'file--audio'),
+      ...latestStories.data,
+      ...latestAppStories.data,
+      ...team,
+      ...[featuredStory, ...featuredStories, ...stories.data]
+        .map(story => story.primaryCategory)
+        .filter(v => !!v)
+    ];
+    paths = [
+      ...resources.map(resource => ({
         params: {
-          alias: pathname.slice(1).split('/')
+          alias: generateLinkHrefForContent(resource)
+            ?.pathname.slice(1)
+            .split('/')
         }
-      }))
-  ].filter(({ params: { alias } }) => !!alias.filter(s => !!s.length).length);
+      })),
+      ...Object.values(menus)
+        // Gather all memus' url's into one array.
+        .reduce((a, m) => [...a, ...m.map(({ url }) => url)], [] as Url[])
+        // Filter out any external url's.
+        .filter(
+          ({ hostname }) =>
+            !hostname || /^(www\.)?(pri|theworld)\.org$/.test(hostname)
+        )
+        .map(({ pathname }) => ({
+          params: {
+            alias: pathname.slice(1).split('/')
+          }
+        }))
+    ].filter(({ params: { alias } }) => !!alias?.join('/').length);
+  }
 
   return { paths, fallback: 'blocking' };
 };

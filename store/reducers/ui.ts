@@ -30,9 +30,28 @@ export const ui = (state = {}, action: UiAction): State => {
         }
       } as UiState;
 
+    case 'UI_SHOW_SOCIAL_SHARE_MENU':
+      return {
+        ...state,
+        socialShareMenu: {
+          shown: true,
+          links: action.payload.ui.socialShareMenu.links,
+          icons: action.payload.ui.socialShareMenu.icons
+        }
+      } as UiState;
+
+    case 'UI_HIDE_SOCIAL_SHARE_MENU':
+      return {
+        ...state,
+        socialShareMenu: {
+          shown: false
+        }
+      } as UiState;
+
     default:
       return state;
   }
 };
 
 export const getUiDrawerOpen = (state: UiState) => state?.drawer?.open;
+export const getUiSocialShareMenu = (state: UiState) => state?.socialShareMenu;

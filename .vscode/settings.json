@@ -11,5 +11,22 @@
     // For ESLint
     "source.fixAll.eslint": false
   },
-  "editor.formatOnPaste": true
+  "editor.formatOnPaste": true,
+  "cSpell.words": [
+    "cflds",
+    "customsearch",
+    "Denormalized",
+    "flipboard",
+    "Lede",
+    "metatags",
+    "optin",
+    "popout",
+    "pubdate",
+    "shortlink",
+    "targetable",
+    "theworld",
+    "unfetch",
+    "unsub",
+    "VERCEL"
+  ]
 }

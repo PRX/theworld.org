@@ -44,15 +44,17 @@ export const StoryRelatedLinks = ({
               <ContentLink data={story}>
                 <Card square elevation={1}>
                   <CardActionArea>
-                    <CardMedia>
-                      <Image
-                        src={image.url}
-                        alt={image.alt}
-                        layout="fill"
-                        objectFit="cover"
-                        sizes={sizes}
-                      />
-                    </CardMedia>
+                    {image && (
+                      <CardMedia>
+                        <Image
+                          src={image.url}
+                          alt={image.alt}
+                          layout="fill"
+                          objectFit="cover"
+                          sizes={sizes}
+                        />
+                      </CardMedia>
+                    )}
                     <CardContent>
                       <Typography variant="h5" component="h2">
                         {title}

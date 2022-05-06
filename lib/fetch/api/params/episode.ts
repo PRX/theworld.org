@@ -23,7 +23,12 @@ export const basicEpisodeParams = {
     'date_broadcasted',
     'teaser',
     'body',
-    'image',
+    'image.title',
+    'image.url',
+    'image.metadata',
+    'image.credit',
+    'image.caption',
+    'image.alt',
     'audio',
     'embedded_player_url',
     'popout_player_url',
@@ -84,6 +89,7 @@ export const fullEpisodeParams = {
     'stories.image',
     'stories.primary_category.title',
     'stories.primary_category.metatags',
-    'spotify_playlist'
+    'spotify_playlist',
+    'share_links'
   ]
 };

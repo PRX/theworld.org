@@ -15,11 +15,11 @@ export const appCtaBannerTheme = (theme: Theme) =>
     typography: {
       h2: {
         color: theme.palette.primary.contrastText,
-        fontSize: '1.5rem'
+        fontSize: '1.2rem'
       },
       body1: {
-        fontSize: '1.1rem',
-        lineHeight: 1.4
+        fontSize: '1rem',
+        lineHeight: 1.3
       }
     },
     overrides: {
@@ -40,8 +40,8 @@ export const appCtaBannerTheme = (theme: Theme) =>
           paddingLeft: theme.spacing(2)
         },
         label: {
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
+          paddingTop: theme.spacing(1),
+          paddingBottom: theme.spacing(0),
           textAlign: 'left'
         }
       },
@@ -55,7 +55,8 @@ export const appCtaBannerTheme = (theme: Theme) =>
       MuiToolbar: {
         root: {
           justifyContent: 'center',
-          marginTop: theme.spacing(3),
+          marginTop: 0,
+          marginBottom: 0,
           '& > * + *': {
             marginLeft: theme.spacing(2)
           }

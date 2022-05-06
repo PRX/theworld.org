@@ -5,7 +5,10 @@
  */
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
 import { fetchApiProgram, fetchProgram } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
@@ -16,12 +19,13 @@ export const fetchProgramData = (
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
-): Promise<void> => {
+): Promise<IPriApiResource> => {
   const state = getState();
   const type = 'node--programs';
-  const data = getDataByResource(state, type, id);
+  const isOnServer = typeof window === 'undefined';
+  let data = getDataByResource(state, type, id);
 
-  if (!data) {
+  if (!data || !data.complete || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,9 +34,7 @@ export const fetchProgramData = (
       }
     });
 
-    const apiResp = await (typeof window === 'undefined'
-      ? fetchProgram
-      : fetchApiProgram)(id).then(
+    data = await (isOnServer ? fetchProgram : fetchApiProgram)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
     const {
@@ -41,7 +43,7 @@ export const fetchProgramData = (
       stories,
       episodes,
       ...payload
-    } = apiResp;
+    } = data;
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
@@ -73,4 +75,6 @@ export const fetchProgramData = (
 
     dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
   }
+
+  return data;
 };

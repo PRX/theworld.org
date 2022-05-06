@@ -50,7 +50,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
         ...state,
         ...(action.payload &&
           href && {
-            [href.pathname]: {
+            [href.pathname.substr(1)]: {
               id: action.payload.id,
               type: action.payload.type
             }
@@ -70,7 +70,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
                 ? a
                 : {
                     ...a,
-                    [h.pathname]: {
+                    [h.pathname.substr(1)]: {
                       id,
                       type
                     }

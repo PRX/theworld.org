@@ -6,7 +6,6 @@
 import fetch from 'isomorphic-unfetch';
 import {
   IPriApiCollectionResponse,
-  IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
 import { IncomingMessage } from 'http';
@@ -131,7 +130,7 @@ export const fetchApiNewsletter = async (id: string, req?: IncomingMessage) =>
  * @param newsletter Newsletter data object.
  * @param options Newsletter subscription options.
  */
-export const postNewsletterSubsciption = async (
+export const postNewsletterSubscription = async (
   newsletter: INewsletterData,
   options: INewsletterOptions
 ) => {
@@ -206,7 +205,39 @@ export const fetchApiEpisode = async (
 export const fetchApiFileAudio = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`file/audio/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`file/audio/${id}`, req);
+
+/**
+ * Method that simplifies GET queries for video file data.
+ *
+ * @param id
+ *    API id of video file.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Video file data object.
+ */
+export const fetchApiFileVideo = async (
+  id: string,
+  req?: IncomingMessage
+): Promise<IPriApiResourceResponse> => fetchApi(`file/video/${id}`, req);
+
+/**
+ * Method that simplifies GET queries for image file data.
+ *
+ * @param id
+ *    API id of image file.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Image file data object.
+ */
+export const fetchApiFileImage = async (
+  id: string,
+  req?: IncomingMessage
+): Promise<IPriApiResourceResponse> => fetchApi(`file/image/${id}`, req);
 
 /**
  * Method that simplifies GET queries for program data.
@@ -284,7 +315,7 @@ export const fetchApiProgramEpisodes = async (
 export const fetchApiCategory = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`category/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`category/${id}`, req);
 
 /**
  * Method that simplifies GET queries for category stories data.
@@ -333,7 +364,7 @@ export const fetchApiCategoryStories = async (
 export const fetchApiTerm = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`term/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`term/${id}`, req);
 
 /**
  * Method that simplifies GET queries for term stories data.
@@ -407,7 +438,7 @@ export const fetchApiTermEpisodes = async (
 export const fetchApiPage = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`page/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`page/${id}`, req);
 
 /**
  * Method that simplifies GET queries for team data.
@@ -420,7 +451,7 @@ export const fetchApiPage = async (
  */
 export const fetchApiTeam = async (
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi('team', req);
+): Promise<IPriApiResourceResponse> => fetchApi('team', req);
 
 /**
  * Method that simplifies GET queries for person data.
@@ -436,7 +467,7 @@ export const fetchApiTeam = async (
 export const fetchApiPerson = async (
   id: string,
   req?: IncomingMessage
-): Promise<IPriApiResource> => fetchApi(`person/${id}`, req);
+): Promise<IPriApiResourceResponse> => fetchApi(`person/${id}`, req);
 
 /**
  * Method that simplifies GET queries for person stories data.
@@ -525,12 +556,13 @@ export const fetchApiSearch = (
   fetch(
     format({
       protocol: 'https',
-      hostname: '7mll7u30kh.execute-api.us-east-1.amazonaws.com', // TODO: Update to `search.theworld.org` when DNS is ready.
+      hostname: 'search.theworld.org', // TODO: Update to `search.theworld.org` when DNS is ready.
       pathname: 'query',
       query: {
         ...(q && { q }),
         ...(label && { l: `${label}` }),
-        ...(start && { s: `${start}` })
+        ...(start && { s: `${start}` }),
+        t: 'metatags-pubdate:d,date:d:s'
       }
     })
   ).then(r => r.status === 200 && r.json()) as Promise<

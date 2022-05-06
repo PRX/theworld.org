@@ -84,15 +84,11 @@ export const Term = () => {
     id,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[1][0];
-  const { items: featuredStories } = getCollectionData(
-    state,
-    type,
-    id,
-    'featured stories'
-  );
+  const featuredStory = featuredStoryState?.items[1][0];
+  const { items: featuredStories } =
+    getCollectionData(state, type, id, 'featured stories') || {};
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page, next, count } = storiesState;
+  const { items: stories, page, next, count } = storiesState || {};
   const hasStories = count > 0;
   const episodesState = getCollectionData(state, type, id, 'episodes');
   const {
@@ -136,7 +132,7 @@ export const Term = () => {
       // Get CTA message data.
       const context = [`term:${id}`];
       await store.dispatch<any>(
-        fetchCtaData('tw_cta_regions_landing', type, id, context)
+        fetchCtaData(type, id, 'tw_cta_regions_landing', context)
       );
     })();
   }, [id, store, type]);
@@ -179,55 +175,54 @@ export const Term = () => {
     {
       key: 'main top',
       children: (
-        <Box mt={3}>
+        <>
           {!isEpisodesView && (
-            <>
+            <Box display="grid" gridGap={8}>
               {featuredStory && (
                 <StoryCard data={featuredStory} feature priority />
               )}
               {featuredStories && (
-                <StoryCardGrid data={featuredStories[1]} mt={2} />
+                <StoryCardGrid data={featuredStories[1]} gridGap={8} />
               )}
-            </>
+            </Box>
           )}
           {isEpisodesView && (
-            <EpisodeCard data={latestEpisode} label="Latest Edition" />
+            <EpisodeCard data={latestEpisode} label="Latest Episode" />
           )}
           {ctaInlineTop && (
-            <Box mt={3}>
+            <>
               <Hidden xsDown>
                 <CtaRegion data={ctaInlineTop} />
               </Hidden>
               <Hidden smUp>
                 <SidebarCta data={ctaInlineTop} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     },
     {
       key: 'main bottom',
       children: (
-        <Box mt={3}>
+        <>
           {!isEpisodesView && (
             <>
               {stories &&
                 stories
                   .reduce((a, p) => [...a, ...p], [])
-                  .map((item: IPriApiResource, index: number) => (
-                    <Box mt={index ? 2 : 0} key={item.id}>
-                      <StoryCard
-                        data={item}
-                        feature={
-                          item.displayTemplate &&
-                          item.displayTemplate !== 'standard'
-                        }
-                      />
-                    </Box>
+                  .map((item: IPriApiResource) => (
+                    <StoryCard
+                      data={item}
+                      feature={
+                        item.displayTemplate &&
+                        item.displayTemplate !== 'standard'
+                      }
+                      key={item.id}
+                    />
                   ))}
               {next && (
-                <Box mt={3}>
+                <Box>
                   <Button
                     variant="contained"
                     size="large"
@@ -249,13 +244,11 @@ export const Term = () => {
             <>
               {episodes
                 .reduce((a, p) => [...a, ...p], [])
-                .map((item: IPriApiResource, index: number) => (
-                  <Box mt={index ? 2 : 0} key={item.id}>
-                    <EpisodeCard data={item} />
-                  </Box>
+                .map((item: IPriApiResource) => (
+                  <EpisodeCard data={item} key={item.id} />
                 ))}
               {episodesNext && (
-                <Box mt={3}>
+                <Box>
                   <Button
                     variant="contained"
                     size="large"
@@ -274,16 +267,16 @@ export const Term = () => {
             </>
           )}
           {ctaInlineBottom && (
-            <Box mt={3}>
+            <>
               <Hidden xsDown>
                 <CtaRegion data={ctaInlineBottom} />
               </Hidden>
               <Hidden smUp>
                 <SidebarCta data={ctaInlineBottom} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     }
   ];
@@ -292,45 +285,45 @@ export const Term = () => {
     {
       key: 'sidebar top',
       children: (
-        <Box mt={3}>
+        <>
           {latestEpisode && !isEpisodesView && (
             <SidebarEpisode
               data={{
                 ...latestEpisode,
                 program: data
               }}
-              label="Latest Edition"
+              label="Latest Episode"
             />
           )}
           {ctaSidebarTop && (
-            <Box mt={3}>
+            <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarTop} />
               </Hidden>
               <Hidden xsDown mdUp>
                 <CtaRegion data={ctaSidebarTop} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     },
     {
       key: 'sidebar bottom',
       children: (
-        <Box mt={3}>
+        <>
           <SidebarLatestStories />
           {ctaSidebarBottom && (
-            <Box mt={3}>
+            <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarBottom} />
               </Hidden>
               <Hidden xsDown mdUp>
                 <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     }
   ];
@@ -356,7 +349,12 @@ export const Term = () => {
           </Container>
         </AppBar>
       )}
-      <LandingPage main={mainElements} sidebar={sidebarElements} />
+      <LandingPage
+        main={mainElements}
+        sidebar={sidebarElements}
+        mt={3}
+        gridGap={8}
+      />
     </>
   );
 };

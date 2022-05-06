@@ -23,13 +23,13 @@ export const contentData = (state: State = {}, action: AnyAction) => {
       key = action.payload && makeResourceSignature(action.payload);
       return {
         ...state,
-        ...(action.payload && {
-          [key]:
-            state[key] && state[key].complete
+        ...(key && {
+          [key]: {
+            ...(state[key] && state[key].complete
               ? state[key]
-              : {
-                  ...action.payload
-                }
+              : action.payload),
+            ...(action.payload.complete ? action.payload : {})
+          }
         })
       };
 
@@ -38,11 +38,14 @@ export const contentData = (state: State = {}, action: AnyAction) => {
         ...state,
         ...action.payload.reduce((a: any, item: any) => {
           const k = item && makeResourceSignature(item);
-          return !item
+          return !k
             ? a
             : {
                 ...a,
-                [k]: state[k] && state[k].complete ? state[k] : item
+                [k]: {
+                  ...(state[k] && state[k].complete ? state[k] : item),
+                  ...(item.complete ? item : {})
+                }
               };
         }, {})
       };

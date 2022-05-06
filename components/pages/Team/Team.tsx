@@ -152,6 +152,8 @@ export const Team = () => {
 
 export const fetchData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>
-): Promise<void> => {
-  await dispatch<any>(fetchTeamData());
+): Promise<any> => {
+  const data = await dispatch<any>(fetchTeamData());
+
+  return data;
 };

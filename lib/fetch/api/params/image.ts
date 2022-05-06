@@ -5,7 +5,7 @@
  */
 
 export const basicImageParams = {
-  fields: ['alt', 'metadata', 'styles']
+  fields: ['alt', 'metadata']
 };
 
 export const fullImageParams = {
@@ -13,10 +13,11 @@ export const fullImageParams = {
   fields: [
     'title',
     'url',
+    'alt',
     'metadata',
+    'metatags',
     'credit',
     'caption',
-    'styles',
     'license.title'
   ]
 };

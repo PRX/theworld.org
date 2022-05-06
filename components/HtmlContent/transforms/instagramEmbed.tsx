@@ -5,7 +5,6 @@
  */
 import InstagramEmbed from 'react-instagram-embed';
 import { DomElement } from 'htmlparser2';
-import { fb } from '@config';
 
 export const instagramEmebed = (node: DomElement) => {
   let url: string;
@@ -30,7 +29,10 @@ export const instagramEmebed = (node: DomElement) => {
 
   if (url) {
     return (
-      <InstagramEmbed url={url} clientAccessToken={fb.clientAccessToken} />
+      <InstagramEmbed
+        url={url}
+        clientAccessToken={process.env.FB_ACCESS_TOKEN}
+      />
     );
   }
 

@@ -177,13 +177,15 @@ export const Bio = () => {
   const mainElements = [
     {
       key: 'main top',
-      children: bio && (
+      children: (
         <>
-          <Box mt={3}>
-            <Box className={cx('body')}>
-              <HtmlContent html={bio} />
+          {bio && (
+            <Box mt={3}>
+              <Box className={cx('body')}>
+                <HtmlContent html={bio} />
+              </Box>
             </Box>
-          </Box>
+          )}
           <Box mt={bio ? 6 : 3}>
             {featuredStory && (
               <StoryCard data={featuredStory} feature priority />

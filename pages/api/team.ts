@@ -17,9 +17,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     range: 100
   })) as IPriApiCollectionResponse;
 
-  const apiResp = {
-    teamMembers
-  };
+  const apiResp = teamMembers;
+
+  res.setHeader(
+    'Cache-Control',
+    process.env.TW_API_COLLECTION_CACHE_CONTROL ||
+      'public, s-maxage=300, stale-while-revalidate'
+  );
 
   return res.status(200).json(apiResp);
 };

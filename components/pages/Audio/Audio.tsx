@@ -7,7 +7,6 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import pad from 'lodash/pad';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { AudioPlayer } from '@components/AudioPlayer';
@@ -17,6 +16,7 @@ import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
+import { parseUtcDate } from '@lib/parse/date';
 import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
@@ -39,16 +39,23 @@ export const Audio = () => {
 
   const {
     complete,
-    metatags,
+    metatags: dataMetatags,
     title,
     audioAuthor,
     audioTitle,
     audioType,
     season,
-    dateBroadcast,
     description,
-    program
-  } = data.current;
+    program,
+    broadcastDate,
+    description
+  } = data;
+  const metatags = {
+    ...dataMetatags,
+    ...(broadcastDate && {
+      pubdate: parseUtcDate(broadcastDate * 1000).join('-')
+    })
+  };
 
   const ctaInlineEnd = getCtaRegionData(
     state,
@@ -65,16 +72,13 @@ export const Audio = () => {
     ...(season && {
       Season: season
     }),
-    ...(dateBroadcast &&
+    ...(broadcastDate &&
       (() => {
-        const dt = new Date(dateBroadcast * 1000);
-        const dtYear = dt.getFullYear();
-        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        const dt = parseUtcDate(broadcastDate * 1000);
         return {
-          'Broadcast Year': `${dtYear}`,
-          'Broadcast Month': `${dtYear}-${dtMonth}`,
-          'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+          'Broadcast Year': dt[0],
+          'Broadcast Month': dt.slice(0, 1).join('-'),
+          'Broadcast Date': dt.join('-')
         };
       })())
   };
@@ -99,7 +103,10 @@ export const Audio = () => {
     }
 
     // Get CTA message data.
-    const context = [`file:${id}`, `node:${program.id}`];
+    const context = [
+      `file:${data.id}`,
+      ...(program ? [`node:${program.id}`] : [])
+    ];
     (async () => {
       await store.dispatch<any>(
         fetchCtaData(type, id, 'tw_cta_regions_content', context)
@@ -109,7 +116,7 @@ export const Audio = () => {
     return () => {
       unsub();
     };
-  }, [complete, id, program.id, state, store, type, unsub]);
+  }, [complete, id, program?.id, state, store, type, unsub]);
 
   return (
     <ThemeProvider theme={audioTheme}>

@@ -7,7 +7,6 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import pad from 'lodash/pad';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -37,7 +36,8 @@ import { SpotifyPlayer } from '@components/SpotifyPlayer';
 import { StoryCard } from '@components/StoryCard';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
-import { RootState } from '@interfaces/state';
+import { RootState, UiAction } from '@interfaces/state';
+import { parseUtcDate } from '@lib/parse/date';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
@@ -66,7 +66,7 @@ export const Episode = () => {
 
   const {
     complete,
-    metatags,
+    metatags: dataMetatags,
     title,
     season,
     dateBroadcast,
@@ -81,7 +81,13 @@ export const Episode = () => {
     guests,
     reporters,
     spotifyPlaylist
-  } = data.current;
+  } = data;
+  const metatags = {
+    ...dataMetatags,
+    ...((dateBroadcast || datePublished) && {
+      pubdate: parseUtcDate((dateBroadcast || datePublished) * 1000).join('-')
+    })
+  };
   const { segments } = audio || {};
 
   const storiesState = getCollectionData(state, type, id, 'stories');
@@ -113,26 +119,20 @@ export const Episode = () => {
     }),
     ...(dateBroadcast &&
       (() => {
-        const dt = new Date(dateBroadcast * 1000);
-        const dtYear = dt.getFullYear();
-        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        const dt = parseUtcDate(dateBroadcast * 1000);
         return {
-          'Broadcast Year': `${dtYear}`,
-          'Broadcast Month': `${dtYear}-${dtMonth}`,
-          'Broadcast Date': `${dtYear}-${dtMonth}-${dtDate}`
+          'Broadcast Year': dt[0],
+          'Broadcast Month': dt.slice(0, 1).join('-'),
+          'Broadcast Date': dt.join('-')
         };
       })()),
     ...(datePublished &&
       (() => {
-        const dt = new Date(datePublished * 1000);
-        const dtYear = dt.getFullYear();
-        const dtMonth = pad(`${dt.getMonth() + 1}`, 2, '0');
-        const dtDate = pad(`${dt.getDate()}`, 2, '0');
+        const dt = parseUtcDate(datePublished * 1000);
         return {
-          'Published Year': `${dtYear}`,
-          'Published Month': `${dtYear}-${dtMonth}`,
-          'Published Date': `${dtYear}-${dtMonth}-${dtDate}`
+          'Published Year': dt[0],
+          'Published Month': dt.slice(0, 1).join('-'),
+          'Published Date': dt.join('-')
         };
       })())
   };
@@ -161,6 +161,44 @@ export const Episode = () => {
       })();
     }
 
+    // Show social hare menu.
+    const { shareLinks } = data;
+    store.dispatch<UiAction>({
+      type: 'UI_SHOW_SOCIAL_SHARE_MENU',
+      payload: {
+        ui: {
+          socialShareMenu: {
+            links: [
+              {
+                key: 'twitter',
+                link: shareLinks.twitter
+              },
+              {
+                key: 'facebook',
+                link: shareLinks.facebook
+              },
+              {
+                key: 'linkedin',
+                link: shareLinks.linkedin
+              },
+              {
+                key: 'flipboard',
+                link: shareLinks.flipboard
+              },
+              {
+                key: 'whatsapp',
+                link: shareLinks.whatsapp
+              },
+              {
+                key: 'email',
+                link: shareLinks.email
+              }
+            ]
+          }
+        }
+      }
+    });
+
     // Get CTA message data.
     const context = [`node:${id}`, `node:${program.id}`];
     (async () => {
@@ -170,6 +208,10 @@ export const Episode = () => {
     })();
 
     return () => {
+      // Hide social hare menu.
+      store.dispatch<UiAction>({
+        type: 'UI_HIDE_SOCIAL_SHARE_MENU'
+      });
       unsub();
     };
   }, [complete, id, program.id, state, store, type, unsub]);

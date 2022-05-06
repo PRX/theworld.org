@@ -13,16 +13,10 @@ import {
 export const storyCardGridStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      '& > * + *': {
-        marginTop: `${theme.spacing(2)}px`
-      },
+      display: 'grid',
+      gridTemplateColumns: '1fr',
       [theme.breakpoints.up('sm')]: {
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gridGap: `${theme.spacing(2)}px`,
-        '& > * + *': {
-          marginTop: 0
-        }
+        gridTemplateColumns: '1fr 1fr'
       }
     },
     loadingBar: {
@@ -35,45 +29,40 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
     },
     isLoading: {
       transform: 'translateY(-100%)'
+    },
+    title: {
+      fontSize: theme.typography.pxToRem(16)
     }
   })
 );
 
 export const storyCardGridTheme = (theme: Theme) =>
   createTheme(theme, {
-    typography: {
-      h5: {
-        fontSize: theme.typography.pxToRem(16)
-      }
-    },
     overrides: {
+      MuiCard: {
+        root: {
+          display: 'grid'
+        }
+      },
       MuiCardActionArea: {
         root: {
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'start',
-          alignItems: 'stretch',
-          height: '100%',
-          [theme.breakpoints.down('xs')]: {
-            display: 'grid',
-            gridTemplateColumns: '100px 1fr',
-            gridGap: `${theme.spacing(2)}px`,
-            padding: `${theme.spacing(2)}px`
-          }
+          display: 'grid',
+          gridTemplateColumns: '1fr 2fr',
+          gridGap: `${theme.spacing(2)}px`,
+          alignItems: 'center',
+          padding: `${theme.spacing(2)}px`
         }
       },
       MuiCardContent: {
         root: {
-          [theme.breakpoints.down('xs')]: {
-            padding: 0
-          }
+          padding: 0
         }
       },
       MuiCardMedia: {
         root: {
-          alignSelf: 'start',
+          alignSelf: 'center',
           height: 'auto',
-          paddingTop: `${100 / (16 / 9)}%`
+          paddingTop: '100%'
         }
       }
     }

@@ -28,7 +28,7 @@ export const fetchCategory = async (
       'metatags',
       'title',
       'teaser',
-      'bannerImage',
+      'banner_image',
       'logo',
       'hosts',
       'sponsors',
@@ -50,6 +50,7 @@ export const fetchCategory = async (
     const stories = await fetchCategoryStories(category).then(
       (resp: IPriApiCollectionResponse) => resp
     );
+    const storiesData = [...stories.data];
 
     // Build response object.
     const resp = {
@@ -57,13 +58,16 @@ export const fetchCategory = async (
         ...category,
         featuredStory: featuredStories
           ? featuredStories.shift()
-          : stories.data.shift(),
+          : storiesData.shift(),
         featuredStories: featuredStories
           ? featuredStories.concat(
-              stories.data.splice(0, 4 - featuredStories.length)
+              storiesData.splice(0, 4 - featuredStories.length)
             )
-          : stories.data.splice(0, 4),
-        stories
+          : storiesData.splice(0, 4),
+        stories: {
+          ...stories,
+          data: storiesData
+        }
       }
     } as IPriApiResourceResponse;
 

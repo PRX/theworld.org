@@ -32,19 +32,6 @@ const config = {
     ...(defaultConfig.analytics || {}),
     ...(localConfig.analytics || {})
   },
-  fb: {
-    ...(defaultConfig.fb || {}),
-    ...(localConfig.fb || {})
-  },
-  search: {
-    cseId: '8fae02a164443be00',
-    ...(defaultConfig.search || {}),
-    ...(localConfig.search || {})
-  },
-  twitter: {
-    ...(defaultConfig.twitter || {}),
-    ...(localConfig.twitter || {})
-  },
   priApi: {
     ...(defaultConfig.priApi || {}),
     ...(localConfig.priApi || {})
@@ -56,15 +43,15 @@ const {
   priApi: { protocol, domain, apiPath, apiVersion }
 } = config;
 // Get env domain, fall back to configured domain.
-const { PRI_API_DOMAIN: configDomain = domain } = process.env;
+const apiDomain = process.env.PRI_API_DOMAIN || domain;
 // Construct base API URL.
-const apiUrlBase = `${protocol}://${configDomain}/${apiPath}/v${apiVersion}`;
+const apiUrlBase = `${protocol}://${apiDomain}/${apiPath}/v${apiVersion}`;
 
 module.exports = {
   ...config,
   priApi: {
     ...priApi,
-    domain: configDomain,
+    domain: apiDomain,
     apiUrlBase
   }
 };

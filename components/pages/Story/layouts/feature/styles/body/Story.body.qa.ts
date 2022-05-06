@@ -13,15 +13,18 @@ export const storyBodyQAStyles = (theme: Theme) =>
     '& .qa-wrap': {
       clear: 'both',
       padding: '0 2rem 0',
-      marginLeft: theme.typography.pxToRem(accentBorderWidth),
-      border: '1px solid transparent',
-      boxShadow: `-${theme.typography.pxToRem(accentBorderWidth)} 0 0 0 ${
-        theme.palette.primary.main
-      }`,
+      marginBlockStart: theme.typography.pxToRem(theme.spacing(4)),
+      marginBlockEnd: theme.typography.pxToRem(theme.spacing(4)),
+      paddingBlockStart: theme.typography.pxToRem(theme.spacing(2)),
+      paddingBlockEnd: theme.typography.pxToRem(theme.spacing(2)),
+      borderLeftWidth: theme.typography.pxToRem(accentBorderWidth),
+      borderLeftStyle: 'solid',
+      borderLeftColor: theme.palette.primary.main,
 
-      '& h3': {
-        margin: '1rem 0 1rem',
-        paddingBottom: '1.25rem',
+      '& .qa-question': {
+        marginBlockEnd: theme.typography.pxToRem(theme.spacing(2)),
+        fontWeight: 'bold',
+        paddingBottom: theme.typography.pxToRem(theme.spacing(2)),
         borderBottom: `${theme.typography.pxToRem(2)} solid ${
           theme.palette.grey[200]
         }`
@@ -29,10 +32,6 @@ export const storyBodyQAStyles = (theme: Theme) =>
 
       '& p': {
         fontSize: '1.2rem'
-      },
-
-      '& + .qa-wrap': {
-        marginTop: '2rem'
       },
 
       '&--border-around': {

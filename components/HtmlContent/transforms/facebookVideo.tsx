@@ -5,7 +5,6 @@
  */
 import { FacebookProvider, EmbeddedVideo } from 'react-facebook';
 import { DomElement } from 'htmlparser2';
-import { fb } from '@config';
 
 export const facebookVideo = (node: DomElement) => {
   let embedUrl: string;
@@ -33,7 +32,7 @@ export const facebookVideo = (node: DomElement) => {
 
   if (embedUrl) {
     return (
-      <FacebookProvider appId={fb.appId}>
+      <FacebookProvider appId={process.env.FB_APP_ID}>
         <EmbeddedVideo href={embedUrl} />
       </FacebookProvider>
     );

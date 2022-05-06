@@ -5,7 +5,6 @@
 
 import { parse } from 'url';
 import Head from 'next/head';
-import { encode } from 'base-64';
 import { OpenGraph } from '@components/OpenGraph';
 import { TwitterCard } from '@components/TwitterCard';
 
@@ -17,7 +16,8 @@ export interface IMetaTagsProps {
   data: IMetaTags;
 }
 
-const sanitizeContent = (content: string) => content.replace(/<[^>]+>/g, '');
+export const sanitizeContent = (content: string) =>
+  content?.replace(/<[^>]+>/g, '');
 
 export const MetaTags = ({ data }: IMetaTagsProps) => {
   const {
@@ -67,7 +67,7 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
   };
   const keyGen = (k: string, v: string) =>
     // eslint-disable-next-line no-control-regex
-    `${k}:${encode(v.replace(/[^\x00-\x7F]/g, ''))}`;
+    `${k}:${v}`;
   const renderMetaOther = () =>
     Object.entries(metaOther).map(
       ([k, v]) =>

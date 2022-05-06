@@ -21,19 +21,18 @@ export const fetchAliasData = (
   getState: () => RootState
 ): Promise<IPriApiResource> => {
   const state = getState();
+  const isOnServer = typeof window === 'undefined';
   let data = getDataByAlias(state, alias);
 
-  if (!data) {
+  if (!data || isOnServer) {
     dispatch({
       type: 'FETCH_ALIAS_DATA_REQUEST',
       alias
     });
 
-    data = await (typeof window === 'undefined'
-      ? fetchQueryAlias
-      : fetchApiQueryAlias)(alias).then(
-      (resp: IPriApiResourceResponse) => resp && resp.data
-    );
+    data = await (isOnServer ? fetchQueryAlias : fetchApiQueryAlias)(
+      alias
+    ).then((resp: IPriApiResourceResponse) => resp && resp.data);
 
     dispatch({
       type: 'FETCH_ALIAS_DATA_SUCCESS',

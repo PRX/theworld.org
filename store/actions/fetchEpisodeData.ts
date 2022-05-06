@@ -6,22 +6,26 @@
 
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
 import { fetchApiEpisode, fetchEpisode } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
 
 export const fetchEpisodeData = (
   id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
-): Promise<void> => {
+): Promise<IPriApiResource> => {
   const state = getState();
   const type = 'node--episodes';
+  const isOnServer = typeof window === 'undefined';
   let data = getDataByResource(state, type, id);
 
-  if (!data || !data.complete) {
+  if (!data || !data.complete || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,9 +34,7 @@ export const fetchEpisodeData = (
       }
     });
 
-    data = await (typeof window === 'undefined'
-      ? fetchEpisode
-      : fetchApiEpisode)(id).then(
+    data = await (isOnServer ? fetchEpisode : fetchApiEpisode)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 
@@ -44,4 +46,6 @@ export const fetchEpisodeData = (
       }
     });
   }
+
+  return data;
 };

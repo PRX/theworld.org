@@ -6,22 +6,26 @@
 
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
-import { fetchAudio } from '@lib/fetch';
+import { fetchApiFileAudio, fetchAudio } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
 
 export const fetchAudioData = (
   id: string
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
-): Promise<void> => {
+): Promise<IPriApiResource> => {
   const state = getState();
   const type = 'file--audio';
+  const isOnServer = typeof window === 'undefined';
   let data = getDataByResource(state, type, id);
 
-  if (!data || !data.complete) {
+  if (!data || !data.complete || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,7 +34,7 @@ export const fetchAudioData = (
       }
     });
 
-    data = await fetchAudio(id).then(
+    data = await (isOnServer ? fetchAudio : fetchApiFileAudio)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 
@@ -42,4 +46,6 @@ export const fetchAudioData = (
       }
     });
   }
+
+  return data;
 };

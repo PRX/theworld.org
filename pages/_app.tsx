@@ -16,6 +16,7 @@ import { AppHeader } from '@components/AppHeader';
 import { AppLoadingBar } from '@components/AppLoadingBar';
 import { AppSearch } from '@components/AppSearch';
 import { AppContext } from '@contexts/AppContext';
+import { SocialShareMenu } from '@components/SocialShareMenu/SocialShareMenu';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
 import { fetchCtaData } from '@store/actions/fetchCtaData';
@@ -87,6 +88,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
             <AppFooter />
             <AppSearch />
             <AppCtaLoadUnder />
+            <SocialShareMenu />
           </Box>
         </AppContext.Provider>
         <CssBaseline />

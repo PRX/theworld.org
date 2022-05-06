@@ -5,13 +5,12 @@
  */
 
 import { HYDRATE } from 'next-redux-wrapper';
-import { encode } from 'base-64';
 import { SearchAction, SearchState, RootState } from '@interfaces/state';
 
 type State = SearchState | RootState;
 
 export const search = (state = {}, action: SearchAction): State => {
-  let queryHash: string;
+  let query: string;
   let s: State;
 
   switch (action.type) {
@@ -52,7 +51,7 @@ export const search = (state = {}, action: SearchAction): State => {
       } as SearchState;
 
     case 'FETCH_SEARCH_SUCCESS':
-      queryHash = encode(action.payload.query);
+      query = (action.payload.query || '').toLowerCase();
       s = state as SearchState;
 
       return {
@@ -60,13 +59,13 @@ export const search = (state = {}, action: SearchAction): State => {
         query: action.payload.query,
         searches: {
           ...(s.searches || {}),
-          [queryHash]: {
-            ...(s.searches?.[queryHash] || {}),
+          [query]: {
+            ...(s.searches?.[query] || {}),
             ...action.payload.data.reduce(
               (a: any, { label, data }) => ({
                 ...a,
                 [label]: [
-                  ...((s as SearchState).searches?.[queryHash]?.[label] || []),
+                  ...((s as SearchState).searches?.[query]?.[label] || []),
                   data
                 ]
               }),
@@ -85,4 +84,4 @@ export const getSearchOpen = (state: SearchState) => state.open;
 export const getSearchLoading = (state: SearchState) => state.loading;
 export const getSearchQuery = (state: SearchState) => state?.query || '';
 export const getSearchData = (state: SearchState, query: string) =>
-  state.searches?.[encode(query)];
+  query && state.searches?.[query.toLowerCase()];

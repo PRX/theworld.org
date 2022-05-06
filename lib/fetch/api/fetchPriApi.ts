@@ -138,7 +138,7 @@ export const fetchPriApiQueryAlias = async (
   keys?: object
 ): Promise<PriApiResourceResponse> =>
   fetchPriApi(
-    `query/alias/${alias.replace(/^\/+|\/+$/, '')}`,
+    `query/alias/${encodeURIComponent(alias.replace(/^\/+|\/+$/, ''))}`,
     params,
     keys
   ).then(resp => !resp.isFailure && resp.response);

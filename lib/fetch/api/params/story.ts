@@ -19,7 +19,6 @@ export const basicStoryParams = {
     'image.credit',
     'image.caption',
     'image.alt',
-    'image.styles',
     'display_template',
     'primary_category.title',
     'primary_category.metatags'
@@ -42,6 +41,7 @@ export const fullStoryParams = {
     'opencalais_region',
     'opencalais_person',
     'tags',
+    'format',
     'video'
   ],
   fields: [
@@ -59,7 +59,6 @@ export const fullStoryParams = {
     'image.credit',
     'image.caption',
     'image.alt',
-    'image.styles',
     'display_template',
     'audio.url',
     'audio.metatags',
@@ -69,9 +68,8 @@ export const fullStoryParams = {
     'primary_category.metatags',
     'program.title',
     'program.metatags',
-    'byline.credit_type.title',
-    'byline.person.title',
-    'byline.person.metatags',
+    'byline.metatags',
+    'byline.title',
     'categories.title',
     'categories.metatags',
     'opencalais_city.title',
@@ -88,6 +86,7 @@ export const fullStoryParams = {
     'opencalais_person.metatags',
     'tags.title',
     'tags.metatags',
+    'format.title',
     'video'
   ]
 };

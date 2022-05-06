@@ -3,23 +3,27 @@
  * Exports the Home component.
  */
 
-import { Homepage, fetchData } from '@components/pages/Homepage';
+import crypto from 'crypto';
+import { Homepage } from '@components/pages/Homepage';
 import { wrapper } from '@store/configureStore';
-import { fetchAppData } from '@store/actions/fetchAppData';
+import { fetchHomepageData } from '@store/actions/fetchHomepageData';
 
 const IndexPage = () => {
   return <Homepage />;
 };
 
 export const getStaticProps = wrapper.getStaticProps(store => async () => {
-  await Promise.all([
-    // Fetch App data (latest stories, menus, etc.)
-    store.dispatch<any>(fetchAppData()),
-    // Use content component to fetch its data.
-    store.dispatch<any>(fetchData())
-  ]);
+  const data = await store.dispatch<any>(fetchHomepageData());
 
-  return { props: {}, revalidate: 10 };
+  return {
+    props: {
+      dataHash: crypto
+        .createHash('sha256')
+        .update(JSON.stringify(data))
+        .digest('hex')
+    },
+    revalidate: parseInt(process.env.ISR_REVALIDATE || '1', 10)
+  };
 });
 
 export default IndexPage;

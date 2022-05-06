@@ -16,19 +16,39 @@ module.exports = withPlausibleProxy({
     CM_API_KEY: process.env.CM_API_KEY,
     CSE_API_KEY: process.env.CSE_API_KEY,
     FB_ACCESS_TOKEN: process.env.FB_ACCESS_TOKEN,
-    PRI_API_CONFIG: priApi
+    FB_ADMINS: process.env.FB_ADMINS,
+    FB_APP_ID: process.env.FB_APP_ID,
+    PRI_API_CONFIG: priApi,
+    ISR_REVALIDATE: process.env.ISR_REVALIDATE,
+    TWITTER_ACCOUNT_ID: process.env.TWITTER_ACCOUNT_ID,
+    TW_API_RESOURCE_CACHE_CONTROL: process.env.TW_API_RESOURCE_CACHE_CONTROL,
+    TW_API_COLLECTION_CACHE_CONTROL:
+      process.env.TW_API_COLLECTION_CACHE_CONTROL,
+    TW_API_CTA_CACHE_CONTROL: process.env.TW_API_CTA_CACHE_CONTROL,
+    TW_STATIC_PREBUILD: process.env.TW_STATIC_PREBUILD
   },
   images: {
     domains: [
+      'theworld.org',
       'media.pri.org',
       'www.pri.org',
       'pri9.lndo.site',
       'media-pri-dev.s3.us-east-1.amazonaws.com',
       'www.loe.org',
-      'www.globalpost.com'
+      'www.globalpost.com',
+      'media2.wnyc.org'
     ],
     deviceSizes: [370, 600, 960, 1280, 1920],
     imageSizes: [50, 100, 300, 400, 568, 808]
+  },
+  async redirects() {
+    return [
+      {
+        source: '/file/:slug',
+        destination: '/media/:slug',
+        permanent: true
+      }
+    ];
   },
   webpack(config, { isServer }) {
     const newConfig = {

@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@material-ui/core/styles';
-import { blue } from '@theme/colors';
+import { blue, grey } from '@theme/colors';
 
 export const sidebarCtaTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -37,6 +37,28 @@ export const sidebarCtaTheme = (theme: Theme) =>
           },
           '& p + p': {
             marginTop: '1rem'
+          },
+          '& a:link, & a:visited': {
+            color: theme.palette.primary.main,
+            fontWeight: 'bold',
+            textDecoration: 'none'
+          },
+          '& ul': {
+            margin: '1em 0 0 16px',
+            padding: 0
+          },
+          '& li': {
+            padding: 0,
+            margin: 0,
+            color: grey[500]
+          },
+          '& li a:link, & li a:visited': {
+            padding: '3px 0',
+            width: '100%'
+          },
+          '& li a:hover': {
+            color: theme.palette.primary.dark,
+            textDecoration: 'underline'
           }
         }
       },

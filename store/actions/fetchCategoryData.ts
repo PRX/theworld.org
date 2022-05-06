@@ -5,9 +5,12 @@
  */
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
+import {
+  IPriApiResource,
+  IPriApiResourceResponse
+} from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
-import { fetchCategory } from '@lib/fetch';
+import { fetchApiCategory, fetchCategory } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
@@ -16,12 +19,13 @@ export const fetchCategoryData = (
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
-): Promise<void> => {
+): Promise<IPriApiResource> => {
   const state = getState();
   const type = 'taxonomy_term--categories';
-  const data = getDataByResource(state, type, id);
+  const isOnServer = typeof window === 'undefined';
+  let data = getDataByResource(state, type, id);
 
-  if (!data) {
+  if (!data || !data.complete || isOnServer) {
     dispatch({
       type: 'FETCH_CONTENT_DATA_REQUEST',
       payload: {
@@ -30,14 +34,10 @@ export const fetchCategoryData = (
       }
     });
 
-    const {
-      featuredStory,
-      featuredStories,
-      stories,
-      ...payload
-    } = await fetchCategory(id).then(
+    data = await (isOnServer ? fetchCategory : fetchApiCategory)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
+    const { featuredStory, featuredStories, stories, ...payload } = data;
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
@@ -67,4 +67,6 @@ export const fetchCategoryData = (
 
     dispatch(appendResourceCollection(stories, type, id, 'stories'));
   }
+
+  return data;
 };

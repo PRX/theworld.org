@@ -15,7 +15,9 @@ export const landingPageHeaderTheme = (theme: Theme) =>
   createTheme(theme, {
     typography: {
       h1: {
-        fontSize: theme.typography.pxToRem(48)
+        fontSize: `clamp(${theme.typography.pxToRem(
+          18
+        )}, 10vw, ${theme.typography.pxToRem(48)})`
       },
       subtitle1: {
         fontSize: '1.5rem',
@@ -29,22 +31,31 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
     root: {
       position: 'relative',
       display: 'grid',
-      gridTemplateRows: 'max-content max-content',
+      gridTemplateRows: '1fr max-content',
       alignItems: 'end',
-      maxHeight: '75vh',
       overflow: 'hidden',
+      minHeight: '15vh',
       backgroundColor: theme.palette.primary.light,
-      marginBottom: theme.typography.pxToRem(theme.spacing(2))
+      marginBottom: theme.typography.pxToRem(theme.spacing(2)),
+      '&$withImage': {
+        minHeight: '35vh'
+      }
     },
     imageWrapper: {
-      gridColumn: '1 / -1',
-      gridRow: '1 / -1',
-      height: '100%',
-      zIndex: 0
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      width: '100%',
+      zIndex: 0,
+      [theme.breakpoints.up('md')]: {
+        alignSelf: 'start',
+        gridColumn: '1 / -1',
+        gridRow: '1 / -1',
+        height: '100%'
+      }
     },
     image: {
-      height: '100%',
-      maxHeight: '75vh'
+      height: '100%'
     },
     content: {
       position: 'relative',
@@ -55,7 +66,6 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       // gridTemplateColumns: '1fr 100vw 1fr',
       gridGap: theme.typography.pxToRem(theme.spacing(2)),
       width: '100%',
-      minHeight: '33.33333%',
       padding: theme.typography.pxToRem(theme.spacing(3)),
       '&::before, &::after': {
         content: '""',
@@ -80,13 +90,6 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
         height: '150%',
         [theme.breakpoints.down('sm')]: {
           height: '80%'
-        }
-      },
-      [theme.breakpoints.up('md')]: {
-        '$withImage &': {
-          position: 'absolute',
-          bottom: 0,
-          gridRow: 'unset'
         }
       }
     },
@@ -113,11 +116,13 @@ export const landingPageHeaderStyles = makeStyles((theme: Theme) =>
       gridGap: theme.typography.pxToRem(theme.spacing(2))
     },
     logo: {
+      position: 'relative',
       flexShrink: 0,
-      margin: theme.typography.pxToRem(theme.spacing(3)),
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: 0
-      },
+      ...((min, size, max) => ({
+        width: `clamp(${min}, ${size}, ${max})`,
+        height: `clamp(${min}, ${size}, ${max})`
+      }))(theme.typography.pxToRem(80), '60vw', theme.typography.pxToRem(200)),
+      margin: `${theme.typography.pxToRem(theme.spacing(3))} 0`,
       [theme.breakpoints.up('md')]: {
         margin: 0,
         marginRight: theme.typography.pxToRem(theme.spacing(3))

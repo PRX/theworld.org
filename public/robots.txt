@@ -2,3 +2,9 @@ Sitemap: https://sitemap.theworld.org/sitemap.xml
 
 User-agent: *
 Disallow:
+
+Disallow: /field-collection
+Disallow: /license
+Disallow: /node
+Disallow: /taxonomy/term
+Disallow: /api

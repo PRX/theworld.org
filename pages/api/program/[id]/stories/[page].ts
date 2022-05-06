@@ -21,10 +21,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (program) {
       const { featuredStories } = program.data;
-      const excluded = (exclude || featuredStories) && [
-        ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
-        ...(featuredStories && featuredStories.map(({ id: i }) => i))
-      ];
+      const excluded =
+        (exclude || featuredStories) &&
+        [
+          ...(exclude && Array.isArray(exclude) ? exclude : [exclude]),
+          ...(featuredStories && featuredStories.map(({ id: i }) => i))
+        ]
+          .filter((v: string) => !!v)
+          .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
 
       // Fetch list of stories. Paginated.
       const stories = (await fetchPriApiQuery('node--stories', {
@@ -32,8 +36,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'filter[status]': 1,
         'filter[program]': id,
         ...(excluded && {
-          'filter[id][value]': excluded,
-          'filter[id][operator]': '<>'
+          ...excluded,
+          'filter[id][operator]': 'NOT IN'
         }),
         sort: '-date_published',
         range,
@@ -42,6 +46,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Build response object.
       const apiResp = stories;
+
+      res.setHeader(
+        'Cache-Control',
+        process.env.TW_API_COLLECTION_CACHE_CONTROL ||
+          'public, s-maxage=300, stale-while-revalidate'
+      );
 
       return res.status(200).json(apiResp);
     }

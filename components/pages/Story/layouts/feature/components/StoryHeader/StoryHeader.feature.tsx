@@ -6,7 +6,6 @@
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';
-import ReactMarkdown from 'react-markdown';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
@@ -28,7 +27,7 @@ interface Props {
 
 export const StoryHeader = ({ data }: Props) => {
   const {
-    byline,
+    bylines,
     dateBroadcast,
     datePublished,
     dateUpdated,
@@ -44,9 +43,6 @@ export const StoryHeader = ({ data }: Props) => {
   const hasFooter = hasCaption || hasCredit;
   const classes = storyHeaderStyles({});
   const cx = classNames.bind(classes);
-  const mdProps = {
-    escapeHtml: false
-  };
 
   return (
     <ThemeProvider theme={storyHeaderTheme}>
@@ -81,11 +77,11 @@ export const StoryHeader = ({ data }: Props) => {
                 </Typography>
               )}
             </Box>
-            <Box className={classes.meta} mb={2}>
-              <Box className={classes.info}>
-                {program && (
-                  <ContentLink data={program} className={classes.programLink} />
-                )}
+            <Box className={classes.info} mb={2}>
+              {program && (
+                <ContentLink data={program} className={classes.programLink} />
+              )}
+              {(dateBroadcast || datePublished) && (
                 <Typography
                   variant="subtitle1"
                   component="div"
@@ -99,37 +95,47 @@ export const StoryHeader = ({ data }: Props) => {
                     {dateBroadcast || datePublished}
                   </Moment>
                 </Typography>
-                {dateUpdated && (
-                  <Typography
-                    variant="subtitle1"
-                    component="div"
-                    className={classes.date}
+              )}
+              {dateUpdated && (
+                <Typography
+                  variant="subtitle1"
+                  component="div"
+                  className={classes.date}
+                >
+                  {' '}
+                  Updated on{' '}
+                  <Moment
+                    format="MMM. D, YYYY · h:mm A z"
+                    tz="America/New_York"
+                    unix
                   >
-                    {' '}
-                    Updated on{' '}
-                    <Moment
-                      format="MMM. D, YYYY · h:mm A z"
-                      tz="America/New_York"
-                      unix
-                    >
-                      {dateUpdated}
-                    </Moment>
-                  </Typography>
-                )}
-                {byline && (
-                  <ul className={classes.byline}>
-                    {byline.map(({ id, creditType, person }) => (
-                      <li className={classes.bylineItem} key={id}>
-                        {creditType ? creditType.title : 'By'}{' '}
-                        <ContentLink
-                          className={classes.bylineLink}
-                          data={person}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </Box>
+                    {dateUpdated}
+                  </Moment>
+                </Typography>
+              )}
+              {bylines && (
+                <ul className={classes.byline}>
+                  {bylines.map(([creditTitle, people]) => (
+                    <li className={classes.bylineItem} key={creditTitle}>
+                      {creditTitle}{' '}
+                      <Box className={classes.bylinePeople} component="span">
+                        {people.map((person: IPriApiResource) => (
+                          <Box
+                            className={classes.bylinePerson}
+                            component="span"
+                            key={person.id}
+                          >
+                            <ContentLink
+                              className={classes.bylineLink}
+                              data={person}
+                            />
+                          </Box>
+                        ))}
+                      </Box>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </Box>
           </Container>
         </Box>
@@ -138,18 +144,14 @@ export const StoryHeader = ({ data }: Props) => {
         <Container fixed className={classes.footer}>
           <Typography variant="caption" component="div">
             {hasCaption && (
-              <ReactMarkdown
-                {...mdProps}
-                className={classes.caption}
-                source={caption}
-              />
+              <Box className={classes.caption}>
+                <HtmlContent html={caption} />
+              </Box>
             )}
             {hasCredit && (
-              <ReactMarkdown
-                {...mdProps}
-                className={classes.credit}
-                source={credit}
-              />
+              <Box className={classes.credit}>
+                <HtmlContent html={credit} />
+              </Box>
             )}
           </Typography>
         </Container>

@@ -8,6 +8,16 @@ module.exports = {
   },
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  moduleNameMapper: {
+    '^@components(.*)$': '<rootDir>/components$1',
+    '^@config(.*)$': '<rootDir>/config$1',
+    '^@contexts(.*)$': '<rootDir>/contexts$1',
+    '^@interfaces(.*)$': '<rootDir>/interfaces$1',
+    '^@lib(.*)$': '<rootDir>/lib$1',
+    '^@store(.*)$': '<rootDir>/store$1',
+    '^@svg(.*)$': '<rootDir>/assets/svg$1',
+    '^@theme(.*)$': '<rootDir>/theme$1'
+  },
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.jest.json'

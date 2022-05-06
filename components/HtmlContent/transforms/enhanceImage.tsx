@@ -25,7 +25,11 @@ export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
     const sizes = imageWidths
       .map(([q, w]) => (q ? `(${q}) ${w}` : w))
       .join(', ');
-    const { alt, class: className, width, height, ...otherAttribs } = attribs;
+    const { attribs } = node;
+    const { alt, class: className, width, height, src, ...otherAttribs } = attribs;
+    const absoluteSrc = /^\/[^/]/.test(src)
+      ? `https://theworld.org${src}`
+      : src;
     let wrapperClass: string;
 
     switch (true) {
@@ -46,6 +50,7 @@ export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
         <Image
           {...otherAttribs}
           alt={alt}
+          src={absoluteSrc}
           width={width || 16}
           height={height || 9}
           layout="responsive"
@@ -56,6 +61,7 @@ export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
       <Image
         {...otherAttribs}
         alt={alt}
+        src={absoluteSrc}
         width={width || 16}
         height={height || 9}
         layout="responsive"
