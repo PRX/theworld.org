@@ -28,12 +28,15 @@ import { socialShareMenuStyles } from './SocialShareMenu.styles';
 
 const defaultIconsMap = new Map();
 [
-  ['facebook', <FontAwesomeIcon size="sm" icon={faFacebook} />],
-  ['twitter', <FontAwesomeIcon size="sm" icon={faTwitter} />],
-  ['linkedin', <FontAwesomeIcon size="sm" icon={faLinkedin} />],
-  ['flipboard', <FontAwesomeIcon size="sm" icon={faFlipboard} />],
-  ['whatsapp', <FontAwesomeIcon size="sm" icon={faWhatsapp} />],
-  ['email', <EmailRounded />]
+  ['facebook', <FontAwesomeIcon size="sm" icon={faFacebook} key="facebook" />],
+  ['twitter', <FontAwesomeIcon size="sm" icon={faTwitter} key="twitter" />],
+  ['linkedin', <FontAwesomeIcon size="sm" icon={faLinkedin} key="linkedin" />],
+  [
+    'flipboard',
+    <FontAwesomeIcon size="sm" icon={faFlipboard} key="flipboard" />
+  ],
+  ['whatsapp', <FontAwesomeIcon size="sm" icon={faWhatsapp} key="whatsapp" />],
+  ['email', <EmailRounded key="email" />]
 ].forEach(([key, icon]) => {
   defaultIconsMap.set(key, icon);
 });
@@ -54,6 +57,7 @@ export const SocialShareMenu = () => {
   const store = useStore();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
+    console.log(state);
     updateForce(store.getState());
   });
   const { shown, links, icons } = getUiSocialShareMenu(state) || {};
@@ -81,9 +85,10 @@ export const SocialShareMenu = () => {
 
   useEffect(() => {
     return () => {
+      console.log('SocialShareMenu going away...');
       unsub();
     };
-  }, []);
+  }, [unsub, shown, links, icons]);
 
   return (
     !!links && (

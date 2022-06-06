@@ -39,7 +39,7 @@ export const Story = () => {
     displayTemplate,
     format,
     resourceDevelopment
-  } = data;
+  } = data.current;
   const metatags = {
     ...dataMetatags,
     ...((dateBroadcast || datePublished) && {
@@ -103,7 +103,7 @@ export const Story = () => {
     }
 
     // Show social hare menu.
-    const { shareLinks } = data;
+    const { shareLinks } = data.current;
     store.dispatch<UiAction>({
       type: 'UI_SHOW_SOCIAL_SHARE_MENU',
       payload: {

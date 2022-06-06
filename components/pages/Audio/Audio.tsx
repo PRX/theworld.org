@@ -45,11 +45,10 @@ export const Audio = () => {
     audioTitle,
     audioType,
     season,
-    description,
     program,
     broadcastDate,
     description
-  } = data;
+  } = data.current;
   const metatags = {
     ...dataMetatags,
     ...(broadcastDate && {
@@ -103,10 +102,7 @@ export const Audio = () => {
     }
 
     // Get CTA message data.
-    const context = [
-      `file:${data.id}`,
-      ...(program ? [`node:${program.id}`] : [])
-    ];
+    const context = [`file:${id}`, ...(program ? [`node:${program.id}`] : [])];
     (async () => {
       await store.dispatch<any>(
         fetchCtaData(type, id, 'tw_cta_regions_content', context)
@@ -116,7 +112,7 @@ export const Audio = () => {
     return () => {
       unsub();
     };
-  }, [complete, id, program?.id, state, store, type, unsub]);
+  }, [complete, id, program, state, store, type, unsub]);
 
   return (
     <ThemeProvider theme={audioTheme}>
