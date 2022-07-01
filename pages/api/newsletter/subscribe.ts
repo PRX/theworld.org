@@ -20,8 +20,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       !listIdSubmitted || listIdSubmitted.indexOf(':') === -1
         ? [undefined, listIdSubmitted]
         : listIdSubmitted.split(':');
-    const clientEnvVarExists =
-      clientId && process.env[`CM_API_KEY_${clientId}`];
+    const clientEnvVarExists = !!(
+      clientId && process.env[`CM_API_KEY_${clientId}`]
+    );
     const apiKey = clientEnvVarExists
       ? process.env[`CM_API_KEY_${clientId}`]
       : process.env.CM_API_KEY;
