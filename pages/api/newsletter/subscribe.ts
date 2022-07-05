@@ -1,6 +1,6 @@
 /**
  * @file newsletter/subscribe.ts
- * Export function to subscribe to newsletter campaign.
+ * Subscribe to newsletter campaign.
  */
 
 import fetch, { Headers } from 'node-fetch';
