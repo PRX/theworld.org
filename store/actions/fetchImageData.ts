@@ -13,6 +13,7 @@ import {
 import { RootState } from '@interfaces/state';
 import { fetchApiFileImage, fetchImage } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
+import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchImageData = (
   id: string
@@ -37,6 +38,8 @@ export const fetchImageData = (
     data = await (isOnServer ? fetchImage : fetchApiFileImage)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
+
+    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_content'));
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',

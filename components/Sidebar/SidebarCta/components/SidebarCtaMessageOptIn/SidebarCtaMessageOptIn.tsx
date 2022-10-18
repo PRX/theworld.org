@@ -18,6 +18,7 @@ import {
 } from '@material-ui/core';
 import { HtmlContent } from '@components/HtmlContent';
 import { ICtaMessageProps } from '@interfaces/cta';
+import { handleButtonClick } from '@lib/routing';
 
 export const SidebarCtaMessageOptIn = ({ data }: ICtaMessageProps) => {
   const { heading, message, optinLabel, action, dismiss } = data;
@@ -30,9 +31,6 @@ export const SidebarCtaMessageOptIn = ({ data }: ICtaMessageProps) => {
     fullWidth: true,
     disableElevation: true,
     disabled: !optedIn
-  };
-  const handleActionClick = () => {
-    // TODO: What do this do?
   };
   const handleOptInChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOptedIn(event.target.checked);
@@ -65,11 +63,7 @@ export const SidebarCtaMessageOptIn = ({ data }: ICtaMessageProps) => {
       {hasActions && (
         <CardActions>
           {action && (
-            <Button
-              {...actionAttrs}
-              href={action.url && action.url.href}
-              onClick={handleActionClick}
-            >
+            <Button {...actionAttrs} onClick={handleButtonClick(action.url)}>
               {action.name}
             </Button>
           )}

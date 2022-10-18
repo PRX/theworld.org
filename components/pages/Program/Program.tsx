@@ -41,7 +41,6 @@ import { EpisodeCard } from '@components/EpisodeCard';
 import { AppContext } from '@contexts/AppContext';
 import { RootState } from '@interfaces/state';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchProgramData } from '@store/actions/fetchProgramData';
 import {
   getCollectionData,
@@ -68,26 +67,18 @@ export const Program = () => {
   const data = getDataByResource(state, type, id);
   const ctaInlineTop = getCtaRegionData(
     state,
-    type,
-    id,
     'tw_cta_region_landing_inline_01'
   );
   const ctaInlineBottom = getCtaRegionData(
     state,
-    type,
-    id,
     'tw_cta_region_landing_inline_02'
   );
   const ctaSidebarTop = getCtaRegionData(
     state,
-    type,
-    id,
     'tw_cta_region_landing_sidebar_01'
   );
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    type,
-    id,
     'tw_cta_region_landing_sidebar_02'
   );
   const featuredStoryState = getCollectionData(
@@ -128,9 +119,10 @@ export const Program = () => {
     sponsors,
     body
   } = data;
+  // const context = [`node:${id}`];
   const [loadingStories, setLoadingStories] = useState(false);
   const [loadingEpisodes, setLoadingEpisodes] = useState(false);
-  const [oldscrollY, setOldScrollY] = useState(0);
+  const [oldScrollY, setOldScrollY] = useState(0);
 
   // Plausible Events.
   const props = {
@@ -146,22 +138,12 @@ export const Program = () => {
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
-    // When we have loaded a new page, we want to counter this scoll change.
+    // When we have loaded a new page, we want to counter this scroll change.
     window.scrollBy({
-      top: oldscrollY - window.scrollY
+      top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
   }, [page, episodesPage]);
-
-  useEffect(() => {
-    (async () => {
-      // Get CTA message data.
-      const context = [`node:${id}`];
-      await store.dispatch<any>(
-        fetchCtaData(type, id, 'tw_cta_regions_landing', context)
-      );
-    })();
-  }, [id]);
 
   const loadMoreStories = async () => {
     setLoadingStories(true);

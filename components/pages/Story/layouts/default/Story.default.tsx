@@ -52,7 +52,6 @@ type Props = StateProps & IContentComponentProps;
 
 export const StoryDefault = ({ data }: Props) => {
   const {
-    type,
     id,
     body,
     audio,
@@ -86,32 +85,22 @@ export const StoryDefault = ({ data }: Props) => {
     relatedState.items[1].filter(item => item.id !== id).slice(0, 4);
   const ctaInlineMobile01 = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_inline_mobile_01'
   );
   const ctaInlineMobile02 = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_inline_mobile_02'
   );
   const ctaInlineEnd = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_inline_end'
   );
   const ctaSidebarTop = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_sidebar_01'
   );
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_sidebar_02'
   );
   const classes = storyStyles({});

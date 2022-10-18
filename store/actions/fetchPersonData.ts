@@ -13,6 +13,7 @@ import { RootState } from '@interfaces/state';
 import { fetchApiPerson, fetchPerson } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
+import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchPersonData = (
   id: string
@@ -44,6 +45,8 @@ export const fetchPersonData = (
       segments,
       ...payload
     } = data;
+
+    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_landing'));
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',

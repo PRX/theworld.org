@@ -17,7 +17,6 @@ import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
 import { parseUtcDate } from '@lib/parse/date';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { audioStyles, audioTheme } from './Audio.styles';
@@ -36,6 +35,10 @@ export const Audio = () => {
   });
   const classes = audioStyles({});
   let data = getDataByResource(state, type, id);
+  // const context = [
+  //   `file:${data.id}`,
+  //   ...(data.program ? [`node:${data.program.id}`] : [])
+  // ];
 
   if (!data) {
     return null;
@@ -60,8 +63,6 @@ export const Audio = () => {
 
   const ctaInlineEnd = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_inline_end'
   );
 
@@ -102,17 +103,6 @@ export const Audio = () => {
         data = getDataByResource(state, type, id);
       })();
     }
-
-    // Get CTA message data.
-    const context = [
-      `file:${data.id}`,
-      ...(data.program ? [`node:${data.program.id}`] : [])
-    ];
-    (async () => {
-      await store.dispatch<any>(
-        fetchCtaData(type, id, 'tw_cta_regions_content', context)
-      );
-    })();
 
     return () => {
       unsub();

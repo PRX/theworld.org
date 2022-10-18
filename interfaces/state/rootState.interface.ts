@@ -6,7 +6,7 @@
 
 import { ContentDataState } from './contentData.interface';
 import { CollectionsState } from './collections.interface';
-import { CtaDataState } from './ctaData.interface';
+import { CtaRegionGroupDataState } from './ctaRegionGroupData.interface';
 import { LoadingState } from './loading.interface';
 import { MenusDataState } from './menusData.interface';
 import { SearchState } from './search.interface';
@@ -16,7 +16,7 @@ export interface RootState {
   aliasData?: ContentDataState;
   contentData?: ContentDataState;
   collections?: CollectionsState;
-  ctaData?: CtaDataState;
+  ctaRegionData?: CtaRegionGroupDataState;
   loading?: LoadingState;
   menusData?: MenusDataState;
   search?: SearchState;

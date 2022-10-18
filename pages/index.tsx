@@ -8,6 +8,7 @@ import crypto from 'crypto';
 import { Homepage } from '@components/pages/Homepage';
 import { wrapper } from '@store/configureStore';
 import { fetchHomepageData } from '@store/actions/fetchHomepageData';
+import { fetchAppData } from '@store/actions/fetchAppData';
 
 const IndexPage = () => {
   return <Homepage />;
@@ -15,6 +16,8 @@ const IndexPage = () => {
 
 export const getStaticProps = wrapper.getStaticProps(store => async () => {
   const data = await store.dispatch<any>(fetchHomepageData());
+
+  await store.dispatch<any>(fetchAppData());
 
   return {
     props: {

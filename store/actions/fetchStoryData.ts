@@ -14,6 +14,7 @@ import {
 import { RootState } from '@interfaces/state';
 import { fetchApiStory, fetchStory } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
+import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const decorateWithBylines = (story: IPriApiResource) => {
   const { byline: b, bylines: bs, ...other } = story;
@@ -69,6 +70,8 @@ export const fetchStoryData = (
     data = await (isOnServer ? fetchStory : fetchApiStory)(id)
       .then((resp: IPriApiResourceResponse) => resp && resp.data)
       .then(story => decorateWithBylines(story));
+
+    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_content'));
 
     dispatch({
       type: 'SET_RESOURCE_CONTEXT',

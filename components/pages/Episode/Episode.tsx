@@ -39,7 +39,6 @@ import { AppContext } from '@contexts/AppContext';
 import { RootState, UiAction } from '@interfaces/state';
 import { parseUtcDate } from '@lib/parse/date';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
 import {
   getDataByResource,
@@ -84,6 +83,7 @@ export const Episode = () => {
     reporters,
     spotifyPlaylist
   } = data;
+  // const context = [`node:${data.id}`, `node:${data.program.id}`];
   const metatags = {
     ...dataMetatags,
     ...((dateBroadcast || datePublished) && {
@@ -96,20 +96,14 @@ export const Episode = () => {
   const { items: stories } = storiesState || {};
   const ctaInlineEnd = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_inline_end'
   );
   const ctaSidebarTop = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_sidebar_01'
   );
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_sidebar_02'
   );
 
@@ -200,14 +194,6 @@ export const Episode = () => {
         }
       }
     });
-
-    // Get CTA message data.
-    const context = [`node:${data.id}`, `node:${data.program.id}`];
-    (async () => {
-      await store.dispatch<any>(
-        fetchCtaData(type, id, 'tw_cta_regions_content', context)
-      );
-    })();
 
     return () => {
       // Hide social hare menu.

@@ -16,7 +16,6 @@ import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchVideoData } from '@store/actions/fetchVideoData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { videoStyles, videoTheme } from './Video.styles';
@@ -42,10 +41,9 @@ export const Video = () => {
 
   const { metatags, title, description } = data;
 
+  // const context = [`file:${data.id}`];
   const ctaInlineEnd = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_inline_end'
   );
 
@@ -63,14 +61,6 @@ export const Video = () => {
         data = getDataByResource(state, type, id);
       })();
     }
-
-    // Get CTA message data.
-    const context = [`file:${data.id}`];
-    (async () => {
-      await store.dispatch<any>(
-        fetchCtaData(type, id, 'tw_cta_regions_content', context)
-      );
-    })();
 
     return () => {
       unsub();

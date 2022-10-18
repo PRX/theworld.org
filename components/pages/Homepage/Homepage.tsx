@@ -24,7 +24,6 @@ import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchHomepageData } from '@store/actions/fetchHomepageData';
 import {
   getCollectionData,
@@ -80,13 +79,7 @@ export const Homepage = () => {
   );
   const latestEpisode =
     episodesState.count > 0 && episodesState.items[1].shift();
-  const inlineTop = getCtaRegionData(
-    state,
-    'homepage',
-    undefined,
-    'tw_cta_region_landing_inline_01'
-  );
-  const drawerMainNav = getMenusData(store.getState(), 'drawerMainNav');
+  const drawerMainNav = getMenusData(state, 'drawerMainNav');
   const categoriesMenu = drawerMainNav
     ?.filter((item: IButton) => item.name === 'Categories')?.[0]
     ?.children.map(
@@ -96,26 +89,22 @@ export const Homepage = () => {
           type: 'link',
           title: item.name,
           metatags: {
-            canonical: item.url.href
+            canonical: item.url
           }
         } as IPriApiResource)
     );
+  // const context = ['node:3704'];
+  const inlineTop = getCtaRegionData(state, 'tw_cta_region_landing_inline_01');
   const inlineBottom = getCtaRegionData(
     state,
-    'homepage',
-    undefined,
     'tw_cta_region_landing_inline_02'
   );
   const sidebarTop = getCtaRegionData(
     state,
-    'homepage',
-    undefined,
     'tw_cta_region_landing_sidebar_01'
   );
   const sidebarBottom = getCtaRegionData(
     state,
-    'homepage',
-    undefined,
     'tw_cta_region_landing_sidebar_02'
   );
 
@@ -208,13 +197,6 @@ export const Homepage = () => {
               <SidebarList data={categoriesMenu} />
             </Sidebar>
           )}
-        </>
-      )
-    },
-    {
-      key: 'sidebar bottom',
-      children: (
-        <>
           {sidebarBottom && (
             <>
               <Hidden only="sm">
@@ -231,14 +213,6 @@ export const Homepage = () => {
   ];
 
   useEffect(() => {
-    // Get CTA message data.
-    const context = ['node:3704'];
-    (async () => {
-      await store.dispatch<any>(
-        fetchCtaData('homepage', undefined, 'tw_cta_regions_landing', context)
-      );
-    })();
-
     return () => {
       unsub();
     };

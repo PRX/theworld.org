@@ -3,11 +3,11 @@
  * Exports the Home component.
  */
 
-import React, { useEffect } from 'react';
-import { useStore } from 'react-redux';
+import React from 'react';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';
 import crypto from 'crypto';
+import { UrlWithParsedQuery } from 'url';
 import {
   IPriApiResource,
   IPriApiResourceResponse
@@ -19,7 +19,7 @@ import { wrapper } from '@store';
 import { fetchHomepage } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { getResourceFetchData } from '@lib/import/fetchData';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { fetchCtaRegionGroupData } from '@store/actions/fetchCtaRegionGroupData';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
@@ -30,16 +30,7 @@ interface StateProps extends RootState {}
 
 type Props = StateProps & IContentComponentProxyProps;
 
-const ContentProxy = ({ type, id }: Props) => {
-  const store = useStore();
-
-  useEffect(() => {
-    // Fetch CTA messages for this resource.
-    (async () => {
-      await store.dispatch<any>(fetchCtaData(type, id));
-    })();
-  }, [type, id]);
-
+const ContentProxy = ({ type }: Props) => {
   switch (type) {
     case 'file--audio':
       return <DynamicAudio />;
@@ -106,6 +97,8 @@ export const getStaticProps = wrapper.getStaticProps(
     if (resourceType) {
       const fetchData = getResourceFetchData(resourceType);
 
+      await store.dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_site'));
+
       if (fetchData) {
         const data = await store.dispatch(fetchData(resourceId));
 
@@ -153,7 +146,10 @@ export const getStaticPaths = async () => {
       ...resources
         .map(resource => ({
           params: {
-            slug: generateLinkHrefForContent(resource)?.pathname
+            slug: (generateLinkHrefForContent(
+              resource,
+              true
+            ) as UrlWithParsedQuery)?.pathname
           }
         }))
         .filter(({ params: { slug } }) => !!slug?.length)

@@ -11,6 +11,7 @@ import { fetchApiHomepage } from '@lib/fetch/api';
 import { fetchHomepage } from '@lib/fetch/homepage/fetchHomepage';
 import { getHomepageData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
+import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchHomepageData = (): ThunkAction<
   void,
@@ -47,15 +48,15 @@ export const fetchHomepageData = (): ThunkAction<
       menus
     } = apiResp;
 
-    dispatch({
-      type: 'SET_RESOURCE_CONTEXT',
-      payload: {
-        type,
-        id,
-        pageType: 'landing',
-        context: ['node:3704']
-      }
-    });
+    // dispatch({
+    //   type: 'SET_RESOURCE_CONTEXT',
+    //   payload: {
+    //     type,
+    //     id,
+    //     pageType: 'landing',
+    //     context: ['node:3704']
+    //   }
+    // });
 
     dispatch(
       appendResourceCollection(
@@ -80,6 +81,8 @@ export const fetchHomepageData = (): ThunkAction<
     dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
 
     dispatch(appendResourceCollection(latestStories, type, id, 'latest'));
+
+    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_landing'));
 
     dispatch({
       type: 'FETCH_HOMEPAGE_DATA_SUCCESS'
