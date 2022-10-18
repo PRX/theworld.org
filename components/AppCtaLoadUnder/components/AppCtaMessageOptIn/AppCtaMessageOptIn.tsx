@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
+import { handleButtonClick } from '@lib/routing';
 import {
   Box,
   Button,
@@ -38,9 +39,9 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
     variant: 'outlined',
     color: 'primary'
   };
-  const handleActionClick = () => {
+  const handleActionClick = handleButtonClick(action.url, () => {
     onClose();
-  };
+  });
   const handleDismissClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -78,11 +79,7 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
           {hasActions && (
             <Toolbar>
               {action && (
-                <Button
-                  {...actionAttrs}
-                  href={action.url && action.url.href}
-                  onClick={handleActionClick}
-                >
+                <Button {...actionAttrs} onClick={handleActionClick}>
                   {action.name}
                 </Button>
               )}

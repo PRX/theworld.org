@@ -28,7 +28,7 @@ export const Story = () => {
   const unsub = store.subscribe(() => {
     updateForce(store.getState());
   });
-  let data = getDataByResource(state, type, id);
+  const data = getDataByResource(state, type, id);
   const {
     metatags: dataMetatags,
     title,
@@ -92,15 +92,54 @@ export const Story = () => {
     console.log(plausibleEvents);
   }
 
+  // Fetch data if not complete.
+  // useEffect(() => {
+  //   if (!data.complete) {
+  //     (async () => {
+  //       // Get content data.
+  //       await store.dispatch<any>(fetchStoryData(id));
+  //       data = getDataByResource(state, type, id);
+  //     })();
+  //   }
+  // }, [id]);
+
   useEffect(() => {
-    if (!data.complete) {
+    // Get missing related stories data.
+    const collection = 'related';
+    const { primaryCategory } = data;
+    const related =
+      primaryCategory &&
+      getCollectionData(
+        state,
+        primaryCategory.type,
+        primaryCategory.id,
+        collection
+      );
+
+    if (!related && primaryCategory) {
       (async () => {
-        // Get content data.
-        await store.dispatch<any>(fetchStoryData(id));
-        data = getDataByResource(state, type, id);
+        const apiData = await fetchApiCategoryStories(
+          primaryCategory.id,
+          1,
+          5,
+          'primary_category'
+        );
+
+        if (apiData) {
+          store.dispatch<any>(
+            appendResourceCollection(
+              apiData,
+              primaryCategory.type,
+              primaryCategory.id,
+              collection
+            )
+          );
+        }
       })();
     }
+  }, [data.primaryCategory]);
 
+  useEffect(() => {
     // Show social hare menu.
     const { shareLinks } = data;
     store.dispatch<UiAction>({
@@ -139,48 +178,19 @@ export const Story = () => {
       }
     });
 
-    // Get missing related stories data.
-    const collection = 'related';
-    const { primaryCategory } = data;
-    const related =
-      primaryCategory &&
-      getCollectionData(
-        state,
-        primaryCategory.type,
-        primaryCategory.id,
-        collection
-      );
-
-    if (!related && primaryCategory) {
-      (async () => {
-        const apiData = await fetchApiCategoryStories(
-          primaryCategory.id,
-          1,
-          5,
-          'primary_category'
-        );
-
-        if (apiData) {
-          store.dispatch<any>(
-            appendResourceCollection(
-              apiData,
-              primaryCategory.type,
-              primaryCategory.id,
-              collection
-            )
-          );
-        }
-      })();
-    }
-
     return () => {
       // Show social hare menu.
       store.dispatch<UiAction>({
         type: 'UI_HIDE_SOCIAL_SHARE_MENU'
       });
+    };
+  }, [data.shareLinks]);
+
+  useEffect(() => {
+    return () => {
       unsub();
     };
-  }, [id]);
+  }, []);
 
   return (
     <>

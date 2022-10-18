@@ -41,7 +41,6 @@ type Props = StateProps & IContentComponentProps;
 
 export const StoryDefault = ({ data }: Props) => {
   const {
-    type,
     id,
     body,
     categories,
@@ -72,8 +71,6 @@ export const StoryDefault = ({ data }: Props) => {
     relatedState.items[1].filter(item => item.id !== id).slice(0, 4);
   const ctaInlineEnd = getCtaRegionData(
     state,
-    type,
-    id as string,
     'tw_cta_region_content_inline_end'
   );
   const classes = storyStyles({});
