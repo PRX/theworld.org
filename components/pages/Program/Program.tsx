@@ -65,22 +65,33 @@ export const Program = () => {
   });
   const classes = programStyles({});
   const data = getDataByResource(state, type, id);
+
+  // CTA data.
   const ctaInlineTop = getCtaRegionData(
     state,
-    'tw_cta_region_landing_inline_01'
+    'tw_cta_region_landing_inline_01',
+    type,
+    id
   );
   const ctaInlineBottom = getCtaRegionData(
     state,
-    'tw_cta_region_landing_inline_02'
+    'tw_cta_region_landing_inline_02',
+    type,
+    id
   );
   const ctaSidebarTop = getCtaRegionData(
     state,
-    'tw_cta_region_landing_sidebar_01'
+    'tw_cta_region_landing_sidebar_01',
+    type,
+    id
   );
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    'tw_cta_region_landing_sidebar_02'
+    'tw_cta_region_landing_sidebar_02',
+    type,
+    id
   );
+
   const featuredStoryState = getCollectionData(
     state,
     type,

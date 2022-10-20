@@ -42,9 +42,12 @@ export const Image = () => {
 
   const { metatags, title, description } = data;
 
+  // CTA data.
   const ctaInlineEnd = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_end'
+    'tw_cta_region_content_inline_end',
+    type,
+    id
   );
 
   // Plausible Events.

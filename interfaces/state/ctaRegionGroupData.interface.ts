@@ -5,16 +5,32 @@
  */
 
 import { AnyAction } from 'redux';
-import { ICtaMessage } from '@interfaces/cta';
+import { ICtaFilterProps, ICtaMessage } from '@interfaces/cta';
 
-export interface CtaRegionGroupDataState {
+export interface CtaRegionGroupData {
   // Key: CTA Region Group Name
   [k: string]: ICtaMessage[];
+}
+
+export interface CtaRegionGroupFilterProps {
+  id: string;
+  type: string;
+  props: {
+    // Key: Resource Signature
+    [k: string]: ICtaFilterProps;
+  };
+}
+
+export interface CtaRegionGroupDataState {
+  data?: CtaRegionGroupData;
+
+  filterProps?: CtaRegionGroupFilterProps;
 }
 
 export interface CtaRegionGroupAction extends AnyAction {
   payload: {
     ctaRegionData?: CtaRegionGroupDataState;
-    data?: CtaRegionGroupDataState;
+    data?: CtaRegionGroupData;
+    filterProps?: CtaRegionGroupFilterProps;
   };
 }

@@ -28,7 +28,9 @@ export const parseCtaMessage = (
   hash: message.contentHash,
   ...(message.heading && { heading: message.heading }),
   ...(message.message && { message: message.message }),
-  ...(message.cookieLifespan && { cookieLifespan: message.cookieLifespan }),
+  ...(message.cookieLifespan && {
+    cookieLifespan: +message.cookieLifespan
+  }),
   ...(message.optinLabel && { optinLabel: message.optinLabel }),
   ...(message.actionLabel && {
     action: {
@@ -52,5 +54,10 @@ export const parseCtaMessage = (
       newsletter: message.newsletter,
       newsletterOptions: parseNewsletterOptions(message.newsletter, region)
     }),
+  ...(message.targetContent && { targetContent: message.targetContent }),
+  ...(message.targetCategories && {
+    targetCategories: message.targetCategories
+  }),
+  ...(message.targetProgram && { targetProgram: message.targetProgram }),
   ...(region && { region })
 });

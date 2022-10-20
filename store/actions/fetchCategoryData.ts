@@ -9,6 +9,7 @@ import {
   IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
+import { ICtaFilterProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
 import { fetchApiCategory, fetchCategory } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
@@ -40,6 +41,20 @@ export const fetchCategoryData = (
     );
     const { featuredStory, featuredStories, stories, ...payload } = data;
 
+    // Set CTA filter props.
+    dispatch({
+      type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+      payload: {
+        filterProps: {
+          type,
+          id,
+          props: {
+            categories: [id]
+          }
+        }
+      } as ICtaFilterProps
+    });
+
     await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_landing'));
 
     dispatch({
@@ -52,7 +67,10 @@ export const fetchCategoryData = (
 
     dispatch(
       appendResourceCollection(
-        { data: [featuredStory], meta: { count: 1 } },
+        {
+          data: [featuredStory],
+          meta: { count: 1 }
+        },
         type,
         id,
         'featured story'
@@ -61,7 +79,12 @@ export const fetchCategoryData = (
 
     dispatch(
       appendResourceCollection(
-        { data: [...featuredStories], meta: { count: featuredStories.length } },
+        {
+          data: [...featuredStories],
+          meta: {
+            count: featuredStories.length
+          }
+        },
         type,
         id,
         'featured stories'

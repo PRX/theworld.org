@@ -21,6 +21,7 @@ export const getStaticProps = wrapper.getStaticProps(store => async () => {
 
   return {
     props: {
+      type: 'homepage',
       dataHash: crypto
         .createHash('sha256')
         .update(JSON.stringify(data))

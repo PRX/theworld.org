@@ -6,6 +6,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
+import { ICtaFilterProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
 import { fetchApiHomepage } from '@lib/fetch/api';
 import { fetchHomepage } from '@lib/fetch/homepage/fetchHomepage';
@@ -48,19 +49,26 @@ export const fetchHomepageData = (): ThunkAction<
       menus
     } = apiResp;
 
-    // dispatch({
-    //   type: 'SET_RESOURCE_CONTEXT',
-    //   payload: {
-    //     type,
-    //     id,
-    //     pageType: 'landing',
-    //     context: ['node:3704']
-    //   }
-    // });
+    // Set CTA filter props.
+    dispatch({
+      type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+      payload: {
+        filterProps: {
+          type,
+          id,
+          props: {
+            program: '3704'
+          }
+        }
+      } as ICtaFilterProps
+    });
 
     dispatch(
       appendResourceCollection(
-        { data: [featuredStory], meta: { count: 1 } },
+        {
+          data: [featuredStory],
+          meta: { count: 1 }
+        },
         type,
         id,
         'featured story'
@@ -69,7 +77,10 @@ export const fetchHomepageData = (): ThunkAction<
 
     dispatch(
       appendResourceCollection(
-        { data: [...featuredStories], meta: { count: featuredStories.length } },
+        {
+          data: [...featuredStories],
+          meta: { count: featuredStories.length }
+        },
         type,
         id,
         'featured stories'

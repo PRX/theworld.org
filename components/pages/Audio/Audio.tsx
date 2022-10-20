@@ -34,11 +34,7 @@ export const Audio = () => {
     setState(store.getState());
   });
   const classes = audioStyles({});
-  let data = getDataByResource(state, type, id);
-  // const context = [
-  //   `file:${data.id}`,
-  //   ...(data.program ? [`node:${data.program.id}`] : [])
-  // ];
+  const data = getDataByResource(state, type, id);
 
   if (!data) {
     return null;
@@ -61,9 +57,12 @@ export const Audio = () => {
     })
   };
 
+  // CTA data.
   const ctaInlineEnd = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_end'
+    'tw_cta_region_content_inline_end',
+    type,
+    id
   );
 
   // Plausible Events.
@@ -96,18 +95,10 @@ export const Audio = () => {
   });
 
   useEffect(() => {
-    if (!data.complete) {
-      (async () => {
-        // Get content data.
-        await store.dispatch<any>(fetchAudioData(id));
-        data = getDataByResource(state, type, id);
-      })();
-    }
-
     return () => {
       unsub();
     };
-  }, [id]);
+  }, []);
 
   return (
     <ThemeProvider theme={audioTheme}>

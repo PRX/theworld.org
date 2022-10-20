@@ -2,7 +2,7 @@
  * @file Homepage.tsx
  * Component for Homepage.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -31,6 +31,7 @@ import {
   getMenusData
 } from '@store/reducers';
 import { IButton } from '@interfaces';
+import { AppContext } from '@contexts/AppContext';
 
 const CtaRegion = dynamic(
   () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
@@ -41,6 +42,11 @@ const SidebarCta = dynamic(
 ) as React.FC<ICtaRegionProps>;
 
 export const Homepage = () => {
+  const {
+    page: {
+      resource: { type, id }
+    }
+  } = useContext(AppContext);
   const store = useStore();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
@@ -93,19 +99,31 @@ export const Homepage = () => {
           }
         } as IPriApiResource)
     );
-  // const context = ['node:3704'];
-  const inlineTop = getCtaRegionData(state, 'tw_cta_region_landing_inline_01');
+
+  // CTA data.
+  const inlineTop = getCtaRegionData(
+    state,
+    'tw_cta_region_landing_inline_01',
+    type,
+    id
+  );
   const inlineBottom = getCtaRegionData(
     state,
-    'tw_cta_region_landing_inline_02'
+    'tw_cta_region_landing_inline_02',
+    type,
+    id
   );
   const sidebarTop = getCtaRegionData(
     state,
-    'tw_cta_region_landing_sidebar_01'
+    'tw_cta_region_landing_sidebar_01',
+    type,
+    id
   );
   const sidebarBottom = getCtaRegionData(
     state,
-    'tw_cta_region_landing_sidebar_02'
+    'tw_cta_region_landing_sidebar_02',
+    type,
+    id
   );
 
   const mainElements = [

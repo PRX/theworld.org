@@ -10,6 +10,7 @@ import {
   IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
+import { ICtaFilterProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
 import { fetchApiFileImage, fetchImage } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
@@ -38,6 +39,20 @@ export const fetchImageData = (
     data = await (isOnServer ? fetchImage : fetchApiFileImage)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
+
+    // Set CTA filter props.
+    dispatch({
+      type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+      payload: {
+        filterProps: {
+          type,
+          id,
+          props: {
+            id
+          }
+        }
+      } as ICtaFilterProps
+    });
 
     await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_content'));
 

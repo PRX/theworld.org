@@ -32,7 +32,7 @@ export const AppCtaMessageDonation = ({
         variant: 'outlined',
         color: 'secondary'
       };
-  const handleActionClick = handleButtonClick(action.url, () => {
+  const handleActionClick = handleButtonClick(action?.url, () => {
     onClose();
   });
   const handleDismissClick = (

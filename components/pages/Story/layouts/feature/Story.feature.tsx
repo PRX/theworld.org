@@ -41,6 +41,7 @@ type Props = StateProps & IContentComponentProps;
 
 export const StoryDefault = ({ data }: Props) => {
   const {
+    type,
     id,
     body,
     categories,
@@ -71,7 +72,9 @@ export const StoryDefault = ({ data }: Props) => {
     relatedState.items[1].filter(item => item.id !== id).slice(0, 4);
   const ctaInlineEnd = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_end'
+    'tw_cta_region_content_inline_end',
+    type,
+    id as string
   );
   const classes = storyStyles({});
   const hasRelated = related && !!related.length;

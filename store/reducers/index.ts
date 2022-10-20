@@ -92,8 +92,18 @@ export const getHomepageData = (state: RootState) => ({
   latestStories: getCollectionData(state, 'homepage', undefined, 'latest')
 });
 
-export const getCtaRegionData = (state: RootState, region: string) =>
-  fromCtaRegionGroupData.getCtaRegionData(state.ctaRegionData, region);
+export const getCtaRegionData = (
+  state: RootState,
+  region: string,
+  type?: string,
+  id?: string
+) =>
+  fromCtaRegionGroupData.getCtaRegionData(
+    state.ctaRegionData,
+    region,
+    type,
+    id
+  );
 
 export const getMenusData = (state: RootState, menu: string) =>
   fromMenusData.getMenusData(state.menusData, menu);

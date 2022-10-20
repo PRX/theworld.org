@@ -10,11 +10,9 @@ import { AppContext } from '@contexts/AppContext';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState, UiAction } from '@interfaces/state';
-import { fetchApiCategoryStories } from '@lib/fetch';
 import { parseUtcDate } from '@lib/parse/date';
-import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { fetchStoryData } from '@store/actions/fetchStoryData';
-import { getDataByResource, getCollectionData } from '@store/reducers';
+import { getDataByResource } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
 
 export const Story = () => {
@@ -91,53 +89,6 @@ export const Story = () => {
     // eslint-disable-next-line no-console
     console.log(plausibleEvents);
   }
-
-  // Fetch data if not complete.
-  // useEffect(() => {
-  //   if (!data.complete) {
-  //     (async () => {
-  //       // Get content data.
-  //       await store.dispatch<any>(fetchStoryData(id));
-  //       data = getDataByResource(state, type, id);
-  //     })();
-  //   }
-  // }, [id]);
-
-  useEffect(() => {
-    // Get missing related stories data.
-    const collection = 'related';
-    const { primaryCategory } = data;
-    const related =
-      primaryCategory &&
-      getCollectionData(
-        state,
-        primaryCategory.type,
-        primaryCategory.id,
-        collection
-      );
-
-    if (!related && primaryCategory) {
-      (async () => {
-        const apiData = await fetchApiCategoryStories(
-          primaryCategory.id,
-          1,
-          5,
-          'primary_category'
-        );
-
-        if (apiData) {
-          store.dispatch<any>(
-            appendResourceCollection(
-              apiData,
-              primaryCategory.type,
-              primaryCategory.id,
-              collection
-            )
-          );
-        }
-      })();
-    }
-  }, [data.primaryCategory]);
 
   useEffect(() => {
     // Show social hare menu.

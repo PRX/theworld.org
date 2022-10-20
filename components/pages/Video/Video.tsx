@@ -41,10 +41,12 @@ export const Video = () => {
 
   const { metatags, title, description } = data;
 
-  // const context = [`file:${data.id}`];
+  // CTA data.
   const ctaInlineEnd = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_end'
+    'tw_cta_region_content_inline_end',
+    type,
+    id
   );
 
   // Plausible Events.

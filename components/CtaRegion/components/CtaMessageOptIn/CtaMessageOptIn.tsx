@@ -31,7 +31,7 @@ export const CtaMessageOptIn = ({ data }: ICtaMessageProps) => {
     disableElevation: true,
     disabled: !optedIn
   };
-  const handleActionClick = handleButtonClick(action.url, () => {
+  const handleActionClick = handleButtonClick(action?.url, () => {
     // TODO: What do this do?
   });
   const handleOptInChange = (event: React.ChangeEvent<HTMLInputElement>) => {

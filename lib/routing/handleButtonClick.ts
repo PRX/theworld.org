@@ -41,18 +41,21 @@ export const generateLinkHrefFromUrl = (url: Url) => {
  *    Handler function.
  */
 /* istanbul ignore next */
-export const handleButtonClick = (
-  url: Url | string,
-  callback: Function = null
-) => (event: MouseEvent) => {
+export const handleButtonClick = (url: Url | string, callback?: Function) => (
+  event: MouseEvent
+) => {
   event.preventDefault();
 
-  const parsedUrl = typeof url === 'string' ? parse(url as string) : url;
+  if (url) {
+    const parsedUrl = typeof url === 'string' ? parse(url as string) : url;
 
-  Router.push(
-    isLocalUrl(parsedUrl.href) ? generateLinkHrefFromUrl(parsedUrl) : parsedUrl,
-    parsedUrl.pathname
-  );
+    Router.push(
+      isLocalUrl(parsedUrl.href)
+        ? generateLinkHrefFromUrl(parsedUrl)
+        : parsedUrl,
+      parsedUrl.pathname
+    );
+  }
 
   if (callback) {
     callback();

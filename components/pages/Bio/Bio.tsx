@@ -53,13 +53,19 @@ export const Bio = () => {
     setState(store.getState());
   });
   const data = getDataByResource(state, type, id);
+
+  // CTA data.
   const ctaSidebarTop = getCtaRegionData(
     state,
-    'tw_cta_region_landing_sidebar_01'
+    'tw_cta_region_landing_sidebar_01',
+    type,
+    id
   );
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    'tw_cta_region_landing_sidebar_02'
+    'tw_cta_region_landing_sidebar_02',
+    type,
+    id
   );
   const featuredStoryState = getCollectionData(
     state,
@@ -67,6 +73,7 @@ export const Bio = () => {
     id,
     'featured story'
   );
+
   const featuredStory = featuredStoryState.items[1][0];
   const { items: featuredStories } =
     getCollectionData(state, type, id, 'featured stories') || {};
@@ -86,7 +93,6 @@ export const Bio = () => {
     position,
     socialLinks
   } = data;
-  // const context = [`node:${id}`];
   const { twitter, tumblr, podcast, blog, website, rss, contact } =
     socialLinks || {};
   const followLinks = [
@@ -98,6 +104,7 @@ export const Bio = () => {
     rss,
     contact
   ].filter(v => !!v);
+
   const [loading, setLoading] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);
   const [segmentsPage, setSegmentsPage] = useState(1);

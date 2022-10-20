@@ -94,17 +94,25 @@ export const Episode = () => {
 
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories } = storiesState || {};
+
+  // CTA data.
   const ctaInlineEnd = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_end'
+    'tw_cta_region_content_inline_end',
+    type,
+    id
   );
   const ctaSidebarTop = getCtaRegionData(
     state,
-    'tw_cta_region_content_sidebar_01'
+    'tw_cta_region_content_sidebar_01',
+    type,
+    id
   );
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    'tw_cta_region_content_sidebar_02'
+    'tw_cta_region_content_sidebar_02',
+    type,
+    id
   );
 
   // Plausible Events.
