@@ -20,6 +20,7 @@ import { fetchHomepage } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { getResourceFetchData } from '@lib/import/fetchData';
 import { fetchCtaRegionGroupData } from '@store/actions/fetchCtaRegionGroupData';
+import { fetchAppData } from '@store/actions/fetchAppData';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
@@ -97,10 +98,14 @@ export const getStaticProps = wrapper.getStaticProps(
     if (resourceType) {
       const fetchData = getResourceFetchData(resourceType);
 
-      await store.dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_site'));
-
       if (fetchData) {
         const data = await store.dispatch(fetchData(resourceId));
+
+        await store.dispatch<any>(fetchAppData());
+
+        await store.dispatch<any>(
+          fetchCtaRegionGroupData('tw_cta_regions_site')
+        );
 
         return {
           props: {
