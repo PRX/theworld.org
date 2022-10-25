@@ -50,11 +50,14 @@ export const getCtaRegionData = (
   region: string,
   type?: string,
   id?: string | number
-) =>
-  type
+) => {
+  const messages = type
     ? state.data?.[region]?.filter(
         filterCtaMessages(
           state.filterProps?.[makeResourceSignature({ type, id })]
         )
       )
     : state.data?.[region];
+
+  return messages?.length ? messages : null;
+};
