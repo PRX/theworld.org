@@ -5,7 +5,7 @@
 
 import { MouseEvent } from 'react';
 import Router from 'next/router';
-import { Url } from 'url';
+import { parse, Url } from 'url';
 import { isLocalUrl } from '../parse/url';
 
 /**
@@ -41,15 +41,21 @@ export const generateLinkHrefFromUrl = (url: Url) => {
  *    Handler function.
  */
 /* istanbul ignore next */
-export const handleButtonClick = (url: Url, callback: Function = null) => (
+export const handleButtonClick = (url: Url | string, callback?: Function) => (
   event: MouseEvent
 ) => {
   event.preventDefault();
 
-  Router.push(
-    isLocalUrl(url.href) ? generateLinkHrefFromUrl(url) : url,
-    url.pathname
-  );
+  if (url) {
+    const parsedUrl = typeof url === 'string' ? parse(url as string) : url;
+
+    Router.push(
+      isLocalUrl(parsedUrl.href)
+        ? generateLinkHrefFromUrl(parsedUrl)
+        : parsedUrl,
+      parsedUrl.pathname
+    );
+  }
 
   if (callback) {
     callback();

@@ -3,7 +3,6 @@
  * Helper functions to parse menu API data into button objects.
  */
 
-import { parse } from 'url';
 import { IButton, ILink } from '@interfaces';
 
 export const parseMenu = (data: ILink[]): IButton[] => {
@@ -27,7 +26,7 @@ export const parseMenu = (data: ILink[]): IButton[] => {
       key: id,
       name,
       ...(title && { title }),
-      url: { ...parse(url) },
+      url,
       ...(className && {
         itemLinkClass: className.join(' '),
         color: className.reduce(

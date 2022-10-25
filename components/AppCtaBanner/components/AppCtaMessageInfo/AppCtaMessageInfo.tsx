@@ -12,6 +12,7 @@ import {
   ButtonProps
 } from '@material-ui/core';
 import { HtmlContent } from '@components/HtmlContent';
+import { handleButtonClick } from '@lib/routing';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 
 export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
@@ -28,9 +29,9 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
         variant: 'outlined',
         color: 'primary'
       };
-  const handleActionClick = () => {
+  const handleActionClick = handleButtonClick(action?.url, () => {
     onClose();
-  };
+  });
   const handleDismissClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -49,11 +50,7 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
       {hasActions && (
         <Toolbar>
           {action && (
-            <Button
-              {...actionAttrs}
-              href={action.url.href}
-              onClick={handleActionClick}
-            >
+            <Button {...actionAttrs} onClick={handleActionClick}>
               {action.name}
             </Button>
           )}

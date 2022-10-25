@@ -19,8 +19,6 @@ import { AppContext } from '@contexts/AppContext';
 import { SocialShareMenu } from '@components/SocialShareMenu/SocialShareMenu';
 import { baseMuiTheme, appTheme } from '@theme/App.theme';
 import { wrapper } from '@store';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
-import { fetchAppData } from '@store/actions/fetchAppData';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   const store = useStore();
@@ -54,18 +52,18 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0 });
-    // Fetch CTA messages for this resource.
-    (async () => {
-      await Promise.all([
-        // Fetch App data (latest stories, menus, etc.)
-        store.dispatch<any>(fetchAppData()),
-        // Fetch CTAs.
-        store.dispatch<any>(fetchCtaData(type, id, 'tw_cta_regions_site'))
-      ]);
-    })();
-  }, [type, id]);
+  // useEffect(() => {
+  //   window.scrollTo({ top: 0, left: 0 });
+  //   // Fetch CTA messages for this resource.
+  //   (async () => {
+  //     await Promise.all([
+  //       // Fetch App data (latest stories, menus, etc.)
+  //       store.dispatch<any>(fetchAppData()),
+  //       // Fetch CTAs.
+  //       store.dispatch<any>(fetchCtaData(type, id, 'tw_cta_regions_site'))
+  //     ]);
+  //   })();
+  // }, [type, id]);
 
   return (
     <ThemeProvider theme={baseMuiTheme}>

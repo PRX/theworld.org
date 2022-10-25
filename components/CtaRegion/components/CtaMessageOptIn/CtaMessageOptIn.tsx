@@ -18,6 +18,7 @@ import {
 } from '@material-ui/core';
 import { HtmlContent } from '@components/HtmlContent';
 import { ICtaMessageProps } from '@interfaces/cta';
+import { handleButtonClick } from '@lib/routing';
 
 export const CtaMessageOptIn = ({ data }: ICtaMessageProps) => {
   const { heading, message, optinLabel, action, dismiss } = data;
@@ -30,9 +31,9 @@ export const CtaMessageOptIn = ({ data }: ICtaMessageProps) => {
     disableElevation: true,
     disabled: !optedIn
   };
-  const handleActionClick = () => {
+  const handleActionClick = handleButtonClick(action?.url, () => {
     // TODO: What do this do?
-  };
+  });
   const handleOptInChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOptedIn(event.target.checked);
   };
@@ -64,11 +65,7 @@ export const CtaMessageOptIn = ({ data }: ICtaMessageProps) => {
       {hasActions && (
         <CardActions>
           {action && (
-            <Button
-              {...actionAttrs}
-              href={action.url && action.url.href}
-              onClick={handleActionClick}
-            >
+            <Button {...actionAttrs} onClick={handleActionClick}>
               {action.name}
             </Button>
           )}

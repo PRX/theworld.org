@@ -13,6 +13,7 @@ import {
 import { RootState } from '@interfaces/state';
 import { fetchApiPage, fetchPage } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
+import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchPageData = (
   id: string
@@ -37,6 +38,8 @@ export const fetchPageData = (
     data = await (isOnServer ? fetchPage : fetchApiPage)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
+
+    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_content'));
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',

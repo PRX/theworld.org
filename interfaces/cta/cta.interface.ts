@@ -20,6 +20,9 @@ export interface ICtaMessage {
   dismiss?: IButton;
   newsletter?: IPriApiNewsletter;
   newsletterOptions?: INewsletterOptions;
+  targetContent?: string[];
+  targetCategories?: string[];
+  targetProgram?: string;
   region?: string;
 }
 
@@ -37,4 +40,10 @@ export interface ICtaRegions {
 
 export interface ICtaMessageComponentContext {
   data: ICtaMessage;
+}
+
+export interface ICtaFilterProps {
+  id?: string;
+  categories?: string[];
+  program?: string;
 }
