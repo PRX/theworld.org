@@ -12,7 +12,6 @@ import { IncomingMessage } from 'http';
 import { ParsedUrlQuery } from 'querystring';
 import { parse, format } from 'url';
 import { customsearch_v1 } from 'googleapis';
-import { ICtaRegions } from '@interfaces/cta';
 import {
   INewsletterOptions,
   INewsletterData,
@@ -541,12 +540,17 @@ export const fetchApiPersonAudio = async (
  */
 export const fetchApiCtaRegionGroup = async (
   regionGroup: string,
-  context: string[],
-  req: IncomingMessage
-): Promise<ICtaRegions> =>
-  fetchApi(`cta/${regionGroup}`, req, undefined, {
-    context
-  });
+  context?: string[],
+  req?: IncomingMessage
+): Promise<IPriApiResourceResponse> =>
+  fetchApi(
+    `cta/${regionGroup}`,
+    req,
+    undefined,
+    context && {
+      context
+    }
+  );
 
 export const fetchApiSearch = (
   q: string,

@@ -13,6 +13,26 @@ class TwDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          {[
+            'alegreya/italic/alegreya-italic-400-latin.woff',
+            'alegreya/normal/alegreya-normal-400-latin.woff',
+            'montserrat/normal/montserrat-normal-400-latin.woff2',
+            'montserrat/normal/montserrat-normal-700-latin.woff2',
+            'opensans/normal/opensans-normal-400-latin.woff2',
+            'opensans/normal/opensans-normal-700-latin.woff2',
+            'sourcesanspro/italic/sourcesanspro-italic-400-latin.woff2',
+            'sourcesanspro/normal/sourcesanspro-normal-400-latin.woff2',
+            'sourcesanspro/normal/sourcesanspro-normal-700-latin.woff2'
+          ].map(path => (
+            <link
+              key={path}
+              rel="preload"
+              href={`/fonts/${path}`}
+              as="font"
+              type={`font/${path.split('.').pop()}`}
+              crossOrigin="anonymous"
+            />
+          ))}
           <link href="/css/fonts.css" rel="stylesheet" />
           <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
           <link
