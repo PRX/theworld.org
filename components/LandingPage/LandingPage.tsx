@@ -4,18 +4,32 @@
  */
 
 import React, { Fragment, ReactNode } from 'react';
-import { Container, Grid, Hidden } from '@material-ui/core';
+import {
+  Box,
+  BoxProps,
+  Container,
+  Grid,
+  GridSpacing,
+  Hidden
+} from '@material-ui/core';
 
 export interface ILandingPageItem {
   key: string;
   children: ReactNode;
 }
-export interface ILandingPageProps {
+export interface ILandingPageProps extends BoxProps {
   main: ILandingPageItem[];
   sidebar: ILandingPageItem[];
+  spacing?: GridSpacing;
 }
 
-export const LandingPage = ({ main, sidebar }: ILandingPageProps) => {
+export const LandingPage = ({
+  main,
+  sidebar,
+  spacing,
+  gridGap,
+  ...other
+}: ILandingPageProps) => {
   const max = Math.max(main.length, sidebar.length);
   const mainItems = [];
 
@@ -33,23 +47,29 @@ export const LandingPage = ({ main, sidebar }: ILandingPageProps) => {
   }
 
   return (
-    <Container fixed>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
-          {mainItems.map(
-            ({ key, children }: ILandingPageItem) =>
-              children && <Fragment key={key}>{children}</Fragment>
-          )}
+    <Box {...other}>
+      <Container fixed>
+        <Grid container spacing={spacing || 3}>
+          <Grid item xs={12} md={8}>
+            <Box display="grid" gridGap={gridGap}>
+              {mainItems.map(
+                ({ key, children }: ILandingPageItem) =>
+                  children && <Fragment key={key}>{children}</Fragment>
+              )}
+            </Box>
+          </Grid>
+          <Grid item xs md={4}>
+            <Hidden smDown implementation="css">
+              <Box display="grid" gridGap={gridGap}>
+                {sidebar.map(
+                  ({ key, children }: ILandingPageItem) =>
+                    children && <Fragment key={key}>{children}</Fragment>
+                )}
+              </Box>
+            </Hidden>
+          </Grid>
         </Grid>
-        <Grid item xs md={4}>
-          <Hidden smDown implementation="css">
-            {sidebar.map(
-              ({ key, children }: ILandingPageItem) =>
-                children && <Fragment key={key}>{children}</Fragment>
-            )}
-          </Hidden>
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </Box>
   );
 };

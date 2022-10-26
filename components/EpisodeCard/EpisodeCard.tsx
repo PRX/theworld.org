@@ -15,10 +15,9 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Grid,
   Typography
 } from '@material-ui/core';
-import { EqualizerRounded, PlayCircleOutlineRounded } from '@material-ui/icons';
+import { EqualizerRounded } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
@@ -33,8 +32,8 @@ export interface EpisodeCardProps {
   priority?: boolean;
 }
 
-export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
-  const { teaser, title, image, audio, dateBroadcast, datePublished } = data;
+export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
+  const { title, teaser, image, audio, dateBroadcast, datePublished } = data;
   const { segments } = audio || {};
   const classes = episodeCardStyles({});
   const cx = classNames.bind(classes);
@@ -62,44 +61,17 @@ export const EpisodeCard = ({ data, label, priority }: EpisodeCardProps) => {
             </CardMedia>
           )}
           <CardContent>
-            <Grid
-              container
-              justify="space-between"
-              alignItems="center"
-              spacing={1}
-            >
-              {label && (
-                <Grid item xs="auto" zeroMinWidth>
-                  <Typography variant="overline" noWrap>
-                    {label}
-                  </Typography>
-                </Grid>
-              )}
-              <Grid item xs="auto" zeroMinWidth>
-                <Typography
-                  variant="subtitle2"
-                  component="span"
-                  color="textSecondary"
-                  gutterBottom
-                  noWrap
-                >
-                  <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
-                    {dateBroadcast || datePublished}
-                  </Moment>
-                </Typography>
-              </Grid>
-            </Grid>
+            <Typography component="span">
+              <Moment format="dddd, MMMM D, YYYY" tz="America/New_York" unix>
+                {dateBroadcast || datePublished}
+              </Moment>
+            </Typography>
             <Typography
               variant="h5"
               component="h2"
               gutterBottom
               className={cx('title')}
             >
-              <PlayCircleOutlineRounded
-                color="primary"
-                fontSize="large"
-                className={cx('playIcon')}
-              />{' '}
               {title}
             </Typography>
             <Typography variant="body1" component="div" color="textSecondary">

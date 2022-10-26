@@ -19,6 +19,7 @@ import {
   SidebarLatestStories,
   SidebarList
 } from '@components/Sidebar';
+import { QuickLinks } from '@components/QuickLinks';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
@@ -122,49 +123,50 @@ export const Homepage = () => {
     {
       key: 'main top',
       children: (
-        <Box mt={3}>
-          <StoryCard data={featuredStory} feature priority />
-          <StoryCardGrid data={featuredStories[1]} mt={2} />
+        <>
+          <Box display="grid" gridTemplateColumns="1fr" gridGap={8}>
+            <StoryCard data={featuredStory} feature priority />
+            <StoryCardGrid data={featuredStories[1]} gridGap={8} />
+          </Box>
           {inlineTop && (
-            <Box mt={3}>
+            <>
               <Hidden xsDown>
                 <CtaRegion data={inlineTop} />
               </Hidden>
               <Hidden smUp>
                 <SidebarCta data={inlineTop} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     },
     {
       key: 'main bottom',
       children: (
-        <Box mt={3}>
+        <>
           {stories
             .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource, index: number) => (
-              <Box mt={index ? 2 : 0} key={item.id}>
-                <StoryCard
-                  data={item}
-                  feature={
-                    item.displayTemplate && item.displayTemplate !== 'standard'
-                  }
-                />
-              </Box>
+            .map((item: IPriApiResource) => (
+              <StoryCard
+                data={item}
+                feature={
+                  item.displayTemplate && item.displayTemplate !== 'standard'
+                }
+                key={item.id}
+              />
             ))}
           {inlineBottom && (
-            <Box mt={3}>
+            <>
               <Hidden xsDown>
                 <CtaRegion data={inlineBottom} />
               </Hidden>
               <Hidden smUp>
                 <SidebarCta data={inlineBottom} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     }
   ];
@@ -173,52 +175,57 @@ export const Homepage = () => {
     {
       key: 'sidebar top',
       children: (
-        <Box mt={3}>
-          <SidebarEpisode data={latestEpisode} label="Latest Edition" />
+        <>
+          <SidebarEpisode data={latestEpisode} label="Latest Episode" />
           {sidebarTop && (
-            <Box mt={3}>
+            <>
               <Hidden only="sm">
                 <SidebarCta data={sidebarTop} />
+                <SidebarLatestStories
+                  data={latestStories[1]}
+                  label="Latest from our partners"
+                />
               </Hidden>
               <Hidden xsDown mdUp>
                 <CtaRegion data={sidebarTop} />
               </Hidden>
-            </Box>
+            </>
           )}
-          {categoriesMenu && (
-            <Box mt={3}>
-              <Sidebar item elevated>
-                <SidebarHeader>
-                  <Typography variant="h2">
-                    <StyleRounded /> Categories
-                  </Typography>
-                </SidebarHeader>
-                <SidebarList data={categoriesMenu} />
-              </Sidebar>
-            </Box>
-          )}
-        </Box>
+        </>
       )
     },
     {
       key: 'sidebar bottom',
       children: (
-        <Box mt={3}>
-          <SidebarLatestStories
-            data={latestStories[1]}
-            label="Latest from our partners"
-          />
+        <>
+          {categoriesMenu && (
+            <Sidebar item elevated>
+              <SidebarHeader>
+                <Typography variant="h2">
+                  <StyleRounded /> Categories
+                </Typography>
+              </SidebarHeader>
+              <SidebarList data={categoriesMenu} />
+            </Sidebar>
+          )}
+        </>
+      )
+    },
+    {
+      key: 'sidebar bottom',
+      children: (
+        <>
           {sidebarBottom && (
-            <Box mt={3}>
+            <>
               <Hidden only="sm">
                 <SidebarCta data={sidebarBottom} />
               </Hidden>
               <Hidden xsDown mdUp>
                 <CtaRegion data={sidebarBottom} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     }
   ];
@@ -266,7 +273,13 @@ export const Homepage = () => {
     <>
       <MetaTags data={metatags} />
       <Plausible subject={{ type: 'homepage', id: null }} />
-      <LandingPage main={mainElements} sidebar={sidebarElements} />
+      <QuickLinks />
+      <LandingPage
+        main={mainElements}
+        sidebar={sidebarElements}
+        mt={3}
+        gridGap={8}
+      />
     </>
   );
 };

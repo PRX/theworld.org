@@ -11,21 +11,20 @@ const accentBorderWidth = 3;
 export const storyBodyQAStyles = (theme: Theme) =>
   ({
     '& .qa-wrap': {
-      clear: 'both',
       padding: '0 2rem 0',
       marginBlockStart: theme.typography.pxToRem(theme.spacing(4)),
       marginBlockEnd: theme.typography.pxToRem(theme.spacing(4)),
       paddingBlockStart: theme.typography.pxToRem(theme.spacing(2)),
       paddingBlockEnd: theme.typography.pxToRem(theme.spacing(2)),
-      borderLeftWidth: theme.typography.pxToRem(accentBorderWidth),
-      borderLeftStyle: 'solid',
-      borderLeftColor: theme.palette.primary.main,
+      borderInlineStartWidth: theme.typography.pxToRem(accentBorderWidth),
+      borderInlineStartStyle: 'solid',
+      borderInlineStartColor: theme.palette.primary.main,
 
       '& .qa-question': {
         marginBlockEnd: theme.typography.pxToRem(theme.spacing(2)),
         fontWeight: 'bold',
-        paddingBottom: theme.typography.pxToRem(theme.spacing(2)),
-        borderBottom: `${theme.typography.pxToRem(2)} solid ${
+        paddingBlockEnd: theme.typography.pxToRem(theme.spacing(2)),
+        borderBlockEnd: `${theme.typography.pxToRem(2)} solid ${
           theme.palette.grey[200]
         }`
       },
@@ -38,7 +37,7 @@ export const storyBodyQAStyles = (theme: Theme) =>
         border: `${theme.typography.pxToRem(1)} solid ${
           theme.palette.grey[200]
         }`,
-        borderLeft: 'none'
+        borderInlineStart: 'none'
       }
     }
   } as CreateCSSProperties<{}>);

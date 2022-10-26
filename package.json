@@ -12,8 +12,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "dev": "next --port $PORT",
-    "dev:start": "yarn vercel dev",
+    "dev": "next dev",
+    "dev:start": "yarn dev",
     "build": "next build",
     "lint": "eslint --ext .jsx,.js,.tsx,.ts ./{components,config,contexts,interfaces,lib,pages,theme,assets/svg} --no-error-on-unmatched-pattern",
     "format:check": "prettier --config ./prettier.config.js --check **/*.{js,ts,tsx}",
@@ -108,7 +108,6 @@
     "react-test-renderer": "^16.9.0",
     "redux-devtools-extension": "^2.13.9",
     "ts-jest": "^27.0.3",
-    "typescript": "^3.6.4",
-    "vercel": "^23.1.2"
+    "typescript": "^3.6.4"
   }
 }

@@ -14,11 +14,7 @@ export const sidebarStyles = makeStyles((theme: Theme) =>
     container: {
       justifyContent: 'stretch'
     },
-    item: {
-      '& + &': {
-        marginTop: theme.spacing(2)
-      }
-    },
+    item: {},
     stretch: {
       flexGrow: 1,
       justifyContent: 'center'
