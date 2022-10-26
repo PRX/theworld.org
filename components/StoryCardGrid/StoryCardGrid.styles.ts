@@ -60,7 +60,7 @@ export const storyCardGridTheme = (theme: Theme) =>
       },
       MuiCardMedia: {
         root: {
-          alignSelf: 'center',
+          alignSelf: 'start',
           height: 'auto',
           paddingTop: '100%'
         }

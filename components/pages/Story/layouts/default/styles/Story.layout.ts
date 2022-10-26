@@ -15,5 +15,7 @@ export const storyLayoutStyles = (theme: Theme) =>
       }
     },
     content: {},
-    sidebar: {}
+    sidebar: {
+      gap: theme.typography.pxToRem(theme.spacing(1))
+    }
   });

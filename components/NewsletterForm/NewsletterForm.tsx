@@ -129,7 +129,7 @@ export const NewsletterForm = ({
                 size="small"
                 onClick={handleSubmit}
                 disabled={!readyToSubmit}
-                aria-hidden="true"
+                aria-label={label || 'Sign Up'}
               >
                 {icon}
               </IconButton>
@@ -142,7 +142,6 @@ export const NewsletterForm = ({
                 disableElevation={submitted}
                 endIcon={icon}
                 onClick={handleSubmit}
-                aria-label="Sign Up"
               >
                 {label || 'Sign Up'}
               </Button>
