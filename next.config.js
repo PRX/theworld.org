@@ -14,6 +14,7 @@ module.exports = withPlausibleProxy({
 })({
   env: {
     CM_API_KEY: process.env.CM_API_KEY,
+    CM_API_KEY_28C2ADD24B84C68A: process.env.CM_API_KEY_28C2ADD24B84C68A,
     CSE_API_KEY: process.env.CSE_API_KEY,
     FB_ACCESS_TOKEN: process.env.FB_ACCESS_TOKEN,
     FB_ADMINS: process.env.FB_ADMINS,
