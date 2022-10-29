@@ -3,12 +3,36 @@
  * Theme and styles for App layout.
  */
 
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  createStyles,
+  makeStyles,
+  Theme
+} from '@material-ui/core/styles';
 import { common } from '@material-ui/core/colors';
 import { blue, orange, red, green, grey, yellow } from './colors';
 
 const buttonBorderRadius = '3px';
 const buttonBorderWidth = '2px';
+
+export const appStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {},
+    uiFooter: {
+      position: 'fixed',
+      bottom: 0,
+      width: '100vw',
+      zIndex: theme.zIndex.appBar,
+      display: 'grid',
+      alignContent: 'end'
+    },
+    socialShareMenu: {
+      position: 'absolute',
+      right: theme.typography.pxToRem(theme.spacing(2)),
+      bottom: `calc(100% + ${theme.typography.pxToRem(theme.spacing(2))})`
+    }
+  })
+);
 
 export const headingProps = {
   color: blue[900],

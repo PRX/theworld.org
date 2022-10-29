@@ -10,9 +10,7 @@ export const socialShareMenuStyles = makeStyles(
   (theme: Theme) =>
     createStyles({
       root: {
-        position: 'fixed',
-        bottom: theme.typography.pxToRem(theme.spacing(2)),
-        right: theme.typography.pxToRem(theme.spacing(2)),
+        position: 'relative',
         zIndex: theme.zIndex.speedDial
       },
       staticTooltipLabel: {

@@ -32,6 +32,8 @@
     "autoprefixer": "^10.2.6",
     "base-64": "^0.1.0",
     "classnames": "^2.3.1",
+    "clsx": "^1.2.1",
+    "framer-motion": "^7.6.2",
     "googleapis": "^82.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "lodash": "^4.17.21",

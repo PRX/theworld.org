@@ -3,7 +3,7 @@
  * Component for social share menu.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { HTMLAttributes, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -50,7 +50,9 @@ const getIconsMap = (icons?: IIconsMap) => {
   return iconsMap;
 };
 
-export const SocialShareMenu = () => {
+export interface ISocialShareMenuProps extends HTMLAttributes<{}> {}
+
+export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
   const store = useStore();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
@@ -88,7 +90,7 @@ export const SocialShareMenu = () => {
   return (
     !!links && (
       <NoSsr>
-        <Box className={cx('root')}>
+        <Box className={cx('root', className)}>
           <SpeedDial
             ariaLabel="Show Share Links"
             hidden={!shown}

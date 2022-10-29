@@ -12,6 +12,12 @@ export interface DrawerState {
   open: boolean;
 }
 
+export interface PlayerState {
+  open: boolean;
+  currentIndex: number;
+  queue: any[];
+}
+
 export interface SocialShareMenuState {
   shown?: boolean;
   links?: ISocialLink[];

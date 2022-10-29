@@ -23,12 +23,15 @@ import {
   List,
   ListItem,
   ListItemText,
+  NoSsr,
   Typography
 } from '@material-ui/core';
 import { Label } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
+import { PlayAudioButton } from '@components/Player/components';
 import { ILink } from '@interfaces/link';
+import { parseAudioData } from '@lib/parse/audio/audioData';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { storyCardStyles, storyCardTheme } from './StoryCard.styles';
 
@@ -56,8 +59,15 @@ export const StoryCard = ({
     primaryCategory,
     crossLinks,
     dateBroadcast,
-    datePublished
+    datePublished,
+    audio
   } = data;
+  const audioData =
+    audio &&
+    parseAudioData(audio, {
+      title,
+      ...(image && { imageUrl: image.url })
+    });
   const { pathname } = generateLinkHrefForContent(
     data,
     true
@@ -182,6 +192,13 @@ export const StoryCard = ({
         {feature && !!(crossLinks && crossLinks.length) && (
           <CardActions>
             <List>{crossLinks.map((link: ILink) => renderLink(link))}</List>
+          </CardActions>
+        )}
+        {audioData && (
+          <CardActions>
+            <NoSsr>
+              <PlayAudioButton audio={audioData} />
+            </NoSsr>
           </CardActions>
         )}
       </Card>
