@@ -15,7 +15,6 @@ import {
 } from '@material-ui/core';
 import { HtmlContent } from '@components/HtmlContent';
 import { ICtaMessageProps } from '@interfaces/cta';
-import { handleButtonClick } from '@lib/routing';
 
 export const CtaMessageInfo = ({ data }: ICtaMessageProps) => {
   const { heading, message, action, dismiss } = data;
@@ -40,7 +39,7 @@ export const CtaMessageInfo = ({ data }: ICtaMessageProps) => {
       {hasActions && (
         <CardActions>
           {action && (
-            <Button {...actionAttrs} onClick={handleButtonClick(action.url)}>
+            <Button {...actionAttrs} href={action.url.href}>
               {action.name}
             </Button>
           )}

@@ -34,7 +34,7 @@ export const AppCtaMessageNewsletter = ({
         variant: 'outlined',
         color: 'primary'
       };
-  const handleActionClick = handleButtonClick(action?.url, () => {
+  const handleActionClick = handleButtonClick(action.url, () => {
     onClose();
   });
   const handleDismissClick = (

@@ -2970,9 +2970,9 @@ can-use-dom@^0.1.0:
   integrity sha1-IsxKNKCrxDlQ9CxkEQJKP2NmtFo=
 
 caniuse-lite@^1.0.30001181, caniuse-lite@^1.0.30001202, caniuse-lite@^1.0.30001219, caniuse-lite@^1.0.30001228, caniuse-lite@^1.0.30001230:
-  version "1.0.30001421"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001421.tgz"
-  integrity sha512-Sw4eLbgUJAEhjLs1Fa+mk45sidp1wRn5y6GtDpHGBaNJ9OCDJaVh2tIaWWUnGfuXfKf1JCBaIarak3FkVAvEeA==
+  version "1.0.30001272"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001272.tgz"
+  integrity sha512-DV1j9Oot5dydyH1v28g25KoVm7l8MTxazwuiH3utWiAS6iL/9Nh//TGwqFEeqqN8nnWYQ8HHhUq+o4QPt9kvYw==
 
 chalk@2.4.2, chalk@^2.0.0, chalk@^2.0.1:
   version "2.4.2"

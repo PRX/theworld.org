@@ -3,18 +3,22 @@
  * Gather CTA messages for a region group.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
+import { postJsonPriApiCtaRegion } from '@lib/fetch/api';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
-import { fetchCtaRegionGroup } from '@lib/fetch/cta';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { regionGroup } = req.query;
+    const { context = [] } = req.body;
     const allNumericRegex = /^\d+$/;
 
     if (regionGroup && !allNumericRegex.test(regionGroup as string)) {
       // Fetch CTA Messages.
-      const regionGroupData = (await fetchCtaRegionGroup(
-        regionGroup as string
+      const regionGroupData = (await postJsonPriApiCtaRegion(
+        regionGroup as string,
+        {
+          context
+        }
       )) as IPriApiResourceResponse;
 
       if (!regionGroupData || !regionGroupData.data.id) {
@@ -29,7 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           'public, s-maxage=2, stale-while-revalidate'
       );
 
-      return res.status(200).json(regionGroupData);
+      return res.status(200).json(regionGroupData.data.subqueues);
     }
     // No region group name provided.
     return res

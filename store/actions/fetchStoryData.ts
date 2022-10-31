@@ -8,21 +8,12 @@ import _uniqBy from 'lodash/uniqBy';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import {
-  IPriApiCollectionResponse,
   IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
-import { ICtaFilterProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
-import {
-  fetchApiCategoryStories,
-  fetchApiStory,
-  fetchCategoryStories,
-  fetchStory
-} from '@lib/fetch';
-import { getCollectionData, getDataByResource } from '@store/reducers';
-import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
-import { appendResourceCollection } from './appendResourceCollection';
+import { fetchApiStory, fetchStory } from '@lib/fetch';
+import { getDataByResource } from '@store/reducers';
 
 export const decorateWithBylines = (story: IPriApiResource) => {
   const { byline: b, bylines: bs, ...other } = story;
@@ -79,64 +70,29 @@ export const fetchStoryData = (
       .then((resp: IPriApiResourceResponse) => resp && resp.data)
       .then(story => decorateWithBylines(story));
 
-    // Set CTA filter props.
     dispatch({
-      type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+      type: 'SET_RESOURCE_CONTEXT',
       payload: {
-        filterProps: {
-          type,
-          id,
-          props: {
-            id,
-            categories: [
-              data.primaryCategory?.id,
-              ...(data.categories || [])
-                .filter((v: any) => !!v)
-                .map(({ id: tid }) => tid)
-            ].filter((v: any) => !!v),
-            program: data.program?.id || null
-          }
-        }
-      } as ICtaFilterProps
+        type,
+        id,
+        pageType: 'content',
+        context: [
+          `node:${data.id}`,
+          `node:${data.program?.id}`,
+          `term:${data.primaryCategory?.id}`,
+          ...((data.categories &&
+            !!data.categories.length &&
+            data.categories
+              .filter(v => !!v)
+              .map(({ id: tid }) => `term:${tid}`)) ||
+            []),
+          ...((data.vertical &&
+            !!data.vertical.length &&
+            data.vertical.filter(v => !!v).map(({ tid }) => `term:${tid}`)) ||
+            [])
+        ]
+      }
     });
-
-    // Get missing related stories data.
-    const collection = 'related';
-    const { primaryCategory } = data;
-    const related =
-      primaryCategory &&
-      getCollectionData(
-        state,
-        primaryCategory.type,
-        primaryCategory.id,
-        collection
-      );
-
-    if (!related && primaryCategory) {
-      (async () => {
-        const apiData = await (isOnServer
-          ? fetchCategoryStories
-          : fetchApiCategoryStories)(
-          primaryCategory.id,
-          1,
-          5,
-          'primary_category'
-        );
-
-        if (apiData) {
-          dispatch<any>(
-            appendResourceCollection(
-              apiData as IPriApiCollectionResponse,
-              primaryCategory.type,
-              primaryCategory.id,
-              collection
-            )
-          );
-        }
-      })();
-    }
-
-    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_content'));
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',

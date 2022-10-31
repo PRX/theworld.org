@@ -4,11 +4,12 @@
  */
 
 import { PropTypes } from '@material-ui/core';
+import { Url } from 'url';
 
 export interface IButton {
   key?: string | number;
   name: string;
-  url?: string;
+  url?: Url;
   itemLinkClass?: string;
   color?: PropTypes.Color;
   icon?: string;

@@ -45,10 +45,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
       };
 
     case 'FETCH_CONTENT_DATA_SUCCESS':
-      href = generateLinkHrefForContent(
-        action.payload,
-        true
-      ) as UrlWithParsedQuery;
+      href = generateLinkHrefForContent(action.payload);
       return {
         ...state,
         ...(action.payload &&
@@ -68,15 +65,12 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
             .filter(item => !!item)
             .reduce((a, item) => {
               const { id, type } = item;
-              const h = generateLinkHrefForContent(
-                item,
-                true
-              ) as UrlWithParsedQuery;
+              const h = generateLinkHrefForContent(item);
               return !h
                 ? a
                 : {
                     ...a,
-                    [h.pathname.substring(1)]: {
+                    [h.pathname.substr(1)]: {
                       id,
                       type
                     }

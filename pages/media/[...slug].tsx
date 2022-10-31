@@ -3,11 +3,11 @@
  * Exports the Home component.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useStore } from 'react-redux';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';
 import crypto from 'crypto';
-import { UrlWithParsedQuery } from 'url';
 import {
   IPriApiResource,
   IPriApiResourceResponse
@@ -19,8 +19,7 @@ import { wrapper } from '@store';
 import { fetchHomepage } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { getResourceFetchData } from '@lib/import/fetchData';
-import { fetchCtaRegionGroupData } from '@store/actions/fetchCtaRegionGroupData';
-import { fetchAppData } from '@store/actions/fetchAppData';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
@@ -31,7 +30,16 @@ interface StateProps extends RootState {}
 
 type Props = StateProps & IContentComponentProxyProps;
 
-const ContentProxy = ({ type }: Props) => {
+const ContentProxy = ({ type, id }: Props) => {
+  const store = useStore();
+
+  useEffect(() => {
+    // Fetch CTA messages for this resource.
+    (async () => {
+      await store.dispatch<any>(fetchCtaData(type, id));
+    })();
+  }, [type, id]);
+
   switch (type) {
     case 'file--audio':
       return <DynamicAudio />;
@@ -101,12 +109,6 @@ export const getStaticProps = wrapper.getStaticProps(
       if (fetchData) {
         const data = await store.dispatch(fetchData(resourceId));
 
-        await store.dispatch<any>(fetchAppData());
-
-        await store.dispatch<any>(
-          fetchCtaRegionGroupData('tw_cta_regions_site')
-        );
-
         return {
           props: {
             type: resourceType,
@@ -151,10 +153,7 @@ export const getStaticPaths = async () => {
       ...resources
         .map(resource => ({
           params: {
-            slug: (generateLinkHrefForContent(
-              resource,
-              true
-            ) as UrlWithParsedQuery)?.pathname
+            slug: generateLinkHrefForContent(resource)?.pathname
           }
         }))
         .filter(({ params: { slug } }) => !!slug?.length)

@@ -7,7 +7,6 @@ import React from 'react';
 import Image from 'next/image';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
-import { parse } from 'url';
 import { Box, Breadcrumbs, Container, Divider, Link } from '@material-ui/core';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
@@ -129,30 +128,28 @@ export const AppFooter = () => {
             aria-label="Footer Navigation"
             classes={{ ol: classes.footerNavMuiOl }}
           >
-            {footerNav
-              .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
-              .map(({ name, url, key, attributes }) =>
-                isLocalUrl(url.href) ? (
-                  <Link
-                    href={url.path}
-                    onClick={handleButtonClick(url)}
-                    key={key}
-                    className={classes.link}
-                    {...attributes}
-                  >
-                    {name}
-                  </Link>
-                ) : (
-                  <a
-                    href={url.href}
-                    className={classes.link}
-                    key={key}
-                    {...attributes}
-                  >
-                    {name}
-                  </a>
-                )
-              )}
+            {footerNav.map(({ name, url, key, attributes }) =>
+              isLocalUrl(url.href) ? (
+                <Link
+                  href={url.pathname}
+                  onClick={handleButtonClick(url)}
+                  key={key}
+                  className={classes.link}
+                  {...attributes}
+                >
+                  {name}
+                </Link>
+              ) : (
+                <a
+                  href={url.href}
+                  className={classes.link}
+                  key={key}
+                  {...attributes}
+                >
+                  {name}
+                </a>
+              )
+            )}
           </Breadcrumbs>
         )}
         <p className={classes.copyright}>

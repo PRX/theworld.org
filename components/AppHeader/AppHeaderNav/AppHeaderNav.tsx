@@ -5,13 +5,11 @@
 
 import React from 'react';
 import { useStore } from 'react-redux';
-import { parse } from 'url';
 import Button from '@material-ui/core/Button';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { FavoriteSharp } from '@material-ui/icons';
-import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';
 import { appHeaderNavTheme } from './AppHeaderNav.styles';
@@ -31,14 +29,13 @@ export const AppHeaderNav = () => {
   return (
     (headerNav?.length && (
       <ThemeProvider theme={appHeaderNavTheme}>
-        {headerNav
-          .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
-          .map(({ color, icon, name, url, key, attributes, itemLinkClass }) => (
+        {headerNav.map(
+          ({ color, icon, name, url, key, attributes, itemLinkClass }) => (
             <React.Fragment key={key}>
               <Hidden xsDown>
                 <Button
                   component="a"
-                  href={isLocalUrl(url.href) ? url.path : url.href}
+                  href={url.href}
                   onClick={handleButtonClick(url)}
                   variant={
                     /\bbtn-(text|link)\b/.test(itemLinkClass)
@@ -88,7 +85,8 @@ export const AppHeaderNav = () => {
                 )}
               </Hidden>
             </React.Fragment>
-          ))}
+          )
+        )}
       </ThemeProvider>
     )) ||
     null

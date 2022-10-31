@@ -4,7 +4,6 @@
  * @param id Term data or identifier.
  */
 
-import { UrlWithParsedQuery } from 'url';
 import {
   PriApiResourceResponse,
   IPriApiResource,
@@ -75,8 +74,7 @@ export const fetchTermStories = async (
       ]
         .filter((v: string) => !!v)
         .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
-    const { pathname } =
-      (generateLinkHrefForContent(term, true) as UrlWithParsedQuery) || {};
+    const { pathname } = generateLinkHrefForContent(term) || {};
     const fieldName = generateFieldNameFromPath(pathname);
 
     if (fieldName) {
