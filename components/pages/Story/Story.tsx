@@ -10,9 +10,11 @@ import { AppContext } from '@contexts/AppContext';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState, UiAction } from '@interfaces/state';
+import { fetchApiCategoryStories } from '@lib/fetch';
 import { parseUtcDate } from '@lib/parse/date';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { fetchStoryData } from '@store/actions/fetchStoryData';
-import { getDataByResource } from '@store/reducers';
+import { getDataByResource, getCollectionData } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
 
 export const Story = () => {
@@ -26,7 +28,7 @@ export const Story = () => {
   const unsub = store.subscribe(() => {
     updateForce(store.getState());
   });
-  const data = getDataByResource(state, type, id);
+  let data = getDataByResource(state, type, id);
   const {
     metatags: dataMetatags,
     title,
@@ -91,6 +93,14 @@ export const Story = () => {
   }
 
   useEffect(() => {
+    if (!data.complete) {
+      (async () => {
+        // Get content data.
+        await store.dispatch<any>(fetchStoryData(id));
+        data = getDataByResource(state, type, id);
+      })();
+    }
+
     // Show social hare menu.
     const { shareLinks } = data;
     store.dispatch<UiAction>({
@@ -129,19 +139,48 @@ export const Story = () => {
       }
     });
 
+    // Get missing related stories data.
+    const collection = 'related';
+    const { primaryCategory } = data;
+    const related =
+      primaryCategory &&
+      getCollectionData(
+        state,
+        primaryCategory.type,
+        primaryCategory.id,
+        collection
+      );
+
+    if (!related && primaryCategory) {
+      (async () => {
+        const apiData = await fetchApiCategoryStories(
+          primaryCategory.id,
+          1,
+          5,
+          'primary_category'
+        );
+
+        if (apiData) {
+          store.dispatch<any>(
+            appendResourceCollection(
+              apiData,
+              primaryCategory.type,
+              primaryCategory.id,
+              collection
+            )
+          );
+        }
+      })();
+    }
+
     return () => {
       // Show social hare menu.
       store.dispatch<UiAction>({
         type: 'UI_HIDE_SOCIAL_SHARE_MENU'
       });
-    };
-  }, [data.shareLinks]);
-
-  useEffect(() => {
-    return () => {
       unsub();
     };
-  }, []);
+  }, [id]);
 
   return (
     <>

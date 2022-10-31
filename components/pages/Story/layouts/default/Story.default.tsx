@@ -84,39 +84,36 @@ export const StoryDefault = ({ data }: Props) => {
   const related =
     relatedState &&
     relatedState.items[1].filter(item => item.id !== id).slice(0, 4);
-
-  // CTA data.
   const ctaInlineMobile01 = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_mobile_01',
     type,
-    id as string
+    id as string,
+    'tw_cta_region_content_inline_mobile_01'
   );
   const ctaInlineMobile02 = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_mobile_02',
     type,
-    id as string
+    id as string,
+    'tw_cta_region_content_inline_mobile_02'
   );
   const ctaInlineEnd = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_end',
     type,
-    id as string
+    id as string,
+    'tw_cta_region_content_inline_end'
   );
   const ctaSidebarTop = getCtaRegionData(
     state,
-    'tw_cta_region_content_sidebar_01',
     type,
-    id as string
+    id as string,
+    'tw_cta_region_content_sidebar_01'
   );
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    'tw_cta_region_content_sidebar_02',
     type,
-    id as string
+    id as string,
+    'tw_cta_region_content_sidebar_02'
   );
-
   const classes = storyStyles({});
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;

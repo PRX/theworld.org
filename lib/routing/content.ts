@@ -7,26 +7,21 @@ import { parse, UrlWithParsedQuery } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 
 /**
- * Helper function to convert API data object for use in app relative aliased
+ * Helper function to convert API data object for use in app relative aliseed
  * Url object for use in Link components.
  *
  * @param data
  *    API data object to convert.
  *
- * @param parseUrl
- *    Flag to return a parsed Url object.
- *
  * @returns
- *    Canonical URL for the resource.
+ *    Url object with alias query relative to app.
  */
 export const generateLinkHrefForContent = (
-  data: IPriApiResource,
-  parseUrl?: boolean
-): string | UrlWithParsedQuery => {
+  data: IPriApiResource
+): UrlWithParsedQuery => {
   const { metatags } = data || ({} as IPriApiResource);
   const { canonical } = metatags || {};
-  const href =
-    canonical && parseUrl ? parse(canonical as string, true) : canonical;
+  const href = canonical && parse(canonical as string, true);
 
   return href;
 };
@@ -35,7 +30,7 @@ export const generateLinkPropsForContent = (
   data: IPriApiResource,
   query?: { [k: string]: string }
 ): { href: UrlWithParsedQuery; as: UrlWithParsedQuery } => {
-  const url = generateLinkHrefForContent(data, true) as UrlWithParsedQuery;
+  const url = generateLinkHrefForContent(data);
 
   if (url) {
     const alias = {

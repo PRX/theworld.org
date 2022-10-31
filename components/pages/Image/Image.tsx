@@ -16,6 +16,7 @@ import { LedeImage } from '@components/LedeImage';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { imageStyles, imageTheme } from './Image.styles';
@@ -34,7 +35,6 @@ export const Image = () => {
   });
   const classes = imageStyles({});
   let data = getDataByResource(state, type, id);
-  // const context = [`file:${data.id}`];
 
   if (!data) {
     return null;
@@ -42,12 +42,11 @@ export const Image = () => {
 
   const { metatags, title, description } = data;
 
-  // CTA data.
   const ctaInlineEnd = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_end',
     type,
-    id
+    id as string,
+    'tw_cta_region_content_inline_end'
   );
 
   // Plausible Events.
@@ -64,6 +63,14 @@ export const Image = () => {
         data = getDataByResource(state, type, id);
       })();
     }
+
+    // Get CTA message data.
+    const context = [`file:${data.id}`];
+    (async () => {
+      await store.dispatch<any>(
+        fetchCtaData(type, id, 'tw_cta_regions_content', context)
+      );
+    })();
 
     return () => {
       unsub();

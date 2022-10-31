@@ -7,7 +7,6 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import classNames from 'classnames/bind';
-import { UrlWithParsedQuery } from 'url';
 import { Link as MuiLink, LinkProps } from '@material-ui/core';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -27,8 +26,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
   ({ children, data, query, className, ...other }: IContentLinkProps, ref) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const { pathname } =
-      (generateLinkHrefForContent(data, true) as UrlWithParsedQuery) || {};
+    const { pathname } = generateLinkHrefForContent(data) || {};
     const { title } = data || ({} as IPriApiResource);
     const props = generateLinkPropsForContent(data, query);
     const { href, as: alias } = props || {};

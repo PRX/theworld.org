@@ -17,6 +17,7 @@ import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { RootState } from '@interfaces/state';
 import { parseUtcDate } from '@lib/parse/date';
+import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { audioStyles, audioTheme } from './Audio.styles';
@@ -34,7 +35,7 @@ export const Audio = () => {
     setState(store.getState());
   });
   const classes = audioStyles({});
-  const data = getDataByResource(state, type, id);
+  let data = getDataByResource(state, type, id);
 
   if (!data) {
     return null;
@@ -57,12 +58,11 @@ export const Audio = () => {
     })
   };
 
-  // CTA data.
   const ctaInlineEnd = getCtaRegionData(
     state,
-    'tw_cta_region_content_inline_end',
     type,
-    id
+    id as string,
+    'tw_cta_region_content_inline_end'
   );
 
   // Plausible Events.
@@ -95,10 +95,29 @@ export const Audio = () => {
   });
 
   useEffect(() => {
+    if (!data.complete) {
+      (async () => {
+        // Get content data.
+        await store.dispatch<any>(fetchAudioData(id));
+        data = getDataByResource(state, type, id);
+      })();
+    }
+
+    // Get CTA message data.
+    const context = [
+      `file:${data.id}`,
+      ...(data.program ? [`node:${data.program.id}`] : [])
+    ];
+    (async () => {
+      await store.dispatch<any>(
+        fetchCtaData(type, id, 'tw_cta_regions_content', context)
+      );
+    })();
+
     return () => {
       unsub();
     };
-  }, []);
+  }, [id]);
 
   return (
     <ThemeProvider theme={audioTheme}>

@@ -8,7 +8,6 @@ import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import classNames from 'classnames/bind';
-import { UrlWithParsedQuery } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Card,
@@ -47,10 +46,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
 
     return iconMap.get(mt);
   })(type);
-  const { pathname } = generateLinkHrefForContent(
-    data,
-    true
-  ) as UrlWithParsedQuery;
+  const { pathname } = generateLinkHrefForContent(data);
   const classes = mediaCardStyles({ isLoading });
   const cx = classNames.bind(classes);
 

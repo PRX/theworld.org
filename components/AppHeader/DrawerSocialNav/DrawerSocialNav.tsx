@@ -5,9 +5,8 @@
 
 import React from 'react';
 import { useStore } from 'react-redux';
-import { parse } from 'url';
+import { IButton } from '@interfaces';
 import { IconButton, Toolbar } from '@material-ui/core';
-import { isLocalUrl } from '@lib/parse/url';
 import {
   Facebook,
   Twitter,
@@ -39,12 +38,11 @@ export const DrawerSocialNav = () => {
   return (
     (drawerSocialNav && (
       <Toolbar className={classes.root}>
-        {drawerSocialNav
-          .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
-          .map(({ name, url, icon, key, title, attributes }) => (
+        {drawerSocialNav.map(
+          ({ name, url, icon, key, title, attributes }: IButton) => (
             <IconButton
               color="inherit"
-              href={isLocalUrl(url.href) ? url.path : url.href}
+              href={url.href}
               target="_blank"
               rel="noopener noreferrer"
               key={key}
@@ -53,7 +51,8 @@ export const DrawerSocialNav = () => {
             >
               {renderIcon(icon, title || name)}
             </IconButton>
-          ))}
+          )
+        )}
       </Toolbar>
     )) ||
     null

@@ -16,7 +16,6 @@ import {
   ThemeProvider
 } from '@material-ui/core';
 import { HtmlContent } from '@components/HtmlContent';
-import { handleButtonClick } from '@lib/routing';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 import { appCtaMessageOptInTheme } from './AppCtaMessageOptIn.styles';
 
@@ -36,9 +35,9 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
         variant: 'outlined',
         color: 'primary'
       };
-  const handleActionClick = handleButtonClick(action?.url, () => {
+  const handleActionClick = () => {
     onClose();
-  });
+  };
   const handleDismissClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -73,7 +72,11 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
         {hasActions && (
           <Toolbar>
             {action && (
-              <Button {...actionAttrs} onClick={handleActionClick}>
+              <Button
+                {...actionAttrs}
+                href={action.url && action.url.href}
+                onClick={handleActionClick}
+              >
                 {action.name}
               </Button>
             )}

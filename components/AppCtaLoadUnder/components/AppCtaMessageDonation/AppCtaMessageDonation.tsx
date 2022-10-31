@@ -4,7 +4,6 @@
  */
 
 import React from 'react';
-import { handleButtonClick } from '@lib/routing';
 import {
   Box,
   Button,
@@ -32,9 +31,9 @@ export const AppCtaMessageDonation = ({
         variant: 'outlined',
         color: 'secondary'
       };
-  const handleActionClick = handleButtonClick(action?.url, () => {
+  const handleActionClick = () => {
     onClose();
-  });
+  };
   const handleDismissClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -53,7 +52,11 @@ export const AppCtaMessageDonation = ({
       {hasActions && (
         <Toolbar>
           {action && (
-            <Button {...actionAttrs} onClick={handleActionClick}>
+            <Button
+              {...actionAttrs}
+              href={action.url.href}
+              onClick={handleActionClick}
+            >
               {action.name}
             </Button>
           )}

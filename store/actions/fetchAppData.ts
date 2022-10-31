@@ -9,7 +9,6 @@ import { RootState } from '@interfaces/state';
 import { fetchApiApp, fetchApp } from '@lib/fetch';
 import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
-import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchAppData = (): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
@@ -30,8 +29,6 @@ export const fetchAppData = (): ThunkAction<void, {}, {}, AnyAction> => async (
     dispatch(
       appendResourceCollection(latestStories, 'app', undefined, 'latest')
     );
-
-    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_site'));
 
     dispatch({
       type: 'FETCH_MENUS_DATA_SUCCESS',

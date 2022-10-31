@@ -5,7 +5,6 @@
 
 import React from 'react';
 import { useStore } from 'react-redux';
-import { parse } from 'url';
 import { Label } from '@material-ui/icons';
 import { Breadcrumbs, Container, Link } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -29,30 +28,28 @@ export const QuickLinks = () => {
               aria-hidden="true"
               className={classes.label}
             />
-            {quickLinks
-              .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
-              .map(({ name, url, key, attributes }) =>
-                isLocalUrl(url.href) ? (
-                  <Link
-                    href={url.pathname}
-                    onClick={handleButtonClick(url)}
-                    key={key}
-                    className={classes.link}
-                    {...attributes}
-                  >
-                    {name}
-                  </Link>
-                ) : (
-                  <a
-                    href={url.href}
-                    className={classes.link}
-                    key={key}
-                    {...attributes}
-                  >
-                    {name}
-                  </a>
-                )
-              )}
+            {quickLinks.map(({ name, url, key, attributes }) =>
+              isLocalUrl(url.href) ? (
+                <Link
+                  href={url.pathname}
+                  onClick={handleButtonClick(url)}
+                  key={key}
+                  className={classes.link}
+                  {...attributes}
+                >
+                  {name}
+                </Link>
+              ) : (
+                <a
+                  href={url.href}
+                  className={classes.link}
+                  key={key}
+                  {...attributes}
+                >
+                  {name}
+                </a>
+              )
+            )}
           </Breadcrumbs>
         </Container>
       </ThemeProvider>
