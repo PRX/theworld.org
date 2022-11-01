@@ -17,7 +17,7 @@ import { fetchProgramStories } from './fetchProgramStories';
 
 export const fetchProgram = async (
   id: string,
-  params: ParsedUrlQuery
+  params?: ParsedUrlQuery
 ): Promise<PriApiResourceResponse> => {
   const programParams = {
     include: [
@@ -35,8 +35,6 @@ export const fetchProgram = async (
     id as string,
     programParams
   ).then((resp: IPriApiResourceResponse) => resp && resp.data);
-
-  console.log(params);
 
   if (program) {
     const { featuredStories } = program;
