@@ -168,49 +168,49 @@ export const Player = ({ children }: IPlayerProps) => {
     });
   };
 
-  const updateMediaSession = useCallback(() => {
-    const artworkSrc = currentTrack.imageUrl;
-    if ('mediaSession' in navigator) {
-      navigator.mediaSession.metadata = new window.MediaMetadata({
-        title: currentTrack.title,
-        artist: currentTrack.subtitle,
-        ...(artworkSrc && { artwork: [{ src: artworkSrc }] })
-      });
-      navigator.mediaSession.setActionHandler('play', () => {
-        play();
-      });
-      navigator.mediaSession.setActionHandler('pause', () => {
-        pause();
-      });
-      navigator.mediaSession.setActionHandler('seekto', e => {
-        seekTo(e.seekTime);
-      });
-      navigator.mediaSession.setActionHandler('seekbackward', () => {
-        replay();
-      });
-      navigator.mediaSession.setActionHandler('seekforward', () => {
-        forward();
-      });
+  // const updateMediaSession = useCallback(() => {
+  //   const artworkSrc = currentTrack.imageUrl;
+  //   if (navigator && 'mediaSession' in navigator) {
+  //     navigator.mediaSession.metadata = new window.MediaMetadata({
+  //       title: currentTrack.title,
+  //       artist: currentTrack.subtitle,
+  //       ...(artworkSrc && { artwork: [{ src: artworkSrc }] })
+  //     });
+  //     navigator?.mediaSession.setActionHandler('play', () => {
+  //       play();
+  //     });
+  //     navigator?.mediaSession.setActionHandler('pause', () => {
+  //       pause();
+  //     });
+  //     navigator?.mediaSession.setActionHandler('seekto', e => {
+  //       seekTo(e.seekTime);
+  //     });
+  //     navigator?.mediaSession.setActionHandler('seekbackward', () => {
+  //       replay();
+  //     });
+  //     navigator?.mediaSession.setActionHandler('seekforward', () => {
+  //       forward();
+  //     });
 
-      if (tracks.length > 1) {
-        navigator.mediaSession.setActionHandler('previoustrack', () => {
-          previousTrack();
-        });
+  //     if (tracks.length > 1) {
+  //       navigator?.mediaSession.setActionHandler('previoustrack', () => {
+  //         previousTrack();
+  //       });
 
-        navigator.mediaSession.setActionHandler('nexttrack', () => {
-          nextTrack();
-        });
-      }
-    }
-  }, [
-    currentTrack.imageUrl,
-    currentTrack.subtitle,
-    currentTrack.title,
-    forward,
-    replay,
-    seekTo,
-    tracks?.length
-  ]);
+  //       navigator?.mediaSession.setActionHandler('nexttrack', () => {
+  //         nextTrack();
+  //       });
+  //     }
+  //   }
+  // }, [
+  //   currentTrack.imageUrl,
+  //   currentTrack.subtitle,
+  //   currentTrack.title,
+  //   forward,
+  //   replay,
+  //   seekTo,
+  //   tracks?.length
+  // ]);
 
   const playerContextValue = useMemo(
     () => ({
@@ -249,13 +249,13 @@ export const Player = ({ children }: IPlayerProps) => {
     audioElm.current
       .play()
       .then(() => {
-        updateMediaSession();
+        // updateMediaSession();
       })
       .catch(e => {
         // eslint-disable-next-line no-console
         console.error(e);
       });
-  }, [updateMediaSession]);
+  }, []);
 
   const pauseAudio = useCallback(() => {
     audioElm.current.pause();

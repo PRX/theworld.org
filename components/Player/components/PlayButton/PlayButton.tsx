@@ -9,7 +9,6 @@ import classNames from 'classnames/bind';
 import { PlayArrowSharp } from '@material-ui/icons';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import IconButton from '@material-ui/core/IconButton';
-import { IAudioData } from '../../types';
 import { playButtonStyles } from './PlayButton.styles';
 
 const PauseSharp = dynamic(() => import('@material-ui/icons/PauseSharp'), {
@@ -23,13 +22,13 @@ export interface IPlayButtonProps {
 export const PlayButton = ({ className }: IPlayButtonProps) => {
   const { state, togglePlayPause } = useContext(PlayerContext);
   const { playing } = state;
-  // const classes = playButtonStyles({
-  //   playing
-  // });
-  // const cx = classNames.bind(classes);
-  // const playBtnClasses = cx(className, {
-  //   playBtn: true
-  // });
+  const classes = playButtonStyles({
+    playing
+  });
+  const cx = classNames.bind(classes);
+  const playBtnClasses = cx(className, {
+    playBtn: true
+  });
 
   const handleClick = () => {
     togglePlayPause();
@@ -37,6 +36,7 @@ export const PlayButton = ({ className }: IPlayButtonProps) => {
 
   return (
     <IconButton
+      className={playBtnClasses}
       aria-label={playing ? 'Pause' : 'Play'}
       onClick={handleClick}
       disableRipple

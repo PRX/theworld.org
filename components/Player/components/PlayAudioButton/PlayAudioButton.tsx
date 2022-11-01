@@ -29,13 +29,13 @@ export const PlayAudioButton = ({
   const { playing, currentTrackIndex, tracks } = state;
   const currentTrack = tracks?.[currentTrackIndex];
   const audioIsPlaying = playing && currentTrack?.guid === audio.guid;
-  // const classes = playAudioButtonStyles({
-  //   playing
-  // });
-  // const cx = classNames.bind(classes);
-  // const playBtnClasses = cx(className, {
-  //   playBtn: true
-  // });
+  const classes = playAudioButtonStyles({
+    playing
+  });
+  const cx = classNames.bind(classes);
+  const playBtnClasses = cx(className, {
+    playBtn: true
+  });
 
   const handleClick = () => {
     if (audio && audio.guid !== currentTrack?.guid) {
@@ -47,6 +47,7 @@ export const PlayAudioButton = ({
 
   return (
     <IconButton
+      className={playBtnClasses}
       aria-label={audioIsPlaying ? 'Pause' : 'Play'}
       onClick={handleClick}
       disableRipple
