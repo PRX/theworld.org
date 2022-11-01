@@ -70,11 +70,11 @@ export const fetchProgram = async (
     }
 
     if (params?.v === 'episodes') {
-      const stories = await fetchProgramStories(program, 1, 1).then(
+      const stories = await fetchProgramStories(program, 1, 5).then(
         (resp: IPriApiCollectionResponse) => resp
       );
       const storiesData = [...stories.data];
-      const episodes = await fetchProgramEpisodes(program).then(
+      const episodes = await fetchProgramEpisodes(program, 1, 5).then(
         (resp: IPriApiCollectionResponse) => resp
       );
 
