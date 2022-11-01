@@ -80,11 +80,13 @@ const ContentProxy = ({ type }: Props) => {
 export const getServerSideProps = wrapper.getServerSideProps(
   store => async ({
     res,
-    params: { alias }
+    req,
+    params
   }): Promise<GetServerSidePropsResult<any>> => {
     let resourceId: string;
     let resourceType: string = 'homepage';
     let redirect: string;
+    const { alias } = params;
     const aliasPath = (alias as string[]).join('/');
     const rgxFileExt = /\.\w+$/;
 
@@ -129,7 +131,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         const fetchData = getResourceFetchData(resourceType);
 
         if (fetchData) {
-          const data = await store.dispatch(fetchData(resourceId, res));
+          const data = await store.dispatch(fetchData(resourceId, req, res));
 
           await store.dispatch<any>(fetchAppData());
 
