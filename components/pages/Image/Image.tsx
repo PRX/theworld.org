@@ -4,9 +4,7 @@
  */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CtaRegion } from '@components/CtaRegion';
@@ -15,7 +13,6 @@ import { HtmlContent } from '@components/HtmlContent';
 import { LedeImage } from '@components/LedeImage';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { RootState } from '@interfaces/state';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { imageStyles, imageTheme } from './Image.styles';
@@ -93,18 +90,4 @@ export const Image = () => {
       </Container>
     </ThemeProvider>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<void> => {
-  const type = 'file--images';
-  const data = getDataByResource(getState(), type, id);
-
-  if (!data) {
-    await dispatch<any>(fetchAudioData(id));
-  }
 };

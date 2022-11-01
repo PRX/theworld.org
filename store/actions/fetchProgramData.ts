@@ -5,6 +5,8 @@
  */
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { IncomingMessage } from 'http';
+import { parse } from 'url';
 import {
   IPriApiResource,
   IPriApiResourceResponse
@@ -17,7 +19,8 @@ import { appendResourceCollection } from './appendResourceCollection';
 import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchProgramData = (
-  id: string
+  id: string,
+  req: IncomingMessage
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
@@ -25,6 +28,7 @@ export const fetchProgramData = (
   const state = getState();
   const type = 'node--programs';
   const isOnServer = typeof window === 'undefined';
+  const params = req?.url ? parse(req.url, true).query : null;
   let data = getDataByResource(state, type, id);
 
   if (!data || !data.complete || isOnServer) {
@@ -36,9 +40,10 @@ export const fetchProgramData = (
       }
     });
 
-    data = await (isOnServer ? fetchProgram : fetchApiProgram)(id).then(
-      (resp: IPriApiResourceResponse) => resp && resp.data
-    );
+    data = await (isOnServer
+      ? fetchProgram(id, params)
+      : fetchApiProgram(id)
+    ).then((resp: IPriApiResourceResponse) => resp && resp.data);
     const {
       featuredStory,
       featuredStories,
@@ -71,35 +76,41 @@ export const fetchProgramData = (
       }
     });
 
-    dispatch(
-      appendResourceCollection(
-        {
-          data: [featuredStory],
-          meta: { count: 1 }
-        },
-        type,
-        id,
-        'featured story'
-      )
-    );
+    if (featuredStories) {
+      dispatch(
+        appendResourceCollection(
+          {
+            data: [featuredStory],
+            meta: { count: 1 }
+          },
+          type,
+          id,
+          'featured story'
+        )
+      );
 
-    dispatch(
-      appendResourceCollection(
-        {
-          data: [...featuredStories],
-          meta: {
-            count: featuredStories.length
-          }
-        },
-        type,
-        id,
-        'featured stories'
-      )
-    );
+      dispatch(
+        appendResourceCollection(
+          {
+            data: [...featuredStories],
+            meta: {
+              count: featuredStories.length
+            }
+          },
+          type,
+          id,
+          'featured stories'
+        )
+      );
+    }
 
-    dispatch(appendResourceCollection(stories, type, id, 'stories'));
+    if (stories) {
+      dispatch(appendResourceCollection(stories, type, id, 'stories'));
+    }
 
-    dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
+    if (episodes) {
+      dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
+    }
   }
 
   return data;

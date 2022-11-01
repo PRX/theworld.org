@@ -3,15 +3,12 @@
  * Component for Story.
  */
 import React, { useContext, useEffect, useState } from 'react';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { AppContext } from '@contexts/AppContext';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { RootState, UiAction } from '@interfaces/state';
+import { UiAction } from '@interfaces/state';
 import { parseUtcDate } from '@lib/parse/date';
-import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { getDataByResource } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
 
@@ -150,19 +147,4 @@ export const Story = () => {
       <LayoutComponent data={data} />
     </>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<void> => {
-  const type = 'node--stories';
-  const data = getDataByResource(getState(), type, id);
-
-  if (!data) {
-    // Get content data.
-    await dispatch<any>(fetchStoryData(id));
-  }
 };

@@ -4,7 +4,6 @@
  */
 
 import React from 'react';
-import { NoSsr } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { getShownMessage } from '@lib/cta';
@@ -19,11 +18,9 @@ export const SidebarCta = ({ data }: ICtaRegionProps) => {
   return (
     data &&
     CtaMessageComponent && (
-      <NoSsr>
-        <ThemeProvider theme={sidebarCtaTheme}>
-          <CtaMessageComponent data={{ ...shownMessage }} />
-        </ThemeProvider>
-      </NoSsr>
+      <ThemeProvider theme={sidebarCtaTheme}>
+        <CtaMessageComponent data={{ ...shownMessage }} />
+      </ThemeProvider>
     )
   );
 };

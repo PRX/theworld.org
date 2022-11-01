@@ -14,21 +14,27 @@ const IndexPage = () => {
   return <Homepage />;
 };
 
-export const getStaticProps = wrapper.getStaticProps(store => async () => {
-  const data = await store.dispatch<any>(fetchHomepageData());
+export const getServerSideProps = wrapper.getServerSideProps(
+  store => async ({ res }) => {
+    const data = await store.dispatch<any>(fetchHomepageData());
 
-  await store.dispatch<any>(fetchAppData());
+    await store.dispatch<any>(fetchAppData());
 
-  return {
-    props: {
-      type: 'homepage',
-      dataHash: crypto
-        .createHash('sha256')
-        .update(JSON.stringify(data))
-        .digest('hex')
-    },
-    revalidate: parseInt(process.env.ISR_REVALIDATE || '1', 10)
-  };
-});
+    res.setHeader(
+      'Cache-Control',
+      `public, s-maxage=${60 * 60}, stale-while-revalidate=${60 * 5}`
+    );
+
+    return {
+      props: {
+        type: 'homepage',
+        dataHash: crypto
+          .createHash('sha256')
+          .update(JSON.stringify(data))
+          .digest('hex')
+      }
+    };
+  }
+);
 
 export default IndexPage;

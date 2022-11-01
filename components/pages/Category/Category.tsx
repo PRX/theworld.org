@@ -4,9 +4,7 @@
  */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -34,9 +32,7 @@ import { LandingPageHeader } from '@components/LandingPageHeader';
 import { MetaTags } from '@components/MetaTags';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { AppContext } from '@contexts/AppContext';
-import { RootState } from '@interfaces/state';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import { fetchCategoryData } from '@store/actions/fetchCategoryData';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -307,21 +303,4 @@ export const Category = () => {
       />
     </>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<void> => {
-  const type = 'taxonomy_term--categories';
-  const state = getState();
-  const data = getDataByResource(state, type, id);
-
-  // Get missing content data.
-  if (!data) {
-    // Get content data.
-    await dispatch<any>(fetchCategoryData(id));
-  }
 };

@@ -4,9 +4,7 @@
  */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { LedeVideo } from '@components/LedeVideo';
@@ -15,7 +13,6 @@ import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { RootState } from '@interfaces/state';
 import { fetchVideoData } from '@store/actions/fetchVideoData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { videoStyles, videoTheme } from './Video.styles';
@@ -92,18 +89,4 @@ export const Video = () => {
       </Container>
     </ThemeProvider>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<void> => {
-  const type = 'file--videos';
-  const data = getDataByResource(getState(), type, id);
-
-  if (!data) {
-    await dispatch<any>(fetchVideoData(id));
-  }
 };

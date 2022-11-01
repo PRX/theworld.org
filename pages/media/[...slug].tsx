@@ -4,20 +4,14 @@
  */
 
 import React from 'react';
-import { GetStaticPropsResult } from 'next';
+import { GetServerSidePropsResult } from 'next';
 import dynamic from 'next/dynamic';
 import crypto from 'crypto';
-import { UrlWithParsedQuery } from 'url';
-import {
-  IPriApiResource,
-  IPriApiResourceResponse
-} from 'pri-api-library/types';
+import { IPriApiResource } from 'pri-api-library/types';
 import { IContentComponentProxyProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
 import { fetchAliasData } from '@store/actions/fetchAliasData';
 import { wrapper } from '@store';
-import { fetchHomepage } from '@lib/fetch';
-import { generateLinkHrefForContent } from '@lib/routing';
 import { getResourceFetchData } from '@lib/import/fetchData';
 import { fetchCtaRegionGroupData } from '@store/actions/fetchCtaRegionGroupData';
 import { fetchAppData } from '@store/actions/fetchAppData';
@@ -47,8 +41,11 @@ const ContentProxy = ({ type }: Props) => {
   }
 };
 
-export const getStaticProps = wrapper.getStaticProps(
-  store => async ({ params: { slug } }): Promise<GetStaticPropsResult<any>> => {
+export const getServerSideProps = wrapper.getServerSideProps(
+  store => async ({
+    res,
+    params: { slug }
+  }): Promise<GetServerSidePropsResult<any>> => {
     let resourceId: string;
     let resourceType: string = 'homepage';
     let redirect: string;
@@ -99,12 +96,17 @@ export const getStaticProps = wrapper.getStaticProps(
       const fetchData = getResourceFetchData(resourceType);
 
       if (fetchData) {
-        const data = await store.dispatch(fetchData(resourceId));
+        const data = await store.dispatch(fetchData(resourceId, res));
 
         await store.dispatch<any>(fetchAppData());
 
         await store.dispatch<any>(
           fetchCtaRegionGroupData('tw_cta_regions_site')
+        );
+
+        res.setHeader(
+          'Cache-Control',
+          `public, s-maxage=${60 * 60 * 24}, stale-while-revalidate=${60 * 5}`
         );
 
         return {
@@ -115,8 +117,7 @@ export const getStaticProps = wrapper.getStaticProps(
               .createHash('sha256')
               .update(JSON.stringify(data))
               .digest('hex')
-          },
-          revalidate: parseInt(process.env.ISR_REVALIDATE || '1', 10)
+          }
         };
       }
     }
@@ -124,52 +125,5 @@ export const getStaticProps = wrapper.getStaticProps(
     return { notFound: true };
   }
 );
-
-export const getStaticPaths = async () => {
-  let paths = [];
-
-  // Check if env wants static pages built.
-  if (process.env.TW_STATIC_PREBUILD === 'BUILD') {
-    const [homepage] = await Promise.all([
-      fetchHomepage().then((resp: IPriApiResourceResponse) => resp && resp.data)
-    ]);
-    const { episodes } = homepage;
-    const resources = [
-      ...episodes.data
-        .reduce(
-          (acc: IPriApiResource[], { audio }) => [
-            ...acc,
-            ...((audio?.segments
-              ? [...audio.segments]
-              : []) as IPriApiResource[])
-          ],
-          [] as IPriApiResource[]
-        )
-        .filter((item: IPriApiResource) => item.type === 'file--audio')
-    ];
-    paths = [
-      ...resources
-        .map(resource => ({
-          params: {
-            slug: (generateLinkHrefForContent(
-              resource,
-              true
-            ) as UrlWithParsedQuery)?.pathname
-          }
-        }))
-        .filter(({ params: { slug } }) => !!slug?.length)
-        .map(({ params: { slug } }) => ({
-          params: {
-            slug: slug?.split('/').slice(1)
-          }
-        }))
-    ];
-  }
-
-  return {
-    paths,
-    fallback: 'blocking'
-  };
-};
 
 export default ContentProxy;

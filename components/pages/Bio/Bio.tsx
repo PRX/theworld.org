@@ -5,9 +5,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Button, Hidden, Typography } from '@material-ui/core';
 import { EqualizerRounded, PublicRounded } from '@material-ui/icons';
@@ -29,9 +27,7 @@ import {
 import { StoryCard } from '@components/StoryCard';
 import { fetchApiPersonAudio, fetchApiPersonStories } from '@lib/fetch';
 import { AppContext } from '@contexts/AppContext';
-import { RootState } from '@interfaces/state';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import { fetchPersonData } from '@store/actions/fetchPersonData';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -310,21 +306,4 @@ export const Bio = () => {
       <LandingPage main={mainElements} sidebar={sidebarElements} />
     </>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<void> => {
-  const type = 'node--people';
-  const state = getState();
-  const data = getDataByResource(state, type, id);
-
-  // Get missing content data.
-  if (!data?.complete) {
-    // Get content data.
-    await dispatch<any>(fetchPersonData(id));
-  }
 };

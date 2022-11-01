@@ -4,9 +4,7 @@
  */
 import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   AppBar,
@@ -29,9 +27,7 @@ import { LandingPageHeader } from '@components/LandingPageHeader';
 import { MetaTags } from '@components/MetaTags';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { AppContext } from '@contexts/AppContext';
-import { RootState } from '@interfaces/state';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import { fetchTermData } from '@store/actions/fetchTermData';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -349,21 +345,4 @@ export const Term = () => {
       />
     </>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<void> => {
-  const type = 'taxonomy_term--terms';
-  const state = getState();
-  const data = getDataByResource(state, type, id);
-
-  // Get missing content data.
-  if (!data) {
-    // Get content data.
-    await dispatch<any>(fetchTermData(id));
-  }
 };

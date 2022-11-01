@@ -92,7 +92,7 @@ describe('lib/parse/menu', () => {
         data[1].children[0].attributes.name
       );
       expect(result[1].children[0]).toHaveProperty('url');
-      expect(result[1].children[0].url.href).toEqual(
+      expect(result[1].children[0].url).toEqual(
         data[1].children[0].attributes.url
       );
     });

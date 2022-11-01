@@ -6,7 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
-import { Box, Container, IconButton, NoSsr } from '@material-ui/core';
+import { Box, Container, IconButton } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CloseSharp } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
@@ -60,32 +60,30 @@ export const AppCtaLoadUnder = () => {
     CtaMessageComponent &&
     shownMessage &&
     !closed && (
-      <NoSsr>
-        <ThemeProvider theme={appCtaLoadUnderTheme}>
-          <Box
-            component="aside"
-            className={cx('root')}
-            position="fixed"
-            bottom={0}
-            width="100%"
-            px={4}
-          >
-            <Container className={cx('container')} maxWidth="lg">
-              <CtaMessageComponent data={shownMessage} onClose={handleClose} />
-            </Container>
-            <Box position="absolute" top={0} right={0}>
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                disableRipple
-                onClick={handleClose}
-              >
-                <CloseSharp />
-              </IconButton>
-            </Box>
+      <ThemeProvider theme={appCtaLoadUnderTheme}>
+        <Box
+          component="aside"
+          className={cx('root')}
+          position="fixed"
+          bottom={0}
+          width="100%"
+          px={4}
+        >
+          <Container className={cx('container')} maxWidth="lg">
+            <CtaMessageComponent data={shownMessage} onClose={handleClose} />
+          </Container>
+          <Box position="absolute" top={0} right={0}>
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              disableRipple
+              onClick={handleClose}
+            >
+              <CloseSharp />
+            </IconButton>
           </Box>
-        </ThemeProvider>
-      </NoSsr>
+        </Box>
+      </ThemeProvider>
     )
   );
 };
