@@ -4,16 +4,13 @@
  */
 
 import React, { useContext, useEffect } from 'react';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { RootState } from '@interfaces/state';
 import { fetchPageData } from '@store/actions/fetchPageData';
 import { getDataByResource } from '@store/reducers';
 import { pageStyles, pageTheme } from './Page.styles';
@@ -68,18 +65,4 @@ export const Page = () => {
       </Container>
     </ThemeProvider>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<void> => {
-  const type = 'node--pages';
-  const data = getDataByResource(getState(), type, id);
-
-  if (!data) {
-    await dispatch<any>(fetchPageData(id));
-  }
 };

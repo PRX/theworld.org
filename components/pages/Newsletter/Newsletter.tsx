@@ -5,8 +5,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
-import { AnyAction } from 'redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import {
   Box,
   Container,
@@ -22,7 +20,6 @@ import { MetaTags } from '@components/MetaTags';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { IPriApiNewsletter } from '@interfaces/newsletter';
-import { RootState } from '@interfaces/state';
 import { parseNewsletterOptions } from '@lib/parse/cta';
 import { fetchNewsletterData } from '@store/actions/fetchNewsletterData';
 import { getDataByResource } from '@store/reducers';
@@ -158,19 +155,4 @@ export const Newsletter = () => {
       </ThemeProvider>
     </>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-) => {
-  const type = 'node--newsletter_sign_ups';
-  const data = getDataByResource(getState(), type, id);
-
-  if (!data) {
-    // Get content data.
-    await dispatch<any>(fetchNewsletterData(id));
-  }
 };

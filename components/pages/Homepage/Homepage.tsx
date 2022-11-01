@@ -4,9 +4,7 @@
  */
 import React, { useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Hidden, Typography } from '@material-ui/core';
 import StyleRounded from '@material-ui/icons/StyleRounded';
@@ -24,7 +22,6 @@ import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
-import { fetchHomepageData } from '@store/actions/fetchHomepageData';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -274,11 +271,4 @@ export const Homepage = () => {
       />
     </>
   );
-};
-
-export const fetchData = (): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>
-): Promise<void> => {
-  // Fetch App Data
-  await dispatch<any>(fetchHomepageData());
 };
