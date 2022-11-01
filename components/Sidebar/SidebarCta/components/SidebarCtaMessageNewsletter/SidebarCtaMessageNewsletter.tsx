@@ -31,7 +31,7 @@ export const SidebarCtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
     newsletterOptions
   } = data;
 
-  const handleSubscibed = () => {
+  const handleSubscribed = () => {
     setSubscribed(true);
   };
 
@@ -51,7 +51,7 @@ export const SidebarCtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
             <NewsletterForm
               label={action && action.name}
               options={newsletterOptions}
-              onSubscribed={handleSubscibed}
+              onSubscribed={handleSubscribed}
               compact
             />
           )}

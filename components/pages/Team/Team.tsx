@@ -10,6 +10,7 @@ import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import classNames from 'classnames/bind';
+import { UrlWithParsedQuery } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Card,
@@ -104,7 +105,10 @@ export const Team = () => {
           {items
             .reduce((a, p) => [...a, ...p], [])
             .map((item: IPriApiResource, index) => {
-              const { pathname } = generateLinkHrefForContent(item);
+              const { pathname } = generateLinkHrefForContent(
+                item,
+                true
+              ) as UrlWithParsedQuery;
               const isLoading = loadingUrl === pathname;
 
               return (

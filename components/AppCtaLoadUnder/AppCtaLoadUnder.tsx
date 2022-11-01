@@ -6,11 +6,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
-import { getShownMessage, setCtaCookie } from '@lib/cta';
 import { Box, Container, IconButton, NoSsr } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CloseSharp } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
+import { getShownMessage, setCtaCookie } from '@lib/cta';
 import { getCtaRegionData } from '@store/reducers';
 import {
   appCtaLoadUnderStyles,
@@ -31,9 +31,9 @@ export const AppCtaLoadUnder = () => {
   } = useContext(AppContext);
   const banner = getCtaRegionData(
     state,
+    'tw_cta_region_site_load_under',
     type,
-    id,
-    'tw_cta_region_site_load_under'
+    id
   );
   const shownMessage = getShownMessage(banner);
   const { type: msgType } = shownMessage || {};
@@ -45,7 +45,7 @@ export const AppCtaLoadUnder = () => {
   const handleClose = () => {
     const { name, hash, cookieLifespan } = shownMessage;
     // Set cookie for region message.
-    setCtaCookie(name, hash, +cookieLifespan);
+    setCtaCookie(name, hash, cookieLifespan);
     // Close prompt.
     setClosed(true);
   };

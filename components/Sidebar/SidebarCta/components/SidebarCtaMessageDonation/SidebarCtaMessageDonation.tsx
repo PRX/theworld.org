@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import { HtmlContent } from '@components/HtmlContent';
 import { ICtaMessageProps } from '@interfaces/cta';
+import { handleButtonClick } from '@lib/routing';
 import { sidebarCtaMessageDonationTheme } from './SidebarCtaMessageDonation.styles';
 
 export const SidebarCtaMessageDonation = ({ data }: ICtaMessageProps) => {
@@ -27,9 +28,6 @@ export const SidebarCtaMessageDonation = ({ data }: ICtaMessageProps) => {
     size: 'large',
     fullWidth: true,
     disableElevation: true
-  };
-  const handleActionClick = () => {
-    // TODO: Route to in-app donation form.
   };
 
   return (
@@ -46,11 +44,7 @@ export const SidebarCtaMessageDonation = ({ data }: ICtaMessageProps) => {
         {hasActions && (
           <CardActions>
             {action && (
-              <Button
-                {...actionAttrs}
-                href={action.url.href}
-                onClick={handleActionClick}
-              >
+              <Button {...actionAttrs} onClick={handleButtonClick(action.url)}>
                 {action.name}
               </Button>
             )}

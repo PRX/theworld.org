@@ -10,9 +10,11 @@ import {
   IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
+import { ICtaFilterProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
 import { fetchApiFileAudio, fetchAudio } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
+import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchAudioData = (
   id: string
@@ -37,6 +39,23 @@ export const fetchAudioData = (
     data = await (isOnServer ? fetchAudio : fetchApiFileAudio)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
+
+    // Set CTA filter props.
+    dispatch({
+      type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+      payload: {
+        filterProps: {
+          type,
+          id,
+          props: {
+            id,
+            program: data.program?.id || null
+          }
+        }
+      } as ICtaFilterProps
+    });
+
+    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_content'));
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',

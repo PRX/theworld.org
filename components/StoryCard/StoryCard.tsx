@@ -8,7 +8,7 @@ import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { parse } from 'url';
+import { parse, UrlWithParsedQuery } from 'url';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -58,7 +58,10 @@ export const StoryCard = ({
     dateBroadcast,
     datePublished
   } = data;
-  const { pathname } = generateLinkHrefForContent(data);
+  const { pathname } = generateLinkHrefForContent(
+    data,
+    true
+  ) as UrlWithParsedQuery;
   const classes = storyCardStyles({ isLoading });
   const cx = classNames.bind(classes);
   const imageWidth = [
