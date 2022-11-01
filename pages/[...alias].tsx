@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { GetStaticPropsResult } from 'next';
+import { GetServerSidePropsResult } from 'next';
 import dynamic from 'next/dynamic';
 import crypto from 'crypto';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -81,7 +81,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   store => async ({
     res,
     params: { alias }
-  }): Promise<GetStaticPropsResult<any>> => {
+  }): Promise<GetServerSidePropsResult<any>> => {
     let resourceId: string;
     let resourceType: string = 'homepage';
     let redirect: string;
