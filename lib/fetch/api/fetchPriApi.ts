@@ -34,7 +34,7 @@ const priApiConfig = configPriApi || process.env.PRI_API_CONFIG;
  * @param keys
  *    Object who's keys refer to relationship types, and values refer to a
  *    property on the related object that should become the key on the parsed
- *    resonse.
+ *    response.
  *
  * @returns
  *    Denormalized response to request, or error object.
@@ -57,7 +57,7 @@ export const fetchPriApi = async (
  * @param keys
  *    Object who's keys refer to relationship types, and values refer to a
  *    property on the related object that should become the key on the parsed
- *    resonse.
+ *    response.
  *
  * @returns
  *    Denormalized response to request, or error object.
@@ -80,7 +80,7 @@ export const postJsonPriApi = async (
  * @param keys
  *    Object who's keys refer to relationship types, and values refer to a
  *    property on the related object that should become the key on the parsed
- *    resonse.
+ *    response.
  *
  * @returns
  *    Denormalized resource collection.
@@ -104,7 +104,7 @@ export const fetchPriApiQuery = async (
  * @param keys
  *    Object who's keys refer to relationship types, and values refer to a
  *    property on the related object that should become the key on the parsed
- *    resonse.
+ *    response.
  *
  * @returns
  *    Denormalized resource item.
@@ -127,7 +127,7 @@ export const fetchPriApiItem = async (
  * @param keys
  *    Object who's keys refer to relationship types, and values refer to a
  *    property on the related object that should become the key on the parsed
- *    resonse.
+ *    response.
  *
  * @returns
  *    Denormalized resource item.
@@ -169,7 +169,7 @@ export const fetchPriApiQueryMenu = async (
  * @param keys
  *    Object who's keys refer to relationship types, and values refer to a
  *    property on the related object that should become the key on the parsed
- *    resonse.
+ *    response.
  *
  * @returns
  *    Denormalized resource item.
@@ -186,8 +186,8 @@ export const fetchPriApiCtaRegion = async (
 /**
  * Method that simplifies POST JSON queries for CTA region group collections.
  *
- * @param alias
- *    Alias used by resource item to display data.
+ * @param name
+ *    Name of CTA region group.
  * @param body
  *    Object containing the body to send as JSON.
  *
@@ -196,7 +196,7 @@ export const fetchPriApiCtaRegion = async (
  */
 export const postJsonPriApiCtaRegion = async (
   name: string,
-  body: object
+  body?: object
 ): Promise<PriApiResourceResponse> =>
   postJsonPriApi(
     `tw/cta/region_group/${name}`,

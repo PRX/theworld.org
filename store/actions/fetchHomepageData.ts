@@ -6,11 +6,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
+import { ICtaFilterProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
 import { fetchApiHomepage } from '@lib/fetch/api';
 import { fetchHomepage } from '@lib/fetch/homepage/fetchHomepage';
 import { getHomepageData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
+import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchHomepageData = (): ThunkAction<
   void,
@@ -47,19 +49,26 @@ export const fetchHomepageData = (): ThunkAction<
       menus
     } = apiResp;
 
+    // Set CTA filter props.
     dispatch({
-      type: 'SET_RESOURCE_CONTEXT',
+      type: 'SET_RESOURCE_CTA_FILTER_PROPS',
       payload: {
-        type,
-        id,
-        pageType: 'landing',
-        context: ['node:3704']
-      }
+        filterProps: {
+          type,
+          id,
+          props: {
+            program: '3704'
+          }
+        }
+      } as ICtaFilterProps
     });
 
     dispatch(
       appendResourceCollection(
-        { data: [featuredStory], meta: { count: 1 } },
+        {
+          data: [featuredStory],
+          meta: { count: 1 }
+        },
         type,
         id,
         'featured story'
@@ -68,7 +77,10 @@ export const fetchHomepageData = (): ThunkAction<
 
     dispatch(
       appendResourceCollection(
-        { data: [...featuredStories], meta: { count: featuredStories.length } },
+        {
+          data: [...featuredStories],
+          meta: { count: featuredStories.length }
+        },
         type,
         id,
         'featured stories'
@@ -80,6 +92,8 @@ export const fetchHomepageData = (): ThunkAction<
     dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
 
     dispatch(appendResourceCollection(latestStories, type, id, 'latest'));
+
+    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_landing'));
 
     dispatch({
       type: 'FETCH_HOMEPAGE_DATA_SUCCESS'

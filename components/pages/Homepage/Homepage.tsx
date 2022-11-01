@@ -2,7 +2,7 @@
  * @file Homepage.tsx
  * Component for Homepage.
  */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
@@ -24,7 +24,6 @@ import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { ICtaRegionProps } from '@interfaces/cta';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
 import { fetchHomepageData } from '@store/actions/fetchHomepageData';
 import {
   getCollectionData,
@@ -32,6 +31,7 @@ import {
   getMenusData
 } from '@store/reducers';
 import { IButton } from '@interfaces';
+import { AppContext } from '@contexts/AppContext';
 
 const CtaRegion = dynamic(
   () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
@@ -42,6 +42,11 @@ const SidebarCta = dynamic(
 ) as React.FC<ICtaRegionProps>;
 
 export const Homepage = () => {
+  const {
+    page: {
+      resource: { type, id }
+    }
+  } = useContext(AppContext);
   const store = useStore();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
@@ -80,13 +85,7 @@ export const Homepage = () => {
   );
   const latestEpisode =
     episodesState.count > 0 && episodesState.items[1].shift();
-  const inlineTop = getCtaRegionData(
-    state,
-    'homepage',
-    undefined,
-    'tw_cta_region_landing_inline_01'
-  );
-  const drawerMainNav = getMenusData(store.getState(), 'drawerMainNav');
+  const drawerMainNav = getMenusData(state, 'drawerMainNav');
   const categoriesMenu = drawerMainNav
     ?.filter((item: IButton) => item.name === 'Categories')?.[0]
     ?.children.map(
@@ -96,27 +95,35 @@ export const Homepage = () => {
           type: 'link',
           title: item.name,
           metatags: {
-            canonical: item.url.href
+            canonical: item.url
           }
         } as IPriApiResource)
     );
+
+  // CTA data.
+  const inlineTop = getCtaRegionData(
+    state,
+    'tw_cta_region_landing_inline_01',
+    type,
+    id
+  );
   const inlineBottom = getCtaRegionData(
     state,
-    'homepage',
-    undefined,
-    'tw_cta_region_landing_inline_02'
+    'tw_cta_region_landing_inline_02',
+    type,
+    id
   );
   const sidebarTop = getCtaRegionData(
     state,
-    'homepage',
-    undefined,
-    'tw_cta_region_landing_sidebar_01'
+    'tw_cta_region_landing_sidebar_01',
+    type,
+    id
   );
   const sidebarBottom = getCtaRegionData(
     state,
-    'homepage',
-    undefined,
-    'tw_cta_region_landing_sidebar_02'
+    'tw_cta_region_landing_sidebar_02',
+    type,
+    id
   );
 
   const mainElements = [
@@ -208,13 +215,6 @@ export const Homepage = () => {
               <SidebarList data={categoriesMenu} />
             </Sidebar>
           )}
-        </>
-      )
-    },
-    {
-      key: 'sidebar bottom',
-      children: (
-        <>
           {sidebarBottom && (
             <>
               <Hidden only="sm">
@@ -231,14 +231,6 @@ export const Homepage = () => {
   ];
 
   useEffect(() => {
-    // Get CTA message data.
-    const context = ['node:3704'];
-    (async () => {
-      await store.dispatch<any>(
-        fetchCtaData('homepage', undefined, 'tw_cta_regions_landing', context)
-      );
-    })();
-
     return () => {
       unsub();
     };

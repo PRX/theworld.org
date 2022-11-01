@@ -5,7 +5,6 @@
 
 import { IPriApiResource } from 'pri-api-library/types';
 import { ICtaMessage } from '@interfaces/cta';
-import { parse } from 'url';
 import { IPriApiNewsletter, INewsletterOptions } from '@interfaces/newsletter';
 import { generateLinkHrefForContent } from '@lib/routing';
 
@@ -29,12 +28,14 @@ export const parseCtaMessage = (
   hash: message.contentHash,
   ...(message.heading && { heading: message.heading }),
   ...(message.message && { message: message.message }),
-  ...(message.cookieLifespan && { cookieLifespan: message.cookieLifespan }),
+  ...(message.cookieLifespan && {
+    cookieLifespan: +message.cookieLifespan
+  }),
   ...(message.optinLabel && { optinLabel: message.optinLabel }),
   ...(message.actionLabel && {
     action: {
       name: message.actionLabel,
-      ...(message.actionUrl && { url: parse(message.actionUrl) })
+      ...(message.actionUrl && { url: message.actionUrl })
     }
   }),
   ...(message.dismissButtonLabel && {
@@ -48,10 +49,15 @@ export const parseCtaMessage = (
       ...(!message.message && { message: message.newsletter.summary }),
       action: {
         name: message.actionLabel || message.newsletter.buttonLabel,
-        url: generateLinkHrefForContent(message.newsletter)
+        url: generateLinkHrefForContent(message.newsletter) as string
       },
       newsletter: message.newsletter,
       newsletterOptions: parseNewsletterOptions(message.newsletter, region)
     }),
+  ...(message.targetContent && { targetContent: message.targetContent }),
+  ...(message.targetCategories && {
+    targetCategories: message.targetCategories
+  }),
+  ...(message.targetProgram && { targetProgram: message.targetProgram }),
   ...(region && { region })
 });

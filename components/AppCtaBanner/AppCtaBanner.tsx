@@ -23,7 +23,7 @@ export const AppCtaBanner = () => {
       resource: { type, id }
     }
   } = useContext(AppContext);
-  const banner = getCtaRegionData(state, type, id, 'tw_cta_region_site_banner');
+  const banner = getCtaRegionData(state, 'tw_cta_region_site_banner', type, id);
   const shownMessage = getShownMessage(banner);
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;

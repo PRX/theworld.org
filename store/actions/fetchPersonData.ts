@@ -9,10 +9,12 @@ import {
   IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
+import { ICtaFilterProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
 import { fetchApiPerson, fetchPerson } from '@lib/fetch';
 import { getDataByResource } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
+import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchPersonData = (
   id: string
@@ -45,6 +47,23 @@ export const fetchPersonData = (
       ...payload
     } = data;
 
+    // Set CTA filter props.
+    dispatch({
+      type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+      payload: {
+        filterProps: {
+          type,
+          id,
+          props: {
+            id,
+            program: data.program?.id || null
+          }
+        }
+      } as ICtaFilterProps
+    });
+
+    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_landing'));
+
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
       payload: {
@@ -55,7 +74,10 @@ export const fetchPersonData = (
 
     dispatch(
       appendResourceCollection(
-        { data: [featuredStory], meta: { count: 1 } },
+        {
+          data: [featuredStory],
+          meta: { count: 1 }
+        },
         type,
         id,
         'featured story'
@@ -64,7 +86,12 @@ export const fetchPersonData = (
 
     dispatch(
       appendResourceCollection(
-        { data: [...featuredStories], meta: { count: featuredStories.length } },
+        {
+          data: [...featuredStories],
+          meta: {
+            count: featuredStories.length
+          }
+        },
         type,
         id,
         'featured stories'

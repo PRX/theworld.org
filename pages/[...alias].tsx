@@ -3,12 +3,11 @@
  * Exports the Home component.
  */
 
-import React, { useEffect } from 'react';
-import { useStore } from 'react-redux';
+import React from 'react';
 import { GetStaticPropsResult } from 'next';
 import dynamic from 'next/dynamic';
 import crypto from 'crypto';
-import { Url } from 'url';
+import { parse, Url, UrlWithParsedQuery } from 'url';
 import {
   IPriApiCollectionResponse,
   IPriApiResource,
@@ -21,7 +20,8 @@ import { wrapper } from '@store';
 import { fetchApp, fetchHomepage, fetchTeam } from '@lib/fetch';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { getResourceFetchData } from '@lib/import/fetchData';
-import { fetchCtaData } from '@store/actions/fetchCtaData';
+import { fetchCtaRegionGroupData } from '@store/actions/fetchCtaRegionGroupData';
+import { fetchAppData } from '@store/actions/fetchAppData';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
@@ -41,16 +41,7 @@ interface StateProps extends RootState {}
 
 type Props = StateProps & IContentComponentProxyProps;
 
-const ContentProxy = ({ type, id }: Props) => {
-  const store = useStore();
-
-  useEffect(() => {
-    // Fetch CTA messages for this resource.
-    (async () => {
-      await store.dispatch<any>(fetchCtaData(type, id));
-    })();
-  }, [type, id]);
-
+const ContentProxy = ({ type }: Props) => {
   switch (type) {
     case 'file--audio':
       return <DynamicAudio />;
@@ -146,6 +137,12 @@ export const getStaticProps = wrapper.getStaticProps(
         if (fetchData) {
           const data = await store.dispatch(fetchData(resourceId));
 
+          await store.dispatch<any>(fetchAppData());
+
+          await store.dispatch<any>(
+            fetchCtaRegionGroupData('tw_cta_regions_site')
+          );
+
           return {
             props: {
               type: resourceType,
@@ -215,14 +212,20 @@ export const getStaticPaths = async () => {
     paths = [
       ...resources.map(resource => ({
         params: {
-          alias: generateLinkHrefForContent(resource)
-            ?.pathname.slice(1)
+          alias: (generateLinkHrefForContent(
+            resource,
+            true
+          ) as UrlWithParsedQuery)?.pathname
+            .slice(1)
             .split('/')
         }
       })),
       ...Object.values(menus)
-        // Gather all memus' url's into one array.
-        .reduce((a, m) => [...a, ...m.map(({ url }) => url)], [] as Url[])
+        // Gather all menus' url's into one array.
+        .reduce(
+          (a, m) => [...a, ...m.map(({ url }) => parse(url))],
+          [] as Url[]
+        )
         // Filter out any external url's.
         .filter(
           ({ hostname }) =>
