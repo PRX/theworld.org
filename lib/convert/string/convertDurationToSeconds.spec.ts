@@ -1,4 +1,4 @@
-import convertDurationToSeconds from './convertDurationToSeconds';
+import { convertDurationToSeconds } from './convertDurationToSeconds';
 
 describe('lib/convert/string', () => {
   describe('convertDurationToSeconds', () => {

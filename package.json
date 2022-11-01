@@ -85,6 +85,7 @@
     "@types/redux-logger": "^3.0.8",
     "@types/url-search-params": "^1.1.0",
     "@types/webpack": "^5.28.0",
+    "@types/wicg-mediasession": "^1.1.4",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
     "babel-jest": "^27.0.2",

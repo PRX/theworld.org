@@ -2129,6 +2129,11 @@
     tapable "^2.2.0"
     webpack "^5"
 
+"@types/wicg-mediasession@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@types/wicg-mediasession/-/wicg-mediasession-1.1.4.tgz#5b30c50384c05e5b54cf1c4cb530e8ca63233417"
+  integrity sha512-x6qWKaAoae/yjKThSsFeZ4SP6036zLrYUOx3Mg1BrbUR38FiKQetWO8owq261XXkdsLg52PyQ2/BZ8Wy038woQ==
+
 "@types/yargs-parser@*":
   version "20.2.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-20.2.0.tgz#dd3e6699ba3237f0348cd085e4698780204842f9"
