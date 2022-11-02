@@ -21,16 +21,18 @@ import { baseMuiTheme, appTheme, appStyles } from '@theme/App.theme';
 import { wrapper } from '@store';
 import { Player } from '@components/Player';
 import { AppPlayer } from '@components/AppPlayer/AppPlayer';
+import { getUiPlayerOpen } from '@store/reducers';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   const store = useStore();
-  const [, setState] = useState(store.getState());
+  const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
+  const playerOpen = getUiPlayerOpen(state);
   const [plausibleDomain, setPlausibleDomain] = useState(null);
   const { type, id } = pageProps;
-  const classes = appStyles({});
+  const classes = appStyles({ playerOpen });
   const contextValue = {
     page: {
       resource: {
@@ -77,9 +79,13 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
               <AppFooter />
               <AppSearch />
               <Box className={classes.uiFooter}>
-                <SocialShareMenu className={classes.socialShareMenu} />
-                <AppCtaLoadUnder />
-                <AppPlayer />
+                <Box className={classes.playerWrapper}>
+                  <AppPlayer />
+                  <Box className={classes.loadUnderWrapper}>
+                    <SocialShareMenu className={classes.socialShareMenu} />
+                    <AppCtaLoadUnder />
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </Player>

@@ -30,6 +30,22 @@ export const ui = (state = {}, action: UiAction): State => {
         }
       } as UiState;
 
+    case 'UI_PLAYER_OPEN':
+      return {
+        ...state,
+        player: {
+          open: true
+        }
+      } as UiState;
+
+    case 'UI_PLAYER_CLOSE':
+      return {
+        ...state,
+        player: {
+          open: false
+        }
+      } as UiState;
+
     case 'UI_SHOW_SOCIAL_SHARE_MENU':
       return {
         ...state,
@@ -54,4 +70,5 @@ export const ui = (state = {}, action: UiAction): State => {
 };
 
 export const getUiDrawerOpen = (state: UiState) => state?.drawer?.open;
+export const getUiPlayerOpen = (state: UiState) => state?.player?.open;
 export const getUiSocialShareMenu = (state: UiState) => state?.socialShareMenu;

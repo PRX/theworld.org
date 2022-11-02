@@ -28,6 +28,11 @@ export interface IAudioData {
   subtitle?: string;
 
   /**
+   * Info strings.
+   */
+  info?: string[];
+
+  /**
    * Source URL for image to use in thumbnail or feature art.
    */
   imageUrl?: string;

@@ -26,6 +26,18 @@ export const appStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       alignContent: 'end'
     },
+    playerWrapper: ({ playerOpen }: any) => ({
+      position: 'absolute',
+      top: '100%',
+      width: '100vw',
+      transition: theme.transitions.create('translate', {
+        duration: theme.transitions.duration.enteringScreen,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      ...(playerOpen && {
+        translate: '0 -100%'
+      })
+    }),
     socialShareMenu: {
       position: 'absolute',
       right: theme.typography.pxToRem(theme.spacing(2)),
@@ -115,9 +127,7 @@ export const appTheme = (theme: Theme) =>
     })(),
     overrides: {
       MuiAppBar: {
-        root: {
-          boxShadow: 'none'
-        }
+        root: {}
       },
       MuiButton: {
         root: {
@@ -173,7 +183,8 @@ export const appTheme = (theme: Theme) =>
       },
       MuiIconButton: {
         root: {
-          borderRadius: 0
+          borderRadius: 0,
+          fontSize: 'inherit'
         }
       },
       MuiLink: {

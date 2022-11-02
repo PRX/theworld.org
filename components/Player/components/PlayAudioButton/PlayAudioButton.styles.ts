@@ -22,6 +22,9 @@ export const playAudioButtonStyles = makeStyles((theme: Theme) =>
           backgroundColor: theme.palette.secondary.dark
         }
       })
-    })
+    }),
+    iconRoot: {
+      fontSize: 'inherit'
+    }
   })
 );

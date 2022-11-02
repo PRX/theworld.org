@@ -14,8 +14,6 @@ export interface DrawerState {
 
 export interface PlayerState {
   open: boolean;
-  currentIndex: number;
-  queue: any[];
 }
 
 export interface SocialShareMenuState {
@@ -26,6 +24,7 @@ export interface SocialShareMenuState {
 
 export interface UiState {
   drawer?: DrawerState;
+  player?: PlayerState;
   socialShareMenu?: SocialShareMenuState;
 }
 

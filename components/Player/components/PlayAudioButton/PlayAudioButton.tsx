@@ -36,6 +36,9 @@ export const PlayAudioButton = ({
   const playBtnClasses = cx(className, {
     playBtn: true
   });
+  const iconClasses = {
+    root: classes.iconRoot
+  };
 
   const handleClick = () => {
     if (audio && audio.guid !== currentTrack?.guid) {
@@ -45,15 +48,14 @@ export const PlayAudioButton = ({
     }
   };
 
-  return (
-    <IconButton
-      className={playBtnClasses}
-      aria-label={audioIsPlaying ? 'Pause' : 'Play'}
-      onClick={handleClick}
-      disableRipple
-    >
-      {!audioIsPlaying && <PlayArrowSharp titleAccess="Play" />}
-      {audioIsPlaying && <PauseSharp titleAccess="Pause" />}
+  return audio ? (
+    <IconButton className={playBtnClasses} onClick={handleClick} disableRipple>
+      {!audioIsPlaying && (
+        <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
+      )}
+      {audioIsPlaying && (
+        <PauseSharp titleAccess="Pause" classes={iconClasses} />
+      )}
     </IconButton>
-  );
+  ) : null;
 };

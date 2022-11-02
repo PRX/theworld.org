@@ -6,29 +6,31 @@
 import React, { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames/bind';
+import { IconButtonProps } from '@material-ui/core';
 import { PlayArrowSharp } from '@material-ui/icons';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import IconButton from '@material-ui/core/IconButton';
-import { playButtonStyles } from './PlayButton.styles';
+import { usePlayButtonStyles } from './PlayButton.styles';
 
 const PauseSharp = dynamic(() => import('@material-ui/icons/PauseSharp'), {
   loading: () => <PlayArrowSharp />
 });
 
-export interface IPlayButtonProps {
+export interface IPlayButtonProps extends IconButtonProps {
   className?: string;
 }
 
-export const PlayButton = ({ className }: IPlayButtonProps) => {
+export const PlayButton = ({ className, ...other }: IPlayButtonProps) => {
   const { state, togglePlayPause } = useContext(PlayerContext);
   const { playing } = state;
-  const classes = playButtonStyles({
+  const classes = usePlayButtonStyles({
     playing
   });
   const cx = classNames.bind(classes);
-  const playBtnClasses = cx(className, {
-    playBtn: true
-  });
+  const playBtnClasses = cx(className, classes.root);
+  const iconClasses = {
+    root: classes.iconRoot
+  };
 
   const handleClick = () => {
     togglePlayPause();
@@ -36,13 +38,14 @@ export const PlayButton = ({ className }: IPlayButtonProps) => {
 
   return (
     <IconButton
+      {...other}
       className={playBtnClasses}
       aria-label={playing ? 'Pause' : 'Play'}
       onClick={handleClick}
       disableRipple
     >
-      {!playing && <PlayArrowSharp titleAccess="Play" />}
-      {playing && <PauseSharp titleAccess="Pause" />}
+      {!playing && <PlayArrowSharp titleAccess="Play" classes={iconClasses} />}
+      {playing && <PauseSharp titleAccess="Pause" classes={iconClasses} />}
     </IconButton>
   );
 };

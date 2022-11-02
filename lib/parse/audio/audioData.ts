@@ -11,14 +11,9 @@ export const parseAudioData = (
   data: IAudioResource,
   overrideProps?: Partial<IAudioData>
 ): IAudioData => {
-  const {
-    type,
-    id,
-    metatags: { canonical },
-    url,
-    audioTitle,
-    metadata: { duration }
-  } = data;
+  const { type, id, metatags, url, audioTitle, metadata } = data;
+  const { canonical } = metatags || {};
+  const { duration } = metadata || {};
 
   return {
     guid: `${type}:${id}`,

@@ -8,8 +8,11 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
-  useRef
+  useRef,
+  useState
 } from 'react';
+import { useStore } from 'react-redux';
+import { UiAction } from '@interfaces/state';
 import { convertDurationToSeconds } from '@lib/convert/string/convertDurationToSeconds';
 import { PlayerContext } from './contexts';
 import { PlayerActionTypes } from './state';
@@ -23,6 +26,11 @@ export interface KeyboardEventWithTarget extends KeyboardEvent {
 }
 
 export const Player = ({ children }: IPlayerProps) => {
+  const store = useStore();
+  const [, updateForce] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    updateForce(store.getState());
+  });
   const audioElm = useRef<HTMLAudioElement>();
   const [state, dispatch] = useReducer(playerStateReducer, {
     ...playerInitialState
@@ -168,49 +176,49 @@ export const Player = ({ children }: IPlayerProps) => {
     });
   };
 
-  // const updateMediaSession = useCallback(() => {
-  //   const artworkSrc = currentTrack.imageUrl;
-  //   if (navigator && 'mediaSession' in navigator) {
-  //     navigator.mediaSession.metadata = new window.MediaMetadata({
-  //       title: currentTrack.title,
-  //       artist: currentTrack.subtitle,
-  //       ...(artworkSrc && { artwork: [{ src: artworkSrc }] })
-  //     });
-  //     navigator?.mediaSession.setActionHandler('play', () => {
-  //       play();
-  //     });
-  //     navigator?.mediaSession.setActionHandler('pause', () => {
-  //       pause();
-  //     });
-  //     navigator?.mediaSession.setActionHandler('seekto', e => {
-  //       seekTo(e.seekTime);
-  //     });
-  //     navigator?.mediaSession.setActionHandler('seekbackward', () => {
-  //       replay();
-  //     });
-  //     navigator?.mediaSession.setActionHandler('seekforward', () => {
-  //       forward();
-  //     });
+  const updateMediaSession = useCallback(() => {
+    const artworkSrc = currentTrack.imageUrl;
+    if (navigator && 'mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new window.MediaMetadata({
+        title: currentTrack.title,
+        artist: currentTrack.subtitle,
+        ...(artworkSrc && { artwork: [{ src: artworkSrc }] })
+      });
+      navigator?.mediaSession.setActionHandler('play', () => {
+        play();
+      });
+      navigator?.mediaSession.setActionHandler('pause', () => {
+        pause();
+      });
+      navigator?.mediaSession.setActionHandler('seekto', e => {
+        seekTo(e.seekTime);
+      });
+      navigator?.mediaSession.setActionHandler('seekbackward', () => {
+        replay();
+      });
+      navigator?.mediaSession.setActionHandler('seekforward', () => {
+        forward();
+      });
 
-  //     if (tracks.length > 1) {
-  //       navigator?.mediaSession.setActionHandler('previoustrack', () => {
-  //         previousTrack();
-  //       });
+      if (tracks?.length > 1) {
+        navigator?.mediaSession.setActionHandler('previoustrack', () => {
+          previousTrack();
+        });
 
-  //       navigator?.mediaSession.setActionHandler('nexttrack', () => {
-  //         nextTrack();
-  //       });
-  //     }
-  //   }
-  // }, [
-  //   currentTrack.imageUrl,
-  //   currentTrack.subtitle,
-  //   currentTrack.title,
-  //   forward,
-  //   replay,
-  //   seekTo,
-  //   tracks?.length
-  // ]);
+        navigator?.mediaSession.setActionHandler('nexttrack', () => {
+          nextTrack();
+        });
+      }
+    }
+  }, [
+    currentTrack.imageUrl,
+    currentTrack.subtitle,
+    currentTrack.title,
+    forward,
+    replay,
+    seekTo,
+    tracks?.length
+  ]);
 
   const playerContextValue = useMemo(
     () => ({
@@ -249,7 +257,7 @@ export const Player = ({ children }: IPlayerProps) => {
     audioElm.current
       .play()
       .then(() => {
-        // updateMediaSession();
+        updateMediaSession();
       })
       .catch(e => {
         // eslint-disable-next-line no-console
@@ -294,6 +302,8 @@ export const Player = ({ children }: IPlayerProps) => {
   const handleEnded = useCallback(() => {
     if (autoplay && !isLastTrack) {
       nextTrack();
+    } else if (isLastTrack) {
+      pause();
     }
   }, [isLastTrack]);
 
@@ -400,6 +410,24 @@ export const Player = ({ children }: IPlayerProps) => {
     },
     [audioElm, playing, seekBy, seekTo, seekToRelative, volumeDown, volumeUp]
   );
+
+  useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (tracks?.length) {
+      store.dispatch<UiAction>({
+        type: 'UI_PLAYER_OPEN'
+      });
+    } else {
+      store.dispatch<UiAction>({
+        type: 'UI_PLAYER_CLOSE'
+      });
+    }
+  }, [tracks]);
 
   useEffect(() => {
     // Initialize audio element.

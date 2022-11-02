@@ -196,9 +196,7 @@ export const StoryCard = ({
         )}
         {audioData && (
           <CardActions>
-            <NoSsr>
-              <PlayAudioButton audio={audioData} />
-            </NoSsr>
+            <PlayAudioButton audio={audioData} />
           </CardActions>
         )}
       </Card>

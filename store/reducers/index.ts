@@ -119,5 +119,7 @@ export const getSearchData = (state: RootState, query: string) =>
 
 export const getUiDrawerOpen = (state: RootState) =>
   fromUi.getUiDrawerOpen(state.ui);
+export const getUiPlayerOpen = (state: RootState) =>
+  fromUi.getUiPlayerOpen(state.ui);
 export const getUiSocialShareMenu = (state: RootState) =>
   fromUi.getUiSocialShareMenu(state.ui);
