@@ -35,7 +35,7 @@ export const AppCtaLoadUnder = () => {
     type,
     id
   );
-  const shownMessage = getShownMessage(banner);
+  const shownMessage = getShownMessage(banner, true);
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);
@@ -56,34 +56,30 @@ export const AppCtaLoadUnder = () => {
     };
   }, []);
 
-  return (
-    CtaMessageComponent &&
-    shownMessage &&
-    !closed && (
-      <ThemeProvider theme={appCtaLoadUnderTheme}>
-        <Box
-          component="aside"
-          className={cx('root')}
-          position="fixed"
-          bottom={0}
-          width="100%"
-          px={4}
-        >
-          <Container className={cx('container')} maxWidth="lg">
-            <CtaMessageComponent data={shownMessage} onClose={handleClose} />
-          </Container>
-          <Box position="absolute" top={0} right={0}>
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              disableRipple
-              onClick={handleClose}
-            >
-              <CloseSharp />
-            </IconButton>
-          </Box>
+  return CtaMessageComponent && shownMessage && !closed ? (
+    <ThemeProvider theme={appCtaLoadUnderTheme}>
+      <Box
+        component="aside"
+        className={cx('root')}
+        position="fixed"
+        bottom={0}
+        width="100%"
+        px={4}
+      >
+        <Container className={cx('container')} maxWidth="lg">
+          <CtaMessageComponent data={shownMessage} onClose={handleClose} />
+        </Container>
+        <Box position="absolute" top={0} right={0}>
+          <IconButton
+            aria-label="close"
+            color="inherit"
+            disableRipple
+            onClick={handleClose}
+          >
+            <CloseSharp />
+          </IconButton>
         </Box>
-      </ThemeProvider>
-    )
-  );
+      </Box>
+    </ThemeProvider>
+  ) : null;
 };

@@ -24,7 +24,7 @@ export const AppCtaBanner = () => {
     }
   } = useContext(AppContext);
   const banner = getCtaRegionData(state, 'tw_cta_region_site_banner', type, id);
-  const shownMessage = getShownMessage(banner);
+  const shownMessage = getShownMessage(banner, true);
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);
@@ -53,35 +53,31 @@ export const AppCtaBanner = () => {
     };
   }, []);
 
-  return (
-    CtaMessageComponent &&
-    shownMessage &&
-    !closed && (
-      <ThemeProvider theme={appCtaBannerTheme}>
-        <Box
-          component="aside"
-          className={cx('root')}
-          display="flex"
-          alignItems="center"
-          minHeight={230}
-          px={2}
-          py={2}
-        >
-          <Container maxWidth="md">
-            <CtaMessageComponent data={shownMessage} onClose={handleClose} />
-          </Container>
-          <Box position="absolute" top={0} right={0}>
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              disableRipple
-              onClick={handleClose}
-            >
-              <CloseSharp />
-            </IconButton>
-          </Box>
+  return CtaMessageComponent && shownMessage && !closed ? (
+    <ThemeProvider theme={appCtaBannerTheme}>
+      <Box
+        component="aside"
+        className={cx('root')}
+        display="flex"
+        alignItems="center"
+        minHeight={230}
+        px={2}
+        py={2}
+      >
+        <Container maxWidth="md">
+          <CtaMessageComponent data={shownMessage} onClose={handleClose} />
+        </Container>
+        <Box position="absolute" top={0} right={0}>
+          <IconButton
+            aria-label="close"
+            color="inherit"
+            disableRipple
+            onClick={handleClose}
+          >
+            <CloseSharp />
+          </IconButton>
         </Box>
-      </ThemeProvider>
-    )
-  );
+      </Box>
+    </ThemeProvider>
+  ) : null;
 };
