@@ -5,6 +5,8 @@
  */
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { parse } from 'url';
+import { IncomingMessage } from 'http';
 import {
   IPriApiResource,
   IPriApiResourceResponse
@@ -16,13 +18,15 @@ import { appendResourceCollection } from './appendResourceCollection';
 import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchTermData = (
-  id: string
+  id: string,
+  req: IncomingMessage
 ): ThunkAction<void, {}, {}, AnyAction> => async (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<IPriApiResource> => {
   const state = getState();
   const type = 'taxonomy_term--terms';
+  const params = req?.url ? parse(req.url, true).query : null;
   const isOnServer = typeof window === 'undefined';
   let data = getDataByResource(state, type, id);
 
@@ -35,7 +39,7 @@ export const fetchTermData = (
       }
     });
 
-    data = await (isOnServer ? fetchTerm : fetchApiTerm)(id).then(
+    data = await (isOnServer ? fetchTerm(id, params) : fetchApiTerm(id)).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
     const {

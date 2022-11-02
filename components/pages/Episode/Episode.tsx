@@ -4,9 +4,7 @@
  */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -36,9 +34,8 @@ import { SpotifyPlayer } from '@components/SpotifyPlayer';
 import { StoryCard } from '@components/StoryCard';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
-import { RootState, UiAction } from '@interfaces/state';
+import { UiAction } from '@interfaces/state';
 import { parseUtcDate } from '@lib/parse/date';
-import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
 import {
   getDataByResource,
@@ -349,23 +346,4 @@ export const Episode = () => {
       </Container>
     </ThemeProvider>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<void> => {
-  const type = 'node--episodes';
-  const data = getDataByResource(getState(), type, id);
-
-  if (!data) {
-    await dispatch<any>(fetchEpisodeData(id));
-    const { stories } = getDataByResource(getState(), type, id);
-
-    if (stories) {
-      dispatch(appendResourceCollection(stories, type, id, 'stories'));
-    }
-  }
 };

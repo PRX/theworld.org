@@ -5,9 +5,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   AppBar,
@@ -39,9 +37,7 @@ import { fetchApiProgramEpisodes, fetchApiProgramStories } from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { EpisodeCard } from '@components/EpisodeCard';
 import { AppContext } from '@contexts/AppContext';
-import { RootState } from '@interfaces/state';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import { fetchProgramData } from '@store/actions/fetchProgramData';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -98,15 +94,11 @@ export const Program = () => {
     id,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[1][0];
-  const { items: featuredStories } = getCollectionData(
-    state,
-    type,
-    id,
-    'featured stories'
-  );
+  const featuredStory = featuredStoryState?.items[1][0];
+  const { items: featuredStories } =
+    getCollectionData(state, type, id, 'featured stories') || {};
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page, next, count } = storiesState;
+  const { items: stories, page, next, count } = storiesState || {};
   const hasStories = count > 0;
   const episodesState = getCollectionData(state, type, id, 'episodes');
   const {
@@ -409,21 +401,4 @@ export const Program = () => {
       />
     </ThemeProvider>
   );
-};
-
-export const fetchData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<void> => {
-  const type = 'node--programs';
-  const state = getState();
-  const data = getDataByResource(state, type, id);
-
-  // Get missing content data.
-  if (!data) {
-    // Get content data.
-    await dispatch<any>(fetchProgramData(id));
-  }
 };

@@ -6,9 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { AnyAction } from 'redux';
 import { useStore } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import classNames from 'classnames/bind';
 import { UrlWithParsedQuery } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -28,7 +26,6 @@ import { MetaTags } from '@components/MetaTags';
 import { Plausible } from '@components/Plausible';
 import { AppContext } from '@contexts/AppContext';
 import { generateLinkHrefForContent } from '@lib/routing';
-import { fetchTeamData } from '@store/actions/fetchTeamData';
 import { getCollectionData } from '@store/reducers';
 import { teamStyles, teamTheme } from './Team.styles';
 import { TeamHeader } from './components/TeamHeader';
@@ -152,12 +149,4 @@ export const Team = () => {
       </Container>
     </ThemeProvider>
   );
-};
-
-export const fetchData = (): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>
-): Promise<any> => {
-  const data = await dispatch<any>(fetchTeamData());
-
-  return data;
 };
