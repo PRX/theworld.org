@@ -12,6 +12,10 @@ export interface CtaRegionGroupData {
   [k: string]: ICtaMessage[];
 }
 
+export interface Cookies {
+  [k: string]: string;
+}
+
 export interface CtaRegionGroupFilterProps {
   id: string;
   type: string;
@@ -23,7 +27,7 @@ export interface CtaRegionGroupFilterProps {
 
 export interface CtaRegionGroupDataState {
   data?: CtaRegionGroupData;
-
+  cookies?: Cookies;
   filterProps?: CtaRegionGroupFilterProps;
 }
 
@@ -32,5 +36,6 @@ export interface CtaRegionGroupAction extends AnyAction {
     ctaRegionData?: CtaRegionGroupDataState;
     data?: CtaRegionGroupData;
     filterProps?: CtaRegionGroupFilterProps;
+    cookies?: Cookies;
   };
 }

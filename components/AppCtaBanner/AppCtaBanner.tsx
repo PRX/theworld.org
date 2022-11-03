@@ -11,7 +11,7 @@ import { Box, Container, IconButton } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CloseSharp } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
-import { getCtaRegionData } from '@store/reducers';
+import { getCookies, getCtaRegionData } from '@store/reducers';
 import { appCtaBannerStyles, appCtaBannerTheme } from './AppCtaBanner.styles';
 import { ctaTypeComponentMap } from './components';
 
@@ -24,7 +24,8 @@ export const AppCtaBanner = () => {
     }
   } = useContext(AppContext);
   const banner = getCtaRegionData(state, 'tw_cta_region_site_banner', type, id);
-  const shownMessage = getShownMessage(banner, true);
+  const cookies = getCookies(state);
+  const shownMessage = getShownMessage(banner, cookies);
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);

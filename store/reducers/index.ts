@@ -104,6 +104,8 @@ export const getCtaRegionData = (
     type,
     id
   );
+export const getCookies = (state: RootState) =>
+  fromCtaRegionGroupData.getCookies(state.ctaRegionData);
 
 export const getMenusData = (state: RootState, menu: string) =>
   fromMenusData.getMenusData(state.menusData, menu);

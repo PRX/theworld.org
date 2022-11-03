@@ -15,8 +15,15 @@ const IndexPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  store => async ({ res }) => {
+  store => async ({ res, req }) => {
     const data = await store.dispatch<any>(fetchHomepageData());
+
+    store.dispatch<any>({
+      type: 'SET_COOKIES',
+      payload: {
+        cookies: req.cookies
+      }
+    });
 
     await store.dispatch<any>(fetchAppData());
 
@@ -28,6 +35,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     return {
       props: {
         type: 'homepage',
+        cookies: req.cookies,
         dataHash: crypto
           .createHash('sha256')
           .update(JSON.stringify(data))
