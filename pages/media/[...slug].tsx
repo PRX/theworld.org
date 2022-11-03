@@ -44,6 +44,7 @@ const ContentProxy = ({ type }: Props) => {
 export const getServerSideProps = wrapper.getServerSideProps(
   store => async ({
     res,
+    req,
     params: { slug }
   }): Promise<GetServerSidePropsResult<any>> => {
     let resourceId: string;
@@ -96,6 +97,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
       const fetchData = getResourceFetchData(resourceType);
 
       if (fetchData) {
+        store.dispatch<any>({
+          type: 'SET_COOKIES',
+          payload: {
+            cookies: req.cookies
+          }
+        });
+
         const data = await store.dispatch(fetchData(resourceId, res));
 
         await store.dispatch<any>(fetchAppData());

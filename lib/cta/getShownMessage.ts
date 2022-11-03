@@ -2,8 +2,8 @@
  * @file getShownMessage.ts
  */
 
-import cookie from 'react-cookies';
 import { ICtaMessage } from '@interfaces/cta';
+import { Cookies } from '@interfaces/state';
 import { getCookieKey } from './getCookieKey';
 
 /**
@@ -17,17 +17,17 @@ import { getCookieKey } from './getCookieKey';
  */
 export const getShownMessage = (
   messages: ICtaMessage[],
-  ignoreCookie: boolean = false
+  cookies?: Cookies
 ): ICtaMessage => {
   let message = null;
 
   if (messages) {
-    message = ignoreCookie
+    message = !cookies
       ? [...messages].shift()
       : messages.reduce((result, msg) => {
           const { name, hash } = msg;
           const cookieName = getCookieKey(name);
-          const hashOld = cookie.load(cookieName);
+          const hashOld = cookies[cookieName];
           if (!result && (!hashOld || hashOld !== hash)) {
             return msg;
           }
