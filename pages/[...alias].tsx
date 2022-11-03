@@ -131,6 +131,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
         const fetchData = getResourceFetchData(resourceType);
 
         if (fetchData) {
+          store.dispatch<any>({
+            type: 'SET_COOKIES',
+            payload: {
+              cookies: req.cookies
+            }
+          });
+
           const data = await store.dispatch(fetchData(resourceId, req, res));
 
           await store.dispatch<any>(fetchAppData());

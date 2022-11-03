@@ -11,7 +11,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { CloseSharp } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
-import { getCtaRegionData } from '@store/reducers';
+import { getCookies, getCtaRegionData } from '@store/reducers';
 import {
   appCtaLoadUnderStyles,
   appCtaLoadUnderTheme
@@ -35,7 +35,8 @@ export const AppCtaLoadUnder = () => {
     type,
     id
   );
-  const shownMessage = getShownMessage(banner, true);
+  const cookies = getCookies(state);
+  const shownMessage = getShownMessage(banner, cookies);
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);

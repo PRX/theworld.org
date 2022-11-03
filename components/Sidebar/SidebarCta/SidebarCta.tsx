@@ -11,7 +11,7 @@ import { sidebarCtaTheme } from './SidebarCta.styles';
 import { ctaTypeComponentMap } from './components';
 
 export const SidebarCta = ({ data }: ICtaRegionProps) => {
-  const shownMessage = getShownMessage(data, true);
+  const shownMessage = getShownMessage(data);
   const { type } = shownMessage;
   const CtaMessageComponent = ctaTypeComponentMap[type] || null;
 

@@ -11,7 +11,7 @@ import { ctaRegionTheme } from './CtaRegion.styles';
 import { ctaTypeComponentMap } from './components';
 
 export const CtaRegion = ({ data }: ICtaRegionProps) => {
-  const shownMessage = getShownMessage(data, true);
+  const shownMessage = getShownMessage(data);
   const { type } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[type] || null;
 

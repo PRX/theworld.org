@@ -22,6 +22,15 @@ export const ctaRegionGroupData = (
     case HYDRATE:
       return { ...state, ...action.payload.ctaRegionData };
 
+    case 'SET_COOKIES':
+      return {
+        ...state,
+        cookies: {
+          ...(state.cookies || {}),
+          ...(action.payload.cookies || {})
+        }
+      };
+
     case 'FETCH_CTA_REGION_GROUP_DATA_SUCCESS':
       return {
         ...state,
@@ -44,6 +53,9 @@ export const ctaRegionGroupData = (
       return state;
   }
 };
+
+export const getCookies = (state: CtaRegionGroupDataState = {}) =>
+  state.cookies;
 
 export const getCtaRegionData = (
   state: CtaRegionGroupDataState = {},
