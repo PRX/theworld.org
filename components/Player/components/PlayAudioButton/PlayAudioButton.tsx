@@ -4,6 +4,7 @@
  */
 
 import React, { useContext } from 'react';
+import { NoSsr } from '@material-ui/core';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames/bind';
 import { PlayArrowSharp } from '@material-ui/icons';
@@ -49,13 +50,19 @@ export const PlayAudioButton = ({
   };
 
   return audio ? (
-    <IconButton className={playBtnClasses} onClick={handleClick} disableRipple>
-      {!audioIsPlaying && (
-        <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
-      )}
-      {audioIsPlaying && (
-        <PauseSharp titleAccess="Pause" classes={iconClasses} />
-      )}
-    </IconButton>
+    <NoSsr>
+      <IconButton
+        className={playBtnClasses}
+        onClick={handleClick}
+        disableRipple
+      >
+        {!audioIsPlaying && (
+          <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
+        )}
+        {audioIsPlaying && (
+          <PauseSharp titleAccess="Pause" classes={iconClasses} />
+        )}
+      </IconButton>
+    </NoSsr>
   ) : null;
 };
