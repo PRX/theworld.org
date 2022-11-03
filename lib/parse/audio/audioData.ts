@@ -6,6 +6,7 @@
 
 import { IAudioData } from '@components/Player/types';
 import { IAudioResource } from '@interfaces';
+import { generateAudioUrl } from '@lib/generate/string';
 
 export const parseAudioData = (
   data: IAudioResource,
@@ -41,7 +42,7 @@ export const parseAudioData = (
 
   return {
     guid: guid || `${type}:${id}`,
-    url,
+    url: generateAudioUrl(url),
     title: audioTitle || fallbackTitle || metatags?.['og:title'],
     link: canonical,
     imageUrl: metatags?.['og:image'],
