@@ -42,7 +42,8 @@ export const appStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       right: theme.typography.pxToRem(theme.spacing(2)),
       bottom: `calc(100% + ${theme.typography.pxToRem(theme.spacing(2))})`
-    }
+    },
+    loadUnderWrapper: {}
   })
 );
 
