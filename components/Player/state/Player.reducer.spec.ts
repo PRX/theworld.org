@@ -202,7 +202,8 @@ describe('states/player', () => {
         };
         const result = playerStateReducer(
           {
-            ...mockState
+            ...mockState,
+            playing: true
           },
           {
             type: PlayerActionTypes.PLAYER_PLAY_AUDIO,
@@ -212,6 +213,81 @@ describe('states/player', () => {
 
         expect(result.currentTrackIndex).toBe(0);
         expect(result.tracks[0].guid).toBe('1337');
+        expect(result.playing).toBe(true);
+      });
+
+      test('should establish tracks, prepend audio to tracks, set `currentTrackIndex` to 0, and `playing` true', () => {
+        const mockTrack = {
+          guid: '1337',
+          url: 'http://foo.com/1337.mp3',
+          link: 'http://foo.com/1337',
+          title: 'Title 1337'
+        };
+        const result = playerStateReducer(
+          {
+            ...mockState,
+            tracks: null,
+            playing: true
+          },
+          {
+            type: PlayerActionTypes.PLAYER_PLAY_AUDIO,
+            payload: mockTrack
+          }
+        );
+
+        expect(result.tracks).toBeInstanceOf(Array);
+        expect(result.currentTrackIndex).toBe(0);
+        expect(result.tracks[0].guid).toBe('1337');
+        expect(result.playing).toBe(true);
+      });
+
+      test('should append audio to tracks, set `currentTrackIndex` to last index, and `playing` true', () => {
+        const mockTrack = {
+          guid: '1337',
+          url: 'http://foo.com/1337.mp3',
+          link: 'http://foo.com/1337',
+          title: 'Title 1337'
+        };
+        const result = playerStateReducer(
+          {
+            ...mockState,
+            playing: false
+          },
+          {
+            type: PlayerActionTypes.PLAYER_PLAY_AUDIO,
+            payload: mockTrack
+          }
+        );
+        const lastIndex = result.tracks.length - 1;
+
+        expect(result.currentTrackIndex).toBe(lastIndex);
+        expect(result.tracks[lastIndex].guid).toBe('1337');
+        expect(result.playing).toBe(true);
+      });
+
+      test('should establish tracks, append audio to tracks, set `currentTrackIndex` to last index, and `playing` true', () => {
+        const mockTrack = {
+          guid: '1337',
+          url: 'http://foo.com/1337.mp3',
+          link: 'http://foo.com/1337',
+          title: 'Title 1337'
+        };
+        const result = playerStateReducer(
+          {
+            ...mockState,
+            tracks: null,
+            playing: false
+          },
+          {
+            type: PlayerActionTypes.PLAYER_PLAY_AUDIO,
+            payload: mockTrack
+          }
+        );
+        const lastIndex = result.tracks.length - 1;
+
+        expect(result.tracks).toBeInstanceOf(Array);
+        expect(result.currentTrackIndex).toBe(lastIndex);
+        expect(result.tracks[lastIndex].guid).toBe('1337');
         expect(result.playing).toBe(true);
       });
 

@@ -75,10 +75,17 @@ export const playerStateReducer = (
 
       return {
         ...state,
-        ...(!isInTracks && {
-          tracks: [action.payload, ...(state.tracks || [])]
-        }),
-        currentTrackIndex: isInTracks ? audioTrackIndex : 0,
+        ...(isInTracks && { currentTrackIndex: audioTrackIndex }),
+        ...(!isInTracks &&
+          playing && {
+            tracks: [action.payload, ...(tracks || [])],
+            currentTrackIndex: 0
+          }),
+        ...(!isInTracks &&
+          !playing && {
+            tracks: [...(tracks || []), action.payload],
+            currentTrackIndex: (tracks || []).length
+          }),
         playing: true
       };
 
