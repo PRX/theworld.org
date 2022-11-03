@@ -378,7 +378,7 @@ export const Program = () => {
         logo={podcastLogo}
       />
       {hasStories && hasEpisodes && (
-        <AppBar position="static" color="transparent">
+        <AppBar position="static" color="transparent" elevation={0}>
           <Container fixed>
             <Tabs
               indicatorColor="primary"

@@ -5,7 +5,7 @@
  */
 
 export const basicStoryParams = {
-  include: ['audio', 'image', 'primary_category'],
+  include: ['image', 'primary_category'],
   fields: [
     'title',
     'metatags',

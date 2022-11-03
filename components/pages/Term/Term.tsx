@@ -322,7 +322,7 @@ export const Term = () => {
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <LandingPageHeader title={title} subhead={description} />
       {hasStories && hasEpisodes && (
-        <AppBar position="static" color="transparent">
+        <AppBar position="static" color="transparent" elevation={0}>
           <Container fixed>
             <Tabs
               indicatorColor="primary"

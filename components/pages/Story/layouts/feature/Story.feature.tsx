@@ -3,7 +3,7 @@
  * Component for default Story layout.
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -12,10 +12,10 @@ import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
 import { IPlayAudioButtonProps } from '@components/Player/components';
+import { IAudioData } from '@components/Player/types';
 import { ITagsProps } from '@components/Tags';
 import { IContentComponentProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
-import { parseAudioData } from '@lib/parse/audio/audioData';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { IStoryRelatedLinksProps } from '../default/components/StoryRelatedLinks';
 import { storyStyles, storyTheme } from './Story.feature.styles';
@@ -47,8 +47,6 @@ export const StoryDefault = ({ data }: Props) => {
     title,
     image,
     body,
-    bylines,
-    program,
     categories,
     primaryCategory,
     tags,
@@ -58,12 +56,17 @@ export const StoryDefault = ({ data }: Props) => {
     opencalaisProvince,
     opencalaisRegion,
     opencalaisPerson,
-    audio,
-    embeddedPlayerUrl,
-    popoutPlayerUrl
+    audio
   } = data;
+  const audioProps = {
+    title,
+    ...(image && { imageUrl: image.url })
+  } as Partial<IAudioData>;
   const store = useStore();
-  const state = store.getState();
+  const [state, updateForce] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    updateForce(store.getState());
+  });
   const relatedState =
     primaryCategory &&
     getCollectionData(
@@ -72,21 +75,6 @@ export const StoryDefault = ({ data }: Props) => {
       primaryCategory.id as string,
       'related'
     );
-  const audioData =
-    audio &&
-    parseAudioData(audio, {
-      title,
-      info: [
-        ...(program ? [program.title] : []),
-        ...(bylines
-          ? bylines.reduce(
-              (acc, [, people]) => [...acc, people.map(person => person.title)],
-              []
-            )
-          : [])
-      ],
-      ...(image && { imageUrl: image.url })
-    });
   const related =
     relatedState &&
     relatedState.items[1].filter(item => item.id !== id).slice(0, 4);
@@ -131,19 +119,17 @@ export const StoryDefault = ({ data }: Props) => {
     }
   });
 
+  useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
+
   return (
     <ThemeProvider theme={storyTheme}>
       <StoryHeader data={data} />
       <Container fixed>
-        {audio && (
-          <PlayAudioButton audio={audioData} />
-          // <AudioPlayer
-          //   data={audio}
-          //   message="Listen to the story."
-          //   embeddedPlayerUrl={embeddedPlayerUrl}
-          //   popoutPlayerUrl={popoutPlayerUrl}
-          // />
-        )}
+        {audio && <PlayAudioButton id={audio.id} fallbackProps={audioProps} />}
         <Box className={classes.body} my={2}>
           <HtmlContent html={body} transforms={[enhanceImages]} />
         </Box>

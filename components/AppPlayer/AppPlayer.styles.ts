@@ -14,10 +14,11 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       isolation: 'isolate',
-      backdropFilter: 'blur(20px)',
-      backgroundColor: fade(theme.palette.background.paper, 0.7),
+      backdropFilter: 'blur(30px)',
+      backgroundColor: fade(theme.palette.background.paper, 0.8),
       color: theme.palette.grey[900]
     },
+    progress: {},
     toolbarRoot: {
       paddingBlock: `${theme.spacing(1)}px`,
       display: 'grid',

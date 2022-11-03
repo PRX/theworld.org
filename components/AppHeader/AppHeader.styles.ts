@@ -7,9 +7,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
 export const appHeaderStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      boxShadow: 'none'
-    },
+    root: {},
     toolbar: {},
     closeBtn: {
       textTransform: 'capitalize'

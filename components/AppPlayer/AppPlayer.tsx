@@ -3,16 +3,17 @@
  */
 
 import React, { useContext } from 'react';
+import clsx from 'clsx';
 import {
   ForwardButton,
   PlayButton,
+  PlayerProgress,
   ReplayButton,
   TrackInfo
 } from '@components/Player/components';
 import { AppBar, Box, NoSsr, Toolbar } from '@material-ui/core';
 import { PlayerContext } from '@components/Player/contexts';
 import { appPlayerStyles } from './AppPlayer.styles';
-import clsx from 'clsx';
 
 export const AppPlayer = () => {
   const { state } = useContext(PlayerContext);
@@ -29,6 +30,9 @@ export const AppPlayer = () => {
   return (
     <NoSsr>
       <AppBar className={classes.root} component="div" position="static">
+        <Box className={classes.progress}>
+          <PlayerProgress />
+        </Box>
         <Toolbar classes={toolbarClasses}>
           <Box className={classes.controls}>
             <ReplayButton
@@ -44,7 +48,7 @@ export const AppPlayer = () => {
             <TrackInfo />
           </Box>
 
-          <Box className={classes.controls}></Box>
+          <Box className={classes.controls} />
         </Toolbar>
       </AppBar>
     </NoSsr>

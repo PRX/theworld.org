@@ -41,7 +41,7 @@ export const TrackInfo = ({ className, ...other }: ITrackInfoProps) => {
             {title}
           </Typography>
         </Marquee>
-        {info && (
+        {info.length ? (
           <Typography
             className={classes.info}
             variant="subtitle1"
@@ -53,7 +53,7 @@ export const TrackInfo = ({ className, ...other }: ITrackInfoProps) => {
               </span>
             ))}
           </Typography>
-        )}
+        ) : null}
       </Box>
     </Box>
   ) : null;

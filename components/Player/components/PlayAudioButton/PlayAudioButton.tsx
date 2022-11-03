@@ -3,57 +3,88 @@
  * Play button component to toggle playing state of player.
  */
 
-import React, { useContext } from 'react';
-import { NoSsr } from '@material-ui/core';
-import dynamic from 'next/dynamic';
-import classNames from 'classnames/bind';
-import { PlayArrowSharp } from '@material-ui/icons';
-import { PlayerContext } from '@components/Player/contexts/PlayerContext';
+import React, { useContext, useEffect, useState } from 'react';
+import { useStore } from 'react-redux';
+import clsx from 'clsx';
+import { CircularProgress, NoSsr } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import { IAudioData } from '../../types';
+import { PlayArrowSharp, PauseSharp } from '@material-ui/icons';
+import { PlayerContext } from '@components/Player/contexts/PlayerContext';
+import { IAudioData } from '@components/Player/types';
+import { IAudioResource } from '@interfaces';
+import { parseAudioData } from '@lib/parse/audio/audioData';
+import { fetchAudioData } from '@store/actions/fetchAudioData';
+import { getDataByResource } from '@store/reducers';
 import { playAudioButtonStyles } from './PlayAudioButton.styles';
-
-const PauseSharp = dynamic(() => import('@material-ui/icons/PauseSharp'), {
-  loading: () => <PlayArrowSharp />
-});
 
 export interface IPlayAudioButtonProps {
   className?: string;
-  audio: IAudioData;
+  id: string;
+  fallbackProps?: Partial<IAudioData>;
 }
 
 export const PlayAudioButton = ({
   className,
-  audio
+  id,
+  fallbackProps
 }: IPlayAudioButtonProps) => {
-  const { state, playAudio, togglePlayPause } = useContext(PlayerContext);
-  const { playing, currentTrackIndex, tracks } = state;
+  const store = useStore();
+  const [state, updateForce] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    updateForce(store.getState());
+  });
+  const audio = getDataByResource(state, 'file--audio', id) as IAudioResource;
+  const audioData = audio && parseAudioData(audio, fallbackProps);
+  const [loading, setLoading] = useState(false);
+
+  const { state: playerState, playAudio, togglePlayPause } = useContext(
+    PlayerContext
+  );
+  const { playing, currentTrackIndex, tracks } = playerState;
   const currentTrack = tracks?.[currentTrackIndex];
-  const audioIsPlaying = playing && currentTrack?.guid === audio.guid;
+  const audioIsPlaying =
+    playing && audioData && currentTrack?.guid === audioData.guid;
   const classes = playAudioButtonStyles({
-    playing
+    audioIsPlaying
   });
-  const cx = classNames.bind(classes);
-  const playBtnClasses = cx(className, {
-    playBtn: true
-  });
+  const playBtnClasses = clsx(className, classes.root);
   const iconClasses = {
     root: classes.iconRoot
   };
 
-  const handleClick = () => {
-    if (audio && audio.guid !== currentTrack?.guid) {
-      playAudio(audio);
+  const handlePlayClick = () => {
+    if (audioData && audioData.guid !== currentTrack?.guid) {
+      playAudio(audioData);
     } else {
       togglePlayPause();
     }
   };
 
-  return audio ? (
+  const handleLoadClick = () => {
+    (async () => {
+      setLoading(true);
+      await store.dispatch<any>(fetchAudioData(id));
+    })();
+  };
+
+  useEffect(() => {
+    if (loading && audioData) {
+      setLoading(false);
+      playAudio(audioData);
+    }
+  }, [loading, audioData?.guid]);
+
+  useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
+
+  return audioData ? (
     <NoSsr>
       <IconButton
         className={playBtnClasses}
-        onClick={handleClick}
+        onClick={handlePlayClick}
         disableRipple
       >
         {!audioIsPlaying && (
@@ -64,5 +95,19 @@ export const PlayAudioButton = ({
         )}
       </IconButton>
     </NoSsr>
-  ) : null;
+  ) : (
+    <NoSsr>
+      <IconButton
+        className={playBtnClasses}
+        onClick={handleLoadClick}
+        disableRipple
+      >
+        {!loading ? (
+          <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
+        ) : (
+          <CircularProgress classes={iconClasses} size="1em" />
+        )}
+      </IconButton>
+    </NoSsr>
+  );
 };
