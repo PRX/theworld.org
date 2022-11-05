@@ -85,14 +85,13 @@ export const PlayAudioButton = ({
   }, [audio?.id]);
 
   useEffect(() => {
-    const track = (tracks || [])[currentTrackIndex];
-    if (track?.guid === `file--audio:${id}`) {
-      if (!audioData) setAudioData(track);
+    if (currentTrack?.guid === `file--audio:${id}`) {
+      if (!audioData) setAudioData(currentTrack);
       setAudioIsPlaying(playing);
     } else {
       setAudioIsPlaying(false);
     }
-  }, [currentTrackIndex, playing]);
+  }, [currentTrack?.guid, playing]);
 
   return audioData ? (
     <NoSsr>

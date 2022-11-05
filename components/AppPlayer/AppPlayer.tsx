@@ -9,6 +9,7 @@ import {
   PlayButton,
   PlayerProgress,
   ReplayButton,
+  TimeInfo,
   TrackInfo
 } from '@components/Player/components';
 import { AppBar, Box, NoSsr, Toolbar } from '@material-ui/core';
@@ -42,6 +43,7 @@ export const AppPlayer = () => {
             />
             <PlayButton className={classes.playButton} color="inherit" />
             <ForwardButton classes={buttonClasses} color="inherit" />
+            <TimeInfo />
           </Box>
 
           <Box className={clsx(classes.controls, classes.info)}>

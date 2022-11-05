@@ -76,7 +76,7 @@ export const storyCardGridTheme = (theme: Theme) =>
           display: 'grid',
           gridTemplateColumns: '1fr 2fr',
           gridGap: `${theme.spacing(2)}px`,
-          alignItems: 'center',
+          alignItems: 'start',
           padding: `${theme.spacing(2)}px`
         }
       },

@@ -23,7 +23,7 @@ export const playerStateReducer = (
   state: IPlayerState,
   action: IPlayerAction
 ): IPlayerState => {
-  const { playing, currentTrackIndex, tracks, muted } = state;
+  const { playing, currentTrackIndex, tracks, muted, currentTime } = state;
   let audioTrackIndex: number;
   let isInTracks: boolean;
 
@@ -46,7 +46,8 @@ export const playerStateReducer = (
           action.payload.findIndex(
             ({ guid }) => guid === (tracks || [])[currentTrackIndex]?.guid
           )
-        )
+        ),
+        currentTime: 0
       };
 
     case ActionTypes.PLAYER_UPDATE_CURRENT_TRACK_INDEX:
@@ -55,7 +56,8 @@ export const playerStateReducer = (
         currentTrackIndex: Math.max(
           0,
           Math.min(action.payload, tracks.length - 1)
-        )
+        ),
+        currentTime: 0
       };
 
     case ActionTypes.PLAYER_PLAY_EPISODE:
@@ -64,7 +66,8 @@ export const playerStateReducer = (
         currentTrackIndex: Math.max(
           0,
           tracks.findIndex(({ guid }) => guid === action.payload)
-        )
+        ),
+        currentTime: 0
       };
 
     case ActionTypes.PLAYER_PLAY_AUDIO:
@@ -76,16 +79,15 @@ export const playerStateReducer = (
       return {
         ...state,
         ...(isInTracks && { currentTrackIndex: audioTrackIndex }),
-        ...(!isInTracks &&
-          playing && {
-            tracks: [action.payload, ...(tracks || [])],
-            currentTrackIndex: 0
-          }),
-        ...(!isInTracks &&
-          !playing && {
-            tracks: [...(tracks || []), action.payload],
-            currentTrackIndex: (tracks || []).length
-          }),
+        ...(!isInTracks && {
+          tracks: [
+            ...(tracks || []).slice(0, currentTrackIndex + 1),
+            action.payload,
+            ...(tracks || []).slice(currentTrackIndex + 1)
+          ],
+          currentTrackIndex: tracks?.length ? currentTrackIndex + 1 : 0
+        }),
+        currentTime: 0,
         playing: true
       };
 
@@ -108,22 +110,30 @@ export const playerStateReducer = (
           audioTrackIndex < currentTrackIndex
             ? currentTrackIndex - 1
             : Math.max(0, Math.min(currentTrackIndex, tracks.length - 2)),
-        playing: audioTrackIndex === currentTrackIndex ? false : playing
+        playing: audioTrackIndex === currentTrackIndex ? false : playing,
+        currentTime: audioTrackIndex === currentTrackIndex ? 0 : currentTime
       };
 
     case ActionTypes.PLAYER_PLAY_TRACK:
-      return { ...state, currentTrackIndex: action.payload, playing: true };
+      return {
+        ...state,
+        currentTrackIndex: action.payload,
+        playing: true,
+        currentTime: 0
+      };
 
     case ActionTypes.PLAYER_NEXT_TRACK:
       return {
         ...state,
-        currentTrackIndex: Math.min(currentTrackIndex + 1, tracks.length - 1)
+        currentTrackIndex: Math.min(currentTrackIndex + 1, tracks.length - 1),
+        currentTime: 0
       };
 
     case ActionTypes.PLAYER_PREVIOUS_TRACK:
       return {
         ...state,
-        currentTrackIndex: Math.max(currentTrackIndex - 1, 0)
+        currentTrackIndex: Math.max(currentTrackIndex - 1, 0),
+        currentTime: 0
       };
 
     case ActionTypes.PLAYER_UPDATE_CURRENT_TIME:

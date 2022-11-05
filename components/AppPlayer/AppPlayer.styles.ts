@@ -22,8 +22,7 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
     toolbarRoot: {
       paddingBlock: `${theme.spacing(1)}px`,
       display: 'grid',
-      gridTemplateColumns:
-        'minmax(min-content, 5vw) 1fr minmax(min-content, 10vw)',
+      gridTemplateColumns: '1fr 1fr 1fr',
       justifyContent: 'space-between',
       gap: theme.typography.pxToRem(theme.spacing(2))
     },

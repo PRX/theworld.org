@@ -74,11 +74,13 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
                 variant="subtitle1"
                 component="span"
               >
-                {info.map(text => (
-                  <span className={classes.infoItem} key={text}>
-                    {text}
-                  </span>
-                ))}
+                {info
+                  .filter(t => !!t)
+                  .map(text => (
+                    <span className={classes.infoItem} key={text}>
+                      {text}
+                    </span>
+                  ))}
               </Typography>
             ) : null}
           </Box>

@@ -19,7 +19,7 @@ export const convertSecondsToDuration = (inputSeconds: number | string) => {
   if (typeof totalSeconds === 'number' && totalSeconds > 0) {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+    const seconds = Math.round(totalSeconds % 60);
     duration = [
       ...(hours ? [hours] : []),
       String(minutes).padStart(2, '0'),
