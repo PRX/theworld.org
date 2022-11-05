@@ -25,7 +25,9 @@ export enum PlayerActionTypes {
   'PLAYER_PLAY_AUDIO' = '[PLAYER] PLAY_AUDIO',
   'PLAYER_NEXT_TRACK' = '[Player] NEXT_TRACK',
   'PLAYER_PREVIOUS_TRACK' = '[Player] PREVIOUS_TRACK',
-  'PLAYER_UPDATE_CURRENT_TIME' = '[Player] UPDATE_CURRENT_TIME'
+  'PLAYER_UPDATE_CURRENT_TIME' = '[Player] UPDATE_CURRENT_TIME',
+  'PLAYER_ADD_TRACK' = '[Player] ADD_TRACK',
+  'PLAYER_REMOVE_TRACK' = '[Player] REMOVE_TRACK'
 }
 
 export interface IPlayerAction {

@@ -8,11 +8,17 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 export const useTrackInfoStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      overflow: 'hidden'
+    },
+    layout: {
       display: 'grid',
       gridTemplateColumns: 'min-content auto',
       gap: theme.typography.pxToRem(theme.spacing(1)),
       alignItems: 'center',
       justifyContent: 'center'
+    },
+    image: {
+      backgroundColor: theme.palette.grey[200]
     },
     text: {
       display: 'grid',

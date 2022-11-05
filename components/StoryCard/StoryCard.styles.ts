@@ -6,18 +6,25 @@
 import {
   createMuiTheme,
   createStyles,
+  fade,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
 
-export const storyCardStyles = makeStyles((theme: Theme) =>
+export const useStoryCardStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       '& > * + *': {
         display: 'grid',
         marginTop: 0
       }
+    },
+    heading: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'start',
+      gap: theme.typography.pxToRem(theme.spacing(3))
     },
     title: {
       marginTop: 0,
@@ -52,6 +59,30 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       width: '100%',
       transform: `translateY(${!isLoading ? 0 : '-100%'})`
     }),
+    audio: {
+      position: 'relative',
+      zIndex: 1,
+      display: 'flex',
+      gap: theme.typography.pxToRem(theme.spacing(0.5)),
+      alignItems: 'center',
+      fontSize: '1.25rem'
+    },
+    audioPlayBtn: {
+      position: 'relative',
+      zIndex: 1,
+      fontSize: '5rem',
+      padding: 0,
+      borderRadius: 0,
+      backgroundColor: 'transparent',
+      color: fade(theme.palette.primary.contrastText, 0.7),
+      '&:hover': {
+        backgroundColor: 'transparent',
+        color: fade(theme.palette.primary.contrastText, 1)
+      },
+      '$feature &': {
+        fontSize: '8rem'
+      }
+    },
     MuiCardActionAreaRoot: {
       display: 'grid',
       gridTemplateColumns: '1fr 3fr',
@@ -70,12 +101,10 @@ export const storyCardStyles = makeStyles((theme: Theme) =>
       padding: 0
     },
     MuiCardMediaRoot: {
-      paddingTop: '100%',
+      alignSelf: 'start',
+      aspectRatio: '1',
       '$feature &': {
-        paddingTop: `${100 / (16 / 9)}%`
-      },
-      [theme.breakpoints.down('sm')]: {
-        alignSelf: 'start'
+        aspectRatio: 16 / 9
       }
     },
     feature: {},
@@ -132,7 +161,12 @@ export const storyCardTheme = (theme: Theme) =>
         root: {
           position: 'relative',
           overflow: 'hidden',
-          width: '100%'
+          display: 'grid',
+          backgroundColor: theme.palette.primary.main,
+          '& > *': {
+            gridRow: '1 / -1',
+            gridColumn: '1 / -1'
+          }
         }
       },
       MuiList: {

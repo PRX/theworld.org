@@ -134,6 +134,20 @@ export const Player = ({ children }: IPlayerProps) => {
     });
   };
 
+  const addTrack = (newTrack: IAudioData) => {
+    dispatch({
+      type: PlayerActionTypes.PLAYER_ADD_TRACK,
+      payload: newTrack
+    });
+  };
+
+  const removeTrack = (track: IAudioData) => {
+    dispatch({
+      type: PlayerActionTypes.PLAYER_REMOVE_TRACK,
+      payload: track
+    });
+  };
+
   const previousTrack = () => {
     dispatch({
       type: PlayerActionTypes.PLAYER_PREVIOUS_TRACK
@@ -237,6 +251,8 @@ export const Player = ({ children }: IPlayerProps) => {
       seekToRelative,
       setTrack,
       setTracks,
+      addTrack,
+      removeTrack,
       previousTrack,
       nextTrack,
       setVolume

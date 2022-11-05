@@ -61,9 +61,13 @@ export const sidebarListTheme = (theme: Theme) =>
     }
   });
 
-export const sidebarListStyles = makeStyles(() =>
+export const sidebarListStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      '&:last-child': {
+        paddingBlockEnd: theme.typography.pxToRem(theme.spacing(2))
+      }
+    },
     noBullet: {
       display: 'unset',
       listStyle: 'unset'

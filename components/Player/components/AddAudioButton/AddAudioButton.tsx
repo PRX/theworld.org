@@ -1,5 +1,5 @@
 /**
- * @file PlayAudioButton.tsx
+ * @file AddAudioButton.tsx
  * Play button component to toggle playing state of player.
  */
 
@@ -7,45 +7,40 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import clsx from 'clsx';
 import { CircularProgress, NoSsr } from '@material-ui/core';
-import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
-import { PlayArrowSharp, PauseSharp } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@material-ui/icons';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { IAudioData } from '@components/Player/types';
 import { IAudioResource } from '@interfaces';
 import { parseAudioData } from '@lib/parse/audio/audioData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource } from '@store/reducers';
-import { playAudioButtonStyles } from './PlayAudioButton.styles';
+import { useAddAudioButtonStyles } from './AddAudioButton.styles';
 
-export interface IPlayAudioButtonProps extends IconButtonProps {
+export interface IAddAudioButtonProps {
   className?: string;
   id: string;
   fallbackProps?: Partial<IAudioData>;
 }
 
-export const PlayAudioButton = ({
+export const AddAudioButton = ({
   className,
   id,
-  fallbackProps,
-  ...other
-}: IPlayAudioButtonProps) => {
+  fallbackProps
+}: IAddAudioButtonProps) => {
   const store = useStore();
   const [audio, setAudio] = useState<IAudioResource>();
   const [audioData, setAudioData] = useState<IAudioData>();
   const [loading, setLoading] = useState(false);
-
-  const { state: playerState, playAudio, togglePlayPause } = useContext(
+  const { state: playerState, addTrack, removeTrack } = useContext(
     PlayerContext
   );
-  const { playing, currentTrackIndex, tracks } = playerState;
-  const currentTrack = tracks?.[currentTrackIndex];
-  const [audioIsPlaying, setAudioIsPlaying] = useState(
-    playing && audioData && currentTrack?.guid === audioData.guid
-  );
-  const classes = playAudioButtonStyles({
-    audioIsPlaying
+  const { tracks } = playerState;
+  const [isQueued, setIsQueued] = useState(false);
+  const classes = useAddAudioButtonStyles({
+    isInTracks: isQueued
   });
-  const playBtnClasses = clsx(classes.root, className);
+  const btnClasses = clsx(classes.root, className);
   const iconButtonClasses = {
     root: classes.iconButtonRoot
   };
@@ -56,12 +51,12 @@ export const PlayAudioButton = ({
     colorPrimary: classes.circularProgressPrimary
   };
 
-  const handlePlayClick = () => {
-    if (audioData && audioData.guid !== currentTrack?.guid) {
-      playAudio(audioData);
-    } else {
-      togglePlayPause();
-    }
+  const handleAddClick = () => {
+    addTrack(audioData);
+  };
+
+  const handleRemoveClick = () => {
+    removeTrack(audioData);
   };
 
   const handleLoadClick = () => {
@@ -70,7 +65,7 @@ export const PlayAudioButton = ({
       const ar = await store.dispatch<any>(fetchAudioData(id));
       setLoading(false);
       setAudio(ar);
-      playAudio(parseAudioData(ar, fallbackProps));
+      addTrack(parseAudioData(ar, fallbackProps));
     })();
   };
 
@@ -85,43 +80,59 @@ export const PlayAudioButton = ({
   }, [audio?.id]);
 
   useEffect(() => {
-    const track = (tracks || [])[currentTrackIndex];
-    if (track?.guid === `file--audio:${id}`) {
+    const track = (tracks || []).find(
+      ({ guid }) => guid === `file--audio:${id}`
+    );
+    if (track) {
       if (!audioData) setAudioData(track);
-      setAudioIsPlaying(playing);
+      setIsQueued(true);
     } else {
-      setAudioIsPlaying(false);
+      setIsQueued(false);
     }
-  }, [currentTrackIndex, playing]);
+  }, [tracks?.length]);
 
   return audioData ? (
     <NoSsr>
-      <IconButton
-        className={playBtnClasses}
-        classes={iconButtonClasses}
-        onClick={handlePlayClick}
-        disableRipple
-        {...other}
-      >
-        {!audioIsPlaying && (
-          <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
-        )}
-        {audioIsPlaying && (
-          <PauseSharp titleAccess="Pause" classes={iconClasses} />
-        )}
-      </IconButton>
+      {!isQueued ? (
+        <IconButton
+          classes={iconButtonClasses}
+          className={btnClasses}
+          onClick={handleAddClick}
+          disableRipple
+        >
+          <PlaylistAddSharp
+            titleAccess="Add To Playlist"
+            classes={iconClasses}
+          />
+        </IconButton>
+      ) : (
+        <IconButton
+          classes={iconButtonClasses}
+          className={btnClasses}
+          onClick={handleRemoveClick}
+          disableRipple
+          data-queued
+        >
+          <PlaylistAddCheckSharp
+            titleAccess="Remove From Playlist"
+            classes={iconClasses}
+          />
+        </IconButton>
+      )}
     </NoSsr>
   ) : (
     <NoSsr>
       <IconButton
-        className={playBtnClasses}
         classes={iconButtonClasses}
+        className={btnClasses}
         onClick={handleLoadClick}
         disableRipple
-        {...other}
       >
         {!loading ? (
-          <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
+          <PlaylistAddSharp
+            titleAccess="Add To Playlist"
+            classes={iconClasses}
+          />
         ) : (
           <CircularProgress classes={progressClasses} size="1em" />
         )}

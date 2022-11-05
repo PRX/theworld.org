@@ -89,6 +89,28 @@ export const playerStateReducer = (
         playing: true
       };
 
+    case ActionTypes.PLAYER_ADD_TRACK:
+      return {
+        ...state,
+        tracks: [...(tracks || []), action.payload],
+        currentTrackIndex: currentTrackIndex || 0
+      };
+
+    case ActionTypes.PLAYER_REMOVE_TRACK:
+      if (!tracks) return state;
+      audioTrackIndex = tracks.findIndex(
+        ({ guid }) => guid === action.payload.guid
+      );
+      return {
+        ...state,
+        tracks: [...tracks.filter(({ guid }) => guid !== action.payload.guid)],
+        currentTrackIndex:
+          audioTrackIndex < currentTrackIndex
+            ? currentTrackIndex - 1
+            : Math.max(0, Math.min(currentTrackIndex, tracks.length - 2)),
+        playing: audioTrackIndex === currentTrackIndex ? false : playing
+      };
+
     case ActionTypes.PLAYER_PLAY_TRACK:
       return { ...state, currentTrackIndex: action.payload, playing: true };
 

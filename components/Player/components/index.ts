@@ -1,3 +1,4 @@
+export * from './AddAudioButton';
 export * from './ForwardButton';
 export * from './PlayAudioButton';
 export * from './PlayButton';

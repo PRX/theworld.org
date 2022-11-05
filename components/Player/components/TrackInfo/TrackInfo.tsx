@@ -5,17 +5,18 @@
 
 import React, { useContext } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
-import { Box, BoxProps, Typography } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { Marquee } from '@components/Marquee';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { useTrackInfoStyles } from './TrackInfo.styles';
 
-export interface ITrackInfoProps extends BoxProps {
+export interface ITrackInfoProps {
   className?: string;
 }
 
-export const TrackInfo = ({ className, ...other }: ITrackInfoProps) => {
+export const TrackInfo = ({ className }: ITrackInfoProps) => {
   const { state } = useContext(PlayerContext);
   const { tracks, currentTrackIndex } = state;
   const currentTrack = tracks?.[currentTrackIndex];
@@ -26,35 +27,63 @@ export const TrackInfo = ({ className, ...other }: ITrackInfoProps) => {
   const classes = useTrackInfoStyles({});
   const rootClasses = clsx(className, classes.root);
 
-  return currentTrack ? (
-    <Box {...other} className={rootClasses}>
-      <Image
-        src={imageUrl}
-        width={thumbnailWidth}
-        height={thumbnailHeight}
-        layout="fixed"
-        alt={`Thumbnail for "${title}"`}
-      />
-      <Box className={classes.text}>
-        <Marquee>
-          <Typography className={classes.title} variant="h2" component="span">
-            {title}
-          </Typography>
-        </Marquee>
-        {info.length ? (
-          <Typography
-            className={classes.info}
-            variant="subtitle1"
-            component="span"
-          >
-            {info.map(text => (
-              <span className={classes.infoItem} key={text}>
-                {text}
-              </span>
-            ))}
-          </Typography>
-        ) : null}
-      </Box>
+  return (
+    <Box className={rootClasses}>
+      <AnimatePresence initial={false} exitBeforeEnter>
+        <motion.div
+          className={classes.layout}
+          key={currentTrack ? currentTrack.guid : 'empty'}
+          initial={{
+            opacity: 0
+          }}
+          animate={{
+            opacity: 1
+          }}
+          exit={{
+            opacity: 0
+          }}
+          transition={{
+            duration: 0.2
+          }}
+        >
+          {imageUrl ? (
+            <Image
+              className={classes.image}
+              src={imageUrl}
+              width={thumbnailWidth}
+              height={thumbnailHeight}
+              layout="fixed"
+              alt={`Thumbnail for "${title}"`}
+            />
+          ) : (
+            <div className={classes.image} />
+          )}
+          <Box className={classes.text}>
+            <Marquee>
+              <Typography
+                className={classes.title}
+                variant="h2"
+                component="span"
+              >
+                {title}
+              </Typography>
+            </Marquee>
+            {info?.length ? (
+              <Typography
+                className={classes.info}
+                variant="subtitle1"
+                component="span"
+              >
+                {info.map(text => (
+                  <span className={classes.infoItem} key={text}>
+                    {text}
+                  </span>
+                ))}
+              </Typography>
+            ) : null}
+          </Box>
+        </motion.div>
+      </AnimatePresence>
     </Box>
-  ) : null;
+  );
 };

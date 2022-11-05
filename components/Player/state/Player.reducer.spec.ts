@@ -235,7 +235,7 @@ describe('states/player', () => {
           }
         );
 
-        expect(result.tracks).toBeInstanceOf(Array);
+        expect(result.tracks).not.toBeNull();
         expect(result.currentTrackIndex).toBe(0);
         expect(result.tracks[0].guid).toBe('1337');
         expect(result.playing).toBe(true);
@@ -285,7 +285,7 @@ describe('states/player', () => {
         );
         const lastIndex = result.tracks.length - 1;
 
-        expect(result.tracks).toBeInstanceOf(Array);
+        expect(result.tracks).not.toBeNull();
         expect(result.currentTrackIndex).toBe(lastIndex);
         expect(result.tracks[lastIndex].guid).toBe('1337');
         expect(result.playing).toBe(true);
@@ -349,6 +349,26 @@ describe('states/player', () => {
     });
 
     describe('`tracks` actions', () => {
+      const mockTracks = [
+        {
+          guid: '1',
+          url: '//foo.com/1.mp3',
+          link: '//foo.com/1',
+          title: 'Title 1'
+        },
+        {
+          guid: '2',
+          url: '//foo.com/2.mp3',
+          link: '//foo.com/2',
+          title: 'Title 2'
+        },
+        {
+          guid: '3',
+          url: '//foo.com/3.mp3',
+          link: '//foo.com/3',
+          title: 'Title 3'
+        }
+      ];
       test('should set `tracks`', () => {
         const mockTrack = {
           guid: '1',
@@ -371,20 +391,6 @@ describe('states/player', () => {
       });
 
       test('should set `tracks` and update `currentIndex`', () => {
-        const mockTracks = [
-          {
-            guid: '1',
-            url: '//foo.com/1.mp3',
-            link: '//foo.com/1',
-            title: 'Title 1'
-          },
-          {
-            guid: '2',
-            url: '//foo.com/2.mp3',
-            link: '//foo.com/2',
-            title: 'Title 2'
-          }
-        ];
         const mockTrack = {
           guid: '3',
           url: '//foo.com/3.mp3',
@@ -411,26 +417,6 @@ describe('states/player', () => {
       });
 
       test('should set `tracks` and set `currentIndex` to 0', () => {
-        const mockTracks = [
-          {
-            guid: '1',
-            url: '//foo.com/1.mp3',
-            link: '//foo.com/1',
-            title: 'Title 1'
-          },
-          {
-            guid: '2',
-            url: '//foo.com/2.mp3',
-            link: '//foo.com/2',
-            title: 'Title 2'
-          },
-          {
-            guid: '3',
-            url: '//foo.com/3.mp3',
-            link: '//foo.com/3',
-            title: 'Title 3'
-          }
-        ];
         const result = playerStateReducer(
           {
             ...playerInitialState,
@@ -447,6 +433,147 @@ describe('states/player', () => {
         expect(result.tracks[0]).toStrictEqual(mockTracks[0]);
         expect(result.tracks[1]).toStrictEqual(mockTracks[2]);
         expect(result.currentTrackIndex).toBe(0);
+      });
+
+      test('should establish tracks, append audio to tracks, set `currentTrackIndex` to 0', () => {
+        const mockTrack = {
+          guid: '1337',
+          url: 'http://foo.com/1337.mp3',
+          link: 'http://foo.com/1337',
+          title: 'Title 1337'
+        };
+        const result = playerStateReducer(
+          {
+            ...playerInitialState
+          },
+          {
+            type: PlayerActionTypes.PLAYER_ADD_TRACK,
+            payload: mockTrack
+          }
+        );
+
+        expect(result.tracks).not.toBeNull();
+        expect(result.currentTrackIndex).toBe(0);
+        expect(result.tracks[0].guid).toBe('1337');
+      });
+
+      test('should append audio to tracks', () => {
+        const mockTrack = {
+          guid: '1337',
+          url: 'http://foo.com/1337.mp3',
+          link: 'http://foo.com/1337',
+          title: 'Title 1337'
+        };
+        const result = playerStateReducer(
+          {
+            ...playerInitialState,
+            tracks: mockTracks,
+            currentTrackIndex: 0
+          },
+          {
+            type: PlayerActionTypes.PLAYER_ADD_TRACK,
+            payload: mockTrack
+          }
+        );
+        const lastIndex = result.tracks.length - 1;
+
+        expect(result.tracks[lastIndex].guid).toBe('1337');
+      });
+
+      test('should do nothing (tracks null)', () => {
+        const mockTrack = {
+          guid: '1337',
+          url: 'http://foo.com/1337.mp3',
+          link: 'http://foo.com/1337',
+          title: 'Title 1337'
+        };
+        const result = playerStateReducer(
+          {
+            ...playerInitialState
+          },
+          {
+            type: PlayerActionTypes.PLAYER_REMOVE_TRACK,
+            payload: mockTrack
+          }
+        );
+
+        expect(result.tracks).toBeNull();
+      });
+
+      test('should remove audio from tracks', () => {
+        const result = playerStateReducer(
+          {
+            ...playerInitialState,
+            tracks: mockTracks,
+            currentTrackIndex: 0,
+            playing: true
+          },
+          {
+            type: PlayerActionTypes.PLAYER_REMOVE_TRACK,
+            payload: mockTracks[1]
+          }
+        );
+
+        expect(result.tracks).not.toBeNull();
+        expect(result.tracks[1].guid).not.toBe('2');
+      });
+
+      test('should remove audio from tracks, and pause', () => {
+        const result = playerStateReducer(
+          {
+            ...playerInitialState,
+            tracks: mockTracks,
+            currentTrackIndex: 0,
+            playing: true
+          },
+          {
+            type: PlayerActionTypes.PLAYER_REMOVE_TRACK,
+            payload: mockTracks[0]
+          }
+        );
+
+        expect(result.tracks).not.toBeNull();
+        expect(result.tracks[0].guid).not.toBe('1');
+        expect(result.playing).toBe(false);
+      });
+
+      test('should remove last audio from tracks, update currentTrackIndex, and pause', () => {
+        const result = playerStateReducer(
+          {
+            ...playerInitialState,
+            tracks: mockTracks,
+            currentTrackIndex: 2,
+            playing: true
+          },
+          {
+            type: PlayerActionTypes.PLAYER_REMOVE_TRACK,
+            payload: mockTracks[2]
+          }
+        );
+
+        expect(result.tracks).not.toBeNull();
+        expect(result.currentTrackIndex).toBe(1);
+        expect(result.tracks.length).toBe(2);
+        expect(result.playing).toBe(false);
+      });
+
+      test('should remove audio from tracks, and update currentTrackIndex', () => {
+        const result = playerStateReducer(
+          {
+            ...playerInitialState,
+            tracks: mockTracks,
+            currentTrackIndex: 2,
+            playing: true
+          },
+          {
+            type: PlayerActionTypes.PLAYER_REMOVE_TRACK,
+            payload: mockTracks[0]
+          }
+        );
+
+        expect(result.tracks).not.toBeNull();
+        expect(result.tracks[0].guid).not.toBe('1');
+        expect(result.currentTrackIndex).toBe(1);
       });
     });
 

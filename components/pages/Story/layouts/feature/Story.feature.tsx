@@ -11,8 +11,6 @@ import { Box, Container } from '@material-ui/core';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
-import { IPlayAudioButtonProps } from '@components/Player/components';
-import { IAudioData } from '@components/Player/types';
 import { ITagsProps } from '@components/Tags';
 import { IContentComponentProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
@@ -20,10 +18,6 @@ import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { IStoryRelatedLinksProps } from '../default/components/StoryRelatedLinks';
 import { storyStyles, storyTheme } from './Story.feature.styles';
 import { StoryHeader } from './components';
-
-const PlayAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.PlayAudioButton)
-) as React.FC<IPlayAudioButtonProps>;
 
 const StoryRelatedLinks = dynamic(
   () =>
@@ -44,8 +38,6 @@ export const StoryDefault = ({ data }: Props) => {
   const {
     type,
     id,
-    title,
-    image,
     body,
     categories,
     primaryCategory,
@@ -55,13 +47,8 @@ export const StoryDefault = ({ data }: Props) => {
     opencalaisCountry,
     opencalaisProvince,
     opencalaisRegion,
-    opencalaisPerson,
-    audio
+    opencalaisPerson
   } = data;
-  const audioProps = {
-    title,
-    ...(image && { imageUrl: image.url })
-  } as Partial<IAudioData>;
   const store = useStore();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
@@ -129,7 +116,6 @@ export const StoryDefault = ({ data }: Props) => {
     <ThemeProvider theme={storyTheme}>
       <StoryHeader data={data} />
       <Container fixed>
-        {audio && <PlayAudioButton id={audio.id} fallbackProps={audioProps} />}
         <Box className={classes.body} my={2}>
           <HtmlContent html={body} transforms={[enhanceImages]} />
         </Box>

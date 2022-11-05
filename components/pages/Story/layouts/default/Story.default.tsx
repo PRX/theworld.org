@@ -13,8 +13,6 @@ import { Box, Container, Grid, Hidden } from '@material-ui/core';
 import { Sidebar, SidebarLatestStories } from '@components/Sidebar';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
-import { IPlayAudioButtonProps } from '@components/Player/components';
-import { IAudioData } from '@components/Player/types';
 import { ITagsProps } from '@components/Tags';
 import { IContentComponentProps } from '@interfaces/content';
 import { ICtaRegionProps } from '@interfaces/cta';
@@ -22,10 +20,6 @@ import { RootState } from '@interfaces/state';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { IStoryRelatedLinksProps, StoryHeader, StoryLede } from './components';
-
-const PlayAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.PlayAudioButton)
-) as React.FC<IPlayAudioButtonProps>;
 
 const CtaRegion = dynamic(
   () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
@@ -55,10 +49,7 @@ export const StoryDefault = ({ data }: Props) => {
   const {
     type,
     id,
-    title,
-    image,
     body,
-    audio,
     categories,
     primaryCategory,
     tags,
@@ -69,10 +60,6 @@ export const StoryDefault = ({ data }: Props) => {
     opencalaisRegion,
     opencalaisPerson
   } = data;
-  const audioProps = {
-    title,
-    ...(image && { imageUrl: image.url })
-  } as Partial<IAudioData>;
   const store = useStore();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
@@ -231,9 +218,6 @@ export const StoryDefault = ({ data }: Props) => {
             <StoryHeader data={data} />
           </Grid>
           <Grid item xs={12}>
-            {audio && (
-              <PlayAudioButton id={audio.id} fallbackProps={audioProps} />
-            )}
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <StoryLede data={data} />
