@@ -19,6 +19,7 @@ export const fullAudioParams = {
     'description',
     'program.title',
     'program.metatags',
-    'url'
+    'url',
+    'usage'
   ]
 };

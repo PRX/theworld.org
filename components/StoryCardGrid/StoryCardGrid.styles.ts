@@ -96,6 +96,11 @@ export const storyCardGridTheme = (theme: Theme) =>
             gridColumn: '1 / -1'
           }
         }
+      },
+      MuiCircularProgress: {
+        root: {
+          padding: '20%'
+        }
       }
     }
   });

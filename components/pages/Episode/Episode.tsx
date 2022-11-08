@@ -12,7 +12,6 @@ import {
   Divider,
   Grid,
   Hidden,
-  ListSubheader,
   Typography
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -287,7 +286,7 @@ export const Episode = () => {
                         ...item,
                         avatar: item.image
                       }))}
-                      subheader={<ListSubheader>Hosts</ListSubheader>}
+                      subheaderText="Hosts"
                     />
                   </Sidebar>
                 )}
@@ -298,7 +297,7 @@ export const Episode = () => {
                         ...item,
                         avatar: item.image
                       }))}
-                      subheader={<ListSubheader>Producers</ListSubheader>}
+                      subheaderText="Producers"
                     />
                   </Sidebar>
                 )}
@@ -309,7 +308,7 @@ export const Episode = () => {
                         ...item,
                         avatar: item.image
                       }))}
-                      subheader={<ListSubheader>Guests</ListSubheader>}
+                      subheaderText="Guests"
                     />
                   </Sidebar>
                 )}
@@ -320,7 +319,7 @@ export const Episode = () => {
                         ...item,
                         avatar: item.image
                       }))}
-                      subheader={<ListSubheader>Reporters</ListSubheader>}
+                      subheaderText="Reporters"
                     />
                   </Sidebar>
                 )}

@@ -1,4 +1,4 @@
-import convertDurationStringToIntegerArray from './convertDurationStringToIntegerArray';
+import { convertDurationStringToIntegerArray } from './convertDurationStringToIntegerArray';
 
 /**
  * Convert Duration string into seconds.

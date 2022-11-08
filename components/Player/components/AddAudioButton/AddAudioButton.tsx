@@ -9,11 +9,13 @@ import clsx from 'clsx';
 import { CircularProgress, NoSsr } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@material-ui/icons';
+import { IPriApiResource } from 'pri-api-library/types';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { IAudioData } from '@components/Player/types';
 import { IAudioResource } from '@interfaces';
 import { parseAudioData } from '@lib/parse/audio/audioData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
+import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { getDataByResource } from '@store/reducers';
 import { useAddAudioButtonStyles } from './AddAudioButton.styles';
 
@@ -63,9 +65,25 @@ export const AddAudioButton = ({
     (async () => {
       setLoading(true);
       const ar = await store.dispatch<any>(fetchAudioData(id));
+      let story: IPriApiResource;
+
+      if (ar.usage?.story) {
+        story = await store.dispatch<any>(fetchStoryData(ar.usage.story[0].id));
+      }
+
       setLoading(false);
       setAudio(ar);
-      addTrack(parseAudioData(ar, fallbackProps));
+      addTrack(
+        parseAudioData(
+          ar,
+          story
+            ? {
+                title: story.title,
+                ...(story.image && { imageUrl: story.image.url })
+              }
+            : fallbackProps
+        )
+      );
     })();
   };
 

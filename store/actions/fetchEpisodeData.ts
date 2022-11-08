@@ -40,6 +40,11 @@ export const fetchEpisodeData = (
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 
+    // Get segments' story data.
+    if (data.audio?.segments) {
+      // TODO: fetchEpisodeSegmentsStories().
+    }
+
     // Set CTA filter props.
     dispatch({
       type: 'SET_RESOURCE_CTA_FILTER_PROPS',

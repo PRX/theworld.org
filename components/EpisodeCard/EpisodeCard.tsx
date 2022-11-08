@@ -13,8 +13,10 @@ import {
   Box,
   Card,
   CardActionArea,
+  CardActions,
   CardContent,
   CardMedia,
+  ListSubheader,
   Typography
 } from '@material-ui/core';
 import { EqualizerRounded } from '@material-ui/icons';
@@ -80,18 +82,22 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
               </Box>
             </Typography>
             <ContentLink data={data} className={cx('link')} />
-            {segments && (
-              <>
-                <Box component="header" className={cx('header')}>
+          </CardContent>
+        </CardActionArea>
+        {segments && (
+          <CardActions>
+            <SidebarAudioList
+              data={segments}
+              subheader={
+                <ListSubheader component="header" className={cx('header')}>
                   <Typography variant="h2">
                     <EqualizerRounded /> In this episode:
                   </Typography>
-                </Box>
-                <SidebarAudioList data={segments} />
-              </>
-            )}
-          </CardContent>
-        </CardActionArea>
+                </ListSubheader>
+              }
+            />
+          </CardActions>
+        )}
       </Card>
     </ThemeProvider>
   );

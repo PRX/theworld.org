@@ -7,7 +7,11 @@
 import { basicAudioParams } from './audio';
 
 export const basicEpisodeParams = {
-  include: [...basicAudioParams.include.map(p => `audio.${p}`), 'image'],
+  include: [
+    ...basicAudioParams.include.map(p => `audio.${p}`),
+    'image',
+    'program'
+  ],
   fields: [
     'title',
     'metatags',
@@ -22,6 +26,8 @@ export const basicEpisodeParams = {
     'image.caption',
     'image.alt',
     'audio',
+    'program.title',
+    'program.metatags',
     'embedded_player_url',
     'popout_player_url'
   ]

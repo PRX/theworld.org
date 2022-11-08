@@ -35,7 +35,9 @@ export const useAddAudioButtonStyles = makeStyles((theme: Theme) =>
     },
     iconButtonRoot: {},
     iconRoot: {
-      fontSize: 'inherit'
+      fontSize: 'inherit',
+      fill: 'currentColor',
+      margin: 0
     }
   })
 );

@@ -41,4 +41,9 @@ export interface IAudioData {
    * Duration of audio track formatted as '[HH:]MM:SS'.
    */
   duration?: string;
+
+  /**
+   * Content link resource data.
+   */
+  linkResource?: { id: string; type: string };
 }

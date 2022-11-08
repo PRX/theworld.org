@@ -30,7 +30,9 @@ export const playAudioButtonStyles = makeStyles((theme: Theme) =>
       })
     }),
     iconRoot: {
-      fontSize: 'inherit'
+      fontSize: 'inherit',
+      fill: 'currentColor',
+      margin: 0
     }
   })
 );

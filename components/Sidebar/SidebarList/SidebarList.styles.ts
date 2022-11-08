@@ -6,10 +6,10 @@
 import {
   createMuiTheme,
   createStyles,
+  fade,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
 
 export const sidebarListTheme = (theme: Theme) =>
   createMuiTheme(theme, {
@@ -19,12 +19,35 @@ export const sidebarListTheme = (theme: Theme) =>
       }
     },
     overrides: {
+      MuiLink: {
+        root: {
+          '&:hover': {
+            color: theme.palette.primary.main
+          }
+        }
+      },
       MuiListItem: {
         root: {},
         button: {
           '&:hover': {
+            backgroundColor: fade(
+              theme.palette.primary.main,
+              theme.palette.action.hoverOpacity
+            )
+          }
+        },
+        secondaryAction: {
+          paddingRight: `${theme.spacing(1)}px`,
+          '&:hover': {
+            background: 'none'
+          }
+        },
+        container: {
+          display: 'flex',
+          alignItems: 'center',
+          '&:hover': {
             color: theme.palette.primary.main,
-            backgroundColor: addCssColorAlpha(
+            backgroundColor: fade(
               theme.palette.primary.main,
               theme.palette.action.hoverOpacity
             )
@@ -35,6 +58,7 @@ export const sidebarListTheme = (theme: Theme) =>
         root: {
           width: '75px',
           height: '75px',
+          marginRight: `${theme.spacing(2)}px`,
           boxShadow: theme.shadows[3]
         }
       },
@@ -48,9 +72,17 @@ export const sidebarListTheme = (theme: Theme) =>
           color: theme.palette.grey[500]
         },
         primary: {
+          display: 'grid',
           color: theme.palette.primary.main,
           fontWeight: theme.typography.fontWeightBold,
           lineHeight: 1
+        }
+      },
+      MuiListItemSecondaryAction: {
+        root: {
+          position: 'static',
+          transform: 'none',
+          paddingRight: `${theme.spacing(2)}px`
         }
       },
       MuiListSubheader: {
@@ -70,7 +102,12 @@ export const sidebarListStyles = makeStyles((theme: Theme) =>
     },
     noBullet: {
       display: 'unset',
-      listStyle: 'unset'
+      listStyle: 'unset',
+      marginLeft: 0
+    },
+    noAvatarImage: {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText
     }
   })
 );
