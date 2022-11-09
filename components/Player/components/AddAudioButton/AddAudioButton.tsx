@@ -112,7 +112,7 @@ export const AddAudioButton = ({
     } else {
       setIsQueued(false);
     }
-  }, [tracks?.length]);
+  }, [tracks?.length, id]);
 
   return audioData ? (
     <NoSsr>

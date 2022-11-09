@@ -113,7 +113,7 @@ export const PlayAudioButton = ({
     } else {
       setAudioIsPlaying(false);
     }
-  }, [currentTrack?.guid, playing]);
+  }, [currentTrack?.guid, id, playing]);
 
   return audioData ? (
     <NoSsr>
