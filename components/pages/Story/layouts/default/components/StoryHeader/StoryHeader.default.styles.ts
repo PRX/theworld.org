@@ -64,13 +64,6 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       gap: theme.typography.pxToRem(theme.spacing(1))
-    },
-    audioPlayButton: {
-      padding: '0.1em',
-      fontSize: theme.typography.pxToRem(60)
-    },
-    audioAddButton: {
-      fontSize: theme.typography.pxToRem(30)
     }
   })
 );

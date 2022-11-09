@@ -136,7 +136,8 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
             const isLoading = pathname === loadingUrl;
             const audioProps = {
               title,
-              ...(image && { imageUrl: image.url })
+              ...(image && { imageUrl: image.url }),
+              linkResource: item
             } as Partial<IAudioData>;
             return (
               <Card square key={id}>

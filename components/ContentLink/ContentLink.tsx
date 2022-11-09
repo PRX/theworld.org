@@ -29,7 +29,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
     const [isLoading, setIsLoading] = useState(false);
     const { pathname } =
       (generateLinkHrefForContent(data, true) as UrlWithParsedQuery) || {};
-    const { title } = data || ({} as IPriApiResource);
+    const { title, audioTitle } = data || ({} as IPriApiResource);
     const props = generateLinkPropsForContent(data, query);
     const { href, as: alias } = props || {};
     const classes = contentLinkStyles({});
@@ -65,11 +65,11 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
           })}
           {...other}
         >
-          {children || title}
+          {children || audioTitle || title}
         </MuiLink>
       </Link>
     ) : (
-      <>{children}</>
+      <>{children || audioTitle || title}</>
     );
   }
 );

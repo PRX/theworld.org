@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { Box, Typography } from '@material-ui/core';
 import { Marquee } from '@components/Marquee';
+import { ContentLink } from '@components/ContentLink';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { useTrackInfoStyles } from './TrackInfo.styles';
 
@@ -20,7 +21,7 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
   const { state } = useContext(PlayerContext);
   const { tracks, currentTrackIndex } = state;
   const currentTrack = tracks?.[currentTrackIndex];
-  const { title, info, imageUrl } = currentTrack || {};
+  const { title, info, imageUrl, linkResource } = currentTrack || {};
   const thumbnailAspectRatio = 16 / 9;
   const thumbnailHeight = 48;
   const thumbnailWidth = thumbnailHeight * thumbnailAspectRatio;
@@ -86,6 +87,9 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
           </Box>
         </motion.div>
       </AnimatePresence>
+      {linkResource ? (
+        <ContentLink data={linkResource} className={clsx(classes.link)} />
+      ) : null}
     </Box>
   );
 };

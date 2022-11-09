@@ -8,6 +8,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 export const useTrackInfoStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      position: 'relative',
       overflow: 'hidden'
     },
     layout: {
@@ -39,6 +40,12 @@ export const useTrackInfoStyles = makeStyles((theme: Theme) =>
           marginInline: theme.typography.pxToRem(theme.spacing(0.5))
         }
       }
+    },
+    link: {
+      position: 'absolute',
+      inset: 0,
+      overflow: 'hidden',
+      textIndent: '-2000vw'
     }
   })
 );

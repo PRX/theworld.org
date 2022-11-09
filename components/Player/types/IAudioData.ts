@@ -1,3 +1,5 @@
+import { IPriApiResource } from 'pri-api-library/types';
+
 /**
  * Audio data interface.
  */
@@ -45,5 +47,5 @@ export interface IAudioData {
   /**
    * Content link resource data.
    */
-  linkResource?: { id: string; type: string };
+  linkResource?: IPriApiResource;
 }

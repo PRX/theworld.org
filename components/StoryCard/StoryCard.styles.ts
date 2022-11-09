@@ -44,10 +44,7 @@ export const useStoryCardStyles = makeStyles((theme: Theme) =>
     },
     link: {
       position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
+      inset: 0,
       overflow: 'hidden',
       textIndent: '-2000vw'
     },
@@ -61,11 +58,7 @@ export const useStoryCardStyles = makeStyles((theme: Theme) =>
     }),
     audio: {
       position: 'relative',
-      zIndex: 1,
-      display: 'flex',
-      gap: theme.typography.pxToRem(theme.spacing(0.5)),
-      alignItems: 'center',
-      fontSize: '1.25rem'
+      zIndex: 1
     },
     audioPlayBtn: {
       position: 'relative',
@@ -97,7 +90,6 @@ export const useStoryCardStyles = makeStyles((theme: Theme) =>
       }
     },
     MuiCardContentRoot: {
-      overflow: 'hidden',
       padding: 0
     },
     MuiCardMediaRoot: {

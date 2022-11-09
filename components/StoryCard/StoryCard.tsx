@@ -29,10 +29,7 @@ import {
 import { Label } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
-import {
-  IPlayAudioButtonProps,
-  IAddAudioButtonProps
-} from '@components/Player/components';
+import { IAudioControlsProps } from '@components/Player/components';
 import { IAudioData } from '@components/Player/types';
 import { ILink } from '@interfaces';
 import { generateLinkHrefForContent } from '@lib/routing';
@@ -40,13 +37,9 @@ import { useStoryCardStyles, storyCardTheme } from './StoryCard.styles';
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
-const PlayAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.PlayAudioButton)
-) as React.FC<IPlayAudioButtonProps>;
-
-const AddAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AddAudioButton)
-) as React.FC<IAddAudioButtonProps>;
+const AudioControls = dynamic(() =>
+  import('@components/Player/components').then(mod => mod.AudioControls)
+) as React.FC<IAudioControlsProps>;
 
 export interface StoryCardProps {
   data: IPriApiResource;
@@ -75,7 +68,8 @@ export const StoryCard = ({
   } = data;
   const audioProps = {
     title,
-    ...(image && { imageUrl: image.url })
+    ...(image && { imageUrl: image.url }),
+    linkResource: data
   } as Partial<IAudioData>;
   const { pathname } = generateLinkHrefForContent(
     data,
@@ -156,13 +150,6 @@ export const StoryCard = ({
                 priority={priority}
               />
             )}
-            {audio && (
-              <PlayAudioButton
-                classes={{ root: classes.audioPlayBtn }}
-                id={audio.id}
-                fallbackProps={audioProps}
-              />
-            )}
             <LinearProgress
               className={classes.loadingBar}
               color="secondary"
@@ -207,7 +194,7 @@ export const StoryCard = ({
               </Box>
               {audio && (
                 <Box className={classes.audio}>
-                  <AddAudioButton id={audio.id} fallbackProps={audioProps} />
+                  <AudioControls id={audio.id} fallbackProps={audioProps} />
                 </Box>
               )}
             </Box>

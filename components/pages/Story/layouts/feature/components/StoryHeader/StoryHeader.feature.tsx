@@ -12,10 +12,7 @@ import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
 import { IContentLinkProps } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
-import {
-  IAddAudioButtonProps,
-  IPlayAudioButtonProps
-} from '@components/Player/components';
+import { IAudioControlsProps } from '@components/Player/components';
 import { IAudioData } from '@components/Player/types';
 import {
   storyHeaderStyles,
@@ -24,13 +21,9 @@ import {
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
-const PlayAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.PlayAudioButton)
-) as React.FC<IPlayAudioButtonProps>;
-
-const AddAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AddAudioButton)
-) as React.FC<IAddAudioButtonProps>;
+const AudioControls = dynamic(() =>
+  import('@components/Player/components').then(mod => mod.AudioControls)
+) as React.FC<IAudioControlsProps>;
 
 const ContentLink = dynamic(() =>
   import('@components/ContentLink').then(mod => mod.ContentLink)
@@ -55,7 +48,8 @@ export const StoryHeader = ({ data }: Props) => {
   const { alt, caption, credit } = image || {};
   const audioProps = {
     title,
-    ...(image && { imageUrl: image.url })
+    ...(image && { imageUrl: image.url }),
+    linkResource: data
   } as Partial<IAudioData>;
   const hasCaption = caption && !!caption.length;
   const hasCredit = credit && !!credit.length;
@@ -161,15 +155,10 @@ export const StoryHeader = ({ data }: Props) => {
               </Box>
               {audio && (
                 <Box className={classes.audio}>
-                  <PlayAudioButton
-                    className={classes.audioPlayButton}
+                  <AudioControls
                     id={audio.id}
                     fallbackProps={audioProps}
-                  />
-                  <AddAudioButton
-                    className={classes.audioAddButton}
-                    id={audio.id}
-                    fallbackProps={audioProps}
+                    variant="feature"
                   />
                 </Box>
               )}

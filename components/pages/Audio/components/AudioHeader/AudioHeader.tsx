@@ -4,19 +4,33 @@
  */
 
 import React from 'react';
-import 'moment-timezone';
-import Moment from 'react-moment';
+import dynamic from 'next/dynamic';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Typography } from '@material-ui/core';
 import { ContentLink } from '@components/ContentLink';
+import { IAudioControlsProps } from '@components/Player/components';
+import { IAudioData } from '@components/Player/types';
 import { audioHeaderStyles } from './AudioHeader.styles';
+
+const Moment = dynamic(() => {
+  import('moment-timezone');
+  return import('react-moment');
+}) as any;
+
+const AudioControls = dynamic(() =>
+  import('@components/Player/components').then(mod => mod.AudioControls)
+) as React.FC<IAudioControlsProps>;
 
 interface Props {
   data: IPriApiResource;
 }
 
 export const AudioHeader = ({ data }: Props) => {
-  const { audioAuthor, audioTitle, broadcastDate, program } = data;
+  const { audioAuthor, audioTitle, broadcastDate, program, title, id } = data;
+  const audioProps = {
+    title: audioTitle || title,
+    linkResource: data
+  } as Partial<IAudioData>;
   const classes = audioHeaderStyles({});
 
   return (
@@ -54,6 +68,9 @@ export const AudioHeader = ({ data }: Props) => {
               )}
             </ul>
           )}
+        </Box>
+        <Box className={classes.audio}>
+          <AudioControls id={id as string} fallbackProps={audioProps} />
         </Box>
       </Box>
     </Box>

@@ -7,8 +7,7 @@ import {
   createMuiTheme,
   Theme,
   makeStyles,
-  createStyles,
-  fade
+  createStyles
 } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
 
@@ -131,36 +130,7 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       alignContent: 'start',
       gridGap: theme.typography.pxToRem(4)
     },
-    audio: {
-      position: 'relative',
-      isolation: 'isolate',
-      filter: 'url(#shadowed-goo)'
-    },
-    audioPlayButton: {
-      padding: '0.1em',
-      fontSize: theme.typography.pxToRem(80),
-      border: `8px solid ${fade(theme.palette.common.white, 0.5)}`
-    },
-    audioAddButton: {
-      position: 'absolute',
-      bottom: 0,
-      right: 0,
-      translate: '30% 0',
-      fontSize: theme.typography.pxToRem(20),
-      border: `4px solid ${fade(theme.palette.common.white, 0.5)}`,
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.primary.contrastText,
-      '&:hover': {
-        backgroundColor: theme.palette.primary.light
-      },
-      '&[data-queued]': {
-        backgroundColor: theme.palette.success.main,
-        color: theme.palette.success.contrastText,
-        '&:hover': {
-          backgroundColor: theme.palette.success.light
-        }
-      }
-    },
+    audio: {},
     programLink: {
       fontWeight: theme.typography.fontWeightBold
     },

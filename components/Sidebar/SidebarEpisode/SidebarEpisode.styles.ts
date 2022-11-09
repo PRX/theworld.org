@@ -33,10 +33,9 @@ export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
     title: {
       marginBlock: 0
     },
-    playAudioButton: {
+    audio: {
       position: 'relative',
-      zIndex: 1,
-      fontSize: '1.5em'
+      zIndex: 1
     }
   })
 );

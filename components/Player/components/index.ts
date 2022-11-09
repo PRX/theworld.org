@@ -1,4 +1,5 @@
 export * from './AddAudioButton';
+export * from './AudioControls';
 export * from './ForwardButton';
 export * from './PlayAudioButton';
 export * from './PlayButton';

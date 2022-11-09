@@ -37,7 +37,7 @@ export const sidebarListTheme = (theme: Theme) =>
           }
         },
         secondaryAction: {
-          paddingRight: `${theme.spacing(1)}px`,
+          paddingRight: `${theme.spacing(2)}px`,
           '&:hover': {
             background: 'none'
           }
@@ -45,6 +45,7 @@ export const sidebarListTheme = (theme: Theme) =>
         container: {
           display: 'flex',
           alignItems: 'center',
+          padding: theme.typography.pxToRem(theme.spacing(0.25)),
           '&:hover': {
             color: theme.palette.primary.main,
             backgroundColor: fade(

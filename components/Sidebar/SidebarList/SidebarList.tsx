@@ -18,7 +18,7 @@ import {
 import { ThemeProvider } from '@material-ui/core/styles';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ContentLink } from '@components/ContentLink';
-import { PlayAudioButton } from '@components/Player/components';
+import { AudioControls } from '@components/Player/components';
 import { sidebarListStyles, sidebarListTheme } from './SidebarList.styles';
 
 export interface ISidebarListProps extends ListProps {
@@ -65,7 +65,14 @@ export const SidebarList = ({
           >
             <ListItemText className={classes.noBullet}>{text}</ListItemText>
             <ListItemSecondaryAction>
-              <PlayAudioButton id={item.id as string} />
+              <AudioControls
+                id={item.id as string}
+                variant="minimal"
+                fallbackProps={{
+                  title: text,
+                  linkResource: item
+                }}
+              />
             </ListItemSecondaryAction>
           </ListItem>
         );
@@ -104,12 +111,14 @@ export const SidebarList = ({
                 <ContentLink data={item}>{text}</ContentLink>
               </ListItemText>
               <ListItemSecondaryAction>
-                <PlayAudioButton
+                <AudioControls
                   id={item.audio.id as string}
                   fallbackProps={{
                     title: item.title,
-                    ...(item.image && { imageUrl: item.image })
+                    ...(item.image && { imageUrl: item.image }),
+                    linkResource: item
                   }}
+                  variant="minimal"
                 />
               </ListItemSecondaryAction>
             </ListItem>

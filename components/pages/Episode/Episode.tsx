@@ -16,7 +16,6 @@ import {
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { EqualizerRounded } from '@material-ui/icons';
-import { AudioPlayer } from '@components/AudioPlayer';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -71,8 +70,6 @@ export const Episode = () => {
     datePublished,
     body,
     audio,
-    embeddedPlayerUrl,
-    popoutPlayerUrl,
     hosts,
     producers,
     guests,
@@ -218,14 +215,6 @@ export const Episode = () => {
             <EpisodeHeader data={data} />
           </Grid>
           <Grid item xs={12}>
-            {audio && (
-              <AudioPlayer
-                data={audio}
-                message="Listen to the episode."
-                embeddedPlayerUrl={embeddedPlayerUrl}
-                popoutPlayerUrl={popoutPlayerUrl}
-              />
-            )}
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <EpisodeLede data={data} />

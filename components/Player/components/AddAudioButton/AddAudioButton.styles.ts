@@ -12,17 +12,20 @@ import {
 
 export const useAddAudioButtonStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: ({ isInTracks }: any) => ({
+    root: ({ isQueued, loading }: any) => ({
       borderRadius: '50%',
       padding: '0.35em',
-      ...(!isInTracks && {
+      ...(!isQueued && {
         backgroundColor: 'transparent',
         color: theme.palette.success.contrastText,
+        ...(loading && {
+          backgroundColor: theme.palette.success.main
+        }),
         '&:hover': {
-          backgroundColor: fade(theme.palette.primary.main, 0.25)
+          backgroundColor: fade(theme.palette.success.light, 1)
         }
       }),
-      ...(isInTracks && {
+      ...(isQueued && {
         backgroundColor: theme.palette.success.main,
         color: theme.palette.success.contrastText,
         '&:hover': {

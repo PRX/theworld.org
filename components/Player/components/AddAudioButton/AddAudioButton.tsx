@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import clsx from 'clsx';
 import { CircularProgress, NoSsr } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@material-ui/icons';
 import { IPriApiResource } from 'pri-api-library/types';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
@@ -19,16 +19,17 @@ import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { getDataByResource } from '@store/reducers';
 import { useAddAudioButtonStyles } from './AddAudioButton.styles';
 
-export interface IAddAudioButtonProps {
-  className?: string;
+export interface IAddAudioButtonProps extends IconButtonProps {
   id: string;
   fallbackProps?: Partial<IAudioData>;
 }
 
 export const AddAudioButton = ({
   className,
+  classes,
   id,
-  fallbackProps
+  fallbackProps,
+  ...other
 }: IAddAudioButtonProps) => {
   const store = useStore();
   const [audio, setAudio] = useState<IAudioResource>();
@@ -39,18 +40,20 @@ export const AddAudioButton = ({
   );
   const { tracks } = playerState;
   const [isQueued, setIsQueued] = useState(false);
-  const classes = useAddAudioButtonStyles({
-    isInTracks: isQueued
+  const styles = useAddAudioButtonStyles({
+    isQueued,
+    loading
   });
-  const btnClasses = clsx(classes.root, className);
+  const btnClasses = clsx(styles.root, className);
   const iconButtonClasses = {
-    root: classes.iconButtonRoot
+    root: styles.iconButtonRoot,
+    ...classes
   };
   const iconClasses = {
-    root: classes.iconRoot
+    root: styles.iconRoot
   };
   const progressClasses = {
-    colorPrimary: classes.circularProgressPrimary
+    colorPrimary: styles.circularProgressPrimary
   };
 
   const handleAddClick = () => {
@@ -79,7 +82,9 @@ export const AddAudioButton = ({
           story
             ? {
                 title: story.title,
-                ...(story.image && { imageUrl: story.image.url })
+                ...(story.image && { imageUrl: story.image.url }),
+                linkResource: story,
+                ...fallbackProps
               }
             : fallbackProps
         )
@@ -113,10 +118,11 @@ export const AddAudioButton = ({
     <NoSsr>
       {!isQueued ? (
         <IconButton
-          classes={iconButtonClasses}
           className={btnClasses}
-          onClick={handleAddClick}
+          classes={iconButtonClasses}
           disableRipple
+          {...other}
+          onClick={handleAddClick}
         >
           <PlaylistAddSharp
             titleAccess="Add To Playlist"
@@ -125,10 +131,11 @@ export const AddAudioButton = ({
         </IconButton>
       ) : (
         <IconButton
-          classes={iconButtonClasses}
           className={btnClasses}
-          onClick={handleRemoveClick}
+          classes={iconButtonClasses}
           disableRipple
+          {...other}
+          onClick={handleRemoveClick}
           data-queued
         >
           <PlaylistAddCheckSharp
@@ -141,10 +148,12 @@ export const AddAudioButton = ({
   ) : (
     <NoSsr>
       <IconButton
-        classes={iconButtonClasses}
         className={btnClasses}
-        onClick={handleLoadClick}
+        classes={iconButtonClasses}
         disableRipple
+        {...other}
+        onClick={handleLoadClick}
+        {...(loading && { 'data-loading': true })}
       >
         {!loading ? (
           <PlaylistAddSharp

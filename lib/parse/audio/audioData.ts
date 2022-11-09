@@ -26,7 +26,7 @@ export const parseAudioData = (
   } = data;
   const { canonical } = metatags || {};
   const { duration } = metadata || {};
-  const { imageUrl, title: fallbackTitle } = fallbackProps || {};
+  const { imageUrl, title: fallbackTitle, linkResource } = fallbackProps || {};
   const dataString =
     broadcastDate &&
     (d => {
@@ -48,6 +48,7 @@ export const parseAudioData = (
     imageUrl: metatags?.['og:image'],
     ...(imageUrl && { imageUrl }),
     ...(duration && { duration }),
-    ...(info.length ? { info } : {})
+    ...(info.length ? { info } : {}),
+    ...(linkResource && { linkResource })
   };
 };

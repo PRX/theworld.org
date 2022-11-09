@@ -27,6 +27,7 @@ export interface IPlayAudioButtonProps extends IconButtonProps {
 
 export const PlayAudioButton = ({
   className,
+  classes,
   id,
   fallbackProps,
   ...other
@@ -44,18 +45,19 @@ export const PlayAudioButton = ({
   const [audioIsPlaying, setAudioIsPlaying] = useState(
     playing && audioData && currentTrack?.guid === audioData.guid
   );
-  const classes = playAudioButtonStyles({
+  const styles = playAudioButtonStyles({
     audioIsPlaying
   });
-  const playBtnClasses = clsx(classes.root, className);
+  const playBtnClassNames = clsx(styles.root, className);
   const iconButtonClasses = {
-    root: classes.iconButtonRoot
+    root: styles.iconButtonRoot,
+    ...classes
   };
   const iconClasses = {
-    root: classes.iconRoot
+    root: styles.iconRoot
   };
   const progressClasses = {
-    colorPrimary: classes.circularProgressPrimary
+    colorPrimary: styles.circularProgressPrimary
   };
 
   const handlePlayClick = () => {
@@ -84,7 +86,9 @@ export const PlayAudioButton = ({
           story
             ? {
                 title: story.title,
-                ...(story.image && { imageUrl: story.image.url })
+                ...(story.image && { imageUrl: story.image.url }),
+                linkResource: story,
+                ...fallbackProps
               }
             : fallbackProps
         )
@@ -114,11 +118,12 @@ export const PlayAudioButton = ({
   return audioData ? (
     <NoSsr>
       <IconButton
-        className={playBtnClasses}
+        className={playBtnClassNames}
         classes={iconButtonClasses}
-        onClick={handlePlayClick}
         disableRipple
         {...other}
+        onClick={handlePlayClick}
+        {...(audioIsPlaying && { 'data-playing': true })}
       >
         {!audioIsPlaying && (
           <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
@@ -131,11 +136,12 @@ export const PlayAudioButton = ({
   ) : (
     <NoSsr>
       <IconButton
-        className={playBtnClasses}
+        className={playBtnClassNames}
         classes={iconButtonClasses}
-        onClick={handleLoadClick}
         disableRipple
         {...other}
+        onClick={handleLoadClick}
+        {...(loading && { 'data-loading': true })}
       >
         {!loading ? (
           <PlayArrowSharp titleAccess="Play" classes={iconClasses} />

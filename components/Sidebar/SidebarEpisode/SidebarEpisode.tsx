@@ -14,10 +14,11 @@ import {
   CardContent,
   Typography
 } from '@material-ui/core';
+import { Headset } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentButton } from '@components/ContentButton';
 import { ContentLink } from '@components/ContentLink';
-import { AddAudioButton, PlayAudioButton } from '@components/Player/components';
+import { AudioControls } from '@components/Player/components';
 import {
   sidebarEpisodeStyles,
   sidebarEpisodeTheme
@@ -44,17 +45,10 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
       <Card square elevation={1} className={cx('root')}>
         <CardActionArea component="div">
           <SidebarHeader className={classes.header}>
-            <PlayAudioButton
-              className={classes.playAudioButton}
-              id={audioId}
-              fallbackProps={{
-                title,
-                ...(image && { imageUrl: image.url })
-              }}
-            />
+            <Headset />
             <Typography variant="h2"> {label}</Typography>
-            <AddAudioButton
-              className={classes.playAudioButton}
+            <AudioControls
+              className={classes.audio}
               id={audioId}
               fallbackProps={{
                 title,

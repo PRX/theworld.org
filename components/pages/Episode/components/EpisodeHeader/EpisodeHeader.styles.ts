@@ -10,6 +10,7 @@ export const episodeHeaderStyles = makeStyles((theme: Theme) =>
     root: {
       fontSize: '1.2rem'
     },
+    heading: {},
     byline: {
       padding: 0,
       margin: 0,
@@ -24,14 +25,18 @@ export const episodeHeaderStyles = makeStyles((theme: Theme) =>
     },
     meta: {
       display: 'grid',
-      gridTemplateColumns: 'max-content',
-      gridTemplateAreas: "'INFO'",
-      justifyContent: 'space-between'
+      gridTemplateColumns: '1fr 300px',
+      alignItems: 'start',
+      gap: theme.typography.pxToRem(theme.spacing(2)),
+      [theme.breakpoints.down('sm')]: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap'
+      }
     },
     info: {
       display: 'grid',
       alignContent: 'start',
-      gridArea: 'INFO',
       gridGap: theme.typography.pxToRem(4)
     },
     programLink: {
@@ -39,6 +44,12 @@ export const episodeHeaderStyles = makeStyles((theme: Theme) =>
     },
     categoryLink: {
       fontWeight: theme.typography.fontWeightBold
+    },
+    audio: {
+      justifySelf: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      gap: theme.typography.pxToRem(theme.spacing(1))
     }
   })
 );
