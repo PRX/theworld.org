@@ -60,7 +60,7 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
   return (
     <ThemeProvider theme={episodeCardTheme}>
       <Card square elevation={1}>
-        <CardActionArea>
+        <CardActionArea component="div">
           {image && (
             <CardMedia>
               <Image

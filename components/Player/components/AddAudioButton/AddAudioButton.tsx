@@ -81,10 +81,10 @@ export const AddAudioButton = ({
           ar,
           story
             ? {
+                ...fallbackProps,
                 title: story.title,
                 ...(story.image && { imageUrl: story.image.url }),
-                linkResource: story,
-                ...fallbackProps
+                linkResource: story
               }
             : fallbackProps
         )
