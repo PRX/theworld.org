@@ -6,13 +6,16 @@ import React, { useContext } from 'react';
 import clsx from 'clsx';
 import {
   ForwardButton,
+  NextButton,
   PlayButton,
   PlayerProgress,
+  PreviousButton,
   ReplayButton,
   TimeInfo,
   TrackInfo
 } from '@components/Player/components';
 import { AppBar, Box, NoSsr, Toolbar } from '@material-ui/core';
+import { AutoplayButton } from '@components/Player/components/AutoPlayButton';
 import { PlayerContext } from '@components/Player/contexts';
 import { appPlayerStyles } from './AppPlayer.styles';
 
@@ -48,9 +51,17 @@ export const AppPlayer = () => {
 
           <Box className={clsx(classes.controls, classes.info)}>
             <TrackInfo />
+            {tracks?.length ? (
+              <>
+                <PreviousButton classes={buttonClasses} color="inherit" />
+                <NextButton classes={buttonClasses} color="inherit" />
+              </>
+            ) : null}
           </Box>
 
-          <Box className={classes.controls} />
+          <Box className={classes.controls}>
+            <AutoplayButton />
+          </Box>
         </Toolbar>
       </AppBar>
     </NoSsr>

@@ -16,7 +16,8 @@ describe('states/player', () => {
       test('should set `playing` to true', () => {
         const result = playerStateReducer(
           {
-            ...playerInitialState
+            ...playerInitialState,
+            playing: false
           },
           {
             type: PlayerActionTypes.PLAYER_PLAY
@@ -60,6 +61,59 @@ describe('states/player', () => {
 
         expect(result1.playing).toBe(true);
         expect(result2.playing).toBe(false);
+      });
+    });
+
+    describe('`autoplay` actions', () => {
+      test('should set `autoplay` to true', () => {
+        const result = playerStateReducer(
+          {
+            ...playerInitialState,
+            autoplay: false
+          },
+          {
+            type: PlayerActionTypes.PLAYER_AUTOPLAY_ENABLE
+          }
+        );
+
+        expect(result.autoplay).toBe(true);
+      });
+
+      test('should set `autoplay` to false', () => {
+        const result = playerStateReducer(
+          {
+            ...playerInitialState,
+            autoplay: true
+          },
+          {
+            type: PlayerActionTypes.PLAYER_AUTOPLAY_DISABLE
+          }
+        );
+
+        expect(result.autoplay).toBe(false);
+      });
+
+      test('should toggle `autoplay`', () => {
+        const result1 = playerStateReducer(
+          {
+            ...playerInitialState,
+            autoplay: false
+          },
+          {
+            type: PlayerActionTypes.PLAYER_TOGGLE_AUTOPLAY
+          }
+        );
+        const result2 = playerStateReducer(
+          {
+            ...result1
+          },
+          {
+            type: PlayerActionTypes.PLAYER_TOGGLE_AUTOPLAY
+          }
+        );
+
+        expect(result1.autoplay).toBe(true);
+        expect(result2.autoplay).toBe(false);
       });
     });
 
@@ -535,7 +589,8 @@ describe('states/player', () => {
       test('should set `muted` to true', () => {
         const result = playerStateReducer(
           {
-            ...playerInitialState
+            ...playerInitialState,
+            muted: false
           },
           {
             type: PlayerActionTypes.PLAYER_MUTE

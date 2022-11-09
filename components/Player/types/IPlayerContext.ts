@@ -15,6 +15,9 @@ export interface IPlayerContext {
   playAudio(audio: IAudioData): void;
   pause(): void;
   togglePlayPause(): void;
+  enableAutoplay(): void;
+  disableAutoplay(): void;
+  toggleAutoplay(): void;
   toggleMute(): void;
   seekTo(time: number): void;
   seekBy(time: number): void;

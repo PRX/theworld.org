@@ -6,12 +6,19 @@
 import { addCssColorAlpha } from '@lib/parse/color';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-export const socialShareMenuStyles = makeStyles(
+export const useSocialShareMenuStyles = makeStyles(
   (theme: Theme) =>
     createStyles({
       root: {
         position: 'relative',
-        zIndex: theme.zIndex.speedDial
+        zIndex: theme.zIndex.speedDial,
+        pointerEvents: 'none'
+      },
+      fab: {
+        pointerEvents: 'all'
+      },
+      actionsClosed: {
+        pointerEvents: 'none'
       },
       staticTooltipLabel: {
         backgroundColor: 'transparent',
@@ -20,6 +27,8 @@ export const socialShareMenuStyles = makeStyles(
         paddingRight: 0
       },
       backdropRoot: {
+        top: 'unset',
+        height: '100vh',
         backgroundImage: `linear-gradient(-45deg, ${addCssColorAlpha(
           theme.palette.grey[900],
           0.75

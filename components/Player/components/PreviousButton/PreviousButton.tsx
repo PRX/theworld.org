@@ -1,41 +1,44 @@
 /**
- * @file ForwardButton.tsx
+ * @file PreviousButton.tsx
  * Forward button component to skip play progress forward.
  */
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
 import { IconButtonProps } from '@material-ui/core';
-import { Forward30Sharp } from '@material-ui/icons';
+import { SkipPrevious } from '@material-ui/icons';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import IconButton from '@material-ui/core/IconButton';
-import { useForwardButtonStyles } from './ForwardButton.styles';
+import { usePreviousButtonStyles } from './PreviousButton.styles';
 
-export interface IForwardButtonProps extends IconButtonProps {}
+export interface IPreviousButtonProps extends IconButtonProps {}
 
-export const ForwardButton = ({ className, ...other }: IForwardButtonProps) => {
-  const { forward } = useContext(PlayerContext);
-  const styles = useForwardButtonStyles({});
+export const PreviousButton = ({
+  className,
+  ...other
+}: IPreviousButtonProps) => {
+  const { previousTrack, state } = useContext(PlayerContext);
+  const { currentTrackIndex } = state;
+  const disabled = !currentTrackIndex;
+  const styles = usePreviousButtonStyles({});
   const rootClassNames = clsx(className, styles.root);
   const iconClasses = {
     root: styles.iconRoot
   };
 
   const handleClick = () => {
-    forward();
+    previousTrack();
   };
 
   return (
     <IconButton
       {...other}
       className={rootClassNames}
+      disabled={disabled}
       onClick={handleClick}
       disableRipple
     >
-      <Forward30Sharp
-        titleAccess="Skip Ahead 30 Seconds"
-        classes={iconClasses}
-      />
+      <SkipPrevious titleAccess="Previous" classes={iconClasses} />
     </IconButton>
   );
 };

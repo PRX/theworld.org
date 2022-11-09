@@ -20,7 +20,6 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
     },
     progress: {},
     toolbarRoot: {
-      paddingBlock: `${theme.spacing(1)}px`,
       display: 'grid',
       gridTemplateColumns: '0fr 1fr 0fr',
       justifyContent: 'space-between',

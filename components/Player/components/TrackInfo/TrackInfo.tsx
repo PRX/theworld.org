@@ -25,14 +25,14 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
   const thumbnailAspectRatio = 16 / 9;
   const thumbnailHeight = 48;
   const thumbnailWidth = thumbnailHeight * thumbnailAspectRatio;
-  const classes = useTrackInfoStyles({});
-  const rootClasses = clsx(className, classes.root);
+  const styles = useTrackInfoStyles({ hasLink: !!linkResource });
+  const rootClassNames = clsx(className, styles.root);
 
   return (
-    <Box className={rootClasses}>
+    <Box className={rootClassNames}>
       <AnimatePresence initial={false} exitBeforeEnter>
         <motion.div
-          className={classes.layout}
+          className={styles.layout}
           key={currentTrack ? currentTrack.guid : 'empty'}
           initial={{
             opacity: 0
@@ -49,7 +49,7 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
         >
           {imageUrl ? (
             <Image
-              className={classes.image}
+              className={styles.image}
               src={imageUrl}
               width={thumbnailWidth}
               height={thumbnailHeight}
@@ -57,12 +57,12 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
               alt={`Thumbnail for "${title}"`}
             />
           ) : (
-            <div className={classes.image} />
+            <div className={styles.image} />
           )}
-          <Box className={classes.text}>
+          <Box className={styles.text}>
             <Marquee>
               <Typography
-                className={classes.title}
+                className={styles.title}
                 variant="h2"
                 component="span"
               >
@@ -70,25 +70,27 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
               </Typography>
             </Marquee>
             {info?.length ? (
-              <Typography
-                className={classes.info}
-                variant="subtitle1"
-                component="span"
-              >
-                {info
-                  .filter(t => !!t)
-                  .map(text => (
-                    <span className={classes.infoItem} key={text}>
-                      {text}
-                    </span>
-                  ))}
-              </Typography>
+              <Marquee>
+                <Typography
+                  className={styles.info}
+                  variant="subtitle1"
+                  component="span"
+                >
+                  {info
+                    .filter(t => !!t)
+                    .map(text => (
+                      <span className={styles.infoItem} key={text}>
+                        {text}
+                      </span>
+                    ))}
+                </Typography>
+              </Marquee>
             ) : null}
           </Box>
         </motion.div>
       </AnimatePresence>
       {linkResource ? (
-        <ContentLink data={linkResource} className={clsx(classes.link)} />
+        <ContentLink data={linkResource} className={clsx(styles.link)} />
       ) : null}
     </Box>
   );

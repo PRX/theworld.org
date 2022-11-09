@@ -15,6 +15,7 @@ import { IAudioData } from '@components/Player/types';
 import { IAudioResource } from '@interfaces';
 import { parseAudioData } from '@lib/parse/audio/audioData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
+import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
 import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { getDataByResource } from '@store/reducers';
 import { useAddAudioButtonStyles } from './AddAudioButton.styles';
@@ -44,7 +45,7 @@ export const AddAudioButton = ({
     isQueued,
     loading
   });
-  const btnClasses = clsx(styles.root, className);
+  const rootClassNames = clsx(styles.root, className);
   const iconButtonClasses = {
     root: styles.iconButtonRoot,
     ...classes
@@ -68,10 +69,18 @@ export const AddAudioButton = ({
     (async () => {
       setLoading(true);
       const ar = await store.dispatch<any>(fetchAudioData(id));
-      let story: IPriApiResource;
+      let linkResource: IPriApiResource;
 
       if (ar.usage?.story) {
-        story = await store.dispatch<any>(fetchStoryData(ar.usage.story[0].id));
+        linkResource = await store.dispatch<any>(
+          fetchStoryData(ar.usage.story[0].id)
+        );
+      }
+
+      if (ar.usage?.episode) {
+        linkResource = await store.dispatch<any>(
+          fetchEpisodeData(ar.usage.episode[0].id)
+        );
       }
 
       setLoading(false);
@@ -79,12 +88,12 @@ export const AddAudioButton = ({
       addTrack(
         parseAudioData(
           ar,
-          story
+          linkResource
             ? {
                 ...fallbackProps,
-                title: story.title,
-                ...(story.image && { imageUrl: story.image.url }),
-                linkResource: story
+                title: linkResource.title,
+                ...(linkResource.image && { imageUrl: linkResource.image.url }),
+                linkResource
               }
             : fallbackProps
         )
@@ -118,7 +127,7 @@ export const AddAudioButton = ({
     <NoSsr>
       {!isQueued ? (
         <IconButton
-          className={btnClasses}
+          className={rootClassNames}
           classes={iconButtonClasses}
           disableRipple
           {...other}
@@ -131,7 +140,7 @@ export const AddAudioButton = ({
         </IconButton>
       ) : (
         <IconButton
-          className={btnClasses}
+          className={rootClassNames}
           classes={iconButtonClasses}
           disableRipple
           {...other}
@@ -148,7 +157,7 @@ export const AddAudioButton = ({
   ) : (
     <NoSsr>
       <IconButton
-        className={btnClasses}
+        className={rootClassNames}
         classes={iconButtonClasses}
         disableRipple
         {...other}

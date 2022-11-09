@@ -86,6 +86,18 @@ export const Player = ({ children }: IPlayerProps) => {
     dispatch({ type: PlayerActionTypes.PLAYER_TOGGLE_PLAYING });
   };
 
+  const enableAutoplay = () => {
+    dispatch({ type: PlayerActionTypes.PLAYER_AUTOPLAY_ENABLE });
+  };
+
+  const disableAutoplay = () => {
+    dispatch({ type: PlayerActionTypes.PLAYER_AUTOPLAY_DISABLE });
+  };
+
+  const toggleAutoplay = () => {
+    dispatch({ type: PlayerActionTypes.PLAYER_TOGGLE_AUTOPLAY });
+  };
+
   const seekTo = useCallback(
     (time: number) => {
       dispatch({
@@ -243,6 +255,9 @@ export const Player = ({ children }: IPlayerProps) => {
       playAudio,
       pause,
       togglePlayPause,
+      enableAutoplay,
+      disableAutoplay,
+      toggleAutoplay,
       toggleMute,
       seekTo,
       seekBy,
@@ -321,7 +336,7 @@ export const Player = ({ children }: IPlayerProps) => {
     } else if (isLastTrack) {
       pause();
     }
-  }, [isLastTrack]);
+  }, [isLastTrack, autoplay]);
 
   const handleHotkey = useCallback(
     (event: KeyboardEventWithTarget) => {
@@ -335,6 +350,9 @@ export const Player = ({ children }: IPlayerProps) => {
       if (hasModifier || fromInput) return;
 
       switch (key) {
+        case 'KeyA':
+          toggleAutoplay();
+          break;
         case 'KeyS':
           audioElm.current.playbackRate = 3 - audioElm.current.playbackRate;
           break;

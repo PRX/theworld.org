@@ -4,26 +4,21 @@
  */
 
 import React, { useContext } from 'react';
-import classNames from 'classnames/bind';
+import clsx from 'clsx';
 import { IconButtonProps } from '@material-ui/core';
 import { Replay5Sharp } from '@material-ui/icons';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import IconButton from '@material-ui/core/IconButton';
 import { useReplayButtonStyles } from './ReplayButton.styles';
 
-export interface IReplayButtonProps extends IconButtonProps {
-  className?: string;
-}
+export interface IReplayButtonProps extends IconButtonProps {}
 
 export const ReplayButton = ({ className, ...other }: IReplayButtonProps) => {
   const { replay } = useContext(PlayerContext);
-  const classes = useReplayButtonStyles({});
-  const cx = classNames.bind(classes);
-  const playBtnClasses = cx(className, {
-    playBtn: true
-  });
+  const styles = useReplayButtonStyles({});
+  const rootClassNames = clsx(className, styles.root);
   const iconClasses = {
-    root: classes.iconRoot
+    root: styles.iconRoot
   };
 
   const handleClick = () => {
@@ -33,7 +28,7 @@ export const ReplayButton = ({ className, ...other }: IReplayButtonProps) => {
   return (
     <IconButton
       {...other}
-      className={playBtnClasses}
+      className={rootClassNames}
       onClick={handleClick}
       disableRipple
     >

@@ -23,7 +23,14 @@ export const playerStateReducer = (
   state: IPlayerState,
   action: IPlayerAction
 ): IPlayerState => {
-  const { playing, currentTrackIndex, tracks, muted, currentTime } = state;
+  const {
+    autoplay,
+    playing,
+    currentTrackIndex,
+    tracks,
+    muted,
+    currentTime
+  } = state;
   let audioTrackIndex: number;
   let isInTracks: boolean;
 
@@ -36,6 +43,15 @@ export const playerStateReducer = (
 
     case ActionTypes.PLAYER_TOGGLE_PLAYING:
       return { ...state, playing: !playing };
+
+    case ActionTypes.PLAYER_AUTOPLAY_ENABLE:
+      return { ...state, autoplay: true };
+
+    case ActionTypes.PLAYER_AUTOPLAY_DISABLE:
+      return { ...state, autoplay: false };
+
+    case ActionTypes.PLAYER_TOGGLE_AUTOPLAY:
+      return { ...state, autoplay: !autoplay };
 
     case ActionTypes.PLAYER_UPDATE_TRACKS:
       return {
