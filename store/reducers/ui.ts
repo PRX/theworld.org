@@ -9,7 +9,7 @@ import { RootState, UiState, UiAction } from '@interfaces/state';
 
 type State = UiState | RootState;
 
-export const ui = (state = {} as State, action: UiAction): State => {
+export const ui = (state = {}, action: UiAction): State => {
   const { player } = state as UiState;
   const { playlistOpen } = player || {};
 
