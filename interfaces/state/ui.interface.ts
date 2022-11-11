@@ -14,6 +14,7 @@ export interface DrawerState {
 
 export interface PlayerState {
   open: boolean;
+  playlistOpen: boolean;
 }
 
 export interface SocialShareMenuState {

@@ -12,6 +12,7 @@ import {
   PreviousButton,
   ReplayButton,
   TimeInfo,
+  TogglePlaylistButton,
   TrackInfo
 } from '@components/Player/components';
 import { AppBar, Box, NoSsr, Toolbar } from '@material-ui/core';
@@ -20,8 +21,8 @@ import { PlayerContext } from '@components/Player/contexts';
 import { appPlayerStyles } from './AppPlayer.styles';
 
 export const AppPlayer = () => {
-  const { state } = useContext(PlayerContext);
-  const { tracks } = state || {};
+  const { state: playerState } = useContext(PlayerContext);
+  const { tracks } = playerState || {};
   const isOpen = !!tracks?.length;
   const classes = appPlayerStyles({ isOpen });
   const toolbarClasses = {
@@ -33,7 +34,14 @@ export const AppPlayer = () => {
 
   return (
     <NoSsr>
-      <AppBar className={classes.root} component="div" position="static">
+      <AppBar
+        className={classes.root}
+        component="div"
+        position="static"
+        {...(!tracks?.length && {
+          inert: 'inert'
+        })}
+      >
         <Box className={classes.progress}>
           <PlayerProgress />
         </Box>
@@ -51,16 +59,13 @@ export const AppPlayer = () => {
 
           <Box className={clsx(classes.controls, classes.info)}>
             <TrackInfo />
-            {tracks?.length ? (
-              <>
-                <PreviousButton classes={buttonClasses} color="inherit" />
-                <NextButton classes={buttonClasses} color="inherit" />
-              </>
-            ) : null}
+            <PreviousButton classes={buttonClasses} color="inherit" />
+            <NextButton classes={buttonClasses} color="inherit" />
           </Box>
 
           <Box className={classes.controls}>
             <AutoplayButton />
+            <TogglePlaylistButton classes={buttonClasses} color="inherit" />
           </Box>
         </Toolbar>
       </AppBar>

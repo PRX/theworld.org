@@ -11,9 +11,7 @@ import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import IconButton from '@material-ui/core/IconButton';
 import { usePlayButtonStyles } from './PlayButton.styles';
 
-export interface IPlayButtonProps extends IconButtonProps {
-  className?: string;
-}
+export interface IPlayButtonProps extends IconButtonProps {}
 
 export const PlayButton = ({ className, ...other }: IPlayButtonProps) => {
   const { state, togglePlayPause } = useContext(PlayerContext);
@@ -21,7 +19,7 @@ export const PlayButton = ({ className, ...other }: IPlayButtonProps) => {
   const styles = usePlayButtonStyles({
     playing
   });
-  const playBtnClasses = clsx(className, styles.root);
+  const rootClassNames = clsx(className, styles.root);
   const iconClasses = {
     root: styles.iconRoot
   };
@@ -33,7 +31,7 @@ export const PlayButton = ({ className, ...other }: IPlayButtonProps) => {
   return (
     <IconButton
       {...other}
-      className={playBtnClasses}
+      className={rootClassNames}
       aria-label={playing ? 'Pause' : 'Play'}
       onClick={handleClick}
       disableRipple

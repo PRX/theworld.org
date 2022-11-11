@@ -13,6 +13,7 @@ import {
 export const appPlayerStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      position: 'relative',
       isolation: 'isolate',
       backdropFilter: 'blur(30px)',
       backgroundColor: fade(theme.palette.background.paper, 0.8),

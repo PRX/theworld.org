@@ -23,7 +23,7 @@ import ShareRoundedIcon from '@material-ui/icons/ShareRounded';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import { IIconsMap } from '@interfaces/icons';
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
-import { getUiSocialShareMenu } from '@store/reducers';
+import { getUiPlayerPlaylistOpen, getUiSocialShareMenu } from '@store/reducers';
 import { useSocialShareMenuStyles } from './SocialShareMenu.styles';
 
 const defaultIconsMap = new Map();
@@ -59,6 +59,7 @@ export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
     updateForce(store.getState());
   });
   const { shown, links, icons } = getUiSocialShareMenu(state) || {};
+  const playlistOpen = getUiPlayerPlaylistOpen(state);
   const [open, setOpen] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   const iconsMap = getIconsMap(icons);
@@ -104,7 +105,7 @@ export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
           <SpeedDial
             ariaLabel="Show Share Links"
             classes={speedDialClasses}
-            hidden={!shown}
+            hidden={!shown || playlistOpen}
             icon={
               <SpeedDialIcon
                 icon={<ShareRoundedIcon />}

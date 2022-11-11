@@ -59,14 +59,7 @@ export const AppCtaLoadUnder = () => {
 
   return CtaMessageComponent && shownMessage && !closed ? (
     <ThemeProvider theme={appCtaLoadUnderTheme}>
-      <Box
-        component="aside"
-        className={cx('root')}
-        position="fixed"
-        bottom={0}
-        width="100%"
-        px={4}
-      >
+      <Box component="aside" className={cx('root')} px={4} height={5}>
         <Container className={cx('container')} maxWidth="lg">
           <CtaMessageComponent data={shownMessage} onClose={handleClose} />
         </Container>

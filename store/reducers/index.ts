@@ -123,5 +123,7 @@ export const getUiDrawerOpen = (state: RootState) =>
   fromUi.getUiDrawerOpen(state.ui);
 export const getUiPlayerOpen = (state: RootState) =>
   fromUi.getUiPlayerOpen(state.ui);
+export const getUiPlayerPlaylistOpen = (state: RootState) =>
+  fromUi.getUiPlayerPlaylistOpen(state.ui);
 export const getUiSocialShareMenu = (state: RootState) =>
   fromUi.getUiSocialShareMenu(state.ui);

@@ -6,6 +6,7 @@
 import {
   createMuiTheme,
   createStyles,
+  fade,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -15,27 +16,46 @@ import { blue, orange, red, green, grey, yellow } from './colors';
 const buttonBorderRadius = '3px';
 const buttonBorderWidth = '2px';
 
-export const appStyles = makeStyles((theme: Theme) =>
+export const useAppStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      paddingBottom: 'var(--footer-padding, 0)'
+    },
+    main: {},
+    content: {},
     uiFooter: {
       position: 'fixed',
       bottom: 0,
       width: '100vw',
-      zIndex: theme.zIndex.appBar,
-      display: 'grid',
-      alignContent: 'end'
+      zIndex: theme.zIndex.appBar - 1
     },
     playerWrapper: ({ playerOpen }: any) => ({
-      position: 'absolute',
-      top: '100%',
-      width: '100vw',
+      position: 'relative',
+      translate: '0 100%',
       transition: theme.transitions.create('translate', {
         duration: theme.transitions.duration.enteringScreen,
         easing: theme.transitions.easing.easeInOut
       }),
       ...(playerOpen && {
-        translate: '0 -100%'
+        translate: '0 0'
+      })
+    }),
+    playlistWrapper: ({ playlistOpen }: any) => ({
+      zIndex: 0,
+      position: 'absolute',
+      bottom: '100%',
+      left: 0,
+      right: 0,
+      height: 'calc(100vh - 100%)',
+      translate: '0 100vh',
+      transition: theme.transitions.create('translate', {
+        duration: theme.transitions.duration.enteringScreen,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      backgroundColor: fade(theme.palette.background.default, 0.8),
+      backdropFilter: 'blur(30px)',
+      ...(playlistOpen && {
+        translate: '0 0'
       })
     }),
     socialShareMenu: {
@@ -55,6 +75,19 @@ export const headingProps = {
 };
 
 export const baseMuiTheme = createMuiTheme({
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        html: {},
+        body: {
+          '& > svg': {
+            position: 'absolute',
+            left: '-10000px'
+          }
+        }
+      }
+    }
+  },
   palette: {
     primary: {
       main: blue[600],
