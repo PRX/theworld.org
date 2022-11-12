@@ -22,6 +22,7 @@ import { wrapper } from '@store';
 import { Player } from '@components/Player';
 import { AppPlayer } from '@components/AppPlayer/AppPlayer';
 import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
+import { Playlist } from '@components/Player/components';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   const rootRef = useRef<HTMLDivElement>();
@@ -110,7 +111,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
                         inert: 'inert'
                       })}
                     >
-                      Playlist
+                      <Playlist className={styles.playlist} />
                     </div>
                     <div className={styles.playerWrapper}>
                       <SocialShareMenu className={styles.socialShareMenu} />

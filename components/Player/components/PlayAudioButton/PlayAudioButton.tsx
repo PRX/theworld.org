@@ -8,7 +8,7 @@ import { useStore } from 'react-redux';
 import clsx from 'clsx';
 import { CircularProgress, NoSsr } from '@material-ui/core';
 import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
-import { PlayArrowSharp, PauseSharp } from '@material-ui/icons';
+import { PauseSharp, PlayArrowSharp, VolumeUpSharp } from '@material-ui/icons';
 import { IPriApiResource } from 'pri-api-library/types';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { IAudioData } from '@components/Player/types';
@@ -22,7 +22,8 @@ import { playAudioButtonStyles } from './PlayAudioButton.styles';
 
 export interface IPlayAudioButtonProps extends IconButtonProps {
   className?: string;
-  id: string;
+  id?: string;
+  audio?: IAudioData;
   fallbackProps?: Partial<IAudioData>;
 }
 
@@ -30,12 +31,13 @@ export const PlayAudioButton = ({
   className,
   classes,
   id,
+  audio,
   fallbackProps,
   ...other
 }: IPlayAudioButtonProps) => {
   const store = useStore();
-  const [audio, setAudio] = useState<IAudioResource>();
-  const [audioData, setAudioData] = useState<IAudioData>();
+  const [audioResource, setAudio] = useState<IAudioResource>();
+  const [audioData, setAudioData] = useState<IAudioData>(audio);
   const [loading, setLoading] = useState(false);
 
   const { state: playerState, playAudio, togglePlayPause } = useContext(
@@ -44,7 +46,9 @@ export const PlayAudioButton = ({
   const { playing, currentTrackIndex, tracks } = playerState;
   const currentTrack = tracks?.[currentTrackIndex];
   const [audioIsPlaying, setAudioIsPlaying] = useState(
-    playing && audioData && currentTrack?.guid === audioData.guid
+    playing &&
+      (audio || audioData) &&
+      currentTrack?.guid === (audio || audioData).guid
   );
   const styles = playAudioButtonStyles({
     audioIsPlaying
@@ -52,6 +56,7 @@ export const PlayAudioButton = ({
   const rootClassNames = clsx(styles.root, className);
   const iconButtonClasses = {
     root: styles.iconButtonRoot,
+    label: styles.iconButtonLabel,
     ...classes
   };
   const iconClasses = {
@@ -112,17 +117,23 @@ export const PlayAudioButton = ({
   }, [id]);
 
   useEffect(() => {
-    setAudioData(audio && parseAudioData(audio, fallbackProps));
-  }, [audio?.id]);
+    setAudioData(() => audio);
+  }, [audio?.guid]);
 
   useEffect(() => {
-    if (currentTrack?.guid === `file--audio:${id}`) {
+    setAudioData(audioResource && parseAudioData(audioResource, fallbackProps));
+  }, [audioResource?.id]);
+
+  useEffect(() => {
+    const usedAudioData = audio || audioData;
+
+    if (currentTrack?.guid === (usedAudioData?.guid || `file--audio:${id}`)) {
       if (!audioData) setAudioData(currentTrack);
       setAudioIsPlaying(playing);
     } else {
       setAudioIsPlaying(false);
     }
-  }, [currentTrack?.guid, id, playing]);
+  }, [currentTrack?.guid, audioData?.guid, id, playing]);
 
   return audioData ? (
     <NoSsr>
@@ -138,7 +149,18 @@ export const PlayAudioButton = ({
           <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
         )}
         {audioIsPlaying && (
-          <PauseSharp titleAccess="Pause" classes={iconClasses} />
+          <>
+            <VolumeUpSharp
+              titleAccess="Pause"
+              classes={iconClasses}
+              className={styles.hideOnHover}
+            />
+            <PauseSharp
+              titleAccess="Pause"
+              classes={iconClasses}
+              className={styles.showOnHover}
+            />
+          </>
         )}
       </IconButton>
     </NoSsr>

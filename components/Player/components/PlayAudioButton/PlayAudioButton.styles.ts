@@ -29,10 +29,33 @@ export const playAudioButtonStyles = makeStyles((theme: Theme) =>
         }
       })
     }),
+    iconButtonLabel: {
+      display: 'grid',
+      '& > *': {
+        gridRow: '1 / -1',
+        gridColumn: '1 / -1',
+        transition: theme.transitions.create('opacity', {
+          duration: theme.transitions.duration.shortest,
+          easing: theme.transitions.easing.sharp
+        })
+      }
+    },
     iconRoot: {
       fontSize: 'inherit',
       fill: 'currentColor',
       margin: 0
+    },
+    hideOnHover: {
+      opacity: 0.99999,
+      ':hover > &': {
+        opacity: 0
+      }
+    },
+    showOnHover: {
+      opacity: 0,
+      ':hover > &': {
+        opacity: 0.99999
+      }
     }
   })
 );

@@ -62,8 +62,7 @@ export const playerStateReducer = (
           action.payload.findIndex(
             ({ guid }) => guid === (tracks || [])[currentTrackIndex]?.guid
           )
-        ),
-        currentTime: 0
+        )
       };
 
     case ActionTypes.PLAYER_UPDATE_CURRENT_TRACK_INDEX:

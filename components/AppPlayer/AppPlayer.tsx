@@ -4,6 +4,7 @@
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ForwardButton,
   NextButton,
@@ -59,8 +60,19 @@ export const AppPlayer = () => {
 
           <Box className={clsx(classes.controls, classes.info)}>
             <TrackInfo />
-            <PreviousButton classes={buttonClasses} color="inherit" />
-            <NextButton classes={buttonClasses} color="inherit" />
+            <AnimatePresence>
+              {tracks?.length > 1 ? (
+                <motion.div
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: 'auto' }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className={classes.controls}
+                >
+                  <PreviousButton classes={buttonClasses} color="inherit" />
+                  <NextButton classes={buttonClasses} color="inherit" />
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
           </Box>
 
           <Box className={classes.controls}>

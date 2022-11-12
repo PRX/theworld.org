@@ -58,6 +58,7 @@ export const useAppStyles = makeStyles((theme: Theme) =>
         translate: '0 0'
       })
     }),
+    playlist: {},
     socialShareMenu: {
       position: 'absolute',
       right: theme.typography.pxToRem(theme.spacing(2)),

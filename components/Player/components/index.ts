@@ -4,6 +4,7 @@ export * from './ForwardButton';
 export * from './NextButton';
 export * from './PlayAudioButton';
 export * from './PlayButton';
+export * from './Playlist';
 export * from './PlayerProgress';
 export * from './PreviousButton';
 export * from './ReplayButton';
