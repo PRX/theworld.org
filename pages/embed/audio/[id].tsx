@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { GetServerSidePropsResult } from 'next';
+import { GetServerSideProps, GetServerSidePropsResult } from 'next';
 import {
   IPriApiResource,
   IPriApiResourceResponse
@@ -13,13 +13,15 @@ import { fetchAudio, fetchEpisode, fetchStory } from '@lib/fetch';
 import { AudioPlayer } from '@components/AudioPlayer';
 import { IAudioPlayerProps } from '@components/AudioPlayer/AudioPlayer.interfaces';
 
-interface Props {
+export interface IEmbedAudioPageProps {
   data: IPriApiResource;
+  embeddedPlayerUrl?: string;
 }
 
-const ContentProxy = ({ data }: Props) => {
+const ContentProxy = ({ data, embeddedPlayerUrl }: IEmbedAudioPageProps) => {
   let props: IAudioPlayerProps = {
     data,
+    embeddedPlayerUrl,
     message: [
       data.audioTitle || data.title,
       ...(data.program ? [data.program.title] : [])
@@ -43,18 +45,23 @@ const ContentProxy = ({ data }: Props) => {
     props = {
       message,
       data: audio,
+      embeddedPlayerUrl,
       popoutPlayerUrl: canonical
     };
   }
 
-  return <AudioPlayer {...props} style={{ margin: 0 }} />;
+  return <AudioPlayer {...props} style={{ margin: 0, boxShadow: 'none' }} />;
 };
 
-export const getServerSideProps = async ({
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
   params: { id }
 }): Promise<GetServerSidePropsResult<any>> => {
   const resourceId = Array.isArray(id) ? id[0] : id;
+  const embeddedPlayerUrl = `https://theworld.org${req.url}`;
   let data: IPriApiResource;
+
+  console.log(req);
 
   // Attempt to fetch story data.
   data = await fetchStory(resourceId).then(
@@ -65,6 +72,7 @@ export const getServerSideProps = async ({
     return {
       props: {
         contentOnly: true,
+        embeddedPlayerUrl,
         data
       }
     };
@@ -79,6 +87,7 @@ export const getServerSideProps = async ({
     return {
       props: {
         contentOnly: true,
+        embeddedPlayerUrl,
         data
       }
     };
@@ -93,6 +102,7 @@ export const getServerSideProps = async ({
     return {
       props: {
         contentOnly: true,
+        embeddedPlayerUrl,
         data
       }
     };
