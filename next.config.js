@@ -48,8 +48,13 @@ module.exports = withPlausibleProxy({
   async redirects() {
     return [
       {
-        source: '/file/:slug',
-        destination: '/media/:slug',
+        source: '/file/:slug*',
+        destination: '/media/:slug*',
+        permanent: true
+      },
+      {
+        source: '/node/:nid/embedded',
+        destination: '/embed/audio/:nid',
         permanent: true
       }
     ];

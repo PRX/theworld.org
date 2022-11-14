@@ -78,7 +78,8 @@ export const AudioPlayer = ({
   downloadFilename,
   embeddedPlayerUrl,
   message,
-  popoutPlayerUrl
+  popoutPlayerUrl,
+  ...other
 }: IAudioPlayerProps) => {
   const { url } = data;
   const audioDownloadFilename =
@@ -207,7 +208,7 @@ export const AudioPlayer = ({
     >
       <ThemeProvider theme={audioPlayerTheme}>
         <ReactPlayer {...playerAttrs} />
-        <div ref={rootElm} className={rootClasses}>
+        <div ref={rootElm} className={rootClasses} {...other}>
           <IconButton
             className={playBtnClasses}
             aria-label={playing ? 'Pause' : 'Play'}
@@ -240,13 +241,13 @@ export const AudioPlayer = ({
               </Box>
               <Box className={classes.volumeControls}>
                 <IconButton
-                  aria-label={muted ? 'Mute' : 'Unmute'}
+                  title={muted ? 'Mute' : 'Unmute'}
                   onClick={() =>
                     dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_MUTED })
                   }
                   disableRipple
                 >
-                  <VolumeBtnIcon titleAccess={muted ? 'Unmute' : 'Mute'} />
+                  <VolumeBtnIcon />
                 </IconButton>
                 <Slider {...volumeAdjustAttrs} />
               </Box>
@@ -258,9 +259,7 @@ export const AudioPlayer = ({
             {!!embeddedPlayerUrl && (
               <IconButton
                 className={classes.embedBtn}
-                aria-label={
-                  embedCodeShown ? 'Hide embed code' : 'Show embed code'
-                }
+                title={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
                 onClick={() =>
                   dispatch({
                     type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
@@ -268,8 +267,8 @@ export const AudioPlayer = ({
                 }
                 disableRipple
               >
-                {!embedCodeShown && <CodeSharp titleAccess="Show embed code" />}
-                {embedCodeShown && <CloseSharp titleAccess="Hide embed code" />}
+                {!embedCodeShown && <CodeSharp />}
+                {embedCodeShown && <CloseSharp />}
               </IconButton>
             )}
             {!!popoutPlayerUrl && (
@@ -279,20 +278,20 @@ export const AudioPlayer = ({
                 href={popoutPlayerUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Open player in new window"
+                title="View on TheWorld.org"
                 disableRipple
               >
-                <OpenInNewSharp titleAccess="Open player in new window" />
+                <OpenInNewSharp />
               </IconButton>
             )}
             <IconButton
               component="a"
               href={url}
               download={audioDownloadFilename}
-              aria-label="Download audio"
+              title="Download Audio"
               disableRipple
             >
-              <GetAppSharp titleAccess="Download audio" />
+              <GetAppSharp />
             </IconButton>
           </Box>
         </div>

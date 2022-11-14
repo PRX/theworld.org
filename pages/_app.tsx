@@ -35,7 +35,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   const playerOpen = getUiPlayerOpen(state);
   const playlistOpen = getUiPlayerPlaylistOpen(state);
   const [plausibleDomain, setPlausibleDomain] = useState(null);
-  const { type, id } = pageProps;
+  const { type, id, contentOnly } = pageProps;
   const styles = useAppStyles({ playerOpen, playlistOpen });
   const contextValue = {
     page: {
@@ -70,6 +70,22 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       unsub();
     };
   }, []);
+
+  if (contentOnly) {
+    return (
+      <ThemeProvider theme={baseMuiTheme}>
+        <PlausibleProvider
+          domain={plausibleDomain}
+          selfHosted
+          trackOutboundLinks
+          enabled={!!plausibleDomain}
+        >
+          <Component {...pageProps} />
+        </PlausibleProvider>
+        <CssBaseline />
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider theme={baseMuiTheme}>

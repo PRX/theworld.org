@@ -79,13 +79,23 @@ export const baseMuiTheme = createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
-        html: {},
+        html: {
+          padding: 0
+        },
         body: {
+          padding: 0,
+          margin: 0,
           '& > svg': {
             position: 'absolute',
             left: '-10000px'
           }
         }
+      }
+    },
+    MuiIconButton: {
+      root: {
+        borderRadius: 0,
+        fontSize: 'inherit'
       }
     }
   },
