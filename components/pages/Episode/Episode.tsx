@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { EqualizerRounded } from '@material-ui/icons';
+import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -213,6 +214,7 @@ export const Episode = () => {
         <Grid container>
           <Grid item xs={12}>
             <EpisodeHeader data={data} />
+            {audio ? <NoJsPlayer url={audio.url} /> : null}
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.main}>

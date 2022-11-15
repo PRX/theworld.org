@@ -66,6 +66,9 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
 
+    // Remove `no-js` styling flag class.
+    document.documentElement.classList.remove('no-js');
+
     return () => {
       unsub();
     };

@@ -10,7 +10,7 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 class TwDocument extends Document {
   render() {
     return (
-      <Html lang="en">
+      <Html lang="en" className="no-js">
         <Head>
           {[
             'alegreya/italic/alegreya-italic-400-latin.woff',

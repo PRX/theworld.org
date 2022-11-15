@@ -12,15 +12,16 @@ import {
 import { fetchAudio, fetchEpisode, fetchStory } from '@lib/fetch';
 import { AudioPlayer } from '@components/AudioPlayer';
 import { IAudioPlayerProps } from '@components/AudioPlayer/AudioPlayer.interfaces';
+import { IAudioResource } from '@interfaces';
 
 export interface IEmbedAudioPageProps {
-  data: IPriApiResource;
+  data: IAudioResource | IPriApiResource;
   embeddedPlayerUrl?: string;
 }
 
 const ContentProxy = ({ data, embeddedPlayerUrl }: IEmbedAudioPageProps) => {
   let props: IAudioPlayerProps = {
-    data,
+    data: data as IAudioResource,
     embeddedPlayerUrl,
     message: [
       data.audioTitle || data.title,
@@ -33,7 +34,8 @@ const ContentProxy = ({ data, embeddedPlayerUrl }: IEmbedAudioPageProps) => {
   const { type } = data;
   if (['node--stories', 'node--episodes'].includes(type)) {
     const { audio, title, program, metatags } = data;
-    const { audioTitle, program: audioProgram } = audio || {};
+    const { audioTitle, program: audioProgram } = (audio ||
+      {}) as IAudioResource;
     const { canonical } = metatags || {};
     const message = [
       audioTitle || title,
@@ -61,8 +63,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   const embeddedPlayerUrl = `https://theworld.org${req.url}`;
   let data: IPriApiResource;
 
-  console.log(req);
-
   // Attempt to fetch story data.
   data = await fetchStory(resourceId).then(
     (resp: IPriApiResourceResponse) => resp && resp.data
@@ -78,7 +78,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     };
   }
 
-  // Attempt to fetch story data.
+  // Attempt to fetch episode data.
   data = await fetchEpisode(resourceId).then(
     (resp: IPriApiResourceResponse) => resp && resp.data
   );

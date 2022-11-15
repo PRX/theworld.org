@@ -118,10 +118,14 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       display: 'none'
     },
     fallbackPlayer: {
-      width: '100%',
-      height: theme.typography.pxToRem(35),
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2)
+      display: 'none',
+      '.no-js &': {
+        display: 'block',
+        width: '100%',
+        height: theme.typography.pxToRem(35),
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2)
+      }
     },
     playBtn: ({ playing }: any) => ({
       ...(!playing && {
@@ -197,6 +201,12 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       [theme.breakpoints.down('xs')]: {
         display: 'none'
+      }
+    },
+    popoutBtn: {
+      '& svg': {
+        width: '1em',
+        height: '1em'
       }
     },
     [theme.breakpoints.down('sm')]: {

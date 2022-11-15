@@ -3,10 +3,10 @@
  * Defines interfaces used by audio player.
  */
 import { HTMLAttributes } from 'react';
-import { IPriApiResource } from 'pri-api-library/types';
+import { IAudioResource } from '@interfaces';
 
 export interface IAudioPlayerProps extends HTMLAttributes<{}> {
-  data: IPriApiResource;
+  data: IAudioResource;
   downloadFilename?: string | true;
   embeddedPlayerUrl?: string;
   message?: string;

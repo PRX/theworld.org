@@ -10,6 +10,7 @@ import { DomElement } from 'htmlparser2';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Box, Container, Grid, Hidden } from '@material-ui/core';
+import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { Sidebar, SidebarLatestStories } from '@components/Sidebar';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
@@ -49,6 +50,7 @@ export const StoryDefault = ({ data }: Props) => {
   const {
     type,
     id,
+    audio,
     body,
     categories,
     primaryCategory,
@@ -216,6 +218,7 @@ export const StoryDefault = ({ data }: Props) => {
         <Grid container>
           <Grid item xs={12}>
             <StoryHeader data={data} />
+            {audio ? <NoJsPlayer url={audio.url} /> : null}
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.main}>

@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Box, Container } from '@material-ui/core';
+import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
@@ -38,6 +39,7 @@ export const StoryDefault = ({ data }: Props) => {
   const {
     type,
     id,
+    audio,
     body,
     categories,
     primaryCategory,
@@ -117,6 +119,7 @@ export const StoryDefault = ({ data }: Props) => {
       <StoryHeader data={data} />
       <Container fixed>
         <Box className={classes.body} my={2}>
+          {audio ? <NoJsPlayer url={audio.url} /> : null}
           <HtmlContent html={body} transforms={[enhanceImages]} />
         </Box>
         {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}

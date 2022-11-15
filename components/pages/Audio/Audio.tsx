@@ -7,6 +7,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
@@ -38,6 +39,7 @@ export const Audio = () => {
   const {
     metatags: dataMetatags,
     title,
+    url,
     audioAuthor,
     audioTitle,
     audioType,
@@ -109,6 +111,7 @@ export const Audio = () => {
           <Grid item xs={12}>
             <AudioHeader data={data} />
             <Box className={classes.body} my={2}>
+              <NoJsPlayer url={url} />
               <HtmlContent html={description} />
             </Box>
             {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}

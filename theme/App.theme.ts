@@ -171,6 +171,13 @@ export const appTheme = (theme: Theme) =>
       return shadows;
     })(),
     overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          html: {
+            backgroundColor: theme.palette.primary.main
+          }
+        }
+      },
       MuiAppBar: {
         root: {}
       },

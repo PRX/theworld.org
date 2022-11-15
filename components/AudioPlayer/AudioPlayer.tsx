@@ -13,6 +13,7 @@ import classNames from 'classnames/bind';
 import { IDurationProps } from '@components/Duration';
 import { formatDuration } from '@lib/parse/time';
 import { generateAudioDownloadFilename } from '@lib/parse/audio';
+import TwGlobeLogo from '@svg/tw-globe.svg';
 import { AudioPlayerActionTypes as ActionTypes } from './AudioPlayer.actions';
 import { IAudioPlayerProps, IProgressState } from './AudioPlayer.interfaces';
 import {
@@ -22,6 +23,7 @@ import {
 import { audioPlayerStyles, audioPlayerTheme } from './AudioPlayer.styles';
 import { IEmbedCodeProps } from './EmbedCode';
 import { ISliderValueLabelProps } from './SliderValueLabel';
+import { NoJsPlayer } from './NoJsPlayer';
 
 const Duration = dynamic(() =>
   import('@components/Duration').then(mod => mod.Duration)
@@ -40,10 +42,6 @@ const SliderValueLabel = dynamic(() =>
 const CloseSharp = dynamic(() => import('@material-ui/icons/CloseSharp'));
 
 const CodeSharp = dynamic(() => import('@material-ui/icons/CodeSharp'));
-
-const OpenInNewSharp = dynamic(() =>
-  import('@material-ui/icons/OpenInNewSharp')
-);
 
 const PauseSharp = dynamic(() => import('@material-ui/icons/PauseSharp'), {
   loading: () => <PlayArrowSharp />
@@ -120,7 +118,8 @@ export const AudioPlayer = ({
       file: {
         forceAudio: true,
         attributes: {
-          autoPlay: false
+          autoPlay: false,
+          preload: 'none'
         }
       }
     },
@@ -202,10 +201,7 @@ export const AudioPlayer = ({
   }, []);
 
   return (
-    <NoSsr
-      defer
-      fallback={<audio className={classes.fallbackPlayer} src={url} controls />}
-    >
+    <NoSsr defer fallback={<NoJsPlayer url={url} />}>
       <ThemeProvider theme={audioPlayerTheme}>
         <ReactPlayer {...playerAttrs} />
         <div ref={rootElm} className={rootClasses} {...other}>
@@ -271,6 +267,15 @@ export const AudioPlayer = ({
                 {embedCodeShown && <CloseSharp />}
               </IconButton>
             )}
+            <IconButton
+              component="a"
+              href={url}
+              download={audioDownloadFilename}
+              title="Download Audio"
+              disableRipple
+            >
+              <GetAppSharp />
+            </IconButton>
             {!!popoutPlayerUrl && (
               <IconButton
                 className={classes.popoutBtn}
@@ -281,18 +286,9 @@ export const AudioPlayer = ({
                 title="View on TheWorld.org"
                 disableRipple
               >
-                <OpenInNewSharp />
+                <TwGlobeLogo />
               </IconButton>
             )}
-            <IconButton
-              component="a"
-              href={url}
-              download={audioDownloadFilename}
-              title="Download Audio"
-              disableRipple
-            >
-              <GetAppSharp />
-            </IconButton>
           </Box>
         </div>
       </ThemeProvider>
