@@ -36,9 +36,16 @@ export const fetchEpisodeData = (
       }
     });
 
-    data = await (isOnServer ? fetchEpisode : fetchApiEpisode)(id).then(
+    const dataPromise = (isOnServer ? fetchEpisode : fetchApiEpisode)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
+
+    const ctaDataPromise = dispatch<any>(
+      fetchCtaRegionGroupData('tw_cta_regions_content')
+    );
+
+    data = await dataPromise;
+    await ctaDataPromise;
 
     // Get segments' story data.
     if (data.audio?.segments) {
@@ -59,8 +66,6 @@ export const fetchEpisodeData = (
         }
       } as ICtaFilterProps
     });
-
-    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_content'));
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',

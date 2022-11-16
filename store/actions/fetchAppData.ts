@@ -24,14 +24,19 @@ export const fetchAppData = (): ThunkAction<void, {}, {}, AnyAction> => async (
       type: 'FETCH_APP_DATA_REQUEST'
     });
 
-    const apiResp = await (isOnServer ? fetchApp : fetchApiApp)();
+    const apiRespPromise = (isOnServer ? fetchApp : fetchApiApp)();
+    const ctaDataPromise = dispatch<any>(
+      fetchCtaRegionGroupData('tw_cta_regions_site')
+    );
+
+    const apiResp = await apiRespPromise;
+    await ctaDataPromise;
+
     const { latestStories, menus } = apiResp;
 
     dispatch(
       appendResourceCollection(latestStories, 'app', undefined, 'latest')
     );
-
-    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_site'));
 
     dispatch({
       type: 'FETCH_MENUS_DATA_SUCCESS',

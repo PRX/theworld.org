@@ -35,11 +35,17 @@ export const fetchHomepageData = (): ThunkAction<
       type: 'FETCH_HOMEPAGE_DATA_REQUEST'
     });
 
-    const apiResp = await (isOnServer
-      ? fetchHomepage
-      : fetchApiHomepage)().then(
+    const dataPromise = (isOnServer ? fetchHomepage : fetchApiHomepage)().then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
+
+    const ctaDataPromise = dispatch<any>(
+      fetchCtaRegionGroupData('tw_cta_regions_landing')
+    );
+
+    const apiResp = await dataPromise;
+    await ctaDataPromise;
+
     const {
       featuredStory,
       featuredStories,
@@ -94,8 +100,6 @@ export const fetchHomepageData = (): ThunkAction<
     }
 
     dispatch(appendResourceCollection(latestStories, type, id, 'latest'));
-
-    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_landing'));
 
     dispatch({
       type: 'FETCH_HOMEPAGE_DATA_SUCCESS'

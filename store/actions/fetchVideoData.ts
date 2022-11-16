@@ -35,11 +35,16 @@ export const fetchVideoData = (
       }
     });
 
-    data = await (isOnServer ? fetchVideo : fetchApiFileVideo)(id).then(
+    const dataPromise = (isOnServer ? fetchVideo : fetchApiFileVideo)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
 
-    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_content'));
+    const ctaDataPromise = dispatch<any>(
+      fetchCtaRegionGroupData('tw_cta_regions_content')
+    );
+
+    data = await dataPromise;
+    await ctaDataPromise;
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
