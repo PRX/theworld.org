@@ -44,7 +44,8 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
     },
     playButton: {
       borderRadius: '50%',
-      fontSize: theme.typography.pxToRem(36)
+      fontSize: theme.typography.pxToRem(36),
+      marginBlock: theme.typography.pxToRem(theme.spacing(1))
     },
     timeInfo: {
       [theme.breakpoints.down(336)]: {
