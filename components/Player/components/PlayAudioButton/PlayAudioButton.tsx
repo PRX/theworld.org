@@ -137,6 +137,13 @@ export const PlayAudioButton = ({
     }
   }, [currentTrack?.guid, audio?.guid, audioData?.guid, id, playing]);
 
+  useEffect(() => {
+    const track = (tracks || []).find(
+      ({ guid }) => guid === `file--audio:${id}`
+    );
+    if (track && !audioData) setAudioData(track);
+  }, [tracks?.length, id]);
+
   return audio || audioData ? (
     <NoSsr>
       <IconButton

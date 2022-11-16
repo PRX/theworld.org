@@ -38,21 +38,31 @@ export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
           }),
           backgroundColor: fade(theme.palette.primary.main, 0.1)
         }
-      })
+      }),
+      [theme.breakpoints.down('xs')]: {
+        display: 'flex',
+        paddingInlineStart: 0
+      }
     }),
     image: {
-      backgroundColor: theme.palette.grey[200]
+      backgroundColor: theme.palette.grey[200],
+      [theme.breakpoints.down('xs')]: {
+        display: 'none'
+      }
     },
     text: {
       display: 'grid',
       alignContent: 'center'
     },
     title: {
-      fontSize: '1rem',
-      whiteSpace: 'nowrap',
+      display: '-webkit-box',
+      fontSize: 'clamp(0.75rem, 5vw, 1rem)',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
-      lineHeight: 1
+      lineHeight: 1,
+      lineClamp: 2,
+      WebkitLineClamp: 2,
+      WebkitBoxOrient: 'vertical'
     },
     info: {
       lineHeight: 1,
@@ -85,7 +95,10 @@ export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
       gap: theme.typography.pxToRem(theme.spacing(0.5))
     },
     handle: {
-      cursor: 'grab'
+      cursor: 'grab',
+      [theme.breakpoints.down('xs')]: {
+        display: 'none'
+      }
     },
     iconButtonRoot: {
       borderRadius: '50%'

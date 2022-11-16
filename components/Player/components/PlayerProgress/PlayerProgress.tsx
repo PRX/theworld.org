@@ -49,14 +49,20 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
     currentTrackIndex,
     tracks,
     playing,
-    currentTime: playerCurrentTime
+    currentTime: playerCurrentTime,
+    currentDuration: playerCurrentDuration
   } = playerState;
   const { duration: trackDuration } =
     tracks?.[currentTrackIndex] || ({} as IAudioData);
   const totalDurationSeconds =
-    duration || convertDurationToSeconds(trackDuration || '00:00');
+    duration ||
+    playerCurrentDuration ||
+    convertDurationToSeconds(trackDuration || '00:00');
   const progress =
-    scrubPosition || played || playedSeconds / totalDurationSeconds || 0;
+    scrubPosition ||
+    (played !== Infinity && played) ||
+    (playedSeconds || playerCurrentTime) / totalDurationSeconds ||
+    0;
   const progressDuration = convertSecondsToDuration(
     Math.round(totalDurationSeconds * progress)
   );
@@ -87,7 +93,7 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
       dispatch({
         type: PlayerActionTypes.PLAYER_UPDATE_PROGRESS,
         payload: {
-          duration: d,
+          duration: d || duration,
           playedSeconds: updatedPlayed,
           played: updatedPlayed / (d || totalDurationSeconds)
         }
@@ -160,6 +166,23 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
 
     setLoaded(newLoaded);
   };
+
+  useEffect(() => {
+    const playerStateJson = localStorage?.getItem('playerProgressState');
+
+    if (playerStateJson) {
+      dispatch({
+        type: PlayerActionTypes.PLAYER_HYDRATE,
+        payload: JSON.parse(playerStateJson)
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (localStorage) {
+      localStorage.setItem('playerProgressState', JSON.stringify(state));
+    }
+  }, [state]);
 
   /**
    * Update state when player state's currentTime changes.

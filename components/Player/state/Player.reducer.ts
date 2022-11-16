@@ -15,6 +15,7 @@ export const playerInitialState: IPlayerState = {
   currentTrackIndex: null,
   tracks: null,
   currentTime: null,
+  currentDuration: null,
   muted: false,
   volume: 0.8
 };
@@ -35,6 +36,9 @@ export const playerStateReducer = (
   let isInTracks: boolean;
 
   switch (action.type) {
+    case ActionTypes.PLAYER_HYDRATE:
+      return { ...action.payload };
+
     case ActionTypes.PLAYER_PLAY:
       return { ...state, playing: true };
 
@@ -153,6 +157,10 @@ export const playerStateReducer = (
 
     case ActionTypes.PLAYER_UPDATE_CURRENT_TIME:
       return { ...state, currentTime: action.payload };
+
+    case ActionTypes.PLAYER_UPDATE_CURRENT_DURATION:
+      return { ...state, currentDuration: action.payload };
+
     case ActionTypes.PLAYER_MUTE:
       return { ...state, muted: true };
 

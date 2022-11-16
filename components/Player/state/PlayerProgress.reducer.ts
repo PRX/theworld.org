@@ -42,7 +42,7 @@ export const playerProgressStateReducer = (
         scrubPosition: null
       };
 
-    case ActionTypes.PLAYER_UPDATE_DURATION:
+    case ActionTypes.PLAYER_UPDATE_CURRENT_DURATION:
       return {
         ...state,
         duration: action.payload

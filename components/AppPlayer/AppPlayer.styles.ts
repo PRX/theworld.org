@@ -29,7 +29,11 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
     controls: {
       display: 'flex',
       alignItems: 'center',
-      gap: theme.typography.pxToRem(theme.spacing(0.25))
+      justifyContent: 'center',
+      gap: theme.typography.pxToRem(theme.spacing(0.25)),
+      '&:last-child': {
+        justifySelf: 'end'
+      }
     },
     iconButtonRoot: {
       borderRadius: '50%',
@@ -42,8 +46,29 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
       borderRadius: '50%',
       fontSize: theme.typography.pxToRem(36)
     },
+    timeInfo: {
+      [theme.breakpoints.down(336)]: {
+        display: 'none'
+      }
+    },
     info: {
-      justifyContent: 'center'
+      display: 'flex',
+      gap: 'inherit',
+      justifyContent: 'center',
+      [theme.breakpoints.down('xs')]: {
+        display: 'none'
+      }
+    },
+    trackInfo: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'none'
+      }
+    },
+    queueControls: {},
+    autoplayButton: {
+      [theme.breakpoints.down(400)]: {
+        display: 'none'
+      }
     }
   })
 );

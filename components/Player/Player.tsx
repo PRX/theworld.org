@@ -321,7 +321,7 @@ export const Player = ({ children }: IPlayerProps) => {
     // When audio data loads, update duration and current time, then start
     // playing if we were playing before.
     dispatch({
-      type: PlayerActionTypes.PLAYER_UPDATE_DURATION,
+      type: PlayerActionTypes.PLAYER_UPDATE_CURRENT_DURATION,
       payload: audioElm.current.duration
     });
 
@@ -446,10 +446,28 @@ export const Player = ({ children }: IPlayerProps) => {
   );
 
   useEffect(() => {
+    const playerStateJson = localStorage?.getItem('playerState');
+
+    if (playerStateJson) {
+      dispatch({
+        type: PlayerActionTypes.PLAYER_HYDRATE,
+        payload: JSON.parse(playerStateJson)
+      });
+    }
+
     return () => {
       unsub();
     };
   }, []);
+
+  useEffect(() => {
+    if (localStorage) {
+      localStorage.setItem(
+        'playerState',
+        JSON.stringify({ ...state, playing: false })
+      );
+    }
+  }, [state]);
 
   useEffect(() => {
     if (tracks?.length) {
@@ -510,7 +528,7 @@ export const Player = ({ children }: IPlayerProps) => {
   }, [muted]);
 
   useEffect(() => {
-    audioElm.current.volume = volume;
+    audioElm.current.volume = volume || audioElm.current.volume;
   }, [volume]);
 
   useEffect(() => {

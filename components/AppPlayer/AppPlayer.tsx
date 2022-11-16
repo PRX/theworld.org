@@ -43,12 +43,12 @@ export const AppPlayer = () => {
   const { tracks, currentTrackIndex } = playerState || {};
   const currentTrack = tracks?.[currentTrackIndex];
   const isOpen = !!tracks?.length;
-  const classes = appPlayerStyles({ isOpen });
+  const styles = appPlayerStyles({ isOpen });
   const toolbarClasses = {
-    root: classes.toolbarRoot
+    root: styles.toolbarRoot
   };
   const buttonClasses = {
-    root: classes.iconButtonRoot
+    root: styles.iconButtonRoot
   };
 
   const handleMenuOpen = (e: MouseEvent<HTMLButtonElement>) => {
@@ -76,55 +76,57 @@ export const AppPlayer = () => {
   return (
     <NoSsr>
       <AppBar
-        className={classes.root}
+        className={styles.root}
         component="div"
         position="static"
         {...(!tracks?.length && {
           inert: 'inert'
         })}
       >
-        <Box className={classes.progress}>
+        <Box className={styles.progress}>
           <PlayerProgress />
         </Box>
         <Toolbar classes={toolbarClasses}>
-          <Box className={classes.controls}>
+          <Box className={styles.controls}>
             <ReplayButton
               classes={buttonClasses}
               color="inherit"
               edge="start"
             />
-            <PlayButton className={classes.playButton} color="inherit" />
+            <PlayButton className={styles.playButton} color="inherit" />
             <ForwardButton classes={buttonClasses} color="inherit" />
-            <TimeInfo />
+            <TimeInfo className={styles.timeInfo} />
           </Box>
 
-          <Box className={clsx(classes.controls, classes.info)}>
-            <TrackInfo />
-            <AnimatePresence>
-              {tracks?.length > 1 ? (
-                <motion.div
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
-                  exit={{ opacity: 0, width: 0 }}
-                  className={classes.controls}
-                >
-                  <PreviousButton classes={buttonClasses} color="inherit" />
-                  <NextButton classes={buttonClasses} color="inherit" />
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
-            <IconButton
-              classes={buttonClasses}
-              aria-controls="app-player-menu"
-              aria-haspopup="true"
-              onClick={handleMenuOpen}
-            >
-              <MoreVertSharp />
-            </IconButton>
+          <Box className={styles.controls}>
+            <Box className={styles.info}>
+              <TrackInfo className={styles.trackInfo} />
+              <AnimatePresence>
+                {tracks?.length > 1 ? (
+                  <motion.div
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: 'auto' }}
+                    exit={{ opacity: 0, width: 0 }}
+                    className={clsx(styles.controls, styles.queueControls)}
+                  >
+                    <PreviousButton classes={buttonClasses} color="inherit" />
+                    <NextButton classes={buttonClasses} color="inherit" />
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
+              <IconButton
+                classes={buttonClasses}
+                aria-controls="app-player-menu"
+                aria-haspopup="true"
+                onClick={handleMenuOpen}
+              >
+                <MoreVertSharp />
+              </IconButton>
+            </Box>
           </Box>
 
-          <Box className={classes.controls}>
-            <AutoplayButton />
+          <Box className={styles.controls}>
+            <AutoplayButton className={styles.autoplayButton} />
             <TogglePlaylistButton
               classes={buttonClasses}
               color="inherit"

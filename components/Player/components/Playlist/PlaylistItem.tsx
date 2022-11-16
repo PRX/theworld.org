@@ -48,22 +48,23 @@ export const PlaylistItem = ({
 
   return (
     <Box {...other} className={rootClassNames}>
-      <Box className={styles.handle} onPointerDown={onPointerDown}>
+      <Box className={styles.handle}>
         <DragHandleSharp />
       </Box>
       <Box className={styles.layout}>
-        {imageUrl ? (
-          <Image
-            className={styles.image}
-            src={imageUrl}
-            width={thumbnailWidth}
-            height={thumbnailHeight}
-            layout="fixed"
-            alt={`Thumbnail for "${title}"`}
-          />
-        ) : (
-          <div className={styles.image} />
-        )}
+        <Box className={styles.image}>
+          {imageUrl ? (
+            <Image
+              className={styles.image}
+              src={imageUrl}
+              width={thumbnailWidth}
+              height={thumbnailHeight}
+              layout="fixed"
+              alt={`Thumbnail for "${title}"`}
+            />
+          ) : null}
+        </Box>
+
         <Box className={styles.text}>
           <Typography className={styles.title} variant="h2" component="span">
             {title}
@@ -85,7 +86,11 @@ export const PlaylistItem = ({
           ) : null}
         </Box>
         {linkResource ? (
-          <ContentLink data={linkResource} className={clsx(styles.link)} />
+          <ContentLink
+            data={linkResource}
+            className={clsx(styles.link)}
+            onPointerDown={onPointerDown}
+          />
         ) : null}
       </Box>
       <Box className={styles.controls}>

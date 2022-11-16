@@ -114,6 +114,14 @@ module.exports = withPlausibleProxy({
           reuseExistingChunk: true,
           enforce: true
         },
+        framermotion: {
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+          name: 'framer-motion',
+          priority: 30,
+          reuseExistingChunk: true,
+          enforce: true
+        },
         pages: {
           chunks: 'all',
           test: /[\\/]components[\\/]pages[\\/]/,
