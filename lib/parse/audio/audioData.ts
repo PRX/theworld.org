@@ -22,11 +22,16 @@ export const parseAudioData = (
     audioAuthor,
     metadata,
     program,
-    broadcastDate
+    broadcastDate: audioBroadcastDate
   } = data;
   const { canonical } = metatags || {};
   const { duration } = metadata || {};
   const { imageUrl, title: fallbackTitle, linkResource } = fallbackProps || {};
+  const broadcastDate =
+    audioBroadcastDate ||
+    linkResource?.broadcastDate ||
+    linkResource?.dateBroadcast ||
+    linkResource?.datePublished;
   const dataString =
     broadcastDate &&
     (d => {

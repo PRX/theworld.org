@@ -6,8 +6,8 @@
 import React, { useContext } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
-import { Box, BoxProps, Typography } from '@material-ui/core';
-import { DragHandleSharp } from '@material-ui/icons';
+import { Box, BoxProps, IconButton, Typography } from '@material-ui/core';
+import { DeleteSharp, DragHandleSharp } from '@material-ui/icons';
 import { ContentLink } from '@components/ContentLink';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { IAudioData } from '@components/Player/types';
@@ -24,7 +24,7 @@ export const PlaylistItem = ({
   onPointerDown,
   ...other
 }: IPlaylistItemProps) => {
-  const { state } = useContext(PlayerContext);
+  const { state, removeTrack } = useContext(PlayerContext);
   const { tracks, currentTrackIndex } = state;
   const currentTrack = tracks?.[currentTrackIndex];
   const { guid: currentTrackGuid } = currentTrack || {};
@@ -38,6 +38,13 @@ export const PlaylistItem = ({
     hasLink: !!linkResource
   });
   const rootClassNames = clsx(className, styles.root);
+  const iconButtonClasses = {
+    root: styles.iconButtonRoot
+  };
+
+  const handleRemoveTrackClick = () => {
+    removeTrack(audio);
+  };
 
   return (
     <Box {...other} className={rootClassNames}>
@@ -83,6 +90,13 @@ export const PlaylistItem = ({
       </Box>
       <Box className={styles.controls}>
         <PlayAudioButton audio={audio} />
+        <IconButton
+          classes={iconButtonClasses}
+          onClick={handleRemoveTrackClick}
+          title="Remove From Playlist"
+        >
+          <DeleteSharp />
+        </IconButton>
       </Box>
     </Box>
   );

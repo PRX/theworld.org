@@ -79,10 +79,16 @@ export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
       textIndent: '-2000vw'
     },
     controls: {
-      fontSize: '1.5em'
+      fontSize: '1.5em',
+      display: 'flex',
+      alignItems: 'center',
+      gap: theme.typography.pxToRem(theme.spacing(0.5))
     },
     handle: {
       cursor: 'grab'
+    },
+    iconButtonRoot: {
+      borderRadius: '50%'
     }
   })
 );

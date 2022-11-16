@@ -67,8 +67,9 @@ export const PlayAudioButton = ({
   };
 
   const handlePlayClick = () => {
-    if (audioData && audioData.guid !== currentTrack?.guid) {
-      playAudio(audioData);
+    const usedAudioData = audio || audioData;
+    if (usedAudioData && usedAudioData.guid !== currentTrack?.guid) {
+      playAudio(usedAudioData);
     } else {
       togglePlayPause();
     }
@@ -128,14 +129,15 @@ export const PlayAudioButton = ({
     const usedAudioData = audio || audioData;
 
     if (currentTrack?.guid === (usedAudioData?.guid || `file--audio:${id}`)) {
-      if (!audioData) setAudioData(currentTrack);
+      if (!audioData && currentTrack) setAudioData(currentTrack);
+      if (!audioData && audio) setAudioData(audio);
       setAudioIsPlaying(playing);
     } else {
       setAudioIsPlaying(false);
     }
-  }, [currentTrack?.guid, audioData?.guid, id, playing]);
+  }, [currentTrack?.guid, audio?.guid, audioData?.guid, id, playing]);
 
-  return audioData ? (
+  return audio || audioData ? (
     <NoSsr>
       <IconButton
         className={rootClassNames}

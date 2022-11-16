@@ -28,7 +28,8 @@ const ContentProxy = ({ data, embeddedPlayerUrl }: IEmbedAudioPageProps) => {
       ...(data.program ? [data.program.title] : [])
     ]
       .filter(v => !!v)
-      .join(' - ')
+      .join(' - '),
+    popoutPlayerUrl: data.metatags?.canonical
   };
 
   const { type } = data;
