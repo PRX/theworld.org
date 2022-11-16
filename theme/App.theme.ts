@@ -87,7 +87,9 @@ export const baseMuiTheme = createMuiTheme({
           margin: 0,
           '& > svg': {
             position: 'absolute',
-            left: '-10000px'
+            left: '-10000px',
+            height: 0,
+            width: 0
           }
         }
       }
