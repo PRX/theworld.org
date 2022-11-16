@@ -55,6 +55,7 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       gap: 'inherit',
       justifyContent: 'center',
+      alignItems: 'center',
       [theme.breakpoints.down('xs')]: {
         display: 'none'
       }
