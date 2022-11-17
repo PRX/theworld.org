@@ -29,13 +29,20 @@ import {
   NoSsr,
   Toolbar
 } from '@material-ui/core';
-import { CodeSharp, DeleteSharp, MoreVertSharp } from '@material-ui/icons';
+import {
+  CodeSharp,
+  DeleteForeverSharp,
+  DeleteSharp,
+  MoreVertSharp
+} from '@material-ui/icons';
 import { AutoplayButton } from '@components/Player/components/AutoPlayButton';
 import { PlayerContext } from '@components/Player/contexts';
 import { appPlayerStyles } from './AppPlayer.styles';
 
 export const AppPlayer = () => {
-  const { state: playerState, removeTrack } = useContext(PlayerContext);
+  const { state: playerState, removeTrack, clearPlaylist } = useContext(
+    PlayerContext
+  );
   const [menuButtonElm, setMenuButtonEl] = React.useState<null | HTMLElement>(
     null
   );
@@ -71,6 +78,11 @@ export const AppPlayer = () => {
   const handleRemoveTrackClick = () => {
     handleMenuClose();
     removeTrack(currentTrack);
+  };
+
+  const handleClearPlaylistClick = () => {
+    handleMenuClose();
+    clearPlaylist();
   };
 
   return (
@@ -142,6 +154,12 @@ export const AppPlayer = () => {
         open={Boolean(menuButtonElm)}
         onClose={handleMenuClose}
       >
+        <MenuItem onClick={handleClearPlaylistClick}>
+          <ListItemIcon>
+            <DeleteForeverSharp />
+          </ListItemIcon>
+          <ListItemText>Clear Playlist</ListItemText>
+        </MenuItem>
         <MenuItem onClick={handleRemoveTrackClick}>
           <ListItemIcon>
             <DeleteSharp />

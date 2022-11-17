@@ -12,6 +12,49 @@ describe('states/player', () => {
       expect(result).toBe(playerInitialState);
     });
 
+    test('should hydrate the entire state', () => {
+      const result = playerStateReducer(
+        {
+          ...playerInitialState
+        },
+        {
+          type: PlayerActionTypes.PLAYER_HYDRATE,
+          payload: {
+            ...playerInitialState,
+            playing: true,
+            autoPlay: false,
+            currentTrackIndex: 0,
+            tracks: [
+              {
+                guid: 'GUID:1',
+                url: '//foo.com/1.mp3',
+                link: '//foo.com/1',
+                title: 'Title 1'
+              },
+              {
+                guid: 'GUID:2',
+                url: '//foo.com/2.mp3',
+                link: '//foo.com/2',
+                title: 'Title 2'
+              },
+              {
+                guid: 'GUID:3',
+                url: '//foo.com/3.mp3',
+                link: '//foo.com/3',
+                title: 'Title 3'
+              }
+            ]
+          }
+        }
+      );
+
+      expect(result.playing).toBe(true);
+      expect(result.autoplay).toBe(true);
+      expect(result.currentTrackIndex).toBe(0);
+      expect(result.tracks).not.toBeNull();
+      expect(result.tracks.length).toBe(3);
+    });
+
     describe('`playing` actions', () => {
       test('should set `playing` to true', () => {
         const result = playerStateReducer(
@@ -118,7 +161,7 @@ describe('states/player', () => {
     });
 
     describe('`currentTime` actions', () => {
-      test('should set `scrubPosition`', () => {
+      test('should set `currentTime`', () => {
         const result = playerStateReducer(
           {
             ...playerInitialState
@@ -130,6 +173,22 @@ describe('states/player', () => {
         );
 
         expect(result.currentTime).toBe(0.25);
+      });
+    });
+
+    describe('`currentDuration` actions', () => {
+      test('should set `currentDuration`', () => {
+        const result = playerStateReducer(
+          {
+            ...playerInitialState
+          },
+          {
+            type: PlayerActionTypes.PLAYER_UPDATE_CURRENT_DURATION,
+            payload: 10
+          }
+        );
+
+        expect(result.currentDuration).toBe(10);
       });
     });
 
@@ -582,6 +641,28 @@ describe('states/player', () => {
         expect(result.tracks).not.toBeNull();
         expect(result.tracks[0].guid).not.toBe('1');
         expect(result.currentTrackIndex).toBe(1);
+      });
+
+      test('should remove all tracks, and update currentTrackIndex', () => {
+        const result = playerStateReducer(
+          {
+            ...playerInitialState,
+            tracks: mockTracks,
+            currentTrackIndex: 2,
+            currentDuration: 10,
+            currentTime: 5,
+            playing: true
+          },
+          {
+            type: PlayerActionTypes.PLAYER_REMOVE_ALL_TRACKS
+          }
+        );
+
+        expect(result.tracks).toBeNull();
+        expect(result.currentTrackIndex).toBeNull();
+        expect(result.currentDuration).toBeNull();
+        expect(result.currentTime).toBeNull();
+        expect(result.playing).toBe(false);
       });
     });
 

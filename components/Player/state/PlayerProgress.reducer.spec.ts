@@ -108,7 +108,7 @@ describe('states/player', () => {
             ...playerProgressInitialState
           },
           {
-            type: PlayerActionTypes.PLAYER_UPDATE_DURATION,
+            type: PlayerActionTypes.PLAYER_UPDATE_CURRENT_DURATION,
             payload: 500
           }
         );

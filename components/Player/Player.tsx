@@ -160,6 +160,12 @@ export const Player = ({ children }: IPlayerProps) => {
     });
   };
 
+  const clearPlaylist = () => {
+    dispatch({
+      type: PlayerActionTypes.PLAYER_REMOVE_ALL_TRACKS
+    });
+  };
+
   const previousTrack = () => {
     dispatch({
       type: PlayerActionTypes.PLAYER_PREVIOUS_TRACK
@@ -268,6 +274,7 @@ export const Player = ({ children }: IPlayerProps) => {
       setTracks,
       addTrack,
       removeTrack,
+      clearPlaylist,
       previousTrack,
       nextTrack,
       setVolume

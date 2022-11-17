@@ -133,6 +133,16 @@ export const playerStateReducer = (
         currentTime: audioTrackIndex === currentTrackIndex ? 0 : currentTime
       };
 
+    case ActionTypes.PLAYER_REMOVE_ALL_TRACKS:
+      return {
+        ...state,
+        tracks: null,
+        currentTrackIndex: null,
+        currentDuration: null,
+        currentTime: null,
+        playing: false
+      };
+
     case ActionTypes.PLAYER_PLAY_TRACK:
       return {
         ...state,
