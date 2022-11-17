@@ -111,17 +111,15 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
                   <AppCtaBanner />
                   <AppHeader />
                 </div>
-                <div className={styles.main}>
-                  <div
-                    className={styles.content}
-                    {...(playlistOpen && {
-                      inert: 'inert'
-                    })}
-                  >
-                    <Component {...pageProps} />
-                    <AppFooter />
-                  </div>
+                <div
+                  className={styles.content}
+                  {...(playlistOpen && {
+                    inert: 'inert'
+                  })}
+                >
+                  <Component {...pageProps} />
                 </div>
+                <AppFooter />
                 <div ref={uiFooterRef} className={styles.uiFooter}>
                   <div className={styles.loadUnderWrapper}>
                     <div

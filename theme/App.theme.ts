@@ -19,10 +19,14 @@ const buttonBorderWidth = '2px';
 export const useAppStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',
       paddingBottom: 'var(--footer-padding, 0)'
     },
-    main: {},
-    content: {},
+    content: {
+      flexGrow: 1
+    },
     uiFooter: {
       position: 'fixed',
       bottom: 0,
