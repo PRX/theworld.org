@@ -46,6 +46,7 @@ export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
     }),
     image: {
       backgroundColor: theme.palette.grey[200],
+      lineHeight: 0,
       [theme.breakpoints.down('xs')]: {
         display: 'none'
       }

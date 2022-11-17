@@ -34,7 +34,8 @@ export const useTrackInfoStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center'
     },
     image: {
-      backgroundColor: theme.palette.grey[200]
+      backgroundColor: theme.palette.grey[200],
+      lineHeight: 0
     },
     text: {
       display: 'grid',
