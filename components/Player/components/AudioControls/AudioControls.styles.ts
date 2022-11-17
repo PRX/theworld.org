@@ -25,19 +25,14 @@ export const useAudioControlsStyles = makeStyles((theme: Theme) =>
         padding: '0.25em',
         fontSize: '1.5em'
       },
-      // '& > :last-child': {
-      //   borderRadius: '0 50% 50% 0'
-      // }
       '&[data-variant="minimal"]': {
         filter: 'none',
         backgroundColor: theme.palette.common.white,
-        // border: `2px solid ${theme.palette.primary.main}`,
         padding: '2px',
         borderRadius: '2em',
         overflow: 'hidden',
         '& > *': {
           padding: '0.25em',
-          // borderRadius: 0,
           fontSize: '1em',
           backgroundColor: 'transparent',
           color: theme.palette.text.secondary,
@@ -45,12 +40,6 @@ export const useAudioControlsStyles = makeStyles((theme: Theme) =>
             backgroundColor: fade(theme.palette.primary.main, 0.3),
             color: theme.palette.text.primary
           }
-        },
-        '& > :first-child': {
-          // borderRadius: '50% 0 0 50%'
-        },
-        '& > :last-child': {
-          // borderRadius: '0 50% 50% 0'
         }
       },
       '&[data-variant="feature"]': {
@@ -68,9 +57,9 @@ export const useAudioControlsStyles = makeStyles((theme: Theme) =>
         }
       },
       '[data-variant="feature"] &': {
-        padding: '0.1em',
-        fontSize: theme.typography.pxToRem(80),
-        border: `8px solid ${fade(theme.palette.common.white, 0.5)}`
+        padding: '0.25em',
+        fontSize: '1.75em',
+        border: `6px solid ${fade(theme.palette.common.white, 0.5)}`
       }
     },
     addAudioButton: {
@@ -85,8 +74,8 @@ export const useAudioControlsStyles = makeStyles((theme: Theme) =>
       },
       '[data-variant="feature"] &': {
         position: 'relative',
-        marginLeft: `-${theme.typography.pxToRem(30)}`,
-        fontSize: theme.typography.pxToRem(20),
+        marginLeft: '-0.9em',
+        fontSize: '.75em',
         border: `4px solid ${fade(theme.palette.common.white, 0.5)}`,
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,

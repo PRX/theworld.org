@@ -7,7 +7,7 @@ import React from 'react';
 import { useStore } from 'react-redux';
 import clsx from 'clsx';
 import { IconButtonProps } from '@material-ui/core';
-import { ArrowDropDownSharp, ArrowDropUpSharp } from '@material-ui/icons';
+import { CloseSharp, PlaylistPlaySharp } from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';
 import { getUiPlayerPlaylistOpen } from '@store/reducers';
 import { useTogglePlaylistButtonStyles } from './TogglePlaylistButton.styles';
@@ -41,8 +41,8 @@ export const TogglePlaylistButton = ({
       onClick={handleClick}
       disableRipple
     >
-      {!playlistOpen && <ArrowDropUpSharp classes={iconClasses} />}
-      {playlistOpen && <ArrowDropDownSharp classes={iconClasses} />}
+      {!playlistOpen && <PlaylistPlaySharp classes={iconClasses} />}
+      {playlistOpen && <CloseSharp classes={iconClasses} />}
     </IconButton>
   );
 };

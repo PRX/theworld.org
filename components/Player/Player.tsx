@@ -338,11 +338,13 @@ export const Player = ({ children }: IPlayerProps) => {
   }, [playing, startPlaying]);
 
   const handleEnded = useCallback(() => {
+    const completedTrack = currentTrack;
     if (autoplay && !isLastTrack) {
       nextTrack();
     } else if (isLastTrack) {
       pause();
     }
+    removeTrack(completedTrack);
   }, [isLastTrack, autoplay]);
 
   const handleHotkey = useCallback(
