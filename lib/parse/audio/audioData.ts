@@ -50,7 +50,10 @@ export const parseAudioData = (
     url: generateAudioUrl(url),
     title: audioTitle || fallbackTitle || metatags?.['og:title'],
     link: canonical,
-    imageUrl: metatags?.['og:image'],
+    ...(program?.metatags?.['og:image'] && {
+      imageUrl: program.metatags['og:image']
+    }),
+    ...(metatags?.['og:image'] && { imageUrl: metatags?.['og:image'] }),
     ...(imageUrl && { imageUrl }),
     ...(duration && { duration }),
     ...(info.length ? { info } : {}),

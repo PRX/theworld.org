@@ -664,6 +664,24 @@ describe('states/player', () => {
         expect(result.currentTime).toBeNull();
         expect(result.playing).toBe(false);
       });
+
+      test('should remove current track', () => {
+        const result = playerStateReducer(
+          {
+            ...playerInitialState,
+            tracks: [...mockTracks],
+            currentTrackIndex: 1
+          },
+          {
+            type: PlayerActionTypes.PLAYER_COMPLETE_CURRENT_TRACK
+          }
+        );
+
+        expect(result.tracks).not.toBeNull();
+        expect(result.tracks[0]).toStrictEqual(mockTracks[0]);
+        expect(result.tracks[1]).toStrictEqual(mockTracks[2]);
+        expect(result.currentTrackIndex).toBe(1);
+      });
     });
 
     describe('`muted` actions', () => {

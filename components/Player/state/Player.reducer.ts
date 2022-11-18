@@ -143,6 +143,26 @@ export const playerStateReducer = (
         playing: false
       };
 
+    case ActionTypes.PLAYER_COMPLETE_CURRENT_TRACK:
+      return {
+        ...state,
+        tracks: [
+          ...tracks.slice(0, currentTrackIndex),
+          ...tracks.slice(currentTrackIndex + 1)
+        ],
+        currentTrackIndex:
+          tracks.length - 1 > 0
+            ? Math.min(tracks.length - 2, currentTrackIndex)
+            : null,
+        currentTime: null,
+        currentDuration: null,
+        playing:
+          // Not last track...
+          tracks.length - 1 !== currentTrackIndex &&
+          // ...and we are auto playing.
+          autoplay
+      };
+
     case ActionTypes.PLAYER_PLAY_TRACK:
       return {
         ...state,

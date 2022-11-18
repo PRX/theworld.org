@@ -115,7 +115,7 @@ export const SidebarList = ({
                   id={item.audio.id as string}
                   fallbackProps={{
                     title: item.title,
-                    ...(item.image && { imageUrl: item.image }),
+                    ...(item.image && { imageUrl: item.image.url }),
                     linkResource: item
                   }}
                   variant="minimal"

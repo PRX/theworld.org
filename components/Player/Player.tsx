@@ -8,8 +8,7 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
-  useRef,
-  useState
+  useRef
 } from 'react';
 import { useStore } from 'react-redux';
 import { UiAction } from '@interfaces/state';
@@ -27,10 +26,6 @@ export interface KeyboardEventWithTarget extends KeyboardEvent {
 
 export const Player = ({ children }: IPlayerProps) => {
   const store = useStore();
-  const [, updateForce] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    updateForce(store.getState());
-  });
   const audioElm = useRef<HTMLAudioElement>();
   const [state, dispatch] = useReducer(playerStateReducer, {
     ...playerInitialState
@@ -38,7 +33,6 @@ export const Player = ({ children }: IPlayerProps) => {
   const {
     tracks,
     playing,
-    autoplay,
     currentTrackIndex,
     currentTime,
     muted,
@@ -49,7 +43,6 @@ export const Player = ({ children }: IPlayerProps) => {
     () => convertDurationToSeconds(currentTrack.duration),
     [currentTrack.duration]
   );
-  const isLastTrack = tracks ? currentTrackIndex === tracks.length - 1 : true;
   const { url } = currentTrack;
 
   const boundedTime = useCallback(
@@ -338,14 +331,10 @@ export const Player = ({ children }: IPlayerProps) => {
   }, [playing, startPlaying]);
 
   const handleEnded = useCallback(() => {
-    const completedTrack = currentTrack;
-    if (autoplay && !isLastTrack) {
-      nextTrack();
-    } else if (isLastTrack) {
-      pause();
-    }
-    removeTrack(completedTrack);
-  }, [isLastTrack, autoplay]);
+    dispatch({
+      type: PlayerActionTypes.PLAYER_COMPLETE_CURRENT_TRACK
+    });
+  }, []);
 
   const handleHotkey = useCallback(
     (event: KeyboardEventWithTarget) => {
@@ -463,10 +452,6 @@ export const Player = ({ children }: IPlayerProps) => {
         payload: JSON.parse(playerStateJson)
       });
     }
-
-    return () => {
-      unsub();
-    };
   }, []);
 
   useEffect(() => {
