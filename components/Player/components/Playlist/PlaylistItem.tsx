@@ -6,7 +6,13 @@
 import React, { useContext } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
-import { Box, BoxProps, IconButton, Typography } from '@material-ui/core';
+import {
+  Box,
+  BoxProps,
+  IconButton,
+  Tooltip,
+  Typography
+} from '@material-ui/core';
 import { DeleteSharp, DragHandleSharp } from '@material-ui/icons';
 import { ContentLink } from '@components/ContentLink';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
@@ -95,13 +101,14 @@ export const PlaylistItem = ({
       </Box>
       <Box className={styles.controls}>
         <PlayAudioButton audio={audio} />
-        <IconButton
-          classes={iconButtonClasses}
-          onClick={handleRemoveTrackClick}
-          title="Remove From Playlist"
-        >
-          <DeleteSharp />
-        </IconButton>
+        <Tooltip title="Remove From Playlist" placement="top" arrow>
+          <IconButton
+            classes={iconButtonClasses}
+            onClick={handleRemoveTrackClick}
+          >
+            <DeleteSharp />
+          </IconButton>
+        </Tooltip>
       </Box>
     </Box>
   );

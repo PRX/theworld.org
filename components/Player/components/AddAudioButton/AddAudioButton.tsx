@@ -6,7 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import clsx from 'clsx';
-import { CircularProgress, NoSsr } from '@material-ui/core';
+import { CircularProgress, NoSsr, Tooltip } from '@material-ui/core';
 import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@material-ui/icons';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -41,6 +41,7 @@ export const AddAudioButton = ({
   );
   const { tracks } = playerState;
   const [isQueued, setIsQueued] = useState(false);
+  const tooltipTitle = isQueued ? 'Remove From Playlist' : 'Add to Playlist';
   const styles = useAddAudioButtonStyles({
     isQueued,
     loading
@@ -123,56 +124,51 @@ export const AddAudioButton = ({
     }
   }, [tracks?.length, id]);
 
-  return audioData ? (
+  return (
     <NoSsr>
-      {!isQueued ? (
-        <IconButton
-          className={rootClassNames}
-          classes={iconButtonClasses}
-          disableRipple
-          {...other}
-          onClick={handleAddClick}
-        >
-          <PlaylistAddSharp
-            titleAccess="Add To Playlist"
-            classes={iconClasses}
-          />
-        </IconButton>
+      {audioData ? (
+        <Tooltip title={tooltipTitle} placement="top" arrow>
+          {!isQueued ? (
+            <IconButton
+              className={rootClassNames}
+              classes={iconButtonClasses}
+              disableRipple
+              {...other}
+              onClick={handleAddClick}
+            >
+              <PlaylistAddSharp classes={iconClasses} />
+            </IconButton>
+          ) : (
+            <IconButton
+              className={rootClassNames}
+              classes={iconButtonClasses}
+              disableRipple
+              {...other}
+              onClick={handleRemoveClick}
+              data-queued
+            >
+              <PlaylistAddCheckSharp classes={iconClasses} />
+            </IconButton>
+          )}
+        </Tooltip>
       ) : (
-        <IconButton
-          className={rootClassNames}
-          classes={iconButtonClasses}
-          disableRipple
-          {...other}
-          onClick={handleRemoveClick}
-          data-queued
-        >
-          <PlaylistAddCheckSharp
-            titleAccess="Remove From Playlist"
-            classes={iconClasses}
-          />
-        </IconButton>
+        <Tooltip title={tooltipTitle} placement="top" arrow>
+          <IconButton
+            className={rootClassNames}
+            classes={iconButtonClasses}
+            disableRipple
+            {...other}
+            onClick={handleLoadClick}
+            {...(loading && { 'data-loading': true })}
+          >
+            {!loading ? (
+              <PlaylistAddSharp classes={iconClasses} />
+            ) : (
+              <CircularProgress classes={progressClasses} size="1em" />
+            )}
+          </IconButton>
+        </Tooltip>
       )}
-    </NoSsr>
-  ) : (
-    <NoSsr>
-      <IconButton
-        className={rootClassNames}
-        classes={iconButtonClasses}
-        disableRipple
-        {...other}
-        onClick={handleLoadClick}
-        {...(loading && { 'data-loading': true })}
-      >
-        {!loading ? (
-          <PlaylistAddSharp
-            titleAccess="Add To Playlist"
-            classes={iconClasses}
-          />
-        ) : (
-          <CircularProgress classes={progressClasses} size="1em" />
-        )}
-      </IconButton>
     </NoSsr>
   );
 };

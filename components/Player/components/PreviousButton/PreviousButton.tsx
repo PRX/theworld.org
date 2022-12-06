@@ -5,7 +5,7 @@
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
-import { IconButtonProps } from '@material-ui/core';
+import { IconButtonProps, Tooltip } from '@material-ui/core';
 import { SkipPrevious } from '@material-ui/icons';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import IconButton from '@material-ui/core/IconButton';
@@ -31,14 +31,16 @@ export const PreviousButton = ({
   };
 
   return (
-    <IconButton
-      {...other}
-      className={rootClassNames}
-      disabled={disabled}
-      onClick={handleClick}
-      disableRipple
-    >
-      <SkipPrevious titleAccess="Previous" classes={iconClasses} />
-    </IconButton>
+    <Tooltip title="Previous" placement="top" arrow>
+      <IconButton
+        {...other}
+        className={rootClassNames}
+        disabled={disabled}
+        onClick={handleClick}
+        disableRipple
+      >
+        <SkipPrevious classes={iconClasses} />
+      </IconButton>
+    </Tooltip>
   );
 };

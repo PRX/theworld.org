@@ -5,7 +5,7 @@
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
-import { IconButtonProps } from '@material-ui/core';
+import { IconButtonProps, Tooltip } from '@material-ui/core';
 import { PauseSharp, PlayArrowSharp } from '@material-ui/icons';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,6 +16,7 @@ export interface IPlayButtonProps extends IconButtonProps {}
 export const PlayButton = ({ className, ...other }: IPlayButtonProps) => {
   const { state, togglePlayPause } = useContext(PlayerContext);
   const { playing } = state;
+  const tooltipTitle = playing ? 'Pause' : 'Play';
   const styles = usePlayButtonStyles({
     playing
   });
@@ -29,15 +30,16 @@ export const PlayButton = ({ className, ...other }: IPlayButtonProps) => {
   };
 
   return (
-    <IconButton
-      {...other}
-      className={rootClassNames}
-      aria-label={playing ? 'Pause' : 'Play'}
-      onClick={handleClick}
-      disableRipple
-    >
-      {!playing && <PlayArrowSharp titleAccess="Play" classes={iconClasses} />}
-      {playing && <PauseSharp titleAccess="Pause" classes={iconClasses} />}
-    </IconButton>
+    <Tooltip title={tooltipTitle} placement="top" arrow>
+      <IconButton
+        {...other}
+        className={rootClassNames}
+        onClick={handleClick}
+        disableRipple
+      >
+        {!playing && <PlayArrowSharp classes={iconClasses} />}
+        {playing && <PauseSharp classes={iconClasses} />}
+      </IconButton>
+    </Tooltip>
   );
 };

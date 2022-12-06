@@ -6,7 +6,7 @@
 import React from 'react';
 import { useStore } from 'react-redux';
 import clsx from 'clsx';
-import { IconButtonProps } from '@material-ui/core';
+import { IconButtonProps, Tooltip } from '@material-ui/core';
 import { CloseSharp, PlaylistPlaySharp } from '@material-ui/icons';
 import IconButton from '@material-ui/core/IconButton';
 import { getUiPlayerPlaylistOpen } from '@store/reducers';
@@ -21,6 +21,7 @@ export const TogglePlaylistButton = ({
   const store = useStore();
   const state = store.getState();
   const playlistOpen = getUiPlayerPlaylistOpen(state);
+  const tooltipTitle = playlistOpen ? 'Close Playlist' : 'Open Playlist';
   const styles = useTogglePlaylistButtonStyles({});
   const rootClassNames = clsx(className, styles.root);
   const iconClasses = {
@@ -34,15 +35,16 @@ export const TogglePlaylistButton = ({
   };
 
   return (
-    <IconButton
-      {...other}
-      className={rootClassNames}
-      title={playlistOpen ? 'Close Playlist' : 'Open Playlist'}
-      onClick={handleClick}
-      disableRipple
-    >
-      {!playlistOpen && <PlaylistPlaySharp classes={iconClasses} />}
-      {playlistOpen && <CloseSharp classes={iconClasses} />}
-    </IconButton>
+    <Tooltip title={tooltipTitle} placement="top" arrow>
+      <IconButton
+        {...other}
+        className={rootClassNames}
+        onClick={handleClick}
+        disableRipple
+      >
+        {!playlistOpen && <PlaylistPlaySharp classes={iconClasses} />}
+        {playlistOpen && <CloseSharp classes={iconClasses} />}
+      </IconButton>
+    </Tooltip>
   );
 };

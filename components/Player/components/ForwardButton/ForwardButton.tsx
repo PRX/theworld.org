@@ -5,7 +5,7 @@
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
-import { IconButtonProps } from '@material-ui/core';
+import { IconButtonProps, Tooltip } from '@material-ui/core';
 import { Forward30Sharp } from '@material-ui/icons';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import IconButton from '@material-ui/core/IconButton';
@@ -26,16 +26,15 @@ export const ForwardButton = ({ className, ...other }: IForwardButtonProps) => {
   };
 
   return (
-    <IconButton
-      {...other}
-      className={rootClassNames}
-      onClick={handleClick}
-      disableRipple
-    >
-      <Forward30Sharp
-        titleAccess="Skip Ahead 30 Seconds"
-        classes={iconClasses}
-      />
-    </IconButton>
+    <Tooltip title="Skip Ahead 30 Seconds" placement="top" arrow>
+      <IconButton
+        {...other}
+        className={rootClassNames}
+        onClick={handleClick}
+        disableRipple
+      >
+        <Forward30Sharp classes={iconClasses} />
+      </IconButton>
+    </Tooltip>
   );
 };

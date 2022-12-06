@@ -6,7 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import clsx from 'clsx';
-import { CircularProgress, NoSsr } from '@material-ui/core';
+import { CircularProgress, NoSsr, Tooltip } from '@material-ui/core';
 import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
 import { PauseSharp, PlayArrowSharp, VolumeUpSharp } from '@material-ui/icons';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -50,6 +50,7 @@ export const PlayAudioButton = ({
       (audio || audioData) &&
       currentTrack?.guid === (audio || audioData).guid
   );
+  const tooltipTitle = audioIsPlaying ? 'Pause' : 'Play';
   const styles = playAudioButtonStyles({
     audioIsPlaying
   });
@@ -144,51 +145,49 @@ export const PlayAudioButton = ({
     if (track && !audioData) setAudioData(track);
   }, [tracks?.length, id]);
 
-  return audio || audioData ? (
+  return (
     <NoSsr>
-      <IconButton
-        className={rootClassNames}
-        classes={iconButtonClasses}
-        disableRipple
-        {...other}
-        onClick={handlePlayClick}
-        {...(audioIsPlaying && { 'data-playing': true })}
-      >
-        {!audioIsPlaying && (
-          <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
-        )}
-        {audioIsPlaying && (
-          <>
-            <VolumeUpSharp
-              titleAccess="Pause"
-              classes={iconClasses}
-              className={styles.hideOnHover}
-            />
-            <PauseSharp
-              titleAccess="Pause"
-              classes={iconClasses}
-              className={styles.showOnHover}
-            />
-          </>
-        )}
-      </IconButton>
-    </NoSsr>
-  ) : (
-    <NoSsr>
-      <IconButton
-        className={rootClassNames}
-        classes={iconButtonClasses}
-        disableRipple
-        {...other}
-        onClick={handleLoadClick}
-        {...(loading && { 'data-loading': true })}
-      >
-        {!loading ? (
-          <PlayArrowSharp titleAccess="Play" classes={iconClasses} />
+      <Tooltip title={tooltipTitle} placement="top" arrow>
+        {audio || audioData ? (
+          <IconButton
+            className={rootClassNames}
+            classes={iconButtonClasses}
+            disableRipple
+            {...other}
+            onClick={handlePlayClick}
+            {...(audioIsPlaying && { 'data-playing': true })}
+          >
+            {!audioIsPlaying && <PlayArrowSharp classes={iconClasses} />}
+            {audioIsPlaying && (
+              <>
+                <VolumeUpSharp
+                  classes={iconClasses}
+                  className={styles.hideOnHover}
+                />
+                <PauseSharp
+                  classes={iconClasses}
+                  className={styles.showOnHover}
+                />
+              </>
+            )}
+          </IconButton>
         ) : (
-          <CircularProgress classes={progressClasses} size="1em" />
+          <IconButton
+            className={rootClassNames}
+            classes={iconButtonClasses}
+            disableRipple
+            {...other}
+            onClick={handleLoadClick}
+            {...(loading && { 'data-loading': true })}
+          >
+            {!loading ? (
+              <PlayArrowSharp classes={iconClasses} />
+            ) : (
+              <CircularProgress classes={progressClasses} size="1em" />
+            )}
+          </IconButton>
         )}
-      </IconButton>
+      </Tooltip>
     </NoSsr>
   );
 };
