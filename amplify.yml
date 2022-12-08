@@ -7,7 +7,6 @@ test:
         - yarn install
     test:
       commands:
-        - yarn lint
         - yarn test --json --outputFile=.jest/jestReport.json
   artifacts:
     baseDirectory: .jest
