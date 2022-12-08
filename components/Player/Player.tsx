@@ -309,13 +309,6 @@ export const Player = ({ children }: IPlayerProps) => {
   );
 
   const startPlaying = useCallback(() => {
-    // Plausible: Played
-    plausible('App Player: Played', {
-      props: {
-        Title: currentTrack.title
-      }
-    });
-
     audioElm.current
       .play()
       .then(() => {
@@ -551,6 +544,12 @@ export const Player = ({ children }: IPlayerProps) => {
     if (!playing) {
       pauseAudio();
     } else {
+      // Plausible: Played
+      plausible('App Player: Played', {
+        props: {
+          Title: currentTrack.title
+        }
+      });
       startPlaying();
     }
   }, [pauseAudio, playing, startPlaying]);
