@@ -201,19 +201,22 @@ describe('states/player', () => {
             guid: 'GUID:1',
             url: '//foo.com/1.mp3',
             link: '//foo.com/1',
-            title: 'Title 1'
+            title: 'Title 1',
+            queuedFrom: 'CONTROLS'
           },
           {
             guid: 'GUID:2',
             url: '//foo.com/2.mp3',
             link: '//foo.com/2',
-            title: 'Title 2'
+            title: 'Title 2',
+            queuedFrom: 'CONTROLS'
           },
           {
             guid: 'GUID:3',
             url: '//foo.com/3.mp3',
             link: '//foo.com/3',
-            title: 'Title 3'
+            title: 'Title 3',
+            queuedFrom: 'CONTROLS'
           }
         ]
       };
@@ -421,19 +424,22 @@ describe('states/player', () => {
           guid: '1',
           url: '//foo.com/1.mp3',
           link: '//foo.com/1',
-          title: 'Title 1'
+          title: 'Title 1',
+          queuedFrom: 'CONTROLS'
         },
         {
           guid: '2',
           url: '//foo.com/2.mp3',
           link: '//foo.com/2',
-          title: 'Title 2'
+          title: 'Title 2',
+          queuedFrom: 'CONTROLS'
         },
         {
           guid: '3',
           url: '//foo.com/3.mp3',
           link: '//foo.com/3',
-          title: 'Title 3'
+          title: 'Title 3',
+          queuedFrom: 'CONTROLS'
         }
       ];
       test('should set `tracks`', () => {
@@ -441,7 +447,8 @@ describe('states/player', () => {
           guid: '1',
           url: '//foo.com/1.mp3',
           link: '//foo.com/1',
-          title: 'Title 1'
+          title: 'Title 1',
+          queuedFrom: 'CONTROLS'
         };
         const result = playerStateReducer(
           {

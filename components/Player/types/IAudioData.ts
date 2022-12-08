@@ -25,6 +25,12 @@ export interface IAudioData {
   title: string;
 
   /**
+   * Name of the controls that queued the audio either from a play
+   * button or add to playlist button.
+   */
+  queuedFrom: string;
+
+  /**
    * Subtitle to display below the title in player.
    */
   subtitle?: string;

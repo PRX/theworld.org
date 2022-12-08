@@ -15,7 +15,11 @@
       "node_modules/@types",
       "node_modules/pri-api-library/types"
     ],
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -26,18 +30,41 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@components/*": ["components/*"],
-      "@config": ["config"],
-      "@config/*": ["config/*"],
-      "@contexts/*": ["contexts/*"],
-      "@interfaces": ["interfaces"],
-      "@interfaces/*": ["interfaces/*"],
-      "@lib/*": ["lib/*"],
-      "@store": ["store"],
-      "@store/*": ["store/*"],
-      "@svg": ["assets/svg/*"],
-      "@theme/*": ["theme/*"]
-    }
+      "@components/*": [
+        "components/*"
+      ],
+      "@config": [
+        "config"
+      ],
+      "@config/*": [
+        "config/*"
+      ],
+      "@contexts/*": [
+        "contexts/*"
+      ],
+      "@interfaces": [
+        "interfaces"
+      ],
+      "@interfaces/*": [
+        "interfaces/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@store": [
+        "store"
+      ],
+      "@store/*": [
+        "store/*"
+      ],
+      "@svg": [
+        "assets/svg/*"
+      ],
+      "@theme/*": [
+        "theme/*"
+      ]
+    },
+    "incremental": true
   },
   "include": [
     "@types/*",
@@ -56,5 +83,10 @@
     "./*.js",
     "./*.ts"
   ],
-  "exclude": ["node_modules", ".next", ".vercel", ".vscode"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".vercel",
+    ".vscode"
+  ]
 }

@@ -70,6 +70,7 @@ export const SidebarList = ({
                 variant="minimal"
                 fallbackProps={{
                   title: text,
+                  queuedFrom: 'Sidebar List Controls',
                   linkResource: item
                 }}
               />
@@ -115,6 +116,7 @@ export const SidebarList = ({
                   id={item.audio.id as string}
                   fallbackProps={{
                     title: item.title,
+                    queuedFrom: 'Sidebar List Controls',
                     ...(item.image && { imageUrl: item.image.url }),
                     linkResource: item
                   }}
@@ -156,7 +158,7 @@ export const SidebarList = ({
     !!data && (
       <ThemeProvider theme={sidebarListTheme}>
         <List {...listProps}>
-          {data.map(item =>
+          {data.map((item) =>
             item.id ? (
               renderItemContent(item)
             ) : (

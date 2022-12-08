@@ -1,4 +1,4 @@
-import convertDurationStringToIntegerArray from './convertDurationStringToIntegerArray';
+import { convertDurationStringToIntegerArray } from './convertDurationStringToIntegerArray';
 
 describe('lib/convert/string', () => {
   describe('convertDurationStringToIntegerArray', () => {

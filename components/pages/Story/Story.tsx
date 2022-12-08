@@ -53,7 +53,7 @@ export const Story = () => {
         const dt = parseUtcDate(dateBroadcast * 1000);
         return {
           'Broadcast Year': dt[0],
-          'Broadcast Month': dt.slice(0, 1).join('-'),
+          'Broadcast Month': dt.slice(0, 2).join('-'),
           'Broadcast Date': dt.join('-')
         };
       })()),
@@ -62,7 +62,7 @@ export const Story = () => {
         const dt = parseUtcDate(datePublished * 1000);
         return {
           'Published Year': dt[0],
-          'Published Month': dt.slice(0, 1).join('-'),
+          'Published Month': dt.slice(0, 2).join('-'),
           'Published Date': dt.join('-')
         };
       })())

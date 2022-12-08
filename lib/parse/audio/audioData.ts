@@ -26,7 +26,12 @@ export const parseAudioData = (
   } = data;
   const { canonical } = metatags || {};
   const { duration } = metadata || {};
-  const { imageUrl, title: fallbackTitle, linkResource } = fallbackProps || {};
+  const {
+    imageUrl,
+    title: fallbackTitle,
+    linkResource,
+    queuedFrom
+  } = fallbackProps || {};
   const broadcastDate =
     audioBroadcastDate ||
     linkResource?.broadcastDate ||
@@ -34,7 +39,7 @@ export const parseAudioData = (
     linkResource?.datePublished;
   const dataString =
     broadcastDate &&
-    (d => {
+    ((d) => {
       const timeStamp = parseInt(d, 10) * 1000;
       const date = new Date(timeStamp);
       return date.toLocaleDateString(undefined, { dateStyle: 'medium' });
@@ -49,6 +54,7 @@ export const parseAudioData = (
     guid: guid || `${type}:${id}`,
     url: generateAudioUrl(url),
     title: audioTitle || fallbackTitle || metatags?.['og:title'],
+    queuedFrom,
     link: canonical,
     ...(program?.metatags?.['og:image'] && {
       imageUrl: program.metatags['og:image']

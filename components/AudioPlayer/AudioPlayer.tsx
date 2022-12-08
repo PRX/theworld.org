@@ -5,7 +5,7 @@
 
 import React, { useEffect, useReducer, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import ReactPlayer from 'react-player/file';
+import ReactPlayer, { FileConfig, FilePlayerProps } from 'react-player/file';
 import { Box, IconButton, NoSsr } from '@material-ui/core';
 import { GetAppSharp, PlayArrowSharp } from '@material-ui/icons';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -24,19 +24,20 @@ import { audioPlayerStyles, audioPlayerTheme } from './AudioPlayer.styles';
 import { IEmbedCodeProps } from './EmbedCode';
 import { ISliderValueLabelProps } from './SliderValueLabel';
 import { NoJsPlayer } from './NoJsPlayer';
+import { ReactPlayerProps } from 'react-player';
 
 const Duration = dynamic(() =>
-  import('@components/Duration').then(mod => mod.Duration)
+  import('@components/Duration').then((mod) => mod.Duration)
 ) as React.FC<IDurationProps>;
 
 const EmbedCode = dynamic(() =>
-  import('./EmbedCode').then(mod => mod.EmbedCode)
+  import('./EmbedCode').then((mod) => mod.EmbedCode)
 ) as React.FC<IEmbedCodeProps>;
 
 const Slider = dynamic(() => import('@material-ui/core/Slider'));
 
 const SliderValueLabel = dynamic(() =>
-  import('./SliderValueLabel').then(mod => mod.SliderValueLabel)
+  import('./SliderValueLabel').then((mod) => mod.SliderValueLabel)
 ) as React.FC<ISliderValueLabelProps>;
 
 const CloseSharp = dynamic(() => import('@material-ui/icons/CloseSharp'));
@@ -115,12 +116,10 @@ export const AudioPlayer = ({
 
   const playerAttrs = {
     config: {
-      file: {
-        forceAudio: true,
-        attributes: {
-          autoPlay: false,
-          preload: 'none'
-        }
+      forceAudio: true,
+      attributes: {
+        autoPlay: false,
+        preload: 'none'
       }
     },
     ref: playerElm,
@@ -142,7 +141,7 @@ export const AudioPlayer = ({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_DURATION,
         payload
       })
-  };
+  } as FilePlayerProps;
 
   const seekAttr = {
     className: classes.seek,

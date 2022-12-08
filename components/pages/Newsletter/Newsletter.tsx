@@ -3,6 +3,7 @@
  * Component for Story.
  */
 import React, { useContext, useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import {
@@ -15,7 +16,6 @@ import {
 import { CheckCircleOutlineSharp } from '@material-ui/icons';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
-import { Image } from '@components/Image';
 import { MetaTags } from '@components/MetaTags';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -86,12 +86,16 @@ export const Newsletter = () => {
               })}
             >
               {image && (
-                <Image
-                  className={cx('image')}
-                  wrapperClassName={cx('imageWrapper')}
-                  data={image}
-                  width={{ xl: '100vw' }}
-                />
+                <Box className={cx('imageWrapper')}>
+                  <Image
+                    alt={image.alt}
+                    className={cx('image')}
+                    src={image.url}
+                    layout="fill"
+                    objectFit="cover"
+                    priority
+                  />
+                </Box>
               )}
               <div className={cx('content')}>
                 <h1 className={cx('title')}>{title}</h1>

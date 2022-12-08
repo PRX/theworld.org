@@ -19,7 +19,7 @@ const Moment = dynamic(() => {
 }) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 interface Props {
@@ -30,6 +30,7 @@ export const EpisodeHeader = ({ data }: Props) => {
   const { dateBroadcast, datePublished, program, title, image, audio } = data;
   const audioProps = {
     title,
+    queuedFrom: 'Page Header Controls',
     ...(image && { imageUrl: image.url })
   } as Partial<IAudioData>;
   const classes = episodeHeaderStyles({});

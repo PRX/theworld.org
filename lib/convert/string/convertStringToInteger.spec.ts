@@ -1,4 +1,4 @@
-import convertStringToInteger from './convertStringToInteger';
+import { convertStringToInteger } from './convertStringToInteger';
 
 describe('lib/convert/string', () => {
   describe('convertStringToInteger', () => {

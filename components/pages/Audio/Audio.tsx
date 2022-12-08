@@ -75,7 +75,7 @@ export const Audio = () => {
         const dt = parseUtcDate(broadcastDate * 1000);
         return {
           'Broadcast Year': dt[0],
-          'Broadcast Month': dt.slice(0, 1).join('-'),
+          'Broadcast Month': dt.slice(0, 2).join('-'),
           'Broadcast Date': dt.join('-')
         };
       })())

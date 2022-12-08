@@ -31,7 +31,7 @@ import { episodeCardStyles, episodeCardTheme } from './EpisodeCard.styles';
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 export interface EpisodeCardProps {
@@ -44,6 +44,7 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
   const { title, teaser, image, audio, dateBroadcast, datePublished } = data;
   const audioProps = {
     title,
+    queuedFrom: 'Card Controls',
     ...(image && { imageUrl: image.url }),
     linkResource: data
   } as Partial<IAudioData>;

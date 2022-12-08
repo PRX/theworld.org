@@ -22,11 +22,11 @@ import {
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 const ContentLink = dynamic(() =>
-  import('@components/ContentLink').then(mod => mod.ContentLink)
+  import('@components/ContentLink').then((mod) => mod.ContentLink)
 ) as React.FC<IContentLinkProps>;
 interface Props {
   data: IPriApiResource;
@@ -48,6 +48,7 @@ export const StoryHeader = ({ data }: Props) => {
   const { alt, caption, credit } = image || {};
   const audioProps = {
     title,
+    queuedFrom: 'Page Header Controls',
     ...(image && { imageUrl: image.url }),
     linkResource: data
   } as Partial<IAudioData>;

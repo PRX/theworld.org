@@ -17,6 +17,7 @@ import { PlayerContext } from './contexts';
 import { PlayerActionTypes } from './state';
 import { IAudioData } from './types';
 import { playerInitialState, playerStateReducer } from './state/Player.reducer';
+import { usePlausible } from 'next-plausible';
 
 export interface IPlayerProps extends React.PropsWithChildren<{}> {}
 
@@ -25,19 +26,14 @@ export interface KeyboardEventWithTarget extends KeyboardEvent {
 }
 
 export const Player = ({ children }: IPlayerProps) => {
+  const plausible = usePlausible();
   const store = useStore();
   const audioElm = useRef<HTMLAudioElement>();
   const [state, dispatch] = useReducer(playerStateReducer, {
     ...playerInitialState
   });
-  const {
-    tracks,
-    playing,
-    currentTrackIndex,
-    currentTime,
-    muted,
-    volume
-  } = state;
+  const { tracks, playing, currentTrackIndex, currentTime, muted, volume } =
+    state;
   const currentTrack = tracks?.[currentTrackIndex] || ({} as IAudioData);
   const currentTrackDurationSeconds = useMemo(
     () => convertDurationToSeconds(currentTrack.duration),
@@ -68,6 +64,20 @@ export const Player = ({ children }: IPlayerProps) => {
   };
 
   const playAudio = (audioData: IAudioData) => {
+    const audioTrackIndex = (tracks || []).findIndex(
+      ({ guid }) => guid === audioData.guid
+    );
+    const notQueued = audioTrackIndex === -1;
+
+    if (notQueued) {
+      // Plausible: Queued
+      plausible('App Player: Queued', {
+        props: {
+          Title: audioData.title,
+          'Queued From': audioData.queuedFrom
+        }
+      });
+    }
     dispatch({ type: PlayerActionTypes.PLAYER_PLAY_AUDIO, payload: audioData });
   };
 
@@ -140,6 +150,14 @@ export const Player = ({ children }: IPlayerProps) => {
   };
 
   const addTrack = (newTrack: IAudioData) => {
+    // Plausible: Queued
+    plausible('App Player: Queued', {
+      props: {
+        Title: currentTrack.title,
+        'Queued From': currentTrack.queuedFrom
+      }
+    });
+
     dispatch({
       type: PlayerActionTypes.PLAYER_ADD_TRACK,
       payload: newTrack
@@ -215,7 +233,7 @@ export const Player = ({ children }: IPlayerProps) => {
       navigator?.mediaSession.setActionHandler('pause', () => {
         pause();
       });
-      navigator?.mediaSession.setActionHandler('seekto', e => {
+      navigator?.mediaSession.setActionHandler('seekto', (e) => {
         seekTo(e.seekTime);
       });
       navigator?.mediaSession.setActionHandler('seekbackward', () => {
@@ -285,12 +303,19 @@ export const Player = ({ children }: IPlayerProps) => {
   );
 
   const startPlaying = useCallback(() => {
+    // Plausible: Played
+    plausible('App Player: Played', {
+      props: {
+        Title: currentTrack.title
+      }
+    });
+
     audioElm.current
       .play()
       .then(() => {
         updateMediaSession();
       })
-      .catch(e => {
+      .catch((e) => {
         // eslint-disable-next-line no-console
         console.error(e);
       });
@@ -331,6 +356,13 @@ export const Player = ({ children }: IPlayerProps) => {
   }, [playing, startPlaying]);
 
   const handleEnded = useCallback(() => {
+    // Plausible: Completed
+    plausible('App Player: Completed', {
+      props: {
+        Title: currentTrack.title
+      }
+    });
+
     dispatch({
       type: PlayerActionTypes.PLAYER_COMPLETE_CURRENT_TRACK
     });

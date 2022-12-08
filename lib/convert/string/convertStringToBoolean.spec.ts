@@ -1,4 +1,4 @@
-import convertStringToBoolean from './convertStringToBoolean';
+import { convertStringToBoolean } from './convertStringToBoolean';
 
 describe('lib/convert/string', () => {
   describe('convertStringToBoolean', () => {
