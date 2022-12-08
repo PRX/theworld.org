@@ -159,8 +159,8 @@ export const Player = ({ children }: IPlayerProps) => {
     // Plausible: Queued
     plausible('App Player: Queued', {
       props: {
-        Title: currentTrack.title,
-        'Queued From': currentTrack.queuedFrom
+        Title: newTrack.title,
+        'Queued From': newTrack.queuedFrom
       }
     });
 
@@ -325,7 +325,7 @@ export const Player = ({ children }: IPlayerProps) => {
         // eslint-disable-next-line no-console
         console.error(e);
       });
-  }, []);
+  }, [currentTrack?.title]);
 
   const pauseAudio = useCallback(() => {
     audioElm.current.pause();
@@ -372,7 +372,7 @@ export const Player = ({ children }: IPlayerProps) => {
     dispatch({
       type: PlayerActionTypes.PLAYER_COMPLETE_CURRENT_TRACK
     });
-  }, []);
+  }, [currentTrack?.title]);
 
   const handleHotkey = useCallback(
     (event: KeyboardEventWithTarget) => {
