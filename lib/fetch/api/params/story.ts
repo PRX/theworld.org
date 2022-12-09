@@ -43,6 +43,7 @@ export const fullStoryParams = {
     'opencalais_person',
     'tags',
     'format',
+    'resource_development',
     'video'
   ],
   fields: [
@@ -88,6 +89,7 @@ export const fullStoryParams = {
     'tags.title',
     'tags.metatags',
     'format.title',
+    'resource_development.title',
     'video'
   ]
 };
