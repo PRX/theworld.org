@@ -4,9 +4,9 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -67,10 +67,10 @@ export const useStoryCardStyles = makeStyles((theme: Theme) =>
       padding: 0,
       borderRadius: 0,
       backgroundColor: 'transparent',
-      color: fade(theme.palette.primary.contrastText, 0.7),
+      color: alpha(theme.palette.primary.contrastText, 0.7),
       '&:hover': {
         backgroundColor: 'transparent',
-        color: fade(theme.palette.primary.contrastText, 1)
+        color: alpha(theme.palette.primary.contrastText, 1)
       },
       '$feature &': {
         fontSize: '8rem'
@@ -107,7 +107,7 @@ export const useStoryCardStyles = makeStyles((theme: Theme) =>
 );
 
 export const storyCardTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h5: {
         lineHeight: 1.1

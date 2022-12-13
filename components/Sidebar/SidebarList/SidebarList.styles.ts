@@ -4,15 +4,15 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
 
 export const sidebarListTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       body2: {
         fontSize: theme.typography.pxToRem(18)
@@ -30,7 +30,7 @@ export const sidebarListTheme = (theme: Theme) =>
         root: {},
         button: {
           '&:hover': {
-            backgroundColor: fade(
+            backgroundColor: alpha(
               theme.palette.primary.main,
               theme.palette.action.hoverOpacity
             )
@@ -48,7 +48,7 @@ export const sidebarListTheme = (theme: Theme) =>
           padding: theme.typography.pxToRem(theme.spacing(0.25)),
           '&:hover': {
             color: theme.palette.primary.main,
-            backgroundColor: fade(
+            backgroundColor: alpha(
               theme.palette.primary.main,
               theme.palette.action.hoverOpacity
             )

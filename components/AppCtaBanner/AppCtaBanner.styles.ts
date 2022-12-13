@@ -4,14 +4,14 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
 
 export const appCtaBannerTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h2: {
         color: theme.palette.primary.contrastText,

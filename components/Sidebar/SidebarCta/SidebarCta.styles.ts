@@ -3,11 +3,11 @@
  * Styles for sidebarCta.
  */
 
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import { createTheme, Theme } from '@material-ui/core/styles';
 import { blue, grey } from '@theme/colors';
 
 export const sidebarCtaTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {},
     overrides: {
       MuiCard: {

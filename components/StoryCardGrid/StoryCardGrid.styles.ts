@@ -4,9 +4,9 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -54,17 +54,17 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
       padding: 0,
       borderRadius: 0,
       backgroundColor: 'transparent',
-      color: fade(theme.palette.primary.contrastText, 0.7),
+      color: alpha(theme.palette.primary.contrastText, 0.7),
       '&:hover': {
         backgroundColor: 'transparent',
-        color: fade(theme.palette.primary.contrastText, 1)
+        color: alpha(theme.palette.primary.contrastText, 1)
       }
     }
   })
 );
 
 export const storyCardGridTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     overrides: {
       MuiCard: {
         root: {

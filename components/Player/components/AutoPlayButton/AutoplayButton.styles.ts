@@ -5,7 +5,7 @@
 
 import {
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -19,7 +19,7 @@ export const useAutoplayButtonStyles = makeStyles((theme: Theme) =>
     colorPrimary: {
       color: theme.palette.grey[300],
       '&:hover': {
-        backgroundColor: fade(
+        backgroundColor: alpha(
           theme.palette.primary.main,
           theme.palette.action.hoverOpacity
         ),

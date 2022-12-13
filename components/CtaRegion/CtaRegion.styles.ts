@@ -3,11 +3,11 @@
  * Styles for CtaRegion.
  */
 
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import { createTheme, Theme } from '@material-ui/core/styles';
 import { blue } from '@theme/colors';
 
 export const ctaRegionTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {},
     overrides: {
       MuiCard: {

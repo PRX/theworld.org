@@ -5,7 +5,7 @@
 
 import {
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -22,7 +22,7 @@ export const useAddAudioButtonStyles = makeStyles((theme: Theme) =>
           backgroundColor: theme.palette.success.main
         }),
         '&:hover': {
-          backgroundColor: fade(theme.palette.success.light, 1)
+          backgroundColor: alpha(theme.palette.success.light, 1)
         }
       }),
       ...(isQueued && {

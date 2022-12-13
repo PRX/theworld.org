@@ -5,7 +5,7 @@
 
 import {
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -66,7 +66,7 @@ export const useEmbedModalContentStyles = makeStyles((theme: Theme) =>
       wordBreak: 'break-word',
       '&:focus': {
         outline: 'none',
-        backgroundColor: fade(theme.palette.primary.main, 0.1)
+        backgroundColor: alpha(theme.palette.primary.main, 0.1)
       }
     },
     actions: {

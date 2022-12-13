@@ -3,11 +3,11 @@
  * Styles for SidebarCtaMessageNewsletter.
  */
 
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import { createTheme, Theme } from '@material-ui/core/styles';
 import { addCssColorAlpha } from '@lib/parse/color';
 
 export const sidebarCtaMessageNewsletterTheme = (theme: Theme) => {
-  const tempTheme = createMuiTheme(theme, {
+  const tempTheme = createTheme(theme, {
     palette: {
       primary: {
         ...theme.palette.success,
@@ -16,7 +16,7 @@ export const sidebarCtaMessageNewsletterTheme = (theme: Theme) => {
     }
   });
 
-  return createMuiTheme(tempTheme, {
+  return createTheme(tempTheme, {
     overrides: {
       MuiButton: {
         containedPrimary: {

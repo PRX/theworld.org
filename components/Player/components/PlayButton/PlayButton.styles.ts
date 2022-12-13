@@ -5,7 +5,7 @@
 
 import {
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -15,9 +15,9 @@ export const usePlayButtonStyles = makeStyles((theme: Theme) =>
     root: ({ playing }: any) => ({
       ...(!playing && {
         color: theme.palette.grey[900],
-        backgroundColor: fade(theme.palette.grey[900], 0.1),
+        backgroundColor: alpha(theme.palette.grey[900], 0.1),
         '&:hover': {
-          backgroundColor: fade(theme.palette.grey[900], 0.3)
+          backgroundColor: alpha(theme.palette.grey[900], 0.3)
         }
       }),
       ...(playing && {

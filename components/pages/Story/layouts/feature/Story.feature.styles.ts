@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -12,7 +12,7 @@ import {
 import { storyBodyStyles } from './styles/Story.body';
 
 export const storyTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     overrides: {
       MuiContainer: {
         maxWidthLg: {

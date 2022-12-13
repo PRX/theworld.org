@@ -35,6 +35,7 @@ export const NextButton = ({ className, ...other }: INextButtonProps) => {
         disabled={disabled}
         onClick={handleClick}
         disableRipple
+        {...(disabled && { component: 'span' })}
       >
         <SkipNextSharp classes={iconClasses} />
       </IconButton>

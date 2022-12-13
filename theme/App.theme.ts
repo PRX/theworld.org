@@ -4,9 +4,9 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -56,7 +56,7 @@ export const useAppStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.enteringScreen,
         easing: theme.transitions.easing.easeInOut
       }),
-      backgroundColor: fade(theme.palette.background.default, 0.8),
+      backgroundColor: alpha(theme.palette.background.default, 0.8),
       backdropFilter: 'blur(30px)',
       ...(playlistOpen && {
         translate: '0 0'
@@ -79,7 +79,7 @@ export const headingProps = {
   fontWeight: 700
 };
 
-export const baseMuiTheme = createMuiTheme({
+export const baseMuiTheme = createTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
@@ -170,7 +170,7 @@ export const baseMuiTheme = createMuiTheme({
 });
 
 export const appTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     shadows: (() => {
       const shadows = [...theme.shadows] as Theme['shadows'];
       shadows[1] = `0 1px 1px 0 ${theme.palette.divider}, 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0)`;

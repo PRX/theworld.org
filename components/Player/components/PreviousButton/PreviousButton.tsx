@@ -38,6 +38,7 @@ export const PreviousButton = ({
         disabled={disabled}
         onClick={handleClick}
         disableRipple
+        {...(disabled && { component: 'span' })}
       >
         <SkipPrevious classes={iconClasses} />
       </IconButton>

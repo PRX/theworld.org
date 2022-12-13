@@ -4,14 +4,14 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   Theme,
   makeStyles,
   createStyles
 } from '@material-ui/core/styles';
 
 export const newsletterTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     overrides: {
       MuiOutlinedInput: {
         input: {

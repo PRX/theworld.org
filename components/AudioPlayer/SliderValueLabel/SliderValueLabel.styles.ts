@@ -4,14 +4,14 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
 
 export const sliderValueLabelTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     overrides: {}
   });
 

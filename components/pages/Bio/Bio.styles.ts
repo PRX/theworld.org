@@ -4,13 +4,13 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   Theme,
   makeStyles,
   createStyles
 } from '@material-ui/core/styles';
 
-export const bioTheme = (theme: Theme) => createMuiTheme(theme, {});
+export const bioTheme = (theme: Theme) => createTheme(theme, {});
 
 export const bioStyles = makeStyles((theme: Theme) =>
   createStyles({

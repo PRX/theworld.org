@@ -5,7 +5,7 @@
 
 import {
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -22,7 +22,7 @@ export const useTrackInfoStyles = makeStyles((theme: Theme) =>
             duration: theme.transitions.duration.shortest,
             easing: theme.transitions.easing.sharp
           }),
-          backgroundColor: fade(theme.palette.primary.main, 0.1)
+          backgroundColor: alpha(theme.palette.primary.main, 0.1)
         }
       })
     }),

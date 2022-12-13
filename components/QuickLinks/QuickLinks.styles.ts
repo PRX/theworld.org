@@ -4,14 +4,14 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
 
 export const QuickLinksTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     overrides: {
       MuiBreadcrumbs: {
         root: {

@@ -190,7 +190,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     </Box>
                     <Grid
                       container
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       spacing={1}
                       style={{ marginBottom: 0 }}
                     >

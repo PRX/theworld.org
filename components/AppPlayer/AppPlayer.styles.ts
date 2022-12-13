@@ -7,7 +7,7 @@ import {
   createStyles,
   makeStyles,
   Theme,
-  fade
+  alpha
 } from '@material-ui/core/styles';
 
 export const appPlayerStyles = makeStyles((theme: Theme) =>
@@ -16,7 +16,7 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       isolation: 'isolate',
       backdropFilter: 'blur(30px)',
-      backgroundColor: fade(theme.palette.background.paper, 0.8),
+      backgroundColor: alpha(theme.palette.background.paper, 0.8),
       color: theme.palette.grey[900]
     },
     progress: {},
@@ -39,7 +39,7 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
       borderRadius: '50%',
       fontSize: theme.typography.pxToRem(28),
       '&:hover': {
-        backgroundColor: fade(theme.palette.grey[900], 0.1)
+        backgroundColor: alpha(theme.palette.grey[900], 0.1)
       }
     },
     playButton: {

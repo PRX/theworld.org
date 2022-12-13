@@ -6,7 +6,7 @@
 import {
   createStyles,
   makeStyles,
-  fade,
+  alpha,
   Theme
 } from '@material-ui/core/styles';
 
@@ -18,7 +18,7 @@ export const usePlayerProgressStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       position: 'relative',
       height: theme.typography.pxToRem(trackSize),
-      backgroundColor: fade(theme.palette.background.paper, 0.3),
+      backgroundColor: alpha(theme.palette.background.paper, 0.3),
       cursor: 'pointer',
       '&::before': {
         content: "''",
@@ -27,7 +27,7 @@ export const usePlayerProgressStyles = makeStyles((theme: Theme) =>
         left: 0,
         width: 'calc(var(--loaded, 0) * 100%)',
         height: '100%',
-        backgroundColor: fade(theme.palette.secondary.light, 0.3)
+        backgroundColor: alpha(theme.palette.secondary.light, 0.3)
       },
       '&::after': {
         content: "''",

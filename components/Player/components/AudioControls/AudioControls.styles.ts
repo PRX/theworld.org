@@ -5,7 +5,7 @@
 
 import {
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -37,7 +37,7 @@ export const useAudioControlsStyles = makeStyles((theme: Theme) =>
           backgroundColor: 'transparent',
           color: theme.palette.text.secondary,
           '&:hover': {
-            backgroundColor: fade(theme.palette.primary.main, 0.3),
+            backgroundColor: alpha(theme.palette.primary.main, 0.3),
             color: theme.palette.text.primary
           }
         }
@@ -59,7 +59,7 @@ export const useAudioControlsStyles = makeStyles((theme: Theme) =>
       '[data-variant="feature"] &': {
         padding: '0.25em',
         fontSize: '1.75em',
-        border: `6px solid ${fade(theme.palette.common.white, 0.5)}`
+        border: `6px solid ${alpha(theme.palette.common.white, 0.5)}`
       }
     },
     addAudioButton: {
@@ -68,7 +68,7 @@ export const useAudioControlsStyles = makeStyles((theme: Theme) =>
         '&[data-queued]': {
           color: theme.palette.success.main,
           '&:hover': {
-            backgroundColor: fade(theme.palette.success.main, 0.5)
+            backgroundColor: alpha(theme.palette.success.main, 0.5)
           }
         }
       },
@@ -76,7 +76,7 @@ export const useAudioControlsStyles = makeStyles((theme: Theme) =>
         position: 'relative',
         marginLeft: '-0.9em',
         fontSize: '.75em',
-        border: `4px solid ${fade(theme.palette.common.white, 0.5)}`,
+        border: `4px solid ${alpha(theme.palette.common.white, 0.5)}`,
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
         '&:hover': {

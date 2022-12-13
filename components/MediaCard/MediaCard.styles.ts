@@ -4,7 +4,7 @@
  */
 
 import {
-  createMuiTheme,
+  createTheme,
   createStyles,
   makeStyles,
   Theme
@@ -60,7 +60,7 @@ export const mediaCardStyles = makeStyles((theme: Theme) =>
 );
 
 export const mediaCardTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h5: {
         lineHeight: 1.1

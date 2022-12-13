@@ -5,7 +5,7 @@
 
 import {
   createStyles,
-  fade,
+  alpha,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -18,7 +18,7 @@ export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
       gap: theme.typography.pxToRem(theme.spacing(1)),
       paddingInline: theme.typography.pxToRem(theme.spacing(2)),
       ...(isCurrentTrack && {
-        backgroundColor: fade(theme.palette.primary.main, 0.1)
+        backgroundColor: alpha(theme.palette.primary.main, 0.1)
       })
     }),
     layout: ({ hasLink }: any) => ({
@@ -36,7 +36,7 @@ export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
             duration: theme.transitions.duration.shortest,
             easing: theme.transitions.easing.sharp
           }),
-          backgroundColor: fade(theme.palette.primary.main, 0.1)
+          backgroundColor: alpha(theme.palette.primary.main, 0.1)
         }
       }),
       [theme.breakpoints.down('xs')]: {
