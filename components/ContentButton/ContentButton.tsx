@@ -28,7 +28,7 @@ export const ContentButton = ({
   const classes = contentButtonStyles({});
 
   return (
-    <Link href={href} as={alias} passHref>
+    <Link href={href} as={alias} passHref legacyBehavior>
       <Button href="" classes={classes} {...other}>
         {children || title}
       </Button>

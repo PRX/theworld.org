@@ -83,10 +83,8 @@ export const AppHeader = () => {
             </IconButton>
           </NoSsr>
 
-          <Link href="/">
-            <a href="/" aria-label="The World">
-              <Logo className={cx('twLogo')} />
-            </a>
+          <Link href="/" aria-label="The World">
+            <Logo className={cx('twLogo')} />
           </Link>
 
           <div className={cx('grow')} />

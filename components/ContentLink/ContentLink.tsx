@@ -55,7 +55,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
     }, []);
 
     return href ? (
-      <Link href={href} as={alias} passHref>
+      <Link href={href} as={alias} passHref legacyBehavior>
         <MuiLink
           ref={ref}
           component="a"

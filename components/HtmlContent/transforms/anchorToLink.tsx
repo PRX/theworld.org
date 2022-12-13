@@ -55,7 +55,7 @@ export const anchorToLink = (
       delete attribs.target;
 
       return (
-        <Link href={linkHref} as={linkAs} passHref key={id}>
+        <Link href={linkHref} as={linkAs} passHref key={id} legacyBehavior>
           {convertNodeToElement({ ...node, attribs }, index, transform)}
         </Link>
       );

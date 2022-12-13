@@ -38,7 +38,12 @@ export const SidebarLatestStories = ({
       </SidebarHeader>
       <SidebarList disablePadding data={listItems} />
       <SidebarFooter>
-        <Link href="/[...alias]" as="/programs/the-world" passHref>
+        <Link
+          href="/[...alias]"
+          as="/programs/the-world"
+          passHref
+          legacyBehavior
+        >
           <Button
             component="a"
             color="primary"
