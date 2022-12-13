@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';
 import classNames from 'classnames/bind';
@@ -22,11 +22,11 @@ import {
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then((mod) => mod.AudioControls)
+  import('@components/Player/components').then(mod => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 const ContentLink = dynamic(() =>
-  import('@components/ContentLink').then((mod) => mod.ContentLink)
+  import('@components/ContentLink').then(mod => mod.ContentLink)
 ) as React.FC<IContentLinkProps>;
 interface Props {
   data: IPriApiResource;

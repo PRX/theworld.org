@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
 import { parse, UrlWithParsedQuery } from 'url';
 import classNames from 'classnames/bind';
@@ -38,7 +38,7 @@ import { useStoryCardStyles, storyCardTheme } from './StoryCard.styles';
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then((mod) => mod.AudioControls)
+  import('@components/Player/components').then(mod => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 export interface StoryCardProps {

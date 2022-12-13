@@ -3,7 +3,7 @@
  * Component for Story.
  */
 import React, { useContext, useState, useEffect } from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
 import {

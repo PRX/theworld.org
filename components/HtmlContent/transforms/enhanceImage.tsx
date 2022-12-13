@@ -4,11 +4,12 @@
  */
 import React from 'react';
 import { DomElement } from 'htmlparser2';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 
 export type ImageWidth = [string, string];
 
 export interface IImageWidthsFunc {
+  // eslint-disable-next-line no-unused-vars
   (node: DomElement): ImageWidth[];
 }
 

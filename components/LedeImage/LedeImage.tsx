@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { Box, Typography } from '@material-ui/core';
 import { HtmlContent } from '@components/HtmlContent';
 import { ledeImageStyles } from './LedeImage.styles';
