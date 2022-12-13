@@ -3,8 +3,8 @@
  * Styles for SocialShareMenu.
  */
 
-import { addCssColorAlpha } from '@lib/parse/color';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const useSocialShareMenuStyles = makeStyles(
   (theme: Theme) =>
@@ -29,10 +29,10 @@ export const useSocialShareMenuStyles = makeStyles(
       backdropRoot: {
         top: 'unset',
         height: '100vh',
-        backgroundImage: `linear-gradient(-45deg, ${addCssColorAlpha(
+        backgroundImage: `linear-gradient(-45deg, ${alpha(
           theme.palette.grey[900],
           0.75
-        )}, ${addCssColorAlpha(theme.palette.grey[900], 0.25)})`
+        )}, ${alpha(theme.palette.grey[900], 0.25)})`
       }
     }),
   { name: 'TwSocialShareMenu' }

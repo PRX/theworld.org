@@ -3,7 +3,7 @@
  * Styles and theme for NextButton.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const useNextButtonStyles = makeStyles(() =>
   createStyles({

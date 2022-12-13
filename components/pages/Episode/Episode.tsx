@@ -13,9 +13,9 @@ import {
   Grid,
   Hidden,
   Typography
-} from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { EqualizerRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
+import { EqualizerRounded } from '@mui/icons-material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';

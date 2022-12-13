@@ -5,9 +5,9 @@
 
 import React, { HTMLAttributes, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Box, IconButton } from '@material-ui/core';
-import { CheckSharp, SelectAllSharp, WarningSharp } from '@material-ui/icons';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Box, IconButton } from '@mui/material';
+import { CheckSharp, SelectAllSharp, WarningSharp } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/styles';
 import classNames from 'classnames/bind';
 import { embedCodeTheme, embedCodeStyles } from './EmbedCode.styles';
 

@@ -3,7 +3,8 @@
  * Styles for LedeVideo.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const ledeVideoStyles = makeStyles((theme: Theme) =>
   createStyles({

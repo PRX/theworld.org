@@ -3,20 +3,16 @@
  * Styles and theme for PlaylistItem.
  */
 
-import {
-  createStyles,
-  alpha,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: ({ isCurrentTrack }) => ({
       display: 'flex',
       alignItems: 'center',
-      gap: theme.typography.pxToRem(theme.spacing(1)),
-      paddingInline: theme.typography.pxToRem(theme.spacing(2)),
+      gap: theme.typography.pxToRem(8),
+      paddingInline: theme.typography.pxToRem(16),
       ...(isCurrentTrack && {
         backgroundColor: alpha(theme.palette.primary.main, 0.1)
       })
@@ -26,10 +22,10 @@ export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       display: 'grid',
       gridTemplateColumns: 'min-content auto',
-      gap: theme.typography.pxToRem(theme.spacing(1.5)),
+      gap: theme.typography.pxToRem(12),
       alignItems: 'center',
       justifyContent: 'start',
-      padding: theme.typography.pxToRem(theme.spacing(2)),
+      padding: theme.typography.pxToRem(16),
       ...(hasLink && {
         '&:hover': {
           transition: theme.transitions.create('background-color', {
@@ -72,16 +68,12 @@ export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
     infoItem: {
       display: 'inline-block',
       whiteSpace: 'nowrap',
-      marginInlineEnd: `calc(1ch + ${theme.typography.pxToRem(
-        theme.spacing(0.5)
-      )})`,
+      marginInlineEnd: `calc(1ch + ${theme.typography.pxToRem(4)})`,
       '&::before': {
         content: "'\u2022'",
-        marginInline: theme.typography.pxToRem(theme.spacing(0.5))
+        marginInline: theme.typography.pxToRem(4)
       },
-      marginInlineStart: `calc(-1ch - ${theme.typography.pxToRem(
-        theme.spacing(0.5)
-      )})`
+      marginInlineStart: `calc(-1ch - ${theme.typography.pxToRem(4)})`
     },
     link: {
       position: 'absolute',
@@ -93,7 +85,7 @@ export const usePlaylistItemStyles = makeStyles((theme: Theme) =>
       fontSize: '1.5em',
       display: 'flex',
       alignItems: 'center',
-      gap: theme.typography.pxToRem(theme.spacing(0.5))
+      gap: theme.typography.pxToRem(4)
     },
     handle: {
       cursor: 'grab',

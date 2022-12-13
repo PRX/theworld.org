@@ -4,8 +4,8 @@
  */
 
 import React, { HTMLAttributes } from 'react';
-import { CardContent } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { CardContent } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import classNames from 'classnames/bind';
 import {
   sidebarContentStyles,

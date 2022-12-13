@@ -3,13 +3,8 @@
  * Styles for LandingPageHeader.
  */
 
-import {
-  createTheme,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const storyHeaderTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -38,7 +33,7 @@ export const storyHeaderTheme = (theme: Theme) =>
             color: theme.palette.primary.contrastText
           },
           '&:hover': {
-            color: addCssColorAlpha(theme.palette.primary.contrastText, 0.6)
+            color: alpha(theme.palette.primary.contrastText, 0.6)
           }
         }
       }
@@ -55,7 +50,7 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
       minHeight: '75vh',
       backgroundColor: theme.palette.primary.light,
-      marginBottom: theme.typography.pxToRem(theme.spacing(2)),
+      marginBottom: theme.typography.pxToRem(16),
       color: theme.palette.primary.contrastText,
       fontSize: '1.2rem'
     },
@@ -82,13 +77,13 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       alignContent: 'end',
       // gridTemplateColumns: '1fr 100vw 1fr',
-      gridGap: theme.typography.pxToRem(theme.spacing(2)),
+      gridGap: theme.typography.pxToRem(16),
       width: '100%',
-      padding: theme.typography.pxToRem(theme.spacing(3)),
-      textShadow: `1px 1px 6px ${addCssColorAlpha(
+      padding: theme.typography.pxToRem(24),
+      textShadow: `1px 1px 6px ${alpha(
         theme.palette.common.black,
         0.3
-      )}, 1px 1px 3px ${addCssColorAlpha(theme.palette.common.black, 0.4)}`
+      )}, 1px 1px 3px ${alpha(theme.palette.common.black, 0.4)}`
     },
     header: {
       gridRow: '1 / -1',
@@ -97,7 +92,7 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       zIndex: 1
     },
     teaser: {
-      marginTop: theme.typography.pxToRem(theme.spacing(2)),
+      marginTop: theme.typography.pxToRem(16),
       fontSize: theme.typography.pxToRem(24),
       lineHeight: theme.typography.pxToRem(30)
     },
@@ -140,7 +135,7 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
     footer: {
       display: 'grid',
       gridGap: '0.5rem',
-      marginBottom: theme.typography.pxToRem(theme.spacing(2)),
+      marginBottom: theme.typography.pxToRem(16),
       '& p': {
         margin: 0
       },

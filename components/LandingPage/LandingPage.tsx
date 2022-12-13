@@ -11,7 +11,7 @@ import {
   Grid,
   GridSpacing,
   Hidden
-} from '@material-ui/core';
+} from '@mui/material';
 
 export interface ILandingPageItem {
   key: string;

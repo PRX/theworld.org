@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { ListProps } from '@material-ui/core';
+import { ListProps } from '@mui/material';
 import { IPriApiResource } from 'pri-api-library/types';
 import { SidebarList } from '../SidebarList';
 

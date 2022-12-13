@@ -6,7 +6,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { IContentLinkProps } from '@components/ContentLink';
 import { IAudioControlsProps } from '@components/Player/components';
 import { IAudioData } from '@components/Player/types';

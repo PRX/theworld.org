@@ -5,10 +5,10 @@
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
-import { IconButtonProps, Tooltip } from '@material-ui/core';
-import { SkipNextSharp } from '@material-ui/icons';
+import { IconButtonProps, Tooltip } from '@mui/material';
+import { SkipNextSharp } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { useNextButtonStyles } from './NextButton.styles';
 
 export interface INextButtonProps extends IconButtonProps {}

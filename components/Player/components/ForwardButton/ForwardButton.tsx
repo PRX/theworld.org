@@ -5,10 +5,10 @@
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
-import { IconButtonProps, Tooltip } from '@material-ui/core';
-import { Forward30Sharp } from '@material-ui/icons';
+import { IconButtonProps, Tooltip } from '@mui/material';
+import { Forward30Sharp } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { useForwardButtonStyles } from './ForwardButton.styles';
 
 export interface IForwardButtonProps extends IconButtonProps {}

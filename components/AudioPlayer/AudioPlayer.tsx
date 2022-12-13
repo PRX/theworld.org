@@ -6,9 +6,9 @@
 import React, { useEffect, useReducer, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import ReactPlayer, { FileConfig, FilePlayerProps } from 'react-player/file';
-import { Box, IconButton, NoSsr } from '@material-ui/core';
-import { GetAppSharp, PlayArrowSharp } from '@material-ui/icons';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Box, IconButton, NoSsr } from '@mui/material';
+import { GetAppSharp, PlayArrowSharp } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/styles';
 import classNames from 'classnames/bind';
 import { IDurationProps } from '@components/Duration';
 import { formatDuration } from '@lib/parse/time';
@@ -27,45 +27,47 @@ import { NoJsPlayer } from './NoJsPlayer';
 import { ReactPlayerProps } from 'react-player';
 
 const Duration = dynamic(() =>
-  import('@components/Duration').then((mod) => mod.Duration)
+  import('@components/Duration').then(mod => mod.Duration)
 ) as React.FC<IDurationProps>;
 
 const EmbedCode = dynamic(() =>
-  import('./EmbedCode').then((mod) => mod.EmbedCode)
+  import('./EmbedCode').then(mod => mod.EmbedCode)
 ) as React.FC<IEmbedCodeProps>;
 
-const Slider = dynamic(() => import('@material-ui/core/Slider'));
+const Slider = dynamic(() => import('@mui/material/Slider'));
 
 const SliderValueLabel = dynamic(() =>
-  import('./SliderValueLabel').then((mod) => mod.SliderValueLabel)
+  import('./SliderValueLabel').then(mod => mod.SliderValueLabel)
 ) as React.FC<ISliderValueLabelProps>;
 
-const CloseSharp = dynamic(() => import('@material-ui/icons/CloseSharp'));
+const CloseSharp = dynamic(() => import('@mui/icons-material/CloseSharp'));
 
-const CodeSharp = dynamic(() => import('@material-ui/icons/CodeSharp'));
+const CodeSharp = dynamic(() => import('@mui/icons-material/CodeSharp'));
 
-const PauseSharp = dynamic(() => import('@material-ui/icons/PauseSharp'), {
+const PauseSharp = dynamic(() => import('@mui/icons-material/PauseSharp'), {
   loading: () => <PlayArrowSharp />
 });
 
-const VolumeUpSharp = dynamic(() => import('@material-ui/icons/VolumeUpSharp'));
+const VolumeUpSharp = dynamic(() =>
+  import('@mui/icons-material/VolumeUpSharp')
+);
 
 const VolumeDownSharp = dynamic(
-  () => import('@material-ui/icons/VolumeDownSharp'),
+  () => import('@mui/icons-material/VolumeDownSharp'),
   {
     loading: () => <VolumeUpSharp />
   }
 );
 
 const VolumeMuteSharp = dynamic(
-  () => import('@material-ui/icons/VolumeMuteSharp'),
+  () => import('@mui/icons-material/VolumeMuteSharp'),
   {
     loading: () => <VolumeDownSharp />
   }
 );
 
 const VolumeOffSharp = dynamic(
-  () => import('@material-ui/icons/VolumeOffSharp'),
+  () => import('@mui/icons-material/VolumeOffSharp'),
   {
     loading: () => <VolumeUpSharp />
   }

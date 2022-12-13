@@ -12,8 +12,8 @@ import {
   Grid,
   ThemeProvider,
   Typography
-} from '@material-ui/core';
-import { CheckCircleOutlineSharp } from '@material-ui/icons';
+} from '@mui/material';
+import { CheckCircleOutlineSharp } from '@mui/icons-material';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';

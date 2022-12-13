@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { imageHeaderStyles } from './ImageHeader.styles';
 
 interface Props {

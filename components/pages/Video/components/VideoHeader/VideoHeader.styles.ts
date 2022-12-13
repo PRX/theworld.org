@@ -3,7 +3,8 @@
  * Styles for VideoHeader layout.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const videoHeaderStyles = makeStyles((theme: Theme) =>
   createStyles({

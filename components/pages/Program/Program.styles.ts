@@ -3,12 +3,8 @@
  * Theme and styles for Program layout.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 import { storyLayoutStyles } from '@components/pages/Story/layouts/default/styles/Story.layout';
 import { storyBodyStyles } from '@components/pages/Story/layouts/default/styles/Story.body';
 
@@ -20,13 +16,13 @@ export const programTheme = (theme: Theme) =>
       },
       h4: {
         fontSize: theme.typography.pxToRem(20),
-        marginBottom: theme.typography.pxToRem(theme.spacing(2))
+        marginBottom: theme.typography.pxToRem(16)
       }
     },
     overrides: {
       MuiDivider: {
         root: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(3))
+          marginBottom: theme.typography.pxToRem(24)
         }
       }
     }

@@ -28,13 +28,13 @@ import {
   Modal,
   NoSsr,
   Toolbar
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   CodeSharp,
   DeleteForeverSharp,
   DeleteSharp,
   MoreVertSharp
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { AutoplayButton } from '@components/Player/components/AutoPlayButton';
 import { PlayerContext } from '@components/Player/contexts';
 import { appPlayerStyles } from './AppPlayer.styles';

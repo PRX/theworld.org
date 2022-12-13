@@ -3,7 +3,8 @@
  * Styles for Audio layout.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const audioHeaderStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,7 +27,7 @@ export const audioHeaderStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridTemplateColumns: '1fr 300px',
       alignItems: 'center',
-      gap: theme.typography.pxToRem(theme.spacing(2)),
+      gap: theme.typography.pxToRem(16),
       [theme.breakpoints.down('sm')]: {
         display: 'flex',
         justifyContent: 'space-between',
@@ -48,7 +49,7 @@ export const audioHeaderStyles = makeStyles((theme: Theme) =>
       justifySelf: 'center',
       display: 'flex',
       alignItems: 'center',
-      gap: theme.typography.pxToRem(theme.spacing(1))
+      gap: theme.typography.pxToRem(8)
     }
   })
 );

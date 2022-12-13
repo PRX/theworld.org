@@ -6,9 +6,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import classNames from 'classnames/bind';
-import { Box, Container, IconButton } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { CloseSharp } from '@material-ui/icons';
+import { Box, Container, IconButton } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
+import { CloseSharp } from '@mui/icons-material';
 import { AppContext } from '@contexts/AppContext';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
 import { getCookies, getCtaRegionData } from '@store/reducers';

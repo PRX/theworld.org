@@ -14,15 +14,15 @@ import {
   faFlipboard,
   faWhatsapp
 } from '@fortawesome/free-brands-svg-icons';
-import Backdrop from '@material-ui/core/Backdrop';
-import Box from '@material-ui/core/Box';
-import NoSsr from '@material-ui/core/NoSsr';
-import CloseRounded from '@material-ui/icons/CloseRounded';
-import EmailRounded from '@material-ui/icons/EmailRounded';
-import ShareRoundedIcon from '@material-ui/icons/ShareRounded';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import NoSsr from '@mui/material/NoSsr';
+import CloseRounded from '@mui/icons-material/CloseRounded';
+import EmailRounded from '@mui/icons-material/EmailRounded';
+import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
+import SvgIcon from '@mui/material/SvgIcon';
 import { IIconsMap } from '@interfaces/icons';
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/lab';
 import { getUiPlayerPlaylistOpen, getUiSocialShareMenu } from '@store/reducers';
 import { useSocialShareMenuStyles } from './SocialShareMenu.styles';
 

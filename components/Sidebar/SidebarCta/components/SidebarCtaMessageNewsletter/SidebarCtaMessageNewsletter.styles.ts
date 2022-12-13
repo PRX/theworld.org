@@ -3,8 +3,7 @@
  * Styles for SidebarCtaMessageNewsletter.
  */
 
-import { createTheme, Theme } from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
 
 export const sidebarCtaMessageNewsletterTheme = (theme: Theme) => {
   const tempTheme = createTheme(theme, {
@@ -27,7 +26,7 @@ export const sidebarCtaMessageNewsletterTheme = (theme: Theme) => {
         },
         outlinedPrimary: {
           color: theme.palette.success.main,
-          borderColor: addCssColorAlpha(theme.palette.success.main, 0.3),
+          borderColor: alpha(theme.palette.success.main, 0.3),
           '&:hover': {
             borderColor: theme.palette.success.main
           }

@@ -3,14 +3,8 @@
  * Styles for story card.
  */
 
-import {
-  createTheme,
-  createStyles,
-  alpha,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const useStoryCardStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,7 +18,7 @@ export const useStoryCardStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'start',
-      gap: theme.typography.pxToRem(theme.spacing(3))
+      gap: theme.typography.pxToRem(24)
     },
     title: {
       marginTop: 0,
@@ -79,9 +73,9 @@ export const useStoryCardStyles = makeStyles((theme: Theme) =>
     MuiCardActionAreaRoot: {
       display: 'grid',
       gridTemplateColumns: '1fr 3fr',
-      gridGap: `${theme.spacing(2)}px`,
+      gridGap: `${16}px`,
       alignItems: 'center',
-      padding: `${theme.spacing(2)}px`,
+      padding: `${16}px`,
       '$feature &': {
         gridTemplateColumns: '1fr'
       },
@@ -167,7 +161,7 @@ export const storyCardTheme = (theme: Theme) =>
         },
         padding: {
           paddingTop: 0,
-          paddingBottom: theme.typography.pxToRem(theme.spacing(2))
+          paddingBottom: theme.typography.pxToRem(16)
         }
       },
       MuiListItem: {
@@ -175,7 +169,7 @@ export const storyCardTheme = (theme: Theme) =>
         button: {
           '&:hover': {
             color: theme.palette.primary.main,
-            backgroundColor: addCssColorAlpha(
+            backgroundColor: alpha(
               theme.palette.primary.main,
               theme.palette.action.hoverOpacity
             )
@@ -188,7 +182,7 @@ export const storyCardTheme = (theme: Theme) =>
           listStyle: 'disc',
           marginTop: 0,
           marginBottom: 0,
-          marginLeft: theme.spacing(2),
+          marginLeft: 16,
           color: theme.palette.grey[500]
         },
         primary: {
@@ -199,7 +193,7 @@ export const storyCardTheme = (theme: Theme) =>
       },
       MuiTypography: {
         gutterBottom: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(0.5))
+          marginBottom: theme.typography.pxToRem(4)
         }
       }
     }

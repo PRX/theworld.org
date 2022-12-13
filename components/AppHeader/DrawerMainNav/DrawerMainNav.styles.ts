@@ -3,55 +3,48 @@
  * Styles for DrawerMainNav.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 import { orange, yellow, cyan } from '@theme/colors';
 import { hexToRgb } from '@lib/parse/color';
 
 export const drawerMainNavTheme = (theme: Theme) =>
-  createTheme(
-    {
-      overrides: {
-        MuiList: {
-          root: {
-            padding: 0
-          }
-        },
-        MuiListItem: {
-          root: {
-            color: 'var(--accent-color)',
-            '&.opened': {
-              color: theme.palette.common.white,
-              backgroundColor: 'var(--accent-color)',
-              '&:hover': {
-                backgroundColor: 'var(--accent-color)'
-              }
-            },
-            '& + &': {
-              borderTopWidth: 0
+  createTheme(theme, {
+    overrides: {
+      MuiList: {
+        root: {
+          padding: 0
+        }
+      },
+      MuiListItem: {
+        root: {
+          color: 'var(--accent-color)',
+          '&.opened': {
+            color: theme.palette.common.white,
+            backgroundColor: 'var(--accent-color)',
+            '&:hover': {
+              backgroundColor: 'var(--accent-color)'
             }
           },
-          button: {
-            '&:hover': {
-              backgroundColor: 'rgba(var(--accent-color-rgb), 0.3)'
-            }
+          '& + &': {
+            borderTopWidth: 0
           }
         },
-        MuiListItemText: {
-          root: {
-            position: 'relative',
-            zIndex: 1,
-            color: 'var(--accent-color-contrast)'
+        button: {
+          '&:hover': {
+            backgroundColor: 'rgba(var(--accent-color-rgb), 0.3)'
           }
         }
+      },
+      MuiListItemText: {
+        root: {
+          position: 'relative',
+          zIndex: 1,
+          color: 'var(--accent-color-contrast)'
+        }
       }
-    },
-    theme
-  );
+    }
+  });
 
 export const drawerMainNavStyles = makeStyles((theme: Theme) =>
   createStyles({

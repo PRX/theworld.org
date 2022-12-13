@@ -5,7 +5,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Button, ButtonProps } from '@material-ui/core';
+import { Button, ButtonProps } from '@mui/material';
 import { IPriApiResource } from 'pri-api-library/types';
 import { generateLinkPropsForContent } from '@lib/routing';
 import { contentButtonStyles } from './ContentButton.styles';

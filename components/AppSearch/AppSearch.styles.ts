@@ -3,12 +3,8 @@
  * Styles and theme for AppSearch.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const appSearchTheme = (theme: Theme) => {
   return createTheme(theme, {
@@ -76,9 +72,9 @@ export const appSearchStyles = makeStyles((theme: Theme) =>
     searchForm: {
       display: 'flex',
       justifyContent: 'center',
-      padding: `${theme.typography.pxToRem(
-        theme.spacing(4)
-      )} ${theme.typography.pxToRem(theme.spacing(5))}`,
+      padding: `${theme.typography.pxToRem(32)} ${theme.typography.pxToRem(
+        40
+      )}`,
       fontSize: '5rem'
     },
     query: {

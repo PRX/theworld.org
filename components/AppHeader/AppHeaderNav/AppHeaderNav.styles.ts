@@ -3,13 +3,8 @@
  * Styles for AppHeaderNav.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const appHeaderNavTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -19,10 +14,7 @@ export const appHeaderNavTheme = (theme: Theme) =>
           color: theme.palette.primary.contrastText,
           fontWeight: theme.typography.fontWeightBold,
           '&:hover, &:focus': {
-            backgroundColor: addCssColorAlpha(
-              theme.palette.primary.contrastText,
-              0.1
-            )
+            backgroundColor: alpha(theme.palette.primary.contrastText, 0.1)
           }
         }
       }
@@ -33,7 +25,7 @@ export const appHeaderNavStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
-      columnGap: theme.typography.pxToRem(theme.spacing(1))
+      columnGap: theme.typography.pxToRem(8)
     }
   })
 );

@@ -3,12 +3,8 @@
  * Styles for SidebarContent.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const sidebarContentTheme = (theme: Theme) => {
   return createTheme(theme, {});
@@ -22,7 +18,7 @@ export const sidebarContentStyles = makeStyles((theme: Theme) =>
         margin: 0
       },
       '& > * + *': {
-        marginTop: theme.typography.pxToRem(theme.spacing(2))
+        marginTop: theme.typography.pxToRem(16)
       }
     }
   })

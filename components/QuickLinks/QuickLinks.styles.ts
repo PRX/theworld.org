@@ -3,12 +3,8 @@
  * Styles for QuickLinks.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const QuickLinksTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -19,9 +15,9 @@ export const QuickLinksTheme = (theme: Theme) =>
           position: 'relative',
           justifyContent: 'center',
           overflow: 'hidden',
-          maxHeight: theme.typography.pxToRem(theme.spacing(6)),
-          marginTop: theme.typography.pxToRem(theme.spacing(1)),
-          marginBottom: theme.typography.pxToRem(theme.spacing(-3))
+          maxHeight: theme.typography.pxToRem(48),
+          marginTop: theme.typography.pxToRem(8),
+          marginBottom: theme.typography.pxToRem(-24)
         }
       }
     }

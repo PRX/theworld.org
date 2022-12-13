@@ -3,12 +3,8 @@
  * Styles and theme for AppPlayer.
  */
 
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-  alpha
-} from '@material-ui/core/styles';
+import { alpha, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const appPlayerStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,13 +20,13 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridTemplateColumns: '0fr 1fr 0fr',
       justifyContent: 'space-between',
-      gap: theme.typography.pxToRem(theme.spacing(2))
+      gap: theme.typography.pxToRem(16)
     },
     controls: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      gap: theme.typography.pxToRem(theme.spacing(0.25)),
+      gap: theme.typography.pxToRem(2),
       '&:last-child': {
         justifySelf: 'end'
       }
@@ -45,7 +41,7 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
     playButton: {
       borderRadius: '50%',
       fontSize: theme.typography.pxToRem(36),
-      marginBlock: theme.typography.pxToRem(theme.spacing(1))
+      marginBlock: theme.typography.pxToRem(8)
     },
     timeInfo: {
       [theme.breakpoints.down(336)]: {

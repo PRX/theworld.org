@@ -3,8 +3,8 @@
  * Body media styles as JSS object.
  */
 
-import { Theme } from '@material-ui/core/styles';
-import { CreateCSSProperties } from '@material-ui/styles';
+import { Theme } from '@mui/material/styles';
+import { CreateCSSProperties } from '@mui/styles';
 
 export const storyBodyMediaStyles = (theme: Theme) =>
   ({
@@ -30,8 +30,8 @@ export const storyBodyMediaStyles = (theme: Theme) =>
       position: 'relative',
       clear: 'both',
       width: '100%',
-      marginTop: theme.typography.pxToRem(theme.spacing(4)),
-      marginBottom: theme.typography.pxToRem(theme.spacing(4)),
+      marginTop: theme.typography.pxToRem(32),
+      marginBottom: theme.typography.pxToRem(32),
 
       '&.media-full_width': {
         position: 'relative',
@@ -60,7 +60,7 @@ export const storyBodyMediaStyles = (theme: Theme) =>
       '& .content': {
         ...theme.typography.caption,
         '& > * + *': {
-          marginTop: theme.typography.pxToRem(theme.spacing(2))
+          marginTop: theme.typography.pxToRem(16)
         },
         '& p': {
           margin: 0
@@ -86,8 +86,8 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     '& .media-youtube-video': {
       position: 'relative',
       height: 0,
-      marginBlockStart: theme.typography.pxToRem(theme.spacing(3)),
-      marginBlockEnd: theme.typography.pxToRem(theme.spacing(3)),
+      marginBlockStart: theme.typography.pxToRem(24),
+      marginBlockEnd: theme.typography.pxToRem(24),
       paddingTop: `${(9 / 16) * 100}%`,
       '& iframe': {
         display: 'block',
@@ -130,9 +130,9 @@ export const storyBodyMediaStyles = (theme: Theme) =>
         clear: 'left',
         width: '44%',
         margin: `${[
-          theme.typography.pxToRem(theme.spacing(1)),
-          theme.typography.pxToRem(theme.spacing(6)),
-          theme.typography.pxToRem(theme.spacing(4)),
+          theme.typography.pxToRem(8),
+          theme.typography.pxToRem(48),
+          theme.typography.pxToRem(32),
           0
         ].join(' ')}`
       },
@@ -141,10 +141,10 @@ export const storyBodyMediaStyles = (theme: Theme) =>
         clear: 'right',
         width: '44%',
         margin: `${[
-          theme.typography.pxToRem(theme.spacing(1)),
+          theme.typography.pxToRem(8),
           0,
-          theme.typography.pxToRem(theme.spacing(4)),
-          theme.typography.pxToRem(theme.spacing(6))
+          theme.typography.pxToRem(32),
+          theme.typography.pxToRem(48)
         ].join(' ')}`
       }
     }

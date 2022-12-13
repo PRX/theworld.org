@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import classNames from 'classnames/bind';
 import { UrlWithParsedQuery } from 'url';
-import { Link as MuiLink, LinkProps } from '@material-ui/core';
+import { Link as MuiLink, LinkProps } from '@mui/material';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   generateLinkHrefForContent,

@@ -6,7 +6,7 @@
 import React from 'react';
 import { useStore } from 'react-redux';
 import { parse } from 'url';
-import { IconButton, Toolbar } from '@material-ui/core';
+import { IconButton, Toolbar } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import {
   Facebook,
@@ -14,7 +14,7 @@ import {
   RssFeed,
   Instagram,
   WhatsApp
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { getMenusData } from '@store/reducers';
 import { drawerTopNavStyles } from './DrawerSocialNav.styles';
 

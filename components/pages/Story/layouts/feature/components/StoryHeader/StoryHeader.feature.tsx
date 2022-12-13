@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 import 'moment-timezone';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
+import { Box, Container, Typography, ThemeProvider } from '@mui/material';
 import { IContentLinkProps } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
 import { IAudioControlsProps } from '@components/Player/components';

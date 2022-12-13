@@ -15,10 +15,10 @@ import {
   Toolbar,
   IconButton,
   NoSsr
-} from '@material-ui/core';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+} from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
 import classNames from 'classnames/bind';
 import { ReactComponent as Logo } from '@svg/tw-white.svg';
 import { getUiDrawerOpen } from '@store/reducers';

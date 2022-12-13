@@ -3,12 +3,8 @@
  * Styles for SidebarFooter.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const sidebarFooterTheme = (theme: Theme) => {
   return createTheme(theme, {

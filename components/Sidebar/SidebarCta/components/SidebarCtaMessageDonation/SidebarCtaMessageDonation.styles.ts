@@ -3,7 +3,7 @@
  * Styles for SidebarCtaMessageDonation.
  */
 
-import { createTheme, Theme } from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
 
 export const sidebarCtaMessageDonationTheme = (theme: Theme) =>
   createTheme(theme, {

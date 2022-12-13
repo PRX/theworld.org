@@ -13,8 +13,8 @@ import {
   Grid,
   Typography,
   ThemeProvider
-} from '@material-ui/core';
-import { CheckCircleOutlineSharp } from '@material-ui/icons';
+} from '@mui/material';
+import { CheckCircleOutlineSharp } from '@mui/icons-material';
 import { HtmlContent } from '@components/HtmlContent';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { ICtaMessageProps } from '@interfaces/cta';

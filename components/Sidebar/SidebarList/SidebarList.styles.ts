@@ -3,13 +3,8 @@
  * Styles and theme for SidebarList.
  */
 
-import {
-  createTheme,
-  createStyles,
-  alpha,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const sidebarListTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -45,7 +40,7 @@ export const sidebarListTheme = (theme: Theme) =>
         container: {
           display: 'flex',
           alignItems: 'center',
-          padding: theme.typography.pxToRem(theme.spacing(0.25)),
+          padding: theme.typography.pxToRem(2),
           '&:hover': {
             color: theme.palette.primary.main,
             backgroundColor: alpha(
@@ -98,7 +93,7 @@ export const sidebarListStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       '&:last-child': {
-        paddingBlockEnd: theme.typography.pxToRem(theme.spacing(2))
+        paddingBlockEnd: theme.typography.pxToRem(16)
       }
     },
     noBullet: {

@@ -3,12 +3,8 @@
  * Theme and styles for Team layout.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const teamTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -52,7 +48,7 @@ export const teamTheme = (theme: Theme) =>
       },
       MuiDivider: {
         root: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(3))
+          marginBottom: theme.typography.pxToRem(24)
         }
       }
     }

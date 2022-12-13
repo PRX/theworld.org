@@ -3,19 +3,14 @@
  * Styles for media card.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const mediaCardStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
     title: {
-      marginTop: theme.typography.pxToRem(theme.spacing(1)),
+      marginTop: theme.typography.pxToRem(8),
       [theme.breakpoints.down('xs')]: {
         fontSize: theme.typography.pxToRem(16),
         '$feature &': {
@@ -112,7 +107,7 @@ export const mediaCardTheme = (theme: Theme) =>
         },
         padding: {
           paddingTop: 0,
-          paddingBottom: theme.typography.pxToRem(theme.spacing(2))
+          paddingBottom: theme.typography.pxToRem(16)
         }
       },
       MuiListItem: {
@@ -120,7 +115,7 @@ export const mediaCardTheme = (theme: Theme) =>
         button: {
           '&:hover': {
             color: theme.palette.primary.main,
-            backgroundColor: addCssColorAlpha(
+            backgroundColor: alpha(
               theme.palette.primary.main,
               theme.palette.action.hoverOpacity
             )
@@ -144,7 +139,7 @@ export const mediaCardTheme = (theme: Theme) =>
       },
       MuiTypography: {
         gutterBottom: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(1.5))
+          marginBottom: theme.typography.pxToRem(12)
         }
       }
     }

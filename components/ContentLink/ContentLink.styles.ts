@@ -3,7 +3,8 @@
  * Styles for ContentLink.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const contentLinkStyles = makeStyles((theme: Theme) =>
   createStyles({

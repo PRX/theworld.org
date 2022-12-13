@@ -3,21 +3,22 @@
  * Styles for AppFooter.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const appFooterStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: theme.typography.pxToRem(theme.spacing(3)),
+      marginTop: theme.typography.pxToRem(24),
       textAlign: 'center'
     },
     container: {
       display: 'grid',
       gridTemplateColumns: '1fr',
-      gridRowGap: theme.typography.pxToRem(theme.spacing(2)),
+      gridRowGap: theme.typography.pxToRem(16),
       justifyItems: 'center',
 
-      padding: theme.typography.pxToRem(theme.spacing(4)),
+      padding: theme.typography.pxToRem(32),
 
       '& > p': {
         margin: 0
@@ -49,7 +50,7 @@ export const appFooterStyles = makeStyles((theme: Theme) =>
     },
     logosTitle: {
       marginTop: 0,
-      marginBottom: theme.typography.pxToRem(theme.spacing(1.5)),
+      marginBottom: theme.typography.pxToRem(12),
       fontStyle: 'italic',
 
       '&::after': {
@@ -78,7 +79,7 @@ export const appFooterStyles = makeStyles((theme: Theme) =>
     fundedByMuiOl: {
       display: 'grid',
       gridTemplateColumns: `${theme.typography.pxToRem(150)}`,
-      gridGap: theme.typography.pxToRem(theme.spacing(1)),
+      gridGap: theme.typography.pxToRem(8),
       justifyContent: 'center',
       [theme.breakpoints.up(370)]: {
         gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(150)})`

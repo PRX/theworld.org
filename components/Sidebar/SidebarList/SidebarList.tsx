@@ -14,8 +14,8 @@ import {
   Avatar,
   ListSubheader,
   ListItemSecondaryAction
-} from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+} from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ContentLink } from '@components/ContentLink';
 import { AudioControls } from '@components/Player/components';
@@ -158,7 +158,7 @@ export const SidebarList = ({
     !!data && (
       <ThemeProvider theme={sidebarListTheme}>
         <List {...listProps}>
-          {data.map((item) =>
+          {data.map(item =>
             item.id ? (
               renderItemContent(item)
             ) : (

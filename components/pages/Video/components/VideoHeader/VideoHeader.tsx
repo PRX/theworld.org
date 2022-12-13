@@ -7,7 +7,7 @@ import React from 'react';
 import 'moment-timezone';
 import Moment from 'react-moment';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { videoHeaderStyles } from './VideoHeader.styles';
 
 interface Props {

@@ -4,8 +4,8 @@
  */
 
 import React from 'react';
-import { Box, BoxProps } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Box, BoxProps } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import clsx from 'clsx';
 import {
   sidebarHeaderStyles,

@@ -3,13 +3,8 @@
  * Styles and theme for AudioPlayer.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme,
-  lighten
-} from '@material-ui/core/styles';
+import { createTheme, lighten, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 import { blue } from '@theme/colors';
 
 const playerHeight = 50;
@@ -21,7 +16,7 @@ export const audioPlayerTheme = (theme: Theme) => {
         root: {
           padding: theme.spacing(1),
           color: theme.palette.getContrastText(blue[900]),
-          fontSize: theme.typography.pxToRem(playerHeight - theme.spacing(2)),
+          fontSize: theme.typography.pxToRem(playerHeight - 16),
 
           '&:hover': {
             backgroundColor: lighten(

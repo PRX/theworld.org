@@ -3,7 +3,7 @@
  * Styles for CtaMessageDonation.
  */
 
-import { createTheme, Theme } from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/styles';
 
 export const ctaMessageDonationTheme = (theme: Theme) =>
   createTheme(theme, {

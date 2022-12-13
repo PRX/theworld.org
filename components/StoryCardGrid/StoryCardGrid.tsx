@@ -26,9 +26,9 @@ import {
   ListItem,
   ListItemText,
   Typography
-} from '@material-ui/core';
-import { Label } from '@material-ui/icons';
-import { ThemeProvider } from '@material-ui/core/styles';
+} from '@mui/material';
+import { Label } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
 import { ILink } from '@interfaces/link';
 import {

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@mui/material';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { getShownMessage } from '@lib/cta';
 import { ctaRegionTheme } from './CtaRegion.styles';

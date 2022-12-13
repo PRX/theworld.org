@@ -3,8 +3,8 @@
  * Body media styles as JSS object.
  */
 
-import { Theme } from '@material-ui/core/styles';
-import { CreateCSSProperties } from '@material-ui/styles';
+import { Theme } from '@mui/material/styles';
+import { CreateCSSProperties } from '@mui/styles';
 
 export const storyBodyMediaStyles = (theme: Theme) =>
   ({
@@ -29,8 +29,8 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     '& .media': {
       clear: 'both',
       width: '100%',
-      marginTop: theme.typography.pxToRem(theme.spacing(4)),
-      marginBottom: theme.typography.pxToRem(theme.spacing(4))
+      marginTop: theme.typography.pxToRem(32),
+      marginBottom: theme.typography.pxToRem(32)
     },
     '& .file-image': {
       '& .content': {

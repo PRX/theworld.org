@@ -3,13 +3,8 @@
  * Styles for AppLoadingBar.
  */
 
-import {
-  createStyles,
-  makeStyles,
-  createTheme,
-  Theme
-} from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const appLoadingBarTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -19,7 +14,7 @@ export const appLoadingBarTheme = (theme: Theme) =>
           animation: 'none'
         },
         dashedColorSecondary: {
-          background: addCssColorAlpha(theme.palette.info.main, 0.6),
+          background: alpha(theme.palette.info.main, 0.6),
           backgroundImage: 'none'
         }
       }

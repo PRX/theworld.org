@@ -3,19 +3,15 @@
  * Styles and theme for TrackInfo.
  */
 
-import {
-  createStyles,
-  alpha,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const useTrackInfoStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: ({ hasLink }: any) => ({
       position: 'relative',
       overflow: 'hidden',
-      padding: theme.typography.pxToRem(theme.spacing(2)),
+      padding: theme.typography.pxToRem(16),
       ...(hasLink && {
         '&:hover': {
           transition: theme.transitions.create('background-color', {
@@ -29,7 +25,7 @@ export const useTrackInfoStyles = makeStyles((theme: Theme) =>
     layout: {
       display: 'grid',
       gridTemplateColumns: 'min-content auto',
-      gap: theme.typography.pxToRem(theme.spacing(1.5)),
+      gap: theme.typography.pxToRem(12),
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -54,7 +50,7 @@ export const useTrackInfoStyles = makeStyles((theme: Theme) =>
       '& + &': {
         '&::before': {
           content: "'\u2022'",
-          marginInline: theme.typography.pxToRem(theme.spacing(0.5))
+          marginInline: theme.typography.pxToRem(4)
         }
       }
     },

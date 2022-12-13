@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
   ThemeProvider
-} from '@material-ui/core';
+} from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
 import { newsletterFormTheme } from '@components/NewsletterForm/NewsletterForm.styles';
 import { handleButtonClick } from '@lib/routing';

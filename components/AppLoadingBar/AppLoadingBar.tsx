@@ -6,8 +6,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
-import { LinearProgress } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { LinearProgress } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import {
   appLoadingBarStyles,
   appLoadingBarTheme

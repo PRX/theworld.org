@@ -3,8 +3,8 @@
  * Body typography styles as JSS object.
  */
 
-import { Theme } from '@material-ui/core/styles';
-import { CreateCSSProperties } from '@material-ui/styles';
+import { Theme } from '@mui/styles';
+import { CreateCSSProperties } from '@mui/styles';
 import { headingProps } from '@theme/App.theme';
 
 export const storyBodyTypography = (theme: Theme) =>

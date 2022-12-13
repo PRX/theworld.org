@@ -6,9 +6,9 @@
 import React from 'react';
 import { useStore } from 'react-redux';
 import { parse } from 'url';
-import { Label } from '@material-ui/icons';
-import { Breadcrumbs, Container, Link } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Label } from '@mui/icons-material';
+import { Breadcrumbs, Container, Link } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';

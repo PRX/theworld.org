@@ -5,7 +5,7 @@
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
-import { Switch, SwitchProps, Tooltip } from '@material-ui/core';
+import { Switch, SwitchProps, Tooltip } from '@mui/material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { useAutoplayButtonStyles } from './AutoplayButton.styles';
 

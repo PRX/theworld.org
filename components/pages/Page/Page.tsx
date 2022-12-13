@@ -5,8 +5,8 @@
 
 import React, { useContext, useEffect } from 'react';
 import { useStore } from 'react-redux';
-import { Box, Container, Grid } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Box, Container, Grid } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';

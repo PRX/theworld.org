@@ -3,13 +3,8 @@
  * Styles for BioHeader.
  */
 
-import {
-  createTheme,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const bioHeaderTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -34,7 +29,7 @@ export const bioHeaderStyles = makeStyles((theme: Theme) =>
       maxHeight: '75vh',
       overflow: 'hidden',
       backgroundColor: theme.palette.primary.light,
-      marginBottom: theme.typography.pxToRem(theme.spacing(2))
+      marginBottom: theme.typography.pxToRem(16)
     },
     imageWrapper: {
       gridColumn: '1 / -1',
@@ -49,11 +44,11 @@ export const bioHeaderStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       alignItems: 'end',
       // gridTemplateColumns: '1fr 100vw 1fr',
-      gridGap: theme.typography.pxToRem(theme.spacing(2)),
+      gridGap: theme.typography.pxToRem(16),
       width: '100%',
       minHeight: '33.33333%',
-      padding: theme.typography.pxToRem(theme.spacing(4)),
-      paddingTop: theme.typography.pxToRem(theme.spacing(12)),
+      padding: theme.typography.pxToRem(32),
+      paddingTop: theme.typography.pxToRem(96),
       '&::before, &::after': {
         content: '""',
         position: 'absolute',
@@ -61,10 +56,7 @@ export const bioHeaderStyles = makeStyles((theme: Theme) =>
         left: -1,
         right: -1,
         zIndex: 0,
-        backgroundColor: addCssColorAlpha(
-          theme.palette.background.default,
-          0.65
-        ),
+        backgroundColor: alpha(theme.palette.background.default, 0.65),
         clipPath: 'polygon(0 0, 100% 66.66666%, 100% 100%, 0 100%)'
       },
       '&::before': {
@@ -84,7 +76,7 @@ export const bioHeaderStyles = makeStyles((theme: Theme) =>
       gridRow: '1 / -1',
       display: 'flex',
       flexDirection: 'column',
-      gap: theme.typography.pxToRem(theme.spacing(2)),
+      gap: theme.typography.pxToRem(16),
       alignItems: 'center',
       zIndex: 1,
       [theme.breakpoints.up('sm')]: {
@@ -97,7 +89,7 @@ export const bioHeaderStyles = makeStyles((theme: Theme) =>
     },
     text: {
       display: 'grid',
-      gridGap: theme.typography.pxToRem(theme.spacing(2)),
+      gridGap: theme.typography.pxToRem(16),
       fontSize: theme.typography.pxToRem(18)
     },
     link: {
@@ -105,13 +97,13 @@ export const bioHeaderStyles = makeStyles((theme: Theme) =>
     },
     image: {
       flexShrink: 0,
-      margin: theme.typography.pxToRem(theme.spacing(3)),
+      margin: theme.typography.pxToRem(24),
       [theme.breakpoints.up('sm')]: {
         marginLeft: 0
       },
       [theme.breakpoints.up('md')]: {
         margin: 0,
-        marginRight: theme.typography.pxToRem(theme.spacing(3))
+        marginRight: theme.typography.pxToRem(24)
       }
     }
   })

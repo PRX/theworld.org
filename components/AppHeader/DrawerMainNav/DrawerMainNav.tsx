@@ -15,8 +15,8 @@ import {
   ListItem,
   ListItemText,
   ThemeProvider
-} from '@material-ui/core';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { getMenusData } from '@store/reducers';
 import {
   drawerMainNavTheme,

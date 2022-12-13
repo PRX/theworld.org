@@ -3,12 +3,8 @@
  * Styles and theme for EmbedModalContent.
  */
 
-import {
-  createStyles,
-  alpha,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const useEmbedModalContentStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +27,7 @@ export const useEmbedModalContentStyles = makeStyles((theme: Theme) =>
       }
     },
     preview: {
-      padding: theme.typography.pxToRem(theme.spacing(1))
+      padding: theme.typography.pxToRem(8)
     },
     container: {
       display: 'flex',
@@ -44,7 +40,7 @@ export const useEmbedModalContentStyles = makeStyles((theme: Theme) =>
     },
     title: {
       flexGrow: 1,
-      paddingInline: theme.typography.pxToRem(theme.spacing(1.5)),
+      paddingInline: theme.typography.pxToRem(12),
       fontWeight: theme.typography.fontWeightBold
     },
     content: {
@@ -57,7 +53,7 @@ export const useEmbedModalContentStyles = makeStyles((theme: Theme) =>
       boxSizing: 'border-box',
       border: 'none',
       borderRadius: 0,
-      padding: theme.typography.pxToRem(theme.spacing(1.5)),
+      padding: theme.typography.pxToRem(12),
       backgroundColor: 'transparent',
       overflow: 'hidden',
       overflowY: 'auto',

@@ -2,14 +2,9 @@
  * @file EpisodeCard.style.tsx
  * Styles for episode card.
  */
-import { addCssColorAlpha } from '@lib/parse/color';
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const episodeCardStyles = makeStyles((theme: Theme) => {
   const headingProps = {
@@ -52,7 +47,7 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'start',
-      gap: theme.typography.pxToRem(theme.spacing(3))
+      gap: theme.typography.pxToRem(24)
     },
     link: {
       position: 'absolute',
@@ -64,7 +59,7 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
       textIndent: '-2000vw'
     },
     title: {
-      marginTop: theme.typography.pxToRem(theme.spacing(1))
+      marginTop: theme.typography.pxToRem(8)
     },
     audio: {
       position: 'relative',
@@ -141,7 +136,7 @@ export const episodeCardTheme = (theme: Theme) =>
         },
         padding: {
           paddingTop: 0,
-          paddingBottom: theme.typography.pxToRem(theme.spacing(2))
+          paddingBottom: theme.typography.pxToRem(16)
         }
       },
       MuiListItem: {
@@ -149,7 +144,7 @@ export const episodeCardTheme = (theme: Theme) =>
         button: {
           '&:hover': {
             color: theme.palette.primary.main,
-            backgroundColor: addCssColorAlpha(
+            backgroundColor: alpha(
               theme.palette.primary.main,
               theme.palette.action.hoverOpacity
             )
@@ -173,7 +168,7 @@ export const episodeCardTheme = (theme: Theme) =>
       },
       MuiTypography: {
         gutterBottom: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(1.5))
+          marginBottom: theme.typography.pxToRem(12)
         }
       }
     }

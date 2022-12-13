@@ -3,12 +3,8 @@
  * Styles for EmbedCode.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const embedCodeTheme = (theme: Theme) => {
   return createTheme(theme, {
@@ -18,7 +14,7 @@ export const embedCodeTheme = (theme: Theme) => {
           padding: theme.spacing(0.5),
           backgroundColor: theme.palette.primary.main,
           color: theme.palette.primary.contrastText,
-          fontSize: theme.typography.pxToRem(24 - theme.spacing(1)),
+          fontSize: theme.typography.pxToRem(16),
 
           '&:hover': {
             backgroundColor: theme.palette.primary.dark

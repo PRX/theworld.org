@@ -4,7 +4,7 @@
  */
 
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Box, BoxProps } from '@material-ui/core';
+import { Box, BoxProps } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { convertDurationToSeconds } from '@lib/convert/string/convertDurationToSeconds';

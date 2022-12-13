@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { IPriApiResource } from 'pri-api-library/types';
 import { pageHeaderStyles } from './PageHeader.styles';
 

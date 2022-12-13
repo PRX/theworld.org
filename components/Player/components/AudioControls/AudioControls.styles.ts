@@ -3,12 +3,8 @@
  * Styles and theme for AudioControls.
  */
 
-import {
-  createStyles,
-  alpha,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const useAudioControlsStyles = makeStyles((theme: Theme) =>
   createStyles({

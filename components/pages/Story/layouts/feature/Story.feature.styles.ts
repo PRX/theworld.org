@@ -3,12 +3,8 @@
  * Theme and styles for default Story layout.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 import { storyBodyStyles } from './styles/Story.body';
 
 export const storyTheme = (theme: Theme) =>

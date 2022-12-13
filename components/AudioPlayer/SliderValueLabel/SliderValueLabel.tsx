@@ -5,7 +5,7 @@
  */
 
 import React, { cloneElement } from 'react';
-import { ValueLabelProps } from '@material-ui/core';
+import { ValueLabelProps } from '@mui/material';
 import classNames from 'classnames/bind';
 import { sliderValueLabelStyles } from './SliderValueLabel.styles';
 

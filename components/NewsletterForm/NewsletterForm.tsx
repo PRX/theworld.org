@@ -14,9 +14,9 @@ import {
   FormControlLabel,
   TextField,
   ThemeProvider
-} from '@material-ui/core';
+} from '@mui/material';
 import { useAmp } from 'next/amp';
-import { SendSharp } from '@material-ui/icons';
+import { SendSharp } from '@mui/icons-material';
 import { INewsletterOptions, INewsletterData } from '@interfaces/newsletter';
 import { postNewsletterSubscription } from '@lib/fetch/api';
 import { validateEmailAddress } from '@lib/validate';

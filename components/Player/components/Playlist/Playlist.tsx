@@ -5,7 +5,7 @@
  */
 
 import React, { useContext, useEffect, useMemo } from 'react';
-import { Box, BoxProps } from '@material-ui/core';
+import { Box, BoxProps } from '@mui/material';
 import { AnimatePresence, Reorder, useDragControls } from 'framer-motion';
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';

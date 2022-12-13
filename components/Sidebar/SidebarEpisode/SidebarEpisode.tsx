@@ -8,14 +8,9 @@ import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  Typography
-} from '@material-ui/core';
-import { Headset } from '@material-ui/icons';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import { Headset } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/styles';
 import { ContentButton } from '@components/ContentButton';
 import { ContentLink } from '@components/ContentLink';
 import { AudioControls } from '@components/Player/components';

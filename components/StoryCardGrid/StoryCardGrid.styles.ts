@@ -3,13 +3,8 @@
  * Styles for Story Card Grid.
  */
 
-import {
-  createTheme,
-  createStyles,
-  alpha,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const storyCardGridStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,7 +29,7 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
     heading: {
       display: 'flex',
       alignItems: 'start',
-      gap: theme.typography.pxToRem(theme.spacing(0.75))
+      gap: theme.typography.pxToRem(6)
     },
     title: {
       fontSize: theme.typography.pxToRem(16)
@@ -43,7 +38,7 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       zIndex: 1,
       display: 'flex',
-      gap: theme.typography.pxToRem(theme.spacing(0.5)),
+      gap: theme.typography.pxToRem(4),
       alignItems: 'center',
       fontSize: '1.25rem'
     },

@@ -3,7 +3,7 @@
  * Layout styles as JSS object.
  */
 
-import { createStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, Theme } from '@mui/material/styles';
 
 export const storyLayoutStyles = (theme: Theme) =>
   createStyles({
@@ -16,6 +16,6 @@ export const storyLayoutStyles = (theme: Theme) =>
     },
     content: {},
     sidebar: {
-      gap: theme.typography.pxToRem(theme.spacing(1))
+      gap: theme.typography.pxToRem(8)
     }
-  });
+  }) as any;

@@ -3,12 +3,8 @@
  * Styles and theme for AutoplayButton.
  */
 
-import {
-  createStyles,
-  alpha,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const useAutoplayButtonStyles = makeStyles((theme: Theme) =>
   createStyles({

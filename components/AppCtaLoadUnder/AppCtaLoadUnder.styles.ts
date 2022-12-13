@@ -3,12 +3,8 @@
  * Styles for AppCtaLoadUnder.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const appCtaLoadUnderTheme = (theme: Theme) =>
   createTheme(theme, {

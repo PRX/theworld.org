@@ -4,8 +4,8 @@
  */
 
 import React, { HTMLAttributes } from 'react';
-import { Box } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Box } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import classNames from 'classnames/bind';
 import {
   sidebarFooterStyles,

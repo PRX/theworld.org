@@ -3,7 +3,7 @@
  * Styles for sidebarCta.
  */
 
-import { createTheme, Theme } from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
 import { blue, grey } from '@theme/colors';
 
 export const sidebarCtaTheme = (theme: Theme) =>

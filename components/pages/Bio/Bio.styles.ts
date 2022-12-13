@@ -3,12 +3,8 @@
  * Styles for LandingPageHeader.
  */
 
-import {
-  createTheme,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const bioTheme = (theme: Theme) => createTheme(theme, {});
 

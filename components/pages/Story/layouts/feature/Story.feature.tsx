@@ -6,8 +6,8 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { Box, Container } from '@material-ui/core';
+import { ThemeProvider } from '@mui/styles';
+import { Box, Container } from '@mui/material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';

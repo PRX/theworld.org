@@ -6,9 +6,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import clsx from 'clsx';
-import { CircularProgress, NoSsr, Tooltip } from '@material-ui/core';
-import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
-import { PauseSharp, PlayArrowSharp, VolumeUpSharp } from '@material-ui/icons';
+import { CircularProgress, NoSsr, Tooltip } from '@mui/material';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import { PauseSharp, PlayArrowSharp, VolumeUpSharp } from '@mui/icons-material';
 import { IPriApiResource } from 'pri-api-library/types';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { IAudioData } from '@components/Player/types';

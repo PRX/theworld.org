@@ -6,15 +6,16 @@
 import React from 'react';
 import { useStore } from 'react-redux';
 import { parse } from 'url';
-import Button from '@material-ui/core/Button';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { FavoriteSharp } from '@material-ui/icons';
+import Button from '@mui/material/Button';
+import Hidden from '@mui/material/Hidden';
+import IconButton from '@mui/material/IconButton';
+import { ThemeProvider } from '@mui/styles';
+import { FavoriteSharp } from '@mui/icons-material';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';
 import { appHeaderNavTheme } from './AppHeaderNav.styles';
+import { ButtonColors, IconButtonColors } from '@interfaces';
 
 const iconComponentMap = new Map();
 iconComponentMap.set('heart', FavoriteSharp);
@@ -45,7 +46,7 @@ export const AppHeaderNav = () => {
                       ? 'text'
                       : 'contained'
                   }
-                  color={color || 'default'}
+                  color={(color as ButtonColors) || 'primary'}
                   disableRipple
                   disableElevation
                   {...(icon && { startIcon: renderIcon(icon) })}
@@ -61,7 +62,7 @@ export const AppHeaderNav = () => {
                     href={url.href}
                     onClick={handleButtonClick(url)}
                     aria-label={name}
-                    color={color || 'default'}
+                    color={(color as IconButtonColors) || 'default'}
                     size="small"
                     disableRipple
                     {...attributes}
@@ -74,7 +75,7 @@ export const AppHeaderNav = () => {
                     href={url.href}
                     onClick={handleButtonClick(url)}
                     variant="text"
-                    color={color || 'default'}
+                    color={(color as ButtonColors) || 'primary'}
                     size="small"
                     disableRipple
                     disableElevation

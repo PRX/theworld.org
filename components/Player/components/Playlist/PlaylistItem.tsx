@@ -12,8 +12,8 @@ import {
   IconButton,
   Tooltip,
   Typography
-} from '@material-ui/core';
-import { DeleteSharp, DragHandleSharp } from '@material-ui/icons';
+} from '@mui/material';
+import { DeleteSharp, DragHandleSharp } from '@mui/icons-material';
 import { ContentLink } from '@components/ContentLink';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { IAudioData } from '@components/Player/types';

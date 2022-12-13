@@ -3,7 +3,7 @@
  * Styles for ContentButton.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const contentButtonStyles = makeStyles(() =>
   createStyles({

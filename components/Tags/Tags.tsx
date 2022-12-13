@@ -4,7 +4,7 @@
  */
 
 import React, { HTMLAttributes } from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ContentButton } from '@components/ContentButton';
 import { tagsStyles } from './Tags.styles';

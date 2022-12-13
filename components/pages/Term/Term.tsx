@@ -14,7 +14,7 @@ import {
   Hidden,
   Tab,
   Tabs
-} from '@material-ui/core';
+} from '@mui/material';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';

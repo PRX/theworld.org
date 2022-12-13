@@ -3,12 +3,8 @@
  * Styles for default sidebar episode card.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,7 +24,7 @@ export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridTemplateColumns: '0fr 1fr 0fr',
       alignItems: 'center',
-      gap: theme.typography.pxToRem(theme.spacing(1))
+      gap: theme.typography.pxToRem(8)
     },
     title: {
       marginBlock: 0
@@ -75,12 +71,12 @@ export const sidebarEpisodeTheme = (theme: Theme) =>
         root: {
           color: theme.palette.text.primary,
           fontWeight: theme.typography.fontWeightBold,
-          paddingBlock: `${theme.spacing(1)}px`
+          paddingBlock: `${8}px`
         }
       },
       MuiTypography: {
         gutterBottom: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(1.5))
+          marginBottom: theme.typography.pxToRem(12)
         }
       }
     }

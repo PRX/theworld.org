@@ -3,12 +3,8 @@
  * Styles and theme for PlayerProgress.
  */
 
-import {
-  createStyles,
-  makeStyles,
-  alpha,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 const trackSize = 5;
 
@@ -67,7 +63,7 @@ export const usePlayerProgressStyles = makeStyles((theme: Theme) =>
         translate: '-50% -2px',
         scale: 0.3333,
         opacity: 0,
-        paddingInline: theme.typography.pxToRem(theme.spacing(0.5)),
+        paddingInline: theme.typography.pxToRem(4),
         backgroundColor: theme.palette.secondary.main,
         border: `3px solid ${theme.palette.secondary.light}`,
         borderRadius: '3rem',

@@ -3,12 +3,8 @@
  * Styles for AppCtaMessageOptIn.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 import { blue } from '@theme/colors';
 
 export const appCtaMessageOptInTheme = (theme: Theme) =>

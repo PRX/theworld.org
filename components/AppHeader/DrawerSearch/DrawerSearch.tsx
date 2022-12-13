@@ -5,12 +5,12 @@
 
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { useStore } from 'react-redux';
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import CloseIcon from '@material-ui/icons/Close';
-import { ThemeProvider } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import CloseIcon from '@mui/icons-material/Close';
+import { ThemeProvider } from '@mui/styles';
 import { fetchSearchData } from '@store/actions/fetchSearchData';
 import { getSearchQuery } from '@store/reducers';
 import {

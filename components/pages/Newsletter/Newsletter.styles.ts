@@ -3,12 +3,8 @@
  * Styles for Newsletter.
  */
 
-import {
-  createTheme,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const newsletterTheme = (theme: Theme) =>
   createTheme(theme, {

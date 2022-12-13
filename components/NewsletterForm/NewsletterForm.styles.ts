@@ -3,12 +3,8 @@
  * Styles for NewsletterForm.
  */
 
-import {
-  createTheme,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const newsletterFormTheme = (theme: Theme) => {
   const tempTheme = createTheme(theme, {

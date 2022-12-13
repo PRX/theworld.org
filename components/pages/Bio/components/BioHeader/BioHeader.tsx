@@ -7,7 +7,7 @@ import React from 'react';
 import Image from 'next/legacy/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
+import { Box, Container, Typography, ThemeProvider } from '@mui/material';
 import { ContentLink } from '@components/ContentLink';
 import { bioHeaderStyles, bioHeaderTheme } from './BioHeader.styles';
 

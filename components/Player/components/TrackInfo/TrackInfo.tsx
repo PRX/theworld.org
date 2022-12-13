@@ -7,7 +7,7 @@ import React, { useContext } from 'react';
 import Image from 'next/legacy/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { Marquee } from '@components/Marquee';
 import { ContentLink } from '@components/ContentLink';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';

@@ -3,7 +3,8 @@
  * Styles for Image layout.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const imageHeaderStyles = makeStyles((theme: Theme) =>
   createStyles({

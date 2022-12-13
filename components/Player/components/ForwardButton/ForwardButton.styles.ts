@@ -3,7 +3,7 @@
  * Styles and theme for ForwardButton.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const useForwardButtonStyles = makeStyles(() =>
   createStyles({

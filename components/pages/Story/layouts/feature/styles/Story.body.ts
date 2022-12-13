@@ -3,7 +3,8 @@
  * Body styles as JSS object.
  */
 
-import { createStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles } from '@mui/styles';
 import {
   storyBodyQAStyles,
   storyBodyMediaStyles,
@@ -14,7 +15,7 @@ import {
 export const storyBodyStyles = (theme: Theme) =>
   createStyles({
     body: {
-      marginTop: theme.typography.pxToRem(theme.spacing(4)),
+      marginTop: theme.typography.pxToRem(32),
 
       ...storyBodyTypography(theme),
       ...storyBodyMediaStyles(theme),
@@ -27,4 +28,4 @@ export const storyBodyStyles = (theme: Theme) =>
         clear: 'both'
       }
     }
-  });
+  } as any);

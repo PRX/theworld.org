@@ -3,8 +3,8 @@
  * Body story act styles as JSS object.
  */
 
-import { Theme } from '@material-ui/core/styles';
-import { CreateCSSProperties } from '@material-ui/styles';
+import { Theme } from '@mui/material/styles';
+import { CreateCSSProperties } from '@mui/styles';
 import { blue, yellow } from '@theme/colors';
 
 export const storyBodyStoryActStyles = (theme: Theme) => {

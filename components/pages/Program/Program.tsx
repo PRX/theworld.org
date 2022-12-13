@@ -15,8 +15,8 @@ import {
   Hidden,
   Tab,
   Tabs
-} from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+} from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { LandingPage } from '@components/LandingPage';
@@ -192,12 +192,12 @@ export const Program = () => {
             </Box>
           )}
           {!isEpisodesView && (
-            <Box display="grid" gridGap={8}>
+            <Box display="grid" gap={8}>
               {featuredStory && (
                 <StoryCard data={featuredStory} feature priority />
               )}
               {featuredStories && (
-                <StoryCardGrid data={featuredStories[1]} gridGap={8} />
+                <StoryCardGrid data={featuredStories[1]} gap={8} />
               )}
             </Box>
           )}
@@ -393,7 +393,7 @@ export const Program = () => {
         main={mainElements}
         sidebar={sidebarElements}
         mt={3}
-        gridGap={8}
+        gap={8}
       />
     </ThemeProvider>
   );

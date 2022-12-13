@@ -6,8 +6,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Button, Hidden, Typography } from '@material-ui/core';
-import { ListAltRounded } from '@material-ui/icons';
+import { Box, Button, Hidden, Typography } from '@mui/material';
+import { ListAltRounded } from '@mui/icons-material';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';

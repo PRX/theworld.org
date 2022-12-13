@@ -6,7 +6,7 @@
 import React from 'react';
 import { useStore } from 'react-redux';
 import { parse } from 'url';
-import { Button, ButtonGroup } from '@material-ui/core';
+import { Button, ButtonGroup } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';

@@ -3,7 +3,7 @@
  * Styles and theme for PreviousButton.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const usePreviousButtonStyles = makeStyles(() =>
   createStyles({

@@ -4,7 +4,7 @@
  */
 
 import React, { HTMLAttributes } from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import classNames from 'classnames/bind';
 import { sidebarStyles } from './Sidebar.styles';
 

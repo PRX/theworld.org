@@ -5,10 +5,10 @@
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
-import { IconButtonProps, Tooltip } from '@material-ui/core';
-import { PauseSharp, PlayArrowSharp } from '@material-ui/icons';
+import { IconButtonProps, Tooltip } from '@mui/material';
+import { PauseSharp, PlayArrowSharp } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { usePlayButtonStyles } from './PlayButton.styles';
 
 export interface IPlayButtonProps extends IconButtonProps {}

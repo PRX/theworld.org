@@ -6,7 +6,7 @@
 import React from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image';
 import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -18,9 +18,9 @@ import {
   CardMedia,
   ListSubheader,
   Typography
-} from '@material-ui/core';
-import { EqualizerRounded } from '@material-ui/icons';
-import { ThemeProvider } from '@material-ui/core/styles';
+} from '@mui/material';
+import { EqualizerRounded } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
 import { IAudioControlsProps } from '@components/Player/components';
@@ -31,7 +31,7 @@ import { episodeCardStyles, episodeCardTheme } from './EpisodeCard.styles';
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then((mod) => mod.AudioControls)
+  import('@components/Player/components').then(mod => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 export interface EpisodeCardProps {

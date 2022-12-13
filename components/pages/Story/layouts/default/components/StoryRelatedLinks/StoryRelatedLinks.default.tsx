@@ -13,8 +13,8 @@ import {
   CardMedia,
   Grid,
   Typography
-} from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+} from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
 import {
   storyRelatedLinksStyles,

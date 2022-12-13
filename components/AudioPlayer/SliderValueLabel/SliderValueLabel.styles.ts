@@ -3,12 +3,8 @@
  * Styles for SliderValueLabel.
  */
 
-import {
-  createTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 export const sliderValueLabelTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -30,10 +26,9 @@ export const sliderValueLabelStyles = makeStyles((theme: Theme) =>
         (value &&
           Math.max(
             minSize,
-            theme.spacing(
-              value.replace(':', '').length +
-                (value.split(':').length - 1) * 0.35
-            )
+            8 *
+              (value.replace(':', '').length +
+                (value.split(':').length - 1) * 0.35)
           )) ||
         minSize;
 
