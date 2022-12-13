@@ -36,9 +36,17 @@ export const fetchCategoryData = (
       }
     });
 
-    data = await (isOnServer ? fetchCategory : fetchApiCategory)(id).then(
-      (resp: IPriApiResourceResponse) => resp && resp.data
+    const dataPromise = (isOnServer ? fetchCategory : fetchApiCategory)(
+      id
+    ).then((resp: IPriApiResourceResponse) => resp && resp.data);
+
+    const ctaDataPromise = dispatch<any>(
+      fetchCtaRegionGroupData('tw_cta_regions_landing')
     );
+
+    data = await dataPromise;
+    await ctaDataPromise;
+
     const { featuredStory, featuredStories, stories, ...payload } = data;
 
     // Set CTA filter props.
@@ -54,8 +62,6 @@ export const fetchCategoryData = (
         }
       } as ICtaFilterProps
     });
-
-    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_landing'));
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',

@@ -3,9 +3,9 @@
  * Component for social share menu.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { HTMLAttributes, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import classNames from 'classnames/bind';
+import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFacebook,
@@ -23,8 +23,8 @@ import ShareRoundedIcon from '@material-ui/icons/ShareRounded';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import { IIconsMap } from '@interfaces/icons';
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
-import { getUiSocialShareMenu } from '@store/reducers';
-import { socialShareMenuStyles } from './SocialShareMenu.styles';
+import { getUiPlayerPlaylistOpen, getUiSocialShareMenu } from '@store/reducers';
+import { useSocialShareMenuStyles } from './SocialShareMenu.styles';
 
 const defaultIconsMap = new Map();
 [
@@ -50,18 +50,31 @@ const getIconsMap = (icons?: IIconsMap) => {
   return iconsMap;
 };
 
-export const SocialShareMenu = () => {
+export interface ISocialShareMenuProps extends HTMLAttributes<{}> {}
+
+export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
   const store = useStore();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
     updateForce(store.getState());
   });
   const { shown, links, icons } = getUiSocialShareMenu(state) || {};
+  const playlistOpen = getUiPlayerPlaylistOpen(state);
   const [open, setOpen] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
-  const classes = socialShareMenuStyles({});
-  const cx = classNames.bind(classes);
   const iconsMap = getIconsMap(icons);
+  const styles = useSocialShareMenuStyles({});
+  const rootClassNames = clsx(styles.root, className);
+  const speedDialClasses = {
+    actionsClosed: styles.actionsClosed
+  };
+  const speedDialActionClasses = {
+    fab: styles.fab,
+    staticTooltipLabel: styles.staticTooltipLabel
+  };
+  const backdropClasses = {
+    root: styles.backdropRoot
+  };
 
   const handleTouchStart = () => {
     setIsTouch(true);
@@ -88,10 +101,11 @@ export const SocialShareMenu = () => {
   return (
     !!links && (
       <NoSsr>
-        <Box className={cx('root')}>
+        <Box className={rootClassNames}>
           <SpeedDial
             ariaLabel="Show Share Links"
-            hidden={!shown}
+            classes={speedDialClasses}
+            hidden={!shown || playlistOpen}
             icon={
               <SpeedDialIcon
                 icon={<ShareRoundedIcon />}
@@ -106,9 +120,7 @@ export const SocialShareMenu = () => {
             {links.map(({ key, link: { title, url } }, index) => (
               <SpeedDialAction
                 key={key}
-                classes={{
-                  staticTooltipLabel: cx('staticTooltipLabel')
-                }}
+                classes={speedDialActionClasses}
                 icon={<SvgIcon color="primary">{iconsMap.get(key)}</SvgIcon>}
                 tooltipTitle={title}
                 delay={index * 50}
@@ -117,14 +129,7 @@ export const SocialShareMenu = () => {
               />
             ))}
           </SpeedDial>
-          {isTouch && (
-            <Backdrop
-              classes={{
-                root: cx('backdropRoot')
-              }}
-              open={open}
-            />
-          )}
+          {isTouch && <Backdrop classes={backdropClasses} open={open} />}
         </Box>
       </NoSsr>
     )

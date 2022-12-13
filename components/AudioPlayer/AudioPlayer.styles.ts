@@ -105,7 +105,7 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.standard
       }),
       display: 'grid',
-      gridTemplateColumns: `${playerHeight}px 1fr max-content`,
+      gridTemplateColumns: `${playerHeight}px 1fr 0fr`,
       gridColumnGap: theme.spacing(2),
       alignItems: 'center',
       marginTop: theme.spacing(2),
@@ -118,10 +118,14 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       display: 'none'
     },
     fallbackPlayer: {
-      width: '100%',
-      height: theme.typography.pxToRem(35),
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2)
+      display: 'none',
+      '.no-js &': {
+        display: 'block',
+        width: '100%',
+        height: theme.typography.pxToRem(35),
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2)
+      }
     },
     playBtn: ({ playing }: any) => ({
       ...(!playing && {
@@ -141,7 +145,7 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
     }),
     controls: {
       display: 'grid',
-      gridTemplateColumns: '2fr 1fr',
+      gridTemplateColumns: '2fr minmax(200px, 10vw)',
       alignItems: 'center',
       gridColumnGap: theme.spacing(2),
       [theme.breakpoints.down('xs')]: {
@@ -194,8 +198,15 @@ export const audioPlayerStyles = makeStyles((theme: Theme) =>
       whiteSpace: 'nowrap'
     },
     menu: {
+      display: 'flex',
       [theme.breakpoints.down('xs')]: {
         display: 'none'
+      }
+    },
+    popoutBtn: {
+      '& svg': {
+        width: '1em',
+        height: '1em'
       }
     },
     [theme.breakpoints.down('sm')]: {

@@ -40,7 +40,7 @@ module.exports = withPlausibleProxy({
       'media2.wnyc.org'
     ],
     deviceSizes: [370, 600, 960, 1280, 1920],
-    imageSizes: [50, 100, 300, 400, 568, 808]
+    imageSizes: [50, 86, 100, 172, 300, 400, 568, 808]
   },
   future: {
     webpack5: true
@@ -48,8 +48,13 @@ module.exports = withPlausibleProxy({
   async redirects() {
     return [
       {
-        source: '/file/:slug',
-        destination: '/media/:slug',
+        source: '/file/:slug*',
+        destination: '/media/:slug*',
+        permanent: true
+      },
+      {
+        source: '/node/:nid/embedded',
+        destination: '/embed/audio/:nid',
         permanent: true
       }
     ];
@@ -105,6 +110,14 @@ module.exports = withPlausibleProxy({
           chunks: 'all',
           test: /[\\/]node_modules[\\/]@material-ui[\\/]/,
           name: 'material-ui',
+          priority: 30,
+          reuseExistingChunk: true,
+          enforce: true
+        },
+        framermotion: {
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+          name: 'framer-motion',
           priority: 30,
           reuseExistingChunk: true,
           enforce: true

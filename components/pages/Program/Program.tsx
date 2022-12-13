@@ -13,7 +13,6 @@ import {
   Button,
   Container,
   Hidden,
-  ListSubheader,
   Tab,
   Tabs
 } from '@material-ui/core';
@@ -317,14 +316,11 @@ export const Program = () => {
                   ...item,
                   avatar: item.image
                 }))}
-                subheader={<ListSubheader>Hosted by</ListSubheader>}
+                subheaderText="Hosted by"
               />
             )}
             {sponsors && !!sponsors.length && (
-              <SidebarList
-                data={sponsors}
-                subheader={<ListSubheader>Supported by</ListSubheader>}
-              />
+              <SidebarList data={sponsors} subheaderText="Supported by" />
             )}
           </Sidebar>
           {ctaSidebarTop && (
@@ -378,7 +374,7 @@ export const Program = () => {
         logo={podcastLogo}
       />
       {hasStories && hasEpisodes && (
-        <AppBar position="static" color="transparent">
+        <AppBar position="static" color="transparent" elevation={0}>
           <Container fixed>
             <Tabs
               indicatorColor="primary"

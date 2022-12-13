@@ -3,12 +3,74 @@
  * Theme and styles for App layout.
  */
 
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  createStyles,
+  fade,
+  makeStyles,
+  Theme
+} from '@material-ui/core/styles';
 import { common } from '@material-ui/core/colors';
 import { blue, orange, red, green, grey, yellow } from './colors';
 
 const buttonBorderRadius = '3px';
 const buttonBorderWidth = '2px';
+
+export const useAppStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',
+      paddingBottom: 'var(--footer-padding, 0)'
+    },
+    content: {
+      flexGrow: 1
+    },
+    uiFooter: {
+      position: 'fixed',
+      bottom: 0,
+      width: '100vw',
+      zIndex: theme.zIndex.appBar - 1
+    },
+    playerWrapper: ({ playerOpen }: any) => ({
+      position: 'relative',
+      translate: '0 100%',
+      transition: theme.transitions.create('translate', {
+        duration: theme.transitions.duration.enteringScreen,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      ...(playerOpen && {
+        translate: '0 0'
+      })
+    }),
+    playlistWrapper: ({ playlistOpen }: any) => ({
+      zIndex: 0,
+      position: 'absolute',
+      bottom: '100%',
+      left: 0,
+      right: 0,
+      height: 'calc(100vh - 100%)',
+      translate: '0 100vh',
+      transition: theme.transitions.create('translate', {
+        duration: theme.transitions.duration.enteringScreen,
+        easing: theme.transitions.easing.easeInOut
+      }),
+      backgroundColor: fade(theme.palette.background.default, 0.8),
+      backdropFilter: 'blur(30px)',
+      ...(playlistOpen && {
+        translate: '0 0'
+      })
+    }),
+    playlist: {},
+    socialShareMenu: {
+      position: 'absolute',
+      right: theme.typography.pxToRem(theme.spacing(2)),
+      bottom: `calc(100% + ${theme.typography.pxToRem(theme.spacing(2))})`
+    },
+    loadUnderWrapper: {}
+  })
+);
 
 export const headingProps = {
   color: blue[900],
@@ -18,6 +80,31 @@ export const headingProps = {
 };
 
 export const baseMuiTheme = createMuiTheme({
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        html: {
+          padding: 0
+        },
+        body: {
+          padding: 0,
+          margin: 0,
+          '& > svg': {
+            position: 'absolute',
+            left: '-10000px',
+            height: 0,
+            width: 0
+          }
+        }
+      }
+    },
+    MuiIconButton: {
+      root: {
+        borderRadius: 0,
+        fontSize: 'inherit'
+      }
+    }
+  },
   palette: {
     primary: {
       main: blue[600],
@@ -90,10 +177,15 @@ export const appTheme = (theme: Theme) =>
       return shadows;
     })(),
     overrides: {
-      MuiAppBar: {
-        root: {
-          boxShadow: 'none'
+      MuiCssBaseline: {
+        '@global': {
+          html: {
+            backgroundColor: theme.palette.primary.main
+          }
         }
+      },
+      MuiAppBar: {
+        root: {}
       },
       MuiButton: {
         root: {
@@ -149,7 +241,8 @@ export const appTheme = (theme: Theme) =>
       },
       MuiIconButton: {
         root: {
-          borderRadius: 0
+          borderRadius: 0,
+          fontSize: 'inherit'
         }
       },
       MuiLink: {

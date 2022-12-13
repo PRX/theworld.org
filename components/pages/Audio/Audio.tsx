@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { Box, Container, Grid } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { AudioPlayer } from '@components/AudioPlayer';
+import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
@@ -39,6 +39,7 @@ export const Audio = () => {
   const {
     metatags: dataMetatags,
     title,
+    url,
     audioAuthor,
     audioTitle,
     audioType,
@@ -74,7 +75,7 @@ export const Audio = () => {
         const dt = parseUtcDate(broadcastDate * 1000);
         return {
           'Broadcast Year': dt[0],
-          'Broadcast Month': dt.slice(0, 1).join('-'),
+          'Broadcast Month': dt.slice(0, 2).join('-'),
           'Broadcast Date': dt.join('-')
         };
       })())
@@ -109,8 +110,8 @@ export const Audio = () => {
         <Grid container>
           <Grid item xs={12}>
             <AudioHeader data={data} />
-            <AudioPlayer data={data} />
             <Box className={classes.body} my={2}>
+              <NoJsPlayer url={url} />
               <HtmlContent html={description} />
             </Box>
             {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}

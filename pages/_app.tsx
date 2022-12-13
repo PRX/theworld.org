@@ -3,11 +3,11 @@
  * Override the main app component.
  */
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useStore } from 'react-redux';
 import { AppProps } from 'next/app';
 import PlausibleProvider from 'next-plausible';
-import { ThemeProvider, Box, CssBaseline } from '@material-ui/core';
+import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import { analytics } from '@config';
 import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
@@ -17,17 +17,26 @@ import { AppLoadingBar } from '@components/AppLoadingBar';
 import { AppSearch } from '@components/AppSearch';
 import { AppContext } from '@contexts/AppContext';
 import { SocialShareMenu } from '@components/SocialShareMenu/SocialShareMenu';
-import { baseMuiTheme, appTheme } from '@theme/App.theme';
+import { baseMuiTheme, appTheme, useAppStyles } from '@theme/App.theme';
 import { wrapper } from '@store';
+import { Player } from '@components/Player';
+import { AppPlayer } from '@components/AppPlayer/AppPlayer';
+import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
+import { Playlist } from '@components/Player/components';
 
 const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+  const rootRef = useRef<HTMLDivElement>();
+  const uiFooterRef = useRef<HTMLDivElement>();
   const store = useStore();
-  const [, setState] = useState(store.getState());
+  const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
+  const playerOpen = getUiPlayerOpen(state);
+  const playlistOpen = getUiPlayerPlaylistOpen(state);
   const [plausibleDomain, setPlausibleDomain] = useState(null);
-  const { type, id } = pageProps;
+  const { type, id, contentOnly } = pageProps;
+  const styles = useAppStyles({ playerOpen, playlistOpen });
   const contextValue = {
     page: {
       resource: {
@@ -36,6 +45,16 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       }
     }
   };
+
+  useEffect(() => {
+    const uiFooterRect = uiFooterRef.current?.getBoundingClientRect();
+    const footerPadding = uiFooterRect?.height || 0;
+
+    rootRef.current?.style.setProperty(
+      '--footer-padding',
+      `${footerPadding}px`
+    );
+  }, [uiFooterRef?.current, playerOpen]);
 
   useEffect(() => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
@@ -47,47 +66,81 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
 
+    // Remove `no-js` styling flag class.
+    document.documentElement.classList.remove('no-js');
+
     return () => {
       unsub();
     };
   }, []);
 
-  // useEffect(() => {
-  //   window.scrollTo({ top: 0, left: 0 });
-  //   // Fetch CTA messages for this resource.
-  //   (async () => {
-  //     await Promise.all([
-  //       // Fetch App data (latest stories, menus, etc.)
-  //       store.dispatch<any>(fetchAppData()),
-  //       // Fetch CTAs.
-  //       store.dispatch<any>(fetchCtaData(type, id, 'tw_cta_regions_site'))
-  //     ]);
-  //   })();
-  // }, [type, id]);
+  if (contentOnly) {
+    return (
+      <ThemeProvider theme={baseMuiTheme}>
+        <PlausibleProvider
+          domain={plausibleDomain}
+          selfHosted
+          trackOutboundLinks
+          enabled={!!plausibleDomain}
+        >
+          <Component {...pageProps} />
+        </PlausibleProvider>
+        <CssBaseline />
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider theme={baseMuiTheme}>
       <ThemeProvider theme={appTheme}>
         <AppContext.Provider value={contextValue}>
-          <Box minHeight="100vh" display="flex" flexDirection="column">
-            <AppLoadingBar />
-            <AppCtaBanner />
-            <AppHeader />
-            <Box flexGrow={1}>
-              <PlausibleProvider
-                domain={plausibleDomain}
-                selfHosted
-                trackOutboundLinks
-                enabled={!!plausibleDomain}
-              >
-                <Component {...pageProps} />
-              </PlausibleProvider>
-            </Box>
-            <AppFooter />
-            <AppSearch />
-            <AppCtaLoadUnder />
-            <SocialShareMenu />
-          </Box>
+          <PlausibleProvider
+            domain={plausibleDomain}
+            selfHosted
+            trackOutboundLinks
+            enabled={!!plausibleDomain}
+          >
+            <Player>
+              <div ref={rootRef} className={styles.root}>
+                <div
+                  {...(playlistOpen && {
+                    inert: 'inert'
+                  })}
+                >
+                  <AppLoadingBar />
+                  <AppCtaBanner />
+                  <AppHeader />
+                </div>
+                <div
+                  className={styles.content}
+                  {...(playlistOpen && {
+                    inert: 'inert'
+                  })}
+                >
+                  <Component {...pageProps} />
+                </div>
+                <AppFooter />
+                <div ref={uiFooterRef} className={styles.uiFooter}>
+                  <div className={styles.loadUnderWrapper}>
+                    <div
+                      className={styles.playlistWrapper}
+                      {...(!playlistOpen && {
+                        inert: 'inert'
+                      })}
+                    >
+                      <Playlist className={styles.playlist} />
+                    </div>
+                    <div className={styles.playerWrapper}>
+                      <SocialShareMenu className={styles.socialShareMenu} />
+                      <AppPlayer />
+                    </div>
+                    <AppCtaLoadUnder />
+                  </div>
+                </div>
+              </div>
+            </Player>
+          </PlausibleProvider>
+          <AppSearch />
         </AppContext.Provider>
         <CssBaseline />
       </ThemeProvider>

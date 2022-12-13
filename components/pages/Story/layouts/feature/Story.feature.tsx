@@ -3,12 +3,12 @@
  * Component for default Story layout.
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Box, Container } from '@material-ui/core';
-import { IAudioPlayerProps } from '@components/AudioPlayer/AudioPlayer.interfaces';
+import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
@@ -19,10 +19,6 @@ import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { IStoryRelatedLinksProps } from '../default/components/StoryRelatedLinks';
 import { storyStyles, storyTheme } from './Story.feature.styles';
 import { StoryHeader } from './components';
-
-const AudioPlayer = dynamic(() =>
-  import('@components/AudioPlayer').then(mod => mod.AudioPlayer)
-) as React.FC<IAudioPlayerProps>;
 
 const StoryRelatedLinks = dynamic(
   () =>
@@ -43,6 +39,7 @@ export const StoryDefault = ({ data }: Props) => {
   const {
     type,
     id,
+    audio,
     body,
     categories,
     primaryCategory,
@@ -52,13 +49,13 @@ export const StoryDefault = ({ data }: Props) => {
     opencalaisCountry,
     opencalaisProvince,
     opencalaisRegion,
-    opencalaisPerson,
-    audio,
-    embeddedPlayerUrl,
-    popoutPlayerUrl
+    opencalaisPerson
   } = data;
   const store = useStore();
-  const state = store.getState();
+  const [state, updateForce] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    updateForce(store.getState());
+  });
   const relatedState =
     primaryCategory &&
     getCollectionData(
@@ -111,19 +108,18 @@ export const StoryDefault = ({ data }: Props) => {
     }
   });
 
+  useEffect(() => {
+    return () => {
+      unsub();
+    };
+  }, []);
+
   return (
     <ThemeProvider theme={storyTheme}>
       <StoryHeader data={data} />
       <Container fixed>
-        {audio && (
-          <AudioPlayer
-            data={audio}
-            message="Listen to the story."
-            embeddedPlayerUrl={embeddedPlayerUrl}
-            popoutPlayerUrl={popoutPlayerUrl}
-          />
-        )}
         <Box className={classes.body} my={2}>
+          {audio ? <NoJsPlayer url={audio.url} /> : null}
           <HtmlContent html={body} transforms={[enhanceImages]} />
         </Box>
         {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}

@@ -6,13 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
-import {
-  Box,
-  Button,
-  Hidden,
-  ListSubheader,
-  Typography
-} from '@material-ui/core';
+import { Box, Button, Hidden, Typography } from '@material-ui/core';
 import { ListAltRounded } from '@material-ui/icons';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
@@ -230,14 +224,11 @@ export const Category = () => {
                   ...item,
                   avatar: item.image
                 }))}
-                subheader={<ListSubheader>Hosted by</ListSubheader>}
+                subheaderText="Hosted by"
               />
             )}
             {sponsors && !!sponsors.length && (
-              <SidebarList
-                data={sponsors}
-                subheader={<ListSubheader>Supported by</ListSubheader>}
-              />
+              <SidebarList data={sponsors} subheaderText="Supported by" />
             )}
             {children && !!children.length && (
               <SidebarList

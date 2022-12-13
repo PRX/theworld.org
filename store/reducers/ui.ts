@@ -10,6 +10,9 @@ import { RootState, UiState, UiAction } from '@interfaces/state';
 type State = UiState | RootState;
 
 export const ui = (state = {}, action: UiAction): State => {
+  const { player } = state as UiState;
+  const { playlistOpen } = player || {};
+
   switch (action.type) {
     case HYDRATE:
       return { ...state, ...action.payload.ui };
@@ -27,6 +30,51 @@ export const ui = (state = {}, action: UiAction): State => {
         ...state,
         drawer: {
           open: false
+        }
+      } as UiState;
+
+    case 'UI_PLAYER_OPEN':
+      return {
+        ...state,
+        player: {
+          ...player,
+          open: true
+        }
+      } as UiState;
+
+    case 'UI_PLAYER_CLOSE':
+      return {
+        ...state,
+        player: {
+          open: false,
+          playlistOpen: false
+        }
+      } as UiState;
+
+    case 'UI_PLAYER_PLAYLIST_OPEN':
+      return {
+        ...state,
+        player: {
+          ...player,
+          playlistOpen: true
+        }
+      } as UiState;
+
+    case 'UI_PLAYER_PLAYLIST_CLOSE':
+      return {
+        ...state,
+        player: {
+          ...player,
+          playlistOpen: false
+        }
+      } as UiState;
+
+    case 'UI_PLAYER_PLAYLIST_TOGGLE':
+      return {
+        ...state,
+        player: {
+          ...player,
+          playlistOpen: !playlistOpen
         }
       } as UiState;
 
@@ -54,4 +102,7 @@ export const ui = (state = {}, action: UiAction): State => {
 };
 
 export const getUiDrawerOpen = (state: UiState) => state?.drawer?.open;
+export const getUiPlayerOpen = (state: UiState) => state?.player?.open;
+export const getUiPlayerPlaylistOpen = (state: UiState) =>
+  state?.player?.playlistOpen;
 export const getUiSocialShareMenu = (state: UiState) => state?.socialShareMenu;

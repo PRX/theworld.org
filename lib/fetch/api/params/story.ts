@@ -13,6 +13,7 @@ export const basicStoryParams = {
     'date_updated',
     'date_broadcasted',
     'teaser',
+    'audio',
     'image.title',
     'image.url',
     'image.metadata',
@@ -42,6 +43,7 @@ export const fullStoryParams = {
     'opencalais_person',
     'tags',
     'format',
+    'resource_development',
     'video'
   ],
   fields: [
@@ -87,6 +89,7 @@ export const fullStoryParams = {
     'tags.title',
     'tags.metatags',
     'format.title',
+    'resource_development.title',
     'video'
   ]
 };

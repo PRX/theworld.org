@@ -6,6 +6,7 @@
 import {
   createMuiTheme,
   createStyles,
+  fade,
   makeStyles,
   Theme
 } from '@material-ui/core/styles';
@@ -30,8 +31,34 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
     isLoading: {
       transform: 'translateY(-100%)'
     },
+    heading: {
+      display: 'flex',
+      alignItems: 'start',
+      gap: theme.typography.pxToRem(theme.spacing(0.75))
+    },
     title: {
       fontSize: theme.typography.pxToRem(16)
+    },
+    audio: {
+      position: 'relative',
+      zIndex: 1,
+      display: 'flex',
+      gap: theme.typography.pxToRem(theme.spacing(0.5)),
+      alignItems: 'center',
+      fontSize: '1.25rem'
+    },
+    audioPlayButton: {
+      position: 'relative',
+      zIndex: 1,
+      fontSize: '5rem',
+      padding: 0,
+      borderRadius: 0,
+      backgroundColor: 'transparent',
+      color: fade(theme.palette.primary.contrastText, 0.7),
+      '&:hover': {
+        backgroundColor: 'transparent',
+        color: fade(theme.palette.primary.contrastText, 1)
+      }
     }
   })
 );
@@ -49,7 +76,7 @@ export const storyCardGridTheme = (theme: Theme) =>
           display: 'grid',
           gridTemplateColumns: '1fr 2fr',
           gridGap: `${theme.spacing(2)}px`,
-          alignItems: 'center',
+          alignItems: 'start',
           padding: `${theme.spacing(2)}px`
         }
       },
@@ -60,9 +87,19 @@ export const storyCardGridTheme = (theme: Theme) =>
       },
       MuiCardMedia: {
         root: {
-          alignSelf: 'center',
-          height: 'auto',
-          paddingTop: '100%'
+          alignSelf: 'start',
+          aspectRatio: 1,
+          display: 'grid',
+          backgroundColor: theme.palette.primary.main,
+          '& > *': {
+            gridRow: '1 / -1',
+            gridColumn: '1 / -1'
+          }
+        }
+      },
+      MuiCircularProgress: {
+        root: {
+          padding: '20%'
         }
       }
     }

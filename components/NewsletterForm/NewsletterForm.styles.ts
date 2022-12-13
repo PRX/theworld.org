@@ -74,7 +74,8 @@ export const newsletterFormStyles = makeStyles((theme: Theme) =>
       gridGap: ({ compact }: { compact: boolean }) =>
         `${theme.spacing(compact ? 1 : 2)}px`,
       [theme.breakpoints.down('xs')]: {
-        gridTemplateColumns: '1fr',
+        gridTemplateColumns: ({ compact }: { compact: boolean }) =>
+          compact ? '1fr min-content' : '1fr',
         justifyContent: 'stretch'
       }
     },

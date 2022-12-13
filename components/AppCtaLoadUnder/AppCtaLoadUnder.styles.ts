@@ -69,6 +69,7 @@ export const appCtaLoadUnderTheme = (theme: Theme) =>
 export const appCtaLoadUnderStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      position: 'relative',
       zIndex: theme.zIndex.drawer,
       backgroundColor: theme.palette.primary.dark,
       color: theme.palette.getContrastText(theme.palette.primary.dark)

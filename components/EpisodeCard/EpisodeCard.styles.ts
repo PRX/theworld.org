@@ -48,6 +48,12 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
     imageWrapper: {
       paddingTop: 'unset'
     },
+    heading: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'start',
+      gap: theme.typography.pxToRem(theme.spacing(3))
+    },
     link: {
       position: 'absolute',
       top: 0,
@@ -59,6 +65,10 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
     },
     title: {
       marginTop: theme.typography.pxToRem(theme.spacing(1))
+    },
+    audio: {
+      position: 'relative',
+      zIndex: 1
     }
   });
 });

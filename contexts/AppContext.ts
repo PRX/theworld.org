@@ -4,16 +4,7 @@
  */
 
 import React from 'react';
-
-export interface IAppContext {
-  page?: {
-    resource?: {
-      type?: string;
-      id?: string;
-    };
-  };
-  copyrightDate?: string | number;
-}
+import { IAppContext } from '@interfaces/contexts';
 
 export const AppContext = React.createContext({
   copyrightDate: new Date().getFullYear()

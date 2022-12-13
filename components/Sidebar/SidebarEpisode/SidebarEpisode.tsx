@@ -14,10 +14,11 @@ import {
   CardContent,
   Typography
 } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
 import { Headset } from '@material-ui/icons';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentButton } from '@components/ContentButton';
 import { ContentLink } from '@components/ContentLink';
+import { AudioControls } from '@components/Player/components';
 import {
   sidebarEpisodeStyles,
   sidebarEpisodeTheme
@@ -34,24 +35,31 @@ export interface SidebarEpisodeProps {
 }
 
 export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
-  const { audio, program, dateBroadcast, datePublished } = data;
-  const { segments } = audio || {};
+  const { audio, program, dateBroadcast, datePublished, title, image } = data;
+  const { id: audioId, segments } = audio || {};
   const classes = sidebarEpisodeStyles({});
   const cx = classNames.bind(classes);
 
   return (
     <ThemeProvider theme={sidebarEpisodeTheme}>
       <Card square elevation={1} className={cx('root')}>
-        <CardActionArea>
-          <SidebarHeader>
-            <Typography variant="h2">
-              <Headset /> {label}
-            </Typography>
+        <CardActionArea component="div">
+          <SidebarHeader className={classes.header}>
+            <Headset />
+            <Typography variant="h2"> {label}</Typography>
+            <AudioControls
+              className={classes.audio}
+              id={audioId}
+              fallbackProps={{
+                title,
+                ...(image && { imageUrl: image.url })
+              }}
+            />
           </SidebarHeader>
           <CardContent>
             <Typography
               variant="h5"
-              component="h2"
+              component="p"
               gutterBottom
               className={cx('title')}
             >

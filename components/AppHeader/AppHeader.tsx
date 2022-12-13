@@ -68,7 +68,7 @@ export const AppHeader = () => {
 
   return (
     <>
-      <AppBar className={cx({ root: true })} position="static">
+      <AppBar className={cx({ root: true })} position="static" elevation={0}>
         <Toolbar className={cx('toolbar')}>
           <NoSsr>
             <IconButton

@@ -130,6 +130,7 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       alignContent: 'start',
       gridGap: theme.typography.pxToRem(4)
     },
+    audio: {},
     programLink: {
       fontWeight: theme.typography.fontWeightBold
     },

@@ -10,8 +10,8 @@ import { DomElement } from 'htmlparser2';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { Box, Container, Grid, Hidden } from '@material-ui/core';
+import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { Sidebar, SidebarLatestStories } from '@components/Sidebar';
-import { IAudioPlayerProps } from '@components/AudioPlayer/AudioPlayer.interfaces';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
 import { ITagsProps } from '@components/Tags';
@@ -21,10 +21,6 @@ import { RootState } from '@interfaces/state';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { storyStyles, storyTheme } from './Story.default.styles';
 import { IStoryRelatedLinksProps, StoryHeader, StoryLede } from './components';
-
-const AudioPlayer = dynamic(() =>
-  import('@components/AudioPlayer').then(mod => mod.AudioPlayer)
-) as React.FC<IAudioPlayerProps>;
 
 const CtaRegion = dynamic(
   () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
@@ -54,10 +50,8 @@ export const StoryDefault = ({ data }: Props) => {
   const {
     type,
     id,
-    body,
     audio,
-    embeddedPlayerUrl,
-    popoutPlayerUrl,
+    body,
     categories,
     primaryCategory,
     tags,
@@ -224,16 +218,9 @@ export const StoryDefault = ({ data }: Props) => {
         <Grid container>
           <Grid item xs={12}>
             <StoryHeader data={data} />
+            {audio ? <NoJsPlayer url={audio.url} /> : null}
           </Grid>
           <Grid item xs={12}>
-            {audio && (
-              <AudioPlayer
-                data={audio}
-                message="Listen to the story."
-                embeddedPlayerUrl={embeddedPlayerUrl}
-                popoutPlayerUrl={popoutPlayerUrl}
-              />
-            )}
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <StoryLede data={data} />

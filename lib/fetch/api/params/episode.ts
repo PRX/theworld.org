@@ -10,11 +10,7 @@ export const basicEpisodeParams = {
   include: [
     ...basicAudioParams.include.map(p => `audio.${p}`),
     'image',
-    'program',
-    'hosts',
-    'guests',
-    'producers',
-    'reporters'
+    'program'
   ],
   fields: [
     'title',
@@ -30,22 +26,10 @@ export const basicEpisodeParams = {
     'image.caption',
     'image.alt',
     'audio',
-    'embedded_player_url',
-    'popout_player_url',
     'program.title',
     'program.metatags',
-    'host.title',
-    'host.image',
-    'host.metatags',
-    'guests.title',
-    'guests.image',
-    'guests.metatags',
-    'producers.title',
-    'producers.image',
-    'producers.metatags',
-    'repoters.title',
-    'repoters.image',
-    'repoters.metatags'
+    'embedded_player_url',
+    'popout_player_url'
   ]
 };
 

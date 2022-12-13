@@ -36,9 +36,17 @@ export const fetchPersonData = (
       }
     });
 
-    data = await (isOnServer ? fetchPerson : fetchApiPerson)(id).then(
+    const dataPromise = (isOnServer ? fetchPerson : fetchApiPerson)(id).then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     );
+
+    const ctaDataPromise = dispatch<any>(
+      fetchCtaRegionGroupData('tw_cta_regions_landing')
+    );
+
+    data = await dataPromise;
+    await ctaDataPromise;
+
     const {
       featuredStory,
       featuredStories,
@@ -61,8 +69,6 @@ export const fetchPersonData = (
         }
       } as ICtaFilterProps
     });
-
-    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_landing'));
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',

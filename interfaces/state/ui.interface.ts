@@ -12,6 +12,11 @@ export interface DrawerState {
   open: boolean;
 }
 
+export interface PlayerState {
+  open: boolean;
+  playlistOpen: boolean;
+}
+
 export interface SocialShareMenuState {
   shown?: boolean;
   links?: ISocialLink[];
@@ -20,6 +25,7 @@ export interface SocialShareMenuState {
 
 export interface UiState {
   drawer?: DrawerState;
+  player?: PlayerState;
   socialShareMenu?: SocialShareMenuState;
 }
 

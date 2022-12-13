@@ -21,7 +21,7 @@ describe('store/actions/fetchStoryData', () => {
         byline: [
           {
             id: '2345',
-            type: 'node--peaple',
+            type: 'node--people',
             title: 'John Doe'
           }
         ],
@@ -44,7 +44,7 @@ describe('store/actions/fetchStoryData', () => {
             creditType: { title: 'By' },
             person: {
               id: '2345',
-              type: 'node--peaple',
+              type: 'node--people',
               title: 'John Doe'
             }
           }
@@ -67,7 +67,7 @@ describe('store/actions/fetchStoryData', () => {
             creditType: { title: 'By' },
             person: {
               id: '2345',
-              type: 'node--peaple',
+              type: 'node--people',
               title: 'John Doe'
             }
           }
@@ -87,7 +87,7 @@ describe('store/actions/fetchStoryData', () => {
         byline: [
           {
             id: '2345',
-            type: 'node--peaple',
+            type: 'node--people',
             title: 'John Doe'
           }
         ],
@@ -96,7 +96,7 @@ describe('store/actions/fetchStoryData', () => {
             creditType: { title: 'By' },
             person: {
               id: '2345',
-              type: 'node--peaple',
+              type: 'node--people',
               title: 'John Doe'
             }
           },
@@ -104,7 +104,7 @@ describe('store/actions/fetchStoryData', () => {
             creditType: { title: 'By' },
             person: {
               id: '3456',
-              type: 'node--peaple',
+              type: 'node--people',
               title: 'Jane Doe'
             }
           },
@@ -112,7 +112,7 @@ describe('store/actions/fetchStoryData', () => {
             creditType: { title: 'Produced by' },
             person: {
               id: '3456',
-              type: 'node--peaple',
+              type: 'node--people',
               title: 'Jane Doe'
             }
           }
@@ -142,7 +142,7 @@ describe('store/actions/fetchStoryData', () => {
             creditType: null,
             person: {
               id: '2345',
-              type: 'node--peaple',
+              type: 'node--people',
               title: 'John Doe'
             }
           }
@@ -165,7 +165,7 @@ describe('store/actions/fetchStoryData', () => {
             creditType: { title: 'By' },
             person: {
               id: '2345',
-              type: 'node--peaple',
+              type: 'node--people',
               title: 'John Doe'
             }
           },

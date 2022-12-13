@@ -5,8 +5,6 @@ env:
   jest/globals: true
   node: true
 extends:
-  - airbnb
-  - airbnb-typescript
   - plugin:prettier/recommended
   - prettier/react
 globals:

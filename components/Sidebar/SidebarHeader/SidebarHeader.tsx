@@ -3,24 +3,31 @@
  * Component for headers in sidebar items.
  */
 
-import React, { HTMLAttributes } from 'react';
-import { Box } from '@material-ui/core';
+import React from 'react';
+import { Box, BoxProps } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import classNames from 'classnames/bind';
+import clsx from 'clsx';
 import {
   sidebarHeaderStyles,
   sidebarHeaderTheme
 } from './SidebarHeader.styles';
 
-interface ISidebarHeaderProps extends HTMLAttributes<{}> {}
+export interface ISidebarHeaderProps extends BoxProps {}
 
-export const SidebarHeader = ({ children, className }: ISidebarHeaderProps) => {
+export const SidebarHeader = ({
+  children,
+  className,
+  ...other
+}: ISidebarHeaderProps) => {
   const classes = sidebarHeaderStyles({});
-  const cx = classNames.bind(classes);
 
   return (
     <ThemeProvider theme={sidebarHeaderTheme}>
-      <Box component="header" className={cx(className, { root: true })}>
+      <Box
+        component="header"
+        {...other}
+        className={clsx(className, classes.root)}
+      >
         {children}
       </Box>
     </ThemeProvider>

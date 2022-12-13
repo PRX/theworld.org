@@ -32,7 +32,12 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { ContentLink } from '@components/ContentLink';
 import { ILink } from '@interfaces/link';
 import {
-  storyCardStyles,
+  IPlayAudioButtonProps,
+  IAddAudioButtonProps
+} from '@components/Player/components';
+import { IAudioData } from '@components/Player/types';
+import {
+  useStoryCardStyles,
   storyCardTheme
 } from '@components/StoryCard/StoryCard.styles';
 import { generateLinkHrefForContent } from '@lib/routing';
@@ -43,6 +48,14 @@ import {
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
+const PlayAudioButton = dynamic(() =>
+  import('@components/Player/components').then((mod) => mod.PlayAudioButton)
+) as React.FC<IPlayAudioButtonProps>;
+
+const AddAudioButton = dynamic(() =>
+  import('@components/Player/components').then((mod) => mod.AddAudioButton)
+) as React.FC<IAddAudioButtonProps>;
+
 export interface StoryCardGridProps extends BoxProps {
   data: IPriApiResource[];
 }
@@ -51,7 +64,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
   const router = useRouter();
   const [loadingUrl, setLoadingUrl] = useState(null);
   const classes = storyCardGridStyles({});
-  const cardClasses = storyCardStyles({});
+  const cardClasses = useStoryCardStyles({});
   const cx = classNames.bind(classes);
   const cxCard = classNames.bind(cardClasses);
   const imageWidth = [
@@ -110,6 +123,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
               id,
               title,
               image,
+              audio,
               primaryCategory,
               crossLinks,
               dateBroadcast,
@@ -120,11 +134,17 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
               true
             ) as UrlWithParsedQuery;
             const isLoading = pathname === loadingUrl;
+            const audioProps = {
+              title,
+              queuedFrom: 'Card Controls',
+              ...(image && { imageUrl: image.url }),
+              linkResource: item
+            } as Partial<IAudioData>;
             return (
               <Card square key={id}>
-                <CardActionArea>
-                  {image && (
-                    <CardMedia>
+                <CardActionArea component="div">
+                  <CardMedia>
+                    {image && (
                       <Image
                         src={image.url}
                         alt={image.alt}
@@ -133,24 +153,41 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                         sizes={sizes}
                         priority={index <= 1}
                       />
-                      <LinearProgress
-                        className={cx(classes.loadingBar, {
-                          isLoading
-                        })}
-                        color="secondary"
-                        aria-label="Progress Bar"
+                    )}
+                    {audio && (
+                      <PlayAudioButton
+                        classes={{ root: classes.audioPlayButton }}
+                        id={audio.id}
+                        fallbackProps={audioProps}
                       />
-                    </CardMedia>
-                  )}
+                    )}
+                    <LinearProgress
+                      className={cx(classes.loadingBar, {
+                        isLoading
+                      })}
+                      color="secondary"
+                      aria-label="Progress Bar"
+                    />
+                  </CardMedia>
                   <CardContent>
-                    <Typography
-                      variant="h5"
-                      component="h2"
-                      gutterBottom
-                      className={cx('title')}
-                    >
-                      {title}
-                    </Typography>
+                    <Box className={classes.heading}>
+                      <Typography
+                        variant="h5"
+                        component="h2"
+                        gutterBottom
+                        className={cx('title')}
+                      >
+                        {title}
+                      </Typography>
+                      {audio && (
+                        <Box className={classes.audio}>
+                          <AddAudioButton
+                            id={audio.id}
+                            fallbackProps={audioProps}
+                          />
+                        </Box>
+                      )}
+                    </Box>
                     <Grid
                       container
                       justify="flex-start"

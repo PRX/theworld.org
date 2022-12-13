@@ -17,7 +17,7 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     },
 
     // Reset for img tag dimension attributes.
-    '& img': {
+    '& img:not([width="1"])': {
       width: '100%',
       maxWidth: '100%',
       height: 'auto',

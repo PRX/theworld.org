@@ -12,12 +12,11 @@ import {
   Divider,
   Grid,
   Hidden,
-  ListSubheader,
   Typography
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { EqualizerRounded } from '@material-ui/icons';
-import { AudioPlayer } from '@components/AudioPlayer';
+import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -72,8 +71,6 @@ export const Episode = () => {
     datePublished,
     body,
     audio,
-    embeddedPlayerUrl,
-    popoutPlayerUrl,
     hosts,
     producers,
     guests,
@@ -123,7 +120,7 @@ export const Episode = () => {
         const dt = parseUtcDate(dateBroadcast * 1000);
         return {
           'Broadcast Year': dt[0],
-          'Broadcast Month': dt.slice(0, 1).join('-'),
+          'Broadcast Month': dt.slice(0, 2).join('-'),
           'Broadcast Date': dt.join('-')
         };
       })()),
@@ -132,7 +129,7 @@ export const Episode = () => {
         const dt = parseUtcDate(datePublished * 1000);
         return {
           'Published Year': dt[0],
-          'Published Month': dt.slice(0, 1).join('-'),
+          'Published Month': dt.slice(0, 2).join('-'),
           'Published Date': dt.join('-')
         };
       })())
@@ -217,16 +214,9 @@ export const Episode = () => {
         <Grid container>
           <Grid item xs={12}>
             <EpisodeHeader data={data} />
+            {audio ? <NoJsPlayer url={audio.url} /> : null}
           </Grid>
           <Grid item xs={12}>
-            {audio && (
-              <AudioPlayer
-                data={audio}
-                message="Listen to the episode."
-                embeddedPlayerUrl={embeddedPlayerUrl}
-                popoutPlayerUrl={popoutPlayerUrl}
-              />
-            )}
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <EpisodeLede data={data} />
@@ -287,7 +277,7 @@ export const Episode = () => {
                         ...item,
                         avatar: item.image
                       }))}
-                      subheader={<ListSubheader>Hosts</ListSubheader>}
+                      subheaderText="Hosts"
                     />
                   </Sidebar>
                 )}
@@ -298,7 +288,7 @@ export const Episode = () => {
                         ...item,
                         avatar: item.image
                       }))}
-                      subheader={<ListSubheader>Producers</ListSubheader>}
+                      subheaderText="Producers"
                     />
                   </Sidebar>
                 )}
@@ -309,7 +299,7 @@ export const Episode = () => {
                         ...item,
                         avatar: item.image
                       }))}
-                      subheader={<ListSubheader>Guests</ListSubheader>}
+                      subheaderText="Guests"
                     />
                   </Sidebar>
                 )}
@@ -320,7 +310,7 @@ export const Episode = () => {
                         ...item,
                         avatar: item.image
                       }))}
-                      subheader={<ListSubheader>Reporters</ListSubheader>}
+                      subheaderText="Reporters"
                     />
                   </Sidebar>
                 )}

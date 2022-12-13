@@ -39,9 +39,18 @@ export const fetchTermData = (
       }
     });
 
-    data = await (isOnServer ? fetchTerm(id, params) : fetchApiTerm(id)).then(
-      (resp: IPriApiResourceResponse) => resp && resp.data
+    const dataPromise = (isOnServer
+      ? fetchTerm(id, params)
+      : fetchApiTerm(id)
+    ).then((resp: IPriApiResourceResponse) => resp && resp.data);
+
+    const ctaDataPromise = dispatch<any>(
+      fetchCtaRegionGroupData('tw_cta_regions_landing')
     );
+
+    data = await dataPromise;
+    await ctaDataPromise;
+
     const {
       featuredStory,
       featuredStories,
@@ -49,8 +58,6 @@ export const fetchTermData = (
       episodes,
       ...payload
     } = data;
-
-    await dispatch<any>(fetchCtaRegionGroupData('tw_cta_regions_landing'));
 
     dispatch({
       type: 'FETCH_CONTENT_DATA_SUCCESS',
