@@ -42,9 +42,6 @@ module.exports = withPlausibleProxy({
     deviceSizes: [370, 600, 960, 1280, 1920],
     imageSizes: [50, 86, 100, 172, 300, 400, 568, 808]
   },
-  future: {
-    webpack5: true
-  },
   async redirects() {
     return [
       {
