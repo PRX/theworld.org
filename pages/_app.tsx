@@ -24,7 +24,7 @@ import { AppPlayer } from '@components/AppPlayer/AppPlayer';
 import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
 import { Playlist } from '@components/Player/components';
 
-const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+const AppLayout: FC = ({ children }) => {
   const rootRef = useRef<HTMLDivElement>();
   const uiFooterRef = useRef<HTMLDivElement>();
   const store = useStore();
@@ -34,17 +34,7 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   });
   const playerOpen = getUiPlayerOpen(state);
   const playlistOpen = getUiPlayerPlaylistOpen(state);
-  const [plausibleDomain, setPlausibleDomain] = useState(null);
-  const { type, id, contentOnly } = pageProps;
   const styles = useAppStyles({ playerOpen, playlistOpen });
-  const contextValue = {
-    page: {
-      resource: {
-        type,
-        id
-      }
-    }
-  };
 
   useEffect(() => {
     const uiFooterRect = uiFooterRef.current?.getBoundingClientRect();
@@ -55,6 +45,63 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
       `${footerPadding}px`
     );
   }, [uiFooterRef?.current, playerOpen]);
+
+  useEffect(() => () => {
+    unsub();
+  });
+
+  return (
+    <div ref={rootRef} className={styles.root}>
+      <div
+        {...(playlistOpen && {
+          inert: 'inert'
+        })}
+      >
+        <AppLoadingBar />
+        <AppCtaBanner />
+        <AppHeader />
+      </div>
+      <div
+        className={styles.content}
+        {...(playlistOpen && {
+          inert: 'inert'
+        })}
+      >
+        {children}
+      </div>
+      <AppFooter />
+      <div ref={uiFooterRef} className={styles.uiFooter}>
+        <div className={styles.loadUnderWrapper}>
+          <div
+            className={styles.playlistWrapper}
+            {...(!playlistOpen && {
+              inert: 'inert'
+            })}
+          >
+            <Playlist className={styles.playlist} />
+          </div>
+          <div className={styles.playerWrapper}>
+            <SocialShareMenu className={styles.socialShareMenu} />
+            <AppPlayer />
+          </div>
+          <AppCtaLoadUnder />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+  const [plausibleDomain, setPlausibleDomain] = useState(null);
+  const { type, id, contentOnly } = pageProps;
+  const contextValue = {
+    page: {
+      resource: {
+        type,
+        id
+      }
+    }
+  };
 
   useEffect(() => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
@@ -68,10 +115,6 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
 
     // Remove `no-js` styling flag class.
     document.documentElement.classList.remove('no-js');
-
-    return () => {
-      unsub();
-    };
   }, []);
 
   if (contentOnly) {
@@ -101,43 +144,9 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
             enabled={!!plausibleDomain}
           >
             <Player>
-              <div ref={rootRef} className={styles.root}>
-                <div
-                  {...(playlistOpen && {
-                    inert: 'inert'
-                  })}
-                >
-                  <AppLoadingBar />
-                  <AppCtaBanner />
-                  <AppHeader />
-                </div>
-                <div
-                  className={styles.content}
-                  {...(playlistOpen && {
-                    inert: 'inert'
-                  })}
-                >
-                  <Component {...pageProps} />
-                </div>
-                <AppFooter />
-                <div ref={uiFooterRef} className={styles.uiFooter}>
-                  <div className={styles.loadUnderWrapper}>
-                    <div
-                      className={styles.playlistWrapper}
-                      {...(!playlistOpen && {
-                        inert: 'inert'
-                      })}
-                    >
-                      <Playlist className={styles.playlist} />
-                    </div>
-                    <div className={styles.playerWrapper}>
-                      <SocialShareMenu className={styles.socialShareMenu} />
-                      <AppPlayer />
-                    </div>
-                    <AppCtaLoadUnder />
-                  </div>
-                </div>
-              </div>
+              <AppLayout>
+                <Component {...pageProps} />
+              </AppLayout>
             </Player>
           </PlausibleProvider>
           <AppSearch />
