@@ -48,7 +48,8 @@ export const storyCardGridStyles = makeStyles((theme: Theme) =>
       fontSize: '1.25rem'
     },
     audioPlayButton: {
-      position: 'relative',
+      position: 'absolute',
+      inset: 0,
       zIndex: 1,
       fontSize: '5rem',
       padding: 0,
@@ -89,12 +90,7 @@ export const storyCardGridTheme = (theme: Theme) =>
         root: {
           alignSelf: 'start',
           aspectRatio: 1,
-          display: 'grid',
-          backgroundColor: theme.palette.primary.main,
-          '& > *': {
-            gridRow: '1 / -1',
-            gridColumn: '1 / -1'
-          }
+          backgroundColor: theme.palette.primary.main
         }
       },
       MuiCircularProgress: {
