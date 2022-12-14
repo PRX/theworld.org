@@ -584,15 +584,17 @@ export const Player = ({ children }: IPlayerProps) => {
    * See https://lukecod.es/2020/08/27/ios-cant-play-youtube-via-react-useeffect/
    * Solution was for video playback, but same issue seems to apply to audio.
    */
-  useLayoutEffect(() => {
-    if (!audioElm.current) return;
+  if (typeof window !== 'undefined') {
+    useLayoutEffect(() => {
+      if (!audioElm.current) return;
 
-    if (!playing) {
-      pauseAudio();
-    } else {
-      startPlaying();
-    }
-  }, [pauseAudio, playing, startPlaying]);
+      if (!playing) {
+        pauseAudio();
+      } else {
+        startPlaying();
+      }
+    }, [pauseAudio, playing, startPlaying]);
+  }
 
   useEffect(() => {
     audioElm.current.muted = muted;
