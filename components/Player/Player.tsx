@@ -6,6 +6,7 @@
 import React, {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useReducer,
   useRef
@@ -62,11 +63,16 @@ export const Player = ({ children }: IPlayerProps) => {
   );
 
   const play = () => {
-    dispatch({ type: PlayerActionTypes.PLAYER_PLAY });
+    dispatch({
+      type: PlayerActionTypes.PLAYER_PLAY
+    });
   };
 
   const playTrack = (index: number) => {
-    dispatch({ type: PlayerActionTypes.PLAYER_PLAY_TRACK, payload: index });
+    dispatch({
+      type: PlayerActionTypes.PLAYER_PLAY_TRACK,
+      payload: index
+    });
   };
 
   const playAudio = (audioData: IAudioData) => {
@@ -84,27 +90,40 @@ export const Player = ({ children }: IPlayerProps) => {
         }
       });
     }
-    dispatch({ type: PlayerActionTypes.PLAYER_PLAY_AUDIO, payload: audioData });
+    dispatch({
+      type: PlayerActionTypes.PLAYER_PLAY_AUDIO,
+      payload: audioData
+    });
   };
 
   const pause = () => {
-    dispatch({ type: PlayerActionTypes.PLAYER_PAUSE });
+    dispatch({
+      type: PlayerActionTypes.PLAYER_PAUSE
+    });
   };
 
   const togglePlayPause = () => {
-    dispatch({ type: PlayerActionTypes.PLAYER_TOGGLE_PLAYING });
+    dispatch({
+      type: PlayerActionTypes.PLAYER_TOGGLE_PLAYING
+    });
   };
 
   const enableAutoplay = () => {
-    dispatch({ type: PlayerActionTypes.PLAYER_AUTOPLAY_ENABLE });
+    dispatch({
+      type: PlayerActionTypes.PLAYER_AUTOPLAY_ENABLE
+    });
   };
 
   const disableAutoplay = () => {
-    dispatch({ type: PlayerActionTypes.PLAYER_AUTOPLAY_DISABLE });
+    dispatch({
+      type: PlayerActionTypes.PLAYER_AUTOPLAY_DISABLE
+    });
   };
 
   const toggleAutoplay = () => {
-    dispatch({ type: PlayerActionTypes.PLAYER_TOGGLE_AUTOPLAY });
+    dispatch({
+      type: PlayerActionTypes.PLAYER_TOGGLE_AUTOPLAY
+    });
   };
 
   const seekTo = useCallback(
@@ -231,7 +250,13 @@ export const Player = ({ children }: IPlayerProps) => {
       navigator.mediaSession.metadata = new window.MediaMetadata({
         title: currentTrack.title,
         artist: currentTrack.subtitle,
-        ...(artworkSrc && { artwork: [{ src: artworkSrc }] })
+        ...(artworkSrc && {
+          artwork: [
+            {
+              src: artworkSrc
+            }
+          ]
+        })
       });
       navigator?.mediaSession.setActionHandler('play', () => {
         play();
@@ -331,13 +356,17 @@ export const Player = ({ children }: IPlayerProps) => {
 
   const handlePlay = useCallback(() => {
     if (!playing) {
-      dispatch({ type: PlayerActionTypes.PLAYER_PLAY });
+      dispatch({
+        type: PlayerActionTypes.PLAYER_PLAY
+      });
     }
   }, [playing]);
 
   const handlePause = useCallback(() => {
     if (!audioElm.current.ended) {
-      dispatch({ type: PlayerActionTypes.PLAYER_PAUSE });
+      dispatch({
+        type: PlayerActionTypes.PLAYER_PAUSE
+      });
     }
   }, []);
 
@@ -495,7 +524,10 @@ export const Player = ({ children }: IPlayerProps) => {
     if (localStorage) {
       localStorage.setItem(
         'playerState',
-        JSON.stringify({ ...state, playing: false })
+        JSON.stringify({
+          ...state,
+          playing: false
+        })
       );
     }
   }, [state]);
@@ -546,7 +578,15 @@ export const Player = ({ children }: IPlayerProps) => {
     handlePlay
   ]);
 
-  useEffect(() => {
+  /**
+   * Have to use `useLayoutEffect` so Safari can understand the `startPlay` call
+   * is a result of a user interaction. `useEffect` seems to disconnect that inference.
+   * See https://lukecod.es/2020/08/27/ios-cant-play-youtube-via-react-useeffect/
+   * Solution was for video playback, but same issue seems to apply to audio.
+   */
+  useLayoutEffect(() => {
+    if (!audioElm.current) return;
+
     if (!playing) {
       pauseAudio();
     } else {
