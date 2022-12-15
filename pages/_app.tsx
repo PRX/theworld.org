@@ -147,9 +147,9 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
               <AppLayout>
                 <Component {...pageProps} />
               </AppLayout>
+              <AppSearch />
             </Player>
           </PlausibleProvider>
-          <AppSearch />
         </AppContext.Provider>
         <CssBaseline />
       </ThemeProvider>

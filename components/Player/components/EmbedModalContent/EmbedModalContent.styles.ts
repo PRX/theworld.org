@@ -15,7 +15,7 @@ export const useEmbedModalContentStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       top: '50%',
       left: '50%',
-      translate: '-50% -50%',
+      transform: 'translate(-50%, -50%)',
       width: '80vw',
       minWidth: '300px',
       maxHeight: '80vh',

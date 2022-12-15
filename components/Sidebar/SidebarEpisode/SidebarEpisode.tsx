@@ -47,6 +47,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
               id={audioId}
               fallbackProps={{
                 title,
+                queuedFrom: 'Sidebar Episode Controls',
                 ...(image && { imageUrl: image.url })
               }}
             />

@@ -35,13 +35,13 @@ export const useAppStyles = makeStyles((theme: Theme) =>
     },
     playerWrapper: ({ playerOpen }: any) => ({
       position: 'relative',
-      translate: '0 100%',
-      transition: theme.transitions.create('translate', {
+      transform: 'translateY(100%)',
+      transition: theme.transitions.create('transform', {
         duration: theme.transitions.duration.enteringScreen,
         easing: theme.transitions.easing.easeInOut
       }),
       ...(playerOpen && {
-        translate: '0 0'
+        transform: 'translateY(0)'
       })
     }),
     playlistWrapper: ({ playlistOpen }: any) => ({
@@ -51,15 +51,15 @@ export const useAppStyles = makeStyles((theme: Theme) =>
       left: 0,
       right: 0,
       height: 'calc(100vh - 100%)',
-      translate: '0 100vh',
-      transition: theme.transitions.create('translate', {
+      transform: 'translateY(100vh)',
+      transition: theme.transitions.create('transform', {
         duration: theme.transitions.duration.enteringScreen,
         easing: theme.transitions.easing.easeInOut
       }),
       backgroundColor: alpha(theme.palette.background.default, 0.8),
       backdropFilter: 'blur(30px)',
       ...(playlistOpen && {
-        translate: '0 0'
+        transform: 'translateY(0)'
       })
     }),
     playlist: {},
