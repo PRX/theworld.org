@@ -3,38 +3,40 @@
  * Styles for default sidebar episode card.
  */
 
-import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    imageWrapper: {
-      paddingTop: 'unset'
-    },
-    link: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      overflow: 'hidden',
-      textIndent: '-2000vw'
-    },
-    header: {
-      display: 'grid',
-      gridTemplateColumns: '0fr 1fr 0fr',
-      alignItems: 'center',
-      gap: theme.typography.pxToRem(8)
-    },
-    title: {
-      marginBlock: 0
-    },
-    audio: {
-      position: 'relative',
-      zIndex: 1
-    }
-  })
-);
+export const sidebarEpisodeStyles = makeStyles()(theme => ({
+  imageWrapper: {
+    paddingTop: 'unset'
+  },
+
+  link: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    overflow: 'hidden',
+    textIndent: '-2000vw'
+  },
+
+  header: {
+    display: 'grid',
+    gridTemplateColumns: '0fr 1fr 0fr',
+    alignItems: 'center',
+    gap: theme.typography.pxToRem(8)
+  },
+
+  title: {
+    marginBlock: 0
+  },
+
+  audio: {
+    position: 'relative',
+    zIndex: 1
+  }
+}));
 
 export const sidebarEpisodeTheme = (theme: Theme) =>
   createTheme(theme, {

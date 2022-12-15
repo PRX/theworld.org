@@ -3,74 +3,71 @@
  * Theme and styles for App layout.
  */
 
-import {
-  createTheme,
-  createStyles,
-  alpha,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
+
+import { createTheme, alpha, Theme } from '@material-ui/core/styles';
 import { common } from '@material-ui/core/colors';
 import { blue, orange, red, green, grey, yellow } from './colors';
 
 const buttonBorderRadius = '3px';
 const buttonBorderWidth = '2px';
 
-export const useAppStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-      paddingBottom: 'var(--footer-padding, 0)'
-    },
-    content: {
-      flexGrow: 1
-    },
-    uiFooter: {
-      position: 'fixed',
-      bottom: 0,
-      width: '100vw',
-      zIndex: theme.zIndex.appBar - 1
-    },
-    playerWrapper: ({ playerOpen }: any) => ({
-      position: 'relative',
-      transform: 'translateY(100%)',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.enteringScreen,
-        easing: theme.transitions.easing.easeInOut
-      }),
-      ...(playerOpen && {
-        transform: 'translateY(0)'
-      })
+export const useAppStyles = makeStyles<{
+  playerOpen: boolean;
+  playlistOpen: boolean;
+}>()((theme, { playerOpen, playlistOpen }) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+    paddingBottom: 'var(--footer-padding, 0)'
+  },
+  content: {
+    flexGrow: 1
+  },
+  uiFooter: {
+    position: 'fixed',
+    bottom: 0,
+    width: '100vw',
+    zIndex: theme.zIndex.appBar - 1
+  },
+  playerWrapper: {
+    position: 'relative',
+    transform: 'translateY(100%)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.enteringScreen,
+      easing: theme.transitions.easing.easeInOut
     }),
-    playlistWrapper: ({ playlistOpen }: any) => ({
-      zIndex: 0,
-      position: 'absolute',
-      bottom: '100%',
-      left: 0,
-      right: 0,
-      height: 'calc(100vh - 100%)',
-      transform: 'translateY(100vh)',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.enteringScreen,
-        easing: theme.transitions.easing.easeInOut
-      }),
-      backgroundColor: alpha(theme.palette.background.default, 0.8),
-      backdropFilter: 'blur(30px)',
-      ...(playlistOpen && {
-        transform: 'translateY(0)'
-      })
+    ...(playerOpen && {
+      transform: 'translateY(0)'
+    })
+  },
+  playlistWrapper: {
+    zIndex: 0,
+    position: 'absolute',
+    bottom: '100%',
+    left: 0,
+    right: 0,
+    height: 'calc(100vh - 100%)',
+    transform: 'translateY(100vh)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.enteringScreen,
+      easing: theme.transitions.easing.easeInOut
     }),
-    playlist: {},
-    socialShareMenu: {
-      position: 'absolute',
-      right: theme.typography.pxToRem(theme.spacing(2)),
-      bottom: `calc(100% + ${theme.typography.pxToRem(theme.spacing(2))})`
-    },
-    loadUnderWrapper: {}
-  })
-);
+    backgroundColor: alpha(theme.palette.background.default, 0.8),
+    backdropFilter: 'blur(30px)',
+    ...(playlistOpen && {
+      transform: 'translateY(0)'
+    })
+  },
+  playlist: {},
+  socialShareMenu: {
+    position: 'absolute',
+    right: theme.spacing(2),
+    bottom: `calc(100% + ${theme.spacing(2)})`
+  },
+  loadUnderWrapper: {}
+}));
 
 export const headingProps = {
   color: blue[900],

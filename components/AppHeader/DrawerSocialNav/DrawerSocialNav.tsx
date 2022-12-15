@@ -34,7 +34,7 @@ const renderIcon = (icon: string, label: string) => {
 export const DrawerSocialNav = () => {
   const store = useStore();
   const drawerSocialNav = getMenusData(store.getState(), 'drawerSocialNav');
-  const classes = drawerTopNavStyles({});
+  const { classes } = drawerTopNavStyles();
 
   return (
     (drawerSocialNav && (

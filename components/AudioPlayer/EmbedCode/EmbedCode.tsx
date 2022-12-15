@@ -8,7 +8,6 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Box, IconButton } from '@mui/material';
 import { CheckSharp, SelectAllSharp, WarningSharp } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/styles';
-import classNames from 'classnames/bind';
 import { embedCodeTheme, embedCodeStyles } from './EmbedCode.styles';
 
 export interface IEmbedCodeProps extends HTMLAttributes<{}> {
@@ -21,8 +20,7 @@ export interface IEmbedCodeState {
 }
 
 export const EmbedCode = ({ src, className }: IEmbedCodeProps) => {
-  const classes = embedCodeStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = embedCodeStyles();
   const elmRef = useRef<HTMLElement>(null);
   const [{ copied, failed }, setState] = useState<IEmbedCodeState>({
     copied: false,

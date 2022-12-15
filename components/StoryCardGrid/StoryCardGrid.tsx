@@ -36,10 +36,7 @@ import {
   IAddAudioButtonProps
 } from '@components/Player/components';
 import { IAudioData } from '@components/Player/types';
-import {
-  useStoryCardStyles,
-  storyCardTheme
-} from '@components/StoryCard/StoryCard.styles';
+import { storyCardTheme } from '@components/StoryCard/StoryCard.styles';
 import { generateLinkHrefForContent } from '@lib/routing';
 import {
   storyCardGridStyles,
@@ -63,10 +60,7 @@ export interface StoryCardGridProps extends BoxProps {
 export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
   const router = useRouter();
   const [loadingUrl, setLoadingUrl] = useState(null);
-  const classes = storyCardGridStyles({});
-  const cardClasses = useStoryCardStyles({});
-  const cx = classNames.bind(classes);
-  const cxCard = classNames.bind(cardClasses);
+  const { classes, cx } = storyCardGridStyles();
   const imageWidth = [
     ['max-width: 600px', '100px'],
     ['max-width: 960px', '50vw'],
@@ -216,7 +210,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                         </Grid>
                       )}
                     </Grid>
-                    <ContentLink data={item} className={cxCard('link')} />
+                    <ContentLink data={item} className={cx('link')} />
                   </CardContent>
                 </CardActionArea>
                 {!!(crossLinks && crossLinks.length) && (

@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const appSearchTheme = (theme: Theme) => {
   return createTheme(theme, {
@@ -61,24 +61,23 @@ export const appSearchTheme = (theme: Theme) => {
   });
 };
 
-export const appSearchStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {},
-    title: {
-      flexGrow: 1,
-      color: 'currentColor',
-      fontSize: '2rem'
-    },
-    searchForm: {
-      display: 'flex',
-      justifyContent: 'center',
-      padding: `${theme.typography.pxToRem(32)} ${theme.typography.pxToRem(
-        40
-      )}`,
-      fontSize: '5rem'
-    },
-    query: {
-      maxWidth: '800px'
-    }
-  })
-);
+export const appSearchStyles = makeStyles()(theme => ({
+  root: {},
+
+  title: {
+    flexGrow: 1,
+    color: 'currentColor',
+    fontSize: '2rem'
+  },
+
+  searchForm: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: `${theme.typography.pxToRem(32)} ${theme.typography.pxToRem(40)}`,
+    fontSize: '5rem'
+  },
+
+  query: {
+    maxWidth: '800px'
+  }
+}));

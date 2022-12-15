@@ -9,7 +9,6 @@ import dynamic from 'next/dynamic';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
 import { parse, UrlWithParsedQuery } from 'url';
-import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -76,8 +75,7 @@ export const StoryCard = ({
     data,
     true
   ) as UrlWithParsedQuery;
-  const classes = useStoryCardStyles({ isLoading });
-  const cx = classNames.bind(classes);
+  const { classes, cx } = useStoryCardStyles({ isLoading });
   const imageWidth = [
     ['max-width: 600px', '100vw'],
     ['max-width: 960px', '552px'],

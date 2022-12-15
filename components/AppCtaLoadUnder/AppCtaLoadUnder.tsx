@@ -5,7 +5,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import classNames from 'classnames/bind';
 import { Box, Container, IconButton } from '@mui/material';
 import { ThemeProvider } from '@mui/styles';
 import { CloseSharp } from '@mui/icons-material';
@@ -40,8 +39,7 @@ export const AppCtaLoadUnder = () => {
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);
-  const classes = appCtaLoadUnderStyles({});
-  const cx = classNames.bind(classes);
+  const { cx } = appCtaLoadUnderStyles();
 
   const handleClose = () => {
     const { name, hash, cookieLifespan } = shownMessage;

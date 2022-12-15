@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const newsletterFormTheme = (theme: Theme) => {
   const tempTheme = createTheme(theme, {
@@ -45,8 +45,8 @@ export const newsletterFormTheme = (theme: Theme) => {
   });
 };
 
-export const newsletterFormStyles = makeStyles((theme: Theme) =>
-  createStyles({
+export const newsletterFormStyles = makeStyles<{ compact: boolean }>()(
+  (theme, { compact }) => ({
     root: {
       flexGrow: 1,
       textAlign: 'initial',
@@ -63,22 +63,21 @@ export const newsletterFormStyles = makeStyles((theme: Theme) =>
         }
       }
     },
+
     layout: {
       display: 'grid',
       gridTemplateColumns: '1fr min-content',
       alignItems: 'center',
-      gridGap: ({ compact }: { compact: boolean }) =>
-        `${theme.spacing(compact ? 1 : 2)}px`,
+      gridGap: `${theme.spacing(compact ? 1 : 2)}px`,
       [theme.breakpoints.down('xs')]: {
-        gridTemplateColumns: ({ compact }: { compact: boolean }) =>
-          compact ? '1fr min-content' : '1fr',
+        gridTemplateColumns: compact ? '1fr min-content' : '1fr',
         justifyContent: 'stretch'
       }
     },
+
     optin: {
       gridColumn: '1 / -1',
-      marginTop: ({ compact }: { compact: boolean }) =>
-        `-${theme.spacing(compact ? 1 : 2)}px`,
+      marginTop: `-${theme.spacing(compact ? 1 : 2)}px`,
       [theme.breakpoints.down('xs')]: {
         paddingTop: `${theme.spacing(1)}px`
       }

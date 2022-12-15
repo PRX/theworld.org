@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { blue } from '@theme/colors';
 
 export const appCtaMessageOptInTheme = (theme: Theme) =>
@@ -19,9 +19,10 @@ export const appCtaMessageOptInTheme = (theme: Theme) =>
     }
   });
 
-export const appCtaMessageOptInStyles = makeStyles((theme: Theme) =>
-  createStyles({
+export const appCtaMessageOptInStyles = makeStyles<void, 'controls'>()(
+  theme => ({
     root: {},
+
     controls: {
       [theme.breakpoints.up('md')]: {
         display: 'grid',

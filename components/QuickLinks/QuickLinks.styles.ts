@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const QuickLinksTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -23,34 +23,35 @@ export const QuickLinksTheme = (theme: Theme) =>
     }
   });
 
-export const QuickLinksStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      textAlign: 'center'
-    },
-    container: {
+export const QuickLinksStyles = makeStyles()(theme => ({
+  root: {
+    textAlign: 'center'
+  },
+
+  container: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+
+  label: {
+    display: 'flex'
+  },
+
+  link: {
+    color: theme.palette.primary.main,
+    '&:is(a)': {
       display: 'flex',
-      justifyContent: 'center'
-    },
-    label: {
-      display: 'flex'
-    },
-    link: {
-      color: theme.palette.primary.main,
-      '&:is(a)': {
-        display: 'flex',
-        alignItems: 'center',
-        textDecoration: 'none',
-        fontWeight: 'bold',
-        minHeight: '48px',
-        minWidth: '48px',
-        '&:hover': {
-          textDecoration: 'underline'
-        }
-      },
-      '&:visited': {
-        color: theme.palette.primary.main
+      alignItems: 'center',
+      textDecoration: 'none',
+      fontWeight: 'bold',
+      minHeight: '48px',
+      minWidth: '48px',
+      '&:hover': {
+        textDecoration: 'underline'
       }
+    },
+    '&:visited': {
+      color: theme.palette.primary.main
     }
-  })
-);
+  }
+}));

@@ -4,7 +4,7 @@
  */
 
 import { createTheme, lighten, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { blue } from '@theme/colors';
 
 const playerHeight = 50;
@@ -88,129 +88,131 @@ export const audioPlayerTheme = (theme: Theme) => {
   });
 };
 
-export const audioPlayerStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: ({ playing, hasPlayed, stuck }) => ({
-      ...((playing || hasPlayed) && {
-        position: 'sticky',
-        top: 0,
-        zIndex: theme.zIndex.appBar
-      }),
-      transition: theme.transitions.create(['box-shadow'], {
-        duration: theme.transitions.duration.standard
-      }),
-      display: 'grid',
-      gridTemplateColumns: `${playerHeight}px 1fr 0fr`,
-      gridColumnGap: theme.spacing(2),
-      alignItems: 'center',
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2),
-      backgroundColor: blue[900],
-      boxShadow: theme.shadows[!stuck ? 1 : 3],
-      color: theme.palette.getContrastText(blue[900])
-    }),
-    player: {
-      display: 'none'
-    },
-    fallbackPlayer: {
-      display: 'none',
-      '.no-js &': {
-        display: 'block',
-        width: '100%',
-        height: theme.typography.pxToRem(35),
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(2)
-      }
-    },
-    playBtn: ({ playing }: any) => ({
-      ...(!playing && {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.primary.contrastText,
-        '&:hover': {
-          backgroundColor: theme.palette.primary.dark
-        }
-      }),
-      ...(playing && {
-        backgroundColor: theme.palette.secondary.main,
-        color: theme.palette.secondary.contrastText,
-        '&:hover': {
-          backgroundColor: theme.palette.secondary.dark
-        }
-      })
-    }),
-    controls: {
-      display: 'grid',
-      gridTemplateColumns: '2fr minmax(200px, 10vw)',
-      alignItems: 'center',
-      gridColumnGap: theme.spacing(2),
-      [theme.breakpoints.down('xs')]: {
-        gridTemplateColumns: '1fr 1fr'
-      }
-    },
-    progress: {
-      position: 'relative',
-      lineHeight: 0,
-      backgroundColor: lighten(blue[900], 0.2)
-    },
-    loaded: {
-      position: 'absolute',
+export const audioPlayerStyles = makeStyles<{
+  playing: boolean;
+  hasPlayed: boolean;
+  stuck: boolean;
+}>()((theme, { playing, hasPlayed, stuck }) => ({
+  root: {
+    ...((playing || hasPlayed) && {
+      position: 'sticky',
       top: 0,
-      height: '100%',
-      backgroundColor: lighten(blue[900], 0.3)
-    },
-    seek: {},
-    progressControls: {
-      display: 'grid',
-      gridTemplateColumns: 'auto',
-      alignItems: 'center',
-      gridColumnGap: theme.spacing(1),
-      [theme.breakpoints.up('sm')]: {
-        gridTemplateColumns: 'max-content 1fr max-content'
+      zIndex: theme.zIndex.appBar
+    }),
+    transition: theme.transitions.create(['box-shadow'], {
+      duration: theme.transitions.duration.standard
+    }),
+    display: 'grid',
+    gridTemplateColumns: `${playerHeight}px 1fr 0fr`,
+    gridColumnGap: theme.spacing(2),
+    alignItems: 'center',
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    backgroundColor: blue[900],
+    boxShadow: theme.shadows[!stuck ? 1 : 3],
+    color: theme.palette.getContrastText(blue[900])
+  },
+  player: {
+    display: 'none'
+  },
+  fallbackPlayer: {
+    display: 'none',
+    '.no-js &': {
+      display: 'block',
+      width: '100%',
+      height: theme.typography.pxToRem(35),
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2)
+    }
+  },
+  playBtn: {
+    ...(!playing && {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
+      '&:hover': {
+        backgroundColor: theme.palette.primary.dark
       }
-    },
-    progressRail: {
+    }),
+    ...(playing && {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.secondary.contrastText,
+      '&:hover': {
+        backgroundColor: theme.palette.secondary.dark
+      }
+    })
+  },
+  controls: {
+    display: 'grid',
+    gridTemplateColumns: '2fr minmax(200px, 10vw)',
+    alignItems: 'center',
+    gridColumnGap: theme.spacing(2),
+    [theme.breakpoints.down('xs')]: {
+      gridTemplateColumns: '1fr 1fr'
+    }
+  },
+  progress: {
+    position: 'relative',
+    lineHeight: 0,
+    backgroundColor: lighten(blue[900], 0.2)
+  },
+  loaded: {
+    position: 'absolute',
+    top: 0,
+    height: '100%',
+    backgroundColor: lighten(blue[900], 0.3)
+  },
+  seek: {},
+  progressControls: {
+    display: 'grid',
+    gridTemplateColumns: 'auto',
+    alignItems: 'center',
+    gridColumnGap: theme.spacing(1),
+    [theme.breakpoints.up('sm')]: {
+      gridTemplateColumns: 'max-content 1fr max-content'
+    }
+  },
+  progressRail: {
+    display: 'none'
+  },
+  volumeControls: {
+    display: 'grid',
+    gridTemplateColumns: `${playerHeight}px 1fr`,
+    gridColumnGap: theme.spacing(0.5),
+    alignItems: 'center'
+  },
+  duration: {
+    display: 'none',
+    fontSize: '1.25rem',
+    [theme.breakpoints.up('sm')]: {
+      display: 'initial'
+    }
+  },
+  played: {},
+  total: {},
+  message: {
+    overflow: 'hidden',
+    fontSize: '1.25rem',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
+  },
+  menu: {
+    display: 'flex',
+    [theme.breakpoints.down('xs')]: {
       display: 'none'
-    },
-    volumeControls: {
-      display: 'grid',
-      gridTemplateColumns: `${playerHeight}px 1fr`,
-      gridColumnGap: theme.spacing(0.5),
-      alignItems: 'center'
-    },
-    duration: {
-      display: 'none',
-      fontSize: '1.25rem',
-      [theme.breakpoints.up('sm')]: {
-        display: 'initial'
-      }
-    },
-    played: {},
-    total: {},
-    message: {
-      overflow: 'hidden',
-      fontSize: '1.25rem',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap'
-    },
-    menu: {
-      display: 'flex',
-      [theme.breakpoints.down('xs')]: {
-        display: 'none'
-      }
+    }
+  },
+  popoutBtn: {
+    '& svg': {
+      width: '1em',
+      height: '1em'
+    }
+  },
+  [theme.breakpoints.down('sm')]: {
+    embedBtn: {
+      display: 'none'
     },
     popoutBtn: {
-      '& svg': {
-        width: '1em',
-        height: '1em'
-      }
-    },
-    [theme.breakpoints.down('sm')]: {
-      embedBtn: {
-        display: 'none'
-      },
-      popoutBtn: {
-        display: 'none'
-      }
+      display: 'none'
     }
-  })
-);
+  }
+}));

@@ -7,7 +7,6 @@ import React, { useState } from 'react';
 import { useStore } from 'react-redux';
 import { handleButtonClick } from '@lib/routing';
 import { IButton } from '@interfaces';
-import classNames from 'classnames/bind';
 import {
   Box,
   Collapse,
@@ -49,8 +48,7 @@ export const DrawerMainNav = () => {
         )
       : {}
   });
-  const classes = drawerMainNavStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = drawerMainNavStyles();
 
   const handleToggleCollapse = (key: string | number) => () => {
     setState({

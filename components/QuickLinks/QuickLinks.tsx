@@ -17,7 +17,7 @@ import { QuickLinksStyles, QuickLinksTheme } from './QuickLinks.styles';
 export const QuickLinks = () => {
   const store = useStore();
   const quickLinks = getMenusData(store.getState(), 'quickLinks');
-  const classes = QuickLinksStyles({});
+  const { classes } = QuickLinksStyles();
 
   return (
     (quickLinks && (

@@ -16,7 +16,7 @@ import { AppHeader } from '@components/AppHeader';
 import { AppLoadingBar } from '@components/AppLoadingBar';
 import { AppSearch } from '@components/AppSearch';
 import { AppContext } from '@contexts/AppContext';
-import { SocialShareMenu } from '@components/SocialShareMenu/SocialShareMenu';
+import { SocialShareMenu } from '@components/SocialShareMenu';
 import { baseMuiTheme, appTheme, useAppStyles } from '@theme/App.theme';
 import { wrapper } from '@store';
 import { Player } from '@components/Player';
@@ -34,7 +34,7 @@ const AppLayout: FC = ({ children }) => {
   });
   const playerOpen = getUiPlayerOpen(state);
   const playlistOpen = getUiPlayerPlaylistOpen(state);
-  const styles = useAppStyles({ playerOpen, playlistOpen });
+  const { classes } = useAppStyles({ playerOpen, playlistOpen });
 
   useEffect(() => {
     const uiFooterRect = uiFooterRef.current?.getBoundingClientRect();
@@ -51,7 +51,7 @@ const AppLayout: FC = ({ children }) => {
   });
 
   return (
-    <div ref={rootRef} className={styles.root}>
+    <div ref={rootRef} className={classes.root}>
       <div
         {...(playlistOpen && {
           inert: 'inert'
@@ -62,7 +62,7 @@ const AppLayout: FC = ({ children }) => {
         <AppHeader />
       </div>
       <div
-        className={styles.content}
+        className={classes.content}
         {...(playlistOpen && {
           inert: 'inert'
         })}
@@ -70,18 +70,18 @@ const AppLayout: FC = ({ children }) => {
         {children}
       </div>
       <AppFooter />
-      <div ref={uiFooterRef} className={styles.uiFooter}>
-        <div className={styles.loadUnderWrapper}>
+      <div ref={uiFooterRef} className={classes.uiFooter}>
+        <div className={classes.loadUnderWrapper}>
           <div
-            className={styles.playlistWrapper}
+            className={classes.playlistWrapper}
             {...(!playlistOpen && {
               inert: 'inert'
             })}
           >
-            <Playlist className={styles.playlist} />
+            <Playlist className={classes.playlist} />
           </div>
-          <div className={styles.playerWrapper}>
-            <SocialShareMenu className={styles.socialShareMenu} />
+          <div className={classes.playerWrapper}>
+            <SocialShareMenu className={classes.socialShareMenu} />
             <AppPlayer />
           </div>
           <AppCtaLoadUnder />

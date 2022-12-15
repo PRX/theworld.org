@@ -15,7 +15,7 @@ export interface ITagsProps extends HTMLAttributes<{}> {
 }
 
 export const Tags = ({ data, label }: ITagsProps) => {
-  const classes = tagsStyles({});
+  const { classes } = tagsStyles();
 
   return (
     <Box component="aside" className={classes.root}>

@@ -3,52 +3,54 @@
  * Styles for LedeVideo.
  */
 
-import { Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const ledeVideoStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'grid',
-      gridGap: '0.75rem',
+export const ledeVideoStyles = makeStyles()(theme => ({
+  root: {
+    display: 'grid',
+    gridGap: '0.75rem',
+    margin: 0
+  },
+
+  playerWrapper: {
+    position: 'relative',
+    paddingTop: `${100 / (16 / 9)}%`
+  },
+
+  player: {
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+
+  footer: {
+    display: 'grid',
+    gridGap: '0.5rem',
+    '& p': {
       margin: 0
     },
-    playerWrapper: {
-      position: 'relative',
-      paddingTop: `${100 / (16 / 9)}%`
+    '& p + p': {
+      marginTop: '1rem'
     },
-    player: {
-      position: 'absolute',
-      top: 0,
-      left: 0
-    },
-    footer: {
-      display: 'grid',
-      gridGap: '0.5rem',
-      '& p': {
-        margin: 0
+    '& a': {
+      color: theme.palette.primary.main,
+      '&:visited': {
+        color: theme.palette.primary.main
       },
-      '& p + p': {
-        marginTop: '1rem'
-      },
-      '& a': {
-        color: theme.palette.primary.main,
-        '&:visited': {
-          color: theme.palette.primary.main
-        },
-        '&:hover': {
-          color: theme.palette.primary.dark
-        }
-      }
-    },
-    caption: {},
-    credit: {
-      display: 'flex',
-      fontSize: '0.75rem',
-      '&::before': {
-        content: "'Credit:'",
-        marginRight: '0.25rem'
+      '&:hover': {
+        color: theme.palette.primary.dark
       }
     }
-  })
-);
+  },
+
+  caption: {},
+
+  credit: {
+    display: 'flex',
+    fontSize: '0.75rem',
+    '&::before': {
+      content: "'Credit:'",
+      marginRight: '0.25rem'
+    }
+  }
+}));

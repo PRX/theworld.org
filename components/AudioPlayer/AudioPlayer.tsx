@@ -5,11 +5,10 @@
 
 import React, { useEffect, useReducer, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import ReactPlayer, { FileConfig, FilePlayerProps } from 'react-player/file';
+import ReactPlayer, { FilePlayerProps } from 'react-player/file';
 import { Box, IconButton, NoSsr } from '@mui/material';
 import { GetAppSharp, PlayArrowSharp } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/styles';
-import classNames from 'classnames/bind';
 import { IDurationProps } from '@components/Duration';
 import { formatDuration } from '@lib/parse/time';
 import { generateAudioDownloadFilename } from '@lib/parse/audio';
@@ -22,9 +21,7 @@ import {
 } from './AudioPlayer.reducer';
 import { audioPlayerStyles, audioPlayerTheme } from './AudioPlayer.styles';
 import { IEmbedCodeProps } from './EmbedCode';
-import { ISliderValueLabelProps } from './SliderValueLabel';
 import { NoJsPlayer } from './NoJsPlayer';
-import { ReactPlayerProps } from 'react-player';
 
 const Duration = dynamic(() =>
   import('@components/Duration').then(mod => mod.Duration)
@@ -35,10 +32,6 @@ const EmbedCode = dynamic(() =>
 ) as React.FC<IEmbedCodeProps>;
 
 const Slider = dynamic(() => import('@mui/material/Slider'));
-
-const SliderValueLabel = dynamic(() =>
-  import('./SliderValueLabel').then(mod => mod.SliderValueLabel)
-) as React.FC<ISliderValueLabelProps>;
 
 const CloseSharp = dynamic(() => import('@mui/icons-material/CloseSharp'));
 
@@ -107,8 +100,7 @@ export const AudioPlayer = ({
   const showMessage = !!message?.length && !hasPlayed && !embedCodeShown;
   const showControls = !message?.length || (hasPlayed && !embedCodeShown);
 
-  const classes = audioPlayerStyles({ loaded, playing, hasPlayed, stuck });
-  const cx = classNames.bind(classes);
+  const { classes, cx } = audioPlayerStyles({ playing, hasPlayed, stuck });
   const rootClasses = cx(className, classes.root);
 
   const playBtnClasses = cx({
@@ -166,8 +158,7 @@ export const AudioPlayer = ({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_SEEKING,
         payload: value as number
       });
-    },
-    ValueLabelComponent: SliderValueLabel
+    }
   };
 
   const volumeAdjustAttrs = {

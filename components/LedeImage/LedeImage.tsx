@@ -16,7 +16,7 @@ export interface ILedeImageProps {
 export const LedeImage = ({ data }: ILedeImageProps) => {
   const { alt, caption, credit, url, metadata } = data;
   const { width, height } = metadata || {};
-  const classes = ledeImageStyles({});
+  const { classes } = ledeImageStyles();
   const hasCaption = caption && !!caption.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;

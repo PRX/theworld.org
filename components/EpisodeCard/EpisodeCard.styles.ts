@@ -4,15 +4,15 @@
  */
 
 import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const episodeCardStyles = makeStyles((theme: Theme) => {
+export const episodeCardStyles = makeStyles()(theme => {
   const headingProps = {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: 400
   };
 
-  return createStyles({
+  return {
     root: {},
     header: {
       padding: '1rem 1rem 0.5rem',
@@ -65,7 +65,7 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
       position: 'relative',
       zIndex: 1
     }
-  });
+  };
 });
 
 export const episodeCardTheme = (theme: Theme) =>

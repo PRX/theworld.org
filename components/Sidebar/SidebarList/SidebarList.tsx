@@ -4,7 +4,6 @@
  */
 
 import React from 'react';
-import clsx from 'clsx';
 import {
   List,
   ListProps,
@@ -34,8 +33,8 @@ export const SidebarList = ({
   subheaderText,
   ...other
 }: ISidebarListProps) => {
-  const classes = sidebarListStyles({});
-  const listClasses = clsx(className, classes.root);
+  const { classes, cx } = sidebarListStyles();
+  const listClasses = cx(className, 'root');
   const listProps = {
     component: 'nav',
     className: listClasses,

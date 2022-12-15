@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const appCtaLoadUnderTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -62,17 +62,16 @@ export const appCtaLoadUnderTheme = (theme: Theme) =>
     }
   });
 
-export const appCtaLoadUnderStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      position: 'relative',
-      zIndex: theme.zIndex.drawer,
-      backgroundColor: theme.palette.primary.dark,
-      color: theme.palette.getContrastText(theme.palette.primary.dark)
-    },
-    container: {
-      paddingTop: theme.spacing(3),
-      paddingBottom: theme.spacing(3)
-    }
-  })
-);
+export const appCtaLoadUnderStyles = makeStyles()(theme => ({
+  root: {
+    position: 'relative',
+    zIndex: theme.zIndex.drawer,
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.getContrastText(theme.palette.primary.dark)
+  },
+
+  container: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3)
+  }
+}));

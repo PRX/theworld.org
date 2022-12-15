@@ -4,7 +4,7 @@
  */
 
 import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const sidebarListTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -89,21 +89,21 @@ export const sidebarListTheme = (theme: Theme) =>
     }
   });
 
-export const sidebarListStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '&:last-child': {
-        paddingBlockEnd: theme.typography.pxToRem(16)
-      }
-    },
-    noBullet: {
-      display: 'unset',
-      listStyle: 'unset',
-      marginLeft: 0
-    },
-    noAvatarImage: {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.primary.contrastText
+export const sidebarListStyles = makeStyles()(theme => ({
+  root: {
+    '&:last-child': {
+      paddingBlockEnd: theme.typography.pxToRem(16)
     }
-  })
-);
+  },
+
+  noBullet: {
+    display: 'unset',
+    listStyle: 'unset',
+    marginLeft: 0
+  },
+
+  noAvatarImage: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText
+  }
+}));

@@ -5,7 +5,6 @@
 
 import React from 'react';
 import Image from 'next/legacy/image';
-import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@mui/material';
 import {
@@ -26,8 +25,7 @@ export const LandingPageHeader = ({
   title,
   subhead
 }: ILandingPageHeaderProps) => {
-  const classes = landingPageHeaderStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = landingPageHeaderStyles();
   const { alt } = image || ({} as any);
   return (
     <ThemeProvider theme={landingPageHeaderTheme}>

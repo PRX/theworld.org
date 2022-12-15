@@ -4,101 +4,103 @@
  */
 
 import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useStoryCardStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      '& > * + *': {
-        display: 'grid',
-        marginTop: 0
-      }
-    },
-    heading: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'start',
-      gap: theme.typography.pxToRem(24)
-    },
-    title: {
-      marginTop: 0,
-      fontSize: theme.typography.pxToRem(20),
-      [theme.breakpoints.down('sm')]: {
-        fontSize: theme.typography.pxToRem(18)
-      },
-      lineHeight: '1.3'
-    },
-    imageWrapper: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      paddingTop: 'unset'
-    },
-    link: {
-      position: 'absolute',
-      inset: 0,
-      overflow: 'hidden',
-      textIndent: '-2000vw'
-    },
-    loadingBar: ({ isLoading }: any) => ({
-      transition: 'transform 400ms ease-out',
-      position: 'absolute',
-      top: '100%',
-      left: 0,
-      width: '100%',
-      transform: `translateY(${!isLoading ? 0 : '-100%'})`
-    }),
-    audio: {
-      position: 'relative',
-      zIndex: 1
-    },
-    audioPlayBtn: {
-      position: 'relative',
-      zIndex: 1,
-      fontSize: '5rem',
-      padding: 0,
-      borderRadius: 0,
-      backgroundColor: 'transparent',
-      color: alpha(theme.palette.primary.contrastText, 0.7),
-      '&:hover': {
-        backgroundColor: 'transparent',
-        color: alpha(theme.palette.primary.contrastText, 1)
-      },
-      '$feature &': {
-        fontSize: '8rem'
-      }
-    },
-    MuiCardActionAreaRoot: {
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const useStoryCardStyles = makeStyles<
+  { isLoading: boolean },
+  'feature'
+>()((theme: Theme, { isLoading }, classes) => ({
+  root: {
+    '& > * + *': {
       display: 'grid',
-      gridTemplateColumns: '1fr 3fr',
-      gridGap: `${16}px`,
-      alignItems: 'center',
-      padding: `${16}px`,
-      '$feature &': {
-        gridTemplateColumns: '1fr'
-      },
-      [theme.breakpoints.down('sm')]: {
-        gridTemplateColumns: '1fr 2fr'
-      }
+      marginTop: 0
+    }
+  },
+  heading: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'start',
+    gap: theme.typography.pxToRem(24)
+  },
+  title: {
+    marginTop: 0,
+    fontSize: theme.typography.pxToRem(20),
+    [theme.breakpoints.down('sm')]: {
+      fontSize: theme.typography.pxToRem(18)
     },
-    MuiCardContentRoot: {
-      padding: 0
+    lineHeight: '1.3'
+  },
+  imageWrapper: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    paddingTop: 'unset'
+  },
+  link: {
+    position: 'absolute',
+    inset: 0,
+    overflow: 'hidden',
+    textIndent: '-2000vw'
+  },
+  loadingBar: {
+    transition: 'transform 400ms ease-out',
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    width: '100%',
+    transform: `translateY(${!isLoading ? 0 : '-100%'})`
+  },
+  audio: {
+    position: 'relative',
+    zIndex: 1
+  },
+  audioPlayBtn: {
+    position: 'relative',
+    zIndex: 1,
+    fontSize: '5rem',
+    padding: 0,
+    borderRadius: 0,
+    backgroundColor: 'transparent',
+    color: alpha(theme.palette.primary.contrastText, 0.7),
+    '&:hover': {
+      backgroundColor: 'transparent',
+      color: alpha(theme.palette.primary.contrastText, 1)
     },
-    MuiCardMediaRoot: {
-      alignSelf: 'start',
-      aspectRatio: '1',
-      '$feature &': {
-        aspectRatio: 16 / 9
-      }
+    [`.${classes.feature} &`]: {
+      fontSize: '8rem'
+    }
+  },
+  MuiCardActionAreaRoot: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 3fr',
+    gridGap: `${16}px`,
+    alignItems: 'center',
+    padding: `${16}px`,
+    [`.${classes.feature} &`]: {
+      gridTemplateColumns: '1fr'
     },
-    feature: {},
-    short: {},
-    isLoading: {},
-    noImage: {}
-  })
-);
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: '1fr 2fr'
+    }
+  },
+  MuiCardContentRoot: {
+    padding: 0
+  },
+  MuiCardMediaRoot: {
+    alignSelf: 'start',
+    aspectRatio: '1',
+    [`.${classes.feature} &`]: {
+      aspectRatio: '16 / 9'
+    }
+  },
+  feature: {},
+  short: {},
+  isLoading: {},
+  noImage: {}
+}));
 
 export const storyCardTheme = (theme: Theme) =>
   createTheme(theme, {

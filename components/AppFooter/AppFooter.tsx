@@ -6,7 +6,6 @@
 import React from 'react';
 import Image from 'next/legacy/image';
 import { useStore } from 'react-redux';
-import classNames from 'classnames/bind';
 import { parse } from 'url';
 import { Box, Breadcrumbs, Container, Divider, Link } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
@@ -21,8 +20,7 @@ export const AppFooter = () => {
   const store = useStore();
   const footerNav = getMenusData(store.getState(), 'footerNav');
   const copyrightDate = new Date().getFullYear();
-  const classes = appFooterStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = appFooterStyles();
   const producedByLogoClasses = cx({ logo: true, producedByLogo: true });
 
   return (

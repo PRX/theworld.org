@@ -33,8 +33,7 @@ export const AppCtaBanner = () => {
     setClosed(false);
     setState(store.getState());
   });
-  const classes = appCtaBannerStyles({});
-  const cx = classNames.bind(classes);
+  const { cx } = appCtaBannerStyles();
 
   const handleClose = () => {
     // Check if cookies allowed.

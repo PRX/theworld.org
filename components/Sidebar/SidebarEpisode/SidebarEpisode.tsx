@@ -6,7 +6,6 @@
 import React from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
-import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import { Headset } from '@mui/icons-material';
@@ -32,8 +31,7 @@ export interface SidebarEpisodeProps {
 export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
   const { audio, program, dateBroadcast, datePublished, title, image } = data;
   const { id: audioId, segments } = audio || {};
-  const classes = sidebarEpisodeStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = sidebarEpisodeStyles();
 
   return (
     <ThemeProvider theme={sidebarEpisodeTheme}>

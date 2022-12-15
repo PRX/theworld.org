@@ -4,7 +4,6 @@
  */
 
 import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
 
 export const appHeaderNavTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -20,12 +19,3 @@ export const appHeaderNavTheme = (theme: Theme) =>
       }
     }
   });
-
-export const appHeaderNavStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      columnGap: theme.typography.pxToRem(8)
-    }
-  })
-);

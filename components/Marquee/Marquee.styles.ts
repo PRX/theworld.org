@@ -3,19 +3,17 @@
  * Styles and theme for Marquee.
  */
 
-import { Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useMarqueeStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      overflow: 'hidden'
-    },
-    content: {
-      position: 'relative',
-      display: 'inline-block',
-      whiteSpace: 'nowrap',
-      paddingInlineEnd: theme.typography.pxToRem(2)
-    }
-  })
-);
+export const useMarqueeStyles = makeStyles()(theme => ({
+  root: {
+    overflow: 'hidden'
+  },
+
+  content: {
+    position: 'relative',
+    display: 'inline-block',
+    whiteSpace: 'nowrap',
+    paddingInlineEnd: theme.typography.pxToRem(2)
+  }
+}));

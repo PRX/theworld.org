@@ -84,7 +84,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
   const storyData = getContentData(story);
   const episodeData = getContentData(episode);
   const mediaData = getContentData(media);
-  const classes = appSearchStyles({});
+  const { classes } = appSearchStyles();
 
   const formatTabLabel = (l: SearchFacet) =>
     `${l} (${data[l]?.[0].searchInformation?.totalResults || 0})`;

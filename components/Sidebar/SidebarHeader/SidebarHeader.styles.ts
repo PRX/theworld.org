@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const sidebarHeaderTheme = (theme: Theme) => {
   const headingProps = {
@@ -45,10 +45,8 @@ export const sidebarHeaderTheme = (theme: Theme) => {
   });
 };
 
-export const sidebarHeaderStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      padding: '1rem 1rem 0.5rem'
-    }
-  })
-);
+export const sidebarHeaderStyles = makeStyles()(() => ({
+  root: {
+    padding: '1rem 1rem 0.5rem'
+  }
+}));

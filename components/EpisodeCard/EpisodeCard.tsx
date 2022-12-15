@@ -7,7 +7,6 @@ import React from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import Image from 'next/legacy/image';
-import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -49,8 +48,7 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
     linkResource: data
   } as Partial<IAudioData>;
   const { segments } = audio || {};
-  const classes = episodeCardStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = episodeCardStyles();
   const imageWidth = [
     ['max-width: 600px', '100vw'],
     ['max-width: 960px', '568px'],

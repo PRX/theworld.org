@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const appDrawerSearchTheme = (theme: Theme) => {
   return createTheme(theme, {
@@ -33,10 +33,8 @@ export const appDrawerSearchTheme = (theme: Theme) => {
   });
 };
 
-export const appDrawerSearchStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      padding: `0 ${theme.spacing(2)}px ${theme.spacing(2)}px`
-    }
-  })
-);
+export const appDrawerSearchStyles = makeStyles()(theme => ({
+  root: {
+    padding: `0 ${theme.spacing(2)}px ${theme.spacing(2)}px`
+  }
+}));

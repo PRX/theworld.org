@@ -3,26 +3,27 @@
  * Styles for Sidebar.
  */
 
-import { Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const sidebarStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexDirection: 'column'
-    },
-    container: {
-      justifyContent: 'stretch'
-    },
-    item: {},
-    stretch: {
-      flexGrow: 1,
-      justifyContent: 'center'
-    },
-    elevated: {
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[1]
-    }
-  })
-);
+export const sidebarStyles = makeStyles()(theme => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+
+  container: {
+    justifyContent: 'stretch'
+  },
+
+  item: {},
+
+  stretch: {
+    flexGrow: 1,
+    justifyContent: 'center'
+  },
+
+  elevated: {
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[1]
+  }
+}));

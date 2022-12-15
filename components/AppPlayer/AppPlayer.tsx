@@ -49,8 +49,7 @@ export const AppPlayer = () => {
   const [showEmbedModal, setShowEmbedModal] = useState(false);
   const { tracks, currentTrackIndex } = playerState || {};
   const currentTrack = tracks?.[currentTrackIndex];
-  const isOpen = !!tracks?.length;
-  const styles = appPlayerStyles({ isOpen });
+  const { classes: styles } = appPlayerStyles();
   const toolbarClasses = {
     root: styles.toolbarRoot
   };

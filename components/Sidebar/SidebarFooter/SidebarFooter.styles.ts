@@ -3,8 +3,8 @@
  * Styles for SidebarFooter.
  */
 
-import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const sidebarFooterTheme = (theme: Theme) => {
   return createTheme(theme, {
@@ -18,10 +18,8 @@ export const sidebarFooterTheme = (theme: Theme) => {
   });
 };
 
-export const sidebarFooterStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      padding: '0.5rem 1rem 1rem'
-    }
-  })
-);
+export const sidebarFooterStyles = makeStyles()(() => ({
+  root: {
+    padding: '0.5rem 1rem 1rem'
+  }
+}));

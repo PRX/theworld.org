@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import classNames from 'classnames/bind';
 import { UrlWithParsedQuery } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -51,8 +50,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
     data,
     true
   ) as UrlWithParsedQuery;
-  const classes = mediaCardStyles({ isLoading });
-  const cx = classNames.bind(classes);
+  const { classes, cx } = mediaCardStyles({ isLoading });
 
   useEffect(() => {
     const handleRouteChangeStart = (url: string) => {

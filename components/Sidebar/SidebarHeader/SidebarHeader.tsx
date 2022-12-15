@@ -6,7 +6,6 @@
 import React from 'react';
 import { Box, BoxProps } from '@mui/material';
 import { ThemeProvider } from '@mui/styles';
-import clsx from 'clsx';
 import {
   sidebarHeaderStyles,
   sidebarHeaderTheme
@@ -19,15 +18,11 @@ export const SidebarHeader = ({
   className,
   ...other
 }: ISidebarHeaderProps) => {
-  const classes = sidebarHeaderStyles({});
+  const { cx } = sidebarHeaderStyles();
 
   return (
     <ThemeProvider theme={sidebarHeaderTheme}>
-      <Box
-        component="header"
-        {...other}
-        className={clsx(className, classes.root)}
-      >
+      <Box component="header" {...other} className={cx(className, 'root')}>
         {children}
       </Box>
     </ThemeProvider>

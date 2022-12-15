@@ -17,7 +17,7 @@ export interface ILedeVideoProps {
 export const LedeVideo = ({ data }: ILedeVideoProps) => {
   const { description, credit, url } = data;
   const theme = useTheme() as Theme;
-  const classes = ledeVideoStyles({});
+  const { classes } = ledeVideoStyles();
   const hasCaption = description && !!description.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;

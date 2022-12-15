@@ -19,7 +19,6 @@ import {
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import classNames from 'classnames/bind';
 import { ReactComponent as Logo } from '@svg/tw-white.svg';
 import { getUiDrawerOpen } from '@store/reducers';
 import { AppHeaderNav } from './AppHeaderNav';
@@ -36,8 +35,7 @@ export const AppHeader = () => {
     setState(store.getState());
   });
   const open = getUiDrawerOpen(state) || false;
-  const classes = appHeaderStyles({});
-  const cx = classNames.bind(classes);
+  const { cx } = appHeaderStyles();
 
   useEffect(() => {
     function handleRouteChangeComplete() {

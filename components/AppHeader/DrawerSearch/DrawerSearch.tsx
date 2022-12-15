@@ -26,7 +26,7 @@ export const DrawerSearch = () => {
     setState(store.getState());
   });
   const query = getSearchQuery(state);
-  const classes = appDrawerSearchStyles({});
+  const { classes } = appDrawerSearchStyles();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

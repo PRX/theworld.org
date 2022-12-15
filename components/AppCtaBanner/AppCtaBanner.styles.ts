@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const appCtaBannerTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -61,11 +61,9 @@ export const appCtaBannerTheme = (theme: Theme) =>
     }
   });
 
-export const appCtaBannerStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: theme.palette.primary.dark,
-      color: theme.palette.getContrastText(theme.palette.primary.dark)
-    }
-  })
-);
+export const appCtaBannerStyles = makeStyles()((theme: Theme) => ({
+  root: {
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.getContrastText(theme.palette.primary.dark)
+  }
+}));

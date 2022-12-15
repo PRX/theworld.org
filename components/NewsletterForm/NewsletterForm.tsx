@@ -4,7 +4,6 @@
  */
 
 import React, { ChangeEvent, FormEvent, useState, HTMLAttributes } from 'react';
-import classNames from 'classnames/bind';
 import {
   Box,
   Button,
@@ -53,8 +52,7 @@ export const NewsletterForm = ({
     <CircularProgress color="inherit" size={20} aria-label="Progress Bar" />
   )) || <SendSharp />;
   const isAmp = useAmp();
-  const classes = newsletterFormStyles({ compact });
-  const cx = classNames.bind(classes);
+  const { classes, cx } = newsletterFormStyles({ compact });
 
   const handleChangeEmailAddress = (e: ChangeEvent<HTMLInputElement>) => {
     setData({

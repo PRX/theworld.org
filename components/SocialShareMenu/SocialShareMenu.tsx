@@ -22,7 +22,7 @@ import EmailRounded from '@mui/icons-material/EmailRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import SvgIcon from '@mui/material/SvgIcon';
 import { IIconsMap } from '@interfaces/icons';
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/lab';
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import { getUiPlayerPlaylistOpen, getUiSocialShareMenu } from '@store/reducers';
 import { useSocialShareMenuStyles } from './SocialShareMenu.styles';
 
@@ -63,8 +63,8 @@ export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
   const [open, setOpen] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   const iconsMap = getIconsMap(icons);
-  const styles = useSocialShareMenuStyles({});
-  const rootClassNames = clsx(styles.root, className);
+  const {classes: styles, cx} = useSocialShareMenuStyles();
+  const rootClassNames = cx('root', className);
   const speedDialClasses = {
     actionsClosed: styles.actionsClosed
   };

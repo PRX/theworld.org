@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { Button, ButtonProps } from '@mui/material';
 import { IPriApiResource } from 'pri-api-library/types';
 import { generateLinkPropsForContent } from '@lib/routing';
-import { contentButtonStyles } from './ContentButton.styles';
 
 export interface ContentButtonProps extends ButtonProps {
   data: IPriApiResource;
@@ -25,11 +24,10 @@ export const ContentButton = ({
 }: ContentButtonProps) => {
   const { title } = data || ({} as IPriApiResource);
   const { href, as: alias } = generateLinkPropsForContent(data, query);
-  const classes = contentButtonStyles({});
 
   return (
     <Link href={href} as={alias} passHref legacyBehavior>
-      <Button href="" classes={classes} {...other}>
+      <Button href="" {...other}>
         {children || title}
       </Button>
     </Link>

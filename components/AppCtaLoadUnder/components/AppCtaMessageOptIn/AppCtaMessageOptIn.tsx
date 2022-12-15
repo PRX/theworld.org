@@ -4,7 +4,6 @@
  */
 
 import React, { useState } from 'react';
-import classNames from 'classnames/bind';
 import { handleButtonClick } from '@lib/routing';
 import {
   Box,
@@ -28,8 +27,7 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   const { heading, message, optinLabel, action, dismiss } = data;
   const hasActions = !!(action || dismiss);
   const [optedIn, setOptedIn] = useState(false);
-  const classes = appCtaMessageOptInStyles({});
-  const cx = classNames.bind(classes);
+  const { cx } = appCtaMessageOptInStyles();
   const actionAttrs: ButtonProps = {
     variant: 'contained',
     color: 'primary',

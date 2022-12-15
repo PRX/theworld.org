@@ -15,7 +15,7 @@ import { drawerTopNavStyles } from './DrawerTopNav.styles';
 export const DrawerTopNav = () => {
   const store = useStore();
   const drawerTopNav = getMenusData(store.getState(), 'drawerTopNav');
-  const classes = drawerTopNavStyles({});
+  const { classes } = drawerTopNavStyles();
 
   return (
     (drawerTopNav && (
