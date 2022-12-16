@@ -5,7 +5,6 @@
 
 import React, { forwardRef, useContext, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import clsx from 'clsx';
 import { Button, IconButton } from '@mui/material';
 import {
   CheckSharp,
@@ -40,8 +39,8 @@ export const EmbedModalContent = forwardRef<any, IEmbedModalContentProps>(
       (copied && 'Copied to clipboard!') ||
       (failed && 'Could not copy to clipboard.') ||
       'Copy code to clipboard.';
-    const styles = useEmbedModalContentStyles({});
-    const rootClassNames = clsx(className, styles.root);
+    const { classes: styles, cx } = useEmbedModalContentStyles();
+    const rootClassNames = cx(className, 'root');
     const iconClasses = {
       root: styles.iconRoot
     };

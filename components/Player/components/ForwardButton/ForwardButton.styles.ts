@@ -3,13 +3,12 @@
  * Styles and theme for ForwardButton.
  */
 
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useForwardButtonStyles = makeStyles(() =>
-  createStyles({
-    root: {},
-    iconRoot: {
-      fontSize: 'inherit'
-    }
-  })
-);
+export const useForwardButtonStyles = makeStyles()(() => ({
+  root: {},
+
+  iconRoot: {
+    fontSize: 'inherit'
+  }
+}));

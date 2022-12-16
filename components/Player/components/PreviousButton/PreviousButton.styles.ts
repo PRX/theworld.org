@@ -3,13 +3,12 @@
  * Styles and theme for PreviousButton.
  */
 
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const usePreviousButtonStyles = makeStyles(() =>
-  createStyles({
-    root: {},
-    iconRoot: {
-      fontSize: 'inherit'
-    }
-  })
-);
+export const usePreviousButtonStyles = makeStyles()(() => ({
+  root: {},
+
+  iconRoot: {
+    fontSize: 'inherit'
+  }
+}));

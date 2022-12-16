@@ -3,13 +3,13 @@
  * Styles and theme for PlayerProgress.
  */
 
-import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { alpha } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
 const trackSize = 5;
 
-export const usePlayerProgressStyles = makeStyles((theme: Theme) =>
-  createStyles({
+export const usePlayerProgressStyles = makeStyles<void, 'root'>()(
+  (theme, _params, classes) => ({
     root: {
       display: 'grid',
       position: 'relative',
@@ -70,7 +70,7 @@ export const usePlayerProgressStyles = makeStyles((theme: Theme) =>
         color: theme.palette.secondary.contrastText,
         pointerEvents: 'none'
       },
-      '$root:hover &, $root[data-scrubbing] &': {
+      [`.${classes.root}:hover &, .${classes.root}[data-scrubbing] &`]: {
         scale: 3,
         boxShadow: theme.shadows[2],
         opacity: 0.9999,

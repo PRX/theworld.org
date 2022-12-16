@@ -4,7 +4,6 @@
  */
 
 import React, { useContext } from 'react';
-import clsx from 'clsx';
 import { IconButtonProps, Tooltip } from '@mui/material';
 import { Replay5Sharp } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
@@ -15,8 +14,8 @@ export interface IReplayButtonProps extends IconButtonProps {}
 
 export const ReplayButton = ({ className, ...other }: IReplayButtonProps) => {
   const { replay } = useContext(PlayerContext);
-  const styles = useReplayButtonStyles({});
-  const rootClassNames = clsx(className, styles.root);
+  const { classes: styles, cx } = useReplayButtonStyles();
+  const rootClassNames = cx(className, 'root');
   const iconClasses = {
     root: styles.iconRoot
   };

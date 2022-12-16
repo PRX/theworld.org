@@ -3,13 +3,12 @@
  * Styles and theme for NextButton.
  */
 
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useNextButtonStyles = makeStyles(() =>
-  createStyles({
-    root: {},
-    iconRoot: {
-      fontSize: 'inherit'
-    }
-  })
-);
+export const useNextButtonStyles = makeStyles()(() => ({
+  root: {},
+
+  iconRoot: {
+    fontSize: 'inherit'
+  }
+}));

@@ -3,12 +3,12 @@
  * Styles and theme for TrackInfo.
  */
 
-import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { alpha } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useTrackInfoStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: ({ hasLink }: any) => ({
+export const useTrackInfoStyles = makeStyles<{ hasLink: boolean }>()(
+  (theme, { hasLink }) => ({
+    root: {
       position: 'relative',
       overflow: 'hidden',
       padding: theme.typography.pxToRem(16),
@@ -21,7 +21,7 @@ export const useTrackInfoStyles = makeStyles((theme: Theme) =>
           backgroundColor: alpha(theme.palette.primary.main, 0.1)
         }
       })
-    }),
+    },
     layout: {
       display: 'grid',
       gridTemplateColumns: 'min-content auto',

@@ -3,33 +3,32 @@
  * Styles and theme for PlayAudioButton.
  */
 
-import { Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const playAudioButtonStyles = makeStyles((theme: Theme) =>
-  createStyles({
+export const playAudioButtonStyles = makeStyles<{ audioIsPlaying: boolean }>()(
+  (theme, { audioIsPlaying }) => ({
     root: {},
     circularProgressPrimary: {
       color: 'inherit'
     },
-    iconButtonRoot: ({ playing }: any) => ({
+    iconButtonRoot: {
       borderRadius: '50%',
       padding: '0.35em',
-      ...(!playing && {
+      ...(!audioIsPlaying && {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
         '&:hover': {
           backgroundColor: theme.palette.primary.light
         }
       }),
-      ...(playing && {
+      ...(audioIsPlaying && {
         backgroundColor: theme.palette.secondary.main,
         color: theme.palette.secondary.contrastText,
         '&:hover': {
           backgroundColor: theme.palette.secondary.dark
         }
       })
-    }),
+    },
     iconButtonLabel: {
       display: 'grid',
       '& > *': {

@@ -5,7 +5,6 @@
 
 import React from 'react';
 import { useStore } from 'react-redux';
-import clsx from 'clsx';
 import { IconButtonProps, Tooltip } from '@mui/material';
 import { CloseSharp, PlaylistPlaySharp } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
@@ -22,8 +21,8 @@ export const TogglePlaylistButton = ({
   const state = store.getState();
   const playlistOpen = getUiPlayerPlaylistOpen(state);
   const tooltipTitle = playlistOpen ? 'Close Playlist' : 'Open Playlist';
-  const styles = useTogglePlaylistButtonStyles({});
-  const rootClassNames = clsx(className, styles.root);
+  const { classes: styles, cx } = useTogglePlaylistButtonStyles();
+  const rootClassNames = cx(className, 'root');
   const iconClasses = {
     root: styles.iconRoot
   };

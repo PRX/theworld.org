@@ -5,14 +5,7 @@
 
 import React, { useContext } from 'react';
 import Image from 'next/legacy/image';
-import clsx from 'clsx';
-import {
-  Box,
-  BoxProps,
-  IconButton,
-  Tooltip,
-  Typography
-} from '@mui/material';
+import { Box, BoxProps, IconButton, Tooltip, Typography } from '@mui/material';
 import { DeleteSharp, DragHandleSharp } from '@mui/icons-material';
 import { ContentLink } from '@components/ContentLink';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
@@ -27,7 +20,6 @@ export interface IPlaylistItemProps extends BoxProps {
 export const PlaylistItem = ({
   audio,
   className,
-  onPointerDown,
   ...other
 }: IPlaylistItemProps) => {
   const { state, removeTrack } = useContext(PlayerContext);
@@ -39,11 +31,11 @@ export const PlaylistItem = ({
   const thumbnailAspectRatio = 16 / 9;
   const thumbnailHeight = 48;
   const thumbnailWidth = thumbnailHeight * thumbnailAspectRatio;
-  const styles = usePlaylistItemStyles({
+  const { classes: styles, cx } = usePlaylistItemStyles({
     isCurrentTrack,
     hasLink: !!linkResource
   });
-  const rootClassNames = clsx(className, styles.root);
+  const rootClassNames = cx(className, 'root');
   const iconButtonClasses = {
     root: styles.iconButtonRoot
   };
@@ -92,11 +84,7 @@ export const PlaylistItem = ({
           ) : null}
         </Box>
         {linkResource ? (
-          <ContentLink
-            data={linkResource}
-            className={clsx(styles.link)}
-            onPointerDown={onPointerDown}
-          />
+          <ContentLink data={linkResource} className={styles.link} />
         ) : null}
       </Box>
       <Box className={styles.controls}>

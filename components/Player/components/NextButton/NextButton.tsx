@@ -17,8 +17,8 @@ export const NextButton = ({ className, ...other }: INextButtonProps) => {
   const { nextTrack, state } = useContext(PlayerContext);
   const { currentTrackIndex, tracks } = state;
   const disabled = tracks ? currentTrackIndex === tracks.length - 1 : true;
-  const styles = useNextButtonStyles({});
-  const rootClassNames = clsx(className, styles.root);
+  const { classes: styles, cx } = useNextButtonStyles();
+  const rootClassNames = clsx(className, 'root');
   const iconClasses = {
     root: styles.iconRoot
   };

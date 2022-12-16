@@ -4,7 +4,6 @@
  */
 
 import React, { useContext } from 'react';
-import clsx from 'clsx';
 import { Switch, SwitchProps, Tooltip } from '@mui/material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { useAutoplayButtonStyles } from './AutoplayButton.styles';
@@ -18,8 +17,8 @@ export const AutoplayButton = ({
 }: IAutoplayButtonProps) => {
   const { state, toggleAutoplay } = useContext(PlayerContext);
   const { autoplay } = state;
-  const styles = useAutoplayButtonStyles({});
-  const rootClassNames = clsx(className, styles.root);
+  const { classes: styles, cx } = useAutoplayButtonStyles();
+  const rootClassNames = cx(className, 'root');
   const rootClasses = {
     switchBase: styles.switchBase,
     colorPrimary: styles.colorPrimary,

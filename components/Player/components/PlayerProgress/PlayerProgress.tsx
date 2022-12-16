@@ -43,7 +43,7 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
     playerProgressStateReducer,
     playerProgressInitialState
   );
-  const classes = usePlayerProgressStyles({});
+  const { classes } = usePlayerProgressStyles();
   const { scrubPosition, played, playedSeconds, duration } = state;
   const {
     currentTrackIndex,

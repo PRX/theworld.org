@@ -4,7 +4,6 @@
  */
 
 import React from 'react';
-import clsx from 'clsx';
 import { Box, BoxProps } from '@mui/material';
 import { IAudioData } from '@components/Player/types';
 import { useAudioControlsStyles } from './AudioControls.styles';
@@ -26,11 +25,8 @@ export const AudioControls = ({
   size = 'medium',
   ...other
 }: IAudioControlsProps) => {
-  const classes = useAudioControlsStyles({
-    variant,
-    size
-  });
-  const rootClasses = clsx(className, classes.root);
+  const { classes, cx } = useAudioControlsStyles();
+  const rootClasses = cx(className, 'root');
 
   return (
     <Box

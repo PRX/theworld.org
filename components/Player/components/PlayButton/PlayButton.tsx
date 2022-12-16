@@ -4,7 +4,6 @@
  */
 
 import React, { useContext } from 'react';
-import clsx from 'clsx';
 import { IconButtonProps, Tooltip } from '@mui/material';
 import { PauseSharp, PlayArrowSharp } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
@@ -17,10 +16,10 @@ export const PlayButton = ({ className, ...other }: IPlayButtonProps) => {
   const { state, togglePlayPause } = useContext(PlayerContext);
   const { playing } = state;
   const tooltipTitle = playing ? 'Pause' : 'Play';
-  const styles = usePlayButtonStyles({
+  const { classes: styles, cx } = usePlayButtonStyles({
     playing
   });
-  const rootClassNames = clsx(className, styles.root);
+  const rootClassNames = cx(className, 'root');
   const iconClasses = {
     root: styles.iconRoot
   };

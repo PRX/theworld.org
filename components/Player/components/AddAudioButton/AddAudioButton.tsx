@@ -5,7 +5,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import clsx from 'clsx';
 import { CircularProgress, NoSsr, Tooltip } from '@mui/material';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@mui/icons-material';
@@ -42,11 +41,11 @@ export const AddAudioButton = ({
   const { tracks } = playerState;
   const [isQueued, setIsQueued] = useState(false);
   const tooltipTitle = isQueued ? 'Remove From Playlist' : 'Add to Playlist';
-  const styles = useAddAudioButtonStyles({
+  const { classes: styles, cx } = useAddAudioButtonStyles({
     isQueued,
     loading
   });
-  const rootClassNames = clsx(styles.root, className);
+  const rootClassNames = cx('root', className);
   const iconButtonClasses = {
     root: styles.iconButtonRoot,
     ...classes

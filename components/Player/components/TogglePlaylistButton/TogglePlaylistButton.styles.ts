@@ -3,13 +3,12 @@
  * Styles and theme for TogglePlaylistButton.
  */
 
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useTogglePlaylistButtonStyles = makeStyles(() =>
-  createStyles({
-    root: {},
-    iconRoot: {
-      fontSize: 'inherit'
-    }
-  })
-);
+export const useTogglePlaylistButtonStyles = makeStyles()(() => ({
+  root: {},
+
+  iconRoot: {
+    fontSize: 'inherit'
+  }
+}));

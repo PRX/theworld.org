@@ -4,7 +4,6 @@
  */
 
 import React, { useContext } from 'react';
-import clsx from 'clsx';
 import { IconButtonProps, Tooltip } from '@mui/material';
 import { Forward30Sharp } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
@@ -15,8 +14,8 @@ export interface IForwardButtonProps extends IconButtonProps {}
 
 export const ForwardButton = ({ className, ...other }: IForwardButtonProps) => {
   const { forward } = useContext(PlayerContext);
-  const styles = useForwardButtonStyles({});
-  const rootClassNames = clsx(className, styles.root);
+  const { classes: styles, cx } = useForwardButtonStyles();
+  const rootClassNames = cx(className, 'root');
   const iconClasses = {
     root: styles.iconRoot
   };

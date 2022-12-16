@@ -3,12 +3,12 @@
  * Styles and theme for AudioPlayer.
  */
 
-import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { alpha } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const usePlayButtonStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: ({ playing }: any) => ({
+export const usePlayButtonStyles = makeStyles<{ playing: boolean }>()(
+  (theme, { playing }) => ({
+    root: {
       ...(!playing && {
         color: theme.palette.grey[900],
         backgroundColor: alpha(theme.palette.grey[900], 0.1),
@@ -23,7 +23,7 @@ export const usePlayButtonStyles = makeStyles((theme: Theme) =>
           backgroundColor: theme.palette.primary.light
         }
       })
-    }),
+    },
     iconRoot: {
       fontSize: 'inherit'
     }

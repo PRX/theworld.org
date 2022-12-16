@@ -5,7 +5,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import clsx from 'clsx';
 import { CircularProgress, NoSsr, Tooltip } from '@mui/material';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { PauseSharp, PlayArrowSharp, VolumeUpSharp } from '@mui/icons-material';
@@ -51,10 +50,10 @@ export const PlayAudioButton = ({
       currentTrack?.guid === (audio || audioData).guid
   );
   const tooltipTitle = audioIsPlaying ? 'Pause' : 'Play';
-  const styles = playAudioButtonStyles({
+  const { classes: styles, cx } = playAudioButtonStyles({
     audioIsPlaying
   });
-  const rootClassNames = clsx(styles.root, className);
+  const rootClassNames = cx('root', className);
   const iconButtonClasses = {
     root: styles.iconButtonRoot,
     label: styles.iconButtonLabel,

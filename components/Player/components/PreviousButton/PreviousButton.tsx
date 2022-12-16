@@ -4,7 +4,6 @@
  */
 
 import React, { useContext } from 'react';
-import clsx from 'clsx';
 import { IconButtonProps, Tooltip } from '@mui/material';
 import { SkipPrevious } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
@@ -20,8 +19,8 @@ export const PreviousButton = ({
   const { previousTrack, state } = useContext(PlayerContext);
   const { currentTrackIndex } = state;
   const disabled = !currentTrackIndex;
-  const styles = usePreviousButtonStyles({});
-  const rootClassNames = clsx(className, styles.root);
+  const { classes: styles, cx } = usePreviousButtonStyles();
+  const rootClassNames = cx(className, 'root');
   const iconClasses = {
     root: styles.iconRoot
   };
