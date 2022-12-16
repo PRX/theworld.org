@@ -37,7 +37,7 @@ import { useStoryCardStyles, storyCardTheme } from './StoryCard.styles';
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 export interface StoryCardProps {
@@ -121,7 +121,7 @@ export const StoryCard = ({
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [pathname, router.events]);
 
   return (
     <ThemeProvider theme={storyCardTheme}>

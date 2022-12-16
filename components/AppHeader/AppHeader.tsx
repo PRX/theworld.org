@@ -50,7 +50,7 @@ export const AppHeader = () => {
       Router.events.off('routeChangeComplete', handleRouteChangeComplete);
       unsub();
     };
-  }, []);
+  }, [store, unsub]);
 
   const handleDrawerOpen = () => () => {
     store.dispatch({ type: 'UI_DRAWER_OPEN' });

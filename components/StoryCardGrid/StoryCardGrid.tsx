@@ -9,7 +9,6 @@ import dynamic from 'next/dynamic';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
 import { parse, UrlWithParsedQuery } from 'url';
-import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -46,11 +45,11 @@ import {
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const PlayAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.PlayAudioButton)
+  import('@components/Player/components').then((mod) => mod.PlayAudioButton)
 ) as React.FC<IPlayAudioButtonProps>;
 
 const AddAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AddAudioButton)
+  import('@components/Player/components').then((mod) => mod.AddAudioButton)
 ) as React.FC<IAddAudioButtonProps>;
 
 export interface StoryCardGridProps extends BoxProps {
@@ -106,7 +105,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [router.events]);
 
   return (
     <ThemeProvider theme={storyCardTheme}>

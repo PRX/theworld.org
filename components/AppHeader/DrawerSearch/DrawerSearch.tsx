@@ -44,11 +44,12 @@ export const DrawerSearch = () => {
     queryRef.current.focus();
   };
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return (
     <ThemeProvider theme={appDrawerSearchTheme}>

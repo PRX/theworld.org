@@ -73,100 +73,97 @@ const ContentProxy = ({ type }: Props) => {
       return <DynamicTeam />;
 
     default:
-      return <></>;
+      return null;
   }
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  store => async ({
-    res,
-    req,
-    params
-  }): Promise<GetServerSidePropsResult<any>> => {
-    let resourceId: string;
-    let resourceType: string = 'homepage';
-    let redirect: string;
-    const { alias } = params;
-    const aliasPath = (alias as string[]).join('/');
-    const rgxFileExt = /\.\w+$/;
+  (store) =>
+    async ({ res, req, params }): Promise<GetServerSidePropsResult<any>> => {
+      let resourceId: string;
+      let resourceType: string = 'homepage';
+      let redirect: string;
+      const { alias } = params;
+      const aliasPath = (alias as string[]).join('/');
+      const rgxFileExt = /\.\w+$/;
 
-    if (!rgxFileExt.test(aliasPath)) {
-      switch (aliasPath) {
-        case 'programs/the-world/team':
-          resourceId = 'the_world';
-          resourceType = 'team';
-          break;
+      if (!rgxFileExt.test(aliasPath)) {
+        switch (aliasPath) {
+          case 'programs/the-world/team':
+            resourceId = 'the_world';
+            resourceType = 'team';
+            break;
 
-        default: {
-          const aliasData = await store.dispatch<any>(
-            fetchAliasData(aliasPath)
-          );
+          default: {
+            const aliasData = await store.dispatch<any>(
+              fetchAliasData(aliasPath)
+            );
 
-          // Update resource id and type.
-          if (aliasData?.type === 'redirect--external') {
-            redirect = aliasData.url;
-          } else if (aliasData?.id) {
-            const { id, type } = aliasData as IPriApiResource;
-            resourceId = id as string;
-            resourceType = type;
-          } else {
-            resourceType = null;
-          }
-          break;
-        }
-      }
-
-      // Return object with redirect url.
-      if (redirect) {
-        return {
-          redirect: {
-            permanent: false,
-            destination: redirect
-          }
-        };
-      }
-
-      // Fetch resource data.
-      if (resourceType) {
-        const fetchData = getResourceFetchData(resourceType);
-
-        if (fetchData) {
-          store.dispatch<any>({
-            type: 'SET_COOKIES',
-            payload: {
-              cookies: req.cookies
+            // Update resource id and type.
+            if (aliasData?.type === 'redirect--external') {
+              redirect = aliasData.url;
+            } else if (aliasData?.id) {
+              const { id, type } = aliasData as IPriApiResource;
+              resourceId = id as string;
+              resourceType = type;
+            } else {
+              resourceType = null;
             }
-          });
+            break;
+          }
+        }
 
-          const data = await store.dispatch(fetchData(resourceId, req, res));
-
-          await store.dispatch<any>(fetchAppData());
-
-          await store.dispatch<any>(
-            fetchCtaRegionGroupData('tw_cta_regions_site')
-          );
-
-          res.setHeader(
-            'Cache-Control',
-            `public, s-maxage=${60 * 60}, stale-while-revalidate=${60 * 5}`
-          );
-
+        // Return object with redirect url.
+        if (redirect) {
           return {
-            props: {
-              type: resourceType,
-              id: resourceId,
-              dataHash: crypto
-                .createHash('sha256')
-                .update(JSON.stringify(data))
-                .digest('hex')
+            redirect: {
+              permanent: false,
+              destination: redirect
             }
           };
         }
-      }
-    }
 
-    return { notFound: true };
-  }
+        // Fetch resource data.
+        if (resourceType) {
+          const fetchData = getResourceFetchData(resourceType);
+
+          if (fetchData) {
+            store.dispatch<any>({
+              type: 'SET_COOKIES',
+              payload: {
+                cookies: req.cookies
+              }
+            });
+
+            const data = await store.dispatch(fetchData(resourceId, req, res));
+
+            await store.dispatch<any>(fetchAppData());
+
+            await store.dispatch<any>(
+              fetchCtaRegionGroupData('tw_cta_regions_site')
+            );
+
+            res.setHeader(
+              'Cache-Control',
+              `public, s-maxage=${60 * 60}, stale-while-revalidate=${60 * 5}`
+            );
+
+            return {
+              props: {
+                type: resourceType,
+                id: resourceId,
+                dataHash: crypto
+                  .createHash('sha256')
+                  .update(JSON.stringify(data))
+                  .digest('hex')
+              }
+            };
+          }
+        }
+      }
+
+      return { notFound: true };
+    }
 );
 
 export default ContentProxy;

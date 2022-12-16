@@ -75,8 +75,11 @@ export const Bio = () => {
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories, page, next } = storiesState || {};
   const segmentsState = getCollectionData(state, type, id, 'segments');
-  const { items: segments, count: segmentsCount, size: segmentsSize } =
-    segmentsState || {};
+  const {
+    items: segments,
+    count: segmentsCount,
+    size: segmentsSize
+  } = segmentsState || {};
   const segmentsPageCount = Math.ceil(segmentsCount / segmentsSize);
   const {
     metatags,
@@ -98,12 +101,12 @@ export const Bio = () => {
     website,
     rss,
     contact
-  ].filter(v => !!v);
+  ].filter((v) => !!v);
 
   const [loading, setLoading] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);
   const [segmentsPage, setSegmentsPage] = useState(1);
-  const { classes, cx } = bioStyles();
+  const { cx } = bioStyles();
 
   // Plausible Events.
   const props = {
@@ -111,11 +114,12 @@ export const Bio = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Person', { props }]];
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -124,7 +128,7 @@ export const Bio = () => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [page]);
+  }, [oldScrollY, page]);
 
   const loadMoreStories = async () => {
     setLoading(true);

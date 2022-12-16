@@ -3,10 +3,9 @@
  * Styles for Tags.
  */
 
-import { Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const tagsStyles = makeStyles()(theme => ({
+export const tagsStyles = makeStyles()((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',

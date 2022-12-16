@@ -37,7 +37,7 @@ export const AppLoadingBar = () => {
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [router.events]);
 
   return (
     <ThemeProvider theme={appLoadingBarTheme}>

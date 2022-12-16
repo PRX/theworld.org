@@ -6,8 +6,8 @@
 import { createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const sidebarFooterTheme = (theme: Theme) => {
-  return createTheme(theme, {
+export const sidebarFooterTheme = (theme: Theme) =>
+  createTheme(theme, {
     overrides: {
       MuiPagination: {
         ul: {
@@ -16,7 +16,6 @@ export const sidebarFooterTheme = (theme: Theme) => {
       }
     }
   });
-};
 
 export const sidebarFooterStyles = makeStyles()(() => ({
   root: {

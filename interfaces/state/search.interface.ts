@@ -5,7 +5,7 @@
  */
 
 import { AnyAction } from 'redux';
-import { customsearch_v1 } from 'googleapis';
+import { customsearch_v1 as customSearch } from 'googleapis';
 
 export const searchFacetLabels = ['story', 'episode', 'media'] as const;
 export type SearchFacet = typeof searchFacetLabels[number];
@@ -16,7 +16,7 @@ export interface SearchesState {
   // base64(query)
   [k: string]: {
     // Key: Facet name.
-    [k: string]: customsearch_v1.Schema$Search[];
+    [k: string]: customSearch.Schema$Search[];
   };
 }
 
@@ -32,6 +32,6 @@ export interface SearchAction extends AnyAction {
     search?: SearchState;
     query: string;
     label: SearchFacetAll;
-    data: { label: string; data: customsearch_v1.Schema$Result }[];
+    data: { label: string; data: customSearch.Schema$Result }[];
   };
 }

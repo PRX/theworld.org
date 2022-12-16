@@ -5,7 +5,6 @@
 
 import React, { HTMLAttributes, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFacebook,
@@ -63,7 +62,7 @@ export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
   const [open, setOpen] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   const iconsMap = getIconsMap(icons);
-  const {classes: styles, cx} = useSocialShareMenuStyles();
+  const { classes: styles, cx } = useSocialShareMenuStyles();
   const rootClassNames = cx('root', className);
   const speedDialClasses = {
     actionsClosed: styles.actionsClosed
@@ -92,11 +91,12 @@ export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
     window.open(url, '_ blank');
   };
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return (
     !!links && (

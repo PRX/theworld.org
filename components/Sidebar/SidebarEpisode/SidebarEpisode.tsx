@@ -64,11 +64,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
             <ContentLink data={data} className={cx('link')} />
           </CardContent>
         </CardActionArea>
-        {segments && (
-          <>
-            <SidebarAudioList disablePadding data={segments} />
-          </>
-        )}
+        {segments && <SidebarAudioList disablePadding data={segments} />}
         {program?.metatags && (
           <SidebarFooter>
             <ContentButton

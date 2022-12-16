@@ -132,11 +132,12 @@ export const Program = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Page', { props }]];
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -145,7 +146,7 @@ export const Program = () => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [page, episodesPage]);
+  }, [page, episodesPage, oldScrollY]);
 
   const loadMoreStories = async () => {
     setLoadingStories(true);
@@ -201,9 +202,7 @@ export const Program = () => {
               )}
             </Box>
           )}
-          {isEpisodesView && (
-            <EpisodeCard data={latestEpisode} label="Latest Episode" />
-          )}
+          {isEpisodesView && <EpisodeCard data={latestEpisode} />}
           {ctaInlineTop && (
             <>
               <Hidden xsDown>

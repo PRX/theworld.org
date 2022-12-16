@@ -12,13 +12,13 @@ import React, {
   useRef
 } from 'react';
 import { useStore } from 'react-redux';
+import { usePlausible } from 'next-plausible';
 import { UiAction } from '@interfaces/state';
 import { convertDurationToSeconds } from '@lib/convert/string/convertDurationToSeconds';
 import { PlayerContext } from './contexts';
 import { PlayerActionTypes } from './state';
 import { IAudioData } from './types';
 import { playerInitialState, playerStateReducer } from './state/Player.reducer';
-import { usePlausible } from 'next-plausible';
 
 export interface IPlayerProps extends React.PropsWithChildren<{}> {}
 
@@ -33,14 +33,8 @@ export const Player = ({ children }: IPlayerProps) => {
   const [state, dispatch] = useReducer(playerStateReducer, {
     ...playerInitialState
   });
-  const {
-    tracks,
-    playing,
-    currentTrackIndex,
-    currentTime,
-    muted,
-    volume
-  } = state;
+  const { tracks, playing, currentTrackIndex, currentTime, muted, volume } =
+    state;
   const currentTrack = tracks?.[currentTrackIndex] || ({} as IAudioData);
   const currentTrackDurationSeconds = useMemo(
     () => convertDurationToSeconds(currentTrack.duration),
@@ -75,26 +69,29 @@ export const Player = ({ children }: IPlayerProps) => {
     });
   };
 
-  const playAudio = (audioData: IAudioData) => {
-    const audioTrackIndex = (tracks || []).findIndex(
-      ({ guid }) => guid === audioData.guid
-    );
-    const notQueued = audioTrackIndex === -1;
+  const playAudio = useCallback(
+    (audioData: IAudioData) => {
+      const audioTrackIndex = (tracks || []).findIndex(
+        ({ guid }) => guid === audioData.guid
+      );
+      const notQueued = audioTrackIndex === -1;
 
-    if (notQueued) {
-      // Plausible: Queued
-      plausible('App Player: Queued', {
-        props: {
-          Title: audioData.title,
-          'Queued From': audioData.queuedFrom
-        }
+      if (notQueued) {
+        // Plausible: Queued
+        plausible('App Player: Queued', {
+          props: {
+            Title: audioData.title,
+            'Queued From': audioData.queuedFrom
+          }
+        });
+      }
+      dispatch({
+        type: PlayerActionTypes.PLAYER_PLAY_AUDIO,
+        payload: audioData
       });
-    }
-    dispatch({
-      type: PlayerActionTypes.PLAYER_PLAY_AUDIO,
-      payload: audioData
-    });
-  };
+    },
+    [plausible, tracks]
+  );
 
   const pause = () => {
     dispatch({
@@ -174,20 +171,23 @@ export const Player = ({ children }: IPlayerProps) => {
     });
   };
 
-  const addTrack = (newTrack: IAudioData) => {
-    // Plausible: Queued
-    plausible('App Player: Queued', {
-      props: {
-        Title: newTrack.title,
-        'Queued From': newTrack.queuedFrom
-      }
-    });
+  const addTrack = useCallback(
+    (newTrack: IAudioData) => {
+      // Plausible: Queued
+      plausible('App Player: Queued', {
+        props: {
+          Title: newTrack.title,
+          'Queued From': newTrack.queuedFrom
+        }
+      });
 
-    dispatch({
-      type: PlayerActionTypes.PLAYER_ADD_TRACK,
-      payload: newTrack
-    });
-  };
+      dispatch({
+        type: PlayerActionTypes.PLAYER_ADD_TRACK,
+        payload: newTrack
+      });
+    },
+    [plausible]
+  );
 
   const removeTrack = (track: IAudioData) => {
     dispatch({
@@ -264,7 +264,7 @@ export const Player = ({ children }: IPlayerProps) => {
       navigator?.mediaSession.setActionHandler('pause', () => {
         pause();
       });
-      navigator?.mediaSession.setActionHandler('seekto', e => {
+      navigator?.mediaSession.setActionHandler('seekto', (e) => {
         seekTo(e.seekTime);
       });
       navigator?.mediaSession.setActionHandler('seekbackward', () => {
@@ -322,13 +322,14 @@ export const Player = ({ children }: IPlayerProps) => {
       setVolume
     }),
     [
-      audioElm,
       state,
-      forward,
-      replay,
-      seekBy,
+      playAudio,
       seekTo,
+      seekBy,
+      replay,
+      forward,
       seekToRelative,
+      addTrack,
       setVolume
     ]
   );
@@ -339,20 +340,23 @@ export const Player = ({ children }: IPlayerProps) => {
       .then(() => {
         updateMediaSession();
       })
-      .catch(e => {
+      .catch((e) => {
         // eslint-disable-next-line no-console
         console.error(e);
       });
-  }, [currentTrack?.title]);
+  }, [updateMediaSession]);
 
   const pauseAudio = useCallback(() => {
     audioElm.current.pause();
   }, []);
 
-  const loadAudio = (src: string) => {
-    audioElm.current.preload = playing ? 'auto' : 'none';
-    audioElm.current.src = src;
-  };
+  const loadAudio = useCallback(
+    (src: string) => {
+      audioElm.current.preload = playing ? 'auto' : 'none';
+      audioElm.current.src = src;
+    },
+    [playing]
+  );
 
   const handlePlay = useCallback(() => {
     if (!playing) {
@@ -387,7 +391,7 @@ export const Player = ({ children }: IPlayerProps) => {
       });
       startPlaying();
     }
-  }, [playing, startPlaying]);
+  }, [currentTrack.title, plausible, playing, startPlaying]);
 
   const handleEnded = useCallback(() => {
     // Plausible: Completed
@@ -400,7 +404,7 @@ export const Player = ({ children }: IPlayerProps) => {
     dispatch({
       type: PlayerActionTypes.PLAYER_COMPLETE_CURRENT_TRACK
     });
-  }, [currentTrack?.title]);
+  }, [currentTrack.title, plausible]);
 
   const handleHotkey = useCallback(
     (event: KeyboardEventWithTarget) => {
@@ -542,7 +546,7 @@ export const Player = ({ children }: IPlayerProps) => {
         type: 'UI_PLAYER_CLOSE'
       });
     }
-  }, [tracks]);
+  }, [store, tracks]);
 
   useEffect(() => {
     // Initialize audio element.
@@ -585,6 +589,7 @@ export const Player = ({ children }: IPlayerProps) => {
    * Solution was for video playback, but same issue seems to apply to audio.
    */
   if (typeof window !== 'undefined') {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useLayoutEffect(() => {
       if (!audioElm.current) return;
 
@@ -610,7 +615,7 @@ export const Player = ({ children }: IPlayerProps) => {
 
   useEffect(() => {
     loadAudio(url);
-  }, [url]);
+  }, [loadAudio, url]);
 
   useEffect(
     () => () => {

@@ -22,14 +22,13 @@ export const Sidebar = ({
   stretch,
   elevated
 }: ISidebarProps) => {
-  const { classes, cx } = sidebarStyles();
+  const { cx } = sidebarStyles();
   const component = item ? 'aside' : null;
 
   return (
     <Box
       component={component}
-      className={cx(className, {
-        root: true,
+      className={cx(className, 'root', {
         container,
         item,
         stretch,

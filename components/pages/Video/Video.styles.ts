@@ -27,8 +27,6 @@ export const videoTheme = (theme: Theme) =>
     }
   });
 
-// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
-export const videoStyles = makeStyles()((theme: Theme) =>
-  ({
-    ...storyBodyStyles(theme)
-  }));
+export const videoStyles = makeStyles()((theme) => ({
+  ...storyBodyStyles(theme)
+}));

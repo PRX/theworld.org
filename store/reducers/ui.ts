@@ -5,15 +5,13 @@
  */
 
 import { HYDRATE } from 'next-redux-wrapper';
-import { RootState, UiState, UiAction } from '@interfaces/state';
+import { UiState, UiAction } from '@interfaces/state';
 
-type State = UiState | RootState;
-
-export const ui = (state = {}, action: UiAction): State => {
+export const ui = (action: UiAction, state = {}) => {
   const { player } = state as UiState;
   const { playlistOpen } = player || {};
 
-  switch (action.type) {
+  switch (action?.type) {
     case HYDRATE:
       return { ...state, ...action.payload.ui };
 

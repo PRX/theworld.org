@@ -25,7 +25,7 @@ export const LandingPageHeader = ({
   title,
   subhead
 }: ILandingPageHeaderProps) => {
-  const { classes, cx } = landingPageHeaderStyles();
+  const { cx } = landingPageHeaderStyles();
   const { alt } = image || ({} as any);
   return (
     <ThemeProvider theme={landingPageHeaderTheme}>

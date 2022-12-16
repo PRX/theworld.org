@@ -26,7 +26,7 @@ interface Props {
 }
 
 export const StoryRelatedLinks = ({ data: related }: Props) => {
-  const classes = storyRelatedLinksStyles({});
+  const { classes } = storyRelatedLinksStyles();
   const imageWidth = [
     ['max-width: 600px', '100vw'],
     [null, '300px']
@@ -36,7 +36,7 @@ export const StoryRelatedLinks = ({ data: related }: Props) => {
   return (
     <ThemeProvider theme={storyRelatedLinksTheme}>
       <Grid container spacing={2} classes={{ root: classes.root }}>
-        {related.map(story => {
+        {related.map((story) => {
           const { id: storyId, title, image } = story;
           return (
             <Grid item md={3} sm={6} xs={12} key={storyId}>

@@ -49,11 +49,12 @@ export const AppCtaLoadUnder = () => {
     setClosed(true);
   };
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return CtaMessageComponent && shownMessage && !closed ? (
     <ThemeProvider theme={appCtaLoadUnderTheme}>

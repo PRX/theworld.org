@@ -10,6 +10,7 @@ import { ThunkAction } from 'redux-thunk';
 import { IPriApiResource } from 'pri-api-library/types';
 
 export interface FetchDataFunc {
+  // eslint-disable-next-line no-unused-vars
   (id: string, req: IncomingMessage): ThunkAction<void, {}, {}, AnyAction>;
 }
 

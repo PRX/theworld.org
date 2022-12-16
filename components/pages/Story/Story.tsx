@@ -132,13 +132,14 @@ export const Story = () => {
         type: 'UI_HIDE_SOCIAL_SHARE_MENU'
       });
     };
-  }, [data.shareLinks]);
+  }, [data, data.shareLinks, store]);
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return (
     <>

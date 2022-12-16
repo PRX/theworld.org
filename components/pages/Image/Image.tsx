@@ -13,7 +13,6 @@ import { HtmlContent } from '@components/HtmlContent';
 import { LedeImage } from '@components/LedeImage';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { imageStyles, imageTheme } from './Image.styles';
 import { ImageHeader } from './components/AudioHeader';
@@ -30,12 +29,7 @@ export const Image = () => {
     setState(store.getState());
   });
   const { cx } = imageStyles();
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
-
+  const data = getDataByResource(state, type, id);
   const { metatags, title, description } = data;
 
   // CTA data.
@@ -52,19 +46,12 @@ export const Image = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Image', { props }]];
 
-  useEffect(() => {
-    if (!data.complete) {
-      (async () => {
-        // Get content data.
-        await store.dispatch<any>(fetchAudioData(id));
-        data = getDataByResource(state, type, id);
-      })();
-    }
-
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, [id]);
+    },
+    [unsub]
+  );
 
   return (
     <ThemeProvider theme={imageTheme}>

@@ -9,8 +9,8 @@ import { blue } from '@theme/colors';
 
 const playerHeight = 50;
 
-export const audioPlayerTheme = (theme: Theme) => {
-  return createTheme(theme, {
+export const audioPlayerTheme = (theme: Theme) =>
+  createTheme(theme, {
     overrides: {
       MuiIconButton: {
         root: {
@@ -86,7 +86,6 @@ export const audioPlayerTheme = (theme: Theme) => {
       }
     }
   });
-};
 
 export const audioPlayerStyles = makeStyles<{
   playing: boolean;

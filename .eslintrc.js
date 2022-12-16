@@ -36,6 +36,10 @@ module.exports = {
       'error',
       'never',
       { ignorePackage: true, svg: 'always' }
-    ]
+    ],
+    'import/prefer-default-export': 0,
+    'import/no-extraneous-dependencies': 0,
+    'no-redeclare': 0,
+    'jsx-a11y/media-has-caption': 0
   }
 };

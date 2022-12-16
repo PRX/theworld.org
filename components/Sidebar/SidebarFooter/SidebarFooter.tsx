@@ -14,7 +14,7 @@ import {
 interface ISidebarFooterProps extends HTMLAttributes<{}> {}
 
 export const SidebarFooter = ({ children, className }: ISidebarFooterProps) => {
-  const { classes, cx } = sidebarFooterStyles();
+  const { cx } = sidebarFooterStyles();
 
   return (
     <ThemeProvider theme={sidebarFooterTheme}>

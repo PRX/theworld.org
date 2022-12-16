@@ -60,14 +60,14 @@ export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
               <Grid
                 container
                 spacing={4}
-                justify="center"
+                justifyContent="center"
                 alignContent="center"
               >
                 <Grid item xs={12}>
                   <Box
                     display="grid"
                     gridTemplateColumns="min-content 1fr"
-                    gridGap={16}
+                    gap={16}
                     justifyContent="center"
                     alignItems="center"
                   >

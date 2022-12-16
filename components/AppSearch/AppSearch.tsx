@@ -14,7 +14,7 @@ import React, {
 import { useStore } from 'react-redux';
 import { useRouter } from 'next/router';
 import { parse } from 'url';
-import { customsearch_v1 } from 'googleapis';
+import { customsearch_v1 as customSearch } from 'googleapis';
 import { SearchFacet, searchFacetLabels } from '@interfaces/state';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -73,14 +73,14 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
   const { nextPage: nextPageEpisode } =
     episode?.[episode.length - 1].queries || {};
   const { nextPage: nextPageMedia } = media?.[media.length - 1].queries || {};
-  const getContentData = (results: customsearch_v1.Schema$Search[]) =>
+  const getContentData = (results: customSearch.Schema$Search[]) =>
     (results || [])
       .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
       .map(({ link }) => {
         const { pathname } = parse(link);
         return getContentDataByAlias(state, pathname);
       })
-      .filter(item => !!item && item);
+      .filter((item) => !!item && item);
   const storyData = getContentData(story);
   const episodeData = getContentData(episode);
   const mediaData = getContentData(media);
@@ -99,15 +99,13 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
     store.dispatch<any>(fetchSearchData(queryRef.current.value, 'all'));
   };
 
-  const handleLoadMore = (
-    l: SearchFacet
-  ): MouseEventHandler<HTMLButtonElement> => (
-    e: MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
+  const handleLoadMore =
+    (l: SearchFacet): MouseEventHandler<HTMLButtonElement> =>
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
 
-    store.dispatch<any>(fetchSearchData(query, l));
-  };
+      store.dispatch<any>(fetchSearchData(query, l));
+    };
 
   const handleClearQuery = () => {
     store.dispatch({ type: 'SEARCH_CLEAR_QUERY' });
@@ -133,7 +131,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
       router.events.off('routeChangeError', handleRouteChangeEnd);
       unsub();
     };
-  }, []);
+  }, [router.events, store, unsub]);
 
   useEffect(() => {
     if (staticPage && !hasData) {
@@ -143,7 +141,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
       }
       store.dispatch<any>(fetchSearchData(query, 'all'));
     }
-  }, [query]);
+  }, [hasData, query, staticPage, store]);
 
   const renderSearchForm = () => (
     <form onSubmit={handleSubmit} autoComplete="off">
@@ -186,7 +184,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
               onChange={handleFilterChange}
               aria-label="filter results"
             >
-              {searchFacetLabels.map(l => (
+              {searchFacetLabels.map((l) => (
                 <Tab label={formatTabLabel(l)} value={l} key={l} />
               ))}
             </TabList>
@@ -203,7 +201,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
           {!!storyData.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {storyData.map(item => (
+                {storyData.map((item) => (
                   <Grid item xs={12} key={item.id}>
                     <StoryCard data={item} short />
                   </Grid>
@@ -231,7 +229,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
           {!!episodeData.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {episodeData.map(item => (
+                {episodeData.map((item) => (
                   <Grid item xs={12} md={6} key={item.id}>
                     <EpisodeCard data={item} />
                   </Grid>
@@ -259,7 +257,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
           {!!mediaData.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {mediaData.map(item => (
+                {mediaData.map((item) => (
                   <Grid item xs={12} md={6} key={item.id}>
                     <MediaCard data={item} />
                   </Grid>

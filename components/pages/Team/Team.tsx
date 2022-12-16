@@ -40,7 +40,7 @@ export const Team = () => {
   const [loadingUrl, setLoadingUrl] = useState(null);
   const store = useStore();
   const state = store.getState();
-  const classes = teamStyles({});
+  const { classes } = teamStyles();
   const cx = classNames.bind(classes);
   const { items } = getCollectionData(state, type, id, 'members');
   const imageWidth = [
@@ -90,7 +90,7 @@ export const Team = () => {
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [router.events]);
 
   return (
     <ThemeProvider theme={teamTheme}>

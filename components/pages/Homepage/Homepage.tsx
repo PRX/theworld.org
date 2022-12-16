@@ -31,11 +31,11 @@ import { IButton } from '@interfaces';
 import { AppContext } from '@contexts/AppContext';
 
 const CtaRegion = dynamic(
-  () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
+  () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
 ) as React.FC<ICtaRegionProps>;
 
 const SidebarCta = dynamic(
-  () => import('@components/Sidebar').then(mod => mod.SidebarCta) as any
+  () => import('@components/Sidebar').then((mod) => mod.SidebarCta) as any
 ) as React.FC<ICtaRegionProps>;
 
 export const Homepage = () => {
@@ -86,7 +86,7 @@ export const Homepage = () => {
   const categoriesMenu = drawerMainNav
     ?.filter((item: IButton) => item.name === 'Categories')?.[0]
     ?.children.map(
-      item =>
+      (item) =>
         ({
           id: item.key,
           type: 'link',
@@ -128,9 +128,9 @@ export const Homepage = () => {
       key: 'main top',
       children: (
         <>
-          <Box display="grid" gridTemplateColumns="1fr" gridGap={8}>
+          <Box display="grid" gridTemplateColumns="1fr" gap={8}>
             <StoryCard data={featuredStory} feature priority />
-            <StoryCardGrid data={featuredStories[1]} gridGap={8} />
+            <StoryCardGrid data={featuredStories[1]} gap={8} />
           </Box>
           {inlineTop && (
             <>
@@ -227,11 +227,12 @@ export const Homepage = () => {
     }
   ];
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   const title = 'The World from PRX';
   const description =
@@ -267,7 +268,7 @@ export const Homepage = () => {
         main={mainElements}
         sidebar={sidebarElements}
         mt={3}
-        gridGap={8}
+        gap={8}
       />
     </>
   );

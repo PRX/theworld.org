@@ -52,7 +52,7 @@ export const NewsletterForm = ({
     <CircularProgress color="inherit" size={20} aria-label="Progress Bar" />
   )) || <SendSharp />;
   const isAmp = useAmp();
-  const { classes, cx } = newsletterFormStyles({ compact });
+  const { cx } = newsletterFormStyles({ compact });
 
   const handleChangeEmailAddress = (e: ChangeEvent<HTMLInputElement>) => {
     setData({

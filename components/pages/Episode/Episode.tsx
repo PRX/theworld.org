@@ -35,7 +35,6 @@ import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { UiAction } from '@interfaces/state';
 import { parseUtcDate } from '@lib/parse/date';
-import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
 import {
   getDataByResource,
   getCollectionData,
@@ -56,12 +55,8 @@ export const Episode = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const { classes, cx } = episodeStyles();
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
+  const { cx } = episodeStyles();
+  const data = getDataByResource(state, type, id);
 
   const {
     metatags: dataMetatags,
@@ -76,8 +71,7 @@ export const Episode = () => {
     guests,
     reporters,
     spotifyPlaylist
-  } = data;
-  // const context = [`node:${data.id}`, `node:${data.program.id}`];
+  } = data || ({} as typeof data);
   const metatags = {
     ...dataMetatags,
     ...((dateBroadcast || datePublished) && {
@@ -141,7 +135,7 @@ export const Episode = () => {
     ...(producers || []),
     ...(guests || []),
     ...(reporters || [])
-  ].forEach(person => {
+  ].forEach((person) => {
     plausibleEvents.push([
       `Person: ${person.title}`,
       {
@@ -151,14 +145,6 @@ export const Episode = () => {
   });
 
   useEffect(() => {
-    if (!data.complete) {
-      (async () => {
-        // Get content data.
-        await store.dispatch<any>(fetchEpisodeData(id));
-        data = getDataByResource(state, type, id);
-      })();
-    }
-
     // Show social hare menu.
     const { shareLinks } = data;
     store.dispatch<UiAction>({
@@ -204,7 +190,7 @@ export const Episode = () => {
       });
       unsub();
     };
-  }, [id]);
+  }, [data, id, store, unsub]);
 
   return (
     <ThemeProvider theme={episodeTheme}>

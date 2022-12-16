@@ -3,11 +3,13 @@
  * Override the main app component.
  */
 
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore } from 'react-redux';
 import { AppProps } from 'next/app';
 import PlausibleProvider from 'next-plausible';
-import { ThemeProvider, CssBaseline } from '@material-ui/core';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 import { analytics } from '@config';
 import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
@@ -23,8 +25,17 @@ import { Player } from '@components/Player';
 import { AppPlayer } from '@components/AppPlayer/AppPlayer';
 import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
 import { Playlist } from '@components/Player/components';
+import createEmotionCache from '@lib/generate/cache/emotion/createEmotionCache';
+import '@theme/css/fonts.css';
 
-const AppLayout: FC = ({ children }) => {
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
+
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache;
+}
+
+const AppLayout = ({ children }) => {
   const rootRef = useRef<HTMLDivElement>();
   const uiFooterRef = useRef<HTMLDivElement>();
   const store = useStore();
@@ -44,7 +55,7 @@ const AppLayout: FC = ({ children }) => {
       '--footer-padding',
       `${footerPadding}px`
     );
-  }, [uiFooterRef?.current, playerOpen]);
+  }, [playerOpen]);
 
   useEffect(() => () => {
     unsub();
@@ -91,17 +102,25 @@ const AppLayout: FC = ({ children }) => {
   );
 };
 
-const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+const TwApp = ({
+  Component,
+  emotionCache = clientSideEmotionCache,
+  pageProps
+}: MyAppProps) => {
+  const AnyComponent = Component as any;
   const [plausibleDomain, setPlausibleDomain] = useState(null);
   const { type, id, contentOnly } = pageProps;
-  const contextValue = {
-    page: {
-      resource: {
-        type,
-        id
+  const contextValue = useMemo(
+    () => ({
+      page: {
+        resource: {
+          type,
+          id
+        }
       }
-    }
-  };
+    }),
+    [type, id]
+  );
 
   useEffect(() => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
@@ -119,41 +138,45 @@ const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
 
   if (contentOnly) {
     return (
-      <ThemeProvider theme={baseMuiTheme}>
-        <PlausibleProvider
-          domain={plausibleDomain}
-          selfHosted
-          trackOutboundLinks
-          enabled={!!plausibleDomain}
-        >
-          <Component {...pageProps} />
-        </PlausibleProvider>
-        <CssBaseline />
-      </ThemeProvider>
-    );
-  }
-
-  return (
-    <ThemeProvider theme={baseMuiTheme}>
-      <ThemeProvider theme={appTheme}>
-        <AppContext.Provider value={contextValue}>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={baseMuiTheme}>
           <PlausibleProvider
             domain={plausibleDomain}
             selfHosted
             trackOutboundLinks
             enabled={!!plausibleDomain}
           >
-            <Player>
-              <AppLayout>
-                <Component {...pageProps} />
-              </AppLayout>
-              <AppSearch />
-            </Player>
+            <AnyComponent {...pageProps} />
           </PlausibleProvider>
-        </AppContext.Provider>
-        <CssBaseline />
+          <CssBaseline />
+        </ThemeProvider>
+      </CacheProvider>
+    );
+  }
+
+  return (
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={baseMuiTheme}>
+        <ThemeProvider theme={appTheme}>
+          <AppContext.Provider value={contextValue}>
+            <PlausibleProvider
+              domain={plausibleDomain}
+              selfHosted
+              trackOutboundLinks
+              enabled={!!plausibleDomain}
+            >
+              <Player>
+                <AppLayout>
+                  <AnyComponent {...pageProps} />
+                </AppLayout>
+                <AppSearch />
+              </Player>
+            </PlausibleProvider>
+          </AppContext.Provider>
+          <CssBaseline />
+        </ThemeProvider>
       </ThemeProvider>
-    </ThemeProvider>
+    </CacheProvider>
   );
 };
 

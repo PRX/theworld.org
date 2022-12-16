@@ -22,7 +22,8 @@ import { sidebarListStyles, sidebarListTheme } from './SidebarList.styles';
 
 export interface ISidebarListProps extends ListProps {
   data: IPriApiResource[];
-  formatTitle?: (data: IPriApiResource) => string;
+  // eslint-disable-next-line no-unused-vars
+  formatTitle?(data: IPriApiResource): string;
   subheaderText?: string;
 }
 
@@ -157,7 +158,7 @@ export const SidebarList = ({
     !!data && (
       <ThemeProvider theme={sidebarListTheme}>
         <List {...listProps}>
-          {data.map(item =>
+          {data.map((item) =>
             item.id ? (
               renderItemContent(item)
             ) : (

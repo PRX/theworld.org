@@ -39,9 +39,11 @@ export const PlayAudioButton = ({
   const [audioData, setAudioData] = useState<IAudioData>(audio);
   const [loading, setLoading] = useState(false);
 
-  const { state: playerState, playAudio, togglePlayPause } = useContext(
-    PlayerContext
-  );
+  const {
+    state: playerState,
+    playAudio,
+    togglePlayPause
+  } = useContext(PlayerContext);
   const { playing, currentTrackIndex, tracks } = playerState;
   const currentTrack = tracks?.[currentTrackIndex];
   const [audioIsPlaying, setAudioIsPlaying] = useState(
@@ -115,15 +117,15 @@ export const PlayAudioButton = ({
     setAudio(
       getDataByResource(store.getState(), 'file--audio', id) as IAudioResource
     );
-  }, [id]);
+  }, [id, store]);
 
   useEffect(() => {
     setAudioData(() => audio);
-  }, [audio?.guid]);
+  }, [audio, audio.guid]);
 
   useEffect(() => {
     setAudioData(audioResource && parseAudioData(audioResource, fallbackProps));
-  }, [audioResource?.id]);
+  }, [audioResource, audioResource.id, fallbackProps]);
 
   useEffect(() => {
     const usedAudioData = audio || audioData;
@@ -135,14 +137,23 @@ export const PlayAudioButton = ({
     } else {
       setAudioIsPlaying(false);
     }
-  }, [currentTrack?.guid, audio?.guid, audioData?.guid, id, playing]);
+  }, [
+    currentTrack?.guid,
+    audio.guid,
+    audioData.guid,
+    id,
+    playing,
+    audio,
+    audioData,
+    currentTrack
+  ]);
 
   useEffect(() => {
     const track = (tracks || []).find(
       ({ guid }) => guid === `file--audio:${id}`
     );
     if (track && !audioData) setAudioData(track);
-  }, [tracks?.length, id]);
+  }, [tracks.length, id, tracks, audioData]);
 
   return (
     <NoSsr>

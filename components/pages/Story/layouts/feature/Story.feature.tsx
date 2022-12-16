@@ -23,12 +23,12 @@ import { StoryHeader } from './components';
 const StoryRelatedLinks = dynamic(
   () =>
     import('./components/StoryRelatedLinks').then(
-      mod => mod.StoryRelatedLinks
+      (mod) => mod.StoryRelatedLinks
     ) as any
 ) as React.FC<IStoryRelatedLinksProps>;
 
 const Tags = dynamic(() =>
-  import('@components/Tags').then(mod => mod.Tags)
+  import('@components/Tags').then((mod) => mod.Tags)
 ) as React.FC<ITagsProps>;
 
 interface StateProps extends RootState {}
@@ -66,14 +66,14 @@ export const StoryDefault = ({ data }: Props) => {
     );
   const related =
     relatedState &&
-    relatedState.items[1].filter(item => item.id !== id).slice(0, 4);
+    relatedState.items[1].filter((item) => item.id !== id).slice(0, 4);
   const ctaInlineEnd = getCtaRegionData(
     state,
     'tw_cta_region_content_inline_end',
     type,
     id as string
   );
-  const classes = storyStyles({});
+  const { cx } = storyStyles();
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;
   const allTags = [
@@ -87,7 +87,7 @@ export const StoryDefault = ({ data }: Props) => {
   ];
   const hasTags = !!allTags.length;
 
-  const enhanceImages = enhanceImage(node => {
+  const enhanceImages = enhanceImage((node) => {
     switch (true) {
       case /\bfile-on-the-side\b/.test(node.attribs.class):
         return [
@@ -108,17 +108,18 @@ export const StoryDefault = ({ data }: Props) => {
     }
   });
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return (
     <ThemeProvider theme={storyTheme}>
       <StoryHeader data={data} />
       <Container fixed>
-        <Box className={classes.body} my={2}>
+        <Box className={cx('body')} my={2}>
           {audio ? <NoJsPlayer url={audio.url} /> : null}
           <HtmlContent html={body} transforms={[enhanceImages]} />
         </Box>

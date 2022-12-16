@@ -69,7 +69,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [pathname, router.events]);
 
   return (
     <ThemeProvider theme={mediaCardTheme}>

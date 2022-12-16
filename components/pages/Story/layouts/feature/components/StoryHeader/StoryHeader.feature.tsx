@@ -7,7 +7,6 @@ import React from 'react';
 import Image from 'next/legacy/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';
-import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@mui/material';
 import { IContentLinkProps } from '@components/ContentLink';
@@ -22,11 +21,11 @@ import {
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 const ContentLink = dynamic(() =>
-  import('@components/ContentLink').then(mod => mod.ContentLink)
+  import('@components/ContentLink').then((mod) => mod.ContentLink)
 ) as React.FC<IContentLinkProps>;
 interface Props {
   data: IPriApiResource;
@@ -55,10 +54,7 @@ export const StoryHeader = ({ data }: Props) => {
   const hasCaption = caption && !!caption.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;
-  const classes = storyHeaderStyles({
-    hasAudio: !!audio
-  });
-  const cx = classNames.bind(classes);
+  const { classes, cx } = storyHeaderStyles();
 
   return (
     <ThemeProvider theme={storyHeaderTheme}>

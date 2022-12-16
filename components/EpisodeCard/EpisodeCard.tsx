@@ -30,12 +30,11 @@ import { episodeCardStyles, episodeCardTheme } from './EpisodeCard.styles';
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 export interface EpisodeCardProps {
   data: IPriApiResource;
-  label?: string;
   priority?: boolean;
 }
 

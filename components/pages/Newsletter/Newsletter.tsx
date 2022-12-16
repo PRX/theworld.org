@@ -14,7 +14,6 @@ import { NewsletterForm } from '@components/NewsletterForm';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { IPriApiNewsletter } from '@interfaces/newsletter';
 import { parseNewsletterOptions } from '@lib/parse/cta';
-import { fetchNewsletterData } from '@store/actions/fetchNewsletterData';
 import { getDataByResource } from '@store/reducers';
 import { newsletterTheme, newsletterStyles } from './Newsletter.styles';
 
@@ -25,20 +24,18 @@ export const Newsletter = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const state = store.getState();
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
-
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
+  const data = getDataByResource(state, type, id);
   const [subscribed, setSubscribed] = useState(false);
   const { metatags, title, body, buttonLabel, summary, image } = data;
   const options = parseNewsletterOptions(
     data as IPriApiNewsletter,
     'newsletter-page'
   );
-  const { classes, cx } = newsletterStyles();
+  const { cx } = newsletterStyles();
 
   const handleSubscribed = () => {
     setSubscribed(true);
@@ -52,15 +49,12 @@ export const Newsletter = () => {
     ['Newsletter Sign Up', { props }]
   ];
 
-  useEffect(() => {
-    if (!data.complete) {
-      (async () => {
-        // Get content data.
-        await store.dispatch<any>(fetchNewsletterData(id));
-        data = getDataByResource(state, type, id);
-      })();
-    }
-  }, [id]);
+  useEffect(
+    () => () => {
+      unsub();
+    },
+    [unsub]
+  );
 
   return (
     <>

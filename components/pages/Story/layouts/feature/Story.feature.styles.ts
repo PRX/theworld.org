@@ -20,8 +20,6 @@ export const storyTheme = (theme: Theme) =>
     }
   });
 
-// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
-export const storyStyles = makeStyles()((theme: Theme) =>
-  ({
-    ...storyBodyStyles(theme)
-  }));
+export const storyStyles = makeStyles()((theme) => ({
+  ...storyBodyStyles(theme)
+}));

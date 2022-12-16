@@ -5,7 +5,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import classNames from 'classnames/bind';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
 import { Box, Container, IconButton } from '@mui/material';
 import { ThemeProvider } from '@mui/styles';
@@ -47,11 +46,12 @@ export const AppCtaBanner = () => {
     setClosed(true);
   };
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return CtaMessageComponent && shownMessage && !closed ? (
     <ThemeProvider theme={appCtaBannerTheme}>

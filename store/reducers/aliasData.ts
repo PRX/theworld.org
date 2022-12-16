@@ -13,10 +13,10 @@ import { generateLinkHrefForContent } from '@lib/routing/content';
 
 type State = ContentDataState | RootState;
 
-export const aliasData = (state: State = {}, action: AnyAction) => {
+export const aliasData = (action: AnyAction, state: State = {}) => {
   let href: UrlWithParsedQuery;
 
-  switch (action.type) {
+  switch (action?.type) {
     case HYDRATE:
       return { ...state, ...action.payload.aliasData };
 
@@ -65,7 +65,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
         ...state,
         ...(action.payload && {
           ...action.payload
-            .filter(item => !!item)
+            .filter((item) => !!item)
             .reduce((a, item) => {
               const { id, type } = item;
               const h = generateLinkHrefForContent(
@@ -90,5 +90,5 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
   }
 };
 
-export const getAliasData = (state: ContentDataState = {}, alias: string) =>
-  state[alias];
+export const getAliasData = (state: ContentDataState, alias: string) =>
+  (state || {})[alias];

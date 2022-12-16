@@ -35,9 +35,11 @@ export const AddAudioButton = ({
   const [audio, setAudio] = useState<IAudioResource>();
   const [audioData, setAudioData] = useState<IAudioData>();
   const [loading, setLoading] = useState(false);
-  const { state: playerState, addTrack, removeTrack } = useContext(
-    PlayerContext
-  );
+  const {
+    state: playerState,
+    addTrack,
+    removeTrack
+  } = useContext(PlayerContext);
   const { tracks } = playerState;
   const [isQueued, setIsQueued] = useState(false);
   const tooltipTitle = isQueued ? 'Remove From Playlist' : 'Add to Playlist';
@@ -105,11 +107,11 @@ export const AddAudioButton = ({
     setAudio(
       getDataByResource(store.getState(), 'file--audio', id) as IAudioResource
     );
-  }, [id]);
+  }, [id, store]);
 
   useEffect(() => {
     setAudioData(audio && parseAudioData(audio, fallbackProps));
-  }, [audio?.id]);
+  }, [audio, audio.id, fallbackProps]);
 
   useEffect(() => {
     const track = (tracks || []).find(
@@ -121,7 +123,7 @@ export const AddAudioButton = ({
     } else {
       setIsQueued(false);
     }
-  }, [tracks?.length, id]);
+  }, [tracks.length, id, tracks, audioData]);
 
   return (
     <NoSsr>

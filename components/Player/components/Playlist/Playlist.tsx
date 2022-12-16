@@ -6,7 +6,7 @@
 
 import React, { useContext, useEffect, useMemo } from 'react';
 import { Box, BoxProps } from '@mui/material';
-import { AnimatePresence, Reorder, useDragControls } from 'framer-motion';
+import { AnimatePresence, Reorder } from 'framer-motion';
 import debounce from 'lodash/debounce';
 import { PlayerContext } from '../../contexts';
 import { IAudioData } from '../../types';
@@ -19,7 +19,6 @@ export const Playlist: React.FC<IPlaylistProps> = ({
   className,
   ...other
 }: IPlaylistProps) => {
-  const controls = useDragControls();
   const { state: playerState, setTracks } = useContext(PlayerContext);
   const { tracks } = playerState;
   const { classes: styles, cx } = usePlaylistStyles();
@@ -36,7 +35,7 @@ export const Playlist: React.FC<IPlaylistProps> = ({
           trailing: true
         }
       ),
-    []
+    [setTracks]
   );
 
   useEffect(() => () => {
@@ -54,7 +53,7 @@ export const Playlist: React.FC<IPlaylistProps> = ({
         onReorder={handleReorder}
       >
         <AnimatePresence>
-          {tracks?.map(track => (
+          {tracks?.map((track) => (
             <Reorder.Item as="div" value={track} key={track.guid}>
               <PlaylistItem audio={track} />
             </Reorder.Item>

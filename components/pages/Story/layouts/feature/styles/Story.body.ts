@@ -28,4 +28,4 @@ export const storyBodyStyles = (theme: Theme) =>
         clear: 'both'
       }
     }
-  } as any);
+  }) as any;
