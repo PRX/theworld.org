@@ -5,14 +5,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Image from 'next/legacy/image';
 import { useStore } from 'react-redux';
-import classNames from 'classnames/bind';
-import {
-  Box,
-  Container,
-  Grid,
-  ThemeProvider,
-  Typography
-} from '@mui/material';
+import { Box, Container, Grid, ThemeProvider, Typography } from '@mui/material';
 import { CheckCircleOutlineSharp } from '@mui/icons-material';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
@@ -45,8 +38,7 @@ export const Newsletter = () => {
     data as IPriApiNewsletter,
     'newsletter-page'
   );
-  const classes = newsletterStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = newsletterStyles();
 
   const handleSubscribed = () => {
     setSubscribed(true);
@@ -76,7 +68,7 @@ export const Newsletter = () => {
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <ThemeProvider theme={newsletterTheme}>
         <Container disableGutters={!!image} maxWidth={false}>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <Grid
               item
               xs={12}
@@ -112,14 +104,14 @@ export const Newsletter = () => {
                     <Grid
                       container
                       spacing={4}
-                      justify="center"
+                      justifyContent="center"
                       alignContent="center"
                     >
                       <Grid item xs={12}>
                         <Box
                           display="grid"
                           gridTemplateColumns="min-content 1fr"
-                          gridGap={16}
+                          gap={16}
                           justifyContent="center"
                           alignItems="center"
                         >

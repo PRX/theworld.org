@@ -28,7 +28,7 @@ export interface IStoryRelatedLinksProps {
 export const StoryRelatedLinks = ({
   data: related
 }: IStoryRelatedLinksProps) => {
-  const classes = storyRelatedLinksStyles({});
+  const { classes } = storyRelatedLinksStyles();
   const imageWidth = [
     ['max-width: 600px', '100vw'],
     [null, '300px']

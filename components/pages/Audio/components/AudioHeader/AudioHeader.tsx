@@ -18,7 +18,7 @@ const Moment = dynamic(() => {
 }) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then((mod) => mod.AudioControls)
+  import('@components/Player/components').then(mod => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 interface Props {
@@ -32,7 +32,7 @@ export const AudioHeader = ({ data }: Props) => {
     queuedFrom: 'Page Header Controls',
     linkResource: data
   } as Partial<IAudioData>;
-  const classes = audioHeaderStyles({});
+  const { classes } = audioHeaderStyles();
 
   return (
     <Box className={classes.root} mt={4} mb={2}>

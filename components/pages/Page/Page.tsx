@@ -24,7 +24,7 @@ export const Page = () => {
   } = useContext(AppContext);
   const store = useStore();
   const state = store.getState();
-  const classes = pageStyles({});
+  const { cx } = pageStyles();
   let data = getDataByResource(state, type, id);
 
   if (!data) {
@@ -57,7 +57,7 @@ export const Page = () => {
         <Grid container>
           <Grid item xs={12}>
             <PageHeader data={data} />
-            <Box className={classes.body} my={2}>
+            <Box className={cx('body')} my={2}>
               <HtmlContent html={body} />
             </Box>
           </Grid>

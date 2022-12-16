@@ -4,15 +4,15 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const storyRelatedLinksStyles = makeStyles((theme: Theme) =>
-  createStyles({
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const storyRelatedLinksStyles = makeStyles()((theme: Theme) =>
+  ({
     root: {
       marginBottom: theme.spacing(3)
     }
-  })
-);
+  }));
 
 export const storyRelatedLinksTheme = (theme: Theme) =>
   createTheme(theme, {

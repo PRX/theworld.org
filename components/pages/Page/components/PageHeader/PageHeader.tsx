@@ -14,7 +14,7 @@ interface Props {
 
 export const PageHeader = ({ data }: Props) => {
   const { title } = data;
-  const classes = pageHeaderStyles({});
+  const { classes } = pageHeaderStyles();
 
   return (
     <Box className={classes.root} mt={4} mb={2}>

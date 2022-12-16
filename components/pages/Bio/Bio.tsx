@@ -4,7 +4,6 @@
  */
 
 import React, { useContext, useEffect, useState } from 'react';
-import classNames from 'classnames/bind';
 import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Button, Hidden, Typography } from '@mui/material';
@@ -104,8 +103,7 @@ export const Bio = () => {
   const [loading, setLoading] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);
   const [segmentsPage, setSegmentsPage] = useState(1);
-  const classes = bioStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = bioStyles();
 
   // Plausible Events.
   const props = {

@@ -111,7 +111,7 @@ export const StoryDefault = ({ data }: Props) => {
     id as string
   );
 
-  const classes = storyStyles({});
+  const { classes, cx } = storyStyles();
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;
   const allTags = [
@@ -221,10 +221,10 @@ export const StoryDefault = ({ data }: Props) => {
             {audio ? <NoJsPlayer url={audio.url} /> : null}
           </Grid>
           <Grid item xs={12}>
-            <Box className={classes.main}>
-              <Box className={classes.content}>
+            <Box className={cx('main')}>
+              <Box className={cx('content')}>
                 <StoryLede data={data} />
-                <Box className={classes.body} my={2}>
+                <Box className={cx('body')} my={2}>
                   <HtmlContent
                     html={body}
                     transforms={[
@@ -246,7 +246,7 @@ export const StoryDefault = ({ data }: Props) => {
                 {hasCategories && <Tags data={categories} label="Categories" />}
                 {hasTags && <Tags data={allTags} label="Tags" />}
               </Box>
-              <Sidebar container className={classes.sidebar}>
+              <Sidebar container className={cx('sidebar')}>
                 <SidebarLatestStories />
                 <Hidden smDown>
                   {ctaSidebarTop && (

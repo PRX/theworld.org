@@ -5,7 +5,6 @@
 
 import React from 'react';
 import Image from 'next/legacy/image';
-import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@mui/material';
 import { ContentLink } from '@components/ContentLink';
@@ -26,8 +25,8 @@ export const BioHeader = ({
   position,
   subhead
 }: IBioHeaderProps) => {
-  const classes = bioHeaderStyles({});
-  const cx = classNames.bind(classes);
+  const { cx } = bioHeaderStyles();
+
   return (
     <ThemeProvider theme={bioHeaderTheme}>
       <Box className={cx('root')}>

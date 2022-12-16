@@ -4,7 +4,6 @@
  */
 
 import { createStyles, Theme } from '@mui/material/styles';
-import { CreateCSSProperties } from '@mui/styles';
 import {
   storyBodyQAStyles,
   storyBodyMediaStyles,

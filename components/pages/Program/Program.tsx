@@ -58,7 +58,7 @@ export const Program = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const classes = programStyles({});
+  const { cx } = programStyles();
   const data = getDataByResource(state, type, id);
 
   // CTA data.
@@ -187,7 +187,7 @@ export const Program = () => {
       children: (
         <>
           {body && !hasContentLinks && (
-            <Box className={classes.body}>
+            <Box className={cx('body')}>
               <HtmlContent html={body} />
             </Box>
           )}

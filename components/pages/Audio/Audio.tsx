@@ -29,7 +29,7 @@ export const Audio = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const classes = audioStyles({});
+  const { classes, cx } = audioStyles();
   const data = getDataByResource(state, type, id);
 
   if (!data) {
@@ -110,7 +110,7 @@ export const Audio = () => {
         <Grid container>
           <Grid item xs={12}>
             <AudioHeader data={data} />
-            <Box className={classes.body} my={2}>
+            <Box className={cx('body')} my={2}>
               <NoJsPlayer url={url} />
               <HtmlContent html={description} />
             </Box>

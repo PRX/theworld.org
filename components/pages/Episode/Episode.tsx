@@ -56,7 +56,7 @@ export const Episode = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const classes = episodeStyles({});
+  const { classes, cx } = episodeStyles();
   let data = getDataByResource(state, type, id);
 
   if (!data) {
@@ -217,10 +217,10 @@ export const Episode = () => {
             {audio ? <NoJsPlayer url={audio.url} /> : null}
           </Grid>
           <Grid item xs={12}>
-            <Box className={classes.main}>
-              <Box className={classes.content}>
+            <Box className={cx('main')}>
+              <Box className={cx('content')}>
                 <EpisodeLede data={data} />
-                <Box className={classes.body} my={2}>
+                <Box className={cx('body')} my={2}>
                   <HtmlContent html={body} />
                 </Box>
                 {spotifyPlaylist && !!spotifyPlaylist.length && (
@@ -258,7 +258,7 @@ export const Episode = () => {
                 )}
                 {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
               </Box>
-              <Sidebar container className={classes.sidebar}>
+              <Sidebar container className={cx('sidebar')}>
                 {segments && (
                   <Sidebar item elevated>
                     <SidebarHeader>

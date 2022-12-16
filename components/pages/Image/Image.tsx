@@ -29,9 +29,8 @@ export const Image = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const classes = imageStyles({});
+  const { cx } = imageStyles();
   let data = getDataByResource(state, type, id);
-  // const context = [`file:${data.id}`];
 
   if (!data) {
     return null;
@@ -81,7 +80,7 @@ export const Image = () => {
           <Grid item xs={12}>
             <ImageHeader data={data} />
             <LedeImage data={data} />
-            <Box className={classes.body} my={2}>
+            <Box className={cx('body')} my={2}>
               <HtmlContent html={description} />
             </Box>
             {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}

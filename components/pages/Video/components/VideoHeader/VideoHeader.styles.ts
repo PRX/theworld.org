@@ -3,22 +3,21 @@
  * Styles for VideoHeader layout.
  */
 
-import { Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const videoHeaderStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      fontSize: '1.2rem'
-    },
-    date: {
-      fontStyle: 'italic'
-    },
-    info: {
-      display: 'grid',
-      alignContent: 'start',
-      gridArea: 'INFO',
-      gridGap: theme.typography.pxToRem(4)
-    }
-  })
-);
+export const videoHeaderStyles = makeStyles()(theme => ({
+  root: {
+    fontSize: '1.2rem'
+  },
+
+  date: {
+    fontStyle: 'italic'
+  },
+
+  info: {
+    display: 'grid',
+    alignContent: 'start',
+    gridArea: 'INFO',
+    gridGap: theme.typography.pxToRem(4)
+  }
+}));

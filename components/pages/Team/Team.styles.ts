@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const teamTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -54,33 +54,32 @@ export const teamTheme = (theme: Theme) =>
     }
   });
 
-export const teamStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    imageWrapper: {
-      paddingTop: '100%'
-    },
-    link: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      overflow: 'hidden',
-      textIndent: '-2000vw'
-    },
-    loadingBar: {
-      transition: 'transform 400ms ease-out',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      transform: 'translateY(-100%)',
-      '$isLoading &': {
-        transform: 'translateY(0)'
-      }
-    },
-    isLoading: {
-      boxShadow: theme.shadows[5]
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const teamStyles = makeStyles<void, 'isLoading'>()((theme: Theme, _params, classes) => ({
+  imageWrapper: {
+    paddingTop: '100%'
+  },
+  link: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    overflow: 'hidden',
+    textIndent: '-2000vw'
+  },
+  loadingBar: {
+    transition: 'transform 400ms ease-out',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    transform: 'translateY(-100%)',
+    [`.${classes.isLoading} &`]: {
+      transform: 'translateY(0)'
     }
-  })
-);
+  },
+  isLoading: {
+    boxShadow: theme.shadows[5]
+  }
+}));

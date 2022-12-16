@@ -14,7 +14,7 @@ interface Props {
 
 export const ImageHeader = ({ data }: Props) => {
   const { title } = data;
-  const classes = imageHeaderStyles({});
+  const { classes } = imageHeaderStyles();
 
   return (
     <Box className={classes.root} mt={4} mb={2}>

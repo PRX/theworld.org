@@ -16,7 +16,7 @@ interface Props {
 
 export const VideoHeader = ({ data }: Props) => {
   const { title, date } = data;
-  const classes = videoHeaderStyles({});
+  const { classes } = videoHeaderStyles();
 
   return (
     <Box className={classes.root} mt={4} mb={2}>

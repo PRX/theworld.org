@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const TeamHeader = ({ title }: Props) => {
-  const classes = teamHeaderStyles({});
+  const { classes } = teamHeaderStyles();
 
   return (
     <Box className={classes.root} mt={4} mb={2}>

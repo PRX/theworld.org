@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { storyBodyStyles } from '@components/pages/Story/layouts/default/styles/Story.body';
 
 export const videoTheme = (theme: Theme) =>
@@ -27,8 +27,8 @@ export const videoTheme = (theme: Theme) =>
     }
   });
 
-export const videoStyles = makeStyles((theme: Theme) =>
-  createStyles({
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const videoStyles = makeStyles()((theme: Theme) =>
+  ({
     ...storyBodyStyles(theme)
-  })
-);
+  }));

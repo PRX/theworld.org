@@ -4,15 +4,13 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const storyRelatedLinksStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      marginBottom: theme.spacing(3)
-    }
-  })
-);
+export const storyRelatedLinksStyles = makeStyles()(theme => ({
+  root: {
+    marginBottom: theme.spacing(3)
+  }
+}));
 
 export const storyRelatedLinksTheme = (theme: Theme) =>
   createTheme(theme, {

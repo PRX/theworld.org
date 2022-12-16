@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { storyLayoutStyles } from './styles/Story.layout';
 import { storyBodyStyles } from './styles/Story.body';
 
@@ -20,9 +20,7 @@ export const storyTheme = (theme: Theme) =>
     }
   });
 
-export const storyStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    ...storyLayoutStyles(theme),
-    ...storyBodyStyles(theme)
-  })
-);
+export const storyStyles = makeStyles()(theme => ({
+  ...storyLayoutStyles(theme),
+  ...storyBodyStyles(theme)
+}));

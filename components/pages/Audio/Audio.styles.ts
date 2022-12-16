@@ -4,7 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { storyBodyStyles } from '@components/pages/Story/layouts/default/styles/Story.body';
 
 export const audioTheme = (theme: Theme) =>
@@ -27,8 +27,6 @@ export const audioTheme = (theme: Theme) =>
     }
   });
 
-export const audioStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    ...storyBodyStyles(theme)
-  })
-);
+export const audioStyles = makeStyles()(theme => ({
+  ...storyBodyStyles(theme)
+}));

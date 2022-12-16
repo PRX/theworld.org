@@ -4,7 +4,7 @@
  */
 
 import { alpha, createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const storyHeaderTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -40,8 +40,9 @@ export const storyHeaderTheme = (theme: Theme) =>
     }
   });
 
-export const storyHeaderStyles = makeStyles((theme: Theme) =>
-  createStyles({
+// TODO jss-to-tss-react codemod: usages of this hook outside of this file will not be converted.
+export const storyHeaderStyles = makeStyles()((theme: Theme) =>
+  ({
     root: {
       position: 'relative',
       display: 'grid',
@@ -54,6 +55,7 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
       color: theme.palette.primary.contrastText,
       fontSize: '1.2rem'
     },
+
     imageWrapper: {
       position: 'absolute',
       top: 0,
@@ -67,9 +69,11 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
         height: '100%'
       }
     },
+
     image: {
       height: '100%'
     },
+
     content: {
       position: 'relative',
       gridColumn: '1 / -1',
@@ -85,27 +89,34 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
         0.3
       )}, 1px 1px 3px ${alpha(theme.palette.common.black, 0.4)}`
     },
+
     header: {
       gridRow: '1 / -1',
       display: 'flex',
       flexDirection: 'column',
       zIndex: 1
     },
+
     teaser: {
       marginTop: theme.typography.pxToRem(16),
       fontSize: theme.typography.pxToRem(24),
       lineHeight: theme.typography.pxToRem(30)
     },
+
     byline: {
       padding: 0,
       margin: 0,
       listStyle: 'none'
     },
+
     bylineItem: {},
+
     bylineLink: {
       fontWeight: theme.typography.fontWeightBold
     },
+
     bylinePeople: {},
+
     bylinePerson: {
       '&::after': {
         content: "', '"
@@ -117,21 +128,27 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
         content: "''"
       }
     },
+
     date: {
       fontStyle: 'italic'
     },
+
     info: {
       display: 'grid',
       alignContent: 'start',
       gridGap: theme.typography.pxToRem(4)
     },
+
     audio: {},
+
     programLink: {
       fontWeight: theme.typography.fontWeightBold
     },
+
     categoryLink: {
       fontWeight: theme.typography.fontWeightBold
     },
+
     footer: {
       display: 'grid',
       gridGap: '0.5rem',
@@ -152,7 +169,9 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
         }
       }
     },
+
     caption: {},
+
     credit: {
       display: 'flex',
       fontSize: '0.75rem',
@@ -161,6 +180,6 @@ export const storyHeaderStyles = makeStyles((theme: Theme) =>
         marginRight: '0.25rem'
       }
     },
+
     withImage: {}
-  })
-);
+  }));

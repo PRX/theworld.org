@@ -18,11 +18,11 @@ const Moment = dynamic(() => {
 }) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then((mod) => mod.AudioControls)
+  import('@components/Player/components').then(mod => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 const ContentLink = dynamic(() =>
-  import('@components/ContentLink').then((mod) => mod.ContentLink)
+  import('@components/ContentLink').then(mod => mod.ContentLink)
 ) as React.FC<IContentLinkProps>;
 interface Props {
   data: IPriApiResource;
@@ -46,7 +46,7 @@ export const StoryHeader = ({ data }: Props) => {
     ...(image && { imageUrl: image.url }),
     linkResource: data
   } as Partial<IAudioData>;
-  const classes = storyHeaderStyles({});
+  const { classes } = storyHeaderStyles();
 
   return (
     <Box component="header" className={classes.root} mt={4} mb={2}>

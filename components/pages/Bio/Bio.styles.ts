@@ -4,12 +4,12 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const bioTheme = (theme: Theme) => createTheme(theme, {});
 
-export const bioStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    body: theme.typography.body1
-  })
-);
+export const bioStyles = makeStyles()(theme => ({
+  body: {
+    ...(theme.typography.body1 as any)
+  }
+}));
