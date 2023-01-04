@@ -55,25 +55,13 @@ export const Homepage = () => {
     undefined,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[1][0];
-  const { items: featuredStories } = getCollectionData(
-    state,
-    'homepage',
-    undefined,
-    'featured stories'
-  );
-  const { items: stories } = getCollectionData(
-    state,
-    'homepage',
-    undefined,
-    'stories'
-  );
-  const { items: latestStories } = getCollectionData(
-    state,
-    'homepage',
-    undefined,
-    'latest'
-  );
+  const featuredStory = featuredStoryState?.items[1][0];
+  const { items: featuredStories } =
+    getCollectionData(state, 'homepage', undefined, 'featured stories') || {};
+  const { items: stories } =
+    getCollectionData(state, 'homepage', undefined, 'stories') || {};
+  const { items: latestStories } =
+    getCollectionData(state, 'homepage', undefined, 'latest') || {};
   const episodesState = getCollectionData(
     state,
     'homepage',
@@ -81,7 +69,7 @@ export const Homepage = () => {
     'episodes'
   );
   const latestEpisode =
-    episodesState.count > 0 && episodesState.items[1].shift();
+    episodesState?.count > 0 && episodesState.items[1].shift();
   const drawerMainNav = getMenusData(state, 'drawerMainNav');
   const categoriesMenu = drawerMainNav
     ?.filter((item: IButton) => item.name === 'Categories')?.[0]

@@ -7,7 +7,7 @@
 import { HYDRATE } from 'next-redux-wrapper';
 import { UiState, UiAction } from '@interfaces/state';
 
-export const ui = (action: UiAction, state = {}) => {
+export const ui = (state = {}, action: UiAction) => {
   const { player } = state as UiState;
   const { playlistOpen } = player || {};
 

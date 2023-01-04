@@ -111,7 +111,7 @@ export const AddAudioButton = ({
 
   useEffect(() => {
     setAudioData(audio && parseAudioData(audio, fallbackProps));
-  }, [audio, audio.id, fallbackProps]);
+  }, [audio, fallbackProps]);
 
   useEffect(() => {
     const track = (tracks || []).find(
@@ -123,7 +123,7 @@ export const AddAudioButton = ({
     } else {
       setIsQueued(false);
     }
-  }, [tracks.length, id, tracks, audioData]);
+  }, [id, tracks, audioData]);
 
   return (
     <NoSsr>

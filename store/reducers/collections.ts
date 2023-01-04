@@ -17,7 +17,7 @@ import { makeResourceSignature } from '@lib/parse/state';
 
 type State = CollectionsState | RootState;
 
-export const collections = (action: AnyAction, state: State = {}) => {
+export const collections = (state: State = {}, action: AnyAction) => {
   let key: string;
   let refs: string[];
   let newCollection: CollectionState;

@@ -10,7 +10,7 @@ import { MenusDataState, RootState } from '@interfaces/state';
 
 type State = MenusDataState | RootState;
 
-export const menusData = (action: AnyAction, state: State = {}) => {
+export const menusData = (state: State = {}, action: AnyAction) => {
   switch (action?.type) {
     case HYDRATE:
       return { ...state, ...action.payload.menusData };

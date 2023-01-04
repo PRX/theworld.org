@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useStore } from 'react-redux';
+import { useStore, Provider } from 'react-redux';
 import { AppProps } from 'next/app';
 import PlausibleProvider from 'next-plausible';
 import { CacheProvider, EmotionCache } from '@emotion/react';
@@ -39,10 +39,7 @@ const AppLayout = ({ children }) => {
   const rootRef = useRef<HTMLDivElement>();
   const uiFooterRef = useRef<HTMLDivElement>();
   const store = useStore();
-  const [state, setState] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
+  const state = store.getState();
   const playerOpen = getUiPlayerOpen(state);
   const playlistOpen = getUiPlayerPlaylistOpen(state);
   const { classes } = useAppStyles({ playerOpen, playlistOpen });
@@ -56,10 +53,6 @@ const AppLayout = ({ children }) => {
       `${footerPadding}px`
     );
   }, [playerOpen]);
-
-  useEffect(() => () => {
-    unsub();
-  });
 
   return (
     <div ref={rootRef} className={classes.root}>
@@ -105,9 +98,11 @@ const AppLayout = ({ children }) => {
 const TwApp = ({
   Component,
   emotionCache = clientSideEmotionCache,
-  pageProps
+  ...rest
 }: MyAppProps) => {
   const AnyComponent = Component as any;
+  const { store, props } = wrapper.useWrappedStore(rest);
+  const { pageProps } = props;
   const [plausibleDomain, setPlausibleDomain] = useState(null);
   const { type, id, contentOnly } = pageProps;
   const contextValue = useMemo(
@@ -125,12 +120,12 @@ const TwApp = ({
   useEffect(() => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
 
-    // Remove the server-side injected CSS.
-    // Fix for https://github.com/mui-org/material-ui/issues/15073
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
+    // // Remove the server-side injected CSS.
+    // // Fix for https://github.com/mui-org/material-ui/issues/15073
+    // const jssStyles = document.querySelector('#jss-server-side');
+    // if (jssStyles) {
+    //   jssStyles.parentElement.removeChild(jssStyles);
+    // }
 
     // Remove `no-js` styling flag class.
     document.documentElement.classList.remove('no-js');
@@ -138,46 +133,50 @@ const TwApp = ({
 
   if (contentOnly) {
     return (
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={baseMuiTheme}>
-          <PlausibleProvider
-            domain={plausibleDomain}
-            selfHosted
-            trackOutboundLinks
-            enabled={!!plausibleDomain}
-          >
-            <AnyComponent {...pageProps} />
-          </PlausibleProvider>
-          <CssBaseline />
-        </ThemeProvider>
-      </CacheProvider>
-    );
-  }
-
-  return (
-    <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={baseMuiTheme}>
-        <ThemeProvider theme={appTheme}>
-          <AppContext.Provider value={contextValue}>
+      <Provider store={store}>
+        <CacheProvider value={emotionCache}>
+          <ThemeProvider theme={baseMuiTheme}>
+            <CssBaseline />
             <PlausibleProvider
               domain={plausibleDomain}
               selfHosted
               trackOutboundLinks
               enabled={!!plausibleDomain}
             >
-              <Player>
-                <AppLayout>
-                  <AnyComponent {...pageProps} />
-                </AppLayout>
-                <AppSearch />
-              </Player>
+              <AnyComponent {...pageProps} />
             </PlausibleProvider>
-          </AppContext.Provider>
-          <CssBaseline />
+          </ThemeProvider>
+        </CacheProvider>
+      </Provider>
+    );
+  }
+
+  return (
+    <Provider store={store}>
+      <CacheProvider value={emotionCache}>
+        <ThemeProvider theme={baseMuiTheme}>
+          <ThemeProvider theme={appTheme}>
+            <CssBaseline />
+            <AppContext.Provider value={contextValue}>
+              <PlausibleProvider
+                domain={plausibleDomain}
+                selfHosted
+                trackOutboundLinks
+                enabled={!!plausibleDomain}
+              >
+                <Player>
+                  <AppLayout>
+                    <AnyComponent {...pageProps} />
+                  </AppLayout>
+                  <AppSearch />
+                </Player>
+              </PlausibleProvider>
+            </AppContext.Provider>
+          </ThemeProvider>
         </ThemeProvider>
-      </ThemeProvider>
-    </CacheProvider>
+      </CacheProvider>
+    </Provider>
   );
 };
 
-export default wrapper.withRedux(TwApp); // eslint-disable-line import/no-default-export
+export default TwApp; // eslint-disable-line import/no-default-export

@@ -12,7 +12,7 @@ import { makeResourceSignature } from '@lib/parse/state';
 
 type State = ContentDataState | RootState;
 
-export const contentData = (action: AnyAction, state: State = {}) => {
+export const contentData = (state: State = {}, action: AnyAction) => {
   let key: string;
 
   switch (action?.type) {

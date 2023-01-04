@@ -13,7 +13,7 @@ import { generateLinkHrefForContent } from '@lib/routing/content';
 
 type State = ContentDataState | RootState;
 
-export const aliasData = (action: AnyAction, state: State = {}) => {
+export const aliasData = (state: State = {}, action: AnyAction) => {
   let href: UrlWithParsedQuery;
 
   switch (action?.type) {

@@ -23,7 +23,7 @@ class TwDocument extends Document {
             'sourcesanspro/italic/sourcesanspro-italic-400-latin.woff2',
             'sourcesanspro/normal/sourcesanspro-normal-400-latin.woff2',
             'sourcesanspro/normal/sourcesanspro-normal-700-latin.woff2'
-          ].map(path => (
+          ].map((path) => (
             <link
               key={path}
               rel="preload"
@@ -41,6 +41,8 @@ class TwDocument extends Document {
             href="/opensearch.xml"
           />
           <link rel="icon" href="/images/favicon.png" />
+          <meta name="emotion-insertion-point" content="" />
+          {(this.props as any).emotionStyleTags}
         </Head>
         <body>
           <Main />
@@ -92,7 +94,7 @@ class TwDocument extends Document {
   }
 }
 
-TwDocument.getInitialProps = async ctx => {
+TwDocument.getInitialProps = async (ctx) => {
   // Resolution order
   //
   // On the server:
@@ -124,7 +126,8 @@ TwDocument.getInitialProps = async ctx => {
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: (App: any) => props => <App emotionCache={cache} {...props} />
+      enhanceApp: (App: any) => (props) =>
+        <App emotionCache={cache} {...props} />
     });
 
   const initialProps = await Document.getInitialProps(ctx);
@@ -132,7 +135,7 @@ TwDocument.getInitialProps = async ctx => {
   // This is important. It prevents Emotion to render invalid HTML.
   // See https://github.com/mui/material-ui/issues/26561#issuecomment-855286153
   const emotionStyles = extractCriticalToChunks(initialProps.html);
-  const emotionStyleTags = emotionStyles.styles.map(style => (
+  const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
       data-emotion={`${style.key} ${style.ids.join(' ')}`}
       key={style.key}

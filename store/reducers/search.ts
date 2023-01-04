@@ -7,7 +7,7 @@
 import { HYDRATE } from 'next-redux-wrapper';
 import { SearchAction, SearchState } from '@interfaces/state';
 
-export const search = (action: SearchAction, state = {}) => {
+export const search = (state = {}, action: SearchAction) => {
   let query: string;
   let s: SearchState;
 

@@ -121,11 +121,11 @@ export const PlayAudioButton = ({
 
   useEffect(() => {
     setAudioData(() => audio);
-  }, [audio, audio.guid]);
+  }, [audio]);
 
   useEffect(() => {
     setAudioData(audioResource && parseAudioData(audioResource, fallbackProps));
-  }, [audioResource, audioResource.id, fallbackProps]);
+  }, [audioResource, fallbackProps]);
 
   useEffect(() => {
     const usedAudioData = audio || audioData;
@@ -137,23 +137,14 @@ export const PlayAudioButton = ({
     } else {
       setAudioIsPlaying(false);
     }
-  }, [
-    currentTrack?.guid,
-    audio.guid,
-    audioData.guid,
-    id,
-    playing,
-    audio,
-    audioData,
-    currentTrack
-  ]);
+  }, [id, playing, audio, audioData, currentTrack]);
 
   useEffect(() => {
     const track = (tracks || []).find(
       ({ guid }) => guid === `file--audio:${id}`
     );
     if (track && !audioData) setAudioData(track);
-  }, [tracks.length, id, tracks, audioData]);
+  }, [id, tracks, audioData]);
 
   return (
     <NoSsr>

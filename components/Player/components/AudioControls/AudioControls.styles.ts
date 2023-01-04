@@ -6,7 +6,7 @@
 import { alpha } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const useAudioControlsStyles = makeStyles()(theme => ({
+export const useAudioControlsStyles = makeStyles()((theme) => ({
   root: {
     position: 'relative',
     isolation: 'isolate',
@@ -16,7 +16,7 @@ export const useAudioControlsStyles = makeStyles()(theme => ({
     fontSize: '1.5em',
     filter: 'url(#shadowed-goo)',
     '& > *': {},
-    '& > :first-child': {
+    '& > :first-of-type': {
       padding: '0.25em',
       fontSize: '1.5em'
     },

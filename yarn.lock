@@ -6293,10 +6293,10 @@ next-plausible@^3.6.5:
   resolved "https://registry.yarnpkg.com/next-plausible/-/next-plausible-3.6.5.tgz#9a4a221d26382c0ea5d25c14a597df90901a0c1e"
   integrity sha512-eGsyie68xIyX+If1PSIJsgv7pkiMUm66Yt9gELl3kUvljaxoJOCwUEALGk5JHvhByGsBiRswkrGioDMthL3gfQ==
 
-next-redux-wrapper@7.0.0-rc.2:
-  version "7.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-7.0.0-rc.2.tgz#8d6673ea2a1f1dbd98de710d928f739241fa2e37"
-  integrity sha512-3djAs4zdmwHJhA3vg7uhVazJcDlubsrU1qRm96GxFmuRHC3/2+lOh4q/1CnQHnBz9dQLNmTNcR6k22PSCYXpFg==
+next-redux-wrapper@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-8.1.0.tgz#d9c135f1ceeb2478375bdacd356eb9db273d3a07"
+  integrity sha512-2hIau0hcI6uQszOtrvAFqgc0NkZegKYhBB7ZAKiG3jk7zfuQb4E7OV9jfxViqqojh3SEHdnFfPkN9KErttUKuw==
 
 next@^13.0.7:
   version "13.0.7"

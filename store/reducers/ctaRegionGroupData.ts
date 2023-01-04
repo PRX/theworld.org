@@ -12,7 +12,7 @@ import { makeResourceSignature } from '@lib/parse/state';
 
 type State = CtaRegionGroupDataState | RootState;
 
-export const ctaRegionGroupData = (action: AnyAction, state: State = {}) => {
+export const ctaRegionGroupData = (state: State = {}, action: AnyAction) => {
   const { cookies, data, filterProps } = state as CtaRegionGroupDataState;
 
   switch (action?.type) {

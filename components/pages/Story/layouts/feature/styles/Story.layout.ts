@@ -16,4 +16,4 @@ export const storyLayoutStyles = (theme: Theme) =>
     },
     content: {},
     sidebar: {}
-  });
+  }) as any;

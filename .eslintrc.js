@@ -40,6 +40,7 @@ module.exports = {
     'import/prefer-default-export': 0,
     'import/no-extraneous-dependencies': 0,
     'no-redeclare': 0,
-    'jsx-a11y/media-has-caption': 0
+    'jsx-a11y/media-has-caption': 0,
+    'default-param-last': 0
   }
 };
