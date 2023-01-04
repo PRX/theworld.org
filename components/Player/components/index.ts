@@ -12,3 +12,4 @@ export * from './ReplayButton';
 export * from './TimeInfo';
 export * from './TogglePlaylistButton';
 export * from './TrackInfo';
+export * from './VolumeControls';

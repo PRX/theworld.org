@@ -15,7 +15,8 @@ import {
   ReplayButton,
   TimeInfo,
   TogglePlaylistButton,
-  TrackInfo
+  TrackInfo,
+  VolumeControls
 } from '@components/Player/components';
 import {
   AppBar,
@@ -138,6 +139,13 @@ export const AppPlayer = () => {
           </Box>
 
           <Box className={styles.controls}>
+            <VolumeControls
+              className={styles.volume}
+              muteButtonProps={{
+                classes: buttonClasses,
+                color: 'inherit'
+              }}
+            />
             <AutoplayButton className={styles.autoplayButton} />
             <TogglePlaylistButton
               classes={buttonClasses}
