@@ -31,6 +31,9 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       gap: theme.typography.pxToRem(theme.spacing(0.25)),
+      [theme.breakpoints.down('sm')]: {
+        justifySelf: 'start'
+      },
       '&:last-child': {
         justifySelf: 'end'
       }
@@ -69,6 +72,11 @@ export const appPlayerStyles = makeStyles((theme: Theme) =>
     queueControls: {},
     autoplayButton: {
       [theme.breakpoints.down(400)]: {
+        display: 'none'
+      }
+    },
+    volume: {
+      [theme.breakpoints.down('xs')]: {
         display: 'none'
       }
     }
