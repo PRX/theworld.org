@@ -183,7 +183,7 @@ export const AppPlayer = () => {
           </ListItemIcon>
           <ListItemText>Embed Audio</ListItemText>
         </MenuItem>
-        <MenuItem component="a" href={currentTrack?.url} target="_blank">
+        <MenuItem component="a" href={currentTrack?.url} download>
           <ListItemIcon>
             <GetAppSharp />
           </ListItemIcon>
