@@ -76,5 +76,11 @@ export const appPlayerStyles = makeStyles()(theme => ({
     [theme.breakpoints.down(400)]: {
       display: 'none'
     }
+  },
+
+  volume: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    }
   }
 }));

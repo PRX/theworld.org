@@ -11,7 +11,7 @@ import { fetchPriApiItem, fetchPriApiQuery } from '@lib/fetch/api';
 import { basicEpisodeParams } from '@lib/fetch/api/params';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id, page = '1', range = 10, exclude } = req.query;
+  const { id, page = '1', range = 5, exclude } = req.query;
 
   if (id) {
     const program = (await fetchPriApiItem(
