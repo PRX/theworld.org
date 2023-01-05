@@ -11,9 +11,9 @@ import { Box, Breadcrumbs, Container, Divider, Link } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';
-import { ReactComponent as TwLogo } from '@svg/tw-white.svg';
-import { ReactComponent as PrxLogo } from '@svg/PRX-Logo-Horizontal-Color.svg';
-import { ReactComponent as GBHLogo } from '@svg/GBH-Logo-Purple.svg';
+import TwLogo from '@svg/tw-white.svg';
+import PrxLogo from '@svg/PRX-Logo-Horizontal-Color.svg';
+import GBHLogo from '@svg/GBH-Logo-Purple.svg';
 import { appFooterStyles } from './AppFooter.styles';
 
 export const AppFooter = () => {

@@ -19,7 +19,7 @@ import {
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { ReactComponent as Logo } from '@svg/tw-white.svg';
+import Logo from '@svg/tw-white.svg';
 import { getUiDrawerOpen } from '@store/reducers';
 import { AppHeaderNav } from './AppHeaderNav';
 import { DrawerTopNav } from './DrawerTopNav';
@@ -27,6 +27,7 @@ import { DrawerMainNav } from './DrawerMainNav';
 import { DrawerSearch } from './DrawerSearch';
 import { DrawerSocialNav } from './DrawerSocialNav';
 import { appHeaderStyles } from './AppHeader.styles';
+import { gridClasses } from '@mui/system';
 
 export const AppHeader = () => {
   const store = useStore();
@@ -35,7 +36,7 @@ export const AppHeader = () => {
     setState(store.getState());
   });
   const open = getUiDrawerOpen(state) || false;
-  const { cx } = appHeaderStyles();
+  const { classes, cx } = appHeaderStyles();
 
   useEffect(() => {
     function handleRouteChangeComplete() {
@@ -66,12 +67,12 @@ export const AppHeader = () => {
 
   return (
     <>
-      <AppBar className={cx({ root: true })} position="static" elevation={0}>
-        <Toolbar className={cx('toolbar')}>
+      <AppBar className={classes.root} position="static" elevation={0}>
+        <Toolbar className={classes.toolbar}>
           <NoSsr>
             <IconButton
               edge="start"
-              className={cx('menuButton')}
+              className={classes.menuButton}
               disableRipple
               color="inherit"
               aria-label="menu"
@@ -82,10 +83,10 @@ export const AppHeader = () => {
           </NoSsr>
 
           <Link href="/" aria-label="The World">
-            <Logo className={cx('twLogo')} />
+            <Logo className={classes.twLogo} />
           </Link>
 
-          <div className={cx('grow')} />
+          <div className={classes.grow} />
 
           {/* Subscribe Button */}
 
@@ -96,7 +97,7 @@ export const AppHeader = () => {
           <NoSsr>
             <IconButton
               edge="end"
-              className={cx('searchButton')}
+              className={classes.closeBtn}
               disableRipple
               color="inherit"
               aria-label="site search"
@@ -122,9 +123,9 @@ export const AppHeader = () => {
               disableRipple
               startIcon={<ChevronLeftIcon />}
               onClick={handleDrawerClose()}
-              className={cx({ closeBtn: true })}
+              className={classes.closeBtn}
               classes={{
-                startIcon: cx({ closeBtnIcon: true })
+                startIcon: classes.closeBtnIcon
               }}
             >
               Close
