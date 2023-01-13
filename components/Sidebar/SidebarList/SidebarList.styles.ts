@@ -3,161 +3,84 @@
  * Styles and theme for SidebarList.
  */
 
-import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const sidebarListTheme = (theme: Theme) =>
-  createTheme(theme, {
-    typography: {
-      body2: {
-        fontSize: theme.typography.pxToRem(18)
-      }
-    },
-    overrides: {
-      MuiLink: {
-        root: {
-          '&:hover': {
-            color: theme.palette.primary.main
-          }
+export const sidebarListStyles = makeStyles<void, 'noBullet'>()(
+  (theme, _params, classes) => ({
+    root: {
+      '& :is(.MuiLink-root)': {
+        '&:hover': {
+          color: theme.palette.primary.main
         }
       },
-      MuiListItem: {
-        root: {},
-        button: {
-          '&:hover': {
-            backgroundColor: alpha(
-              theme.palette.primary.main,
-              theme.palette.action.hoverOpacity
-            )
-          }
-        },
-        secondaryAction: {
-          paddingRight: `${theme.spacing(2)}px`,
-          '&:hover': {
-            background: 'none'
-          }
-        },
-        container: {
-          display: 'flex',
-          alignItems: 'center',
-          padding: theme.typography.pxToRem(2),
-          '&:hover': {
-            color: theme.palette.primary.main,
-            backgroundColor: alpha(
-              theme.palette.primary.main,
-              theme.palette.action.hoverOpacity
-            )
-          }
-        }
+      '& :is(.MuiList-root)': {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: theme.spacing(1)
       },
-      MuiAvatar: {
-        root: {
-          width: '75px',
-          height: '75px',
-          marginRight: `${theme.spacing(2)}px`,
-          boxShadow: theme.shadows[3]
-        }
-      },
-      MuiListItemText: {
-        root: {
-          display: 'list-item',
-          listStyle: 'disc',
-          marginTop: 0,
-          marginBottom: 0,
-          marginLeft: theme.spacing(2),
-          color: theme.palette.grey[500]
-        },
-        primary: {
-          display: 'grid',
+      '& :is(.MuiListItemButton-root)': {
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing(0.5),
+        '&:hover': {
           color: theme.palette.primary.main,
-          fontWeight: theme.typography.fontWeightBold,
-          lineHeight: 1
+          backgroundColor: alpha(
+            theme.palette.primary.main,
+            theme.palette.action.hoverOpacity
+          )
         }
       },
-      MuiListItemSecondaryAction: {
-        root: {
-          position: 'static',
-          transform: 'none',
-          paddingRight: `${theme.spacing(2)}`
+      '& :is(.MuiListItemButton-secondaryAction)': {
+        '&:hover': {
+          background: 'none'
         }
       },
-      MuiListSubheader: {
-        root: {
-          ...theme.typography.h6
+      '& :is(.MuiListItemSecondaryAction-root)': {
+        position: 'static',
+        transform: 'none'
+      },
+      '& :where(.MuiListItemText-root)': {
+        display: 'list-item',
+        listStyle: 'disc',
+        marginTop: 0,
+        marginBottom: 0,
+        marginLeft: theme.spacing(2),
+        color: theme.palette.grey[500],
+        [`&.${classes.noBullet}`]: {
+          display: 'unset',
+          listStyle: 'unset',
+          marginLeft: 0
         }
-      }
-    }
-  });
-
-export const sidebarListStyles = makeStyles()(theme => ({
-  root: {
-    '& :is(.MuiLink-root)': {
-      '&:hover': {
-        color: theme.palette.primary.main
-      }
-    },
-    '& :is(.MuiListItemButton-root)': {
-      display: 'flex',
-      alignItems: 'center',
-      padding: theme.typography.pxToRem(2),
-      '&:hover': {
+      },
+      '& :is(.MuiListItemText-primary)': {
+        display: 'grid',
         color: theme.palette.primary.main,
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.hoverOpacity
-        )
+        fontWeight: theme.typography.fontWeightBold,
+        lineHeight: 1
+      },
+
+      '& :is(.MuiAvatar-root)': {
+        width: '75px',
+        height: '75px',
+        marginRight: theme.spacing(2),
+        boxShadow: theme.shadows[3]
+      },
+
+      '&:last-child': {
+        paddingBlockEnd: theme.typography.pxToRem(16)
       }
     },
-    '& :is(.MuiListItemButton-container)': {
-      display: 'flex',
-      alignItems: 'center',
-      padding: theme.typography.pxToRem(2),
-      '&:hover': {
-        color: theme.palette.primary.main,
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.hoverOpacity
-        )
-      }
+
+    noBullet: {
+      display: 'unset',
+      listStyle: 'unset',
+      marginLeft: 0
     },
-    '& :is(.MuiListItemButton-secondaryAction)': {
-      paddingRight: theme.spacing(2),
-      '&:hover': {
-        background: 'none'
-      }
-    },
-    '& :is(.MuiListItemSecondaryAction-root)': {
-      position: 'static',
-      transform: 'none',
-      paddingRight: theme.spacing(2)
-    },
-    '& :is(.MuiListItemText-root)': {
-      display: 'list-item',
-      listStyle: 'disc',
-      marginTop: 0,
-      marginBottom: 0,
-      marginLeft: theme.spacing(2),
-      color: theme.palette.grey[500]
-    },
-    '& :is(.MuiListItemText-primary)': {
-      display: 'grid',
-      color: theme.palette.primary.main,
-      fontWeight: theme.typography.fontWeightBold,
-      lineHeight: 1
-    },
-    '&:last-child': {
-      paddingBlockEnd: theme.typography.pxToRem(16)
+
+    noAvatarImage: {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText
     }
-  },
-
-  noBullet: {
-    display: 'unset',
-    listStyle: 'unset',
-    marginLeft: 0
-  },
-
-  noAvatarImage: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText
-  }
-}));
+  })
+);

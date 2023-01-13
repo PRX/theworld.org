@@ -20,7 +20,7 @@ export const storyTheme = (theme: Theme) =>
     }
   });
 
-export const storyStyles = makeStyles()(theme => ({
+export const useStoryStyles = makeStyles()((theme) => ({
   ...storyLayoutStyles(theme),
   ...storyBodyStyles(theme)
 }));

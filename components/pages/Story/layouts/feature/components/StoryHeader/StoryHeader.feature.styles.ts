@@ -25,15 +25,17 @@ export const storyHeaderTheme = (theme: Theme) =>
         }
       }
     },
-    overrides: {
+    components: {
       MuiLink: {
-        root: {
-          color: theme.palette.primary.contrastText,
-          '&:visited': {
-            color: theme.palette.primary.contrastText
-          },
-          '&:hover': {
-            color: alpha(theme.palette.primary.contrastText, 0.6)
+        styleOverrides: {
+          root: {
+            color: theme.palette.primary.contrastText,
+            '&:visited': {
+              color: theme.palette.primary.contrastText
+            },
+            '&:hover': {
+              color: alpha(theme.palette.primary.contrastText, 0.6)
+            }
           }
         }
       }

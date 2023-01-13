@@ -7,7 +7,6 @@ import React from 'react';
 import {
   List,
   ListProps,
-  ListItem,
   ListItemText,
   ListItemAvatar,
   Avatar,
@@ -15,11 +14,10 @@ import {
   ListItemSecondaryAction,
   ListItemButton
 } from '@mui/material';
-import { ThemeProvider } from '@mui/styles';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ContentLink } from '@components/ContentLink';
 import { AudioControls } from '@components/Player/components';
-import { sidebarListStyles, sidebarListTheme } from './SidebarList.styles';
+import { sidebarListStyles } from './SidebarList.styles';
 
 export interface ISidebarListProps extends ListProps {
   data: IPriApiResource[];
@@ -133,19 +131,17 @@ export const SidebarList = ({
 
   return (
     !!data && (
-      <ThemeProvider theme={sidebarListTheme}>
-        <List {...listProps}>
-          {data.map(item =>
-            item.id ? (
-              renderItemContent(item)
-            ) : (
-              <ListItem button component="a" href={item.url} key={item.url}>
-                <ListItemText>{item.title}</ListItemText>
-              </ListItem>
-            )
-          )}
-        </List>
-      </ThemeProvider>
+      <List {...listProps}>
+        {data.map((item) =>
+          item.id ? (
+            renderItemContent(item)
+          ) : (
+            <ListItemButton component="a" href={item.url} key={item.url}>
+              <ListItemText>{item.title}</ListItemText>
+            </ListItemButton>
+          )
+        )}
+      </List>
     )
   );
 };

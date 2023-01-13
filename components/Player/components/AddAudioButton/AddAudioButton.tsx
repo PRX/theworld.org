@@ -3,15 +3,15 @@
  * Play button component to toggle playing state of player.
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import { type MouseEventHandler, useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { CircularProgress, NoSsr, Tooltip } from '@mui/material';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@mui/icons-material';
-import { IPriApiResource } from 'pri-api-library/types';
+import { type IPriApiResource } from 'pri-api-library/types';
+import { type IAudioData } from '@components/Player/types';
+import { type IAudioResource } from '@interfaces';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
-import { IAudioData } from '@components/Player/types';
-import { IAudioResource } from '@interfaces';
 import { parseAudioData } from '@lib/parse/audio/audioData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
@@ -35,9 +35,11 @@ export const AddAudioButton = ({
   const [audio, setAudio] = useState<IAudioResource>();
   const [audioData, setAudioData] = useState<IAudioData>();
   const [loading, setLoading] = useState(false);
-  const { state: playerState, addTrack, removeTrack } = useContext(
-    PlayerContext
-  );
+  const {
+    state: playerState,
+    addTrack,
+    removeTrack
+  } = useContext(PlayerContext);
   const { tracks } = playerState;
   const [isQueued, setIsQueued] = useState(false);
   const tooltipTitle = isQueued ? 'Remove From Playlist' : 'Add to Playlist';
@@ -65,7 +67,8 @@ export const AddAudioButton = ({
     removeTrack(audioData);
   };
 
-  const handleLoadClick = () => {
+  const handleLoadClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
     (async () => {
       setLoading(true);
       const ar = await store.dispatch<any>(fetchAudioData(id));

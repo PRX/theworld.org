@@ -26,10 +26,7 @@ export const tagsStyles = makeStyles()((theme) => ({
 
   link: {
     fontWeight: theme.typography.fontWeightBold,
-    color: theme.palette.primary.main
-  },
-
-  tag: {
+    color: theme.palette.primary.main,
     textTransform: 'capitalize'
   }
 }));

@@ -73,7 +73,7 @@ export const StoryDefault = ({ data }: Props) => {
     type,
     id as string
   );
-  const { cx } = storyStyles();
+  const { classes } = storyStyles();
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;
   const allTags = [
@@ -118,8 +118,8 @@ export const StoryDefault = ({ data }: Props) => {
   return (
     <ThemeProvider theme={storyTheme}>
       <StoryHeader data={data} />
-      <Container fixed>
-        <Box className={cx('body')} my={2}>
+      <Container classes={{ maxWidthLg: classes.MuiContainerMaxWidthLg }} fixed>
+        <Box className={classes.body} my={2}>
           {audio ? <NoJsPlayer url={audio.url} /> : null}
           <HtmlContent html={body} transforms={[enhanceImages]} />
         </Box>

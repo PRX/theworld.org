@@ -49,7 +49,7 @@ export const playAudioButtonStyles = makeStyles<{ audioIsPlaying: boolean }>()(
         backgroundColor: theme.palette.secondary.main,
         color: theme.palette.secondary.contrastText,
         '&:hover': {
-          backgroundColor: theme.palette.secondary.dark
+          backgroundColor: theme.palette.secondary.light
         }
       })
     },

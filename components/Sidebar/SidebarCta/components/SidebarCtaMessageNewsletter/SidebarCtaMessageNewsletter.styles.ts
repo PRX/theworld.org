@@ -16,25 +16,29 @@ export const sidebarCtaMessageNewsletterTheme = (theme: Theme) => {
   });
 
   return createTheme(tempTheme, {
-    overrides: {
+    components: {
       MuiButton: {
-        containedPrimary: {
-          backgroundColor: theme.palette.success.main,
-          '&:hover': {
-            backgroundColor: theme.palette.success.dark
-          }
-        },
-        outlinedPrimary: {
-          color: theme.palette.success.main,
-          borderColor: alpha(theme.palette.success.main, 0.3),
-          '&:hover': {
-            borderColor: theme.palette.success.main
+        styleOverrides: {
+          containedPrimary: {
+            backgroundColor: theme.palette.success.main,
+            '&:hover': {
+              backgroundColor: theme.palette.success.dark
+            }
+          },
+          outlinedPrimary: {
+            color: theme.palette.success.main,
+            borderColor: alpha(theme.palette.success.main, 0.3),
+            '&:hover': {
+              borderColor: theme.palette.success.main
+            }
           }
         }
       },
       MuiCard: {
-        root: {
-          borderLeftColor: theme.palette.success.main
+        styleOverrides: {
+          root: {
+            '--cta-accent-color': theme.palette.success.main
+          }
         }
       }
     }

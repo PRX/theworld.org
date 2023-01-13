@@ -6,11 +6,11 @@
 import { alpha } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const storyCardGridStyles = makeStyles()(theme => ({
+export const storyCardGridStyles = makeStyles()((theme) => ({
   root: {
     display: 'grid',
     gridTemplateColumns: '1fr',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('lg')]: {
       gridTemplateColumns: '1fr 1fr'
     }
   },
@@ -90,7 +90,10 @@ export const storyCardGridStyles = makeStyles()(theme => ({
     gridGap: theme.spacing(2),
     alignItems: 'start',
     padding: theme.spacing(2),
-    color: theme.palette.primary.main
+    color: theme.palette.primary.main,
+    [theme.breakpoints.between('sm', 'lg')]: {
+      gridTemplateColumns: '1fr 3fr'
+    }
   },
 
   MuiCardContentRoot: {

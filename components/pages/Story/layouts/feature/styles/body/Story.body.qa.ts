@@ -3,8 +3,7 @@
  * Body Q&A styles as JSS object.
  */
 
-import { Theme } from '@mui/material/styles';
-import { CreateCSSProperties } from '@mui/styles';
+import { type Theme } from '@mui/material/styles';
 
 const accentBorderWidth = 3;
 
@@ -40,4 +39,4 @@ export const storyBodyQAStyles = (theme: Theme) =>
         borderInlineStart: 'none'
       }
     }
-  } as CreateCSSProperties<{}>);
+  } as any);

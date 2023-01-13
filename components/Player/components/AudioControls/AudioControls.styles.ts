@@ -26,6 +26,7 @@ export const useAudioControlsStyles = makeStyles()((theme) => ({
       padding: '2px',
       borderRadius: '2em',
       overflow: 'hidden',
+      fontSize: '1.25em',
       '& > *': {
         padding: '0.25em',
         fontSize: '1em',

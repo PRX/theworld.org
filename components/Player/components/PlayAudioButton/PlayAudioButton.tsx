@@ -3,15 +3,15 @@
  * Play button component to toggle playing state of player.
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import { type MouseEventHandler, useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { CircularProgress, NoSsr, Tooltip } from '@mui/material';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 import { PauseSharp, PlayArrowSharp, VolumeUpSharp } from '@mui/icons-material';
-import { IPriApiResource } from 'pri-api-library/types';
+import { type IPriApiResource } from 'pri-api-library/types';
+import { type IAudioData } from '@components/Player/types';
+import { type IAudioResource } from '@interfaces';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
-import { IAudioData } from '@components/Player/types';
-import { IAudioResource } from '@interfaces';
 import { parseAudioData } from '@lib/parse/audio/audioData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
@@ -39,9 +39,11 @@ export const PlayAudioButton = ({
   const [audioData, setAudioData] = useState<IAudioData>(audio);
   const [loading, setLoading] = useState(false);
 
-  const { state: playerState, playAudio, togglePlayPause } = useContext(
-    PlayerContext
-  );
+  const {
+    state: playerState,
+    playAudio,
+    togglePlayPause
+  } = useContext(PlayerContext);
   const { playing, currentTrackIndex, tracks } = playerState;
   const currentTrack = tracks?.[currentTrackIndex];
   const [audioIsPlaying, setAudioIsPlaying] = useState(
@@ -65,7 +67,9 @@ export const PlayAudioButton = ({
     colorPrimary: styles.circularProgressPrimary
   };
 
-  const handlePlayClick = () => {
+  const handlePlayClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+
     const usedAudioData = audio || audioData;
     if (usedAudioData && usedAudioData.guid !== currentTrack?.guid) {
       playAudio(usedAudioData);
@@ -74,7 +78,9 @@ export const PlayAudioButton = ({
     }
   };
 
-  const handleLoadClick = () => {
+  const handleLoadClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+
     (async () => {
       setLoading(true);
       const ar = await store.dispatch<any>(fetchAudioData(id));

@@ -9,11 +9,13 @@ import { storyBodyStyles } from './styles/Story.body';
 
 export const storyTheme = (theme: Theme) =>
   createTheme(theme, {
-    overrides: {
+    components: {
       MuiContainer: {
-        maxWidthLg: {
-          [theme.breakpoints.up('md')]: {
-            maxWidth: '960px'
+        styleOverrides: {
+          maxWidthLg: {
+            [theme.breakpoints.up('md')]: {
+              maxWidth: '960px'
+            }
           }
         }
       }
@@ -21,5 +23,10 @@ export const storyTheme = (theme: Theme) =>
   });
 
 export const storyStyles = makeStyles()((theme) => ({
-  ...storyBodyStyles(theme)
+  ...storyBodyStyles(theme),
+  MuiContainerMaxWidthLg: {
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '960px'
+    }
+  }
 }));

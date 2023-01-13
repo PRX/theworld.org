@@ -6,7 +6,7 @@
 import { createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const sidebarEpisodeStyles = makeStyles()(theme => ({
+export const sidebarEpisodeStyles = makeStyles()((theme) => ({
   root: {
     '& :is(.MuiButtonBase-root)': {
       fontSize: 'inherit',
@@ -47,7 +47,8 @@ export const sidebarEpisodeStyles = makeStyles()(theme => ({
 
   audio: {
     position: 'relative',
-    zIndex: 1
+    zIndex: 1,
+    fontSize: '1.125rem'
   }
 }));
 

@@ -21,11 +21,9 @@ export const Tags = ({ data, label }: ITagsProps) => {
     <Box component="aside" className={classes.root}>
       {label && <h2 className={classes.label}>{label}</h2>}
       {data.map(
-        item =>
+        (item) =>
           item && (
-            <span className={classes.tag} key={item.id}>
-              <ContentButton className={classes.link} data={item} />
-            </span>
+            <ContentButton className={classes.link} data={item} key={item.id} />
           )
       )}
     </Box>

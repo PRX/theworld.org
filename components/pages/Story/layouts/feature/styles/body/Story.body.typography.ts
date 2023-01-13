@@ -3,8 +3,7 @@
  * Body typography styles as JSS object.
  */
 
-import { Theme } from '@mui/material/styles';
-import { CreateCSSProperties } from '@mui/styles';
+import { type Theme } from '@mui/material/styles';
 import { headingProps } from '@theme/App.theme';
 
 export const storyBodyTypography = (theme: Theme) =>
@@ -109,4 +108,4 @@ export const storyBodyTypography = (theme: Theme) =>
       color: theme.palette.grey[700],
       fontSize: '1rem'
     }
-  } as CreateCSSProperties<{}>);
+  } as any);

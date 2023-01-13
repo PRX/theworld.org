@@ -19,7 +19,7 @@ import { IContentComponentProps } from '@interfaces/content';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { RootState } from '@interfaces/state';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
-import { storyStyles, storyTheme } from './Story.default.styles';
+import { useStoryStyles, storyTheme } from './Story.default.styles';
 import { IStoryRelatedLinksProps, StoryHeader, StoryLede } from './components';
 
 const CtaRegion = dynamic(
@@ -113,7 +113,7 @@ export const StoryDefault = ({ data }: Props) => {
     id as string
   );
 
-  const { cx } = storyStyles();
+  const { classes } = useStoryStyles();
   const hasRelated = related && !!related.length;
   const hasCategories = categories && !!categories.length;
   const allTags = [
@@ -224,10 +224,10 @@ export const StoryDefault = ({ data }: Props) => {
             {audio ? <NoJsPlayer url={audio.url} /> : null}
           </Grid>
           <Grid item xs={12}>
-            <Box className={cx('main')}>
-              <Box className={cx('content')}>
+            <Box className={classes.main}>
+              <Box className={classes.content}>
                 <StoryLede data={data} />
-                <Box className={cx('body')} my={2}>
+                <Box className={classes.body} my={2}>
                   <HtmlContent
                     html={body}
                     transforms={[
@@ -249,7 +249,7 @@ export const StoryDefault = ({ data }: Props) => {
                 {hasCategories && <Tags data={categories} label="Categories" />}
                 {hasTags && <Tags data={allTags} label="Tags" />}
               </Box>
-              <Sidebar container className={cx('sidebar')}>
+              <Sidebar container className={classes.sidebar}>
                 <SidebarLatestStories />
                 <Hidden smDown>
                   {ctaSidebarTop && (

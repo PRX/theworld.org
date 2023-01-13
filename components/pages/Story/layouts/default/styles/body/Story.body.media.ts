@@ -3,8 +3,7 @@
  * Body media styles as JSS object.
  */
 
-import { Theme } from '@mui/material/styles';
-import { CreateCSSProperties } from '@mui/styles';
+import { type Theme } from '@mui/material/styles';
 
 export const storyBodyMediaStyles = (theme: Theme) =>
   ({
@@ -115,4 +114,4 @@ export const storyBodyMediaStyles = (theme: Theme) =>
         )} 0 0.5rem ${theme.typography.pxToRem(30)}`
       }
     }
-  } as CreateCSSProperties<{}>);
+  } as any);
