@@ -8,14 +8,16 @@ import { makeStyles } from 'tss-react/mui';
 
 export const appLoadingBarTheme = (theme: Theme) =>
   createTheme(theme, {
-    overrides: {
+    components: {
       MuiLinearProgress: {
-        dashed: {
-          animation: 'none'
-        },
-        dashedColorSecondary: {
-          background: alpha(theme.palette.info.main, 0.6),
-          backgroundImage: 'none'
+        styleOverrides: {
+          dashed: {
+            animation: 'none'
+          },
+          dashedColorSecondary: {
+            background: alpha(theme.palette.info.main, 0.6),
+            backgroundImage: 'none'
+          }
         }
       }
     }

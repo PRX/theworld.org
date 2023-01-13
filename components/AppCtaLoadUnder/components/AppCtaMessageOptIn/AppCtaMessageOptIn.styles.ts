@@ -9,11 +9,13 @@ import { blue } from '@theme/colors';
 
 export const appCtaMessageOptInTheme = (theme: Theme) =>
   createTheme(theme, {
-    overrides: {
+    components: {
       MuiPaper: {
-        root: {
-          backgroundColor: blue[700],
-          color: theme.palette.getContrastText(blue[700])
+        styleOverrides: {
+          root: {
+            backgroundColor: blue[700],
+            color: theme.palette.getContrastText(blue[700])
+          }
         }
       }
     }

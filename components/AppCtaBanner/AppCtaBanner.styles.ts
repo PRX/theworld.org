@@ -18,43 +18,53 @@ export const appCtaBannerTheme = (theme: Theme) =>
         lineHeight: 1.3
       }
     },
-    overrides: {
+    components: {
       MuiButton: {
-        containedPrimary: {
-          '&:hover': {
-            backgroundColor: theme.palette.secondary.main
+        styleOverrides: {
+          containedPrimary: {
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.main
+            }
           }
         }
       },
       MuiCheckbox: {
-        root: {
-          color: 'inherit'
+        styleOverrides: {
+          root: {
+            color: 'inherit'
+          }
         }
       },
       MuiFormControlLabel: {
-        root: {
-          paddingLeft: theme.spacing(2)
-        },
-        label: {
-          paddingTop: theme.spacing(1),
-          paddingBottom: theme.spacing(0),
-          textAlign: 'left'
+        styleOverrides: {
+          root: {
+            paddingLeft: theme.spacing(2)
+          },
+          label: {
+            paddingTop: theme.spacing(1),
+            paddingBottom: theme.spacing(0),
+            textAlign: 'left'
+          }
         }
       },
       MuiIconButton: {
-        root: {
-          '&:hover': {
-            backgroundColor: theme.palette.action.focus
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              backgroundColor: theme.palette.action.focus
+            }
           }
         }
       },
       MuiToolbar: {
-        root: {
-          justifyContent: 'center',
-          marginTop: 0,
-          marginBottom: 0,
-          '& > * + *': {
-            marginLeft: theme.spacing(2)
+        styleOverrides: {
+          root: {
+            justifyContent: 'center',
+            marginTop: 0,
+            marginBottom: 0,
+            '& > * + *': {
+              marginLeft: theme.spacing(2)
+            }
           }
         }
       }

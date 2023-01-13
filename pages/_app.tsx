@@ -39,7 +39,10 @@ const AppLayout = ({ children }) => {
   const rootRef = useRef<HTMLDivElement>();
   const uiFooterRef = useRef<HTMLDivElement>();
   const store = useStore();
-  const state = store.getState();
+  const [state, updateForce] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    updateForce(store.getState());
+  });
   const playerOpen = getUiPlayerOpen(state);
   const playlistOpen = getUiPlayerPlaylistOpen(state);
   const { classes } = useAppStyles({ playerOpen, playlistOpen });
@@ -53,6 +56,13 @@ const AppLayout = ({ children }) => {
       `${footerPadding}px`
     );
   }, [playerOpen]);
+
+  useEffect(
+    () => () => {
+      unsub();
+    },
+    [unsub]
+  );
 
   return (
     <div ref={rootRef} className={classes.root}>
@@ -133,49 +143,49 @@ const TwApp = ({
 
   if (contentOnly) {
     return (
-      <Provider store={store}>
-        <CacheProvider value={emotionCache}>
-          <ThemeProvider theme={baseMuiTheme}>
-            <CssBaseline />
-            <PlausibleProvider
-              domain={plausibleDomain}
-              selfHosted
-              trackOutboundLinks
-              enabled={!!plausibleDomain}
-            >
+      <PlausibleProvider
+        domain={plausibleDomain}
+        selfHosted
+        trackOutboundLinks
+        enabled={!!plausibleDomain}
+      >
+        <Provider store={store}>
+          <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={baseMuiTheme}>
               <AnyComponent {...pageProps} />
-            </PlausibleProvider>
-          </ThemeProvider>
-        </CacheProvider>
-      </Provider>
+              <CssBaseline />
+            </ThemeProvider>
+          </CacheProvider>
+        </Provider>
+      </PlausibleProvider>
     );
   }
 
   return (
-    <Provider store={store}>
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={baseMuiTheme}>
-          <ThemeProvider theme={appTheme}>
-            <CssBaseline />
-            <AppContext.Provider value={contextValue}>
-              <PlausibleProvider
-                domain={plausibleDomain}
-                selfHosted
-                trackOutboundLinks
-                enabled={!!plausibleDomain}
-              >
-                <Player>
+    <PlausibleProvider
+      domain={plausibleDomain}
+      selfHosted
+      trackOutboundLinks
+      enabled={!!plausibleDomain}
+    >
+      <Provider store={store}>
+        <Player>
+          <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={baseMuiTheme}>
+              <ThemeProvider theme={appTheme}>
+                <AppContext.Provider value={contextValue}>
                   <AppLayout>
                     <AnyComponent {...pageProps} />
                   </AppLayout>
                   <AppSearch />
-                </Player>
-              </PlausibleProvider>
-            </AppContext.Provider>
-          </ThemeProvider>
-        </ThemeProvider>
-      </CacheProvider>
-    </Provider>
+                </AppContext.Provider>
+                <CssBaseline />
+              </ThemeProvider>
+            </ThemeProvider>
+          </CacheProvider>
+        </Player>
+      </Provider>
+    </PlausibleProvider>
   );
 };
 

@@ -39,11 +39,9 @@ export const PlayAudioButton = ({
   const [audioData, setAudioData] = useState<IAudioData>(audio);
   const [loading, setLoading] = useState(false);
 
-  const {
-    state: playerState,
-    playAudio,
-    togglePlayPause
-  } = useContext(PlayerContext);
+  const { state: playerState, playAudio, togglePlayPause } = useContext(
+    PlayerContext
+  );
   const { playing, currentTrackIndex, tracks } = playerState;
   const currentTrack = tracks?.[currentTrackIndex];
   const [audioIsPlaying, setAudioIsPlaying] = useState(
@@ -55,10 +53,9 @@ export const PlayAudioButton = ({
   const { classes: styles, cx } = playAudioButtonStyles({
     audioIsPlaying
   });
-  const rootClassNames = cx('root', className);
+  const rootClassNames = cx(styles.root, className);
   const iconButtonClasses = {
     root: styles.iconButtonRoot,
-    label: styles.iconButtonLabel,
     ...classes
   };
   const iconClasses = {
@@ -161,14 +158,8 @@ export const PlayAudioButton = ({
             {!audioIsPlaying && <PlayArrowSharp classes={iconClasses} />}
             {audioIsPlaying && (
               <>
-                <VolumeUpSharp
-                  classes={iconClasses}
-                  className={styles.hideOnHover}
-                />
-                <PauseSharp
-                  classes={iconClasses}
-                  className={styles.showOnHover}
-                />
+                <VolumeUpSharp classes={iconClasses} />
+                <PauseSharp classes={iconClasses} />
               </>
             )}
           </IconButton>

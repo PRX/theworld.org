@@ -71,7 +71,7 @@ export const usePlayerProgressStyles = makeStyles<void, 'root'>()(
         pointerEvents: 'none'
       },
       [`.${classes.root}:hover &, .${classes.root}[data-scrubbing] &`]: {
-        scale: 3,
+        scale: '3',
         boxShadow: theme.shadows[2],
         opacity: 0.9999,
         '&::before': {

@@ -8,16 +8,18 @@ import { makeStyles } from 'tss-react/mui';
 
 export const embedCodeTheme = (theme: Theme) => {
   return createTheme(theme, {
-    overrides: {
+    components: {
       MuiIconButton: {
-        root: {
-          padding: theme.spacing(0.5),
-          backgroundColor: theme.palette.primary.main,
-          color: theme.palette.primary.contrastText,
-          fontSize: theme.typography.pxToRem(16),
+        styleOverrides: {
+          root: {
+            padding: theme.spacing(0.5),
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+            fontSize: theme.typography.pxToRem(16),
 
-          '&:hover': {
-            backgroundColor: theme.palette.primary.dark
+            '&:hover': {
+              backgroundColor: theme.palette.primary.dark
+            }
           }
         }
       }

@@ -18,7 +18,7 @@ export const NextButton = ({ className, ...other }: INextButtonProps) => {
   const { currentTrackIndex, tracks } = state;
   const disabled = tracks ? currentTrackIndex === tracks.length - 1 : true;
   const { classes: styles } = useNextButtonStyles();
-  const rootClassNames = clsx(className, 'root');
+  const rootClassNames = clsx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };

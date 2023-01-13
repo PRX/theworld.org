@@ -27,7 +27,7 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
   const { classes: styles, cx } = useTrackInfoStyles({
     hasLink: !!linkResource
   });
-  const rootClassNames = cx(className, 'root');
+  const rootClassNames = cx(styles.root, className);
 
   return (
     <Box className={rootClassNames}>

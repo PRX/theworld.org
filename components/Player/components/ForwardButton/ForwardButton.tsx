@@ -15,7 +15,7 @@ export interface IForwardButtonProps extends IconButtonProps {}
 export const ForwardButton = ({ className, ...other }: IForwardButtonProps) => {
   const { forward } = useContext(PlayerContext);
   const { classes: styles, cx } = useForwardButtonStyles();
-  const rootClassNames = cx(className, 'root');
+  const rootClassNames = cx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };

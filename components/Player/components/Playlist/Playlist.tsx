@@ -22,7 +22,7 @@ export const Playlist: React.FC<IPlaylistProps> = ({
   const { state: playerState, setTracks } = useContext(PlayerContext);
   const { tracks } = playerState;
   const { classes: styles, cx } = usePlaylistStyles();
-  const rootClasses = cx(className, 'root');
+  const rootClasses = cx(styles.root, className);
 
   const handleReorder = useMemo(
     () =>
@@ -53,7 +53,7 @@ export const Playlist: React.FC<IPlaylistProps> = ({
         onReorder={handleReorder}
       >
         <AnimatePresence>
-          {tracks?.map((track) => (
+          {tracks?.map(track => (
             <Reorder.Item as="div" value={track} key={track.guid}>
               <PlaylistItem audio={track} />
             </Reorder.Item>

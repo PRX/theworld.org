@@ -20,7 +20,7 @@ export const PreviousButton = ({
   const { currentTrackIndex } = state;
   const disabled = !currentTrackIndex;
   const { classes: styles, cx } = usePreviousButtonStyles();
-  const rootClassNames = cx(className, 'root');
+  const rootClassNames = cx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };

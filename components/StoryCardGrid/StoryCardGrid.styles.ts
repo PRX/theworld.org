@@ -3,7 +3,7 @@
  * Styles for Story Card Grid.
  */
 
-import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const storyCardGridStyles = makeStyles()(theme => ({
@@ -38,6 +38,17 @@ export const storyCardGridStyles = makeStyles()(theme => ({
     fontSize: theme.typography.pxToRem(16)
   },
 
+  primaryCategory: {
+    display: 'flex',
+    position: 'relative',
+    alignItems: 'center',
+    zIndex: 1,
+    fontFamily:
+      '"Open Sans","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+    letterSpacing: 'unset',
+    textTransform: 'unset'
+  },
+
   audio: {
     position: 'relative',
     zIndex: 1,
@@ -67,42 +78,35 @@ export const storyCardGridStyles = makeStyles()(theme => ({
     inset: 0,
     overflow: 'hidden',
     textIndent: '-2000vw'
+  },
+
+  MuiCardRoot: {
+    display: 'grid'
+  },
+
+  MuiCardActionAreaRoot: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr',
+    gridGap: theme.spacing(2),
+    alignItems: 'start',
+    padding: theme.spacing(2),
+    color: theme.palette.primary.main
+  },
+
+  MuiCardContentRoot: {
+    padding: 0,
+    color: theme.palette.text.primary
+  },
+
+  MuiCardMediaRoot: {
+    position: 'relative',
+    alignSelf: 'start',
+    aspectRatio: '1',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.primary.main
+  },
+
+  MuiCircularProgressRoot: {
+    padding: '20%'
   }
 }));
-
-export const storyCardGridTheme = (theme: Theme) =>
-  createTheme(theme, {
-    overrides: {
-      MuiCard: {
-        root: {
-          display: 'grid'
-        }
-      },
-      MuiCardActionArea: {
-        root: {
-          display: 'grid',
-          gridTemplateColumns: '1fr 2fr',
-          gridGap: `${theme.spacing(2)}px`,
-          alignItems: 'start',
-          padding: `${theme.spacing(2)}px`
-        }
-      },
-      MuiCardContent: {
-        root: {
-          padding: 0
-        }
-      },
-      MuiCardMedia: {
-        root: {
-          alignSelf: 'start',
-          aspectRatio: 1,
-          backgroundColor: theme.palette.primary.main
-        }
-      },
-      MuiCircularProgress: {
-        root: {
-          padding: '20%'
-        }
-      }
-    }
-  });

@@ -42,7 +42,7 @@ export const EmbedCode = ({ src, className }: IEmbedCodeProps) => {
 
   return (
     <ThemeProvider theme={embedCodeTheme}>
-      <Box className={cx(className, { root: true })}>
+      <Box className={cx(className, classes.root)}>
         <code ref={elmRef} className={classes.code}>
           {embedCode}
         </code>

@@ -22,7 +22,7 @@ export const TogglePlaylistButton = ({
   const playlistOpen = getUiPlayerPlaylistOpen(state);
   const tooltipTitle = playlistOpen ? 'Close Playlist' : 'Open Playlist';
   const { classes: styles, cx } = useTogglePlaylistButtonStyles();
-  const rootClassNames = cx(className, 'root');
+  const rootClassNames = cx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };

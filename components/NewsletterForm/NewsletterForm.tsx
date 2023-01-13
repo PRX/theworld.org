@@ -52,7 +52,7 @@ export const NewsletterForm = ({
     <CircularProgress color="inherit" size={20} aria-label="Progress Bar" />
   )) || <SendSharp />;
   const isAmp = useAmp();
-  const { cx } = newsletterFormStyles({ compact });
+  const { classes, cx } = newsletterFormStyles({ compact });
 
   const handleChangeEmailAddress = (e: ChangeEvent<HTMLInputElement>) => {
     setData({
@@ -100,12 +100,12 @@ export const NewsletterForm = ({
   return (
     <ThemeProvider theme={newsletterFormTheme}>
       <form
-        className={cx(className, 'root')}
+        className={cx(className, classes.root)}
         onSubmit={handleSubmit}
         noValidate
         autoComplete="off"
       >
-        <Box className={cx('layout')}>
+        <Box className={classes.layout}>
           <Box>
             <TextField
               type="email"
@@ -145,7 +145,7 @@ export const NewsletterForm = ({
               </Button>
             )}
           </Box>
-          <Box className={cx('optin')}>
+          <Box className={classes.optin}>
             <FormControlLabel
               control={
                 <Checkbox

@@ -12,7 +12,8 @@ import {
   ListItemAvatar,
   Avatar,
   ListSubheader,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
+  ListItemButton
 } from '@mui/material';
 import { ThemeProvider } from '@mui/styles';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -35,7 +36,7 @@ export const SidebarList = ({
   ...other
 }: ISidebarListProps) => {
   const { classes, cx } = sidebarListStyles();
-  const listClasses = cx(className, 'root');
+  const listClasses = cx(classes.root, className);
   const listProps = {
     component: 'nav',
     className: listClasses,
@@ -56,13 +57,7 @@ export const SidebarList = ({
     switch (item.type) {
       case 'file--audio':
         return (
-          <ListItem
-            button
-            component={ContentLink}
-            ContainerComponent="div"
-            data={item}
-            key={item.id}
-          >
+          <ListItemButton component={ContentLink} data={item} key={item.id}>
             <ListItemText className={classes.noBullet}>{text}</ListItemText>
             <ListItemSecondaryAction>
               <AudioControls
@@ -75,18 +70,12 @@ export const SidebarList = ({
                 }}
               />
             </ListItemSecondaryAction>
-          </ListItem>
+          </ListItemButton>
         );
 
       case 'node--people':
         return (
-          <ListItem
-            button
-            component={ContentLink}
-            ContainerComponent="div"
-            data={item}
-            key={item.id}
-          >
+          <ListItemButton component={ContentLink} data={item} key={item.id}>
             <ListItemAvatar>
               {item.avatar ? (
                 <Avatar
@@ -101,13 +90,13 @@ export const SidebarList = ({
               )}
             </ListItemAvatar>
             <ListItemText className={classes.noBullet}>{text}</ListItemText>
-          </ListItem>
+          </ListItemButton>
         );
 
       case 'node--stories':
         if (item.audio) {
           return (
-            <ListItem button ContainerComponent="div" key={item.id}>
+            <ListItemButton key={item.id}>
               <ListItemText className={classes.noBullet}>
                 <ContentLink data={item}>{text}</ContentLink>
               </ListItemText>
@@ -123,33 +112,21 @@ export const SidebarList = ({
                   variant="minimal"
                 />
               </ListItemSecondaryAction>
-            </ListItem>
+            </ListItemButton>
           );
         }
 
         return (
-          <ListItem
-            button
-            component={ContentLink}
-            ContainerComponent="div"
-            data={item}
-            key={item.id}
-          >
+          <ListItemButton component={ContentLink} data={item} key={item.id}>
             <ListItemText className={classes.noBullet}>{text}</ListItemText>
-          </ListItem>
+          </ListItemButton>
         );
 
       default:
         return (
-          <ListItem
-            button
-            component={ContentLink}
-            ContainerComponent="div"
-            data={item}
-            key={item.id}
-          >
+          <ListItemButton component={ContentLink} data={item} key={item.id}>
             <ListItemText>{text}</ListItemText>
-          </ListItem>
+          </ListItemButton>
         );
     }
   };
@@ -158,7 +135,7 @@ export const SidebarList = ({
     !!data && (
       <ThemeProvider theme={sidebarListTheme}>
         <List {...listProps}>
-          {data.map((item) =>
+          {data.map(item =>
             item.id ? (
               renderItemContent(item)
             ) : (

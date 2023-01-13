@@ -5,11 +5,7 @@
 
 import React from 'react';
 import { Box, BoxProps } from '@mui/material';
-import { ThemeProvider } from '@mui/styles';
-import {
-  sidebarHeaderStyles,
-  sidebarHeaderTheme
-} from './SidebarHeader.styles';
+import { sidebarHeaderStyles } from './SidebarHeader.styles';
 
 export interface ISidebarHeaderProps extends BoxProps {}
 
@@ -18,13 +14,11 @@ export const SidebarHeader = ({
   className,
   ...other
 }: ISidebarHeaderProps) => {
-  const { cx } = sidebarHeaderStyles();
+  const { classes, cx } = sidebarHeaderStyles();
 
   return (
-    <ThemeProvider theme={sidebarHeaderTheme}>
-      <Box component="header" {...other} className={cx(className, 'root')}>
-        {children}
-      </Box>
-    </ThemeProvider>
+    <Box component="header" {...other} className={cx(classes.root, className)}>
+      {children}
+    </Box>
   );
 };

@@ -40,7 +40,7 @@ export const EmbedModalContent = forwardRef<any, IEmbedModalContentProps>(
       (failed && 'Could not copy to clipboard.') ||
       'Copy code to clipboard.';
     const { classes: styles, cx } = useEmbedModalContentStyles();
-    const rootClassNames = cx(className, 'root');
+    const rootClassNames = cx(styles.root, className);
     const iconClasses = {
       root: styles.iconRoot
     };

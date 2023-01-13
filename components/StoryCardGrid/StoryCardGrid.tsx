@@ -27,7 +27,6 @@ import {
   Typography
 } from '@mui/material';
 import { Label } from '@mui/icons-material';
-import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
 import { ILink } from '@interfaces/link';
 import {
@@ -35,21 +34,17 @@ import {
   IAddAudioButtonProps
 } from '@components/Player/components';
 import { IAudioData } from '@components/Player/types';
-import { storyCardTheme } from '@components/StoryCard/StoryCard.styles';
 import { generateLinkHrefForContent } from '@lib/routing';
-import {
-  storyCardGridStyles,
-  storyCardGridTheme
-} from './StoryCardGrid.styles';
+import { storyCardGridStyles } from './StoryCardGrid.styles';
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const PlayAudioButton = dynamic(() =>
-  import('@components/Player/components').then((mod) => mod.PlayAudioButton)
+  import('@components/Player/components').then(mod => mod.PlayAudioButton)
 ) as React.FC<IPlayAudioButtonProps>;
 
 const AddAudioButton = dynamic(() =>
-  import('@components/Player/components').then((mod) => mod.AddAudioButton)
+  import('@components/Player/components').then(mod => mod.AddAudioButton)
 ) as React.FC<IAddAudioButtonProps>;
 
 export interface StoryCardGridProps extends BoxProps {
@@ -108,122 +103,119 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
   }, [router.events]);
 
   return (
-    <ThemeProvider theme={storyCardTheme}>
-      <ThemeProvider theme={storyCardGridTheme}>
-        <Box className={cx('root')} {...other}>
-          {data.map((item, index) => {
-            const {
-              id,
-              title,
-              image,
-              audio,
-              primaryCategory,
-              crossLinks,
-              dateBroadcast,
-              datePublished
-            } = item;
-            const { pathname } = generateLinkHrefForContent(
-              item,
-              true
-            ) as UrlWithParsedQuery;
-            const isLoading = pathname === loadingUrl;
-            const audioProps = {
-              title,
-              queuedFrom: 'Card Controls',
-              ...(image && { imageUrl: image.url }),
-              linkResource: item
-            } as Partial<IAudioData>;
-            return (
-              <Card square key={id}>
-                <CardActionArea component="div">
-                  <CardMedia>
-                    {image && (
-                      <Image
-                        src={image.url}
-                        alt={image.alt}
-                        layout="fill"
-                        objectFit="cover"
-                        sizes={sizes}
-                        priority={index <= 1}
-                      />
-                    )}
-                    {audio && (
-                      <PlayAudioButton
-                        classes={{ root: classes.audioPlayButton }}
+    <Box className={classes.root} {...other}>
+      {data.map((item, index) => {
+        const {
+          id,
+          title,
+          image,
+          audio,
+          primaryCategory,
+          crossLinks,
+          dateBroadcast,
+          datePublished
+        } = item;
+        const { pathname } = generateLinkHrefForContent(
+          item,
+          true
+        ) as UrlWithParsedQuery;
+        const isLoading = pathname === loadingUrl;
+        const audioProps = {
+          title,
+          queuedFrom: 'Card Controls',
+          ...(image && { imageUrl: image.url }),
+          linkResource: item
+        } as Partial<IAudioData>;
+        return (
+          <Card classes={{ root: classes.MuiCardRoot }} square key={id}>
+            <CardActionArea
+              component="div"
+              classes={{ root: classes.MuiCardActionAreaRoot }}
+            >
+              <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
+                {image && (
+                  <Image
+                    src={image.url}
+                    alt={image.alt}
+                    layout="fill"
+                    objectFit="cover"
+                    sizes={sizes}
+                    priority={index <= 1}
+                  />
+                )}
+                {audio && (
+                  <PlayAudioButton
+                    classes={{ root: classes.audioPlayButton }}
+                    id={audio.id}
+                    fallbackProps={audioProps}
+                  />
+                )}
+                <LinearProgress
+                  className={cx(classes.loadingBar, {
+                    isLoading
+                  })}
+                  color="secondary"
+                  aria-label="Progress Bar"
+                />
+              </CardMedia>
+              <CardContent classes={{ root: classes.MuiCardContentRoot }}>
+                <Box className={classes.heading}>
+                  <Typography
+                    variant="h5"
+                    component="h2"
+                    gutterBottom
+                    className={classes.title}
+                  >
+                    {title}
+                  </Typography>
+                  {audio && (
+                    <Box className={classes.audio}>
+                      <AddAudioButton
                         id={audio.id}
                         fallbackProps={audioProps}
                       />
-                    )}
-                    <LinearProgress
-                      className={cx(classes.loadingBar, {
-                        isLoading
-                      })}
-                      color="secondary"
-                      aria-label="Progress Bar"
-                    />
-                  </CardMedia>
-                  <CardContent>
-                    <Box className={classes.heading}>
-                      <Typography
-                        variant="h5"
-                        component="h2"
-                        gutterBottom
-                        className={cx('title')}
-                      >
-                        {title}
-                      </Typography>
-                      {audio && (
-                        <Box className={classes.audio}>
-                          <AddAudioButton
-                            id={audio.id}
-                            fallbackProps={audioProps}
-                          />
-                        </Box>
-                      )}
                     </Box>
-                    <Grid
-                      container
-                      justifyContent="flex-start"
-                      spacing={1}
-                      style={{ marginBottom: 0 }}
-                    >
-                      <Grid item xs="auto" zeroMinWidth>
-                        <Typography component="span">
-                          <Moment
-                            format="MMMM D, YYYY"
-                            tz="America/New_York"
-                            unix
-                          >
-                            {dateBroadcast || datePublished}
-                          </Moment>
-                        </Typography>
-                      </Grid>
-                      {primaryCategory && (
-                        <Grid item xs="auto" zeroMinWidth>
-                          <Typography variant="overline" noWrap>
-                            <Label color="secondary" />
-                            <ContentLink data={primaryCategory}>
-                              {primaryCategory.title}
-                            </ContentLink>
-                          </Typography>
-                        </Grid>
-                      )}
+                  )}
+                </Box>
+                <Grid
+                  container
+                  justifyContent="flex-start"
+                  spacing={1}
+                  style={{ marginBottom: 0 }}
+                >
+                  <Grid item xs="auto" zeroMinWidth>
+                    <Typography component="span">
+                      <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                        {dateBroadcast || datePublished}
+                      </Moment>
+                    </Typography>
+                  </Grid>
+                  {primaryCategory && (
+                    <Grid item xs="auto" zeroMinWidth>
+                      <Typography
+                        className={classes.primaryCategory}
+                        variant="overline"
+                        noWrap
+                      >
+                        <Label color="secondary" />
+                        <ContentLink data={primaryCategory}>
+                          {primaryCategory.title}
+                        </ContentLink>
+                      </Typography>
                     </Grid>
-                    <ContentLink data={item} className={cx('link')} />
-                  </CardContent>
-                </CardActionArea>
-                {!!(crossLinks && crossLinks.length) && (
-                  <CardActions>
-                    <List>
-                      {crossLinks.map((link: ILink) => renderLink(link))}
-                    </List>
-                  </CardActions>
-                )}
-              </Card>
-            );
-          })}
-        </Box>
-      </ThemeProvider>
-    </ThemeProvider>
+                  )}
+                </Grid>
+                <ContentLink data={item} className={classes.link} />
+              </CardContent>
+            </CardActionArea>
+            {!!(crossLinks && crossLinks.length) && (
+              <CardActions>
+                <List>{crossLinks.map((link: ILink) => renderLink(link))}</List>
+              </CardActions>
+            )}
+          </Card>
+        );
+      })}
+    </Box>
   );
 };

@@ -19,7 +19,7 @@ export const TimeInfo: React.FC<ITimeInfoProps> = ({
   ...other
 }: ITimeInfoProps) => {
   const { audioElm, state: playerState } = useContext(PlayerContext);
-  const { cx } = useTimeInfoStyles();
+  const { classes: styles, cx } = useTimeInfoStyles();
   const {
     currentTrackIndex,
     tracks,
@@ -34,7 +34,7 @@ export const TimeInfo: React.FC<ITimeInfoProps> = ({
   const playedDuration = convertSecondsToDuration(currentTime);
   const trackDuration = convertSecondsToDuration(duration);
   const timeInfo = `${playedDuration} / ${trackDuration}`;
-  const rootClasses = cx(className, 'root');
+  const rootClasses = cx(styles.root, className);
 
   /**
    * Update player progress visuals.

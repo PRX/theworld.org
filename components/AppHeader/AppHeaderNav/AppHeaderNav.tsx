@@ -28,68 +28,63 @@ export const AppHeaderNav = () => {
   const store = useStore();
   const headerNav = getMenusData(store.getState(), 'headerNav');
 
-  return (
-    (headerNav?.length && (
-      <ThemeProvider theme={appHeaderNavTheme}>
-        {headerNav
-          .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
-          .map(({ color, icon, name, url, key, attributes, itemLinkClass }) => (
-            <React.Fragment key={key}>
-              <Button
-                sx={{ display: { xs: 'none', sm: 'inline-block' } }}
+  return headerNav?.length ? (
+    <ThemeProvider theme={appHeaderNavTheme}>
+      {headerNav
+        .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
+        .map(({ color, icon, name, url, key, attributes, itemLinkClass }) => (
+          <React.Fragment key={key}>
+            <Button
+              sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
+              component="a"
+              href={isLocalUrl(url.href) ? url.path : url.href}
+              onClick={handleButtonClick(url)}
+              variant={
+                /\bbtn-(text|link)\b/.test(itemLinkClass) ? 'text' : 'contained'
+              }
+              color={(color as ButtonColors) || 'primary'}
+              disableRipple
+              disableElevation
+              {...(icon && { startIcon: renderIcon(icon) })}
+              {...attributes}
+            >
+              {name}
+            </Button>
+            {icon ? (
+              <IconButton
+                sx={{ display: { sm: 'none', xs: 'inline-flex' } }}
                 component="a"
-                href={isLocalUrl(url.href) ? url.path : url.href}
+                href={url.href}
                 onClick={handleButtonClick(url)}
-                variant={
-                  /\bbtn-(text|link)\b/.test(itemLinkClass)
-                    ? 'text'
-                    : 'contained'
-                }
+                aria-label={name}
+                color={(color as IconButtonColors) || 'default'}
+                size="small"
+                disableRipple
+                {...attributes}
+              >
+                {renderIcon(icon)}
+              </IconButton>
+            ) : (
+              <Button
+                sx={{ display: { sm: 'none', xs: 'inline-flex' } }}
+                component="a"
+                href={url.href}
+                onClick={handleButtonClick(url)}
+                variant="text"
                 color={(color as ButtonColors) || 'primary'}
+                size="small"
                 disableRipple
                 disableElevation
-                {...(icon && { startIcon: renderIcon(icon) })}
                 {...attributes}
+                {...(icon && {
+                  startIcon: renderIcon(icon)
+                })}
               >
                 {name}
               </Button>
-              {icon ? (
-                <IconButton
-                  sx={{ display: { sm: 'none', xs: 'inline-block' } }}
-                  component="a"
-                  href={url.href}
-                  onClick={handleButtonClick(url)}
-                  aria-label={name}
-                  color={(color as IconButtonColors) || 'default'}
-                  size="small"
-                  disableRipple
-                  {...attributes}
-                >
-                  {renderIcon(icon)}
-                </IconButton>
-              ) : (
-                <Button
-                  sx={{ display: { sm: 'none', xs: 'inline-block' } }}
-                  component="a"
-                  href={url.href}
-                  onClick={handleButtonClick(url)}
-                  variant="text"
-                  color={(color as ButtonColors) || 'primary'}
-                  size="small"
-                  disableRipple
-                  disableElevation
-                  {...attributes}
-                  {...(icon && {
-                    startIcon: renderIcon(icon)
-                  })}
-                >
-                  {name}
-                </Button>
-              )}
-            </React.Fragment>
-          ))}
-      </ThemeProvider>
-    )) ||
-    null
-  );
+            )}
+          </React.Fragment>
+        ))}
+    </ThemeProvider>
+  ) : null;
 };

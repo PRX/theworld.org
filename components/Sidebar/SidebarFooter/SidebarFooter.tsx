@@ -14,11 +14,11 @@ import {
 interface ISidebarFooterProps extends HTMLAttributes<{}> {}
 
 export const SidebarFooter = ({ children, className }: ISidebarFooterProps) => {
-  const { cx } = sidebarFooterStyles();
+  const { classes, cx } = sidebarFooterStyles();
 
   return (
     <ThemeProvider theme={sidebarFooterTheme}>
-      <Box component="footer" className={cx(className, 'root')}>
+      <Box component="footer" className={cx(classes.root, className)}>
         {children}
       </Box>
     </ThemeProvider>

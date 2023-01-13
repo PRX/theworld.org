@@ -18,7 +18,7 @@ export const AutoplayButton = ({
   const { state, toggleAutoplay } = useContext(PlayerContext);
   const { autoplay } = state;
   const { classes: styles, cx } = useAutoplayButtonStyles();
-  const rootClassNames = cx(className, 'root');
+  const rootClassNames = cx(styles.root, className);
   const rootClasses = {
     switchBase: styles.switchBase,
     colorPrimary: styles.colorPrimary,

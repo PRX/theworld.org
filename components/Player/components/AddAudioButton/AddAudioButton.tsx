@@ -35,11 +35,9 @@ export const AddAudioButton = ({
   const [audio, setAudio] = useState<IAudioResource>();
   const [audioData, setAudioData] = useState<IAudioData>();
   const [loading, setLoading] = useState(false);
-  const {
-    state: playerState,
-    addTrack,
-    removeTrack
-  } = useContext(PlayerContext);
+  const { state: playerState, addTrack, removeTrack } = useContext(
+    PlayerContext
+  );
   const { tracks } = playerState;
   const [isQueued, setIsQueued] = useState(false);
   const tooltipTitle = isQueued ? 'Remove From Playlist' : 'Add to Playlist';
@@ -47,7 +45,7 @@ export const AddAudioButton = ({
     isQueued,
     loading
   });
-  const rootClassNames = cx('root', className);
+  const rootClassNames = cx(styles.root, className);
   const iconButtonClasses = {
     root: styles.iconButtonRoot,
     ...classes

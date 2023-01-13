@@ -13,9 +13,11 @@ export const SidebarContent = ({
   children,
   className
 }: ISidebarContentProps) => {
-  const { cx } = sidebarContentStyles();
+  const { classes, cx } = sidebarContentStyles();
 
   return (
-    <CardContent className={cx(className, 'root')}>{children}</CardContent>
+    <CardContent className={cx(classes.root, className)}>
+      {children}
+    </CardContent>
   );
 };

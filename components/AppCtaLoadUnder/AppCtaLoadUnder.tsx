@@ -39,7 +39,7 @@ export const AppCtaLoadUnder = () => {
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);
-  const { cx } = appCtaLoadUnderStyles();
+  const { classes, cx } = appCtaLoadUnderStyles();
 
   const handleClose = () => {
     const { name, hash, cookieLifespan } = shownMessage;
@@ -58,8 +58,8 @@ export const AppCtaLoadUnder = () => {
 
   return CtaMessageComponent && shownMessage && !closed ? (
     <ThemeProvider theme={appCtaLoadUnderTheme}>
-      <Box component="aside" className={cx('root')} px={4} height={5}>
-        <Container className={cx('container')} maxWidth="lg">
+      <Box component="aside" className={classes.root} px={4} height={5}>
+        <Container className={classes.container} maxWidth="lg">
           <CtaMessageComponent data={shownMessage} onClose={handleClose} />
         </Container>
         <Box position="absolute" top={0} right={0}>

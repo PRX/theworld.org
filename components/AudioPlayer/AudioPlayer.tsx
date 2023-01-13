@@ -103,8 +103,7 @@ export const AudioPlayer = ({
   const { classes, cx } = audioPlayerStyles({ playing, hasPlayed, stuck });
   const rootClasses = cx(className, classes.root);
 
-  const playBtnClasses = cx({
-    playBtn: true,
+  const playBtnClasses = cx(classes.playBtn, {
     loading: !loaded
   });
 

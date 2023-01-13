@@ -26,7 +26,7 @@ export const AudioControls = ({
   ...other
 }: IAudioControlsProps) => {
   const { classes, cx } = useAudioControlsStyles();
-  const rootClasses = cx(className, 'root');
+  const rootClasses = cx(classes.root, className);
 
   return (
     <Box

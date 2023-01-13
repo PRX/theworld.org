@@ -18,44 +18,54 @@ export const appCtaLoadUnderTheme = (theme: Theme) =>
         lineHeight: 1.2
       }
     },
-    overrides: {
+    components: {
       MuiButton: {
-        containedPrimary: {
-          '&:hover': {
-            backgroundColor: theme.palette.secondary.main
+        styleOverrides: {
+          containedPrimary: {
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.main
+            }
           }
         }
       },
       MuiCheckbox: {
-        root: {
-          color: 'inherit'
+        styleOverrides: {
+          root: {
+            color: 'inherit'
+          }
         }
       },
       MuiFormControlLabel: {
-        root: {
-          paddingLeft: theme.spacing(2)
-        },
-        label: {
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          textAlign: 'left'
+        styleOverrides: {
+          root: {
+            paddingLeft: theme.spacing(2)
+          },
+          label: {
+            paddingTop: theme.spacing(2),
+            paddingBottom: theme.spacing(2),
+            textAlign: 'left'
+          }
         }
       },
       MuiIconButton: {
-        root: {
-          '&:hover': {
-            backgroundColor: theme.palette.action.focus
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              backgroundColor: theme.palette.action.focus
+            }
           }
         }
       },
       MuiToolbar: {
-        root: {
-          justifyContent: 'center',
-          '& > * + *': {
-            marginLeft: theme.spacing(2)
-          },
-          [theme.breakpoints.down('sm')]: {
-            marginTop: theme.spacing(1)
+        styleOverrides: {
+          root: {
+            justifyContent: 'center',
+            '& > * + *': {
+              marginLeft: theme.spacing(2)
+            },
+            [theme.breakpoints.down('sm')]: {
+              marginTop: theme.spacing(1)
+            }
           }
         }
       }

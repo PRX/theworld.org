@@ -11,76 +11,85 @@ const playerHeight = 50;
 
 export const audioPlayerTheme = (theme: Theme) =>
   createTheme(theme, {
-    overrides: {
+    components: {
       MuiIconButton: {
-        root: {
-          padding: theme.spacing(1),
-          color: theme.palette.getContrastText(blue[900]),
-          fontSize: theme.typography.pxToRem(playerHeight - 16),
+        styleOverrides: {
+          root: {
+            padding: theme.spacing(1),
+            color: theme.palette.getContrastText(blue[900]),
+            fontSize: theme.typography.pxToRem(playerHeight - 16),
+            aspectRatio: '1',
 
-          '&:hover': {
-            backgroundColor: lighten(
-              blue[900],
-              theme.palette.action.hoverOpacity * 2
-            )
+            '&:hover': {
+              backgroundColor: lighten(
+                blue[900],
+                theme.palette.action.hoverOpacity * 2
+              )
+            }
           }
         }
       },
       MuiSvgIcon: {
-        root: {
-          fontSize: 'inherit'
+        styleOverrides: {
+          root: {
+            fontSize: 'inherit'
+          }
         }
       },
       MuiSlider: {
-        root: {},
-        rail: {
-          height: '100%',
-          top: 0,
-          backgroundColor: lighten(blue[900], 0.3),
-          opacity: 1
-        },
-        track: {
-          height: '100%',
-          top: 0,
-          backgroundColor: theme.palette.primary.main
-        },
-        thumb: {
-          transform: 'translateX(-50%)',
-          willChange: 'width',
-          transition: theme.transitions.create('width', {
-            duration: '150ms',
-            easing: theme.transitions.easing.easeOut
-          }),
-          width: 2,
-          height: '100%',
-          top: 0,
-          marginTop: 0,
-          marginLeft: 0,
-          boxShadow: 'none',
-          backgroundColor: theme.palette.primary.contrastText,
-          borderRadius: 0,
-          userSelect: 'none',
-
-          '&:hover': {
-            width: 6,
-            boxShadow: 'none'
+        styleOverrides: {
+          root: {
+            outline: '1px solid red',
+            '&.Mui-active': {
+              width: 10,
+              '&:hover': {
+                width: 10
+              }
+            }
           },
+          rail: {
+            height: '100%',
+            top: 0,
+            backgroundColor: lighten(blue[900], 0.3),
+            opacity: 1
+          },
+          track: {
+            height: '100%',
+            top: 0,
+            backgroundColor: theme.palette.primary.main
+          },
+          thumb: {
+            transform: 'translateX(-50%)',
+            willChange: 'width',
+            transition: theme.transitions.create('width', {
+              duration: '150ms',
+              easing: theme.transitions.easing.easeOut
+            }),
+            width: 2,
+            height: '100%',
+            top: 0,
+            marginTop: 0,
+            marginLeft: 0,
+            boxShadow: 'none',
+            backgroundColor: theme.palette.primary.contrastText,
+            borderRadius: 0,
+            userSelect: 'none',
 
-          '&[class*="active"]': {
-            boxShadow: 'none'
-          }
-        },
-        active: {
-          width: 10,
-          '&:hover': {
-            width: 10
-          }
-        },
-        valueLabel: {
-          left: 'auto',
-          color: theme.palette.secondary.main,
-          '& [class*="label"]': {
-            color: theme.palette.secondary.contrastText
+            '&:hover': {
+              width: 6,
+              boxShadow: 'none'
+            },
+
+            '&[class*="active"]': {
+              boxShadow: 'none'
+            }
+          },
+          valueLabel: {
+            left: 'auto',
+            color: theme.palette.secondary.main,
+            '& [class*="label"]': {
+              color: theme.palette.secondary.contrastText
+            }
           }
         }
       }
@@ -104,7 +113,8 @@ export const audioPlayerStyles = makeStyles<{
     display: 'grid',
     gridTemplateColumns: `${playerHeight}px 1fr 0fr`,
     gridColumnGap: theme.spacing(2),
-    alignItems: 'center',
+    alignItems: 'stretch',
+    height: `${playerHeight}px`,
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
     backgroundColor: blue[900],

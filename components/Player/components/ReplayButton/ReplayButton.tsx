@@ -15,7 +15,7 @@ export interface IReplayButtonProps extends IconButtonProps {}
 export const ReplayButton = ({ className, ...other }: IReplayButtonProps) => {
   const { replay } = useContext(PlayerContext);
   const { classes: styles, cx } = useReplayButtonStyles();
-  const rootClassNames = cx(className, 'root');
+  const rootClassNames = cx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };

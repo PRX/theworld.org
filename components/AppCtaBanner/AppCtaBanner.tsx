@@ -32,7 +32,7 @@ export const AppCtaBanner = () => {
     setClosed(false);
     setState(store.getState());
   });
-  const { cx } = appCtaBannerStyles();
+  const { classes } = appCtaBannerStyles();
 
   const handleClose = () => {
     // Check if cookies allowed.
@@ -57,7 +57,7 @@ export const AppCtaBanner = () => {
     <ThemeProvider theme={appCtaBannerTheme}>
       <Box
         component="aside"
-        className={cx('root')}
+        className={classes.root}
         display="flex"
         alignItems="center"
         minHeight={230}

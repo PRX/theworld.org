@@ -8,11 +8,10 @@ import { useStore } from 'react-redux';
 import { parse } from 'url';
 import { Label } from '@mui/icons-material';
 import { Breadcrumbs, Container, Link } from '@mui/material';
-import { ThemeProvider } from '@mui/styles';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';
-import { QuickLinksStyles, QuickLinksTheme } from './QuickLinks.styles';
+import { QuickLinksStyles } from './QuickLinks.styles';
 
 export const QuickLinks = () => {
   const store = useStore();
@@ -21,41 +20,43 @@ export const QuickLinks = () => {
 
   return (
     (quickLinks && (
-      <ThemeProvider theme={QuickLinksTheme}>
-        <Container>
-          <Breadcrumbs separator=" " aria-label="Quick Links">
-            <Label
-              color="secondary"
-              aria-hidden="true"
-              className={classes.label}
-            />
-            {quickLinks
-              .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
-              .map(({ name, url, key, attributes }) =>
-                isLocalUrl(url.href) ? (
-                  <Link
-                    href={url.pathname}
-                    onClick={handleButtonClick(url)}
-                    key={key}
-                    className={classes.link}
-                    {...attributes}
-                  >
-                    {name}
-                  </Link>
-                ) : (
-                  <a
-                    href={url.href}
-                    className={classes.link}
-                    key={key}
-                    {...attributes}
-                  >
-                    {name}
-                  </a>
-                )
-              )}
-          </Breadcrumbs>
-        </Container>
-      </ThemeProvider>
+      <Container>
+        <Breadcrumbs
+          classes={{ root: classes.MuiBreadcrumbsRoot }}
+          separator=" "
+          aria-label="Quick Links"
+        >
+          <Label
+            color="secondary"
+            aria-hidden="true"
+            className={classes.label}
+          />
+          {quickLinks
+            .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
+            .map(({ name, url, key, attributes }) =>
+              isLocalUrl(url.href) ? (
+                <Link
+                  href={url.pathname}
+                  onClick={handleButtonClick(url)}
+                  key={key}
+                  className={classes.link}
+                  {...attributes}
+                >
+                  {name}
+                </Link>
+              ) : (
+                <a
+                  href={url.href}
+                  className={classes.link}
+                  key={key}
+                  {...attributes}
+                >
+                  {name}
+                </a>
+              )
+            )}
+        </Breadcrumbs>
+      </Container>
     )) ||
     null
   );

@@ -7,7 +7,31 @@ import { makeStyles } from 'tss-react/mui';
 
 export const playAudioButtonStyles = makeStyles<{ audioIsPlaying: boolean }>()(
   (theme, { audioIsPlaying }) => ({
-    root: {},
+    root: {
+      display: 'grid',
+      '& > *': {
+        gridRow: '1 / -1',
+        gridColumn: '1 / -1',
+        transition: theme.transitions.create('opacity', {
+          duration: theme.transitions.duration.shortest,
+          easing: theme.transitions.easing.sharp
+        })
+      },
+      ...(audioIsPlaying && {
+        '& > :first-of-type': {
+          opacity: 0.99999
+        },
+        '& > :last-of-type': {
+          opacity: 0
+        },
+        '&:hover > :first-of-type': {
+          opacity: 0
+        },
+        '&:hover > :last-of-type': {
+          opacity: 0.99999
+        }
+      })
+    },
     circularProgressPrimary: {
       color: 'inherit'
     },
@@ -44,18 +68,6 @@ export const playAudioButtonStyles = makeStyles<{ audioIsPlaying: boolean }>()(
       fontSize: 'inherit',
       fill: 'currentColor',
       margin: 0
-    },
-    hideOnHover: {
-      opacity: 0.99999,
-      ':hover > &': {
-        opacity: 0
-      }
-    },
-    showOnHover: {
-      opacity: 0,
-      ':hover > &': {
-        opacity: 0.99999
-      }
     }
   })
 );

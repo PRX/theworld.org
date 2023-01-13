@@ -35,7 +35,7 @@ export const PlaylistItem = ({
     isCurrentTrack,
     hasLink: !!linkResource
   });
-  const rootClassNames = cx(className, 'root');
+  const rootClassNames = cx(styles.root, className);
   const iconButtonClasses = {
     root: styles.iconButtonRoot
   };

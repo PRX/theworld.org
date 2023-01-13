@@ -19,7 +19,7 @@ export const PlayButton = ({ className, ...other }: IPlayButtonProps) => {
   const { classes: styles, cx } = usePlayButtonStyles({
     playing
   });
-  const rootClassNames = cx(className, 'root');
+  const rootClassNames = cx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };

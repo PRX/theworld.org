@@ -142,9 +142,9 @@ export const baseMuiTheme = createTheme(
     }
   },
   {
-    overrides: {
+    components: {
       MuiCssBaseline: {
-        '@global': {
+        styleOverrides: {
           html: {
             padding: 0
           },
@@ -161,9 +161,11 @@ export const baseMuiTheme = createTheme(
         }
       },
       MuiIconButton: {
-        root: {
-          borderRadius: 0,
-          fontSize: 'inherit'
+        styleOverrides: {
+          root: {
+            borderRadius: 0,
+            fontSize: 'inherit'
+          }
         }
       }
     }
@@ -177,83 +179,95 @@ export const appTheme = (theme: Theme) =>
       shadows[1] = `0 1px 1px 0 ${theme.palette.divider}, 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0)`;
       return shadows;
     })(),
-    overrides: {
+    components: {
       MuiCssBaseline: {
-        '@global': {
+        styleOverrides: {
           html: {
             backgroundColor: theme.palette.primary.main
           }
         }
       },
       MuiAppBar: {
-        root: {}
+        styleOverrides: {
+          root: {}
+        }
       },
       MuiButton: {
-        root: {
-          borderRadius: '0.25em',
-          fontSize: '1rem'
-        },
-        contained: {
-          fontWeight: 'bold'
-        },
-        containedSecondary: {
-          border: `1px solid ${yellow[500]}`,
-          '&:hover': {
-            backgroundColor: yellow[500]
+        styleOverrides: {
+          root: {
+            borderRadius: '0.25em',
+            fontSize: '1rem'
+          },
+          contained: {
+            fontWeight: 'bold'
+          },
+          containedSecondary: {
+            border: `1px solid ${yellow[500]}`,
+            '&:hover': {
+              backgroundColor: yellow[500]
+            }
+          },
+          label: {
+            textTransform: 'none'
           }
-        },
-        label: {
-          textTransform: 'none'
         }
       },
       MuiButtonGroup: {
-        contained: {
-          boxShadow: 'none'
-        },
-        groupedContained: {
-          whiteSpace: 'nowrap',
-          '&:first-child': {
-            borderRadius: `${buttonBorderRadius} 0 0 ${buttonBorderRadius}`
-          },
-          '&:last-child': {
-            borderRadius: `0 ${buttonBorderRadius} ${buttonBorderRadius} 0`
-          }
-        },
-        groupedContainedSecondary: {
-          border: `${buttonBorderWidth} solid ${theme.palette.secondary.light}`,
-          '&:not(:last-child)': {
-            borderRight: `${buttonBorderWidth} solid ${theme.palette.secondary.light}`,
-            borderColor: `${theme.palette.secondary.light}`
-          },
-          '& + *': {
-            marginLeft: `-${buttonBorderWidth}`
-          },
-          '&:hover, &:focus': {
-            backgroundColor: theme.palette.secondary.light,
+        styleOverrides: {
+          contained: {
             boxShadow: 'none'
+          },
+          groupedContained: {
+            whiteSpace: 'nowrap',
+            '&:first-of-type': {
+              borderRadius: `${buttonBorderRadius} 0 0 ${buttonBorderRadius}`
+            },
+            '&:last-of-type': {
+              borderRadius: `0 ${buttonBorderRadius} ${buttonBorderRadius} 0`
+            }
+          },
+          groupedContainedSecondary: {
+            border: `${buttonBorderWidth} solid ${theme.palette.secondary.light}`,
+            '&:not(:last-of-type)': {
+              borderRight: `${buttonBorderWidth} solid ${theme.palette.secondary.light}`,
+              borderColor: `${theme.palette.secondary.light}`
+            },
+            '& + *': {
+              marginLeft: `-${buttonBorderWidth}`
+            },
+            '&:hover, &:focus': {
+              backgroundColor: theme.palette.secondary.light,
+              boxShadow: 'none'
+            }
           }
         }
       },
       MuiDrawer: {
-        paper: {
-          color: theme.palette.primary.contrastText,
-          backgroundColor: theme.palette.primary.main
+        styleOverrides: {
+          paper: {
+            color: theme.palette.primary.contrastText,
+            backgroundColor: theme.palette.primary.main
+          }
         }
       },
       MuiIconButton: {
-        root: {
-          borderRadius: 0,
-          fontSize: 'inherit'
+        styleOverrides: {
+          root: {
+            borderRadius: 0,
+            fontSize: 'inherit'
+          }
         }
       },
       MuiLink: {
-        root: {
-          color: theme.palette.primary.main,
-          '&:visited': {
-            color: theme.palette.primary.main
-          },
-          '&:hover': {
-            color: theme.palette.primary.dark
+        styleOverrides: {
+          root: {
+            color: theme.palette.primary.main,
+            '&:visited': {
+              color: theme.palette.primary.main
+            },
+            '&:hover': {
+              color: theme.palette.primary.dark
+            }
           }
         }
       }

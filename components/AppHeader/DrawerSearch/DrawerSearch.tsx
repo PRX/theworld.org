@@ -10,13 +10,9 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
-import { ThemeProvider } from '@mui/styles';
 import { fetchSearchData } from '@store/actions/fetchSearchData';
 import { getSearchQuery } from '@store/reducers';
-import {
-  appDrawerSearchStyles,
-  appDrawerSearchTheme
-} from './DrawerSearch.styles';
+import { appDrawerSearchStyles } from './DrawerSearch.styles';
 
 export const DrawerSearch = () => {
   const queryRef = useRef(null);
@@ -52,34 +48,50 @@ export const DrawerSearch = () => {
   );
 
   return (
-    <ThemeProvider theme={appDrawerSearchTheme}>
-      <form onSubmit={handleSubmit} autoComplete="off">
-        <Box className={classes.root}>
-          <TextField
-            inputRef={queryRef}
-            id="standard-basic"
-            label="I am looking for&hellip;"
-            defaultValue={query}
-            size="medium"
-            color="secondary"
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClearQuery}
-                    color="inherit"
-                    size="small"
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-          />
-        </Box>
-      </form>
-    </ThemeProvider>
+    <form onSubmit={handleSubmit} autoComplete="off">
+      <Box className={classes.root}>
+        <TextField
+          variant="standard"
+          inputRef={queryRef}
+          id="standard-basic"
+          label="I am looking for&hellip;"
+          defaultValue={query}
+          size="medium"
+          color="secondary"
+          fullWidth
+          classes={{
+            root: classes.inputRoot
+          }}
+          InputLabelProps={{
+            classes: {
+              root: classes.labelRoot
+            }
+          }}
+          InputProps={{
+            classes: {
+              root: classes.inputRoot,
+              underline: classes.inputUnderline
+            },
+            endAdornment: (
+              <InputAdornment
+                sx={{
+                  color: 'inherit'
+                }}
+                position="end"
+              >
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClearQuery}
+                  color="inherit"
+                  size="small"
+                >
+                  <CloseIcon />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
+        />
+      </Box>
+    </form>
   );
 };

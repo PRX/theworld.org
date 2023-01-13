@@ -3,25 +3,7 @@
  * Styles for QuickLinks.
  */
 
-import { createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
-
-export const QuickLinksTheme = (theme: Theme) =>
-  createTheme(theme, {
-    overrides: {
-      MuiBreadcrumbs: {
-        root: {
-          display: 'flex',
-          position: 'relative',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          maxHeight: theme.typography.pxToRem(48),
-          marginTop: theme.typography.pxToRem(8),
-          marginBottom: theme.typography.pxToRem(-24)
-        }
-      }
-    }
-  });
 
 export const QuickLinksStyles = makeStyles()(theme => ({
   root: {
@@ -53,5 +35,15 @@ export const QuickLinksStyles = makeStyles()(theme => ({
     '&:visited': {
       color: theme.palette.primary.main
     }
+  },
+
+  MuiBreadcrumbsRoot: {
+    display: 'flex',
+    position: 'relative',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    maxHeight: theme.typography.pxToRem(48),
+    marginTop: theme.typography.pxToRem(8),
+    marginBottom: theme.typography.pxToRem(-24)
   }
 }));

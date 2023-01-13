@@ -27,7 +27,7 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   const { heading, message, optinLabel, action, dismiss } = data;
   const hasActions = !!(action || dismiss);
   const [optedIn, setOptedIn] = useState(false);
-  const { cx } = appCtaMessageOptInStyles();
+  const { classes } = appCtaMessageOptInStyles();
   const actionAttrs: ButtonProps = {
     variant: 'contained',
     color: 'primary',
@@ -59,7 +59,7 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
             <HtmlContent html={message} />
           </Typography>
         )}
-        <Box className={cx('controls')}>
+        <Box className={classes.controls}>
           <Box>
             <Paper>
               <FormControlLabel

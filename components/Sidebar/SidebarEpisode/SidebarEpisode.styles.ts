@@ -7,6 +7,23 @@ import { createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const sidebarEpisodeStyles = makeStyles()(theme => ({
+  root: {
+    '& :is(.MuiButtonBase-root)': {
+      fontSize: 'inherit',
+      lineHeight: 'inherit'
+    },
+    '& :is(.MuiCard-root)': {
+      color: theme.palette.primary.main
+    },
+    '& :is(.MuiCardActionArea-root)': {
+      color: theme.palette.primary.main
+    },
+    '& :is(.MuiCardActions-root)': {
+      margin: 0,
+      padding: 0
+    }
+  },
+
   imageWrapper: {
     paddingTop: 'unset'
   },
@@ -21,15 +38,11 @@ export const sidebarEpisodeStyles = makeStyles()(theme => ({
     textIndent: '-2000vw'
   },
 
-  header: {
-    display: 'grid',
-    gridTemplateColumns: '0fr 1fr 0fr',
-    alignItems: 'center',
-    gap: theme.typography.pxToRem(8)
-  },
+  header: {},
 
   title: {
-    marginBlock: 0
+    marginBlock: 0,
+    fontSize: theme.typography.pxToRem(18)
   },
 
   audio: {
@@ -51,34 +64,44 @@ export const sidebarEpisodeTheme = (theme: Theme) =>
         fontSize: theme.typography.pxToRem(18)
       }
     },
-    overrides: {
+    components: {
       MuiButtonBase: {
-        root: {
-          fontSize: 'inherit',
-          lineHeight: 'inherit'
+        styleOverrides: {
+          root: {
+            fontSize: 'inherit',
+            lineHeight: 'inherit'
+          }
         }
       },
       MuiCard: {
-        root: {
-          color: theme.palette.primary.main
+        styleOverrides: {
+          root: {
+            color: theme.palette.primary.main
+          }
         }
       },
       MuiCardActions: {
-        root: {
-          margin: 0,
-          padding: 0
+        styleOverrides: {
+          root: {
+            margin: 0,
+            padding: 0
+          }
         }
       },
       MuiCardContent: {
-        root: {
-          color: theme.palette.text.primary,
-          fontWeight: theme.typography.fontWeightBold,
-          paddingBlock: `${8}px`
+        styleOverrides: {
+          root: {
+            color: theme.palette.text.primary,
+            fontWeight: theme.typography.fontWeightBold,
+            paddingBlock: `${8}px`
+          }
         }
       },
       MuiTypography: {
-        gutterBottom: {
-          marginBottom: theme.typography.pxToRem(12)
+        styleOverrides: {
+          gutterBottom: {
+            marginBottom: theme.typography.pxToRem(12)
+          }
         }
       }
     }

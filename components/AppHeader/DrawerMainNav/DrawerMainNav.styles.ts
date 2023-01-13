@@ -10,37 +10,41 @@ import { hexToRgb } from '@lib/parse/color';
 
 export const drawerMainNavTheme = (theme: Theme) =>
   createTheme(theme, {
-    overrides: {
+    components: {
       MuiList: {
-        root: {
-          padding: 0
+        styleOverrides: {
+          root: {
+            padding: 0
+          }
         }
       },
-      MuiListItem: {
-        root: {
-          color: 'var(--accent-color)',
-          '&.opened': {
-            color: theme.palette.common.white,
-            backgroundColor: 'var(--accent-color)',
+      MuiListItemButton: {
+        styleOverrides: {
+          root: {
+            color: 'var(--accent-color)',
+            '&.opened': {
+              color: theme.palette.common.white,
+              backgroundColor: 'var(--accent-color)',
+              '&:hover': {
+                backgroundColor: 'var(--accent-color)'
+              }
+            },
+            '& + &': {
+              borderTopWidth: 0
+            },
             '&:hover': {
-              backgroundColor: 'var(--accent-color)'
+              backgroundColor: 'rgba(var(--accent-color-rgb), 0.3)'
             }
-          },
-          '& + &': {
-            borderTopWidth: 0
-          }
-        },
-        button: {
-          '&:hover': {
-            backgroundColor: 'rgba(var(--accent-color-rgb), 0.3)'
           }
         }
       },
       MuiListItemText: {
-        root: {
-          position: 'relative',
-          zIndex: 1,
-          color: 'var(--accent-color-contrast)'
+        styleOverrides: {
+          root: {
+            position: 'relative',
+            zIndex: 1,
+            color: 'var(--accent-color-contrast)'
+          }
         }
       }
     }
@@ -53,15 +57,15 @@ export const drawerMainNavStyles = makeStyles()(theme => ({
     '--accent-color': orange[500],
     '--accent-color-rgb': hexToRgb(orange[500]).toString(),
     '--accent-color-contrast': theme.palette.getContrastText(orange[500]),
-    boxShadow: `-${theme.spacing(0.5)}px 0 0 0 var(--accent-color)`,
+    boxShadow: `-${theme.spacing(0.5)} 0 0 0 var(--accent-color)`,
 
-    '&:nth-child(2n)': {
+    '&:nth-of-type(2n)': {
       '--accent-color': yellow[500],
       '--accent-color-rgb': hexToRgb(yellow[500]).toString(),
       '--accent-color-contrast': theme.palette.getContrastText(yellow[500])
     },
 
-    '&:nth-child(3n)': {
+    '&:nth-of-type(3n)': {
       '--accent-color': cyan[500],
       '--accent-color-rgb': hexToRgb(cyan[500]).toString(),
       '--accent-color-contrast': theme.palette.getContrastText(cyan[500])

@@ -3,50 +3,23 @@
  * Styles for SidebarHeader.
  */
 
-import { createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const sidebarHeaderTheme = (theme: Theme) => {
-  const headingProps = {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: 400
-  };
-
-  return createTheme(theme, {
-    overrides: {
-      MuiSvgIcon: {
-        root: {
-          marginRight: '0.25rem',
-          fill: theme.palette.secondary.main,
-          verticalAlign: 'text-bottom'
-        }
-      }
-    },
-    typography: {
-      h1: {
-        ...headingProps
-      },
-      h2: {
-        ...headingProps
-      },
-      h3: {
-        ...headingProps
-      },
-      h4: {
-        ...headingProps
-      },
-      h5: {
-        ...headingProps
-      },
-      h6: {
-        ...headingProps
-      }
-    }
-  });
-};
-
-export const sidebarHeaderStyles = makeStyles()(() => ({
+export const sidebarHeaderStyles = makeStyles()(theme => ({
   root: {
-    padding: '1rem 1rem 0.5rem'
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.typography.pxToRem(8),
+    padding: '1rem 1rem 0.5rem',
+    '& :where(h1, h2, h3, h4, h5, h6)': {
+      flexGrow: 1,
+      fontSize: theme.typography.pxToRem(15),
+      fontWeight: 400
+    },
+    '& > :where(.MuiSvgIcon-root)': {
+      marginRight: '0.25rem',
+      fill: theme.palette.secondary.main,
+      verticalAlign: 'text-bottom'
+    }
   }
 }));

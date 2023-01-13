@@ -19,6 +19,9 @@ export const sidebarFooterTheme = (theme: Theme) =>
 
 export const sidebarFooterStyles = makeStyles()(() => ({
   root: {
-    padding: '0.5rem 1rem 1rem'
+    padding: '0.5rem 1rem 1rem',
+    '& :where(.MuiPagination-ul)': {
+      justifyContent: 'center'
+    }
   }
 }));

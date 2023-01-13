@@ -21,7 +21,7 @@ export const AppFooter = () => {
   const footerNav = getMenusData(store.getState(), 'footerNav');
   const copyrightDate = new Date().getFullYear();
   const { classes, cx } = appFooterStyles();
-  const producedByLogoClasses = cx({ logo: true, producedByLogo: true });
+  const producedByLogoClasses = cx(classes.logo, classes.producedByLogo);
 
   return (
     <footer className={classes.root}>
@@ -32,7 +32,7 @@ export const AppFooter = () => {
           The World is a public radio program that crosses borders and time
           zones to bring home the stories that matter.
         </p>
-        <Box className={cx({ logos: true, producedBy: true })}>
+        <Box className={cx(classes.logos, classes.producedBy)}>
           <p className={classes.logosTitle}>Produced by</p>
           <Breadcrumbs
             separator=" "
@@ -49,7 +49,7 @@ export const AppFooter = () => {
             </Link>
           </Breadcrumbs>
         </Box>
-        <Box className={cx({ logos: true, fundedBy: true })}>
+        <Box className={cx(classes.logos, classes.fundedBy)}>
           <p className={classes.logosTitle}>Major funding provided by</p>
           <Breadcrumbs
             separator=" "

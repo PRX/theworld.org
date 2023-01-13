@@ -78,7 +78,7 @@ export const sidebarListTheme = (theme: Theme) =>
         root: {
           position: 'static',
           transform: 'none',
-          paddingRight: `${theme.spacing(2)}px`
+          paddingRight: `${theme.spacing(2)}`
         }
       },
       MuiListSubheader: {
@@ -91,6 +91,60 @@ export const sidebarListTheme = (theme: Theme) =>
 
 export const sidebarListStyles = makeStyles()(theme => ({
   root: {
+    '& :is(.MuiLink-root)': {
+      '&:hover': {
+        color: theme.palette.primary.main
+      }
+    },
+    '& :is(.MuiListItemButton-root)': {
+      display: 'flex',
+      alignItems: 'center',
+      padding: theme.typography.pxToRem(2),
+      '&:hover': {
+        color: theme.palette.primary.main,
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.hoverOpacity
+        )
+      }
+    },
+    '& :is(.MuiListItemButton-container)': {
+      display: 'flex',
+      alignItems: 'center',
+      padding: theme.typography.pxToRem(2),
+      '&:hover': {
+        color: theme.palette.primary.main,
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.hoverOpacity
+        )
+      }
+    },
+    '& :is(.MuiListItemButton-secondaryAction)': {
+      paddingRight: theme.spacing(2),
+      '&:hover': {
+        background: 'none'
+      }
+    },
+    '& :is(.MuiListItemSecondaryAction-root)': {
+      position: 'static',
+      transform: 'none',
+      paddingRight: theme.spacing(2)
+    },
+    '& :is(.MuiListItemText-root)': {
+      display: 'list-item',
+      listStyle: 'disc',
+      marginTop: 0,
+      marginBottom: 0,
+      marginLeft: theme.spacing(2),
+      color: theme.palette.grey[500]
+    },
+    '& :is(.MuiListItemText-primary)': {
+      display: 'grid',
+      color: theme.palette.primary.main,
+      fontWeight: theme.typography.fontWeightBold,
+      lineHeight: 1
+    },
     '&:last-child': {
       paddingBlockEnd: theme.typography.pxToRem(16)
     }
