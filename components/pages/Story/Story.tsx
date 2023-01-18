@@ -46,7 +46,7 @@ export const Story = () => {
     Title: title,
     ...(format && { 'Story Format': format.title }),
     ...(resourceDevelopment && {
-      'Resource Development': resourceDevelopment
+      'Resource Development': resourceDevelopment.title
     }),
     ...(dateBroadcast &&
       (() => {
