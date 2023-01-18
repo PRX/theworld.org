@@ -5,7 +5,6 @@
 
 import { createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
-import { storyLayoutStyles } from '@components/pages/Story/layouts/default/styles/Story.layout';
 import { storyBodyStyles } from '@components/pages/Story/layouts/default/styles/Story.body';
 
 export const programTheme = (theme: Theme) =>
@@ -19,10 +18,12 @@ export const programTheme = (theme: Theme) =>
         marginBottom: theme.typography.pxToRem(16)
       }
     },
-    overrides: {
+    components: {
       MuiDivider: {
-        root: {
-          marginBottom: theme.typography.pxToRem(24)
+        styleOverrides: {
+          root: {
+            marginBottom: theme.typography.pxToRem(24)
+          }
         }
       }
     }

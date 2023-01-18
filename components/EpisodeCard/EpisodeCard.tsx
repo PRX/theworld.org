@@ -47,7 +47,7 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
     linkResource: data
   } as Partial<IAudioData>;
   const { segments } = audio || {};
-  const { classes, cx } = episodeCardStyles();
+  const { classes } = episodeCardStyles();
   const imageWidth = [
     ['max-width: 600px', '100vw'],
     ['max-width: 960px', '568px'],
@@ -57,10 +57,10 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
 
   return (
     <ThemeProvider theme={episodeCardTheme}>
-      <Card square elevation={1}>
+      <Card square elevation={1} classes={{ root: classes.MuiCardRoot }}>
         <CardActionArea component="div">
           {image && (
-            <CardMedia>
+            <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
               <Image
                 src={image.url}
                 alt={image.alt}
@@ -71,7 +71,7 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
               />
             </CardMedia>
           )}
-          <CardContent>
+          <CardContent classes={{ root: classes.MuiCardContentRoot }}>
             <Box className={classes.heading}>
               <Box>
                 <Typography component="span">
@@ -87,7 +87,7 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
                   variant="h5"
                   component="h2"
                   gutterBottom
-                  className={cx('title')}
+                  className={classes.title}
                 >
                   {title}
                 </Typography>
@@ -99,19 +99,23 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
               )}
             </Box>
             <Typography variant="body1" component="div" color="textSecondary">
-              <Box className={cx('body')}>
+              <Box className={classes.body}>
                 <HtmlContent html={teaser} />
               </Box>
             </Typography>
-            <ContentLink data={data} className={cx('link')} />
+            <ContentLink data={data} className={classes.link} />
           </CardContent>
         </CardActionArea>
         {segments && (
-          <CardActions>
+          <CardActions classes={{ root: classes.MuiCardActionsRoot }}>
             <SidebarAudioList
               data={segments}
+              classes={{
+                root: classes.MuiListRoot,
+                padding: classes.MuiListPadding
+              }}
               subheader={
-                <ListSubheader component="header" className={cx('header')}>
+                <ListSubheader component="header" className={classes.header}>
                   <Typography variant="h2">
                     <EqualizerRounded /> In this episode:
                   </Typography>

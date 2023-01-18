@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
 import { useStore } from 'react-redux';
-import classNames from 'classnames/bind';
 import { UrlWithParsedQuery } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -40,8 +39,7 @@ export const Team = () => {
   const [loadingUrl, setLoadingUrl] = useState(null);
   const store = useStore();
   const state = store.getState();
-  const { classes } = teamStyles();
-  const cx = classNames.bind(classes);
+  const { classes, cx } = teamStyles();
   const { items } = getCollectionData(state, type, id, 'members');
   const imageWidth = [
     ['max-width: 600px', '100wv'],
@@ -114,10 +112,21 @@ export const Team = () => {
                     className={cx({
                       [classes.isLoading]: isLoading
                     })}
+                    classes={{
+                      root: classes.MuiCardRoot
+                    }}
                   >
-                    <CardActionArea>
+                    <CardActionArea
+                      classes={{
+                        root: classes.MuiCardActionAreaRoot
+                      }}
+                    >
                       {item.image && (
-                        <CardMedia>
+                        <CardMedia
+                          classes={{
+                            root: classes.MuiCardMediaRoot
+                          }}
+                        >
                           <Image
                             alt={item.image.alt}
                             src={item.image.url}
@@ -128,13 +137,19 @@ export const Team = () => {
                           />
                         </CardMedia>
                       )}
-                      <CardContent>
+                      <CardContent
+                        classes={{
+                          root: classes.MuiCardContentRoot
+                        }}
+                      >
                         <LinearProgress
                           className={classes.loadingBar}
                           color="secondary"
                           aria-label="Progress Bar"
                         />
-                        <Typography variant="h4">{item.title}</Typography>
+                        <Typography variant="h4" className={classes.title}>
+                          {item.title}
+                        </Typography>
                         <Typography variant="subtitle1">
                           {item.position}
                         </Typography>

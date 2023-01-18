@@ -3,7 +3,7 @@
  * Styles for Newsletter.
  */
 
-import { createTheme, Theme } from '@mui/material/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
 export const newsletterTheme = (theme: Theme) =>
@@ -63,6 +63,7 @@ export const newsletterStyles = makeStyles<
     }
   },
   withImage: {},
+  image: {},
   imageWrapper: {
     gridColumn: '1 / -1',
     gridRow: '1 / -1',
@@ -94,7 +95,11 @@ export const newsletterStyles = makeStyles<
   summary: {
     fontSize: 'clamp(0.8rem, 5vw, 1.5rem)'
   },
-  form: {},
+  form: {
+    '& :where(.MuiOutlinedInput-input)': {
+      backgroundColor: alpha(theme.palette.common.white, 0.5)
+    }
+  },
   body: {
     fontSize: '(1.2rem)',
     lineHeight: '1.7rem',

@@ -17,7 +17,9 @@ export const TeamHeader = ({ title }: Props) => {
   return (
     <Box className={classes.root} mt={4} mb={2}>
       <Box mb={3}>
-        <Typography variant="h1">{title}</Typography>
+        <Typography variant="h1" className={classes.title}>
+          {title}
+        </Typography>
       </Box>
     </Box>
   );

@@ -5,9 +5,8 @@
 
 import { makeStyles } from 'tss-react/mui';
 
-export const appFooterStyles = makeStyles()(theme => ({
+export const appFooterStyles = makeStyles()((theme) => ({
   root: {
-    marginTop: theme.typography.pxToRem(24),
     textAlign: 'center'
   },
 

@@ -57,7 +57,10 @@ export const landingPageHeaderStyles = makeStyles()(theme => ({
     }
   },
 
+  content: {},
+
   header: {
+    position: 'relative',
     gridRow: '1 / -1',
     display: 'flex',
     flexDirection: 'column',

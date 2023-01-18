@@ -6,9 +6,9 @@
 import React from 'react';
 import Image from 'next/legacy/image';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Container, Typography, ThemeProvider } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import { ContentLink } from '@components/ContentLink';
-import { bioHeaderStyles, bioHeaderTheme } from './BioHeader.styles';
+import { bioHeaderStyles } from './BioHeader.styles';
 
 export interface IBioHeaderProps {
   image?: IPriApiResource;
@@ -25,40 +25,48 @@ export const BioHeader = ({
   position,
   subhead
 }: IBioHeaderProps) => {
-  const { cx } = bioHeaderStyles();
+  const { classes } = bioHeaderStyles();
 
   return (
-    <ThemeProvider theme={bioHeaderTheme}>
-      <Box className={cx('root')}>
-        <Box className={cx('content')}>
-          <Container fixed className={cx('header')}>
-            {image && (
-              <Image
-                src={image.url}
-                layout="fixed"
-                width={220}
-                height={220}
-                className={cx('image')}
-                objectFit="cover"
-              />
+    <Box className={classes.root}>
+      <Box className={classes.content}>
+        <Container fixed className={classes.header}>
+          {image && (
+            <Image
+              src={image.url}
+              layout="fixed"
+              width={220}
+              height={220}
+              className={classes.image}
+              objectFit="cover"
+            />
+          )}
+          <Box className={classes.text}>
+            <Typography variant="h1" className={classes.title}>
+              {title}
+            </Typography>
+            {position && (
+              <Typography
+                variant="subtitle1"
+                component="p"
+                className={classes.position}
+              >
+                {position}
+              </Typography>
             )}
-            <Box className={cx('text')}>
-              <Typography variant="h1">{title}</Typography>
-              {position && (
-                <Typography variant="subtitle1" component="p">
-                  {position}
-                </Typography>
-              )}
-              {program && <ContentLink className={cx('link')} data={program} />}
-              {subhead && (
-                <Typography variant="subtitle1" component="p">
-                  {subhead}
-                </Typography>
-              )}
-            </Box>
-          </Container>
-        </Box>
+            {program && <ContentLink className={classes.link} data={program} />}
+            {subhead && (
+              <Typography
+                variant="subtitle1"
+                component="p"
+                className={classes.subhead}
+              >
+                {subhead}
+              </Typography>
+            )}
+          </Box>
+        </Container>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 };

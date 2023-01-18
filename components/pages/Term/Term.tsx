@@ -166,12 +166,12 @@ export const Term = () => {
       children: (
         <>
           {!isEpisodesView && (
-            <Box display="grid" gap={8}>
+            <Box display="grid" gap={1}>
               {featuredStory && (
                 <StoryCard data={featuredStory} feature priority />
               )}
               {featuredStories && (
-                <StoryCardGrid data={featuredStories[1]} gap={8} />
+                <StoryCardGrid data={featuredStories[1]} gap={1} />
               )}
             </Box>
           )}
@@ -340,7 +340,7 @@ export const Term = () => {
         main={mainElements}
         sidebar={sidebarElements}
         mt={3}
-        gap={8}
+        gap={1}
       />
     </>
   );

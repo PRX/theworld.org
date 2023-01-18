@@ -35,7 +35,7 @@ export const Newsletter = () => {
     data as IPriApiNewsletter,
     'newsletter-page'
   );
-  const { cx } = newsletterStyles();
+  const { classes, cx } = newsletterStyles();
 
   const handleSubscribed = () => {
     setSubscribed(true);
@@ -67,15 +67,15 @@ export const Newsletter = () => {
               item
               xs={12}
               sm={image ? 12 : 9}
-              className={cx('header', {
-                withImage: !!image
+              className={cx(classes.header, {
+                [classes.withImage]: !!image
               })}
             >
               {image && (
-                <Box className={cx('imageWrapper')}>
+                <Box className={classes.imageWrapper}>
                   <Image
                     alt={image.alt}
-                    className={cx('image')}
+                    className={classes.image}
                     src={image.url}
                     layout="fill"
                     objectFit="cover"
@@ -83,15 +83,16 @@ export const Newsletter = () => {
                   />
                 </Box>
               )}
-              <div className={cx('content')}>
-                <h1 className={cx('title')}>{title}</h1>
-                <p className={cx('summary')}>{summary}</p>
-                <Box className={cx('form')}>
+              <div className={classes.content}>
+                <h1 className={classes.title}>{title}</h1>
+                <p className={classes.summary}>{summary}</p>
+                <Box className={classes.form}>
                   {!subscribed && (
                     <NewsletterForm
                       options={options}
                       label={buttonLabel}
                       onSubscribed={handleSubscribed}
+                      className={classes.form}
                     />
                   )}
                   {subscribed && (
@@ -135,7 +136,7 @@ export const Newsletter = () => {
             </Grid>
             {body && (
               <Container fixed>
-                <Box className={cx('body')} my={2}>
+                <Box className={classes.body} my={2}>
                   <HtmlContent html={body} />
                 </Box>
               </Container>

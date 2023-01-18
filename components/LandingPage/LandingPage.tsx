@@ -47,7 +47,7 @@ export const LandingPage = ({
   }
 
   return (
-    <Box {...other}>
+    <Box mb={3} {...other}>
       <Container fixed>
         <Grid container spacing={spacing || 3}>
           <Grid item xs={12} md={8}>

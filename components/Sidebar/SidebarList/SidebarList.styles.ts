@@ -19,10 +19,11 @@ export const sidebarListStyles = makeStyles<void, 'noBullet'>()(
         flexDirection: 'column',
         gap: theme.spacing(1)
       },
-      '& :is(.MuiListItemButton-root)': {
+      '& :where(.MuiListItemButton-root)': {
         display: 'flex',
         alignItems: 'center',
         gap: theme.spacing(0.5),
+        paddingBlock: theme.spacing(0.75),
         '&:hover': {
           color: theme.palette.primary.main,
           backgroundColor: alpha(

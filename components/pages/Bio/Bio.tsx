@@ -106,7 +106,7 @@ export const Bio = () => {
   const [loading, setLoading] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);
   const [segmentsPage, setSegmentsPage] = useState(1);
-  const { cx } = bioStyles();
+  const { classes } = bioStyles();
 
   // Plausible Events.
   const props = {
@@ -172,17 +172,17 @@ export const Bio = () => {
         <>
           {bio && (
             <Box mt={3}>
-              <Box className={cx('body')}>
+              <Box className={classes.body}>
                 <HtmlContent html={bio} />
               </Box>
             </Box>
           )}
-          <Box mt={bio ? 6 : 3}>
+          <Box mt={bio ? 6 : 3} mb={3} display="grid" gap={1}>
             {featuredStory && (
               <StoryCard data={featuredStory} feature priority />
             )}
             {featuredStories && (
-              <StoryCardGrid data={featuredStories[1]} mt={2} />
+              <StoryCardGrid data={featuredStories[1]} gap={1} />
             )}
           </Box>
         </>
@@ -194,15 +194,14 @@ export const Bio = () => {
         <>
           {stories
             .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource, index: number) => (
-              <Box mt={index ? 2 : 3} key={item.id}>
-                <StoryCard
-                  data={item}
-                  feature={
-                    item.displayTemplate && item.displayTemplate !== 'standard'
-                  }
-                />
-              </Box>
+            .map((item: IPriApiResource) => (
+              <StoryCard
+                data={item}
+                feature={
+                  item.displayTemplate && item.displayTemplate !== 'standard'
+                }
+                key={item.id}
+              />
             ))}
           {next && (
             <Box mt={3}>
@@ -229,12 +228,13 @@ export const Bio = () => {
     {
       key: 'sidebar top',
       children: (
-        <Box mt={3}>
+        <>
           {segments && !!segments[1].length && (
             <Sidebar item elevated>
               <SidebarHeader>
+                <EqualizerRounded />
                 <Typography variant="h2">
-                  <EqualizerRounded /> Latest segments from {title}
+                  Latest segments from {title}
                 </Typography>
               </SidebarHeader>
               <SidebarAudioList disablePadding data={segments[segmentsPage]} />
@@ -253,43 +253,42 @@ export const Bio = () => {
           {!!followLinks.length && (
             <Sidebar item elevated>
               <SidebarHeader>
-                <Typography variant="h2">
-                  <PublicRounded /> Follow {title}
-                </Typography>
+                <PublicRounded />
+                <Typography variant="h2">Follow {title}</Typography>
               </SidebarHeader>
               <SidebarList disablePadding data={followLinks} />
               <SidebarFooter />
             </Sidebar>
           )}
           {ctaSidebarTop && (
-            <Box mt={3}>
+            <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarTop} />
               </Hidden>
               <Hidden xsDown mdUp>
                 <CtaRegion data={ctaSidebarTop} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     },
     {
       key: 'sidebar bottom',
       children: (
-        <Box mt={3}>
+        <>
           <SidebarLatestStories />
           {ctaSidebarBottom && (
-            <Box mt={3}>
+            <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarBottom} />
               </Hidden>
               <Hidden xsDown mdUp>
                 <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
-            </Box>
+            </>
           )}
-        </Box>
+        </>
       )
     }
   ];
@@ -305,7 +304,7 @@ export const Bio = () => {
         image={image}
         program={program}
       />
-      <LandingPage main={mainElements} sidebar={sidebarElements} />
+      <LandingPage main={mainElements} sidebar={sidebarElements} gap={1} />
     </>
   );
 };

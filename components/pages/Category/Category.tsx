@@ -140,12 +140,12 @@ export const Category = () => {
       key: 'main top',
       children: (
         <>
-          <Box display="grid" gap={8}>
+          <Box display="grid" gap={1}>
             {featuredStory && (
               <StoryCard data={featuredStory} feature priority />
             )}
             {featuredStories && (
-              <StoryCardGrid data={featuredStories[1]} gap={8} />
+              <StoryCardGrid data={featuredStories[1]} gap={1} />
             )}
           </Box>
           {ctaInlineTop && (
@@ -291,7 +291,7 @@ export const Category = () => {
         main={mainElements}
         sidebar={sidebarElements}
         mt={3}
-        gap={8}
+        gap={1}
       />
     </>
   );

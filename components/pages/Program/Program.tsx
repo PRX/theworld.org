@@ -58,7 +58,7 @@ export const Program = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const { cx } = programStyles();
+  const { classes } = programStyles();
   const data = getDataByResource(state, type, id);
 
   // CTA data.
@@ -188,17 +188,17 @@ export const Program = () => {
       children: (
         <>
           {body && !hasContentLinks && (
-            <Box className={cx('body')}>
+            <Box className={classes.body}>
               <HtmlContent html={body} />
             </Box>
           )}
           {!isEpisodesView && (
-            <Box display="grid" gap={8}>
+            <Box display="grid" gap={1}>
               {featuredStory && (
                 <StoryCard data={featuredStory} feature priority />
               )}
               {featuredStories && (
-                <StoryCardGrid data={featuredStories[1]} gap={8} />
+                <StoryCardGrid data={featuredStories[1]} gap={1} />
               )}
             </Box>
           )}
@@ -392,7 +392,7 @@ export const Program = () => {
         main={mainElements}
         sidebar={sidebarElements}
         mt={3}
-        gap={8}
+        gap={1}
       />
     </ThemeProvider>
   );

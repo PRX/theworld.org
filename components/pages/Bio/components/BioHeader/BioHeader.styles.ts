@@ -3,23 +3,10 @@
  * Styles for BioHeader.
  */
 
-import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const bioHeaderTheme = (theme: Theme) =>
-  createTheme(theme, {
-    typography: {
-      h1: {
-        fontSize: theme.typography.pxToRem(48)
-      },
-      subtitle1: {
-        fontSize: 'inherit',
-        lineHeight: '1.1'
-      }
-    }
-  });
-
-export const bioHeaderStyles = makeStyles()(theme => ({
+export const bioHeaderStyles = makeStyles()((theme) => ({
   root: {
     position: 'relative',
     display: 'grid',
@@ -29,6 +16,20 @@ export const bioHeaderStyles = makeStyles()(theme => ({
     overflow: 'hidden',
     backgroundColor: theme.palette.primary.light,
     marginBottom: theme.typography.pxToRem(16)
+  },
+
+  title: {
+    fontSize: theme.typography.pxToRem(48)
+  },
+
+  subhead: {
+    fontSize: 'inherit',
+    lineHeight: '1.1'
+  },
+
+  position: {
+    fontSize: 'inherit',
+    lineHeight: '1.1'
   },
 
   imageWrapper: {
