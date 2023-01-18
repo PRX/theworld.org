@@ -24,6 +24,7 @@ import {
   IconButton,
   ListItemIcon,
   ListItemText,
+  ListProps,
   Menu,
   MenuItem,
   Modal,
@@ -34,6 +35,7 @@ import {
   CodeSharp,
   DeleteForeverSharp,
   DeleteSharp,
+  GetAppSharp,
   MoreVertSharp
 } from '@mui/icons-material';
 import { AutoplayButton } from '@components/Player/components/AutoPlayButton';
@@ -160,24 +162,31 @@ export const AppPlayer = () => {
         keepMounted
         open={Boolean(menuButtonElm)}
         onClose={handleMenuClose}
+        MenuListProps={{ component: 'nav' } as ListProps}
       >
-        <MenuItem onClick={handleClearPlaylistClick}>
+        <MenuItem component="button" onClick={handleClearPlaylistClick}>
           <ListItemIcon>
             <DeleteForeverSharp />
           </ListItemIcon>
           <ListItemText>Clear Playlist</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleRemoveTrackClick}>
+        <MenuItem component="button" onClick={handleRemoveTrackClick}>
           <ListItemIcon>
             <DeleteSharp />
           </ListItemIcon>
           <ListItemText>Remove From Playlist</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleShowEmbedModalClick}>
+        <MenuItem component="button" onClick={handleShowEmbedModalClick}>
           <ListItemIcon>
             <CodeSharp />
           </ListItemIcon>
           <ListItemText>Embed Audio</ListItemText>
+        </MenuItem>
+        <MenuItem component="a" href={currentTrack?.url} download>
+          <ListItemIcon>
+            <GetAppSharp />
+          </ListItemIcon>
+          <ListItemText>Download Audio</ListItemText>
         </MenuItem>
       </Menu>
       <Modal open={!!showEmbedModal} onClose={handleEmbedModalClose}>
