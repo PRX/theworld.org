@@ -42,12 +42,15 @@ export const EmbedCode = ({ src, className }: IEmbedCodeProps) => {
 
   return (
     <ThemeProvider theme={embedCodeTheme}>
-      <Box className={cx(className, classes.root)}>
+      <Box className={cx(classes.root, className)}>
         <code ref={elmRef} className={classes.code}>
           {embedCode}
         </code>
         <CopyToClipboard text={embedCode} onCopy={handleCopy}>
-          <IconButton disableRipple>
+          <IconButton
+            classes={{ root: classes.MuiIconButtonRoot }}
+            disableRipple
+          >
             <EmbedCodeCopyIcon titleAccess={EmbedCodeCopyIconTitle} />
           </IconButton>
         </CopyToClipboard>

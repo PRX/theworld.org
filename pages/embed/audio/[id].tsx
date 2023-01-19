@@ -27,7 +27,7 @@ const ContentProxy = ({ data, embeddedPlayerUrl }: IEmbedAudioPageProps) => {
       data.audioTitle || data.title,
       ...(data.program ? [data.program.title] : [])
     ]
-      .filter(v => !!v)
+      .filter((v) => !!v)
       .join(' - '),
     popoutPlayerUrl: data.metatags?.canonical
   };
@@ -42,7 +42,7 @@ const ContentProxy = ({ data, embeddedPlayerUrl }: IEmbedAudioPageProps) => {
       audioTitle || title,
       ...(audioProgram ? [audioProgram.title] : [program.title])
     ]
-      .filter(v => !!v)
+      .filter((v) => !!v)
       .join(' - ');
 
     props = {
@@ -57,11 +57,10 @@ const ContentProxy = ({ data, embeddedPlayerUrl }: IEmbedAudioPageProps) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
-  req,
   params: { id }
 }): Promise<GetServerSidePropsResult<any>> => {
   const resourceId = Array.isArray(id) ? id[0] : id;
-  const embeddedPlayerUrl = `https://theworld.org${req.url}`;
+  const embeddedPlayerUrl = `https://theworld.org/embed/audio/${id}`;
   let data: IPriApiResource;
 
   // Attempt to fetch story data.

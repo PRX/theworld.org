@@ -3,98 +3,11 @@
  * Styles and theme for AudioPlayer.
  */
 
-import { createTheme, lighten, Theme } from '@mui/material/styles';
+import { lighten } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 import { blue } from '@theme/colors';
 
 const playerHeight = 50;
-
-export const audioPlayerTheme = (theme: Theme) =>
-  createTheme(theme, {
-    components: {
-      MuiIconButton: {
-        styleOverrides: {
-          root: {
-            padding: theme.spacing(1),
-            color: theme.palette.getContrastText(blue[900]),
-            fontSize: theme.typography.pxToRem(playerHeight - 16),
-            aspectRatio: '1',
-
-            '&:hover': {
-              backgroundColor: lighten(
-                blue[900],
-                theme.palette.action.hoverOpacity * 2
-              )
-            }
-          }
-        }
-      },
-      MuiSvgIcon: {
-        styleOverrides: {
-          root: {
-            fontSize: 'inherit'
-          }
-        }
-      },
-      MuiSlider: {
-        styleOverrides: {
-          root: {
-            outline: '1px solid red',
-            '&.Mui-active': {
-              width: 10,
-              '&:hover': {
-                width: 10
-              }
-            }
-          },
-          rail: {
-            height: '100%',
-            top: 0,
-            backgroundColor: lighten(blue[900], 0.3),
-            opacity: 1
-          },
-          track: {
-            height: '100%',
-            top: 0,
-            backgroundColor: theme.palette.primary.main
-          },
-          thumb: {
-            transform: 'translateX(-50%)',
-            willChange: 'width',
-            transition: theme.transitions.create('width', {
-              duration: '150ms',
-              easing: theme.transitions.easing.easeOut
-            }),
-            width: 2,
-            height: '100%',
-            top: 0,
-            marginTop: 0,
-            marginLeft: 0,
-            boxShadow: 'none',
-            backgroundColor: theme.palette.primary.contrastText,
-            borderRadius: 0,
-            userSelect: 'none',
-
-            '&:hover': {
-              width: 6,
-              boxShadow: 'none'
-            },
-
-            '&[class*="active"]': {
-              boxShadow: 'none'
-            }
-          },
-          valueLabel: {
-            left: 'auto',
-            color: theme.palette.secondary.main,
-            '& [class*="label"]': {
-              color: theme.palette.secondary.contrastText
-            }
-          }
-        }
-      }
-    }
-  });
 
 export const audioPlayerStyles = makeStyles<{
   playing: boolean;
@@ -113,7 +26,7 @@ export const audioPlayerStyles = makeStyles<{
     display: 'grid',
     gridTemplateColumns: `${playerHeight}px 1fr 0fr`,
     gridColumnGap: theme.spacing(2),
-    alignItems: 'stretch',
+    alignItems: 'center',
     height: `${playerHeight}px`,
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
@@ -152,16 +65,16 @@ export const audioPlayerStyles = makeStyles<{
   },
   controls: {
     display: 'grid',
-    gridTemplateColumns: '2fr minmax(200px, 10vw)',
+    gridTemplateColumns: '2fr 1fr',
     alignItems: 'center',
     gridColumnGap: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
-      gridTemplateColumns: '1fr 1fr'
+    [theme.breakpoints.up('md')]: {
+      gridTemplateColumns: '2fr minmax(150px, 10vw)'
     }
   },
   progress: {
     position: 'relative',
-    lineHeight: 0,
+    height: '100%',
     backgroundColor: lighten(blue[900], 0.2)
   },
   loaded: {
@@ -205,9 +118,9 @@ export const audioPlayerStyles = makeStyles<{
     whiteSpace: 'nowrap'
   },
   menu: {
-    display: 'flex',
-    [theme.breakpoints.down('xs')]: {
-      display: 'none'
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex'
     }
   },
   popoutBtn: {
@@ -216,6 +129,94 @@ export const audioPlayerStyles = makeStyles<{
       height: '1em'
     }
   },
+
+  MuiIconButtonRoot: {
+    padding: theme.spacing(1),
+    color: theme.palette.getContrastText(blue[900]),
+    fontSize: theme.typography.pxToRem(playerHeight - 16),
+    aspectRatio: '1',
+
+    '& :where(.MuiSvgIcon-root)': {
+      fontSize: 'inherit'
+    },
+
+    '&:hover': {
+      backgroundColor: lighten(blue[900], theme.palette.action.hoverOpacity * 2)
+    }
+  },
+
+  MuiSliderRoot: {
+    padding: 0,
+    height: '100%',
+    '&.Mui-active': {
+      width: 10,
+      '&:hover': {
+        width: 10
+      }
+    }
+  },
+  MuiSliderRail: {
+    height: '100%',
+    top: 0,
+    backgroundColor: lighten(blue[900], 0.3),
+    opacity: 1
+  },
+  MuiSliderTrack: {
+    transform: 'none',
+    height: '100%',
+    top: 0,
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: 0,
+    border: 'none'
+  },
+  MuiSliderThumb: {
+    transform: 'translateX(-50%)',
+    willChange: 'width',
+    transition: theme.transitions.create('width', {
+      duration: '150ms',
+      easing: theme.transitions.easing.easeOut
+    }),
+    width: 2,
+    height: '100%',
+    top: 0,
+    marginTop: 0,
+    marginLeft: 0,
+    boxShadow: 'none',
+    backgroundColor: theme.palette.primary.contrastText,
+    borderRadius: 0,
+    userSelect: 'none',
+
+    '&:hover': {
+      width: 6,
+      boxShadow: 'none'
+    },
+
+    '&[class*="active"]': {
+      boxShadow: 'none'
+    }
+  },
+  MuiSliderValueLabel: {
+    top: '50%',
+    left: '105%',
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: 'unset',
+    padding: 0,
+    width: 32,
+    height: '100%',
+    borderRadius: '0 50% 50% 0',
+    backgroundColor: 'transparent',
+    transformOrigin: 'center center',
+    transform: 'translate(-50%, -50%) scale(0)',
+    '&:before': { display: 'none' },
+    '&.MuiSlider-valueLabelOpen': {
+      transform: 'translate(0, -50%) scale(1)'
+    }
+  },
+  MuiSliderValueLabelLabel: {
+    color: theme.palette.secondary.contrastText
+  },
+
   [theme.breakpoints.down('sm')]: {
     embedBtn: {
       display: 'none'

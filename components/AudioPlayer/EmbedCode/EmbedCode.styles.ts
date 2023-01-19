@@ -6,8 +6,8 @@
 import { createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const embedCodeTheme = (theme: Theme) => {
-  return createTheme(theme, {
+export const embedCodeTheme = (theme: Theme) =>
+  createTheme(theme, {
     components: {
       MuiIconButton: {
         styleOverrides: {
@@ -25,9 +25,8 @@ export const embedCodeTheme = (theme: Theme) => {
       }
     }
   });
-};
 
-export const embedCodeStyles = makeStyles()(theme => ({
+export const embedCodeStyles = makeStyles()((theme) => ({
   root: {
     display: 'grid',
     gridTemplateColumns: '1fr min-content',
@@ -52,6 +51,17 @@ export const embedCodeStyles = makeStyles()(theme => ({
       bottom: 0,
       backgroundColor: 'currentColor',
       opacity: theme.palette.action.hoverOpacity * 2
+    }
+  },
+
+  MuiIconButtonRoot: {
+    padding: theme.spacing(0.5),
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    fontSize: theme.typography.pxToRem(16),
+
+    '&:hover': {
+      backgroundColor: theme.palette.primary.dark
     }
   }
 }));
