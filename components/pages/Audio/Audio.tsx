@@ -29,12 +29,8 @@ export const Audio = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const { classes, cx } = audioStyles();
+  const { classes } = audioStyles();
   const data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
 
   const {
     metatags: dataMetatags,
@@ -82,7 +78,7 @@ export const Audio = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Audio', { props }]];
 
-  [...(audioAuthor || [])].forEach(person => {
+  [...(audioAuthor || [])].forEach((person) => {
     plausibleEvents.push([
       `Person: ${person.title}`,
       {
@@ -91,11 +87,12 @@ export const Audio = () => {
     ]);
   });
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return (
     <ThemeProvider theme={audioTheme}>
@@ -110,7 +107,7 @@ export const Audio = () => {
         <Grid container>
           <Grid item xs={12}>
             <AudioHeader data={data} />
-            <Box className={cx('body')} my={2}>
+            <Box className={classes.body} my={2}>
               <NoJsPlayer url={url} />
               <HtmlContent html={description} />
             </Box>

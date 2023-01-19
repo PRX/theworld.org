@@ -6,8 +6,8 @@
 import { createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const appSearchTheme = (theme: Theme) => {
-  return createTheme(theme, {
+export const appSearchTheme = (theme: Theme) =>
+  createTheme(theme, {
     components: {
       MuiAppBar: {
         styleOverrides: {
@@ -71,9 +71,8 @@ export const appSearchTheme = (theme: Theme) => {
       }
     }
   });
-};
 
-export const appSearchStyles = makeStyles()(theme => ({
+export const appSearchStyles = makeStyles()((theme) => ({
   root: {},
 
   title: {

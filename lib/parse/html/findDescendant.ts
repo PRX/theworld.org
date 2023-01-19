@@ -15,6 +15,7 @@ import { DomElement } from 'htmlparser2';
  */
 export const findDescendant = (
   node: DomElement,
+  // eslint-disable-next-line no-unused-vars
   func: (N: DomElement) => boolean
 ) => {
   const { children } = node;

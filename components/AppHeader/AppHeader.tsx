@@ -27,7 +27,6 @@ import { DrawerMainNav } from './DrawerMainNav';
 import { DrawerSearch } from './DrawerSearch';
 import { DrawerSocialNav } from './DrawerSocialNav';
 import { appHeaderStyles } from './AppHeader.styles';
-import { gridClasses } from '@mui/system';
 
 export const AppHeader = () => {
   const store = useStore();
@@ -36,7 +35,7 @@ export const AppHeader = () => {
     setState(store.getState());
   });
   const open = getUiDrawerOpen(state) || false;
-  const { classes, cx } = appHeaderStyles();
+  const { classes } = appHeaderStyles();
 
   useEffect(() => {
     function handleRouteChangeComplete() {

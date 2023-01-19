@@ -39,7 +39,7 @@ export const AppCtaLoadUnder = () => {
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);
-  const { classes, cx } = appCtaLoadUnderStyles();
+  const { classes } = appCtaLoadUnderStyles();
 
   const handleClose = () => {
     const { name, hash, cookieLifespan } = shownMessage;

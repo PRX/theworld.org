@@ -12,8 +12,5 @@ import { postJsonPriApiCtaRegion } from '@lib/fetch/api/fetchPriApi';
 
 export const fetchCtaRegionGroup = async (
   regionGroup: string
-): Promise<PriApiResourceResponse> => {
-  return (await postJsonPriApiCtaRegion(
-    regionGroup
-  )) as IPriApiResourceResponse;
-};
+): Promise<PriApiResourceResponse> =>
+  (await postJsonPriApiCtaRegion(regionGroup)) as IPriApiResourceResponse;

@@ -21,7 +21,6 @@ import {
   LinearProgress,
   Link as MuiLink,
   List,
-  ListItem,
   ListItemText,
   Typography,
   ListItemButton
@@ -38,7 +37,7 @@ import { useStoryCardStyles, storyCardTheme } from './StoryCard.styles';
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 export interface StoryCardProps {
@@ -131,8 +130,8 @@ export const StoryCard = ({
         elevation={1}
         className={cx({
           feature: feature || !image,
-          short: short,
-          isLoading: isLoading
+          short,
+          isLoading
         })}
       >
         <CardActionArea

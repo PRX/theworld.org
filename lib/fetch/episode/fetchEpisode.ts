@@ -8,8 +8,7 @@ import { fullEpisodeParams } from '../api/params';
 
 export const fetchEpisode = async (
   id: string
-): Promise<PriApiResourceResponse> => {
-  return fetchPriApiItem('node--episodes', id, {
+): Promise<PriApiResourceResponse> =>
+  fetchPriApiItem('node--episodes', id, {
     ...fullEpisodeParams
   });
-};

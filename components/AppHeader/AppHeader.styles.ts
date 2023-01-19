@@ -3,10 +3,9 @@
  * Styles for AppHeader.
  */
 
-import { Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const appHeaderStyles = makeStyles()(theme => ({
+export const appHeaderStyles = makeStyles()((theme) => ({
   root: {},
   toolbar: {},
 

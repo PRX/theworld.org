@@ -18,9 +18,7 @@ export const preloadComponent = async (type: string) => {
     ResourceComponentMap[type] &&
     (await ResourceComponentMap[type].render
       .preload()
-      .then(({ default: Component }) => {
-        return Component;
-      }));
+      .then(({ default: Component }) => Component));
 
   return ResourceComponent;
 };

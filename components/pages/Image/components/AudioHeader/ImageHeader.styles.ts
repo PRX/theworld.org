@@ -5,7 +5,7 @@
 
 import { makeStyles } from 'tss-react/mui';
 
-export const imageHeaderStyles = makeStyles()(theme => ({
+export const imageHeaderStyles = makeStyles()(() => ({
   root: {
     fontSize: '1.2rem'
   }

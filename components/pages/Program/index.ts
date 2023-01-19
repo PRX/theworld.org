@@ -1,2 +1,3 @@
+/* eslint-disable no-restricted-exports */
 export * from './Program';
-export { Program as default } from './Program'; // eslint-disable-line import/no-default-export
+export { Program as default } from './Program';
