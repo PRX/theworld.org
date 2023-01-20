@@ -24,7 +24,10 @@ import { AppPlayer } from '@components/AppPlayer/AppPlayer';
 import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
 import { Playlist } from '@components/Player/components';
 
-const TwApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+const TwApp: FC<AppProps> = ({
+  Component,
+  pageProps
+}: AppProps<{ type: string; id: string; contentOnly: boolean }>) => {
   const rootRef = useRef<HTMLDivElement>();
   const uiFooterRef = useRef<HTMLDivElement>();
   const store = useStore();
