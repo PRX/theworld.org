@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import ReactMarkdown from 'react-markdown/with-html';
+import ReactMarkdown from 'react-markdown';
 import ReactPlayer from 'react-player';
 import { Box, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
@@ -61,14 +61,14 @@ export const LedeVideo = ({ data }: ILedeVideoProps) => {
             <ReactMarkdown
               {...mdProps}
               className={classes.caption}
-              source={description}
+              children={description}
             />
           )}
           {hasCredit && (
             <ReactMarkdown
               {...mdProps}
               className={classes.credit}
-              source={credit}
+              children={credit}
             />
           )}
         </Typography>

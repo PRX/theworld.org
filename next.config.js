@@ -42,9 +42,6 @@ module.exports = withPlausibleProxy({
     deviceSizes: [370, 600, 960, 1280, 1920],
     imageSizes: [50, 86, 100, 172, 300, 400, 568, 808]
   },
-  future: {
-    webpack5: true
-  },
   async redirects() {
     return [
       {
@@ -88,9 +85,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item.toLowerCase());
+              .reduceRight((item) => item.toLowerCase());
             const allChunksNames = chunks
-              .map(item => (item.name || '').toLowerCase())
+              .map((item) => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
@@ -129,9 +126,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item.toLowerCase());
+              .reduceRight((item) => item.toLowerCase());
             const allChunksNames = chunks
-              .map(item => (item.name || '').toLowerCase())
+              .map((item) => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
@@ -154,9 +151,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item.toLowerCase());
+              .reduceRight((item) => item.toLowerCase());
             const allChunksNames = chunks
-              .map(item => (item.name || '').toLowerCase())
+              .map((item) => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
@@ -171,9 +168,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item.toLowerCase());
+              .reduceRight((item) => item.toLowerCase());
             const allChunksNames = chunks
-              .map(item => (item.name || '').toLowerCase())
+              .map((item) => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
@@ -188,9 +185,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight(item => item.toLowerCase());
+              .reduceRight((item) => item.toLowerCase());
             const allChunksNames = chunks
-              .map(item => (item.name || '').toLowerCase())
+              .map((item) => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
