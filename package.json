@@ -18,7 +18,7 @@
     "lint": "eslint --ext .jsx,.js,.tsx,.ts ./{components,config,contexts,interfaces,lib,pages,theme,assets/svg} --no-error-on-unmatched-pattern",
     "format:check": "prettier --config ./prettier.config.js --check **/*.{js,ts,tsx}",
     "start": "next start",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest --detectOpenHandles"
   },
   "dependencies": {
     "@emotion/cache": "^11.10.5",
