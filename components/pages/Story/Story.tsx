@@ -32,7 +32,8 @@ export const Story = () => {
     datePublished,
     displayTemplate,
     format,
-    resourceDevelopment
+    resourceDevelopment,
+    shareLinks
   } = data;
   const metatags = {
     ...dataMetatags,
@@ -88,8 +89,8 @@ export const Story = () => {
   }
 
   useEffect(() => {
-    // Show social hare menu.
-    const { shareLinks } = data;
+    if (!shareLinks) return;
+
     store.dispatch<UiAction>({
       type: 'UI_SHOW_SOCIAL_SHARE_MENU',
       payload: {
@@ -132,7 +133,7 @@ export const Story = () => {
         type: 'UI_HIDE_SOCIAL_SHARE_MENU'
       });
     };
-  }, [data, data.shareLinks, store]);
+  }, [shareLinks, store]);
 
   useEffect(
     () => () => {
