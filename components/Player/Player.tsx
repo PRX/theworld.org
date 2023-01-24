@@ -33,14 +33,8 @@ export const Player = ({ children }: IPlayerProps) => {
   const [state, dispatch] = useReducer(playerStateReducer, {
     ...playerInitialState
   });
-  const {
-    tracks,
-    playing,
-    currentTrackIndex,
-    currentTime,
-    muted,
-    volume
-  } = state;
+  const { tracks, playing, currentTrackIndex, currentTime, muted, volume } =
+    state;
   const currentTrack = tracks?.[currentTrackIndex] || ({} as IAudioData);
   const currentTrackDurationSeconds = useMemo(
     () => convertDurationToSeconds(currentTrack.duration),
@@ -270,7 +264,7 @@ export const Player = ({ children }: IPlayerProps) => {
       navigator?.mediaSession.setActionHandler('pause', () => {
         pause();
       });
-      navigator?.mediaSession.setActionHandler('seekto', e => {
+      navigator?.mediaSession.setActionHandler('seekto', (e) => {
         seekTo(e.seekTime);
       });
       navigator?.mediaSession.setActionHandler('seekbackward', () => {
@@ -346,7 +340,7 @@ export const Player = ({ children }: IPlayerProps) => {
       .then(() => {
         updateMediaSession();
       })
-      .catch(e => {
+      .catch((e) => {
         // eslint-disable-next-line no-console
         console.error(e);
       });
@@ -357,8 +351,10 @@ export const Player = ({ children }: IPlayerProps) => {
   }, []);
 
   const loadAudio = (src: string, isPlaying: boolean) => {
-    audioElm.current.preload = isPlaying ? 'auto' : 'none';
-    audioElm.current.src = src;
+    if (src !== audioElm.current.src) {
+      audioElm.current.preload = isPlaying ? 'auto' : 'none';
+      audioElm.current.src = src;
+    }
   };
 
   const handlePlay = useCallback(() => {
@@ -617,9 +613,8 @@ export const Player = ({ children }: IPlayerProps) => {
   }, [currentTime]);
 
   useEffect(() => {
-    console.log('useEffect [url]', url);
     loadAudio(url, playing);
-  }, [url]);
+  }, [url, playing]);
 
   useEffect(
     () => () => {

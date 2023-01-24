@@ -54,7 +54,7 @@ export const Episode = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const { classes, cx } = episodeStyles();
+  const { classes } = episodeStyles();
   const data = getDataByResource(state, type, id);
 
   const {
@@ -135,7 +135,7 @@ export const Episode = () => {
     ...(producers || []),
     ...(guests || []),
     ...(reporters || [])
-  ].forEach(person => {
+  ].forEach((person) => {
     plausibleEvents.push([
       `Person: ${person.title}`,
       {
