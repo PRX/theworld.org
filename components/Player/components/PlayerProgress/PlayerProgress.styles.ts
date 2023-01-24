@@ -18,6 +18,10 @@ export const usePlayerProgressStyles = makeStyles<void, 'root'>()(
       cursor: 'pointer',
       '&::before': {
         content: "''",
+        transition: theme.transitions.create('width', {
+          duration: theme.transitions.duration.short,
+          easing: theme.transitions.easing.easeOut
+        }),
         position: 'absolute',
         top: 0,
         left: 0,
@@ -27,6 +31,10 @@ export const usePlayerProgressStyles = makeStyles<void, 'root'>()(
       },
       '&::after': {
         content: "''",
+        transition: theme.transitions.create('width', {
+          duration: theme.transitions.duration.short,
+          easing: theme.transitions.easing.sharp
+        }),
         position: 'absolute',
         top: 0,
         left: 0,

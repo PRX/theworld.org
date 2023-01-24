@@ -12,6 +12,12 @@ export const episodeHeaderStyles = makeStyles()(theme => ({
 
   heading: {},
 
+  title: {
+    fontSize: `clamp(${theme.typography.pxToRem(
+      32
+    )}, 5vw, ${theme.typography.pxToRem(48)})`
+  },
+
   byline: {
     padding: 0,
     margin: 0,

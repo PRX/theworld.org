@@ -12,7 +12,8 @@ export const storyLayoutStyles = (theme: Theme) => ({
     gridGap: theme.spacing(3),
     [theme.breakpoints.up('md')]: {
       gridTemplateColumns: '1fr 300px'
-    }
+    },
+    marginBlockEnd: theme.spacing(5)
   } as CSSObject,
   content: {} as CSSObject,
   sidebar: {

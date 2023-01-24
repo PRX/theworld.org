@@ -14,7 +14,6 @@ import {
   Hidden,
   Typography
 } from '@mui/material';
-import { ThemeProvider } from '@mui/styles';
 import { EqualizerRounded } from '@mui/icons-material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { HtmlContent } from '@components/HtmlContent';
@@ -40,7 +39,7 @@ import {
   getCollectionData,
   getCtaRegionData
 } from '@store/reducers';
-import { episodeStyles, episodeTheme } from './Episode.styles';
+import { episodeStyles } from './Episode.styles';
 import { EpisodeLede } from './components/EpisodeLede';
 import { EpisodeHeader } from './components/EpisodeHeader';
 
@@ -55,7 +54,7 @@ export const Episode = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const { cx } = episodeStyles();
+  const { classes, cx } = episodeStyles();
   const data = getDataByResource(state, type, id);
 
   const {
@@ -70,7 +69,8 @@ export const Episode = () => {
     producers,
     guests,
     reporters,
-    spotifyPlaylist
+    spotifyPlaylist,
+    shareLinks
   } = data || ({} as typeof data);
   const metatags = {
     ...dataMetatags,
@@ -135,7 +135,7 @@ export const Episode = () => {
     ...(producers || []),
     ...(guests || []),
     ...(reporters || [])
-  ].forEach((person) => {
+  ].forEach(person => {
     plausibleEvents.push([
       `Person: ${person.title}`,
       {
@@ -145,55 +145,62 @@ export const Episode = () => {
   });
 
   useEffect(() => {
-    // Show social hare menu.
-    const { shareLinks } = data;
-    store.dispatch<UiAction>({
-      type: 'UI_SHOW_SOCIAL_SHARE_MENU',
-      payload: {
-        ui: {
-          socialShareMenu: {
-            links: [
-              {
-                key: 'twitter',
-                link: shareLinks.twitter
-              },
-              {
-                key: 'facebook',
-                link: shareLinks.facebook
-              },
-              {
-                key: 'linkedin',
-                link: shareLinks.linkedin
-              },
-              {
-                key: 'flipboard',
-                link: shareLinks.flipboard
-              },
-              {
-                key: 'whatsapp',
-                link: shareLinks.whatsapp
-              },
-              {
-                key: 'email',
-                link: shareLinks.email
-              }
-            ]
+    if (shareLinks) {
+      // Show social hare menu.
+      store.dispatch<UiAction>({
+        type: 'UI_SHOW_SOCIAL_SHARE_MENU',
+        payload: {
+          ui: {
+            socialShareMenu: {
+              links: [
+                {
+                  key: 'twitter',
+                  link: shareLinks.twitter
+                },
+                {
+                  key: 'facebook',
+                  link: shareLinks.facebook
+                },
+                {
+                  key: 'linkedin',
+                  link: shareLinks.linkedin
+                },
+                {
+                  key: 'flipboard',
+                  link: shareLinks.flipboard
+                },
+                {
+                  key: 'whatsapp',
+                  link: shareLinks.whatsapp
+                },
+                {
+                  key: 'email',
+                  link: shareLinks.email
+                }
+              ]
+            }
           }
         }
-      }
-    });
+      });
+    }
 
     return () => {
       // Hide social hare menu.
       store.dispatch<UiAction>({
         type: 'UI_HIDE_SOCIAL_SHARE_MENU'
       });
-      unsub();
     };
-  }, [data, id, store, unsub]);
+  }, [shareLinks, store]);
+
+  useEffect(
+    () => () => {
+      unsub();
+    },
+    [unsub]
+  );
 
   return (
-    <ThemeProvider theme={episodeTheme}>
+    <>
       <MetaTags data={metatags} />
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <Container fixed>
@@ -203,16 +210,20 @@ export const Episode = () => {
             {audio ? <NoJsPlayer url={audio.url} /> : null}
           </Grid>
           <Grid item xs={12}>
-            <Box className={cx('main')}>
-              <Box className={cx('content')}>
+            <Box className={classes.main}>
+              <Box className={classes.content}>
                 <EpisodeLede data={data} />
-                <Box className={cx('body')} my={2}>
+                <Box className={classes.body} my={2}>
                   <HtmlContent html={body} />
                 </Box>
                 {spotifyPlaylist && !!spotifyPlaylist.length && (
                   <Box my={3}>
-                    <Divider />
-                    <Typography variant="h4" component="h2">
+                    <Divider classes={{ root: classes.MuiDividerRoot }} />
+                    <Typography
+                      variant="h4"
+                      component="h2"
+                      className={classes.heading}
+                    >
                       Music heard on air
                     </Typography>
                     <Grid container spacing={2}>
@@ -227,7 +238,11 @@ export const Episode = () => {
                 {stories && (
                   <Box my={3}>
                     <Divider />
-                    <Typography variant="h4">
+                    <Typography
+                      variant="h4"
+                      component="h2"
+                      className={classes.heading}
+                    >
                       Stories from this episode
                     </Typography>
                     {stories
@@ -244,13 +259,12 @@ export const Episode = () => {
                 )}
                 {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
               </Box>
-              <Sidebar container className={cx('sidebar')}>
+              <Sidebar container className={classes.sidebar}>
                 {segments && (
                   <Sidebar item elevated>
                     <SidebarHeader>
-                      <Typography variant="h2">
-                        <EqualizerRounded /> In this episode:
-                      </Typography>
+                      <EqualizerRounded />
+                      <Typography variant="h2">In this episode:</Typography>
                     </SidebarHeader>
                     <SidebarAudioList disablePadding data={segments} />
                     <SidebarFooter />
@@ -320,6 +334,6 @@ export const Episode = () => {
           </Grid>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </>
   );
 };

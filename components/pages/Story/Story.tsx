@@ -89,7 +89,7 @@ export const Story = () => {
   }
 
   useEffect(() => {
-    if (!shareLinks) {
+    if (shareLinks) {
       store.dispatch<UiAction>({
         type: 'UI_SHOW_SOCIAL_SHARE_MENU',
         payload: {

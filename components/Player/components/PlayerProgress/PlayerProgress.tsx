@@ -48,7 +48,6 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
   const {
     currentTrackIndex,
     tracks,
-    playing,
     currentTime: playerCurrentTime,
     currentDuration: playerCurrentDuration
   } = playerState;
@@ -199,14 +198,12 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
   useEffect(() => {
     clearInterval(updateInterval.current);
 
-    if (playing) {
-      updateInterval.current = setInterval(handleUpdateLoaded, updateFrequency);
-    }
+    updateInterval.current = setInterval(handleUpdateLoaded, updateFrequency);
 
     return () => {
       clearInterval(updateInterval.current);
     };
-  }, [playing, updateFrequency, handleUpdate, handleUpdateLoaded]);
+  }, [updateFrequency, handleUpdate, handleUpdateLoaded]);
 
   /**
    * Setup audio element event handlers.

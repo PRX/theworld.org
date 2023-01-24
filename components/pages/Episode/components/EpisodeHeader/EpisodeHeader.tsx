@@ -38,7 +38,9 @@ export const EpisodeHeader = ({ data }: Props) => {
   return (
     <Box component="header" className={classes.root} mt={4} mb={2}>
       <Box mb={3}>
-        <Typography variant="h1">{title}</Typography>
+        <Typography variant="h1" className={classes.title}>
+          {title}
+        </Typography>
       </Box>
       <Box className={classes.meta} mb={2}>
         <Box className={classes.info}>

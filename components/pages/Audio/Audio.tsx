@@ -6,7 +6,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { Box, Container, Grid } from '@mui/material';
-import { ThemeProvider } from '@mui/styles';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
@@ -15,7 +14,7 @@ import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { parseUtcDate } from '@lib/parse/date';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
-import { audioStyles, audioTheme } from './Audio.styles';
+import { audioStyles } from './Audio.styles';
 import { AudioHeader } from './components/AudioHeader';
 
 export const Audio = () => {
@@ -95,7 +94,7 @@ export const Audio = () => {
   );
 
   return (
-    <ThemeProvider theme={audioTheme}>
+    <>
       <MetaTags
         data={{
           ...metatags,
@@ -103,7 +102,7 @@ export const Audio = () => {
         }}
       />
       <Plausible events={plausibleEvents} subject={{ type, id }} />
-      <Container fixed>
+      <Container fixed className={classes.main}>
         <Grid container>
           <Grid item xs={12}>
             <AudioHeader data={data} />
@@ -115,6 +114,6 @@ export const Audio = () => {
           </Grid>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </>
   );
 };

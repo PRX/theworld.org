@@ -41,7 +41,11 @@ export const SidebarList = ({
     ...other,
     ...(subheaderText && {
       subheader: (
-        <ListSubheader component="header" disableSticky>
+        <ListSubheader
+          classes={{ root: classes.MuiListSubheaderRoot }}
+          component="header"
+          disableSticky
+        >
           {subheaderText}
         </ListSubheader>
       )
@@ -56,7 +60,7 @@ export const SidebarList = ({
       case 'file--audio':
         return (
           <ListItemButton component={ContentLink} data={item} key={item.id}>
-            <ListItemText className={classes.noBullet}>{text}</ListItemText>
+            <ListItemText className={cx('noBullet')}>{text}</ListItemText>
             <ListItemSecondaryAction>
               <AudioControls
                 id={item.id as string}
@@ -87,7 +91,7 @@ export const SidebarList = ({
                 </Avatar>
               )}
             </ListItemAvatar>
-            <ListItemText className={classes.noBullet}>{text}</ListItemText>
+            <ListItemText className={cx('noBullet')}>{text}</ListItemText>
           </ListItemButton>
         );
 
@@ -95,7 +99,7 @@ export const SidebarList = ({
         if (item.audio) {
           return (
             <ListItemButton key={item.id}>
-              <ListItemText className={classes.noBullet}>
+              <ListItemText className={cx('noBullet')}>
                 <ContentLink data={item}>{text}</ContentLink>
               </ListItemText>
               <ListItemSecondaryAction>
@@ -116,7 +120,7 @@ export const SidebarList = ({
 
         return (
           <ListItemButton component={ContentLink} data={item} key={item.id}>
-            <ListItemText className={classes.noBullet}>{text}</ListItemText>
+            <ListItemText className={cx('noBullet')}>{text}</ListItemText>
           </ListItemButton>
         );
 
@@ -132,7 +136,7 @@ export const SidebarList = ({
   return (
     !!data && (
       <List {...listProps}>
-        {data.map((item) =>
+        {data.map(item =>
           item.id ? (
             renderItemContent(item)
           ) : (

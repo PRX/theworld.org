@@ -5,9 +5,15 @@
 
 import { makeStyles } from 'tss-react/mui';
 
-export const audioHeaderStyles = makeStyles()(theme => ({
+export const audioHeaderStyles = makeStyles()((theme) => ({
   root: {
     fontSize: '1.2rem'
+  },
+
+  title: {
+    fontSize: `clamp(${theme.typography.pxToRem(
+      32
+    )}, 5vw, ${theme.typography.pxToRem(48)})`
   },
 
   byline: {

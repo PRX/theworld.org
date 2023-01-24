@@ -18,7 +18,7 @@ const Moment = dynamic(() => {
 }) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 interface Props {
@@ -37,7 +37,9 @@ export const AudioHeader = ({ data }: Props) => {
   return (
     <Box className={classes.root} mt={4} mb={2}>
       <Box mb={3}>
-        <Typography variant="h1">{audioTitle}</Typography>
+        <Typography variant="h1" className={classes.title}>
+          {audioTitle}
+        </Typography>
       </Box>
       <Box className={classes.meta} mb={2}>
         <Box className={classes.info}>
