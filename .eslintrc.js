@@ -31,6 +31,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/require-default-props': 0,
     'react/prop-types': 0,
+    'react-hooks/exhaustive-deps': 0,
     'import/no-unresolved': ['error', { ignore: ['\\.svg$'] }],
     'import/extensions': [
       'error',
