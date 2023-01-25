@@ -160,6 +160,8 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
    * Interval handler to update loaded progress.
    */
   const handleUpdateLoaded = useCallback(() => {
+    if (!audioElm) return;
+
     const { buffered } = audioElm;
     const newLoaded = buffered.length ? buffered.end(0) / audioElm.duration : 0;
 

@@ -169,21 +169,21 @@ const TwApp = ({
       enabled={!!plausibleDomain}
     >
       <Provider store={store}>
-        <Player>
-          <CacheProvider value={emotionCache}>
-            <ThemeProvider theme={baseMuiTheme}>
-              <ThemeProvider theme={appTheme}>
-                <AppContext.Provider value={contextValue}>
+        <CacheProvider value={emotionCache}>
+          <ThemeProvider theme={baseMuiTheme}>
+            <ThemeProvider theme={appTheme}>
+              <AppContext.Provider value={contextValue}>
+                <Player>
                   <AppLayout>
                     <AnyComponent {...pageProps} />
                   </AppLayout>
-                  <AppSearch />
-                </AppContext.Provider>
-                <CssBaseline />
-              </ThemeProvider>
+                </Player>
+                <AppSearch />
+              </AppContext.Provider>
+              <CssBaseline />
             </ThemeProvider>
-          </CacheProvider>
-        </Player>
+          </ThemeProvider>
+        </CacheProvider>
       </Provider>
     </PlausibleProvider>
   );
