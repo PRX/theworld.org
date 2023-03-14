@@ -3,7 +3,7 @@
  * Exports a mechanism that makes GET requests to API easier to manage.
  */
 
-import fetch from 'isomorphic-unfetch';
+// import fetch from 'isomorphic-unfetch';
 import {
   IPriApiCollectionResponse,
   IPriApiResourceResponse

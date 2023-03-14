@@ -6,7 +6,7 @@
 const path = require('path');
 const { withPlausibleProxy } = require('next-plausible');
 const { uid } = require('uid');
-const { priApi } = require('./config');
+const { priApi, twApi } = require('./config');
 
 module.exports = withPlausibleProxy({
   subdirectory: uid(6),
@@ -20,6 +20,7 @@ module.exports = withPlausibleProxy({
     FB_ADMINS: process.env.FB_ADMINS,
     FB_APP_ID: process.env.FB_APP_ID,
     PRI_API_CONFIG: priApi,
+    TW_API_CONFIG: twApi,
     ISR_REVALIDATE: process.env.ISR_REVALIDATE,
     TWITTER_ACCOUNT_ID: process.env.TWITTER_ACCOUNT_ID,
     TW_API_RESOURCE_CACHE_CONTROL: process.env.TW_API_RESOURCE_CACHE_CONTROL,
@@ -91,9 +92,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight((item) => item.toLowerCase());
+              .reduceRight(item => item.toLowerCase());
             const allChunksNames = chunks
-              .map((item) => (item.name || '').toLowerCase())
+              .map(item => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
@@ -132,9 +133,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight((item) => item.toLowerCase());
+              .reduceRight(item => item.toLowerCase());
             const allChunksNames = chunks
-              .map((item) => (item.name || '').toLowerCase())
+              .map(item => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
@@ -157,9 +158,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight((item) => item.toLowerCase());
+              .reduceRight(item => item.toLowerCase());
             const allChunksNames = chunks
-              .map((item) => (item.name || '').toLowerCase())
+              .map(item => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
@@ -174,9 +175,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight((item) => item.toLowerCase());
+              .reduceRight(item => item.toLowerCase());
             const allChunksNames = chunks
-              .map((item) => (item.name || '').toLowerCase())
+              .map(item => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
@@ -191,9 +192,9 @@ module.exports = withPlausibleProxy({
             const moduleFileName = module
               .identifier()
               .split('/')
-              .reduceRight((item) => item.toLowerCase());
+              .reduceRight(item => item.toLowerCase());
             const allChunksNames = chunks
-              .map((item) => (item.name || '').toLowerCase())
+              .map(item => (item.name || '').toLowerCase())
               .join('~');
             return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
           },
