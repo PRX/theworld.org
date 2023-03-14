@@ -120,7 +120,6 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
 
     if (staticPage || !dialogContentRef.current) return;
 
-    console.log(dialogContentRef.current.scrollTo);
     dialogContentRef.current.scroll({ top: 0 });
   };
 
