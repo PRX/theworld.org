@@ -6,14 +6,14 @@
 
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { parse } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
+import { parse } from 'url';
 import {
   RootState,
   searchFacetLabels,
   SearchFacetAll
 } from '@interfaces/state';
-import { fetchApiSearch } from '@lib/fetch';
+import { fetchApiSearch, fetchQuerySearch } from '@lib/fetch';
 import { getSearchData } from '@store/reducers';
 import { fetchBulkAliasData } from './fetchAliasData';
 import { fetchStoryData } from './fetchStoryData';
@@ -33,6 +33,8 @@ export const fetchSearchData = (
   const facets = label === 'all' ? searchFacetLabels : [label];
   const currentData = getSearchData(state, query) || {};
   const q = (query || '').toLowerCase().replace(/^\s+|\s+$/, '');
+  const isOnServer = typeof window === 'undefined';
+  const fetchFunc = isOnServer ? fetchQuerySearch : fetchApiSearch;
 
   // Map facet labels to data fetch for content type.
   const funcMap = new Map();
@@ -55,7 +57,7 @@ export const fetchSearchData = (
     const start: number = [...(facetData || [])].pop()?.queries?.nextPage?.[0]
       .startIndex;
 
-    return fetchApiSearch(query, l, start)
+    return fetchFunc(query, l, start)
       .then(data => ({
         l,
         data
@@ -77,6 +79,7 @@ export const fetchSearchData = (
       const reqs = aliasesData
         .map(([, { id, type }]): [
           string,
+          // eslint-disable-next-line no-unused-vars
           (id: string) => ThunkAction<void, {}, {}, AnyAction>
         ] => [id as string, funcMap.get(type)])
         .filter(([, fetchFunc]) => !!fetchFunc)
