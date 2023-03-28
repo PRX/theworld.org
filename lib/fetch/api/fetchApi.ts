@@ -3,20 +3,19 @@
  * Exports a mechanism that makes GET requests to API easier to manage.
  */
 
-import fetch from 'isomorphic-unfetch';
+import { customsearch_v1 } from 'googleapis';
+import { IncomingMessage } from 'http';
+import { ParsedUrlQuery } from 'querystring';
 import {
   IPriApiCollectionResponse,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
-import { IncomingMessage } from 'http';
-import { ParsedUrlQuery } from 'querystring';
-import { parse, format } from 'url';
-import { customsearch_v1 } from 'googleapis';
 import {
   INewsletterOptions,
   INewsletterData,
   ICMApiCustomField
 } from '@interfaces/newsletter';
+import { parse, format } from 'url';
 
 /**
  * Method that simplifies GET requests.
@@ -556,19 +555,12 @@ export const fetchApiSearch = (
   q: string,
   label: string,
   start: string | number
-) =>
-  fetch(
-    format({
-      protocol: 'https',
-      hostname: 'search.theworld.org', // TODO: Update to `search.theworld.org` when DNS is ready.
-      pathname: 'query',
-      query: {
-        ...(q && { q }),
-        ...(label && { l: `${label}` }),
-        ...(start && { s: `${start}` }),
-        t: 'metatags-pubdate:d,date:d:s'
-      }
-    })
-  ).then(r => r.status === 200 && r.json()) as Promise<
-    customsearch_v1.Schema$Search
-  >;
+) => {
+  let url = format({
+    pathname: `query/search/${label}/${q}`,
+    query: {
+      ...(start && { start })
+    }
+  });
+  return fetchApi(url) as Promise<customsearch_v1.Schema$Search>;
+};
