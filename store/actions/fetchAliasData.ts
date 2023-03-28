@@ -12,81 +12,89 @@ import {
 } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
 import { getDataByAlias } from '@store/reducers';
-import { fetchApiQueryAlias, fetchQueryAlias } from '@lib/fetch';
+import {
+  fetchApiQueryAlias,
+  fetchQueryAlias,
+  fetchTwApiQueryAlias
+} from '@lib/fetch';
 
-export const fetchAliasData = (
-  alias: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<IPriApiResource> => {
-  const state = getState();
-  const isOnServer = typeof window === 'undefined';
-  let data = getDataByAlias(state, alias);
+export const fetchAliasData =
+  (alias: string): ThunkAction<void, {}, {}, AnyAction> =>
+  async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>,
+    getState: () => RootState
+  ): Promise<IPriApiResource> => {
+    const state = getState();
+    const isOnServer = typeof window === 'undefined';
+    let data = getDataByAlias(state, alias);
 
-  if (!data || isOnServer) {
+    if (!data || isOnServer) {
+      dispatch({
+        type: 'FETCH_ALIAS_DATA_REQUEST',
+        alias
+      });
+
+      const twData = await fetchTwApiQueryAlias(alias);
+
+      console.log('fetchAliasData >> twData', alias, twData);
+
+      data = await (isOnServer ? fetchQueryAlias : fetchApiQueryAlias)(
+        alias
+      ).then((resp: IPriApiResourceResponse) => resp && resp.data);
+
+      dispatch({
+        type: 'FETCH_ALIAS_DATA_SUCCESS',
+        alias,
+        data
+      });
+    }
+
     dispatch({
-      type: 'FETCH_ALIAS_DATA_REQUEST',
-      alias
-    });
-
-    data = await (isOnServer ? fetchQueryAlias : fetchApiQueryAlias)(
-      alias
-    ).then((resp: IPriApiResourceResponse) => resp && resp.data);
-
-    dispatch({
-      type: 'FETCH_ALIAS_DATA_SUCCESS',
+      type: 'FETCH_ALIAS_DATA_COMPLETE',
       alias,
       data
     });
-  }
 
-  dispatch({
-    type: 'FETCH_ALIAS_DATA_COMPLETE',
-    alias,
-    data
-  });
+    return data;
+  };
 
-  return data;
-};
+export const fetchBulkAliasData =
+  (aliases: string[]): ThunkAction<void, {}, {}, AnyAction> =>
+  async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>
+  ): Promise<[string, IPriApiResource][]> => {
+    const fetchFunc =
+      typeof window === 'undefined' ? fetchQueryAlias : fetchApiQueryAlias;
+    const data: [string, IPriApiResource][] = [];
 
-export const fetchBulkAliasData = (
-  aliases: string[]
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>
-): Promise<[string, IPriApiResource][]> => {
-  const fetchFunc =
-    typeof window === 'undefined' ? fetchQueryAlias : fetchApiQueryAlias;
-  const data: [string, IPriApiResource][] = [];
+    if (aliases && !!aliases.length) {
+      dispatch({
+        type: 'FETCH_BULK_ALIAS_DATA_REQUEST',
+        aliases
+      });
 
-  if (aliases && !!aliases.length) {
+      await Promise.all(
+        aliases.map((alias) =>
+          fetchFunc(alias).then((r: IPriApiResourceResponse) => {
+            if (r) {
+              data.push([alias, r.data]);
+            }
+          })
+        )
+      );
+
+      dispatch({
+        type: 'FETCH_BULK_ALIAS_DATA_SUCCESS',
+        aliases,
+        data
+      });
+    }
+
     dispatch({
-      type: 'FETCH_BULK_ALIAS_DATA_REQUEST',
-      aliases
-    });
-
-    await Promise.all(
-      aliases.map(alias =>
-        fetchFunc(alias).then((r: IPriApiResourceResponse) => {
-          if (r) {
-            data.push([alias, r.data]);
-          }
-        })
-      )
-    );
-
-    dispatch({
-      type: 'FETCH_BULK_ALIAS_DATA_SUCCESS',
+      type: 'FETCH_BULK_ALIAS_DATA_COMPLETE',
       aliases,
       data
     });
-  }
 
-  dispatch({
-    type: 'FETCH_BULK_ALIAS_DATA_COMPLETE',
-    aliases,
-    data
-  });
-
-  return data;
-};
+    return data;
+  };

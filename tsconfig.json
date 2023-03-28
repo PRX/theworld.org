@@ -9,17 +9,13 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2015",
+    "target": "es6",
     "typeRoots": [
       "@types",
       "node_modules/@types",
       "node_modules/pri-api-library/types"
     ],
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -30,63 +26,36 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@config": [
-        "config"
-      ],
-      "@config/*": [
-        "config/*"
-      ],
-      "@contexts/*": [
-        "contexts/*"
-      ],
-      "@interfaces": [
-        "interfaces"
-      ],
-      "@interfaces/*": [
-        "interfaces/*"
-      ],
-      "@lib/*": [
-        "lib/*"
-      ],
-      "@store": [
-        "store"
-      ],
-      "@store/*": [
-        "store/*"
-      ],
-      "@svg": [
-        "assets/svg/*"
-      ],
-      "@theme/*": [
-        "theme/*"
-      ]
+      "@components/*": ["components/*"],
+      "@config": ["config"],
+      "@config/*": ["config/*"],
+      "@contexts/*": ["contexts/*"],
+      "@interfaces": ["interfaces"],
+      "@interfaces/*": ["interfaces/*"],
+      "@lib/*": ["lib/*"],
+      "@store": ["store"],
+      "@store/*": ["store/*"],
+      "@styles/*": ["styles/*"],
+      "@svg": ["assets/svg/*"],
+      "@theme/*": ["theme/*"]
     },
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
   "include": [
-    "@types/*",
-    "@types/**/*",
-    "components/*",
-    "components/**/*",
-    "config/*",
-    "contexts/*",
-    "contexts/**/*",
-    "interfaces/**/*",
-    "lib/**/*",
-    "pages/**/*",
     "assets/svg/*.svg",
-    "store/**/*",
-    "theme/**/*",
-    "./*.js",
-    "./*.ts"
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/**/*.ts",
+    "**/**/*.tsx",
+    ".next/types/**/*.ts",
+    "styles/*.scss"
   ],
-  "exclude": [
-    "node_modules",
-    ".next",
-    ".vercel",
-    ".vscode"
-  ]
+  "exclude": ["node_modules", ".next", ".vercel", ".vscode"]
 }

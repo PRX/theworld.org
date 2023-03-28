@@ -3,6 +3,7 @@
  * Component for app drawer top nav.
  */
 
+import type { RootState } from '@interfaces/state';
 import React, { useState } from 'react';
 import { useStore } from 'react-redux';
 import { handleButtonClick } from '@lib/routing';
@@ -27,7 +28,7 @@ export interface OpenStateMap {
 }
 
 export const DrawerMainNav = () => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const drawerMainNav = getMenusData(store.getState(), 'drawerMainNav');
   const [{ open }, setState] = useState({
     open: drawerMainNav

@@ -3,6 +3,7 @@
  * Component for app header nav.
  */
 
+import type { RootState } from '@interfaces/state';
 import React from 'react';
 import { useStore } from 'react-redux';
 import { parse } from 'url';
@@ -25,66 +26,70 @@ const renderIcon = (icon: string) => {
 };
 
 export const AppHeaderNav = () => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const headerNav = getMenusData(store.getState(), 'headerNav');
 
   return headerNav?.length ? (
     <ThemeProvider theme={appHeaderNavTheme}>
       {headerNav
-        .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
-        .map(({ color, icon, name, url, key, attributes, itemLinkClass }) => (
-          <React.Fragment key={key}>
-            <Button
-              sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
-              component="a"
-              href={isLocalUrl(url.href) ? url.path : url.href}
-              onClick={handleButtonClick(url)}
-              variant={
-                /\bbtn-(text|link)\b/.test(itemLinkClass) ? 'text' : 'contained'
-              }
-              color={(color as ButtonColors) || 'primary'}
-              disableRipple
-              disableElevation
-              {...(icon && { startIcon: renderIcon(icon) })}
-              {...attributes}
-            >
-              {name}
-            </Button>
-            {icon ? (
-              <IconButton
-                sx={{ display: { sm: 'none', xs: 'inline-flex' } }}
-                component="a"
-                href={url.href}
-                onClick={handleButtonClick(url)}
-                aria-label={name}
-                color={(color as IconButtonColors) || 'default'}
-                size="small"
-                disableRipple
-                {...attributes}
-              >
-                {renderIcon(icon)}
-              </IconButton>
-            ) : (
+        .map(({ url, ...other }) => ({ ...other, url: parse(url || '') }))
+        .map(
+          ({ color, icon, name, url, key, attributes, itemLinkClass = '' }) => (
+            <React.Fragment key={key}>
               <Button
-                sx={{ display: { sm: 'none', xs: 'inline-flex' } }}
+                sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
                 component="a"
-                href={url.href}
+                href={isLocalUrl(url.href) ? url.path || undefined : url.href}
                 onClick={handleButtonClick(url)}
-                variant="text"
+                variant={
+                  /\bbtn-(text|link)\b/.test(itemLinkClass)
+                    ? 'text'
+                    : 'contained'
+                }
                 color={(color as ButtonColors) || 'primary'}
-                size="small"
                 disableRipple
                 disableElevation
+                {...(icon && { startIcon: renderIcon(icon) })}
                 {...attributes}
-                {...(icon && {
-                  startIcon: renderIcon(icon)
-                })}
               >
                 {name}
               </Button>
-            )}
-          </React.Fragment>
-        ))}
+              {icon ? (
+                <IconButton
+                  sx={{ display: { sm: 'none', xs: 'inline-flex' } }}
+                  component="a"
+                  href={url.href}
+                  onClick={handleButtonClick(url)}
+                  aria-label={name}
+                  color={(color as IconButtonColors) || 'default'}
+                  size="small"
+                  disableRipple
+                  {...attributes}
+                >
+                  {renderIcon(icon)}
+                </IconButton>
+              ) : (
+                <Button
+                  sx={{ display: { sm: 'none', xs: 'inline-flex' } }}
+                  component="a"
+                  href={url.href}
+                  onClick={handleButtonClick(url)}
+                  variant="text"
+                  color={(color as ButtonColors) || 'primary'}
+                  size="small"
+                  disableRipple
+                  disableElevation
+                  {...attributes}
+                  {...(icon && {
+                    startIcon: renderIcon(icon)
+                  })}
+                >
+                  {name}
+                </Button>
+              )}
+            </React.Fragment>
+          )
+        )}
     </ThemeProvider>
   ) : null;
 };

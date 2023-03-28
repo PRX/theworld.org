@@ -7,6 +7,7 @@ import { parseMenu } from '@lib/parse/menu';
 import { IPriApiCollectionResponse } from 'pri-api-library/types';
 import { fetchPriApiQuery, fetchPriApiQueryMenu } from '../api/fetchPriApi';
 import { basicStoryParams } from '../api/params';
+import { fetchTwApiMenu } from '../menu';
 
 export interface IApp {
   latestStories: IPriApiCollectionResponse;
@@ -36,6 +37,10 @@ export const fetchApp = async (): Promise<IApp> => {
       range: 10
     }).then((resp: IPriApiCollectionResponse) => resp)
   ]);
+
+  const twMenu = await fetchTwApiMenu('secondary-menu');
+
+  console.log(twMenu);
 
   const resp = {
     latestStories,

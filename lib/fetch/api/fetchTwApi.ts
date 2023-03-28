@@ -3,7 +3,7 @@
  * Exports a mechanism that makes GET requests to TW (WP) API easier to manage.
  */
 
-import { RequestInit } from 'next/dist/server/web/spec-extension/request';
+import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import { stringify as qsStringify } from 'qs';
 import { twApi as configTwApi } from '@config';
 
@@ -18,11 +18,11 @@ const { apiUrlBase } = twApiConfig;
  * @param init Init options for the fetch.
  * @returns Fetched data.
  */
-export const fetchTwApi = async (
+export default async function fetchTwApi(
   path: string,
-  params?: object,
+  params?: { [k: string]: any },
   init?: RequestInit
-) => {
+) {
   let url = `${apiUrlBase}/${path}`;
 
   if (params) {
@@ -30,9 +30,35 @@ export const fetchTwApi = async (
     url = `${url}?${qs}`;
   }
 
-  const data = await fetch(url, init)
-    .then((resp) => resp.json())
-    .catch(() => false);
+  const resp = await fetch(url, init);
 
-  return data;
-};
+  if (resp.ok) {
+    const data = await resp.json();
+    const isCollection = !!resp.headers['x-wp-total'];
+
+    if (isCollection) {
+      const count = parseInt(resp.headers['x-wp-total'], 10);
+      const first = 1;
+      const last = parseInt(resp.headers['x-wp-totalpages'], 10);
+      const size = Math.ceil(count / last);
+      const page = parseInt(params?.page, 10) || 1;
+      const next = page + 1;
+
+      return {
+        meta: {
+          count,
+          first,
+          last,
+          next,
+          page,
+          size
+        },
+        data
+      };
+    }
+
+    return { data };
+  }
+
+  return false;
+}

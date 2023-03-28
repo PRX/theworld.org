@@ -59,4 +59,5 @@ export const getContentData = (
   state: ContentDataState,
   type: string,
   id: string
-) => (state || {})[makeResourceSignature({ type, id } as IPriApiResource)];
+) =>
+  (state || {})[makeResourceSignature({ type, id } satisfies IPriApiResource)];

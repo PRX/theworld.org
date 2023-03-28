@@ -8,7 +8,7 @@ import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Button, Hidden, Typography } from '@mui/material';
 import { EqualizerRounded, PublicRounded } from '@mui/icons-material';
-import Pagination from '@mui/lab/Pagination';
+import Pagination from '@mui/material/Pagination';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
@@ -75,11 +75,8 @@ export const Bio = () => {
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories, page, next } = storiesState || {};
   const segmentsState = getCollectionData(state, type, id, 'segments');
-  const {
-    items: segments,
-    count: segmentsCount,
-    size: segmentsSize
-  } = segmentsState || {};
+  const { items: segments, count: segmentsCount, size: segmentsSize } =
+    segmentsState || {};
   const segmentsPageCount = Math.ceil(segmentsCount / segmentsSize);
   const {
     metatags,
@@ -101,7 +98,7 @@ export const Bio = () => {
     website,
     rss,
     contact
-  ].filter((v) => !!v);
+  ].filter(v => !!v);
 
   const [loading, setLoading] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);

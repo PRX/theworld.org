@@ -21,7 +21,7 @@ import { isLocalUrl } from '../parse/url';
 export const generateLinkHrefFromUrl = (url: Url) => {
   const pathname = url.pathname !== '/' ? '/[...alias]' : '/';
   const query =
-    url.pathname !== '/'
+    pathname !== '/' && url.pathname
       ? { alias: url.pathname.replace(/^\/+|\/+$/g, '').split('/') }
       : null;
 
@@ -41,23 +41,22 @@ export const generateLinkHrefFromUrl = (url: Url) => {
  *    Handler function.
  */
 /* istanbul ignore next */
-export const handleButtonClick = (url: Url | string, callback?: Function) => (
-  event: MouseEvent
-) => {
-  event.preventDefault();
+export const handleButtonClick =
+  (url: Url | string, callback?: Function) => (event: MouseEvent) => {
+    event.preventDefault();
 
-  if (url) {
-    const parsedUrl = typeof url === 'string' ? parse(url as string) : url;
+    if (url) {
+      const parsedUrl = typeof url === 'string' ? parse(url as string) : url;
 
-    Router.push(
-      isLocalUrl(parsedUrl.href)
-        ? generateLinkHrefFromUrl(parsedUrl)
-        : parsedUrl,
-      parsedUrl.pathname
-    );
-  }
+      Router.push(
+        isLocalUrl(parsedUrl.href)
+          ? generateLinkHrefFromUrl(parsedUrl)
+          : parsedUrl,
+        parsedUrl.pathname || undefined
+      );
+    }
 
-  if (callback) {
-    callback();
-  }
-};
+    if (callback) {
+      callback();
+    }
+  };

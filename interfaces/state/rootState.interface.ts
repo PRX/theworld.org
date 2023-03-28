@@ -13,12 +13,12 @@ import { SearchState } from './search.interface';
 import { UiState } from './ui.interface';
 
 export interface RootState {
-  aliasData?: ContentDataState;
-  contentData?: ContentDataState;
-  collections?: CollectionsState;
-  ctaRegionData?: CtaRegionGroupDataState;
-  loading?: LoadingState;
-  menusData?: MenusDataState;
-  search?: SearchState;
-  ui?: UiState;
+  aliasData: ContentDataState;
+  contentData: ContentDataState;
+  collections: CollectionsState;
+  ctaRegionData: CtaRegionGroupDataState;
+  loading: LoadingState;
+  menusData: MenusDataState;
+  search: SearchState;
+  ui: UiState;
 }

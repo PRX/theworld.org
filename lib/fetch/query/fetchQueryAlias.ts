@@ -3,7 +3,7 @@
  */
 
 import { PriApiResourceResponse } from 'pri-api-library/types';
-import { fetchPriApiQueryAlias } from '../api/fetchPriApi';
+import { fetchPriApiQueryAlias } from '@lib/fetch/api/fetchPriApi';
 
 export const fetchQueryAlias = async (
   alias: string

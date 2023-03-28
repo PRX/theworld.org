@@ -45,27 +45,34 @@ const ContentProxy = ({ type }: Props) => {
     case 'file--videos':
       return <DynamicVideo />;
 
+    case 'episode':
     case 'node--episodes':
       return <DynamicEpisode />;
 
     case 'node--newsletter_sign_ups':
       return <DynamicNewsletter />;
 
+    case 'page':
     case 'node--pages':
       return <DynamicPage />;
 
+    case 'contributor':
     case 'node--people':
       return <DynamicBio />;
 
+    case 'program':
     case 'node--programs':
       return <DynamicProgram />;
 
+    case 'post':
     case 'node--stories':
       return <DynamicStory />;
 
+    case 'category':
     case 'taxonomy_term--categories':
       return <DynamicCategory />;
 
+    case 'term':
     case 'taxonomy_term--terms':
       return <DynamicTerm />;
 
@@ -80,10 +87,10 @@ const ContentProxy = ({ type }: Props) => {
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ res, req, params }): Promise<GetServerSidePropsResult<any>> => {
-      let resourceId: string;
-      let resourceType: string = 'homepage';
-      let redirect: string;
-      const { alias } = params;
+      let resourceId: string | undefined;
+      let resourceType: string | undefined = 'homepage';
+      let redirect: string | undefined;
+      const { alias = [] } = params || {};
       const aliasPath = (alias as string[]).join('/');
       const rgxFileExt = /\.\w+$/;
 
@@ -107,7 +114,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
               resourceId = id as string;
               resourceType = type;
             } else {
-              resourceType = null;
+              resourceType = undefined;
             }
             break;
           }
