@@ -3,55 +3,43 @@
  * Helper functions to parse menu API data into button objects.
  */
 
-import { IButton, ILink } from '@interfaces';
+import { IButton } from '@interfaces';
+import { MenuItem } from '@interfaces/menu';
+import { isLocalUrl } from '../url';
 
-export const parseMenu = (data: ILink[]): IButton[] => {
+export const parseMenu = (data: MenuItem[]) => {
   // If no data or links exist, return empty array.
   if (!data || !data.length) {
     return [];
   }
-  return data.map(
-    ({
-      id,
-      name,
-      url,
-      attributes: {
-        class: className,
-        title,
-        referrerpolicy,
-        ...otherAttributes
-      },
-      children = null
-    }) => ({
+  return data.map(({ id, name, url, attributes, children = null }) => {
+    const {
+      class: className,
+      color,
+      icon,
+      title,
+      referrerpolicy,
+      ...otherAttributes
+    } = attributes || {};
+    const isLocal = isLocalUrl(url);
+
+    return {
       key: id,
       name,
-      ...(title && { title }),
       url,
+      ...(color && { color }),
+      ...(icon && { icon }),
+      ...(title && { title }),
       ...(className && {
-        itemLinkClass: className.join(' '),
-        color: className.reduce(
-          (color: string, cn: string) =>
-            color || (cn === 'btn-danger' && 'secondary'),
-          null
-        ),
-        icon: className.reduce(
-          (icon: string, cn: string) =>
-            icon || (cn.indexOf('icon-') > -1 && cn.split('-')[1]),
-          null
-        )
+        itemLinkClass: className.join(' ')
       }),
-      children:
-        children &&
-        parseMenu(
-          children.map(
-            ({ id: childId, attributes }): ILink =>
-              ({ id: childId, ...attributes } as ILink)
-          )
-        ),
+      children: children && parseMenu(children),
       attributes: {
         ...otherAttributes,
-        ...(referrerpolicy && { referrerPolicy: referrerpolicy })
+        ...(!isLocal && {
+          referrerPolicy: 'no-referrer-when-downgrade'
+        })
       }
-    })
-  );
+    } satisfies IButton;
+  });
 };

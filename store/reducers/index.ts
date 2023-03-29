@@ -17,7 +17,6 @@ export const initialState: RootState = {
   menusData: {},
   search: {
     open: false,
-    query: undefined,
     loading: false,
     searches: {}
   },

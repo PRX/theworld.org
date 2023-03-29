@@ -1,21 +1,6 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import fetchTwApi from '@lib/fetch/api/fetchTwApi';
-
-type TwApiMenuItem = {
-  ID: number;
-  menu_item_parent: string;
-  title: string;
-  url: string;
-};
-
-type MenuItem = {
-  id: string;
-  parent: string;
-  name: string;
-  url: string;
-  attributes?: { [key: string]: any };
-  children?: MenuItem[] | null;
-};
+import { MenuItem, MenuItemAttributes, TwApiMenuItem } from '@interfaces/menu';
 
 function getChildren(parentId: string, allItems: MenuItem[]) {
   let children = allItems.filter(({ parent }) => parent === parentId);
@@ -26,6 +11,7 @@ function getChildren(parentId: string, allItems: MenuItem[]) {
     ({ id, ...rest }) =>
       ({
         ...rest,
+        id,
         children: getChildren(id, allItems)
       } as MenuItem)
   );
@@ -62,9 +48,9 @@ export const fetchTwApiMenu = async (
     (resp) =>
       resp &&
       (resp.data as TwApiMenuItem[])
-        .map(({ ID: id, title, url, menu_item_parent: parent }) => {
+        .map(({ ID, title, url, menu_item_parent: parent }) => {
           const [name, attributesJson] = title.split('|');
-          let attributes: { [key: string]: string } | undefined;
+          let attributes: MenuItemAttributes | undefined;
 
           try {
             attributes = JSON.parse(attributesJson);
@@ -73,7 +59,7 @@ export const fetchTwApiMenu = async (
           }
 
           return {
-            id: `${id}`,
+            id: `${ID}`,
             parent,
             name,
             url,

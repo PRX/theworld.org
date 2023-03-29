@@ -5,7 +5,7 @@
 import { IButton } from '@interfaces';
 import { parseMenu } from '@lib/parse/menu';
 import { IPriApiCollectionResponse } from 'pri-api-library/types';
-import { fetchPriApiQuery, fetchPriApiQueryMenu } from '../api/fetchPriApi';
+import { fetchPriApiQuery } from '../api/fetchPriApi';
 import { basicStoryParams } from '../api/params';
 import { fetchTwApiMenu } from '../menu';
 
@@ -25,11 +25,11 @@ export const fetchApp = async (): Promise<IApp> => {
     headerNav,
     latestStories
   ] = await Promise.all([
-    fetchPriApiQueryMenu('menu-tw-main-nav'),
-    fetchPriApiQueryMenu('menu-tw-social-nav'),
-    fetchPriApiQueryMenu('menu-tw-top-nav'),
-    fetchPriApiQueryMenu('menu-tw-footer-nav'),
-    fetchPriApiQueryMenu('menu-tw-header-nav'),
+    fetchTwApiMenu('secondary-menu'),
+    fetchTwApiMenu('social'),
+    fetchTwApiMenu('highlight-menu'),
+    fetchTwApiMenu('tertiary-menu'),
+    fetchTwApiMenu('primary-menu'),
     fetchPriApiQuery('node--stories', {
       ...basicStoryParams,
       'filter[status]': 1,
@@ -38,18 +38,14 @@ export const fetchApp = async (): Promise<IApp> => {
     }).then((resp: IPriApiCollectionResponse) => resp)
   ]);
 
-  const twMenu = await fetchTwApiMenu('secondary-menu');
-
-  console.log(twMenu);
-
   const resp = {
     latestStories,
     menus: {
-      drawerMainNav: parseMenu(drawerMainNav),
-      drawerSocialNav: parseMenu(drawerSocialNav),
-      drawerTopNav: parseMenu(drawerTopNav),
-      footerNav: parseMenu(footerNav),
-      headerNav: parseMenu(headerNav)
+      ...(drawerMainNav && { drawerMainNav: parseMenu(drawerMainNav) }),
+      ...(drawerSocialNav && { drawerSocialNav: parseMenu(drawerSocialNav) }),
+      ...(drawerTopNav && { drawerTopNav: parseMenu(drawerTopNav) }),
+      ...(footerNav && { footerNav: parseMenu(footerNav) }),
+      ...(headerNav && { headerNav: parseMenu(headerNav) })
     }
   };
 
