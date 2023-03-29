@@ -555,12 +555,7 @@ export const fetchApiSearch = (
   q: string,
   label: string,
   start: string | number
-) => {
-  let url = format({
-    pathname: `query/search/${label}/${q}`,
-    query: {
-      ...(start && { start })
-    }
-  });
-  return fetchApi(url) as Promise<customsearch_v1.Schema$Search>;
-};
+) =>
+  fetchApi(`query/search/${label}/${q}`, undefined, {
+    ...(start && { start: `${start}` })
+  }) as Promise<customsearch_v1.Schema$Search>;
