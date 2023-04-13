@@ -12,7 +12,7 @@ export const parseMenu = (data: MenuItem[]) => {
   if (!data || !data.length) {
     return [];
   }
-  return data.map(({ id, name, url, attributes, children = null }) => {
+  return data.map(({ id, name, url, attributes, children = null, ...rest }) => {
     const {
       class: className,
       color,
@@ -24,6 +24,7 @@ export const parseMenu = (data: MenuItem[]) => {
     const isLocal = isLocalUrl(url);
 
     return {
+      ...rest,
       key: id,
       name,
       url,

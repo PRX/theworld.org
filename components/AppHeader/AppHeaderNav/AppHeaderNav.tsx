@@ -33,6 +33,23 @@ export const AppHeaderNav = () => {
     <ThemeProvider theme={appHeaderNavTheme}>
       {headerNav
         .map(({ url, ...other }) => ({ ...other, url: parse(url || '') }))
+        .map(({ service, ...other }) => {
+          if (!service) return other;
+
+          const servicesOptions = new Map([
+            ['prx:give', {
+              icon: 'heart',
+              color: 'secondary'
+            }]
+          ])
+          const options = servicesOptions.get(service);
+
+          return {
+            ...options,
+            ...other,
+            service,
+          };
+        })
         .map(
           ({ color, icon, name, url, key, attributes, itemLinkClass = '' }) => (
             <React.Fragment key={key}>

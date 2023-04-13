@@ -13,49 +13,40 @@ export interface IImageWidthsFunc {
   (node: DomElement): ImageWidth[];
 }
 
-export const enhanceImage =
-  (getImageWidths: IImageWidthsFunc) => (node: DomElement) => {
-    const { type, name, attribs } = node;
-    if (
-      type === 'tag' &&
-      name === 'img' &&
-      !(attribs.width === '1' && attribs.height === '1')
-    ) {
-      const imageWidths = getImageWidths(node);
-      const sizes = imageWidths
-        .map(([q, w]) => (q ? `(${q}) ${w}` : w))
-        .join(', ');
-      const { class: className, width, height, src, ...otherAttribs } = attribs;
-      const absoluteSrc = /^\/[^/]/.test(src)
-        ? `https://theworld.org${src}`
-        : src;
-      let wrapperClass: string;
+export const enhanceImage = (getImageWidths: IImageWidthsFunc) => (
+  node: DomElement
+) => {
+  const { type, name, attribs } = node;
+  if (
+    type === 'tag' &&
+    name === 'img' &&
+    !(attribs.width === '1' && attribs.height === '1')
+  ) {
+    const imageWidths = getImageWidths(node);
+    const sizes = imageWidths
+      .map(([q, w]) => (q ? `(${q}) ${w}` : w))
+      .join(', ');
+    const { class: className, width, height, src, ...otherAttribs } = attribs;
+    const absoluteSrc = /^\/[^/]/.test(src)
+      ? `https://theworld.org${src}`
+      : src;
+    let wrapperClass: string | undefined;
 
-      switch (true) {
-        case /\bfile-full-width\b/.test(className):
-          wrapperClass = 'file-full-width-wrapper';
-          break;
+    switch (true) {
+      case /\bfile-full-width\b/.test(className):
+        wrapperClass = 'file-full-width-wrapper';
+        break;
 
-        case /\bfile-browser-width\b/.test(className):
-          wrapperClass = 'file-browser-width-wrapper';
-          break;
+      case /\bfile-browser-width\b/.test(className):
+        wrapperClass = 'file-browser-width-wrapper';
+        break;
 
-        default:
-          break;
-      }
+      default:
+        break;
+    }
 
-      return wrapperClass ? (
-        <div className={wrapperClass} key={attribs.src}>
-          <Image
-            {...otherAttribs}
-            src={absoluteSrc}
-            width={width || 16}
-            height={height || 9}
-            layout="responsive"
-            sizes={sizes}
-          />
-        </div>
-      ) : (
+    return wrapperClass ? (
+      <div className={wrapperClass} key={attribs.src}>
         <Image
           {...otherAttribs}
           src={absoluteSrc}
@@ -63,10 +54,20 @@ export const enhanceImage =
           height={height || 9}
           layout="responsive"
           sizes={sizes}
-          key={attribs.src}
         />
-      );
-    }
+      </div>
+    ) : (
+      <Image
+        {...otherAttribs}
+        src={absoluteSrc}
+        width={width || 16}
+        height={height || 9}
+        layout="responsive"
+        sizes={sizes}
+        key={attribs.src}
+      />
+    );
+  }
 
-    return undefined;
-  };
+  return undefined;
+};

@@ -1,6 +1,29 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
+import { URL } from 'url';
 import fetchTwApi from '@lib/fetch/api/fetchTwApi';
 import { MenuItem, MenuItemAttributes, TwApiMenuItem } from '@interfaces/menu';
+import { isLocalUrl } from '@lib/parse/url';
+
+const servicesMap = new Map<string, string>();
+servicesMap.set('give.prx.org', 'prx:give');
+servicesMap.set('facebook.com', 'facebook');
+servicesMap.set('www.facebook.com', 'facebook');
+servicesMap.set('instagram.com', 'instagram');
+servicesMap.set('www.instagram.com', 'instagram');
+servicesMap.set('twitter.com', 'twitter');
+servicesMap.set('www.twitter.com', 'twitter');
+
+function getServiceFromUrl(url: string) {
+  try {
+    const { hostname } = new URL(url, 'https://theworld.org');
+    const service = servicesMap.get(hostname);
+
+    return service;
+
+  } catch(e) {
+    return undefined;
+  }
+}
 
 function getChildren(parentId: string, allItems: MenuItem[]) {
   let children = allItems.filter(({ parent }) => parent === parentId);
@@ -50,6 +73,7 @@ export const fetchTwApiMenu = async (
       (resp.data as TwApiMenuItem[])
         .map(({ ID, title, url, menu_item_parent: parent }) => {
           const [name, attributesJson] = title.split('|');
+          const service = getServiceFromUrl(url);
           let attributes: MenuItemAttributes | undefined;
 
           try {
@@ -63,6 +87,7 @@ export const fetchTwApiMenu = async (
             parent,
             name,
             url,
+            ...(service && { service }),
             ...(attributes && { attributes })
           } as MenuItem;
         })

@@ -3,7 +3,7 @@
  * Component for app drawer social nav.
  */
 
-import React from 'react';
+import type { RootState } from '@interfaces/state';
 import { useStore } from 'react-redux';
 import { parse } from 'url';
 import { IconButton, Toolbar } from '@mui/material';
@@ -32,7 +32,7 @@ const renderIcon = (icon: string, label: string) => {
 };
 
 export const DrawerSocialNav = () => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const drawerSocialNav = getMenusData(store.getState(), 'drawerSocialNav');
   const { classes } = drawerTopNavStyles();
 
@@ -41,17 +41,38 @@ export const DrawerSocialNav = () => {
       <Toolbar className={classes.root}>
         {drawerSocialNav
           .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
+          .map(({ service, ...other }) => {
+            if (!service) return other;
+
+            const servicesOptions = new Map([
+              [
+                'facebook',
+                {
+                  icon: 'facebook'
+                }
+              ],
+              ['instagram', { icon: 'instagram' }],
+              ['twitter', { icon: 'twitter' }]
+            ]);
+            const options = servicesOptions.get(service);
+
+            return {
+              ...options,
+              ...other,
+              service,
+            };
+          })
           .map(({ name, url, icon, key, title, attributes }) => (
             <IconButton
               color="inherit"
-              href={isLocalUrl(url.href) ? url.path : url.href}
+              href={isLocalUrl(url.href) && url.path ? url.path : url.href}
               target="_blank"
               rel="noopener noreferrer"
               key={key}
               disableRipple
               {...attributes}
             >
-              {renderIcon(icon, title || name)}
+              {icon ? renderIcon(icon, title || name) : title || name}
             </IconButton>
           ))}
       </Toolbar>

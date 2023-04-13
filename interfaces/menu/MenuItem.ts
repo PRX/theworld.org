@@ -15,6 +15,7 @@ export type MenuItem = {
   parent: string;
   name: string;
   url: string;
+  service?: string;
   attributes?: MenuItemAttributes;
   children?: MenuItem[] | null;
 };

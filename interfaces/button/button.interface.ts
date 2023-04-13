@@ -36,6 +36,7 @@ export interface IButton {
   key: string | number;
   name: string;
   url: string;
+  service?: string;
   itemLinkClass?: string;
   color?: IconButtonColors | ButtonColors;
   icon?: string;

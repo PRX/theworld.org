@@ -4,13 +4,13 @@
  */
 
 import { type MouseEventHandler, useContext, useEffect, useState } from 'react';
+import { type IPriApiResource } from 'pri-api-library/types';
+import type { IAudioResource, RootState } from '@interfaces';
+import { type IAudioData } from '@components/Player/types';
 import { useStore } from 'react-redux';
 import { CircularProgress, NoSsr, Tooltip } from '@mui/material';
 import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 import { PauseSharp, PlayArrowSharp, VolumeUpSharp } from '@mui/icons-material';
-import { type IPriApiResource } from 'pri-api-library/types';
-import { type IAudioData } from '@components/Player/types';
-import { type IAudioResource } from '@interfaces';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { parseAudioData } from '@lib/parse/audio/audioData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
@@ -34,9 +34,9 @@ export const PlayAudioButton = ({
   fallbackProps,
   ...other
 }: IPlayAudioButtonProps) => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const [audioResource, setAudio] = useState<IAudioResource>();
-  const [audioData, setAudioData] = useState<IAudioData>(audio);
+  const [audioData, setAudioData] = useState<typeof audio>(audio);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -48,8 +48,8 @@ export const PlayAudioButton = ({
   const currentTrack = tracks?.[currentTrackIndex];
   const [audioIsPlaying, setAudioIsPlaying] = useState(
     playing &&
-      (audio || audioData) &&
-      currentTrack?.guid === (audio || audioData).guid
+      !!(audio ?? audioData) &&
+      currentTrack?.guid === (audio ?? audioData)?.guid
   );
   const tooltipTitle = audioIsPlaying ? 'Pause' : 'Play';
   const { classes: styles, cx } = playAudioButtonStyles({
@@ -81,10 +81,12 @@ export const PlayAudioButton = ({
   const handleLoadClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
+    if (!id) return;
+
     (async () => {
       setLoading(true);
       const ar = await store.dispatch<any>(fetchAudioData(id));
-      let linkResource: IPriApiResource;
+      let linkResource: IPriApiResource | undefined;
 
       if (ar.usage?.story) {
         linkResource = await store.dispatch<any>(
@@ -117,6 +119,8 @@ export const PlayAudioButton = ({
   };
 
   useEffect(() => {
+    if (!id) return;
+
     setAudio(
       getDataByResource(store.getState(), 'file--audio', id) as IAudioResource
     );
