@@ -20,7 +20,7 @@ export interface IContentComponent extends FunctionComponent {
 
 export interface IContentComponentProps {
   id: string;
-  data?: IPriApiResource;
+  data: IPriApiResource;
 }
 
 export interface IContentComponentProxyProps {

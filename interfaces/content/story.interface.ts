@@ -2,16 +2,21 @@
  * Defines story data interface and types.
  */
 
-import { IImage } from './image.interface';
+import type { IPost } from './post.interface';
 
-export interface IStory {
-  id: number;
-  type: string;
-  link: string;
-  datePublished: string;
+export interface IStory extends IPost {
+  displayTemplate: string;
   dateBroadcast?: string;
-  title: string;
-  body: string;
-  subhead: string;
-  image?: IImage;
+  audio?: number;
+  contributors: number[];
+  program: number[];
+  city: number[];
+  provinceOrState: number[];
+  country: number[];
+  region: number[];
+  continent: number[];
+  person: number[];
+  socialTags: number[];
+  resourceDevelopment: number[];
+  storyFormat: number[];
 }

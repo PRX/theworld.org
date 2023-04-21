@@ -2,4 +2,5 @@ export * from './parseTwApiDataAudio';
 export * from './parseTwApiDataImage';
 export * from './parseTwApiDataPost';
 export * from './parseTwApiDataPostStory';
-export * from './parseTwApiDataTaxonomy';
+export * from './parseTwApiDataTerm';
+export * from './parseTwApiDataTermCategory';

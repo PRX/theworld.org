@@ -3,58 +3,46 @@
  * Parse The World Wordpress API post data into normalized model.
  */
 
-import type { WP_REST_API_Attachment, WP_REST_API_Post, WP_REST_API_Term } from 'wp-types';
-import { parseTwApiDataImage } from './parseTwApiDataImage';
-import { parseTwApiDataTaxonomy } from './parseTwApiDataTaxonomy';
+import type { WP_REST_API_Post as WPRestApiPost } from 'wp-types';
+import type { IPost } from '@interfaces';
 
-export function parseTwApiDataPost(data: WP_REST_API_Post) {
+export interface TwApiPost extends WPRestApiPost {
+  yeost_head?: string;
+  yeost_head_json?: { [k: string]: any };
+}
+
+export function parseTwApiDataPost(data: TwApiPost) {
   const {
     id,
     type: postType,
     date,
     link,
-    guid,
     title,
     content,
     excerpt,
-    yeost_head,
-    yeost_head_json,
-    featured_media: featuredMedia,
-    _embedded: embedded
+    featured_media: image,
+    categories,
+    tags,
+    yeost_head: yeostHead,
+    yeost_head_json: yeostHeadJson
   } = data;
-  let result = {
+  const result = {
     ...(id && { id }),
-    ...(postType && {type: `post:${postType === 'post' ? 'story' : postType}`}),
-    ...(date && {datePublished: date}),
-    ...(link && {link}),
-    ...((yeost_head || undefined) && { metatagsHtml: yeost_head }),
-    // Flatten rich content props.
-    ...(guid && { guid: guid.rendered }),
-    ...(title && { title: title.rendered }),
-    ...(content && { body: content.rendered }),
-    ...(excerpt && { subhead: excerpt.rendered }),
-    // Move embedded data to data prop.
-    ...(embedded?.['wp:featuredmedia'] && {
-      image: parseTwApiDataImage(embedded['wp:featuredmedia'][0] as WP_REST_API_Attachment)
+    ...(postType && {
+      type: `post:${postType === 'post' ? 'story' : postType}`
     }),
-    ...((embedded?.['wp:term'] as WP_REST_API_Term[][])?.reduce(
-      (a, terms) => ({
-        ...terms.reduce(
-          (ac, term) => ({
-            ...ac,
-            [term.taxonomy]: [
-              ...ac[term.taxonomy],
-              parseTwApiDataTaxonomy(term)
-            ]
-          }),
-          a
-        )
-      }),
-      {} as { [k: string]: any }
-    ) || {})
-  };
+    ...(date && { datePublished: date }),
+    ...(link && { link }),
+    ...(image && { image }),
+    ...(categories && { categories }),
+    ...(tags && { tags }),
+    ...(yeostHead && { metatagsHtml: yeostHead }),
+    ...(yeostHeadJson && { metatags: yeostHeadJson }),
+    // Flatten rich content props.
+    ...(title && { title: title.rendered }),
+    ...(excerpt && { subhead: excerpt.rendered }),
+    ...(content && { body: content.rendered })
+  } as IPost;
 
   return result;
 }
-
-

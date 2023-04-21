@@ -86,3 +86,22 @@ export interface IAudioResource extends IPriApiResource {
         story?: IAudioUsage[];
       };
 }
+
+export interface IAudio {
+  id: number;
+  url: string;
+  title: string;
+  audioTitle?: string;
+  audioAuthor: number[];
+  dateBroadcast?: string;
+  program?: number;
+  segments?: number[];
+  metadata?: {
+    duration?: string;
+  };
+  usage?: {
+    episode?: IAudioUsage[];
+    post?: IAudioUsage[];
+    segment?: IAudioUsage[];
+  };
+}

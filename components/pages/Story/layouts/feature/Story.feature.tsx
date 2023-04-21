@@ -3,7 +3,10 @@
  * Component for default Story layout.
  */
 
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import type { ITagsProps } from '@components/Tags';
+import type { IContentComponentProps } from '@interfaces/content';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { ThemeProvider } from '@mui/styles';
@@ -12,11 +15,9 @@ import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
-import { ITagsProps } from '@components/Tags';
-import { IContentComponentProps } from '@interfaces/content';
 import { RootState } from '@interfaces/state';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
-import { IStoryRelatedLinksProps } from '../default/components/StoryRelatedLinks';
+import type { IStoryRelatedLinksProps } from '../default/components/StoryRelatedLinks';
 import { storyStyles, storyTheme } from './Story.feature.styles';
 import { StoryHeader } from './components';
 
@@ -51,7 +52,7 @@ export const StoryDefault = ({ data }: Props) => {
     opencalaisRegion,
     opencalaisPerson
   } = data;
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
     updateForce(store.getState());

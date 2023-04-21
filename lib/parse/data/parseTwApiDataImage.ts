@@ -1,20 +1,17 @@
-import type { WP_REST_API_Attachment } from 'wp-types';
+import type { WP_REST_API_Attachment as WPRestApiAttachment } from 'wp-types';
 import type { IImage } from '@interfaces';
 
-
-export function parseTwApiDataImage(data: WP_REST_API_Attachment) {
+export function parseTwApiDataImage(data: WPRestApiAttachment) {
   const {
     id,
-    type,
-    media_type: mediaType,
     source_url: url,
     alt_text: alt,
     caption,
     media_details: mediaDetails
   } = data;
-  const image = {
+  const result = {
     id,
-    type: `${type}:${mediaType}`,
+    type: 'media:image',
     url,
     alt,
     caption: caption.rendered,
@@ -24,5 +21,5 @@ export function parseTwApiDataImage(data: WP_REST_API_Attachment) {
     }
   } as IImage;
 
-  return image;
+  return result;
 }

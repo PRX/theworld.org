@@ -1,39 +1,64 @@
-import type { WP_REST_API_Post } from 'wp-types';
+import type { WP_REST_API_Post as WPRestApiPost } from 'wp-types';
+import type { IStory } from '@interfaces/content/story.interface';
 import { parseTwApiDataPost } from './parseTwApiDataPost';
 
-export interface TwApiDataPostStory extends WP_REST_API_Post {
-  /**
-   *  Added by Advanced Custom Fields [WP REST API Integration](https://www.advancedcustomfields.com/resources/wp-rest-api-integration/).
-   */
+export interface TwApiDataPostStory extends WPRestApiPost {
+  contributors: number[];
+  program: number[];
+  resource_development: number[];
+  story_format: number[];
+  city: number[];
+  continent: number[];
+  country: number[];
+  province_or_state: number[];
+  region: number[];
+  person: number[];
+  social_tags: number[];
   acf?: {
-    /**
-     * Date story was broadcast, if applicable.
-     */
     broadcast_date?: number;
-
-    /**
-     * What type of layout to render story page with.
-     */
     format?: string;
-
-    /**
-     * Audio media associated with the content.
-     */
-    audio?: string | { id: string; };
+    audio?: number;
   };
 }
 
 export default function parseTwApiDataPostStory(data: TwApiDataPostStory) {
-  const { acf } = data;
-  const { broadcast_date: dateBroadcast, format: displayTemplate, audio } =
-    acf ?? {};
+  const {
+    acf,
+    contributors,
+    program,
+    city,
+    continent,
+    country,
+    person,
+    province_or_state: provinceOrState,
+    region,
+    social_tags: socialTags,
+    resource_development: resourceDevelopment,
+    story_format: storyFormat
+  } = data;
+  const {
+    broadcast_date: dateBroadcast,
+    format: displayTemplate,
+    audio
+  } = acf ?? {};
   const post = parseTwApiDataPost(data);
-  const story = {
+  const result = {
     ...structuredClone(post),
-    dateBroadcast,
     displayTemplate,
-    ...(audio && { audio: typeof audio === 'string' ? audio : audio.id })
-  };
+    ...(dateBroadcast && { dateBroadcast }),
+    ...(audio && { audio }),
+    ...(contributors && { contributors }),
+    ...(program && { program }),
+    ...(city && { city }),
+    ...(continent && { continent }),
+    ...(country && { country }),
+    ...(person && { person }),
+    ...(provinceOrState && { provinceOrState }),
+    ...(region && { region }),
+    ...(socialTags && { socialTags }),
+    ...(resourceDevelopment && { resourceDevelopment }),
+    ...(storyFormat && { storyFormat })
+  } as IStory;
 
-  return story;
+  return result;
 }
