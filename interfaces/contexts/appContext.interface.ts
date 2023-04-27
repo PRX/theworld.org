@@ -5,9 +5,9 @@
  */
 
 export interface IAppContext {
-  page?: {
-    resource?: {
-      type?: string;
+  page: {
+    resource: {
+      type: string;
       id?: string;
     };
   };

@@ -21,7 +21,7 @@ export const collections = (state: State = {}, action: AnyAction) => {
   let key: string;
   let refs: string[];
   let newCollection: CollectionState;
-  let meta: object;
+  let meta: CollectionState;
 
   const addCollectionPage = (
     items: string[][],

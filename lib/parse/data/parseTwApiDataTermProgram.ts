@@ -27,7 +27,7 @@ export interface TwApiDataTermProgram extends WPRestApiTerm {
   };
 }
 
-export function parseTwApiDataTermCategory(data: TwApiDataTermProgram) {
+export function parseTwApiDataTermProgram(data: TwApiDataTermProgram) {
   const { acf } = data;
   const {
     teaser,

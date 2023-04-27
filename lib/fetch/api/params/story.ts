@@ -4,6 +4,20 @@
  * Query parameters needed to requests data for a story.
  */
 
+export const basicTwApiStoryParams = {
+  _fields: [
+    'id',
+    'type',
+    'title',
+    'excerpt',
+    'featured_media',
+    'acf.format',
+    '_links',
+    '_embedded'
+  ],
+  _embed: ['wp:featuredmedia']
+};
+
 export const basicStoryParams = {
   include: ['image', 'primary_category'],
   fields: [

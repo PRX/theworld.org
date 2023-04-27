@@ -10,37 +10,42 @@ import { isLocalUrl } from '../url';
 export const parseMenu = (data: MenuItem[]) => {
   // If no data or links exist, return empty array.
   if (!data || !data.length) {
-    return [];
+    return [] as IButton[];
   }
-  return data.map(({ id, name, url, attributes, children = null, ...rest }) => {
-    const {
-      class: className,
-      color,
-      icon,
-      title,
-      referrerpolicy,
-      ...otherAttributes
-    } = attributes || {};
-    const isLocal = isLocalUrl(url);
 
-    return {
-      ...rest,
-      key: id,
-      name,
-      url,
-      ...(color && { color }),
-      ...(icon && { icon }),
-      ...(title && { title }),
-      ...(className && {
-        itemLinkClass: className.join(' ')
-      }),
-      children: children && parseMenu(children),
-      attributes: {
-        ...otherAttributes,
-        ...(!isLocal && {
-          referrerPolicy: 'no-referrer-when-downgrade'
-        })
-      }
-    } satisfies IButton;
-  });
+  const menu = data.map<IButton>(
+    ({ id, name, url, attributes, children = null, ...rest }) => {
+      const {
+        class: className,
+        color,
+        icon,
+        title,
+        referrerpolicy,
+        ...otherAttributes
+      } = attributes || {};
+      const isLocal = isLocalUrl(url);
+
+      return {
+        ...rest,
+        key: id,
+        name,
+        url,
+        ...(color && { color }),
+        ...(icon && { icon }),
+        ...(title && { title }),
+        ...(className && {
+          itemLinkClass: className.join(' ')
+        }),
+        children: children && parseMenu(children),
+        attributes: {
+          ...otherAttributes,
+          ...(!isLocal && {
+            referrerPolicy: 'no-referrer-when-downgrade'
+          })
+        }
+      } as IButton;
+    }
+  ) as IButton[];
+
+  return menu;
 };

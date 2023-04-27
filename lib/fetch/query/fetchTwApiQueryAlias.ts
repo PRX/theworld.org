@@ -32,7 +32,9 @@ export const fetchTwApiQueryAlias = async (
       resp && {
         data: {
           id: resp.data.id,
-          type: resp.data.taxonomy || resp.data.type
+          type: resp.data.taxonomy
+            ? `term:${resp.data.taxonomy}`
+            : `post:${resp.data.type === 'post' ? 'story' : resp.data.type}`
         }
       }
   );

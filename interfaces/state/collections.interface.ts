@@ -5,12 +5,12 @@
  */
 
 export interface CollectionState {
-  count?: number;
-  page?: number;
+  count: number;
+  page: number;
   range?: number;
-  size?: number;
-  first?: number;
-  last?: number;
+  size: number;
+  first: number;
+  last: number;
   next?: number;
   prev?: number;
   items: string[][];

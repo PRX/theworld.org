@@ -3,8 +3,12 @@
  * Parse The World Wordpress API post data into normalized model.
  */
 
-import type { WP_REST_API_Post as WPRestApiPost } from 'wp-types';
+import type {
+  WP_REST_API_Attachment as WPRestApiAttachment,
+  WP_REST_API_Post as WPRestApiPost
+} from 'wp-types';
 import type { IPost } from '@interfaces';
+import { parseTwApiDataImage } from './parseTwApiDataImage';
 
 export interface TwApiPost extends WPRestApiPost {
   yeost_head?: string;
@@ -24,8 +28,10 @@ export function parseTwApiDataPost(data: TwApiPost) {
     categories,
     tags,
     yeost_head: yeostHead,
-    yeost_head_json: yeostHeadJson
+    yeost_head_json: yeostHeadJson,
+    _embedded: embedded
   } = data;
+  const { 'wp:featuredmedia': embeddedFeaturedMedia } = embedded ?? {};
   const result = {
     ...(id && { id }),
     ...(postType && {
@@ -34,6 +40,11 @@ export function parseTwApiDataPost(data: TwApiPost) {
     ...(date && { datePublished: date }),
     ...(link && { link }),
     ...(image && { image }),
+    ...(embeddedFeaturedMedia && {
+      image: parseTwApiDataImage(
+        embeddedFeaturedMedia[0] as WPRestApiAttachment
+      )
+    }),
     ...(categories && { categories }),
     ...(tags && { tags }),
     ...(yeostHead && { metatagsHtml: yeostHead }),

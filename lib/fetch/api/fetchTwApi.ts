@@ -10,6 +10,23 @@ import { twApi as configTwApi } from '@config';
 const twApiConfig = configTwApi || process.env.TW_API_CONFIG;
 const { apiUrlBase } = twApiConfig;
 
+export interface TwApiCollectionMeta {
+  count: number;
+  first: number;
+  last: number;
+  size: number;
+  page: number;
+  next?: number;
+}
+
+export interface TwApiResource<DataType> {
+  data: DataType;
+}
+
+export interface TwApiCollection<DataType> extends TwApiResource<DataType[]> {
+  meta: TwApiCollectionMeta;
+}
+
 /**
  * Fetch data from TW (WP) API.
  *
@@ -32,33 +49,31 @@ export default async function fetchTwApi(
 
   const resp = await fetch(url, init);
 
-  if (resp.ok) {
-    const data = await resp.json();
-    const isCollection = !!resp.headers['x-wp-total'];
+  if (!resp.ok) return undefined;
 
-    if (isCollection) {
-      const count = parseInt(resp.headers['x-wp-total'], 10);
-      const first = 1;
-      const last = parseInt(resp.headers['x-wp-totalpages'], 10);
-      const size = Math.ceil(count / last);
-      const page = parseInt(params?.page, 10) || 1;
-      const next = page + 1;
+  const data = await resp.json();
+  const isCollection = !!resp.headers['x-wp-total'];
 
-      return {
-        meta: {
-          count,
-          first,
-          last,
-          next,
-          page,
-          size
-        },
-        data
-      };
-    }
+  if (isCollection) {
+    const count = parseInt(resp.headers['x-wp-total'], 10);
+    const first = 1;
+    const last = parseInt(resp.headers['x-wp-totalpages'], 10);
+    const size = Math.ceil(count / last);
+    const page = parseInt(params?.page, 10) || 1;
+    const next = page + 1;
 
-    return { data };
+    return {
+      meta: {
+        count,
+        first,
+        last,
+        ...(next <= last && { next }),
+        page,
+        size
+      },
+      data
+    } as TwApiCollection<any[]>;
   }
 
-  return false;
+  return { data } as TwApiResource<any>;
 }

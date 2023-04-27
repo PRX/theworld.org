@@ -3,9 +3,11 @@
  * Component for Bio.
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import type React from 'react';
+import type { IPriApiResource } from 'pri-api-library/types';
+import type { RootState } from '@interfaces';
+import { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Button, Hidden, Typography } from '@mui/material';
 import { EqualizerRounded, PublicRounded } from '@mui/icons-material';
 import Pagination from '@mui/material/Pagination';
@@ -37,12 +39,10 @@ import { BioHeader } from './components/BioHeader';
 import { bioStyles } from './Bio.styles';
 
 export const Bio = () => {
-  const {
-    page: {
-      resource: { type, id }
-    }
-  } = useContext(AppContext);
-  const store = useStore();
+  const { page: pageData } = useContext(AppContext);
+  const { resource } = pageData;
+  const { type, id = '' } = resource;
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
@@ -75,8 +75,11 @@ export const Bio = () => {
   const storiesState = getCollectionData(state, type, id, 'stories');
   const { items: stories, page, next } = storiesState || {};
   const segmentsState = getCollectionData(state, type, id, 'segments');
-  const { items: segments, count: segmentsCount, size: segmentsSize } =
-    segmentsState || {};
+  const {
+    items: segments,
+    count: segmentsCount,
+    size: segmentsSize
+  } = segmentsState || {};
   const segmentsPageCount = Math.ceil(segmentsCount / segmentsSize);
   const {
     metatags,
@@ -98,7 +101,7 @@ export const Bio = () => {
     website,
     rss,
     contact
-  ].filter(v => !!v);
+  ].filter((v) => !!v);
 
   const [loading, setLoading] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);
