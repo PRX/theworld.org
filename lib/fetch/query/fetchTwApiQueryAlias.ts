@@ -1,5 +1,6 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import fetchTwApi from '@lib/fetch/api/fetchTwApi';
+import { TwApiResource } from '@interfaces';
+import { fetchTwApi } from '@lib/fetch/api';
 
 /**
  * Method that simplifies GET queries for resource item using URL path alias.
@@ -19,7 +20,7 @@ export const fetchTwApiQueryAlias = async (
   params?: object,
   init?: RequestInit
 ) =>
-  fetchTwApi(
+  fetchTwApi<TwApiResource<{ id: number; type: string; taxonomy: string }>>(
     `tw/v2/alias`,
     {
       _fields: 'id,type,taxonomy',
@@ -33,8 +34,8 @@ export const fetchTwApiQueryAlias = async (
         data: {
           id: resp.data.id,
           type: resp.data.taxonomy
-            ? `term:${resp.data.taxonomy}`
-            : `post:${resp.data.type === 'post' ? 'story' : resp.data.type}`
+            ? `term--${resp.data.taxonomy}`
+            : `post--${resp.data.type === 'post' ? 'story' : resp.data.type}`
         }
       }
   );

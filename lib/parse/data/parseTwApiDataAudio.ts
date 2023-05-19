@@ -20,7 +20,7 @@ export function parseTwApiDataAudio(data: TwApiDataAudio) {
   } = acf ?? {};
   const result = {
     id,
-    type: 'media:audio',
+    type: 'media--audio',
     title: title.rendered,
     url,
     audioAuthor: contributor,

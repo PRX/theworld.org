@@ -20,7 +20,7 @@ export default function parseTwApiDataPostEpisode(data: TwApiDataPostEpisode) {
   const { broadcast_date: dateBroadcast, audio } = acf ?? {};
   const post = parseTwApiDataPost(data);
   const result = {
-    ...structuredClone(post),
+    ...post,
     ...(dateBroadcast && { dateBroadcast }),
     ...(audio && { audio }),
     ...(program && { program })

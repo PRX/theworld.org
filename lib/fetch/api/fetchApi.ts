@@ -17,6 +17,7 @@ import {
   INewsletterData,
   ICMApiCustomField
 } from '@interfaces/newsletter';
+import { IStory, TwApiResource } from '@interfaces';
 
 /**
  * Method that simplifies GET requests.
@@ -42,7 +43,7 @@ export const fetchApi = async (
   const baseUrl = req
     ? `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
     : '';
-  const { query: reqQuery = {} } = (req && parse(req.url, true)) || {};
+  const { query: reqQuery = {} } = (req?.url && parse(req.url, true)) || {};
 
   delete reqQuery.alias;
 
@@ -138,12 +139,14 @@ export const postNewsletterSubscription = async (
     listId: '04472db22d3fa6920bb38f18358b0f72',
     ...options
   };
-  const customFields = Object.entries(cflds).map(
-    ([Key, Value]: [string, string]): ICMApiCustomField => ({
-      Key,
-      Value
-    })
-  );
+  const customFields =
+    cflds &&
+    Object.entries(cflds).map(
+      ([Key, Value]: [string, string]): ICMApiCustomField => ({
+        Key,
+        Value
+      })
+    );
   const payload = {
     listId,
     emailAddress,
@@ -170,9 +173,9 @@ export const postNewsletterSubscription = async (
  *    Story data object.
  */
 export const fetchApiStory = async (
-  id: string,
+  id: number,
   req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`story/${id}`, req);
+): Promise<TwApiResource<IStory>> => fetchApi(`story/${id}`, req);
 
 /**
  * Method that simplifies GET queries for episode data.

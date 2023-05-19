@@ -1,11 +1,16 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import type { ParsedUrlQuery } from 'querystring';
 import type { IEpisode, IProgram, IStory } from '@interfaces';
-import fetchTwApi, { TwApiCollection } from '@lib/fetch/api/fetchTwApi';
-import { parseTwApiDataTermProgram } from '@lib/parse/data';
+import type { TwApiCollection, TwApiResource } from '@interfaces/api';
+import { fetchTwApi } from '@lib/fetch/api';
+import {
+  TwApiDataTermProgram,
+  parseTwApiDataTermProgram
+} from '@lib/parse/data';
 import parseTwApiDataPostEpisode from '@lib/parse/data/parseTwApiDataPostEpisode';
-import parseTwApiDataPostStory, {
-  type TwApiDataPostStory
+import {
+  type TwApiDataPostStory,
+  parseTwApiDataPostStory
 } from '@lib/parse/data/parseTwApiDataPostStory';
 import { basicTwApiStoryParams } from '../api/params';
 import { fetchTwApiProgramStories } from './fetchTwApiProgramStories';
@@ -16,7 +21,11 @@ export const fetchTwApiProgram = async (
   params?: ParsedUrlQuery,
   init?: RequestInit
 ) => {
-  const programResp = await fetchTwApi(`wp/v2/program/${id}`, undefined, init);
+  const programResp = await fetchTwApi<TwApiResource<TwApiDataTermProgram>>(
+    `wp/v2/program/${id}`,
+    undefined,
+    init
+  );
   const { data: programData } = programResp || {};
 
   if (!programData) return undefined;
@@ -39,17 +48,20 @@ export const fetchTwApiProgram = async (
     );
 
     parallelRequests.push(
-      fetchTwApi(
+      fetchTwApi<TwApiCollection<TwApiDataPostStory>>(
         'wp/v1/posts',
         {
           ...basicTwApiStoryParams,
           include: featuredStoriesIds
         },
         init
-      ).then(({ data, meta }: TwApiCollection<TwApiDataPostStory>) => ({
-        meta,
-        data: data.map((storyApi) => parseTwApiDataPostStory(storyApi))
-      }))
+      ).then(
+        (resp) =>
+          resp && {
+            meta: resp.meta,
+            data: resp.data.map((storyApi) => parseTwApiDataPostStory(storyApi))
+          }
+      )
     );
 
     storiesRequestParams.exclude = featuredStoriesIds;

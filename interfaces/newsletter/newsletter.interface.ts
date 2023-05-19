@@ -25,7 +25,7 @@ export interface INewsletterCustomFields {
 }
 
 export interface INewsletterOptions {
-  listId: string;
+  listId?: string;
   customFields?: INewsletterCustomFields;
 }
 

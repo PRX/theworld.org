@@ -6,7 +6,6 @@
 
 import { AnyAction } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
-import { IPriApiResource } from 'pri-api-library/types';
 import { ContentDataState, RootState } from '@interfaces/state';
 import { makeResourceSignature } from '@lib/parse/state';
 
@@ -58,6 +57,5 @@ export const contentData = (state: State = {}, action: AnyAction) => {
 export const getContentData = (
   state: ContentDataState,
   type: string,
-  id: string
-) =>
-  (state || {})[makeResourceSignature({ type, id } satisfies IPriApiResource)];
+  id: string | number
+) => (state || {})[makeResourceSignature({ type, id })];

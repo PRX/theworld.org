@@ -24,7 +24,7 @@ export function parseTwApiDataTerm(data: TwApiTerm) {
   const result = {
     ...(id && { id }),
     ...(taxonomy && {
-      type: `term:${taxonomy}`
+      type: `term--${taxonomy}`
     }),
     ...(link && { link }),
     ...(title && { title }),

@@ -18,6 +18,10 @@ export const basicTwApiStoryParams = {
   _embed: ['wp:featuredmedia']
 };
 
+export const fullTwApiStoryParams = {
+  _embed: ['wp:featuredmedia']
+};
+
 export const basicStoryParams = {
   include: ['image', 'primary_category'],
   fields: [

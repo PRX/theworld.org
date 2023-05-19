@@ -24,7 +24,7 @@ export const ResourceComponentMap = {
   'node--pages': DynamicPage,
   'node--people': DynamicBio,
   'node--programs': DynamicProgram,
-  'node--stories': DynamicStory,
+  'post--story': DynamicStory,
   'taxonomy_term--categories': DynamicCategory,
   'taxonomy_term--terms': DynamicTerm,
   team: DynamicTeam

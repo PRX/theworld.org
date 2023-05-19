@@ -11,7 +11,7 @@ export function parseTwApiDataImage(data: WPRestApiAttachment) {
   } = data;
   const result = {
     id,
-    type: 'media:image',
+    type: 'media--image',
     url,
     alt,
     caption: caption.rendered,

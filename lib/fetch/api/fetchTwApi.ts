@@ -10,23 +10,6 @@ import { twApi as configTwApi } from '@config';
 const twApiConfig = configTwApi || process.env.TW_API_CONFIG;
 const { apiUrlBase } = twApiConfig;
 
-export interface TwApiCollectionMeta {
-  count: number;
-  first: number;
-  last: number;
-  size: number;
-  page: number;
-  next?: number;
-}
-
-export interface TwApiResource<DataType> {
-  data: DataType;
-}
-
-export interface TwApiCollection<DataType> extends TwApiResource<DataType[]> {
-  meta: TwApiCollectionMeta;
-}
-
 /**
  * Fetch data from TW (WP) API.
  *
@@ -35,7 +18,7 @@ export interface TwApiCollection<DataType> extends TwApiResource<DataType[]> {
  * @param init Init options for the fetch.
  * @returns Fetched data.
  */
-export default async function fetchTwApi(
+export async function fetchTwApi<T>(
   path: string,
   params?: { [k: string]: any },
   init?: RequestInit
@@ -51,29 +34,35 @@ export default async function fetchTwApi(
 
   if (!resp.ok) return undefined;
 
-  const data = await resp.json();
-  const isCollection = !!resp.headers['x-wp-total'];
+  try {
+    const data = await resp.json();
+    const isCollection = !!resp.headers['x-wp-total'];
 
-  if (isCollection) {
-    const count = parseInt(resp.headers['x-wp-total'], 10);
-    const first = 1;
-    const last = parseInt(resp.headers['x-wp-totalpages'], 10);
-    const size = Math.ceil(count / last);
-    const page = parseInt(params?.page, 10) || 1;
-    const next = page + 1;
+    if (isCollection) {
+      const count = parseInt(resp.headers['x-wp-total'], 10);
+      const first = 1;
+      const last = parseInt(resp.headers['x-wp-totalpages'], 10);
+      const size = Math.ceil(count / last);
+      const page = parseInt(params?.page, 10) || 1;
+      const next = page + 1;
 
-    return {
-      meta: {
-        count,
-        first,
-        last,
-        ...(next <= last && { next }),
-        page,
-        size
-      },
-      data
-    } as TwApiCollection<any[]>;
+      return {
+        meta: {
+          count,
+          first,
+          last,
+          ...(next <= last && { next }),
+          page,
+          size
+        },
+        data
+      } as T;
+    }
+
+    return { data } as T;
+  } catch (error) {
+    return undefined;
   }
-
-  return { data } as TwApiResource<any>;
 }
+
+export default fetchTwApi;

@@ -3,7 +3,7 @@ import type { IStory } from '@interfaces/content/story.interface';
 import { parseTwApiDataPost } from './parseTwApiDataPost';
 
 export interface TwApiDataPostStory extends WPRestApiPost {
-  contributors: number[];
+  contributor: number[];
   program: number[];
   resource_development: number[];
   story_format: number[];
@@ -21,10 +21,10 @@ export interface TwApiDataPostStory extends WPRestApiPost {
   };
 }
 
-export default function parseTwApiDataPostStory(data: TwApiDataPostStory) {
+export function parseTwApiDataPostStory(data: TwApiDataPostStory) {
   const {
     acf,
-    contributors,
+    contributor,
     program,
     city,
     continent,
@@ -43,11 +43,11 @@ export default function parseTwApiDataPostStory(data: TwApiDataPostStory) {
   } = acf ?? {};
   const post = parseTwApiDataPost(data);
   const result = {
-    ...structuredClone(post),
+    ...post,
     displayTemplate,
     ...(dateBroadcast && { dateBroadcast }),
     ...(audio && { audio }),
-    ...(contributors && { contributors }),
+    ...(contributor && { contributor }),
     ...(program && { program }),
     ...(city && { city }),
     ...(continent && { continent }),
@@ -62,3 +62,5 @@ export default function parseTwApiDataPostStory(data: TwApiDataPostStory) {
 
   return result;
 }
+
+export default parseTwApiDataPostStory;

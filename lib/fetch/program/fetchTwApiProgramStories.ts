@@ -1,7 +1,8 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
+import type { TwApiCollection, TwApiResource } from '@interfaces/api';
 import type { TwApiDataPostStory, TwApiDataTermProgram } from '@lib/parse/data';
-import { basicTwApiStoryParams } from '../api/params';
-import fetchTwApi, { TwApiCollection } from '../api/fetchTwApi';
+import { fetchTwApi } from '@lib/fetch/api';
+import { basicTwApiStoryParams } from '@lib/fetch/api/params';
 
 /**
  * Fetch stories for a program from WP API.
@@ -22,9 +23,11 @@ export const fetchTwApiProgramStories = async (
 ) => {
   const program =
     typeof id === 'number'
-      ? await fetchTwApi(`wp/v2/program/${id}`, undefined, init).then(
-          (resp) => resp && (resp.data as TwApiDataTermProgram)
-        )
+      ? await fetchTwApi<TwApiResource<TwApiDataTermProgram>>(
+          `wp/v2/program/${id}`,
+          { _fields: ['acf.featured_stories'] },
+          init
+        ).then((resp) => resp && resp.data)
       : id;
 
   if (program) {
@@ -38,12 +41,12 @@ export const fetchTwApiProgramStories = async (
       ].filter((v: number) => !!v);
 
     // Fetch list of stories. Paginated.
-    return fetchTwApi('wp/v2/posts', {
+    return fetchTwApi<TwApiCollection<TwApiDataPostStory>>('wp/v2/posts', {
       ...basicTwApiStoryParams,
       ...(exclude && { exclude }),
       per_page: range,
       page
-    }) as Promise<TwApiCollection<TwApiDataPostStory>>;
+    });
   }
 
   return undefined;

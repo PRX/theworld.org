@@ -12,7 +12,7 @@ export interface IStory extends IPost {
   displayTemplate: string;
   dateBroadcast?: string;
   audio?: number | IAudio;
-  contributors: number[] | IContributor[];
+  contributor: number[] | IContributor[];
   program: number[] | IProgram[];
   city: number[] | ITerm[];
   provinceOrState: number[] | ITerm[];

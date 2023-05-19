@@ -7,7 +7,7 @@ import { useStore } from 'react-redux';
 import { AppContext } from '@contexts/AppContext';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { UiAction } from '@interfaces/state';
+import { RootState, UiAction } from '@interfaces/state';
 import { parseUtcDate } from '@lib/parse/date';
 import { getDataByResource } from '@store/reducers';
 import { layoutComponentMap } from './layouts';
@@ -15,10 +15,10 @@ import { layoutComponentMap } from './layouts';
 export const Story = () => {
   const {
     page: {
-      resource: { type, id }
+      resource: { type, id = '' }
     }
   } = useContext(AppContext);
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
     updateForce(store.getState());

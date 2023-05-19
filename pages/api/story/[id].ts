@@ -6,14 +6,17 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { IPriApiResourceResponse } from 'pri-api-library/types';
 import { fetchPriApiItem } from '@lib/fetch/api';
 import { fullStoryParams } from '@lib/fetch/api/params';
+import fetchTwApiStory from '@lib/fetch/story/fetchTwApiStory';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   if (id) {
-    const story = (await fetchPriApiItem('node--stories', id as string, {
-      ...fullStoryParams
-    })) as IPriApiResourceResponse;
+    // const story = (await fetchPriApiItem('node--stories', id as string, {
+    //   ...fullStoryParams
+    // })) as IPriApiResourceResponse;
+
+    const story = await fetchTwApiStory(parseInt(id as string, 10));
 
     if (story) {
       res.setHeader(

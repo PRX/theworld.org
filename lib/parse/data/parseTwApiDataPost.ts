@@ -35,7 +35,7 @@ export function parseTwApiDataPost(data: TwApiPost) {
   const result = {
     ...(id && { id }),
     ...(postType && {
-      type: `post:${postType === 'post' ? 'story' : postType}`
+      type: `post--${postType === 'post' ? 'story' : postType}`
     }),
     ...(date && { datePublished: date }),
     ...(link && { link }),

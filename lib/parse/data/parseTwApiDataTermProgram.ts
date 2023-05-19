@@ -44,7 +44,7 @@ export function parseTwApiDataTermProgram(data: TwApiDataTermProgram) {
         .filter((v) => !!v) as SponsorLink[])
     : undefined;
   const result = {
-    ...structuredClone(term),
+    ...term,
     ...(teaser && { teaser }),
     ...(bannerImage && { bannerImage }),
     ...(podcastLogo && { podcastLogo }),
