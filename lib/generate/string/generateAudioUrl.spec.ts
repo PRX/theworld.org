@@ -21,5 +21,15 @@ describe('lib/generate/string', () => {
 
       expect(result).toMatch('https://foo.com/bar.mp3?_from=theworld.org');
     });
+
+    test('should convert `www.prodtrac.com` to `dts.prodtrac.com.', () => {
+      const result = generateAudioUrl(
+        'https://www.podtrac.com/pts/redirect.mp3/foo.com/bar.mp3'
+      );
+
+      expect(result).toMatch(
+        'https://dts.podtrac.com/redirect.mp3/foo.com/bar.mp3?_from=theworld.org'
+      );
+    });
   });
 });

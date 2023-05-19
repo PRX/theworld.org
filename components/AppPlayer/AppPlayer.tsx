@@ -162,7 +162,9 @@ export const AppPlayer = () => {
         keepMounted
         open={Boolean(menuButtonElm)}
         onClose={handleMenuClose}
-        MenuListProps={{ component: 'nav' } as ListProps}
+        MenuListProps={
+          { component: 'nav', style: { display: 'grid' } } as ListProps
+        }
       >
         <MenuItem component="button" onClick={handleClearPlaylistClick}>
           <ListItemIcon>

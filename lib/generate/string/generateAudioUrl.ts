@@ -11,6 +11,12 @@ export const generateAudioUrl = (audioUrl: string) => {
     : audioUrl;
   const url = new URL(audioUrlWithProtocol);
 
+  // Fix for deprecated podtrac redirect URL pattern.
+  if (url.href.startsWith('https://www.podtrac.com/pts')) {
+    url.host = 'dts.podtrac.com';
+    url.pathname = url.pathname.replace(/^\/pts/, '');
+  }
+
   if (!url.searchParams.get('_from')) {
     url.searchParams.set('_from', 'theworld.org');
   }
