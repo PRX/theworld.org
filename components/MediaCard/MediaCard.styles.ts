@@ -4,6 +4,7 @@
  */
 
 import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { openSans } from '@theme/fonts';
 import { makeStyles } from 'tss-react/mui';
 
 export const mediaCardStyles = makeStyles<{ isLoading: boolean }, 'feature'>()(
@@ -64,8 +65,7 @@ export const mediaCardTheme = (theme: Theme) =>
         display: 'block',
         position: 'relative',
         zIndex: 1,
-        fontFamily:
-          '"Open Sans","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+        fontFamily: openSans.style.fontFamily,
         letterSpacing: 'unset',
         textTransform: 'unset'
       }

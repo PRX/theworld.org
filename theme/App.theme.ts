@@ -3,11 +3,11 @@
  * Theme and styles for App layout.
  */
 
-import { makeStyles } from 'tss-react/mui';
-
 import { createTheme, alpha, Theme } from '@mui/material/styles';
 import { common } from '@mui/material/colors';
+import { makeStyles } from 'tss-react/mui';
 import { blue, orange, red, green, grey, yellow } from './colors';
+import { montserrat, sourceSans3 } from './fonts';
 
 const buttonBorderRadius = '3px';
 const buttonBorderWidth = '2px';
@@ -71,8 +71,7 @@ export const useAppStyles = makeStyles<{
 
 export const headingProps = {
   color: blue[900],
-  fontFamily:
-    '"Montserrat","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+  fontFamily: montserrat.style.fontFamily,
   fontWeight: 700
 };
 
@@ -108,8 +107,7 @@ export const baseMuiTheme = createTheme(
       borderRadius: 0
     },
     typography: {
-      fontFamily:
-        '"Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+      fontFamily: sourceSans3.style.fontFamily,
       caption: {
         color: grey[700],
         fontSize: '0.9rem',

@@ -39,8 +39,7 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
   const hostname = process.env.NEXT_PUBLIC_VERCEL_URL || 'theworld.org';
   const pageUrl = `https://${hostname}${urlCanonical.pathname}`;
   const defaultImage = {
-    src:
-      'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg',
+    src: 'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg',
     width: 3000,
     height: 3000
   };
