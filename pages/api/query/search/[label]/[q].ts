@@ -4,13 +4,13 @@
  */
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchApiSearch } from '@lib/fetch/api';
+import { fetchQuerySearch } from '@lib/fetch';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { label, q, start } = req.query;
 
   if (q.length) {
-    const apiResp = await fetchApiSearch(
+    const apiResp = await fetchQuerySearch(
       q as string,
       label as string,
       start as string

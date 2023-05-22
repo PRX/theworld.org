@@ -115,7 +115,10 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
 
   const handleFilterChange = (e: object, value: any) => {
     setLabel(value);
-    dialogContentRef.current.scrollTo = 0;
+
+    if (staticPage || !dialogContentRef.current) return;
+
+    dialogContentRef.current.scroll({ top: 0 });
   };
 
   useEffect(() => {

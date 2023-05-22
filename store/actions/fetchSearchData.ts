@@ -6,14 +6,14 @@
 
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { parse } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
+import { parse } from 'url';
 import {
   RootState,
   searchFacetLabels,
   SearchFacetAll
 } from '@interfaces/state';
-import { fetchApiSearch } from '@lib/fetch';
+import { fetchApiSearch, fetchQuerySearch } from '@lib/fetch';
 import { getSearchData } from '@store/reducers';
 import { fetchBulkAliasData } from './fetchAliasData';
 import { fetchStoryData } from './fetchStoryData';
@@ -29,10 +29,17 @@ export const fetchSearchData = (
   dispatch: ThunkDispatch<{}, {}, AnyAction>,
   getState: () => RootState
 ): Promise<void> => {
+  const q = (query || '').toLowerCase().replace(/^\s+|\s+$/, '');
+
+  if (!q.length) {
+    return;
+  }
+
   const state = getState();
   const facets = label === 'all' ? searchFacetLabels : [label];
-  const currentData = getSearchData(state, query) || {};
-  const q = (query || '').toLowerCase().replace(/^\s+|\s+$/, '');
+  const currentData = getSearchData(state, q) || {};
+  const isOnServer = typeof window === 'undefined';
+  const fetchFunc = isOnServer ? fetchQuerySearch : fetchApiSearch;
 
   // Map facet labels to data fetch for content type.
   const funcMap = new Map();
@@ -41,10 +48,6 @@ export const fetchSearchData = (
   funcMap.set('file--audio', fetchAudioData);
   funcMap.set('file--images', fetchImageData);
   funcMap.set('file--videos', fetchVideoData);
-
-  if (!q.length) {
-    return;
-  }
 
   dispatch({
     type: 'FETCH_SEARCH_REQUEST'
@@ -55,14 +58,10 @@ export const fetchSearchData = (
     const start: number = [...(facetData || [])].pop()?.queries?.nextPage?.[0]
       .startIndex;
 
-    return fetchApiSearch(query, l, start)
-      .then(data => ({
-        l,
-        data
-      }))
-      .then(r => {
-        return r;
-      });
+    return fetchFunc(q, l, start).then(data => ({
+      l,
+      data
+    }));
   });
 
   const payloadData = await Promise.all(requests).then(async searchResults => {
@@ -77,6 +76,7 @@ export const fetchSearchData = (
       const reqs = aliasesData
         .map(([, { id, type }]): [
           string,
+          // eslint-disable-next-line no-unused-vars
           (id: string) => ThunkAction<void, {}, {}, AnyAction>
         ] => [id as string, funcMap.get(type)])
         .filter(([, fetchFunc]) => !!fetchFunc)
@@ -93,7 +93,7 @@ export const fetchSearchData = (
   dispatch({
     type: 'FETCH_SEARCH_SUCCESS',
     payload: {
-      query,
+      query: q,
       data: payloadData
     }
   });

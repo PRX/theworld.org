@@ -42,7 +42,7 @@ export const generateLinkHrefFromUrl = (url: Url) => {
  */
 /* istanbul ignore next */
 export const handleButtonClick =
-  (url: Url | string, callback?: Function) => (event: MouseEvent) => {
+  (url?: Url | string, callback?: Function) => (event: MouseEvent) => {
     event.preventDefault();
 
     if (url) {
