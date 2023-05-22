@@ -3,31 +3,30 @@
  * Styles and theme for VolumeControls.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useVolumeControlsStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'grid',
-      gridTemplateColumns: '1fr min-content',
-      gap: theme.typography.pxToRem(theme.spacing(1)),
-      alignItems: 'center',
-      width: '150px'
-    },
-    track: {
-      transition: theme.transitions.create('opacity', {
-        duration: theme.transitions.duration.short,
-        easing: theme.transitions.easing.sharp
-      }),
-      '@media (hover: hover)': {
-        opacity: 0,
-        ':hover > &': {
-          opacity: 1
-        }
-      }
-    },
-    iconRoot: {
-      fontSize: 'inherit'
+export const useVolumeControlsStyles = makeStyles()(theme => ({
+  root: {
+    display: 'grid',
+    gridTemplateColumns: '1fr min-content',
+    gap: theme.typography.pxToRem(8),
+    alignItems: 'center',
+    width: '150px',
+    '--track-opacity': 0,
+    '&:hover': {
+      '--track-opacity': 1
     }
-  })
-);
+  },
+  track: {
+    transition: theme.transitions.create('opacity', {
+      duration: theme.transitions.duration.short,
+      easing: theme.transitions.easing.sharp
+    }),
+    '@media (hover: hover)': {
+      opacity: 'var(--track-opacity)'
+    }
+  },
+  iconRoot: {
+    fontSize: 'inherit'
+  }
+}));

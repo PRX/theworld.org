@@ -5,9 +5,8 @@
  */
 
 import React, { useContext, useEffect, useMemo } from 'react';
-import { Box, BoxProps } from '@material-ui/core';
-import { AnimatePresence, Reorder, useDragControls } from 'framer-motion';
-import clsx from 'clsx';
+import { Box, BoxProps } from '@mui/material';
+import { AnimatePresence, Reorder } from 'framer-motion';
 import debounce from 'lodash/debounce';
 import { PlayerContext } from '../../contexts';
 import { IAudioData } from '../../types';
@@ -20,11 +19,10 @@ export const Playlist: React.FC<IPlaylistProps> = ({
   className,
   ...other
 }: IPlaylistProps) => {
-  const controls = useDragControls();
   const { state: playerState, setTracks } = useContext(PlayerContext);
   const { tracks } = playerState;
-  const styles = usePlaylistStyles({});
-  const rootClasses = clsx(className, styles.root);
+  const { classes: styles, cx } = usePlaylistStyles();
+  const rootClasses = cx(styles.root, className);
 
   const handleReorder = useMemo(
     () =>
@@ -37,7 +35,7 @@ export const Playlist: React.FC<IPlaylistProps> = ({
           trailing: true
         }
       ),
-    []
+    [setTracks]
   );
 
   useEffect(() => () => {
@@ -57,10 +55,7 @@ export const Playlist: React.FC<IPlaylistProps> = ({
         <AnimatePresence>
           {tracks?.map(track => (
             <Reorder.Item as="div" value={track} key={track.guid}>
-              <PlaylistItem
-                audio={track}
-                onPointerDown={e => controls.start(e)}
-              />
+              <PlaylistItem audio={track} />
             </Reorder.Item>
           ))}
         </AnimatePresence>

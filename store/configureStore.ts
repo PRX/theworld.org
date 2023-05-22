@@ -2,7 +2,11 @@
  * @file configureStore.ts
  */
 
-import { createStore, applyMiddleware, Store } from 'redux';
+import {
+  legacy_createStore as createStore,
+  applyMiddleware,
+  Store
+} from 'redux';
 import { MakeStore, createWrapper } from 'next-redux-wrapper';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';

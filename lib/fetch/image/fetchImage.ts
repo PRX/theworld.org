@@ -6,10 +6,7 @@ import { PriApiResourceResponse } from 'pri-api-library/types';
 import { fetchPriApiItem } from '../api/fetchPriApi';
 import { fullImageParams } from '../api/params';
 
-export const fetchImage = async (
-  id: string
-): Promise<PriApiResourceResponse> => {
-  return fetchPriApiItem('file--images', id, {
+export const fetchImage = async (id: string): Promise<PriApiResourceResponse> =>
+  fetchPriApiItem('file--images', id, {
     ...fullImageParams
   });
-};

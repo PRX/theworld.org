@@ -3,14 +3,32 @@
  * Interfaces for button.
  */
 
-import { PropTypes } from '@material-ui/core';
+import type { OverridableStringUnion } from '@mui/types';
+import type {
+  ButtonPropsColorOverrides,
+  IconButtonPropsColorOverrides
+} from '@mui/material';
+
+export type IconButtonColors = OverridableStringUnion<
+    | 'inherit'
+    | 'default'
+    | 'primary'
+    | 'secondary'
+    | 'error'
+    | 'info'
+    | 'success'
+    | 'warning',
+    IconButtonPropsColorOverrides
+  >;
+
+export type ButtonColors = OverridableStringUnion<"inherit" | "primary" | "secondary" | "error" | "info" | "success" | "warning", ButtonPropsColorOverrides>;
 
 export interface IButton {
   key?: string | number;
   name: string;
   url?: string;
   itemLinkClass?: string;
-  color?: PropTypes.Color;
+  color?: IconButtonColors | ButtonColors;
   icon?: string;
   title?: string;
   children?: IButton[];

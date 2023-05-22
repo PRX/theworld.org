@@ -6,8 +6,8 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import ReactPlayer from 'react-player';
-import { Box, Typography } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { Box, Theme, Typography } from '@mui/material';
+import { useTheme } from '@mui/styles';
 import { ledeVideoStyles } from './LedeVideo.styles';
 
 export interface ILedeVideoProps {
@@ -16,8 +16,8 @@ export interface ILedeVideoProps {
 
 export const LedeVideo = ({ data }: ILedeVideoProps) => {
   const { description, credit, url } = data;
-  const theme = useTheme();
-  const classes = ledeVideoStyles({});
+  const theme = useTheme() as Theme;
+  const { classes } = ledeVideoStyles();
   const hasCaption = description && !!description.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;
@@ -58,18 +58,14 @@ export const LedeVideo = ({ data }: ILedeVideoProps) => {
           className={classes.footer}
         >
           {hasCaption && (
-            <ReactMarkdown
-              {...mdProps}
-              className={classes.caption}
-              children={description}
-            />
+            <ReactMarkdown {...mdProps} className={classes.caption}>
+              {description}
+            </ReactMarkdown>
           )}
           {hasCredit && (
-            <ReactMarkdown
-              {...mdProps}
-              className={classes.credit}
-              children={credit}
-            />
+            <ReactMarkdown {...mdProps} className={classes.credit}>
+              {credit}
+            </ReactMarkdown>
           )}
         </Typography>
       )}

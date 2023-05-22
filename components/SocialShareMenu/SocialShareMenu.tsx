@@ -5,7 +5,6 @@
 
 import React, { HTMLAttributes, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFacebook,
@@ -14,15 +13,15 @@ import {
   faFlipboard,
   faWhatsapp
 } from '@fortawesome/free-brands-svg-icons';
-import Backdrop from '@material-ui/core/Backdrop';
-import Box from '@material-ui/core/Box';
-import NoSsr from '@material-ui/core/NoSsr';
-import CloseRounded from '@material-ui/icons/CloseRounded';
-import EmailRounded from '@material-ui/icons/EmailRounded';
-import ShareRoundedIcon from '@material-ui/icons/ShareRounded';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import Backdrop from '@mui/material/Backdrop';
+import Box from '@mui/material/Box';
+import NoSsr from '@mui/material/NoSsr';
+import CloseRounded from '@mui/icons-material/CloseRounded';
+import EmailRounded from '@mui/icons-material/EmailRounded';
+import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
+import SvgIcon from '@mui/material/SvgIcon';
 import { IIconsMap } from '@interfaces/icons';
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import { getUiPlayerPlaylistOpen, getUiSocialShareMenu } from '@store/reducers';
 import { useSocialShareMenuStyles } from './SocialShareMenu.styles';
 
@@ -63,8 +62,8 @@ export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
   const [open, setOpen] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   const iconsMap = getIconsMap(icons);
-  const styles = useSocialShareMenuStyles({});
-  const rootClassNames = clsx(styles.root, className);
+  const { classes: styles, cx } = useSocialShareMenuStyles();
+  const rootClassNames = cx('root', className);
   const speedDialClasses = {
     actionsClosed: styles.actionsClosed
   };
@@ -92,11 +91,12 @@ export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
     window.open(url, '_ blank');
   };
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return (
     !!links && (

@@ -4,8 +4,6 @@
  */
 
 import React, { useCallback, useContext } from 'react';
-import { PlayerContext } from '../../contexts';
-import { useVolumeControlsStyles } from './VolumeControls.styles';
 import {
   Box,
   BoxProps,
@@ -13,14 +11,15 @@ import {
   IconButtonProps,
   Slider,
   Tooltip
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   VolumeDownSharp,
   VolumeMuteSharp,
   VolumeOffSharp,
   VolumeUpSharp
-} from '@material-ui/icons';
-import clsx from 'clsx';
+} from '@mui/icons-material';
+import { PlayerContext } from '../../contexts';
+import { useVolumeControlsStyles } from './VolumeControls.styles';
 
 export interface IVolumeControlsProps extends BoxProps {
   muteButtonProps?: Partial<IconButtonProps>;
@@ -33,8 +32,8 @@ export const VolumeControls: React.FC<IVolumeControlsProps> = ({
 }: IVolumeControlsProps) => {
   const { audioElm, state, setVolume, toggleMute } = useContext(PlayerContext);
   const { volume, muted } = state;
-  const styles = useVolumeControlsStyles({});
-  const rootClassName = clsx(styles.root, className);
+  const { classes: styles, cx } = useVolumeControlsStyles();
+  const rootClassName = cx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };
@@ -56,16 +55,13 @@ export const VolumeControls: React.FC<IVolumeControlsProps> = ({
 
       setVolume(updatedVolume);
     },
-    [audioElm]
+    [audioElm, setVolume]
   );
 
   /**
    * Update volume based on slider position.
    */
-  const handleSliderChange = (
-    e: React.ChangeEvent<{}>,
-    newValue: number | number[]
-  ) => {
+  const handleSliderChange = (e: Event, newValue: number | number[]) => {
     updateVolume(newValue as number);
   };
 

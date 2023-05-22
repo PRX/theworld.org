@@ -7,7 +7,7 @@ import React from 'react';
 
 import { IPriApiResource } from 'pri-api-library/types';
 import dynamic from 'next/dynamic';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { ContentLink } from '@components/ContentLink';
 import { IAudioControlsProps } from '@components/Player/components';
 import { IAudioData } from '@components/Player/types';
@@ -19,7 +19,7 @@ const Moment = dynamic(() => {
 }) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then((mod) => mod.AudioControls)
+  import('@components/Player/components').then(mod => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 interface Props {
@@ -33,12 +33,14 @@ export const EpisodeHeader = ({ data }: Props) => {
     queuedFrom: 'Page Header Controls',
     ...(image && { imageUrl: image.url })
   } as Partial<IAudioData>;
-  const classes = episodeHeaderStyles({});
+  const { classes } = episodeHeaderStyles();
 
   return (
     <Box component="header" className={classes.root} mt={4} mb={2}>
       <Box mb={3}>
-        <Typography variant="h1">{title}</Typography>
+        <Typography variant="h1" className={classes.title}>
+          {title}
+        </Typography>
       </Box>
       <Box className={classes.meta} mb={2}>
         <Box className={classes.info}>

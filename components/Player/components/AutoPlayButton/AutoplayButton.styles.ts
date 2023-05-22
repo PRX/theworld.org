@@ -3,28 +3,24 @@
  * Styles and theme for AutoplayButton.
  */
 
-import {
-  createStyles,
-  fade,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useAutoplayButtonStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {},
-    switchBase: {
-      borderRadius: '50%'
-    },
-    colorPrimary: {
-      color: theme.palette.grey[300],
-      '&:hover': {
-        backgroundColor: fade(
-          theme.palette.primary.main,
-          theme.palette.action.hoverOpacity
-        ),
-        color: theme.palette.primary.main
-      }
+export const useAutoplayButtonStyles = makeStyles()(theme => ({
+  root: {},
+
+  switchBase: {
+    borderRadius: '50%'
+  },
+
+  colorPrimary: {
+    color: theme.palette.grey[300],
+    '&:hover': {
+      backgroundColor: alpha(
+        theme.palette.primary.main,
+        theme.palette.action.hoverOpacity
+      ),
+      color: theme.palette.primary.main
     }
-  })
-);
+  }
+}));

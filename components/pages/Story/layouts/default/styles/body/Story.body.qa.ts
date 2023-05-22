@@ -3,8 +3,7 @@
  * Body Q&A styles as JSS object.
  */
 
-import { Theme } from '@material-ui/core/styles';
-import { CreateCSSProperties } from '@material-ui/styles';
+import { type Theme } from '@mui/material/styles';
 
 const accentBorderWidth = 3;
 
@@ -12,18 +11,18 @@ export const storyBodyQAStyles = (theme: Theme) =>
   ({
     '& .qa-wrap': {
       padding: '0 2rem 0',
-      marginBlockStart: theme.typography.pxToRem(theme.spacing(4)),
-      marginBlockEnd: theme.typography.pxToRem(theme.spacing(4)),
-      paddingBlockStart: theme.typography.pxToRem(theme.spacing(2)),
-      paddingBlockEnd: theme.typography.pxToRem(theme.spacing(2)),
+      marginBlockStart: theme.typography.pxToRem(32),
+      marginBlockEnd: theme.typography.pxToRem(32),
+      paddingBlockStart: theme.typography.pxToRem(16),
+      paddingBlockEnd: theme.typography.pxToRem(16),
       borderInlineStartWidth: theme.typography.pxToRem(accentBorderWidth),
       borderInlineStartStyle: 'solid',
       borderInlineStartColor: theme.palette.primary.main,
 
       '& .qa-question': {
-        marginBlockEnd: theme.typography.pxToRem(theme.spacing(2)),
+        marginBlockEnd: theme.typography.pxToRem(16),
         fontWeight: 'bold',
-        paddingBlockEnd: theme.typography.pxToRem(theme.spacing(2)),
+        paddingBlockEnd: theme.typography.pxToRem(16),
         borderBlockEnd: `${theme.typography.pxToRem(2)} solid ${
           theme.palette.grey[200]
         }`
@@ -40,4 +39,4 @@ export const storyBodyQAStyles = (theme: Theme) =>
         borderInlineStart: 'none'
       }
     }
-  } as CreateCSSProperties<{}>);
+  } as any);

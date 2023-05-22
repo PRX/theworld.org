@@ -4,10 +4,9 @@
  */
 
 import React, { useContext } from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import clsx from 'clsx';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { Marquee } from '@components/Marquee';
 import { ContentLink } from '@components/ContentLink';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
@@ -25,8 +24,10 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
   const thumbnailAspectRatio = 16 / 9;
   const thumbnailHeight = 48;
   const thumbnailWidth = thumbnailHeight * thumbnailAspectRatio;
-  const styles = useTrackInfoStyles({ hasLink: !!linkResource });
-  const rootClassNames = clsx(className, styles.root);
+  const { classes: styles, cx } = useTrackInfoStyles({
+    hasLink: !!linkResource
+  });
+  const rootClassNames = cx(styles.root, className);
 
   return (
     <Box className={rootClassNames}>
@@ -90,7 +91,7 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
         </motion.div>
       </AnimatePresence>
       {linkResource ? (
-        <ContentLink data={linkResource} className={clsx(styles.link)} />
+        <ContentLink data={linkResource} className={styles.link} />
       ) : null}
     </Box>
   );

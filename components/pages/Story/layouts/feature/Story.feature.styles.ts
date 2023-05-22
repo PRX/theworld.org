@@ -3,29 +3,30 @@
  * Theme and styles for default Story layout.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { storyBodyStyles } from './styles/Story.body';
 
 export const storyTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
-    overrides: {
+  createTheme(theme, {
+    components: {
       MuiContainer: {
-        maxWidthLg: {
-          [theme.breakpoints.up('md')]: {
-            maxWidth: '960px'
+        styleOverrides: {
+          maxWidthLg: {
+            [theme.breakpoints.up('md')]: {
+              maxWidth: '960px'
+            }
           }
         }
       }
     }
   });
 
-export const storyStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    ...storyBodyStyles(theme)
-  })
-);
+export const storyStyles = makeStyles()((theme) => ({
+  ...storyBodyStyles(theme),
+  MuiContainerMaxWidthLg: {
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '960px'
+    }
+  }
+}));

@@ -1,9 +1,7 @@
 declare module '*.svg' {
   import React = require('react');
-
-  export const ReactComponent: React.SFC<React.SVGProps<SVGSVGElement>>;
-  const src: string;
-  export default src; // eslint-disable-line import/no-default-export
+  const content: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+  export default content;
 }
 
 declare module '*.png';

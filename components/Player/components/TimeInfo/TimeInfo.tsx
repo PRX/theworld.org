@@ -4,9 +4,8 @@
  */
 
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Box, BoxProps } from '@material-ui/core';
+import { Box, BoxProps } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import clsx from 'clsx';
 import { convertDurationToSeconds } from '@lib/convert/string/convertDurationToSeconds';
 import { convertSecondsToDuration } from '@lib/convert/string/convertSecondsToDuration';
 import { PlayerContext } from '../../contexts';
@@ -20,7 +19,7 @@ export const TimeInfo: React.FC<ITimeInfoProps> = ({
   ...other
 }: ITimeInfoProps) => {
   const { audioElm, state: playerState } = useContext(PlayerContext);
-  const classes = useTimeInfoStyles({});
+  const { classes: styles, cx } = useTimeInfoStyles();
   const {
     currentTrackIndex,
     tracks,
@@ -35,7 +34,7 @@ export const TimeInfo: React.FC<ITimeInfoProps> = ({
   const playedDuration = convertSecondsToDuration(currentTime);
   const trackDuration = convertSecondsToDuration(duration);
   const timeInfo = `${playedDuration} / ${trackDuration}`;
-  const rootClasses = clsx(className, classes.root);
+  const rootClasses = cx(styles.root, className);
 
   /**
    * Update player progress visuals.

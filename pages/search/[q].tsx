@@ -8,17 +8,16 @@ import { AppSearch } from '@components/AppSearch';
 import { wrapper } from '@store';
 import { fetchSearchData } from '@store/actions/fetchSearchData';
 
-const SearchPage = ({ q }: { q: string }) => {
-  return <AppSearch static q={q} />;
-};
+const SearchPage = ({ q }: { q: string }) => <AppSearch static q={q} />;
 
 SearchPage.getInitialProps = wrapper.getInitialPageProps(
-  store => async ({ query }): Promise<any> => {
-    const { q } = query;
-    await store.dispatch<any>(fetchSearchData(q as string, 'all'));
+  (store) =>
+    async ({ query }): Promise<any> => {
+      const { q } = query;
+      await store.dispatch<any>(fetchSearchData(q as string, 'all'));
 
-    return { q };
-  }
+      return { q };
+    }
 );
 
 export default SearchPage;

@@ -32,7 +32,8 @@ export const Story = () => {
     datePublished,
     displayTemplate,
     format,
-    resourceDevelopment
+    resourceDevelopment,
+    shareLinks
   } = data;
   const metatags = {
     ...dataMetatags,
@@ -88,57 +89,57 @@ export const Story = () => {
   }
 
   useEffect(() => {
-    // Show social hare menu.
-    const { shareLinks } = data;
-    store.dispatch<UiAction>({
-      type: 'UI_SHOW_SOCIAL_SHARE_MENU',
-      payload: {
-        ui: {
-          socialShareMenu: {
-            links: [
-              {
-                key: 'twitter',
-                link: shareLinks.twitter
-              },
-              {
-                key: 'facebook',
-                link: shareLinks.facebook
-              },
-              {
-                key: 'linkedin',
-                link: shareLinks.linkedin
-              },
-              {
-                key: 'flipboard',
-                link: shareLinks.flipboard
-              },
-              {
-                key: 'whatsapp',
-                link: shareLinks.whatsapp
-              },
-              {
-                key: 'email',
-                link: shareLinks.email
-              }
-            ]
+    if (shareLinks) {
+      store.dispatch<UiAction>({
+        type: 'UI_SHOW_SOCIAL_SHARE_MENU',
+        payload: {
+          ui: {
+            socialShareMenu: {
+              links: [
+                {
+                  key: 'twitter',
+                  link: shareLinks.twitter
+                },
+                {
+                  key: 'facebook',
+                  link: shareLinks.facebook
+                },
+                {
+                  key: 'linkedin',
+                  link: shareLinks.linkedin
+                },
+                {
+                  key: 'flipboard',
+                  link: shareLinks.flipboard
+                },
+                {
+                  key: 'whatsapp',
+                  link: shareLinks.whatsapp
+                },
+                {
+                  key: 'email',
+                  link: shareLinks.email
+                }
+              ]
+            }
           }
         }
-      }
-    });
-
+      });
+    }
     return () => {
       // Show social hare menu.
       store.dispatch<UiAction>({
         type: 'UI_HIDE_SOCIAL_SHARE_MENU'
       });
     };
-  }, [data.shareLinks]);
+  }, [shareLinks, store]);
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return (
     <>

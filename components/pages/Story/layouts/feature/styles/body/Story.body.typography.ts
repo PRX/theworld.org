@@ -3,8 +3,7 @@
  * Body typography styles as JSS object.
  */
 
-import { Theme } from '@material-ui/core/styles';
-import { CreateCSSProperties } from '@material-ui/styles';
+import { type Theme } from '@mui/material/styles';
 import { headingProps } from '@theme/App.theme';
 
 export const storyBodyTypography = (theme: Theme) =>
@@ -23,7 +22,7 @@ export const storyBodyTypography = (theme: Theme) =>
 
     '& h2, & h3, & h4, & h5, & h6': {
       ...headingProps,
-      marginTop: theme.typography.pxToRem(theme.spacing(8))
+      marginTop: theme.typography.pxToRem(64)
     },
 
     '& hr': {
@@ -45,7 +44,7 @@ export const storyBodyTypography = (theme: Theme) =>
       display: 'flow-root',
       backgroundColor: theme.palette.grey[200],
       margin: 0,
-      padding: theme.typography.pxToRem(theme.spacing(3)),
+      padding: theme.typography.pxToRem(24),
       color: theme.palette.grey[700],
       fontSize: '0.9rem',
       lineHeight: '1.1rem',
@@ -69,10 +68,10 @@ export const storyBodyTypography = (theme: Theme) =>
         left: '50%',
         transform: 'translateX(-50%)',
         width: '100vw',
-        marginTop: theme.typography.pxToRem(theme.spacing(4)),
-        marginBottom: theme.typography.pxToRem(theme.spacing(4)),
-        paddingBlock: `${theme.typography.pxToRem(theme.spacing(8))}`,
-        paddingInline: `${theme.typography.pxToRem(theme.spacing(2))}`,
+        marginTop: theme.typography.pxToRem(32),
+        marginBottom: theme.typography.pxToRem(32),
+        paddingBlock: `${theme.typography.pxToRem(64)}`,
+        paddingInline: `${theme.typography.pxToRem(16)}`,
         borderTop: `1px solid ${theme.palette.divider}`,
         borderBottom: `1px solid ${theme.palette.divider}`,
         background: 'none',
@@ -96,7 +95,7 @@ export const storyBodyTypography = (theme: Theme) =>
     },
 
     '& [gp-pullquote]': {
-      padding: theme.typography.pxToRem(theme.spacing(3)),
+      padding: theme.typography.pxToRem(24),
       color: theme.palette.primary.dark,
       fontFamily: '"Alegreya", serif',
       fontSize: '1.5rem',
@@ -109,4 +108,4 @@ export const storyBodyTypography = (theme: Theme) =>
       color: theme.palette.grey[700],
       fontSize: '1rem'
     }
-  } as CreateCSSProperties<{}>);
+  } as any);

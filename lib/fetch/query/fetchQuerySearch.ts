@@ -2,7 +2,7 @@
  * Query search server.
  */
 
-import { customsearch_v1 } from 'googleapis';
+import type { customsearch_v1 as customSearchV1 } from 'googleapis';
 import { format } from 'url';
 
 /**
@@ -30,6 +30,6 @@ export const fetchQuerySearch = (
         t: 'metatags-pubdate:d,date:d:s'
       }
     })
-  ).then(r => r.status === 200 && r.json()) as Promise<
-    customsearch_v1.Schema$Search
-  >;
+  ).then(
+    (r) => r.status === 200 && r.json()
+  ) as Promise<customSearchV1.Schema$Search>;

@@ -1,2 +1,3 @@
+/* eslint-disable no-restricted-exports */
 export * from './Image';
-export { Image as default } from './Image'; // eslint-disable-line import/no-default-export
+export { Image as default } from './Image';

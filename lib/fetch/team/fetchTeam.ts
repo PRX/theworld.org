@@ -5,10 +5,8 @@
 import { PriApiResourceResponse } from 'pri-api-library/types';
 import { fetchPriApiQuery } from '../api/fetchPriApi';
 
-export const fetchTeam = async (
-  id: string
-): Promise<PriApiResourceResponse> => {
-  return fetchPriApiQuery('node--people', {
+export const fetchTeam = async (id: string): Promise<PriApiResourceResponse> =>
+  fetchPriApiQuery('node--people', {
     include: ['image'],
     'filter[status]': 1,
     'filter[department][value]': id,
@@ -16,4 +14,3 @@ export const fetchTeam = async (
     sort: 'title',
     range: 100
   });
-};

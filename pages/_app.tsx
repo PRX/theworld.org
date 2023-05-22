@@ -3,11 +3,13 @@
  * Override the main app component.
  */
 
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { useStore } from 'react-redux';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useStore, Provider } from 'react-redux';
 import { AppProps } from 'next/app';
 import PlausibleProvider from 'next-plausible';
-import { ThemeProvider, CssBaseline } from '@material-ui/core';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 import { analytics } from '@config';
 import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
@@ -16,38 +18,34 @@ import { AppHeader } from '@components/AppHeader';
 import { AppLoadingBar } from '@components/AppLoadingBar';
 import { AppSearch } from '@components/AppSearch';
 import { AppContext } from '@contexts/AppContext';
-import { SocialShareMenu } from '@components/SocialShareMenu/SocialShareMenu';
+import { SocialShareMenu } from '@components/SocialShareMenu';
 import { baseMuiTheme, appTheme, useAppStyles } from '@theme/App.theme';
 import { wrapper } from '@store';
 import { Player } from '@components/Player';
 import { AppPlayer } from '@components/AppPlayer/AppPlayer';
 import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
 import { Playlist } from '@components/Player/components';
+import createEmotionCache from '@lib/generate/cache/emotion/createEmotionCache';
+import '@theme/css/fonts.css';
 
-const TwApp: FC<AppProps> = ({
-  Component,
-  pageProps
-}: AppProps<{ type: string; id: string; contentOnly: boolean }>) => {
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache();
+
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache;
+}
+
+const AppLayout = ({ children }) => {
   const rootRef = useRef<HTMLDivElement>();
   const uiFooterRef = useRef<HTMLDivElement>();
   const store = useStore();
-  const [state, setState] = useState(store.getState());
+  const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
-    setState(store.getState());
+    updateForce(store.getState());
   });
   const playerOpen = getUiPlayerOpen(state);
   const playlistOpen = getUiPlayerPlaylistOpen(state);
-  const [plausibleDomain, setPlausibleDomain] = useState(null);
-  const { type, id, contentOnly } = pageProps;
-  const styles = useAppStyles({ playerOpen, playlistOpen });
-  const contextValue = {
-    page: {
-      resource: {
-        type,
-        id
-      }
-    }
-  };
+  const { classes } = useAppStyles({ playerOpen, playlistOpen });
 
   useEffect(() => {
     const uiFooterRect = uiFooterRef.current?.getBoundingClientRect();
@@ -57,98 +55,138 @@ const TwApp: FC<AppProps> = ({
       '--footer-padding',
       `${footerPadding}px`
     );
-  }, [uiFooterRef?.current, playerOpen]);
+  }, [playerOpen]);
+
+  useEffect(
+    () => () => {
+      unsub();
+    },
+    [unsub]
+  );
+
+  return (
+    <div ref={rootRef} className={classes.root}>
+      <div
+        {...(playlistOpen && {
+          inert: 'inert'
+        })}
+      >
+        <AppLoadingBar />
+        <AppCtaBanner />
+        <AppHeader />
+      </div>
+      <div
+        className={classes.content}
+        {...(playlistOpen && {
+          inert: 'inert'
+        })}
+      >
+        {children}
+      </div>
+      <AppFooter />
+      <div ref={uiFooterRef} className={classes.uiFooter}>
+        <div className={classes.loadUnderWrapper}>
+          <div
+            className={classes.playlistWrapper}
+            {...(!playlistOpen && {
+              inert: 'inert'
+            })}
+          >
+            <Playlist className={classes.playlist} />
+          </div>
+          <div className={classes.playerWrapper}>
+            <SocialShareMenu className={classes.socialShareMenu} />
+            <AppPlayer />
+          </div>
+          <AppCtaLoadUnder />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TwApp = ({
+  Component,
+  emotionCache = clientSideEmotionCache,
+  ...rest
+}: MyAppProps) => {
+  const AnyComponent = Component as any;
+  const { store, props } = wrapper.useWrappedStore(rest);
+  const { pageProps } = props;
+  const [plausibleDomain, setPlausibleDomain] = useState(null);
+  const { type, id, contentOnly } = pageProps;
+  const contextValue = useMemo(
+    () => ({
+      page: {
+        resource: {
+          type,
+          id
+        }
+      }
+    }),
+    [type, id]
+  );
 
   useEffect(() => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
 
-    // Remove the server-side injected CSS.
-    // Fix for https://github.com/mui-org/material-ui/issues/15073
-    const jssStyles = document.querySelector('#jss-server-side');
-    if (jssStyles) {
-      jssStyles.parentElement.removeChild(jssStyles);
-    }
+    // // Remove the server-side injected CSS.
+    // // Fix for https://github.com/mui-org/material-ui/issues/15073
+    // const jssStyles = document.querySelector('#jss-server-side');
+    // if (jssStyles) {
+    //   jssStyles.parentElement.removeChild(jssStyles);
+    // }
 
     // Remove `no-js` styling flag class.
     document.documentElement.classList.remove('no-js');
-
-    return () => {
-      unsub();
-    };
   }, []);
 
   if (contentOnly) {
     return (
-      <ThemeProvider theme={baseMuiTheme}>
-        <PlausibleProvider
-          domain={plausibleDomain}
-          selfHosted
-          trackOutboundLinks
-          enabled={!!plausibleDomain}
-        >
-          <Component {...pageProps} />
-        </PlausibleProvider>
-        <CssBaseline />
-      </ThemeProvider>
+      <PlausibleProvider
+        domain={plausibleDomain}
+        selfHosted
+        trackOutboundLinks
+        enabled={!!plausibleDomain}
+      >
+        <Provider store={store}>
+          <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={baseMuiTheme}>
+              <AnyComponent {...pageProps} />
+              <CssBaseline />
+            </ThemeProvider>
+          </CacheProvider>
+        </Provider>
+      </PlausibleProvider>
     );
   }
 
   return (
-    <ThemeProvider theme={baseMuiTheme}>
-      <ThemeProvider theme={appTheme}>
-        <AppContext.Provider value={contextValue}>
-          <PlausibleProvider
-            domain={plausibleDomain}
-            selfHosted
-            trackOutboundLinks
-            enabled={!!plausibleDomain}
-          >
-            <Player>
-              <div ref={rootRef} className={styles.root}>
-                <div
-                  {...(playlistOpen && {
-                    inert: 'inert'
-                  })}
-                >
-                  <AppLoadingBar />
-                  <AppCtaBanner />
-                  <AppHeader />
-                </div>
-                <div
-                  className={styles.content}
-                  {...(playlistOpen && {
-                    inert: 'inert'
-                  })}
-                >
-                  <Component {...pageProps} />
-                </div>
-                <AppFooter />
-                <div ref={uiFooterRef} className={styles.uiFooter}>
-                  <div className={styles.loadUnderWrapper}>
-                    <div
-                      className={styles.playlistWrapper}
-                      {...(!playlistOpen && {
-                        inert: 'inert'
-                      })}
-                    >
-                      <Playlist className={styles.playlist} />
-                    </div>
-                    <div className={styles.playerWrapper}>
-                      <SocialShareMenu className={styles.socialShareMenu} />
-                      <AppPlayer />
-                    </div>
-                    <AppCtaLoadUnder />
-                  </div>
-                </div>
-              </div>
-              <AppSearch />
-            </Player>
-          </PlausibleProvider>
-        </AppContext.Provider>
-        <CssBaseline />
-      </ThemeProvider>
-    </ThemeProvider>
+    <PlausibleProvider
+      domain={plausibleDomain}
+      selfHosted
+      trackOutboundLinks
+      enabled={!!plausibleDomain}
+    >
+      <Provider store={store}>
+        <CacheProvider value={emotionCache}>
+          <ThemeProvider theme={baseMuiTheme}>
+            <ThemeProvider theme={appTheme}>
+              <AppContext.Provider value={contextValue}>
+                <Player>
+                  <AppLayout>
+                    <AnyComponent {...pageProps} />
+                  </AppLayout>
+                </Player>
+                <AppSearch />
+              </AppContext.Provider>
+              <CssBaseline />
+            </ThemeProvider>
+          </ThemeProvider>
+        </CacheProvider>
+      </Provider>
+    </PlausibleProvider>
   );
 };
 
-export default wrapper.withRedux(TwApp); // eslint-disable-line import/no-default-export
+export default TwApp; // eslint-disable-line import/no-default-export

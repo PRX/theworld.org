@@ -14,27 +14,27 @@ import React, {
 import { useStore } from 'react-redux';
 import { useRouter } from 'next/router';
 import { parse } from 'url';
-import { customsearch_v1 } from 'googleapis';
+import { customsearch_v1 as customSearch } from 'googleapis';
 import { SearchFacet, searchFacetLabels } from '@interfaces/state';
-import AppBar from '@material-ui/core/AppBar';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import Container from '@material-ui/core/Container';
-import Tab from '@material-ui/core/Tab';
-import TabContext from '@material-ui/lab/TabContext';
-import TabList from '@material-ui/lab/TabList';
-import TabPanel from '@material-ui/lab/TabPanel';
-import Grid from '@material-ui/core/Grid';
-import { ThemeProvider } from '@material-ui/core/styles';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
+import Container from '@mui/material/Container';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import Grid from '@mui/material/Grid';
+import { ThemeProvider } from '@mui/styles';
 import { EpisodeCard } from '@components/EpisodeCard';
 import { MediaCard } from '@components/MediaCard';
 import { StoryCard } from '@components/StoryCard';
@@ -73,18 +73,18 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
   const { nextPage: nextPageEpisode } =
     episode?.[episode.length - 1].queries || {};
   const { nextPage: nextPageMedia } = media?.[media.length - 1].queries || {};
-  const getContentData = (results: customsearch_v1.Schema$Search[]) =>
+  const getContentData = (results: customSearch.Schema$Search[]) =>
     (results || [])
       .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
       .map(({ link }) => {
         const { pathname } = parse(link);
         return getContentDataByAlias(state, pathname);
       })
-      .filter(item => !!item && item);
+      .filter((item) => !!item && item);
   const storyData = getContentData(story);
   const episodeData = getContentData(episode);
   const mediaData = getContentData(media);
-  const classes = appSearchStyles({});
+  const { classes } = appSearchStyles();
 
   const formatTabLabel = (l: SearchFacet) =>
     `${l} (${data[l]?.[0].searchInformation?.totalResults || 0})`;
@@ -99,15 +99,13 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
     store.dispatch<any>(fetchSearchData(queryRef.current.value, 'all'));
   };
 
-  const handleLoadMore = (
-    l: SearchFacet
-  ): MouseEventHandler<HTMLButtonElement> => (
-    e: MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
+  const handleLoadMore =
+    (l: SearchFacet): MouseEventHandler<HTMLButtonElement> =>
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
 
-    store.dispatch<any>(fetchSearchData(query, l));
-  };
+      store.dispatch<any>(fetchSearchData(query, l));
+    };
 
   const handleClearQuery = () => {
     store.dispatch({ type: 'SEARCH_CLEAR_QUERY' });
@@ -136,7 +134,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
       router.events.off('routeChangeError', handleRouteChangeEnd);
       unsub();
     };
-  }, []);
+  }, [router.events, store, unsub]);
 
   useEffect(() => {
     if (staticPage && !hasData) {
@@ -146,7 +144,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
       }
       store.dispatch<any>(fetchSearchData(query, 'all'));
     }
-  }, [query]);
+  }, [hasData, query, staticPage, store]);
 
   const renderSearchForm = () => (
     <form onSubmit={handleSubmit} autoComplete="off">
@@ -189,7 +187,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
               onChange={handleFilterChange}
               aria-label="filter results"
             >
-              {searchFacetLabels.map(l => (
+              {searchFacetLabels.map((l) => (
                 <Tab label={formatTabLabel(l)} value={l} key={l} />
               ))}
             </TabList>
@@ -206,7 +204,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
           {!!storyData.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {storyData.map(item => (
+                {storyData.map((item) => (
                   <Grid item xs={12} key={item.id}>
                     <StoryCard data={item} short />
                   </Grid>
@@ -234,7 +232,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
           {!!episodeData.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {episodeData.map(item => (
+                {episodeData.map((item) => (
                   <Grid item xs={12} md={6} key={item.id}>
                     <EpisodeCard data={item} />
                   </Grid>
@@ -262,7 +260,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
           {!!mediaData.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {mediaData.map(item => (
+                {mediaData.map((item) => (
                   <Grid item xs={12} md={6} key={item.id}>
                     <MediaCard data={item} />
                   </Grid>

@@ -4,8 +4,8 @@
  */
 
 import React from 'react';
-import Image from 'next/image';
-import { Box, Typography } from '@material-ui/core';
+import Image from 'next/legacy/image';
+import { Box, Typography } from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
 import { ledeImageStyles } from './LedeImage.styles';
 
@@ -16,7 +16,7 @@ export interface ILedeImageProps {
 export const LedeImage = ({ data }: ILedeImageProps) => {
   const { alt, caption, credit, url, metadata } = data;
   const { width, height } = metadata || {};
-  const classes = ledeImageStyles({});
+  const { classes } = ledeImageStyles();
   const hasCaption = caption && !!caption.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;

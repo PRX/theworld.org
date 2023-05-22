@@ -4,7 +4,6 @@
  */
 
 import React, { useState } from 'react';
-import classNames from 'classnames/bind';
 import { handleButtonClick } from '@lib/routing';
 import {
   Box,
@@ -16,7 +15,7 @@ import {
   FormControlLabel,
   Paper,
   ThemeProvider
-} from '@material-ui/core';
+} from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 import {
@@ -28,8 +27,7 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   const { heading, message, optinLabel, action, dismiss } = data;
   const hasActions = !!(action || dismiss);
   const [optedIn, setOptedIn] = useState(false);
-  const classes = appCtaMessageOptInStyles({});
-  const cx = classNames.bind(classes);
+  const { classes } = appCtaMessageOptInStyles();
   const actionAttrs: ButtonProps = {
     variant: 'contained',
     color: 'primary',
@@ -61,7 +59,7 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
             <HtmlContent html={message} />
           </Typography>
         )}
-        <Box className={cx('controls')}>
+        <Box className={classes.controls}>
           <Box>
             <Paper>
               <FormControlLabel

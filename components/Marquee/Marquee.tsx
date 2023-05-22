@@ -15,7 +15,7 @@ export const Marquee = ({ children }: IMarqueeProps) => {
   const contentRef = useRef(null);
   const rootRef = useRef(null);
   const timeoutRef = useRef(null);
-  const classes = useMarqueeStyles({});
+  const { classes } = useMarqueeStyles();
 
   const updateMarqueeOffset = useCallback(() => {
     const rootRec = rootRef.current?.getBoundingClientRect();

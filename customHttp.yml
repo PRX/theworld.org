@@ -1,8 +1,4 @@
 customHeaders:
-  - pattern: '/_next/static/**/*'
-    headers:
-      - key: 'Cache-Control'
-        value: 'public, max-age=31536000, immutable'
   - pattern: '**'
     headers:
       - key: 'Cache-Control'
@@ -17,3 +13,7 @@ customHeaders:
         value: 'nosniff'
       - key: 'Permissions-Policy'
         value: 'interest-cohort=()'
+  - pattern: '/_next/static/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'

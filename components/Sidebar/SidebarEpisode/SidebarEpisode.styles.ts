@@ -3,45 +3,57 @@
  * Styles for default sidebar episode card.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const sidebarEpisodeStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    imageWrapper: {
-      paddingTop: 'unset'
+export const sidebarEpisodeStyles = makeStyles()((theme) => ({
+  root: {
+    '& :is(.MuiButtonBase-root)': {
+      fontSize: 'inherit',
+      lineHeight: 'inherit'
     },
-    link: {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      overflow: 'hidden',
-      textIndent: '-2000vw'
+    '& :is(.MuiCard-root)': {
+      color: theme.palette.primary.main
     },
-    header: {
-      display: 'grid',
-      gridTemplateColumns: '0fr 1fr 0fr',
-      alignItems: 'center',
-      gap: theme.typography.pxToRem(theme.spacing(1))
+    '& :is(.MuiCardActionArea-root)': {
+      color: theme.palette.primary.main
     },
-    title: {
-      marginBlock: 0
-    },
-    audio: {
-      position: 'relative',
-      zIndex: 1
+    '& :is(.MuiCardActions-root)': {
+      margin: 0,
+      padding: 0
     }
-  })
-);
+  },
+
+  imageWrapper: {
+    paddingTop: 'unset'
+  },
+
+  link: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    overflow: 'hidden',
+    textIndent: '-2000vw'
+  },
+
+  header: {},
+
+  title: {
+    marginBlock: 0,
+    fontSize: theme.typography.pxToRem(18)
+  },
+
+  audio: {
+    position: 'relative',
+    zIndex: 1,
+    fontSize: '1.125rem'
+  }
+}));
 
 export const sidebarEpisodeTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       body1: {
         fontSize: theme.typography.pxToRem(16)
@@ -53,34 +65,44 @@ export const sidebarEpisodeTheme = (theme: Theme) =>
         fontSize: theme.typography.pxToRem(18)
       }
     },
-    overrides: {
+    components: {
       MuiButtonBase: {
-        root: {
-          fontSize: 'inherit',
-          lineHeight: 'inherit'
+        styleOverrides: {
+          root: {
+            fontSize: 'inherit',
+            lineHeight: 'inherit'
+          }
         }
       },
       MuiCard: {
-        root: {
-          color: theme.palette.primary.main
+        styleOverrides: {
+          root: {
+            color: theme.palette.primary.main
+          }
         }
       },
       MuiCardActions: {
-        root: {
-          margin: 0,
-          padding: 0
+        styleOverrides: {
+          root: {
+            margin: 0,
+            padding: 0
+          }
         }
       },
       MuiCardContent: {
-        root: {
-          color: theme.palette.text.primary,
-          fontWeight: theme.typography.fontWeightBold,
-          paddingBlock: `${theme.spacing(1)}px`
+        styleOverrides: {
+          root: {
+            color: theme.palette.text.primary,
+            fontWeight: theme.typography.fontWeightBold,
+            paddingBlock: `${8}px`
+          }
         }
       },
       MuiTypography: {
-        gutterBottom: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(1.5))
+        styleOverrides: {
+          gutterBottom: {
+            marginBottom: theme.typography.pxToRem(12)
+          }
         }
       }
     }

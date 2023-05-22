@@ -3,17 +3,13 @@
  * Styles for LandingPageHeader.
  */
 
-import {
-  createMuiTheme,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const bioTheme = (theme: Theme) => createMuiTheme(theme, {});
+export const bioTheme = (theme: Theme) => createTheme(theme, {});
 
-export const bioStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    body: theme.typography.body1
-  })
-);
+export const bioStyles = makeStyles()(theme => ({
+  body: {
+    ...(theme.typography.body1 as any)
+  }
+}));

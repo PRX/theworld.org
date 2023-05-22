@@ -4,26 +4,24 @@
  */
 
 import React from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { useStore } from 'react-redux';
-import classNames from 'classnames/bind';
 import { parse } from 'url';
-import { Box, Breadcrumbs, Container, Divider, Link } from '@material-ui/core';
+import { Box, Breadcrumbs, Container, Divider, Link } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
 import { getMenusData } from '@store/reducers';
-import { ReactComponent as TwLogo } from '@svg/tw-white.svg';
-import { ReactComponent as PrxLogo } from '@svg/PRX-Logo-Horizontal-Color.svg';
-import { ReactComponent as GBHLogo } from '@svg/GBH-Logo-Purple.svg';
+import TwLogo from '@svg/tw-white.svg';
+import PrxLogo from '@svg/PRX-Logo-Horizontal-Color.svg';
+import GBHLogo from '@svg/GBH-Logo-Purple.svg';
 import { appFooterStyles } from './AppFooter.styles';
 
 export const AppFooter = () => {
   const store = useStore();
   const footerNav = getMenusData(store.getState(), 'footerNav');
   const copyrightDate = new Date().getFullYear();
-  const classes = appFooterStyles({});
-  const cx = classNames.bind(classes);
-  const producedByLogoClasses = cx({ logo: true, producedByLogo: true });
+  const { classes, cx } = appFooterStyles();
+  const producedByLogoClasses = cx(classes.logo, classes.producedByLogo);
 
   return (
     <footer className={classes.root}>
@@ -34,7 +32,7 @@ export const AppFooter = () => {
           The World is a public radio program that crosses borders and time
           zones to bring home the stories that matter.
         </p>
-        <Box className={cx({ logos: true, producedBy: true })}>
+        <Box className={cx(classes.logos, classes.producedBy)}>
           <p className={classes.logosTitle}>Produced by</p>
           <Breadcrumbs
             separator=" "
@@ -51,7 +49,7 @@ export const AppFooter = () => {
             </Link>
           </Breadcrumbs>
         </Box>
-        <Box className={cx({ logos: true, fundedBy: true })}>
+        <Box className={cx(classes.logos, classes.fundedBy)}>
           <p className={classes.logosTitle}>Major funding provided by</p>
           <Breadcrumbs
             separator=" "

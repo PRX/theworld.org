@@ -3,12 +3,10 @@
  * Styles and theme for TimeInfo.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useTimeInfoStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      whiteSpace: 'nowrap'
-    }
-  })
-);
+export const useTimeInfoStyles = makeStyles()(() => ({
+  root: {
+    whiteSpace: 'nowrap'
+  }
+}));

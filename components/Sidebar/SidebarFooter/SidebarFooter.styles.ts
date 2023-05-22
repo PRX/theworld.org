@@ -3,15 +3,11 @@
  * Styles for SidebarFooter.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const sidebarFooterTheme = (theme: Theme) => {
-  return createMuiTheme(theme, {
+export const sidebarFooterTheme = (theme: Theme) =>
+  createTheme(theme, {
     overrides: {
       MuiPagination: {
         ul: {
@@ -20,12 +16,12 @@ export const sidebarFooterTheme = (theme: Theme) => {
       }
     }
   });
-};
 
-export const sidebarFooterStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      padding: '0.5rem 1rem 1rem'
+export const sidebarFooterStyles = makeStyles()(() => ({
+  root: {
+    padding: '0.5rem 1rem 1rem',
+    '& :where(.MuiPagination-ul)': {
+      justifyContent: 'center'
     }
-  })
-);
+  }
+}));

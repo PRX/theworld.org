@@ -35,14 +35,14 @@ export const collections = (state: State = {}, action: AnyAction) => {
     return result;
   };
 
-  switch (action.type) {
+  switch (action?.type) {
     case HYDRATE:
       return { ...state, ...action.payload.collections };
 
     case 'APPEND_REFS_TO_COLLECTION':
       key = makeResourceSignature(action.payload.resource);
       refs = (action.payload.data || [])
-        .filter(v => !!v)
+        .filter((v) => !!v)
         .map((ref: IPriApiResource) => makeResourceSignature(ref));
       meta = {
         ...action.payload.meta,
@@ -90,13 +90,13 @@ export const collections = (state: State = {}, action: AnyAction) => {
 };
 
 export const getResourceCollection = (
-  state: CollectionsState = {},
+  state: CollectionsState,
   type: string,
   id: string,
   collection: string
 ) => {
   const key = makeResourceSignature({ type, id } as IPriApiResource);
-  const resourceCollections = state[key];
+  const resourceCollections = (state || {})[key];
 
   return resourceCollections && resourceCollections[collection];
 };

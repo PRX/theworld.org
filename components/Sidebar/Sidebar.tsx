@@ -4,8 +4,7 @@
  */
 
 import React, { HTMLAttributes } from 'react';
-import { Box } from '@material-ui/core';
-import classNames from 'classnames/bind';
+import { Box } from '@mui/material';
 import { sidebarStyles } from './Sidebar.styles';
 
 export interface ISidebarProps extends HTMLAttributes<{}> {
@@ -23,19 +22,17 @@ export const Sidebar = ({
   stretch,
   elevated
 }: ISidebarProps) => {
-  const classes = sidebarStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = sidebarStyles();
   const component = item ? 'aside' : null;
 
   return (
     <Box
       component={component}
-      className={cx(className, {
-        root: true,
-        container,
-        item,
-        stretch,
-        elevated
+      className={cx(classes.root, className, {
+        [classes.container]: container,
+        [classes.item]: item,
+        [classes.stretch]: stretch,
+        [classes.elevated]: elevated
       })}
     >
       {children}

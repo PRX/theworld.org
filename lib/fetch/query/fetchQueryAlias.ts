@@ -7,8 +7,7 @@ import { fetchPriApiQueryAlias } from '../api/fetchPriApi';
 
 export const fetchQueryAlias = async (
   alias: string
-): Promise<PriApiResourceResponse> => {
-  return fetchPriApiQueryAlias(alias, {
+): Promise<PriApiResourceResponse> =>
+  fetchPriApiQueryAlias(alias, {
     fields: ['id']
   });
-};

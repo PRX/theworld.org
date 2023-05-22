@@ -3,10 +3,10 @@
  * Styles for CtaMessageDonation.
  */
 
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
 
 export const ctaMessageDonationTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     overrides: {
       MuiCard: {
         root: {

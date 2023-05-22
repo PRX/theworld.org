@@ -1,2 +1,3 @@
+/* eslint-disable no-restricted-exports */
 export * from './Story.feature';
-export { StoryDefault as default } from './Story.feature'; // eslint-disable-line import/no-default-export
+export { StoryDefault as default } from './Story.feature';

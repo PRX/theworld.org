@@ -3,22 +3,17 @@
  * Styles for media card.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const mediaCardStyles = makeStyles((theme: Theme) =>
-  createStyles({
+export const mediaCardStyles = makeStyles<{ isLoading: boolean }, 'feature'>()(
+  (theme, { isLoading }, classes) => ({
     root: {},
     title: {
-      marginTop: theme.typography.pxToRem(theme.spacing(1)),
+      marginTop: theme.typography.pxToRem(8),
       [theme.breakpoints.down('xs')]: {
         fontSize: theme.typography.pxToRem(16),
-        '$feature &': {
+        [`.${classes.feature} &`]: {
           fontSize: theme.typography.pxToRem(22)
         }
       }
@@ -32,14 +27,14 @@ export const mediaCardStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
       textIndent: '-2000vw'
     },
-    loadingBar: ({ isLoading }: any) => ({
+    loadingBar: {
       transition: 'transform 400ms ease-out',
       position: 'absolute',
       top: '100%',
       left: 0,
       width: '100%',
       transform: `translateY(${!isLoading ? 0 : '-100%'})`
-    }),
+    },
     MuiCardActionAreaRoot: {
       display: 'grid',
       gridTemplateColumns: 'min-content 1fr',
@@ -60,7 +55,7 @@ export const mediaCardStyles = makeStyles((theme: Theme) =>
 );
 
 export const mediaCardTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h5: {
         lineHeight: 1.1
@@ -112,7 +107,7 @@ export const mediaCardTheme = (theme: Theme) =>
         },
         padding: {
           paddingTop: 0,
-          paddingBottom: theme.typography.pxToRem(theme.spacing(2))
+          paddingBottom: theme.typography.pxToRem(16)
         }
       },
       MuiListItem: {
@@ -120,7 +115,7 @@ export const mediaCardTheme = (theme: Theme) =>
         button: {
           '&:hover': {
             color: theme.palette.primary.main,
-            backgroundColor: addCssColorAlpha(
+            backgroundColor: alpha(
               theme.palette.primary.main,
               theme.palette.action.hoverOpacity
             )
@@ -144,7 +139,7 @@ export const mediaCardTheme = (theme: Theme) =>
       },
       MuiTypography: {
         gutterBottom: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(1.5))
+          marginBottom: theme.typography.pxToRem(12)
         }
       }
     }

@@ -15,7 +15,7 @@ import {
   Typography,
   FormControlLabel,
   Paper
-} from '@material-ui/core';
+} from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
 import { ICtaMessageProps } from '@interfaces/cta';
 import { handleButtonClick } from '@lib/routing';

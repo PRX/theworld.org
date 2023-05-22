@@ -1,2 +1,3 @@
+/* eslint-disable no-restricted-exports */
 export * from './Term';
-export { Term as default } from './Term'; // eslint-disable-line import/no-default-export
+export { Term as default } from './Term';

@@ -3,21 +3,17 @@
  * Styles and theme for AudioPlayer.
  */
 
-import {
-  createStyles,
-  fade,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const usePlayButtonStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: ({ playing }: any) => ({
+export const usePlayButtonStyles = makeStyles<{ playing: boolean }>()(
+  (theme, { playing }) => ({
+    root: {
       ...(!playing && {
         color: theme.palette.grey[900],
-        backgroundColor: fade(theme.palette.grey[900], 0.1),
+        backgroundColor: alpha(theme.palette.grey[900], 0.1),
         '&:hover': {
-          backgroundColor: fade(theme.palette.grey[900], 0.3)
+          backgroundColor: alpha(theme.palette.grey[900], 0.3)
         }
       }),
       ...(playing && {
@@ -27,7 +23,7 @@ export const usePlayButtonStyles = makeStyles((theme: Theme) =>
           backgroundColor: theme.palette.primary.light
         }
       })
-    }),
+    },
     iconRoot: {
       fontSize: 'inherit'
     }

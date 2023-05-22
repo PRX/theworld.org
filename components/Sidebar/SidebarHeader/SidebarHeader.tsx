@@ -4,13 +4,8 @@
  */
 
 import React from 'react';
-import { Box, BoxProps } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import {
-  sidebarHeaderStyles,
-  sidebarHeaderTheme
-} from './SidebarHeader.styles';
+import { Box, BoxProps } from '@mui/material';
+import { sidebarHeaderStyles } from './SidebarHeader.styles';
 
 export interface ISidebarHeaderProps extends BoxProps {}
 
@@ -19,17 +14,11 @@ export const SidebarHeader = ({
   className,
   ...other
 }: ISidebarHeaderProps) => {
-  const classes = sidebarHeaderStyles({});
+  const { classes, cx } = sidebarHeaderStyles();
 
   return (
-    <ThemeProvider theme={sidebarHeaderTheme}>
-      <Box
-        component="header"
-        {...other}
-        className={clsx(className, classes.root)}
-      >
-        {children}
-      </Box>
-    </ThemeProvider>
+    <Box component="header" {...other} className={cx(classes.root, className)}>
+      {children}
+    </Box>
   );
 };

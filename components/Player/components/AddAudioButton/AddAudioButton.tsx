@@ -3,16 +3,15 @@
  * Play button component to toggle playing state of player.
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import { type MouseEventHandler, useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import clsx from 'clsx';
-import { CircularProgress, NoSsr, Tooltip } from '@material-ui/core';
-import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
-import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@material-ui/icons';
-import { IPriApiResource } from 'pri-api-library/types';
+import { CircularProgress, NoSsr, Tooltip } from '@mui/material';
+import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
+import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@mui/icons-material';
+import { type IPriApiResource } from 'pri-api-library/types';
+import { type IAudioData } from '@components/Player/types';
+import { type IAudioResource } from '@interfaces';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
-import { IAudioData } from '@components/Player/types';
-import { IAudioResource } from '@interfaces';
 import { parseAudioData } from '@lib/parse/audio/audioData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
@@ -36,17 +35,19 @@ export const AddAudioButton = ({
   const [audio, setAudio] = useState<IAudioResource>();
   const [audioData, setAudioData] = useState<IAudioData>();
   const [loading, setLoading] = useState(false);
-  const { state: playerState, addTrack, removeTrack } = useContext(
-    PlayerContext
-  );
+  const {
+    state: playerState,
+    addTrack,
+    removeTrack
+  } = useContext(PlayerContext);
   const { tracks } = playerState;
   const [isQueued, setIsQueued] = useState(false);
   const tooltipTitle = isQueued ? 'Remove From Playlist' : 'Add to Playlist';
-  const styles = useAddAudioButtonStyles({
+  const { classes: styles, cx } = useAddAudioButtonStyles({
     isQueued,
     loading
   });
-  const rootClassNames = clsx(styles.root, className);
+  const rootClassNames = cx(styles.root, className);
   const iconButtonClasses = {
     root: styles.iconButtonRoot,
     ...classes
@@ -66,7 +67,8 @@ export const AddAudioButton = ({
     removeTrack(audioData);
   };
 
-  const handleLoadClick = () => {
+  const handleLoadClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
     (async () => {
       setLoading(true);
       const ar = await store.dispatch<any>(fetchAudioData(id));
@@ -106,11 +108,11 @@ export const AddAudioButton = ({
     setAudio(
       getDataByResource(store.getState(), 'file--audio', id) as IAudioResource
     );
-  }, [id]);
+  }, [id, store]);
 
   useEffect(() => {
     setAudioData(audio && parseAudioData(audio, fallbackProps));
-  }, [audio?.id]);
+  }, [audio, fallbackProps]);
 
   useEffect(() => {
     const track = (tracks || []).find(
@@ -122,7 +124,7 @@ export const AddAudioButton = ({
     } else {
       setIsQueued(false);
     }
-  }, [tracks?.length, id]);
+  }, [id, tracks, audioData]);
 
   return (
     <NoSsr>

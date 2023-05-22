@@ -3,19 +3,19 @@
  * Exports a mechanism that makes GET requests to API easier to manage.
  */
 
-import { customsearch_v1 } from 'googleapis';
-import { IncomingMessage } from 'http';
-import { ParsedUrlQuery } from 'querystring';
 import {
   IPriApiCollectionResponse,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
+import { IncomingMessage } from 'http';
+import { ParsedUrlQuery } from 'querystring';
+import { parse, format } from 'url';
+import { customsearch_v1 as customSearch } from 'googleapis';
 import {
   INewsletterOptions,
   INewsletterData,
   ICMApiCustomField
 } from '@interfaces/newsletter';
-import { parse, format } from 'url';
 
 /**
  * Method that simplifies GET requests.
@@ -64,7 +64,7 @@ export const fetchApi = async (
           body: JSON.stringify(body)
         }
       : {}
-  ).then(r => r.status === 200 && r.json());
+  ).then((r) => r.status === 200 && r.json());
 };
 
 /**
@@ -154,7 +154,7 @@ export const postNewsletterSubscription = async (
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(payload)
-  }).then(r => r.json());
+  }).then((r) => r.json());
 };
 
 /**
@@ -556,6 +556,18 @@ export const fetchApiSearch = (
   label: string,
   start: string | number
 ) =>
-  fetchApi(`query/search/${label}/${q}`, undefined, {
-    ...(start && { start: `${start}` })
-  }) as Promise<customsearch_v1.Schema$Search>;
+  fetch(
+    format({
+      protocol: 'https',
+      hostname: 'search.theworld.org', // TODO: Update to `search.theworld.org` when DNS is ready.
+      pathname: 'query',
+      query: {
+        ...(q && { q }),
+        ...(label && { l: `${label}` }),
+        ...(start && { s: `${start}` }),
+        t: 'metatags-pubdate:d,date:d:s'
+      }
+    })
+  ).then(
+    (r) => r.status === 200 && r.json()
+  ) as Promise<customSearch.Schema$Search>;

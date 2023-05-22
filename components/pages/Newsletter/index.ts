@@ -1,2 +1,3 @@
+/* eslint-disable no-restricted-exports */
 export * from './Newsletter';
-export { Newsletter as default } from './Newsletter'; // eslint-disable-line import/no-default-export
+export { Newsletter as default } from './Newsletter';

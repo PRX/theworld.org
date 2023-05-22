@@ -7,8 +7,8 @@ import React from 'react';
 import { useStore } from 'react-redux';
 import Link from 'next/link';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Button, Typography } from '@material-ui/core';
-import { MenuBookRounded, NavigateNext } from '@material-ui/icons';
+import { Button, Typography } from '@mui/material';
+import { MenuBookRounded, NavigateNext } from '@mui/icons-material';
 import { getCollectionData } from '@store/reducers';
 import { Sidebar } from '../Sidebar';
 import { SidebarHeader } from '../SidebarHeader';
@@ -32,13 +32,17 @@ export const SidebarLatestStories = ({
   return listItems?.length ? (
     <Sidebar item elevated>
       <SidebarHeader>
-        <Typography variant="h2">
-          <MenuBookRounded /> {label || 'Latest Headlines'}
-        </Typography>
+        <MenuBookRounded />
+        <Typography variant="h2">{label || 'Latest Headlines'}</Typography>
       </SidebarHeader>
       <SidebarList disablePadding data={listItems} />
       <SidebarFooter>
-        <Link href="/[...alias]" as="/programs/the-world" passHref>
+        <Link
+          href="/[...alias]"
+          as="/programs/the-world"
+          passHref
+          legacyBehavior
+        >
           <Button
             component="a"
             color="primary"

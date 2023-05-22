@@ -3,33 +3,29 @@
  * Styles and theme for TrackInfo.
  */
 
-import {
-  createStyles,
-  fade,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useTrackInfoStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: ({ hasLink }: any) => ({
+export const useTrackInfoStyles = makeStyles<{ hasLink: boolean }>()(
+  (theme, { hasLink }) => ({
+    root: {
       position: 'relative',
       overflow: 'hidden',
-      padding: theme.typography.pxToRem(theme.spacing(2)),
+      padding: theme.typography.pxToRem(16),
       ...(hasLink && {
         '&:hover': {
           transition: theme.transitions.create('background-color', {
             duration: theme.transitions.duration.shortest,
             easing: theme.transitions.easing.sharp
           }),
-          backgroundColor: fade(theme.palette.primary.main, 0.1)
+          backgroundColor: alpha(theme.palette.primary.main, 0.1)
         }
       })
-    }),
+    },
     layout: {
       display: 'grid',
       gridTemplateColumns: 'min-content auto',
-      gap: theme.typography.pxToRem(theme.spacing(1.5)),
+      gap: theme.typography.pxToRem(12),
       alignItems: 'center',
       justifyContent: 'center'
     },
@@ -54,7 +50,7 @@ export const useTrackInfoStyles = makeStyles((theme: Theme) =>
       '& + &': {
         '&::before': {
           content: "'\u2022'",
-          marginInline: theme.typography.pxToRem(theme.spacing(0.5))
+          marginInline: theme.typography.pxToRem(4)
         }
       }
     },

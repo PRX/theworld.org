@@ -5,10 +5,9 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import classNames from 'classnames/bind';
-import { Box, Container, IconButton } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { CloseSharp } from '@material-ui/icons';
+import { Box, Container, IconButton } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
+import { CloseSharp } from '@mui/icons-material';
 import { AppContext } from '@contexts/AppContext';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
 import { getCookies, getCtaRegionData } from '@store/reducers';
@@ -40,8 +39,7 @@ export const AppCtaLoadUnder = () => {
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);
-  const classes = appCtaLoadUnderStyles({});
-  const cx = classNames.bind(classes);
+  const { classes } = appCtaLoadUnderStyles();
 
   const handleClose = () => {
     const { name, hash, cookieLifespan } = shownMessage;
@@ -51,16 +49,17 @@ export const AppCtaLoadUnder = () => {
     setClosed(true);
   };
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return CtaMessageComponent && shownMessage && !closed ? (
     <ThemeProvider theme={appCtaLoadUnderTheme}>
-      <Box component="aside" className={cx('root')} px={4} height={5}>
-        <Container className={cx('container')} maxWidth="lg">
+      <Box component="aside" className={classes.root} px={4} height={5}>
+        <Container className={classes.container} maxWidth="lg">
           <CtaMessageComponent data={shownMessage} onClose={handleClose} />
         </Container>
         <Box position="absolute" top={0} right={0}>

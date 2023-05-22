@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
   ThemeProvider
-} from '@material-ui/core';
+} from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
 import { newsletterFormTheme } from '@components/NewsletterForm/NewsletterForm.styles';
 import { handleButtonClick } from '@lib/routing';
@@ -48,7 +48,7 @@ export const AppCtaMessageNewsletter = ({
   return (
     <ThemeProvider theme={newsletterFormTheme}>
       <Box textAlign="center">
-        <Grid container justify="center" alignItems="center">
+        <Grid container justifyContent="center" alignItems="center">
           <Grid item sm={12} md={8}>
             {heading && <Typography variant="h2">{heading}</Typography>}
             {message && (

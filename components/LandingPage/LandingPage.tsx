@@ -11,7 +11,7 @@ import {
   Grid,
   GridSpacing,
   Hidden
-} from '@material-ui/core';
+} from '@mui/material';
 
 export interface ILandingPageItem {
   key: string;
@@ -27,7 +27,7 @@ export const LandingPage = ({
   main,
   sidebar,
   spacing,
-  gridGap,
+  gap,
   ...other
 }: ILandingPageProps) => {
   const max = Math.max(main.length, sidebar.length);
@@ -47,11 +47,11 @@ export const LandingPage = ({
   }
 
   return (
-    <Box {...other}>
+    <Box mb={3} {...other}>
       <Container fixed>
         <Grid container spacing={spacing || 3}>
           <Grid item xs={12} md={8}>
-            <Box display="grid" gridGap={gridGap}>
+            <Box display="grid" gap={gap}>
               {mainItems.map(
                 ({ key, children }: ILandingPageItem) =>
                   children && <Fragment key={key}>{children}</Fragment>
@@ -60,7 +60,7 @@ export const LandingPage = ({
           </Grid>
           <Grid item xs md={4}>
             <Hidden smDown implementation="css">
-              <Box display="grid" gridGap={gridGap}>
+              <Box display="grid" gap={gap}>
                 {sidebar.map(
                   ({ key, children }: ILandingPageItem) =>
                     children && <Fragment key={key}>{children}</Fragment>

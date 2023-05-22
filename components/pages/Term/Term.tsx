@@ -14,7 +14,7 @@ import {
   Hidden,
   Tab,
   Tabs
-} from '@material-ui/core';
+} from '@mui/material';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -110,11 +110,12 @@ export const Term = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Term', { props }]];
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -123,7 +124,7 @@ export const Term = () => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [page]);
+  }, [oldScrollY, page]);
 
   const loadMoreStories = async () => {
     setLoadingStories(true);
@@ -165,18 +166,16 @@ export const Term = () => {
       children: (
         <>
           {!isEpisodesView && (
-            <Box display="grid" gridGap={8}>
+            <Box display="grid" gap={1}>
               {featuredStory && (
                 <StoryCard data={featuredStory} feature priority />
               )}
               {featuredStories && (
-                <StoryCardGrid data={featuredStories[1]} gridGap={8} />
+                <StoryCardGrid data={featuredStories[1]} gap={1} />
               )}
             </Box>
           )}
-          {isEpisodesView && (
-            <EpisodeCard data={latestEpisode} label="Latest Episode" />
-          )}
+          {isEpisodesView && <EpisodeCard data={latestEpisode} />}
           {ctaInlineTop && (
             <>
               <Hidden xsDown>
@@ -341,7 +340,7 @@ export const Term = () => {
         main={mainElements}
         sidebar={sidebarElements}
         mt={3}
-        gridGap={8}
+        gap={1}
       />
     </>
   );

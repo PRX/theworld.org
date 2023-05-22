@@ -13,9 +13,8 @@ import {
   Grid,
   Hidden,
   Typography
-} from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { EqualizerRounded } from '@material-ui/icons';
+} from '@mui/material';
+import { EqualizerRounded } from '@mui/icons-material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
@@ -35,13 +34,12 @@ import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { UiAction } from '@interfaces/state';
 import { parseUtcDate } from '@lib/parse/date';
-import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
 import {
   getDataByResource,
   getCollectionData,
   getCtaRegionData
 } from '@store/reducers';
-import { episodeStyles, episodeTheme } from './Episode.styles';
+import { episodeStyles } from './Episode.styles';
 import { EpisodeLede } from './components/EpisodeLede';
 import { EpisodeHeader } from './components/EpisodeHeader';
 
@@ -56,12 +54,8 @@ export const Episode = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const classes = episodeStyles({});
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
+  const { classes } = episodeStyles();
+  const data = getDataByResource(state, type, id);
 
   const {
     metatags: dataMetatags,
@@ -75,9 +69,9 @@ export const Episode = () => {
     producers,
     guests,
     reporters,
-    spotifyPlaylist
-  } = data;
-  // const context = [`node:${data.id}`, `node:${data.program.id}`];
+    spotifyPlaylist,
+    shareLinks
+  } = data || ({} as typeof data);
   const metatags = {
     ...dataMetatags,
     ...((dateBroadcast || datePublished) && {
@@ -141,7 +135,7 @@ export const Episode = () => {
     ...(producers || []),
     ...(guests || []),
     ...(reporters || [])
-  ].forEach(person => {
+  ].forEach((person) => {
     plausibleEvents.push([
       `Person: ${person.title}`,
       {
@@ -151,63 +145,62 @@ export const Episode = () => {
   });
 
   useEffect(() => {
-    if (!data.complete) {
-      (async () => {
-        // Get content data.
-        await store.dispatch<any>(fetchEpisodeData(id));
-        data = getDataByResource(state, type, id);
-      })();
-    }
-
-    // Show social hare menu.
-    const { shareLinks } = data;
-    store.dispatch<UiAction>({
-      type: 'UI_SHOW_SOCIAL_SHARE_MENU',
-      payload: {
-        ui: {
-          socialShareMenu: {
-            links: [
-              {
-                key: 'twitter',
-                link: shareLinks.twitter
-              },
-              {
-                key: 'facebook',
-                link: shareLinks.facebook
-              },
-              {
-                key: 'linkedin',
-                link: shareLinks.linkedin
-              },
-              {
-                key: 'flipboard',
-                link: shareLinks.flipboard
-              },
-              {
-                key: 'whatsapp',
-                link: shareLinks.whatsapp
-              },
-              {
-                key: 'email',
-                link: shareLinks.email
-              }
-            ]
+    if (shareLinks) {
+      // Show social hare menu.
+      store.dispatch<UiAction>({
+        type: 'UI_SHOW_SOCIAL_SHARE_MENU',
+        payload: {
+          ui: {
+            socialShareMenu: {
+              links: [
+                {
+                  key: 'twitter',
+                  link: shareLinks.twitter
+                },
+                {
+                  key: 'facebook',
+                  link: shareLinks.facebook
+                },
+                {
+                  key: 'linkedin',
+                  link: shareLinks.linkedin
+                },
+                {
+                  key: 'flipboard',
+                  link: shareLinks.flipboard
+                },
+                {
+                  key: 'whatsapp',
+                  link: shareLinks.whatsapp
+                },
+                {
+                  key: 'email',
+                  link: shareLinks.email
+                }
+              ]
+            }
           }
         }
-      }
-    });
+      });
+    }
 
     return () => {
       // Hide social hare menu.
       store.dispatch<UiAction>({
         type: 'UI_HIDE_SOCIAL_SHARE_MENU'
       });
-      unsub();
     };
-  }, [id]);
+  }, [shareLinks, store]);
+
+  useEffect(
+    () => () => {
+      unsub();
+    },
+    [unsub]
+  );
 
   return (
-    <ThemeProvider theme={episodeTheme}>
+    <>
       <MetaTags data={metatags} />
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <Container fixed>
@@ -225,8 +218,12 @@ export const Episode = () => {
                 </Box>
                 {spotifyPlaylist && !!spotifyPlaylist.length && (
                   <Box my={3}>
-                    <Divider />
-                    <Typography variant="h4" component="h2">
+                    <Divider classes={{ root: classes.MuiDividerRoot }} />
+                    <Typography
+                      variant="h4"
+                      component="h2"
+                      className={classes.heading}
+                    >
                       Music heard on air
                     </Typography>
                     <Grid container spacing={2}>
@@ -241,7 +238,11 @@ export const Episode = () => {
                 {stories && (
                   <Box my={3}>
                     <Divider />
-                    <Typography variant="h4">
+                    <Typography
+                      variant="h4"
+                      component="h2"
+                      className={classes.heading}
+                    >
                       Stories from this episode
                     </Typography>
                     {stories
@@ -262,9 +263,8 @@ export const Episode = () => {
                 {segments && (
                   <Sidebar item elevated>
                     <SidebarHeader>
-                      <Typography variant="h2">
-                        <EqualizerRounded /> In this episode:
-                      </Typography>
+                      <EqualizerRounded />
+                      <Typography variant="h2">In this episode:</Typography>
                     </SidebarHeader>
                     <SidebarAudioList disablePadding data={segments} />
                     <SidebarFooter />
@@ -334,6 +334,6 @@ export const Episode = () => {
           </Grid>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </>
   );
 };

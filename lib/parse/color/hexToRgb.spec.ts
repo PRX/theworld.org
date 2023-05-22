@@ -1,4 +1,4 @@
-import { hexToRgb, hexToCssRgba, addCssColorAlpha } from './index';
+import { hexToRgb, hexToCssRgba } from './index';
 
 describe('lib/parse/color', () => {
   describe('hexToRgb', () => {
@@ -40,46 +40,6 @@ describe('lib/parse/color', () => {
 
       expect(result1).toEqual('rgba(0,255,0,0.5)');
       expect(result2).toEqual('rgba(0,255,0,0.25)');
-    });
-  });
-
-  describe('addCssColorAlpha', () => {
-    test('should convert hex string to rgba.', () => {
-      const result1 = addCssColorAlpha('#00FF00', 0.5);
-      const result2 = addCssColorAlpha('#0F0', 0.25);
-
-      expect(result1).toEqual('rgba(0,255,0,0.5)');
-      expect(result2).toEqual('rgba(0,255,0,0.25)');
-    });
-
-    test('should convert rgb string to rgba.', () => {
-      const result1 = addCssColorAlpha('rgb(0,255,0)', 0.5);
-      const result2 = addCssColorAlpha('rgb(0, 255, 0)', 0.5);
-      const result3 = addCssColorAlpha('rgb(0 255 0)', 0.5);
-
-      expect(result1).toEqual('rgba(0,255,0,0.5)');
-      expect(result2).toEqual('rgba(0,255,0,0.5)');
-      expect(result3).toEqual('rgba(0,255,0,0.5)');
-    });
-
-    test('should convert hsl string to hsla.', () => {
-      const result1 = addCssColorAlpha('hsl(100,100%,30%)', 0.5);
-      const result2 = addCssColorAlpha('hsl(100, 100%, 30%)', 0.5);
-      const result3 = addCssColorAlpha('hsl(100 100% 30%)', 0.5);
-      const result4 = addCssColorAlpha('hsl(100, 100%, 30% / 0.75)', 0.5);
-
-      expect(result1).toEqual('hsla(100,100%,30%,0.5)');
-      expect(result2).toEqual('hsla(100,100%,30%,0.5)');
-      expect(result3).toEqual('hsla(100,100%,30%,0.5)');
-      expect(result4).toEqual('hsla(100,100%,30%,0.5)');
-    });
-
-    test('should update alpha of rgba and hsla.', () => {
-      const result1 = addCssColorAlpha('rgba(0,255,0,0.75)', 0.5);
-      const result2 = addCssColorAlpha('hsla(100,100%,30%,0.75)', 0.5);
-
-      expect(result1).toEqual('rgba(0,255,0,0.5)');
-      expect(result2).toEqual('hsla(100,100%,30%,0.5)');
     });
   });
 });

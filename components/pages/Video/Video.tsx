@@ -5,15 +5,14 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import { Box, Container, Grid } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Box, Container, Grid } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import { LedeVideo } from '@components/LedeVideo';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { fetchVideoData } from '@store/actions/fetchVideoData';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { videoStyles, videoTheme } from './Video.styles';
 import { VideoHeader } from './components/VideoHeader';
@@ -29,14 +28,9 @@ export const Video = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const classes = videoStyles({});
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
-
+  const data = getDataByResource(state, type, id);
   const { metatags, title, description } = data;
+  const { cx } = videoStyles();
 
   // CTA data.
   const ctaInlineEnd = getCtaRegionData(
@@ -52,19 +46,12 @@ export const Video = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Video', { props }]];
 
-  useEffect(() => {
-    if (!data.complete) {
-      (async () => {
-        // Get content data.
-        await store.dispatch<any>(fetchVideoData(id));
-        data = getDataByResource(state, type, id);
-      })();
-    }
-
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, [id]);
+    },
+    [unsub]
+  );
 
   return (
     <ThemeProvider theme={videoTheme}>
@@ -80,7 +67,7 @@ export const Video = () => {
           <Grid item xs={12}>
             <VideoHeader data={data} />
             <LedeVideo data={data} />
-            <Box className={classes.body} my={2}>
+            <Box className={cx('body')} my={2}>
               <HtmlContent html={description} />
             </Box>
             {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}

@@ -6,9 +6,8 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import classNames from 'classnames/bind';
 import { UrlWithParsedQuery } from 'url';
-import { Link as MuiLink, LinkProps } from '@material-ui/core';
+import { Link as MuiLink, LinkProps } from '@mui/material';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   generateLinkHrefForContent,
@@ -32,8 +31,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
     const { title, audioTitle } = data || ({} as IPriApiResource);
     const props = generateLinkPropsForContent(data, query);
     const { href, as: alias } = props || {};
-    const classes = contentLinkStyles({});
-    const cx = classNames.bind(classes);
+    const { classes, cx } = contentLinkStyles();
 
     useEffect(() => {
       const handleRouteChangeStart = (url: string) => {
@@ -52,10 +50,10 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
         router.events.off('routeChangeComplete', handleRouteChangeEnd);
         router.events.off('routeChangeError', handleRouteChangeEnd);
       };
-    }, []);
+    }, [pathname, router.events]);
 
     return href ? (
-      <Link href={href} as={alias} passHref>
+      <Link href={href} as={alias} passHref legacyBehavior>
         <MuiLink
           ref={ref}
           component="a"
@@ -69,7 +67,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
         </MuiLink>
       </Link>
     ) : (
-      <>{children || audioTitle || title}</>
+      children || audioTitle || title
     );
   }
 );

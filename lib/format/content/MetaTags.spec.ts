@@ -1,4 +1,4 @@
-import { sanitizeContent } from './MetaTags';
+import { sanitizeContent } from './sanitizeContent';
 
 describe('Components/MetaTags', () => {
   describe('sanitizeContent', () => {
