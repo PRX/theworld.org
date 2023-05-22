@@ -3,8 +3,8 @@
  * Handler functions for routing to content.
  */
 
+import type { IContent } from '@interfaces';
 import { parse, UrlWithParsedQuery } from 'url';
-import { IPriApiResource } from 'pri-api-library/types';
 
 /**
  * Helper function to convert API data object for use in app relative aliased
@@ -20,35 +20,33 @@ import { IPriApiResource } from 'pri-api-library/types';
  *    Canonical URL for the resource.
  */
 export const generateLinkHrefForContent = (
-  data: IPriApiResource,
+  data: IContent,
   parseUrl?: boolean
 ): string | UrlWithParsedQuery => {
-  const { metatags } = data || ({} as IPriApiResource);
-  const { canonical } = metatags || {};
-  const href =
-    canonical && parseUrl ? parse(canonical as string, true) : canonical;
+  const { link } = data || ({} as typeof data);
+  const href = link && parseUrl ? parse(link, true) : link;
 
   return href;
 };
 
 export const generateLinkPropsForContent = (
-  data: IPriApiResource,
+  data: IContent,
   query?: { [k: string]: string }
-): { href: UrlWithParsedQuery; as: UrlWithParsedQuery } => {
-  const url = generateLinkHrefForContent(data, true) as UrlWithParsedQuery;
+) => {
+  const url = parse(data.link, true);
 
-  if (url) {
+  if (url?.pathname) {
     const alias = {
       ...parse(url.pathname),
       ...(query && { query })
-    };
+    } as UrlWithParsedQuery;
     const href = {
       ...parse('/[...alias]'),
       query: {
-        alias: alias.pathname.substr(1).split('/'),
+        alias: alias.pathname?.replace(/^\//, '').split('/'),
         ...query
       }
-    };
+    } as UrlWithParsedQuery;
 
     return {
       href,

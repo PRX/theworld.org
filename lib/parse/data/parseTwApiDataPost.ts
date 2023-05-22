@@ -11,8 +11,8 @@ import type { IPost } from '@interfaces';
 import { parseTwApiDataImage } from './parseTwApiDataImage';
 
 export interface TwApiPost extends WPRestApiPost {
-  yeost_head?: string;
-  yeost_head_json?: { [k: string]: any };
+  yoast_head?: string;
+  yoast_head_json?: { [k: string]: any };
 }
 
 export function parseTwApiDataPost(data: TwApiPost) {
@@ -27,8 +27,8 @@ export function parseTwApiDataPost(data: TwApiPost) {
     featured_media: image,
     categories,
     tags,
-    yeost_head: yeostHead,
-    yeost_head_json: yeostHeadJson,
+    yoast_head: yoastHead,
+    yoast_head_json: yoastHeadJson,
     _embedded: embedded
   } = data;
   const { 'wp:featuredmedia': embeddedFeaturedMedia } = embedded ?? {};
@@ -47,13 +47,15 @@ export function parseTwApiDataPost(data: TwApiPost) {
     }),
     ...(categories && { categories }),
     ...(tags && { tags }),
-    ...(yeostHead && { metatagsHtml: yeostHead }),
-    ...(yeostHeadJson && { metatags: yeostHeadJson }),
+    ...(yoastHead && { metatagsHtml: yoastHead }),
+    ...(yoastHeadJson && { metatags: { ...yoastHeadJson, canonical: link } }),
     // Flatten rich content props.
     ...(title && { title: title.rendered }),
     ...(excerpt && { subhead: excerpt.rendered }),
     ...(content && { body: content.rendered })
   } as IPost;
+
+  console.log(result);
 
   return result;
 }

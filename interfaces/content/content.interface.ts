@@ -11,7 +11,7 @@ import { IPriApiResource } from 'pri-api-library/types';
 
 export interface FetchDataFunc {
   // eslint-disable-next-line no-unused-vars
-  (id: string, req: IncomingMessage): ThunkAction<void, {}, {}, AnyAction>;
+  (id: number, req: IncomingMessage): ThunkAction<void, {}, {}, AnyAction>;
 }
 
 export interface IContentComponent extends FunctionComponent {
@@ -19,18 +19,25 @@ export interface IContentComponent extends FunctionComponent {
 }
 
 export interface IContentComponentProps {
-  id: string;
+  id: number;
   data: IPriApiResource;
 }
 
 export interface IContentComponentProxyProps {
   type?: string;
-  id?: string;
+  id?: number;
   errorCode?: number;
   redirect?: string;
 }
 
 export interface IContentContext {
   type: string;
-  id?: string;
+  id?: number;
+}
+
+export interface IContent {
+  id: number;
+  type: string;
+  link: string;
+  [k: string]: any;
 }

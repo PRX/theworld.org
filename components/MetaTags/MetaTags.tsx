@@ -11,7 +11,13 @@ import { TwitterCard } from '@components/TwitterCard';
 import { sanitizeContent } from '@lib/format/content/sanitizeContent';
 
 export interface IMetaTags {
-  [k: string]: string;
+  og_image: {
+    width: number;
+    height: number;
+    url: string;
+    type: string;
+  }[];
+  [k: string]: any;
 }
 
 export interface IMetaTagsProps {
@@ -19,47 +25,43 @@ export interface IMetaTagsProps {
 }
 
 export const MetaTags = ({ data }: IMetaTagsProps) => {
+  console.log(data);
   const {
     title,
     description,
     canonical,
-    'og:title': ogTitle,
-    'og:description': ogDescription,
-    'og:type': ogType,
-    'og:image': ogImage,
-    'og:image:width': ogImageWidth,
-    'og:image:height': ogImageHeight,
-    'twitter:title': twTitle,
-    'twitter:description': twDescription,
-    'twitter:card': twCard,
-    'twitter:image': twImage,
+    og_title: ogTitle,
+    og_description: ogDescription,
+    og_type: ogType,
+    og_image: ogImage,
+    twitter_card: twCard,
+    twitter_misc: twImage,
     ...metaOther
   } = data;
   const urlCanonical = parse(canonical);
-  const hostname = process.env.NEXT_PUBLIC_VERCEL_URL || 'theworld.org';
+  const hostname = 'theworld.org';
   const pageUrl = `https://${hostname}${urlCanonical.pathname}`;
   const defaultImage = {
-    src:
-      'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg',
+    src: 'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg',
     width: 3000,
     height: 3000
   };
   const ogProps = {
     title: ogTitle,
-    description: sanitizeContent(ogDescription),
+    description: ogDescription,
     url: pageUrl,
     type: ogType,
-    image: ogImage
+    image: ogImage?.[0]
       ? {
-          src: ogImage,
-          ...(ogImageWidth && { width: parseInt(ogImageWidth, 10) }),
-          ...(ogImageHeight && { height: parseInt(ogImageHeight, 10) })
+          src: ogImage[0].url,
+          width: ogImage[0].width,
+          height: ogImage[0].height
         }
       : defaultImage
   };
   const twProps = {
-    title: twTitle,
-    description: sanitizeContent(twDescription),
+    title: ogTitle,
+    description: ogDescription,
     url: pageUrl,
     type: twCard,
     image: twImage ? { src: twImage } : defaultImage
@@ -93,7 +95,7 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
       <link rel="canonical" href={pageUrl} />
       <OpenGraph {...ogProps} />
       <TwitterCard {...twProps} />
-      {renderMetaOther()}
+      {/* {renderMetaOther()} */}
     </Head>
   );
 };

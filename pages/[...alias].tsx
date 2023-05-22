@@ -45,34 +45,34 @@ const ContentProxy = ({ type }: Props) => {
     case 'file--videos':
       return <DynamicVideo />;
 
-    case 'episode':
+    case 'post--episode':
     case 'node--episodes':
       return <DynamicEpisode />;
 
     case 'node--newsletter_sign_ups':
       return <DynamicNewsletter />;
 
-    case 'page':
+    case 'post--page':
     case 'node--pages':
       return <DynamicPage />;
 
-    case 'contributor':
+    case 'term--contributor':
     case 'node--people':
       return <DynamicBio />;
 
-    case 'program':
+    case 'term--program':
     case 'node--programs':
       return <DynamicProgram />;
 
-    case 'post':
+    case 'post--story':
     case 'node--stories':
       return <DynamicStory />;
 
-    case 'category':
+    case 'term--category':
     case 'taxonomy_term--categories':
       return <DynamicCategory />;
 
-    case 'term':
+    case 'term--tag':
     case 'taxonomy_term--terms':
       return <DynamicTerm />;
 

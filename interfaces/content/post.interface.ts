@@ -3,13 +3,11 @@
  */
 
 import type { ICategory } from './category.interface';
+import type { IContent } from './content.interface';
 import type { IImage } from './image.interface';
 import type { ITerm } from './term.interface';
 
-export interface IPost {
-  id: number;
-  type: string;
-  link: string;
+export interface IPost extends IContent {
   datePublished: string;
   title: string;
   subhead: string;

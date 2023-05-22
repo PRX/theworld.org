@@ -3,12 +3,15 @@
  * Component for links to content page.
  */
 
-import React, { forwardRef, useEffect, useState } from 'react';
+import type React from 'react';
+import type { LinkProps } from '@mui/material';
+import type { IPriApiResource } from 'pri-api-library/types';
+import type { IContent } from '@interfaces';
+import { forwardRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { UrlWithParsedQuery } from 'url';
-import { Link as MuiLink, LinkProps } from '@mui/material';
-import { IPriApiResource } from 'pri-api-library/types';
+import { Link as MuiLink } from '@mui/material';
 import {
   generateLinkHrefForContent,
   generateLinkPropsForContent
@@ -16,7 +19,7 @@ import {
 import { contentLinkStyles } from './ContentLink.styles';
 
 export interface IContentLinkProps extends LinkProps {
-  data: IPriApiResource;
+  data: IContent;
   query?: { [k: string]: string };
 }
 
@@ -29,6 +32,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
     const { pathname } =
       (generateLinkHrefForContent(data, true) as UrlWithParsedQuery) || {};
     const { title, audioTitle } = data || ({} as IPriApiResource);
+    console.log(data);
     const props = generateLinkPropsForContent(data, query);
     const { href, as: alias } = props || {};
     const { classes, cx } = contentLinkStyles();

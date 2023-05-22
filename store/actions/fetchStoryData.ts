@@ -20,7 +20,7 @@ import {
   fetchTwApiStory
 } from '@lib/fetch';
 import { getCollectionData, getDataByResource } from '@store/reducers';
-import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
+// import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 import { appendResourceCollection } from './appendResourceCollection';
 
 export const decorateWithBylines = (story: IPriApiResource) => {
@@ -78,12 +78,12 @@ export const fetchStoryData =
         .then((resp) => resp && resp.data)
         .then((story) => story && decorateWithBylines(story));
 
-      const ctaDataPromise = dispatch<any>(
-        fetchCtaRegionGroupData('tw_cta_regions_content')
-      );
+      // const ctaDataPromise = dispatch<any>(
+      //   fetchCtaRegionGroupData('tw_cta_regions_content')
+      // );
 
       data = await dataPromise;
-      await ctaDataPromise;
+      // await ctaDataPromise;
 
       // Set CTA filter props.
       dispatch({

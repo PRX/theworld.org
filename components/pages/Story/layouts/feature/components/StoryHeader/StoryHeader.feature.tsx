@@ -3,16 +3,17 @@
  * Component for sidebar elements.
  */
 
-import React from 'react';
+import type React from 'react';
+import type { IPriApiResource } from 'pri-api-library/types';
+import type { IContent } from '@interfaces';
+import type { IContentLinkProps } from '@components/ContentLink';
+import type { IAudioControlsProps } from '@components/Player/components';
+import type { IAudioData } from '@components/Player/types';
 import Image from 'next/legacy/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@mui/material';
-import { IContentLinkProps } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
-import { IAudioControlsProps } from '@components/Player/components';
-import { IAudioData } from '@components/Player/types';
 import {
   storyHeaderStyles,
   storyHeaderTheme
@@ -94,8 +95,11 @@ export const StoryHeader = ({ data }: Props) => {
             </Box>
             <Box mb={2} display="flex" alignItems="center">
               <Box className={classes.info} flexGrow={1}>
-                {program && (
-                  <ContentLink data={program} className={classes.programLink} />
+                {program?.[0] && (
+                  <ContentLink
+                    data={program[0]}
+                    className={classes.programLink}
+                  />
                 )}
                 {(dateBroadcast || datePublished) && (
                   <Typography
@@ -106,7 +110,6 @@ export const StoryHeader = ({ data }: Props) => {
                     <Moment
                       format="MMMM D, YYYY · h:mm A z"
                       tz="America/New_York"
-                      unix
                     >
                       {dateBroadcast || datePublished}
                     </Moment>
@@ -123,7 +126,6 @@ export const StoryHeader = ({ data }: Props) => {
                     <Moment
                       format="MMM. D, YYYY · h:mm A z"
                       tz="America/New_York"
-                      unix
                     >
                       {dateUpdated}
                     </Moment>
@@ -135,7 +137,7 @@ export const StoryHeader = ({ data }: Props) => {
                       <li className={classes.bylineItem} key={creditTitle}>
                         {creditTitle}{' '}
                         <Box className={classes.bylinePeople} component="span">
-                          {people.map((person: IPriApiResource) => (
+                          {people.map((person: IContent) => (
                             <Box
                               className={classes.bylinePerson}
                               component="span"

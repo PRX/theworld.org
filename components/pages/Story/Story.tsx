@@ -38,7 +38,7 @@ export const Story = () => {
   const metatags = {
     ...dataMetatags,
     ...((dateBroadcast || datePublished) && {
-      pubdate: parseUtcDate((dateBroadcast || datePublished) * 1000).join('-')
+      pubdate: dateBroadcast || datePublished
     })
   };
   const LayoutComponent =
