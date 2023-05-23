@@ -4,6 +4,7 @@
  */
 
 import { createTheme, Theme } from '@mui/material/styles';
+import { montserrat } from '@theme/fonts';
 import { makeStyles } from 'tss-react/mui';
 
 export const appSearchTheme = (theme: Theme) =>
@@ -45,8 +46,7 @@ export const appSearchTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             fontSize: 'clamp(2rem, 10vw, 3rem)',
-            fontFamily:
-              '"Montserrat","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+            fontFamily: montserrat.style.fontFamily,
             fontWeight: theme.typography.fontWeightBold
           }
         }
@@ -55,8 +55,7 @@ export const appSearchTheme = (theme: Theme) =>
         styleOverrides: {
           root: {
             fontSize: 'clamp(3rem, 10vw, 3rem)',
-            fontFamily:
-              '"Montserrat","Source Sans Pro","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+            fontFamily: montserrat.style.fontFamily,
             whiteSpace: 'nowrap'
           },
           formControl: {

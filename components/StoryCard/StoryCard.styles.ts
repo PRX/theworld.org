@@ -4,9 +4,10 @@
  */
 
 import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { openSans } from '@theme/fonts';
 import { makeStyles } from 'tss-react/mui';
 
-export const useStoryCardStyles = makeStyles()(theme => ({
+export const useStoryCardStyles = makeStyles()((theme) => ({
   root: {
     '& > * + *': {
       display: 'grid',
@@ -33,8 +34,7 @@ export const useStoryCardStyles = makeStyles()(theme => ({
     position: 'relative',
     alignItems: 'center',
     zIndex: 1,
-    fontFamily:
-      '"Open Sans","Helvetica Neue",Helvetica,Arial,"Nimbus Sans L",sans-serif',
+    fontFamily: openSans.style.fontFamily,
     letterSpacing: 'unset',
     textTransform: 'unset'
   },

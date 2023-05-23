@@ -5,6 +5,7 @@
 
 import { type Theme } from '@mui/material/styles';
 import { headingProps } from '@theme/App.theme';
+import { alegreya } from '@theme/fonts';
 
 export const storyBodyTypography = (theme: Theme) => ({
   fontSize: '1.2rem',
@@ -63,7 +64,7 @@ export const storyBodyTypography = (theme: Theme) => ({
     '&.pullquote': {
       background: 'none',
       color: theme.palette.primary.dark,
-      fontFamily: '"Alegreya", serif',
+      fontFamily: alegreya.style.fontFamily,
       fontSize: '1.5rem',
       textAlign: 'center',
       '& p': {
@@ -79,7 +80,7 @@ export const storyBodyTypography = (theme: Theme) => ({
   '& [gp-pullquote]': {
     padding: theme.typography.pxToRem(24),
     color: theme.palette.primary.dark,
-    fontFamily: '"Alegreya", serif',
+    fontFamily: alegreya.style.fontFamily,
     fontSize: '1.5rem',
     textAlign: 'center'
   },
