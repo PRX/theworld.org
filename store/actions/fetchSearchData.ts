@@ -85,14 +85,14 @@ export const fetchSearchData =
               ] => [id as string, funcMap.get(type)]
             )
             .filter(([, func]) => !!func)
-            .map(([id, func]) => dispatch<any>(func(id)));
+            .map(async ([id, func]) => dispatch<any>(func(id)));
 
           await Promise.all(reqs);
 
           return { label: l, data };
         });
 
-        return dataRequests;
+        return Promise.all(dataRequests);
       }
     );
 

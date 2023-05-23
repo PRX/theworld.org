@@ -176,8 +176,8 @@ const TwApp = ({
                   <AppLayout>
                     <AnyComponent {...pageProps} />
                   </AppLayout>
+                  <AppSearch />
                 </Player>
-                <AppSearch />
               </AppContext.Provider>
               <CssBaseline />
             </ThemeProvider>
