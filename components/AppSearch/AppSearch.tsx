@@ -155,6 +155,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
           className={classes.query}
           label="I am looking for&hellip;"
           size="medium"
+          variant="standard"
           fullWidth
           defaultValue={query}
           {...(staticPage && {
@@ -162,7 +163,15 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
               shrink: !!query?.length || !!queryRef.current?.value?.length
             }
           })}
+          InputLabelProps={{
+            classes: {
+              root: classes.MuiInputLabelRoot,
+              formControl: classes.MuiInputLabelFormControl,
+              shrink: classes.MuiInputLabelShrink
+            }
+          }}
           InputProps={{
+            classes: { root: classes.MuiInputRoot },
             endAdornment: !isLoading ? (
               <InputAdornment position="end">
                 <IconButton
@@ -179,7 +188,11 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
         />
       </Box>
       {hasData && (
-        <AppBar position="static" color="transparent">
+        <AppBar
+          classes={{ root: classes.facetAppBarRoot }}
+          position="static"
+          color="transparent"
+        >
           <Container fixed>
             <TabList
               indicatorColor="primary"
@@ -313,7 +326,10 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
               </Toolbar>
             </AppBar>
             {renderSearchForm()}
-            <DialogContent ref={dialogContentRef}>
+            <DialogContent
+              ref={dialogContentRef}
+              classes={{ root: classes.MuiDialogContentRoot }}
+            >
               {renderSearchResults()}
             </DialogContent>
           </TabContext>
