@@ -6,8 +6,7 @@
 import React from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
-import classNames from 'classnames/bind';
+import Image from 'next/legacy/image';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -18,9 +17,9 @@ import {
   CardMedia,
   ListSubheader,
   Typography
-} from '@material-ui/core';
-import { EqualizerRounded } from '@material-ui/icons';
-import { ThemeProvider } from '@material-ui/core/styles';
+} from '@mui/material';
+import { EqualizerRounded } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
 import { IAudioControlsProps } from '@components/Player/components';
@@ -36,7 +35,6 @@ const AudioControls = dynamic(() =>
 
 export interface EpisodeCardProps {
   data: IPriApiResource;
-  label?: string;
   priority?: boolean;
 }
 
@@ -49,8 +47,7 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
     linkResource: data
   } as Partial<IAudioData>;
   const { segments } = audio || {};
-  const classes = episodeCardStyles({});
-  const cx = classNames.bind(classes);
+  const { classes } = episodeCardStyles();
   const imageWidth = [
     ['max-width: 600px', '100vw'],
     ['max-width: 960px', '568px'],
@@ -60,10 +57,10 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
 
   return (
     <ThemeProvider theme={episodeCardTheme}>
-      <Card square elevation={1}>
+      <Card square elevation={1} classes={{ root: classes.MuiCardRoot }}>
         <CardActionArea component="div">
           {image && (
-            <CardMedia>
+            <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
               <Image
                 src={image.url}
                 alt={image.alt}
@@ -74,7 +71,7 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
               />
             </CardMedia>
           )}
-          <CardContent>
+          <CardContent classes={{ root: classes.MuiCardContentRoot }}>
             <Box className={classes.heading}>
               <Box>
                 <Typography component="span">
@@ -90,7 +87,7 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
                   variant="h5"
                   component="h2"
                   gutterBottom
-                  className={cx('title')}
+                  className={classes.title}
                 >
                   {title}
                 </Typography>
@@ -102,19 +99,23 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
               )}
             </Box>
             <Typography variant="body1" component="div" color="textSecondary">
-              <Box className={cx('body')}>
+              <Box className={classes.body}>
                 <HtmlContent html={teaser} />
               </Box>
             </Typography>
-            <ContentLink data={data} className={cx('link')} />
+            <ContentLink data={data} className={classes.link} />
           </CardContent>
         </CardActionArea>
         {segments && (
-          <CardActions>
+          <CardActions classes={{ root: classes.MuiCardActionsRoot }}>
             <SidebarAudioList
               data={segments}
+              classes={{
+                root: classes.MuiListRoot,
+                padding: classes.MuiListPadding
+              }}
               subheader={
-                <ListSubheader component="header" className={cx('header')}>
+                <ListSubheader component="header" className={classes.header}>
                   <Typography variant="h2">
                     <EqualizerRounded /> In this episode:
                   </Typography>

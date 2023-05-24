@@ -3,15 +3,12 @@
  * Styles for NewsletterForm.
  */
 
-import {
-  createMuiTheme,
-  Theme,
-  makeStyles,
-  createStyles
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const newsletterFormTheme = (theme: Theme) => {
-  const tempTheme = createMuiTheme(theme, {
+  const tempTheme = createTheme({
+    ...theme,
     palette: {
       primary: {
         ...theme.palette.success,
@@ -20,37 +17,44 @@ export const newsletterFormTheme = (theme: Theme) => {
     }
   });
 
-  return createMuiTheme(tempTheme, {
-    overrides: {
+  return createTheme({
+    ...tempTheme,
+    components: {
       MuiInputBase: {
-        root: {
-          color: theme.palette.grey[700]
+        styleOverrides: {
+          root: {
+            color: theme.palette.grey[700]
+          }
         }
       },
       MuiInputLabel: {
-        root: {
-          color: theme.palette.grey[700]
+        styleOverrides: {
+          root: {
+            color: theme.palette.grey[700]
+          }
         }
       },
       MuiButton: {
-        containedPrimary: {
-          [theme.breakpoints.down('xs')]: {
-            width: '100%'
+        styleOverrides: {
+          containedPrimary: {
+            [theme.breakpoints.down('xs')]: {
+              width: '100%'
+            },
+            '&:hover': {
+              backgroundColor: tempTheme.palette.primary.dark
+            }
           },
-          '&:hover': {
-            backgroundColor: tempTheme.palette.primary.dark
+          contained: {
+            whiteSpace: 'nowrap'
           }
-        },
-        label: {
-          whiteSpace: 'nowrap'
         }
       }
     }
   });
 };
 
-export const newsletterFormStyles = makeStyles((theme: Theme) =>
-  createStyles({
+export const newsletterFormStyles = makeStyles<{ compact: boolean }>()(
+  (theme, { compact }) => ({
     root: {
       flexGrow: 1,
       textAlign: 'initial',
@@ -67,24 +71,23 @@ export const newsletterFormStyles = makeStyles((theme: Theme) =>
         }
       }
     },
+
     layout: {
       display: 'grid',
       gridTemplateColumns: '1fr min-content',
       alignItems: 'center',
-      gridGap: ({ compact }: { compact: boolean }) =>
-        `${theme.spacing(compact ? 1 : 2)}px`,
+      gridGap: theme.spacing(compact ? 1 : 2),
       [theme.breakpoints.down('xs')]: {
-        gridTemplateColumns: ({ compact }: { compact: boolean }) =>
-          compact ? '1fr min-content' : '1fr',
+        gridTemplateColumns: compact ? '1fr min-content' : '1fr',
         justifyContent: 'stretch'
       }
     },
+
     optin: {
       gridColumn: '1 / -1',
-      marginTop: ({ compact }: { compact: boolean }) =>
-        `-${theme.spacing(compact ? 1 : 2)}px`,
+      marginTop: `-${theme.spacing(compact ? 1 : 2)}`,
       [theme.breakpoints.down('xs')]: {
-        paddingTop: `${theme.spacing(1)}px`
+        paddingTop: theme.spacing(1)
       }
     }
   })

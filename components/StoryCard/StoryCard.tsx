@@ -6,10 +6,9 @@
 import React, { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
 import { parse, UrlWithParsedQuery } from 'url';
-import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
@@ -22,12 +21,12 @@ import {
   LinearProgress,
   Link as MuiLink,
   List,
-  ListItem,
   ListItemText,
-  Typography
-} from '@material-ui/core';
-import { Label } from '@material-ui/icons';
-import { ThemeProvider } from '@material-ui/core/styles';
+  Typography,
+  ListItemButton
+} from '@mui/material';
+import { Label } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
 import { IAudioControlsProps } from '@components/Player/components';
 import { IAudioData } from '@components/Player/types';
@@ -76,8 +75,7 @@ export const StoryCard = ({
     data,
     true
   ) as UrlWithParsedQuery;
-  const classes = useStoryCardStyles({ isLoading });
-  const cx = classNames.bind(classes);
+  const { classes, cx } = useStoryCardStyles();
   const imageWidth = [
     ['max-width: 600px', '100vw'],
     ['max-width: 960px', '552px'],
@@ -100,9 +98,9 @@ export const StoryCard = ({
         };
 
     return (
-      <ListItem button component={LinkComponent} key={url} {...other}>
+      <ListItemButton component={LinkComponent} key={url} {...other}>
         <ListItemText>{linkTitle}</ListItemText>
-      </ListItem>
+      </ListItemButton>
     );
   };
 
@@ -123,7 +121,7 @@ export const StoryCard = ({
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [pathname, router.events]);
 
   return (
     <ThemeProvider theme={storyCardTheme}>
@@ -131,9 +129,9 @@ export const StoryCard = ({
         square
         elevation={1}
         className={cx({
-          [classes.feature]: feature || !image,
-          [classes.short]: short,
-          [classes.isLoading]: isLoading
+          feature: feature || !image,
+          short,
+          isLoading
         })}
       >
         <CardActionArea
@@ -170,9 +168,9 @@ export const StoryCard = ({
                 </Typography>
                 <Grid
                   container
-                  justify="flex-start"
+                  justifyContent="flex-start"
                   spacing={1}
-                  style={{ marginBottom: 0 }}
+                  // style={{ marginBottom: 0 }}
                 >
                   <Grid item xs="auto" zeroMinWidth>
                     <Typography component="span">
@@ -183,8 +181,12 @@ export const StoryCard = ({
                   </Grid>
                   {primaryCategory && (
                     <Grid item xs="auto" zeroMinWidth>
-                      <Typography variant="overline" noWrap>
-                        <Label color="secondary" className={cx('labelIcon')} />
+                      <Typography
+                        variant="overline"
+                        noWrap
+                        className={classes.primaryCategory}
+                      >
+                        <Label color="secondary" />
                         <ContentLink data={primaryCategory}>
                           {primaryCategory.title}
                         </ContentLink>
@@ -203,7 +205,7 @@ export const StoryCard = ({
               {teaser}
             </Typography>
           </CardContent>
-          <ContentLink data={data} className={cx('link')} />
+          <ContentLink data={data} className={classes.link} />
         </CardActionArea>
         {feature && !!(crossLinks && crossLinks.length) && (
           <CardActions>

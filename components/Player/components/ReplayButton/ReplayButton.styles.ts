@@ -3,13 +3,12 @@
  * Styles and theme for ReplayButton.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const useReplayButtonStyles = makeStyles(() =>
-  createStyles({
-    root: {},
-    iconRoot: {
-      fontSize: 'inherit'
-    }
-  })
-);
+export const useReplayButtonStyles = makeStyles()(() => ({
+  root: {},
+
+  iconRoot: {
+    fontSize: 'inherit'
+  }
+}));

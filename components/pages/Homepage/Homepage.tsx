@@ -6,8 +6,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Hidden, Typography } from '@material-ui/core';
-import StyleRounded from '@material-ui/icons/StyleRounded';
+import { Box, Hidden, Typography } from '@mui/material';
+import StyleRounded from '@mui/icons-material/StyleRounded';
 import { LandingPage } from '@components/LandingPage';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible } from '@components/Plausible';
@@ -55,25 +55,13 @@ export const Homepage = () => {
     undefined,
     'featured story'
   );
-  const featuredStory = featuredStoryState.items[1][0];
-  const { items: featuredStories } = getCollectionData(
-    state,
-    'homepage',
-    undefined,
-    'featured stories'
-  );
-  const { items: stories } = getCollectionData(
-    state,
-    'homepage',
-    undefined,
-    'stories'
-  );
-  const { items: latestStories } = getCollectionData(
-    state,
-    'homepage',
-    undefined,
-    'latest'
-  );
+  const featuredStory = featuredStoryState?.items[1][0];
+  const { items: featuredStories } =
+    getCollectionData(state, 'homepage', undefined, 'featured stories') || {};
+  const { items: stories } =
+    getCollectionData(state, 'homepage', undefined, 'stories') || {};
+  const { items: latestStories } =
+    getCollectionData(state, 'homepage', undefined, 'latest') || {};
   const episodesState = getCollectionData(
     state,
     'homepage',
@@ -81,7 +69,7 @@ export const Homepage = () => {
     'episodes'
   );
   const latestEpisode =
-    episodesState.count > 0 && episodesState.items[1].shift();
+    episodesState?.count > 0 && episodesState.items[1].shift();
   const drawerMainNav = getMenusData(state, 'drawerMainNav');
   const categoriesMenu = drawerMainNav
     ?.filter((item: IButton) => item.name === 'Categories')?.[0]
@@ -128,9 +116,9 @@ export const Homepage = () => {
       key: 'main top',
       children: (
         <>
-          <Box display="grid" gridTemplateColumns="1fr" gridGap={8}>
+          <Box display="grid" gridTemplateColumns="1fr" gap={1}>
             <StoryCard data={featuredStory} feature priority />
-            <StoryCardGrid data={featuredStories[1]} gridGap={8} />
+            <StoryCardGrid data={featuredStories[1]} gap={1} />
           </Box>
           {inlineTop && (
             <>
@@ -205,9 +193,8 @@ export const Homepage = () => {
           {categoriesMenu && (
             <Sidebar item elevated>
               <SidebarHeader>
-                <Typography variant="h2">
-                  <StyleRounded /> Categories
-                </Typography>
+                <StyleRounded />
+                <Typography variant="h2">Categories</Typography>
               </SidebarHeader>
               <SidebarList data={categoriesMenu} />
             </Sidebar>
@@ -227,11 +214,12 @@ export const Homepage = () => {
     }
   ];
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   const title = 'The World from PRX';
   const description =
@@ -267,7 +255,7 @@ export const Homepage = () => {
         main={mainElements}
         sidebar={sidebarElements}
         mt={3}
-        gridGap={8}
+        gap={1}
       />
     </>
   );

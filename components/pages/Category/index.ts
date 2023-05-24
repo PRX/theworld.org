@@ -1,2 +1,3 @@
+/* eslint-disable no-restricted-exports */
 export * from './Category';
-export { Category as default } from './Category'; // eslint-disable-line import/no-default-export
+export { Category as default } from './Category';

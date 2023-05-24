@@ -4,7 +4,6 @@
  */
 
 import React, { ChangeEvent, FormEvent, useState, HTMLAttributes } from 'react';
-import classNames from 'classnames/bind';
 import {
   Box,
   Button,
@@ -14,9 +13,9 @@ import {
   FormControlLabel,
   TextField,
   ThemeProvider
-} from '@material-ui/core';
+} from '@mui/material';
 import { useAmp } from 'next/amp';
-import { SendSharp } from '@material-ui/icons';
+import { SendSharp } from '@mui/icons-material';
 import { INewsletterOptions, INewsletterData } from '@interfaces/newsletter';
 import { postNewsletterSubscription } from '@lib/fetch/api';
 import { validateEmailAddress } from '@lib/validate';
@@ -53,8 +52,7 @@ export const NewsletterForm = ({
     <CircularProgress color="inherit" size={20} aria-label="Progress Bar" />
   )) || <SendSharp />;
   const isAmp = useAmp();
-  const classes = newsletterFormStyles({ compact });
-  const cx = classNames.bind(classes);
+  const { classes, cx } = newsletterFormStyles({ compact });
 
   const handleChangeEmailAddress = (e: ChangeEvent<HTMLInputElement>) => {
     setData({
@@ -102,12 +100,12 @@ export const NewsletterForm = ({
   return (
     <ThemeProvider theme={newsletterFormTheme}>
       <form
-        className={cx(className, 'root')}
+        className={cx(className, classes.root)}
         onSubmit={handleSubmit}
         noValidate
         autoComplete="off"
       >
-        <Box className={cx('layout')}>
+        <Box className={classes.layout}>
           <Box>
             <TextField
               type="email"
@@ -147,7 +145,7 @@ export const NewsletterForm = ({
               </Button>
             )}
           </Box>
-          <Box className={cx('optin')}>
+          <Box className={classes.optin}>
             <FormControlLabel
               control={
                 <Checkbox

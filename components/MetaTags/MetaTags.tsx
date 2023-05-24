@@ -8,6 +8,7 @@ import { parse } from 'url';
 import Head from 'next/head';
 import { OpenGraph } from '@components/OpenGraph';
 import { TwitterCard } from '@components/TwitterCard';
+import { sanitizeContent } from '@lib/format/content/sanitizeContent';
 
 export interface IMetaTags {
   [k: string]: string;
@@ -16,9 +17,6 @@ export interface IMetaTags {
 export interface IMetaTagsProps {
   data: IMetaTags;
 }
-
-export const sanitizeContent = (content: string) =>
-  content?.replace(/<[^>]+>/g, '');
 
 export const MetaTags = ({ data }: IMetaTagsProps) => {
   const {
@@ -41,8 +39,7 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
   const hostname = process.env.NEXT_PUBLIC_VERCEL_URL || 'theworld.org';
   const pageUrl = `https://${hostname}${urlCanonical.pathname}`;
   const defaultImage = {
-    src:
-      'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg',
+    src: 'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg',
     width: 3000,
     height: 3000
   };

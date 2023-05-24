@@ -7,8 +7,5 @@
 import { PriApiResourceResponse } from 'pri-api-library/types';
 import { fetchPriApiItem } from '../api/fetchPriApi';
 
-export const fetchPage = async (
-  id: string
-): Promise<PriApiResourceResponse> => {
-  return fetchPriApiItem('node--pages', id, {});
-};
+export const fetchPage = async (id: string): Promise<PriApiResourceResponse> =>
+  fetchPriApiItem('node--pages', id, {});

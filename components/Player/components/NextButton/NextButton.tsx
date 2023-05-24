@@ -5,10 +5,10 @@
 
 import React, { useContext } from 'react';
 import clsx from 'clsx';
-import { IconButtonProps, Tooltip } from '@material-ui/core';
-import { SkipNextSharp } from '@material-ui/icons';
+import { IconButtonProps, Tooltip } from '@mui/material';
+import { SkipNextSharp } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { useNextButtonStyles } from './NextButton.styles';
 
 export interface INextButtonProps extends IconButtonProps {}
@@ -17,8 +17,8 @@ export const NextButton = ({ className, ...other }: INextButtonProps) => {
   const { nextTrack, state } = useContext(PlayerContext);
   const { currentTrackIndex, tracks } = state;
   const disabled = tracks ? currentTrackIndex === tracks.length - 1 : true;
-  const styles = useNextButtonStyles({});
-  const rootClassNames = clsx(className, styles.root);
+  const { classes: styles } = useNextButtonStyles();
+  const rootClassNames = clsx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };
@@ -35,6 +35,7 @@ export const NextButton = ({ className, ...other }: INextButtonProps) => {
         disabled={disabled}
         onClick={handleClick}
         disableRipple
+        {...(disabled && { component: 'span' })}
       >
         <SkipNextSharp classes={iconClasses} />
       </IconButton>

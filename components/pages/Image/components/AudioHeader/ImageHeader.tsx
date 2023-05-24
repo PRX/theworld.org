@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { imageHeaderStyles } from './ImageHeader.styles';
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
 
 export const ImageHeader = ({ data }: Props) => {
   const { title } = data;
-  const classes = imageHeaderStyles({});
+  const { classes } = imageHeaderStyles();
 
   return (
     <Box className={classes.root} mt={4} mb={2}>

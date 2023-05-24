@@ -3,34 +3,38 @@
  * Styles and theme for PlayerProgress.
  */
 
-import {
-  createStyles,
-  makeStyles,
-  fade,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
 const trackSize = 5;
 
-export const usePlayerProgressStyles = makeStyles((theme: Theme) =>
-  createStyles({
+export const usePlayerProgressStyles = makeStyles<void, 'root'>()(
+  (theme, _params, classes) => ({
     root: {
       display: 'grid',
       position: 'relative',
       height: theme.typography.pxToRem(trackSize),
-      backgroundColor: fade(theme.palette.background.paper, 0.3),
+      backgroundColor: alpha(theme.palette.background.paper, 0.3),
       cursor: 'pointer',
       '&::before': {
         content: "''",
+        transition: theme.transitions.create('width', {
+          duration: theme.transitions.duration.short,
+          easing: theme.transitions.easing.easeOut
+        }),
         position: 'absolute',
         top: 0,
         left: 0,
         width: 'calc(var(--loaded, 0) * 100%)',
         height: '100%',
-        backgroundColor: fade(theme.palette.secondary.light, 0.3)
+        backgroundColor: alpha(theme.palette.secondary.light, 0.3)
       },
       '&::after': {
         content: "''",
+        transition: theme.transitions.create('width', {
+          duration: theme.transitions.duration.short,
+          easing: theme.transitions.easing.sharp
+        }),
         position: 'absolute',
         top: 0,
         left: 0,
@@ -66,7 +70,7 @@ export const usePlayerProgressStyles = makeStyles((theme: Theme) =>
         transformOrigin: '0 0',
         transform: 'scale(0.3) translate(-30%, -70%)',
         opacity: 0,
-        paddingInline: theme.typography.pxToRem(theme.spacing(0.5)),
+        paddingInline: theme.typography.pxToRem(4),
         backgroundColor: theme.palette.secondary.main,
         border: `3px solid ${theme.palette.secondary.light}`,
         borderRadius: '3rem',
@@ -74,8 +78,8 @@ export const usePlayerProgressStyles = makeStyles((theme: Theme) =>
         color: theme.palette.secondary.contrastText,
         pointerEvents: 'none'
       },
-      '$root:hover &, $root[data-scrubbing] &': {
-        scale: 3,
+      [`.${classes.root}:hover &, .${classes.root}[data-scrubbing] &`]: {
+        scale: '3',
         boxShadow: theme.shadows[2],
         opacity: 0.9999,
         '&::before': {

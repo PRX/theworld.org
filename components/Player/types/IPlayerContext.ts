@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * @file interfaces/contexts/playerContext.interface.ts
  *

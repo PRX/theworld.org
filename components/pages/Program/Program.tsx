@@ -15,8 +15,8 @@ import {
   Hidden,
   Tab,
   Tabs
-} from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+} from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { LandingPage } from '@components/LandingPage';
@@ -58,7 +58,7 @@ export const Program = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const classes = programStyles({});
+  const { classes } = programStyles();
   const data = getDataByResource(state, type, id);
 
   // CTA data.
@@ -132,11 +132,12 @@ export const Program = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Page', { props }]];
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -145,7 +146,7 @@ export const Program = () => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [page, episodesPage]);
+  }, [page, episodesPage, oldScrollY]);
 
   const loadMoreStories = async () => {
     setLoadingStories(true);
@@ -192,18 +193,16 @@ export const Program = () => {
             </Box>
           )}
           {!isEpisodesView && (
-            <Box display="grid" gridGap={8}>
+            <Box display="grid" gap={1}>
               {featuredStory && (
                 <StoryCard data={featuredStory} feature priority />
               )}
               {featuredStories && (
-                <StoryCardGrid data={featuredStories[1]} gridGap={8} />
+                <StoryCardGrid data={featuredStories[1]} gap={1} />
               )}
             </Box>
           )}
-          {isEpisodesView && (
-            <EpisodeCard data={latestEpisode} label="Latest Episode" />
-          )}
+          {isEpisodesView && <EpisodeCard data={latestEpisode} />}
           {ctaInlineTop && (
             <>
               <Hidden xsDown>
@@ -393,7 +392,7 @@ export const Program = () => {
         main={mainElements}
         sidebar={sidebarElements}
         mt={3}
-        gridGap={8}
+        gap={1}
       />
     </ThemeProvider>
   );

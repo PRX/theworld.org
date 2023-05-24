@@ -4,12 +4,11 @@
  */
 
 import React from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';
-import classNames from 'classnames/bind';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
+import { Box, Container, Typography, ThemeProvider } from '@mui/material';
 import { IContentLinkProps } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
 import { IAudioControlsProps } from '@components/Player/components';
@@ -55,16 +54,16 @@ export const StoryHeader = ({ data }: Props) => {
   const hasCaption = caption && !!caption.length;
   const hasCredit = credit && !!credit.length;
   const hasFooter = hasCaption || hasCredit;
-  const classes = storyHeaderStyles({
-    hasAudio: !!audio
-  });
-  const cx = classNames.bind(classes);
+  const { classes, cx } = storyHeaderStyles();
 
   return (
     <ThemeProvider theme={storyHeaderTheme}>
-      <Box component="header" className={cx('root', { withImage: !!image })}>
+      <Box
+        component="header"
+        className={cx(classes.root, { [classes.withImage]: !!image })}
+      >
         {image && (
-          <Box className={cx('imageWrapper')}>
+          <Box className={classes.imageWrapper}>
             <Image
               alt={alt}
               className={cx('image')}
@@ -75,8 +74,8 @@ export const StoryHeader = ({ data }: Props) => {
             />
           </Box>
         )}
-        <Box className={cx('content')}>
-          <Container fixed className={cx('header')}>
+        <Box className={classes.content}>
+          <Container fixed className={classes.header}>
             {primaryCategory && (
               <Box mb={2}>
                 <ContentLink

@@ -12,7 +12,7 @@ import {
   Toolbar,
   Typography,
   ButtonProps
-} from '@material-ui/core';
+} from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 
@@ -42,7 +42,7 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
 
   return (
     <Box textAlign="center">
-      <Grid container justify="center" alignItems="center">
+      <Grid container justifyContent="center" alignItems="center">
         <Grid item sm={12} md={8}>
           {heading && <Typography variant="h2">{heading}</Typography>}
           {message && (

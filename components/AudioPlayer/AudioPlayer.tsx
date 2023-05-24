@@ -5,11 +5,9 @@
 
 import React, { useEffect, useReducer, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import ReactPlayer, { FileConfig, FilePlayerProps } from 'react-player/file';
-import { Box, IconButton, NoSsr } from '@material-ui/core';
-import { GetAppSharp, PlayArrowSharp } from '@material-ui/icons';
-import { ThemeProvider } from '@material-ui/core/styles';
-import classNames from 'classnames/bind';
+import ReactPlayer, { FilePlayerProps } from 'react-player/file';
+import { Box, IconButton, NoSsr } from '@mui/material';
+import { GetAppSharp, PlayArrowSharp } from '@mui/icons-material';
 import { IDurationProps } from '@components/Duration';
 import { formatDuration } from '@lib/parse/time';
 import { generateAudioDownloadFilename } from '@lib/parse/audio';
@@ -20,11 +18,9 @@ import {
   audioPlayerStateReducer,
   audioPlayerInitialState
 } from './AudioPlayer.reducer';
-import { audioPlayerStyles, audioPlayerTheme } from './AudioPlayer.styles';
+import { audioPlayerStyles } from './AudioPlayer.styles';
 import { IEmbedCodeProps } from './EmbedCode';
-import { ISliderValueLabelProps } from './SliderValueLabel';
 import { NoJsPlayer } from './NoJsPlayer';
-import { ReactPlayerProps } from 'react-player';
 
 const Duration = dynamic(() =>
   import('@components/Duration').then((mod) => mod.Duration)
@@ -34,38 +30,36 @@ const EmbedCode = dynamic(() =>
   import('./EmbedCode').then((mod) => mod.EmbedCode)
 ) as React.FC<IEmbedCodeProps>;
 
-const Slider = dynamic(() => import('@material-ui/core/Slider'));
+const Slider = dynamic(() => import('@mui/material/Slider'));
 
-const SliderValueLabel = dynamic(() =>
-  import('./SliderValueLabel').then((mod) => mod.SliderValueLabel)
-) as React.FC<ISliderValueLabelProps>;
+const CloseSharp = dynamic(() => import('@mui/icons-material/CloseSharp'));
 
-const CloseSharp = dynamic(() => import('@material-ui/icons/CloseSharp'));
+const CodeSharp = dynamic(() => import('@mui/icons-material/CodeSharp'));
 
-const CodeSharp = dynamic(() => import('@material-ui/icons/CodeSharp'));
-
-const PauseSharp = dynamic(() => import('@material-ui/icons/PauseSharp'), {
+const PauseSharp = dynamic(() => import('@mui/icons-material/PauseSharp'), {
   loading: () => <PlayArrowSharp />
 });
 
-const VolumeUpSharp = dynamic(() => import('@material-ui/icons/VolumeUpSharp'));
+const VolumeUpSharp = dynamic(
+  () => import('@mui/icons-material/VolumeUpSharp')
+);
 
 const VolumeDownSharp = dynamic(
-  () => import('@material-ui/icons/VolumeDownSharp'),
+  () => import('@mui/icons-material/VolumeDownSharp'),
   {
     loading: () => <VolumeUpSharp />
   }
 );
 
 const VolumeMuteSharp = dynamic(
-  () => import('@material-ui/icons/VolumeMuteSharp'),
+  () => import('@mui/icons-material/VolumeMuteSharp'),
   {
     loading: () => <VolumeDownSharp />
   }
 );
 
 const VolumeOffSharp = dynamic(
-  () => import('@material-ui/icons/VolumeOffSharp'),
+  () => import('@mui/icons-material/VolumeOffSharp'),
   {
     loading: () => <VolumeUpSharp />
   }
@@ -105,14 +99,16 @@ export const AudioPlayer = ({
   const showMessage = !!message?.length && !hasPlayed && !embedCodeShown;
   const showControls = !message?.length || (hasPlayed && !embedCodeShown);
 
-  const classes = audioPlayerStyles({ loaded, playing, hasPlayed, stuck });
-  const cx = classNames.bind(classes);
-  const rootClasses = cx(className, classes.root);
+  const { classes, cx } = audioPlayerStyles({ playing, hasPlayed, stuck });
+  const rootClasses = cx(classes.root, className);
 
-  const playBtnClasses = cx({
-    playBtn: true,
+  const playBtnClassNames = cx(classes.playBtn, {
     loading: !loaded
   });
+
+  const iconButtonClasses = {
+    root: classes.MuiIconButtonRoot
+  };
 
   const playerAttrs = {
     config: {
@@ -146,7 +142,12 @@ export const AudioPlayer = ({
   const seekAttr = {
     className: classes.seek,
     classes: {
-      rail: classes.progressRail
+      root: classes.MuiSliderRoot,
+      rail: classes.progressRail,
+      track: classes.MuiSliderTrack,
+      thumb: classes.MuiSliderThumb,
+      valueLabel: classes.MuiSliderValueLabel,
+      valueLabelLabel: classes.MuiSliderValueLabelLabel
     },
     max: 1,
     step: 0.001,
@@ -164,8 +165,7 @@ export const AudioPlayer = ({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_SEEKING,
         payload: value as number
       });
-    },
-    ValueLabelComponent: SliderValueLabel
+    }
   };
 
   const volumeAdjustAttrs = {
@@ -201,96 +201,99 @@ export const AudioPlayer = ({
 
   return (
     <NoSsr defer fallback={<NoJsPlayer url={url} />}>
-      <ThemeProvider theme={audioPlayerTheme}>
-        <ReactPlayer {...playerAttrs} />
-        <div ref={rootElm} className={rootClasses} {...other}>
-          <IconButton
-            className={playBtnClasses}
-            aria-label={playing ? 'Pause' : 'Play'}
-            onClick={() =>
-              dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_PLAYING })
-            }
-            disableRipple
-          >
-            {!playing && <PlayArrowSharp titleAccess="Play" />}
-            {playing && <PauseSharp titleAccess="Pause" />}
-          </IconButton>
-          {showControls && (
-            <Box className={classes.controls}>
-              <Box className={classes.progressControls}>
-                <Duration
-                  className={cx(classes.duration, classes.played)}
-                  seconds={playedSeconds}
+      <ReactPlayer {...playerAttrs} />
+      <div ref={rootElm} className={rootClasses} {...other}>
+        <IconButton
+          className={playBtnClassNames}
+          classes={iconButtonClasses}
+          aria-label={playing ? 'Pause' : 'Play'}
+          onClick={() =>
+            dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_PLAYING })
+          }
+          disableRipple
+        >
+          {!playing && <PlayArrowSharp titleAccess="Play" />}
+          {playing && <PauseSharp titleAccess="Pause" />}
+        </IconButton>
+        {showControls && (
+          <Box className={classes.controls}>
+            <Box className={classes.progressControls}>
+              <Duration
+                className={cx(classes.duration, classes.played)}
+                seconds={playedSeconds}
+              />
+              <Box className={classes.progress}>
+                <Box
+                  className={classes.loaded}
+                  style={{ width: `${loaded * 100}%` }}
                 />
-                <Box className={classes.progress}>
-                  <Box
-                    className={classes.loaded}
-                    style={{ width: `${loaded * 100}%` }}
-                  />
-                  <Slider {...seekAttr} valueLabelDisplay="auto" />
-                </Box>
-                <Duration
-                  className={cx(classes.duration, classes.total)}
-                  seconds={duration}
-                />
+                <Slider {...seekAttr} valueLabelDisplay="auto" />
               </Box>
-              <Box className={classes.volumeControls}>
-                <IconButton
-                  title={muted ? 'Mute' : 'Unmute'}
-                  onClick={() =>
-                    dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_MUTED })
-                  }
-                  disableRipple
-                >
-                  <VolumeBtnIcon />
-                </IconButton>
-                <Slider {...volumeAdjustAttrs} />
-              </Box>
+              <Duration
+                className={cx(classes.duration, classes.total)}
+                seconds={duration}
+              />
             </Box>
-          )}
-          {showMessage && <Box className={classes.message}>{message}</Box>}
-          {embedCodeShown && <EmbedCode src={embeddedPlayerUrl} />}
-          <Box className={classes.menu}>
-            {!!embeddedPlayerUrl && (
+            <Box className={classes.volumeControls}>
               <IconButton
-                className={classes.embedBtn}
-                title={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
+                classes={iconButtonClasses}
+                title={muted ? 'Mute' : 'Unmute'}
                 onClick={() =>
-                  dispatch({
-                    type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
-                  })
+                  dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_MUTED })
                 }
                 disableRipple
               >
-                {!embedCodeShown && <CodeSharp />}
-                {embedCodeShown && <CloseSharp />}
+                <VolumeBtnIcon />
               </IconButton>
-            )}
+              <Slider {...volumeAdjustAttrs} />
+            </Box>
+          </Box>
+        )}
+        {showMessage && <Box className={classes.message}>{message}</Box>}
+        {embedCodeShown && <EmbedCode src={embeddedPlayerUrl} />}
+        <Box className={classes.menu}>
+          {!!embeddedPlayerUrl && (
             <IconButton
-              component="a"
-              href={url}
-              download={audioDownloadFilename}
-              title="Download Audio"
+              classes={iconButtonClasses}
+              className={classes.embedBtn}
+              title={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
+              onClick={() =>
+                dispatch({
+                  type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
+                })
+              }
               disableRipple
             >
-              <GetAppSharp />
+              {!embedCodeShown && <CodeSharp />}
+              {embedCodeShown && <CloseSharp />}
             </IconButton>
-            {!!popoutPlayerUrl && (
-              <IconButton
-                className={classes.popoutBtn}
-                component="a"
-                href={popoutPlayerUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="View on TheWorld.org"
-                disableRipple
-              >
-                <TwGlobeLogo />
-              </IconButton>
-            )}
-          </Box>
-        </div>
-      </ThemeProvider>
+          )}
+          <IconButton
+            classes={iconButtonClasses}
+            component="a"
+            href={url}
+            download={audioDownloadFilename}
+            title="Download Audio"
+            disableRipple
+          >
+            <GetAppSharp />
+          </IconButton>
+          {!!popoutPlayerUrl && (
+            <IconButton
+              className={classes.popoutBtn}
+              classes={iconButtonClasses}
+              component="a"
+              href={popoutPlayerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="View on TheWorld.org"
+              disableRipple
+            >
+              <TwGlobeLogo />
+            </IconButton>
+          )}
+        </Box>
+      </div>
     </NoSsr>
   );
 };

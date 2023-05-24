@@ -6,7 +6,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { ContentLink } from '@components/ContentLink';
 import { IAudioControlsProps } from '@components/Player/components';
 import { IAudioData } from '@components/Player/types';
@@ -32,12 +32,14 @@ export const AudioHeader = ({ data }: Props) => {
     queuedFrom: 'Page Header Controls',
     linkResource: data
   } as Partial<IAudioData>;
-  const classes = audioHeaderStyles({});
+  const { classes } = audioHeaderStyles();
 
   return (
     <Box className={classes.root} mt={4} mb={2}>
       <Box mb={3}>
-        <Typography variant="h1">{audioTitle}</Typography>
+        <Typography variant="h1" className={classes.title}>
+          {audioTitle}
+        </Typography>
       </Box>
       <Box className={classes.meta} mb={2}>
         <Box className={classes.info}>

@@ -43,12 +43,11 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
     playerProgressStateReducer,
     playerProgressInitialState
   );
-  const classes = usePlayerProgressStyles({});
+  const { classes } = usePlayerProgressStyles();
   const { scrubPosition, played, playedSeconds, duration } = state;
   const {
     currentTrackIndex,
     tracks,
-    playing,
     currentTime: playerCurrentTime,
     currentDuration: playerCurrentDuration
   } = playerState;
@@ -99,7 +98,7 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
         }
       });
     },
-    [audioElm, totalDurationSeconds]
+    [audioElm, duration, totalDurationSeconds]
   );
 
   /**
@@ -160,12 +159,14 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
   /**
    * Interval handler to update loaded progress.
    */
-  const handleUpdateLoaded = () => {
+  const handleUpdateLoaded = useCallback(() => {
+    if (!audioElm) return;
+
     const { buffered } = audioElm;
     const newLoaded = buffered.length ? buffered.end(0) / audioElm.duration : 0;
 
     setLoaded(newLoaded);
-  };
+  }, [audioElm]);
 
   useEffect(() => {
     const playerStateJson = localStorage?.getItem('playerProgressState');
@@ -199,14 +200,12 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
   useEffect(() => {
     clearInterval(updateInterval.current);
 
-    if (playing) {
-      updateInterval.current = setInterval(handleUpdateLoaded, updateFrequency);
-    }
+    updateInterval.current = setInterval(handleUpdateLoaded, updateFrequency);
 
     return () => {
       clearInterval(updateInterval.current);
     };
-  }, [playing, updateFrequency, handleUpdate]);
+  }, [updateFrequency, handleUpdate, handleUpdateLoaded]);
 
   /**
    * Setup audio element event handlers.

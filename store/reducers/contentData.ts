@@ -15,7 +15,7 @@ type State = ContentDataState | RootState;
 export const contentData = (state: State = {}, action: AnyAction) => {
   let key: string;
 
-  switch (action.type) {
+  switch (action?.type) {
     case HYDRATE:
       return { ...state, ...action.payload.contentData };
 
@@ -56,7 +56,7 @@ export const contentData = (state: State = {}, action: AnyAction) => {
 };
 
 export const getContentData = (
-  state: ContentDataState = {},
+  state: ContentDataState,
   type: string,
   id: string
-) => state[makeResourceSignature({ type, id } as IPriApiResource)];
+) => (state || {})[makeResourceSignature({ type, id } as IPriApiResource)];

@@ -3,15 +3,11 @@
  * Styles for AppCtaLoadUnder.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const appCtaLoadUnderTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h2: {
         color: theme.palette.primary.contrastText,
@@ -22,61 +18,70 @@ export const appCtaLoadUnderTheme = (theme: Theme) =>
         lineHeight: 1.2
       }
     },
-    overrides: {
+    components: {
       MuiButton: {
-        containedPrimary: {
-          '&:hover': {
-            backgroundColor: theme.palette.secondary.main
+        styleOverrides: {
+          containedPrimary: {
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.main
+            }
           }
         }
       },
       MuiCheckbox: {
-        root: {
-          color: 'inherit'
+        styleOverrides: {
+          root: {
+            color: 'inherit'
+          }
         }
       },
       MuiFormControlLabel: {
-        root: {
-          paddingLeft: theme.spacing(2)
-        },
-        label: {
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          textAlign: 'left'
+        styleOverrides: {
+          root: {
+            paddingLeft: theme.spacing(2)
+          },
+          label: {
+            paddingTop: theme.spacing(2),
+            paddingBottom: theme.spacing(2),
+            textAlign: 'left'
+          }
         }
       },
       MuiIconButton: {
-        root: {
-          '&:hover': {
-            backgroundColor: theme.palette.action.focus
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              backgroundColor: theme.palette.action.focus
+            }
           }
         }
       },
       MuiToolbar: {
-        root: {
-          justifyContent: 'center',
-          '& > * + *': {
-            marginLeft: theme.spacing(2)
-          },
-          [theme.breakpoints.down('sm')]: {
-            marginTop: theme.spacing(1)
+        styleOverrides: {
+          root: {
+            justifyContent: 'center',
+            '& > * + *': {
+              marginLeft: theme.spacing(2)
+            },
+            [theme.breakpoints.down('sm')]: {
+              marginTop: theme.spacing(1)
+            }
           }
         }
       }
     }
   });
 
-export const appCtaLoadUnderStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      position: 'relative',
-      zIndex: theme.zIndex.drawer,
-      backgroundColor: theme.palette.primary.dark,
-      color: theme.palette.getContrastText(theme.palette.primary.dark)
-    },
-    container: {
-      paddingTop: theme.spacing(3),
-      paddingBottom: theme.spacing(3)
-    }
-  })
-);
+export const appCtaLoadUnderStyles = makeStyles()(theme => ({
+  root: {
+    position: 'relative',
+    zIndex: theme.zIndex.drawer,
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.getContrastText(theme.palette.primary.dark)
+  },
+
+  container: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3)
+  }
+}));

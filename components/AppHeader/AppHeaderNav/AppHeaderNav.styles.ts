@@ -3,37 +3,21 @@
  * Styles for AppHeaderNav.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
 
 export const appHeaderNavTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
-    overrides: {
+  createTheme(theme, {
+    components: {
       MuiButton: {
-        text: {
-          color: theme.palette.primary.contrastText,
-          fontWeight: theme.typography.fontWeightBold,
-          '&:hover, &:focus': {
-            backgroundColor: addCssColorAlpha(
-              theme.palette.primary.contrastText,
-              0.1
-            )
+        styleOverrides: {
+          text: {
+            color: theme.palette.primary.contrastText,
+            fontWeight: theme.typography.fontWeightBold,
+            '&:hover, &:focus': {
+              backgroundColor: alpha(theme.palette.primary.contrastText, 0.1)
+            }
           }
         }
       }
     }
   });
-
-export const appHeaderNavStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      columnGap: theme.typography.pxToRem(theme.spacing(1))
-    }
-  })
-);

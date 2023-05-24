@@ -4,13 +4,8 @@
  */
 
 import React, { HTMLAttributes } from 'react';
-import { CardContent } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
-import classNames from 'classnames/bind';
-import {
-  sidebarContentStyles,
-  sidebarContentTheme
-} from './SidebarContent.styles';
+import { CardContent } from '@mui/material';
+import { sidebarContentStyles } from './SidebarContent.styles';
 
 interface ISidebarContentProps extends HTMLAttributes<{}> {}
 
@@ -18,12 +13,11 @@ export const SidebarContent = ({
   children,
   className
 }: ISidebarContentProps) => {
-  const classes = sidebarContentStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = sidebarContentStyles();
 
   return (
-    <ThemeProvider theme={sidebarContentTheme}>
-      <CardContent className={cx(className, 'root')}>{children}</CardContent>
-    </ThemeProvider>
+    <CardContent className={cx(classes.root, className)}>
+      {children}
+    </CardContent>
   );
 };

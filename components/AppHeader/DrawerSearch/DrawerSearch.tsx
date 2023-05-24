@@ -5,18 +5,14 @@
 
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { useStore } from 'react-redux';
-import Box from '@material-ui/core/Box';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import CloseIcon from '@material-ui/icons/Close';
-import { ThemeProvider } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import CloseIcon from '@mui/icons-material/Close';
 import { fetchSearchData } from '@store/actions/fetchSearchData';
 import { getSearchQuery } from '@store/reducers';
-import {
-  appDrawerSearchStyles,
-  appDrawerSearchTheme
-} from './DrawerSearch.styles';
+import { appDrawerSearchStyles } from './DrawerSearch.styles';
 
 export const DrawerSearch = () => {
   const queryRef = useRef(null);
@@ -26,7 +22,7 @@ export const DrawerSearch = () => {
     setState(store.getState());
   });
   const query = getSearchQuery(state);
-  const classes = appDrawerSearchStyles({});
+  const { classes } = appDrawerSearchStyles();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -44,41 +40,58 @@ export const DrawerSearch = () => {
     queryRef.current.focus();
   };
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return (
-    <ThemeProvider theme={appDrawerSearchTheme}>
-      <form onSubmit={handleSubmit} autoComplete="off">
-        <Box className={classes.root}>
-          <TextField
-            inputRef={queryRef}
-            id="standard-basic"
-            label="I am looking for&hellip;"
-            defaultValue={query}
-            size="medium"
-            color="secondary"
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClearQuery}
-                    color="inherit"
-                    size="small"
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-          />
-        </Box>
-      </form>
-    </ThemeProvider>
+    <form onSubmit={handleSubmit} autoComplete="off">
+      <Box className={classes.root}>
+        <TextField
+          variant="standard"
+          inputRef={queryRef}
+          id="standard-basic"
+          label="I am looking for&hellip;"
+          defaultValue={query}
+          size="medium"
+          color="secondary"
+          fullWidth
+          classes={{
+            root: classes.inputRoot
+          }}
+          InputLabelProps={{
+            classes: {
+              root: classes.labelRoot
+            }
+          }}
+          InputProps={{
+            classes: {
+              root: classes.inputRoot,
+              underline: classes.inputUnderline
+            },
+            endAdornment: (
+              <InputAdornment
+                sx={{
+                  color: 'inherit'
+                }}
+                position="end"
+              >
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClearQuery}
+                  color="inherit"
+                  size="small"
+                >
+                  <CloseIcon />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
+        />
+      </Box>
+    </form>
   );
 };

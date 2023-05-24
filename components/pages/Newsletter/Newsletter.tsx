@@ -3,17 +3,10 @@
  * Component for Story.
  */
 import React, { useContext, useState, useEffect } from 'react';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { useStore } from 'react-redux';
-import classNames from 'classnames/bind';
-import {
-  Box,
-  Container,
-  Grid,
-  ThemeProvider,
-  Typography
-} from '@material-ui/core';
-import { CheckCircleOutlineSharp } from '@material-ui/icons';
+import { Box, Container, Grid, ThemeProvider, Typography } from '@mui/material';
+import { CheckCircleOutlineSharp } from '@mui/icons-material';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
@@ -21,7 +14,6 @@ import { NewsletterForm } from '@components/NewsletterForm';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { IPriApiNewsletter } from '@interfaces/newsletter';
 import { parseNewsletterOptions } from '@lib/parse/cta';
-import { fetchNewsletterData } from '@store/actions/fetchNewsletterData';
 import { getDataByResource } from '@store/reducers';
 import { newsletterTheme, newsletterStyles } from './Newsletter.styles';
 
@@ -32,21 +24,18 @@ export const Newsletter = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const state = store.getState();
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
-
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
+  const data = getDataByResource(state, type, id);
   const [subscribed, setSubscribed] = useState(false);
   const { metatags, title, body, buttonLabel, summary, image } = data;
   const options = parseNewsletterOptions(
     data as IPriApiNewsletter,
     'newsletter-page'
   );
-  const classes = newsletterStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = newsletterStyles();
 
   const handleSubscribed = () => {
     setSubscribed(true);
@@ -60,15 +49,12 @@ export const Newsletter = () => {
     ['Newsletter Sign Up', { props }]
   ];
 
-  useEffect(() => {
-    if (!data.complete) {
-      (async () => {
-        // Get content data.
-        await store.dispatch<any>(fetchNewsletterData(id));
-        data = getDataByResource(state, type, id);
-      })();
-    }
-  }, [id]);
+  useEffect(
+    () => () => {
+      unsub();
+    },
+    [unsub]
+  );
 
   return (
     <>
@@ -76,20 +62,20 @@ export const Newsletter = () => {
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <ThemeProvider theme={newsletterTheme}>
         <Container disableGutters={!!image} maxWidth={false}>
-          <Grid container justify="center">
+          <Grid container justifyContent="center">
             <Grid
               item
               xs={12}
               sm={image ? 12 : 9}
-              className={cx('header', {
-                withImage: !!image
+              className={cx(classes.header, {
+                [classes.withImage]: !!image
               })}
             >
               {image && (
-                <Box className={cx('imageWrapper')}>
+                <Box className={classes.imageWrapper}>
                   <Image
                     alt={image.alt}
-                    className={cx('image')}
+                    className={classes.image}
                     src={image.url}
                     layout="fill"
                     objectFit="cover"
@@ -97,29 +83,30 @@ export const Newsletter = () => {
                   />
                 </Box>
               )}
-              <div className={cx('content')}>
-                <h1 className={cx('title')}>{title}</h1>
-                <p className={cx('summary')}>{summary}</p>
-                <Box className={cx('form')}>
+              <div className={classes.content}>
+                <h1 className={classes.title}>{title}</h1>
+                <p className={classes.summary}>{summary}</p>
+                <Box className={classes.form}>
                   {!subscribed && (
                     <NewsletterForm
                       options={options}
                       label={buttonLabel}
                       onSubscribed={handleSubscribed}
+                      className={classes.form}
                     />
                   )}
                   {subscribed && (
                     <Grid
                       container
                       spacing={4}
-                      justify="center"
+                      justifyContent="center"
                       alignContent="center"
                     >
                       <Grid item xs={12}>
                         <Box
                           display="grid"
                           gridTemplateColumns="min-content 1fr"
-                          gridGap={16}
+                          gap={16}
                           justifyContent="center"
                           alignItems="center"
                         >
@@ -149,7 +136,7 @@ export const Newsletter = () => {
             </Grid>
             {body && (
               <Container fixed>
-                <Box className={cx('body')} my={2}>
+                <Box className={classes.body} my={2}>
                   <HtmlContent html={body} />
                 </Box>
               </Container>

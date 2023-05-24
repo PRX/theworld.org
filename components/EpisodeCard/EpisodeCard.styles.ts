@@ -2,23 +2,23 @@
  * @file EpisodeCard.style.tsx
  * Styles for episode card.
  */
-import { addCssColorAlpha } from '@lib/parse/color';
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const episodeCardStyles = makeStyles((theme: Theme) => {
+export const episodeCardStyles = makeStyles()((theme) => {
   const headingProps = {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: 400
   };
 
-  return createStyles({
+  return {
     root: {},
+
+    body: {
+      fontSize: theme.typography.pxToRem(16)
+    },
+
     header: {
       padding: '1rem 1rem 0.5rem',
       '& h1': {
@@ -45,15 +45,19 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
         verticalAlign: 'text-bottom'
       }
     },
+
     imageWrapper: {
       paddingTop: 'unset'
     },
+
     heading: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'start',
-      gap: theme.typography.pxToRem(theme.spacing(3))
+      gap: theme.typography.pxToRem(24),
+      color: theme.palette.text.primary
     },
+
     link: {
       position: 'absolute',
       top: 0,
@@ -63,18 +67,66 @@ export const episodeCardStyles = makeStyles((theme: Theme) => {
       overflow: 'hidden',
       textIndent: '-2000vw'
     },
+
     title: {
-      marginTop: theme.typography.pxToRem(theme.spacing(1))
+      marginTop: theme.typography.pxToRem(8),
+      marginBottom: theme.typography.pxToRem(12),
+      fontSize: theme.typography.pxToRem(18)
     },
+
     audio: {
       position: 'relative',
       zIndex: 1
+    },
+
+    MuiButtonBaseRoot: {
+      fontSize: 'inherit',
+      lineHeight: 'inherit'
+    },
+
+    MuiCardRoot: {
+      color: theme.palette.primary.main
+    },
+
+    MuiCardActionsRoot: {
+      margin: 0,
+      padding: 0
+    },
+
+    MuiCardContentRoot: {
+      color: theme.palette.text.primary,
+      fontWeight: theme.typography.fontWeightBold
+    },
+
+    MuiCardMediaRoot: {
+      position: 'relative',
+      width: '100%',
+      height: 0,
+      paddingTop: `${(9 / 16) * 100}%`,
+      '& > :only-child': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%'
+      }
+    },
+
+    MuiListRoot: {
+      width: '100%',
+      '& :is(.MuiListItemButton-root)': {
+        paddingBlock: theme.spacing(0.5)
+      }
+    },
+    MuiListPadding: {
+      paddingTop: 0,
+      paddingBottom: theme.typography.pxToRem(16)
     }
-  });
+  };
 });
 
 export const episodeCardTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       body1: {
         fontSize: theme.typography.pxToRem(16)
@@ -96,84 +148,101 @@ export const episodeCardTheme = (theme: Theme) =>
         lineHeight: 1
       }
     },
-    overrides: {
+    components: {
       MuiButtonBase: {
-        root: {
-          fontSize: 'inherit',
-          lineHeight: 'inherit'
+        styleOverrides: {
+          root: {
+            fontSize: 'inherit',
+            lineHeight: 'inherit'
+          }
         }
       },
       MuiCard: {
-        root: {
-          color: theme.palette.primary.main
+        styleOverrides: {
+          root: {
+            color: theme.palette.primary.main
+          }
         }
       },
       MuiCardActions: {
-        root: {
-          margin: 0,
-          padding: 0
+        styleOverrides: {
+          root: {
+            margin: 0,
+            padding: 0
+          }
         }
       },
       MuiCardContent: {
-        root: {
-          color: theme.palette.text.primary,
-          fontWeight: theme.typography.fontWeightBold
+        styleOverrides: {
+          root: {
+            color: theme.palette.text.primary,
+            fontWeight: theme.typography.fontWeightBold
+          }
         }
       },
       MuiCardMedia: {
-        root: {
-          position: 'relative',
-          width: '100%',
-          height: 0,
-          paddingTop: `${(9 / 16) * 100}%`,
-          '& > :only-child': {
-            position: 'absolute',
-            top: 0,
-            left: 0,
+        styleOverrides: {
+          root: {
+            position: 'relative',
             width: '100%',
-            height: '100%'
+            height: 0,
+            paddingTop: `${(9 / 16) * 100}%`,
+            '& > :only-child': {
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%'
+            }
           }
         }
       },
       MuiList: {
-        root: {
-          width: '100%'
-        },
-        padding: {
-          paddingTop: 0,
-          paddingBottom: theme.typography.pxToRem(theme.spacing(2))
+        styleOverrides: {
+          root: {
+            width: '100%'
+          },
+          padding: {
+            paddingTop: 0,
+            paddingBottom: theme.typography.pxToRem(16)
+          }
         }
       },
-      MuiListItem: {
-        root: {},
-        button: {
-          '&:hover': {
-            color: theme.palette.primary.main,
-            backgroundColor: addCssColorAlpha(
-              theme.palette.primary.main,
-              theme.palette.action.hoverOpacity
-            )
+      MuiListItemButton: {
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              color: theme.palette.primary.main,
+              backgroundColor: alpha(
+                theme.palette.primary.main,
+                theme.palette.action.hoverOpacity
+              )
+            }
           }
         }
       },
       MuiListItemText: {
-        root: {
-          display: 'list-item',
-          listStyle: 'disc',
-          marginTop: 0,
-          marginBottom: 0,
-          marginLeft: theme.spacing(2),
-          color: theme.palette.grey[500]
-        },
-        primary: {
-          color: theme.palette.primary.main,
-          fontWeight: theme.typography.fontWeightBold,
-          lineHeight: 1
+        styleOverrides: {
+          root: {
+            display: 'list-item',
+            listStyle: 'disc',
+            marginTop: 0,
+            marginBottom: 0,
+            marginLeft: theme.spacing(2),
+            color: theme.palette.grey[500]
+          },
+          primary: {
+            color: theme.palette.primary.main,
+            fontWeight: theme.typography.fontWeightBold,
+            lineHeight: 1
+          }
         }
       },
       MuiTypography: {
-        gutterBottom: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(1.5))
+        styleOverrides: {
+          gutterBottom: {
+            marginBottom: theme.typography.pxToRem(12)
+          }
         }
       }
     }

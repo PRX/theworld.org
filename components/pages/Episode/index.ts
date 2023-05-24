@@ -1,2 +1,3 @@
+/* eslint-disable no-restricted-exports */
 export * from './Episode';
-export { Episode as default } from './Episode'; // eslint-disable-line import/no-default-export
+export { Episode as default } from './Episode';

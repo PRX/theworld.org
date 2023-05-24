@@ -5,9 +5,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import classNames from 'classnames';
-import { LinearProgress } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { LinearProgress } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import {
   appLoadingBarStyles,
   appLoadingBarTheme
@@ -16,8 +15,7 @@ import {
 export const AppLoadingBar = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const classes = appLoadingBarStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = appLoadingBarStyles();
   const className = cx(classes.root, {
     [classes.isLoading]: isLoading
   });
@@ -39,7 +37,7 @@ export const AppLoadingBar = () => {
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [router.events]);
 
   return (
     <ThemeProvider theme={appLoadingBarTheme}>

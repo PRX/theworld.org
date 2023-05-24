@@ -4,9 +4,8 @@
  */
 
 import React, { HTMLAttributes } from 'react';
-import { Box } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
-import classNames from 'classnames/bind';
+import { Box } from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
 import {
   sidebarFooterStyles,
   sidebarFooterTheme
@@ -15,12 +14,11 @@ import {
 interface ISidebarFooterProps extends HTMLAttributes<{}> {}
 
 export const SidebarFooter = ({ children, className }: ISidebarFooterProps) => {
-  const classes = sidebarFooterStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = sidebarFooterStyles();
 
   return (
     <ThemeProvider theme={sidebarFooterTheme}>
-      <Box component="footer" className={cx(className, 'root')}>
+      <Box component="footer" className={cx(classes.root, className)}>
         {children}
       </Box>
     </ThemeProvider>

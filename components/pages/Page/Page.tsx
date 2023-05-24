@@ -3,17 +3,15 @@
  * Component for Pages.
  */
 
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import { Box, Container, Grid } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Box, Container, Grid } from '@mui/material';
 import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { fetchPageData } from '@store/actions/fetchPageData';
 import { getDataByResource } from '@store/reducers';
-import { pageStyles, pageTheme } from './Page.styles';
+import { pageStyles } from './Page.styles';
 import { PageHeader } from './components/PageHeader';
 
 export const Page = () => {
@@ -23,15 +21,13 @@ export const Page = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const state = store.getState();
-  const classes = pageStyles({});
-  let data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
-
-  const { metatags, title, body } = data;
+  const [state, setState] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    setState(store.getState());
+  });
+  const data = getDataByResource(state, type, id);
+  const { metatags, title, body } = data || ({} as typeof data);
+  const { classes } = pageStyles();
 
   // Plausible Events.
   const props = {
@@ -39,18 +35,15 @@ export const Page = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Page', { props }]];
 
-  useEffect(() => {
-    if (!data.complete) {
-      (async () => {
-        // Get content data.
-        await store.dispatch<any>(fetchPageData(id));
-        data = getDataByResource(state, type, id);
-      })();
-    }
-  }, [id]);
+  useEffect(
+    () => () => {
+      unsub();
+    },
+    [unsub]
+  );
 
   return (
-    <ThemeProvider theme={pageTheme}>
+    <>
       <MetaTags data={metatags} />
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <Container fixed>
@@ -63,6 +56,6 @@ export const Page = () => {
           </Grid>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </>
   );
 };

@@ -6,8 +6,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Button, Hidden, Typography } from '@material-ui/core';
-import { ListAltRounded } from '@material-ui/icons';
+import { Box, Button, Hidden, Typography } from '@mui/material';
+import { ListAltRounded } from '@mui/icons-material';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -106,11 +106,12 @@ export const Category = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Category', { props }]];
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -119,7 +120,7 @@ export const Category = () => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [page]);
+  }, [oldScrollY, page]);
 
   const loadMoreStories = async () => {
     setLoading(true);
@@ -139,12 +140,12 @@ export const Category = () => {
       key: 'main top',
       children: (
         <>
-          <Box display="grid" gridGap={8}>
+          <Box display="grid" gap={1}>
             {featuredStory && (
               <StoryCard data={featuredStory} feature priority />
             )}
             {featuredStories && (
-              <StoryCardGrid data={featuredStories[1]} gridGap={8} />
+              <StoryCardGrid data={featuredStories[1]} gap={1} />
             )}
           </Box>
           {ctaInlineTop && (
@@ -290,7 +291,7 @@ export const Category = () => {
         main={mainElements}
         sidebar={sidebarElements}
         mt={3}
-        gridGap={8}
+        gap={1}
       />
     </>
   );

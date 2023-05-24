@@ -9,7 +9,7 @@ import { DomElement } from 'htmlparser2';
 import { parse } from 'url';
 import { findDescendant } from '@lib/parse/html';
 
-export const twitterEmebed = (node: DomElement) => {
+export const twitterEmbed = (node: DomElement) => {
   let embedUrl: string;
 
   switch (true) {

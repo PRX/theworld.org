@@ -3,11 +3,10 @@
  * Styles for CtaMessageNewsletter.
  */
 
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
-import { addCssColorAlpha } from '@lib/parse/color';
+import { alpha, createTheme, Theme } from '@mui/material/styles';
 
 export const ctaMessageNewsletterTheme = (theme: Theme) => {
-  const tempTheme = createMuiTheme(theme, {
+  const tempTheme = createTheme(theme, {
     palette: {
       primary: {
         ...theme.palette.success,
@@ -16,37 +15,45 @@ export const ctaMessageNewsletterTheme = (theme: Theme) => {
     }
   });
 
-  return createMuiTheme(tempTheme, {
-    overrides: {
+  return createTheme(tempTheme, {
+    components: {
       MuiInputBase: {
-        root: {
-          color: theme.palette.grey[700]
+        styleOverrides: {
+          root: {
+            color: theme.palette.grey[700]
+          }
         }
       },
       MuiInputLabel: {
-        outlined: {
-          color: theme.palette.grey[700]
+        styleOverrides: {
+          outlined: {
+            color: theme.palette.grey[700]
+          }
         }
       },
       MuiButton: {
-        containedPrimary: {
-          backgroundColor: theme.palette.success.main,
-          '&:hover': {
-            backgroundColor: theme.palette.success.dark
-          }
-        },
-        outlinedPrimary: {
-          color: theme.palette.success.main,
-          borderColor: addCssColorAlpha(theme.palette.success.main, 0.3),
-          '&:hover': {
-            borderColor: theme.palette.success.main
+        styleOverrides: {
+          containedPrimary: {
+            backgroundColor: theme.palette.success.main,
+            '&:hover': {
+              backgroundColor: theme.palette.success.dark
+            }
+          },
+          outlinedPrimary: {
+            color: theme.palette.success.main,
+            borderColor: alpha(theme.palette.success.main, 0.3),
+            '&:hover': {
+              borderColor: theme.palette.success.main
+            }
           }
         }
       },
       MuiCard: {
-        root: {
-          paddingBottom: '0.5rem',
-          borderLeftColor: theme.palette.success.main
+        styleOverrides: {
+          root: {
+            paddingBottom: '0.5rem',
+            borderLeftColor: theme.palette.success.main
+          }
         }
       }
     }

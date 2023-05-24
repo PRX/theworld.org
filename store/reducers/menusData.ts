@@ -11,7 +11,7 @@ import { MenusDataState, RootState } from '@interfaces/state';
 type State = MenusDataState | RootState;
 
 export const menusData = (state: State = {}, action: AnyAction) => {
-  switch (action.type) {
+  switch (action?.type) {
     case HYDRATE:
       return { ...state, ...action.payload.menusData };
     case 'FETCH_MENUS_DATA_SUCCESS':
@@ -25,5 +25,5 @@ export const menusData = (state: State = {}, action: AnyAction) => {
   }
 };
 
-export const getMenusData = (state: MenusDataState = {}, menu: string) =>
-  state[menu];
+export const getMenusData = (state: MenusDataState, menu: string) =>
+  (state || {})[menu];

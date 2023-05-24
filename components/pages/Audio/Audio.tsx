@@ -5,8 +5,7 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import { Box, Container, Grid } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Box, Container, Grid } from '@mui/material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
@@ -15,7 +14,7 @@ import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { parseUtcDate } from '@lib/parse/date';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
-import { audioStyles, audioTheme } from './Audio.styles';
+import { audioStyles } from './Audio.styles';
 import { AudioHeader } from './components/AudioHeader';
 
 export const Audio = () => {
@@ -29,12 +28,8 @@ export const Audio = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const classes = audioStyles({});
+  const { classes } = audioStyles();
   const data = getDataByResource(state, type, id);
-
-  if (!data) {
-    return null;
-  }
 
   const {
     metatags: dataMetatags,
@@ -82,7 +77,7 @@ export const Audio = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Audio', { props }]];
 
-  [...(audioAuthor || [])].forEach(person => {
+  [...(audioAuthor || [])].forEach((person) => {
     plausibleEvents.push([
       `Person: ${person.title}`,
       {
@@ -91,14 +86,15 @@ export const Audio = () => {
     ]);
   });
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       unsub();
-    };
-  }, []);
+    },
+    [unsub]
+  );
 
   return (
-    <ThemeProvider theme={audioTheme}>
+    <>
       <MetaTags
         data={{
           ...metatags,
@@ -106,7 +102,7 @@ export const Audio = () => {
         }}
       />
       <Plausible events={plausibleEvents} subject={{ type, id }} />
-      <Container fixed>
+      <Container fixed className={classes.main}>
         <Grid container>
           <Grid item xs={12}>
             <AudioHeader data={data} />
@@ -118,6 +114,6 @@ export const Audio = () => {
           </Grid>
         </Grid>
       </Container>
-    </ThemeProvider>
+    </>
   );
 };

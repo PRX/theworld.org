@@ -5,21 +5,17 @@
  */
 
 import { HYDRATE } from 'next-redux-wrapper';
-import { SearchAction, SearchState, RootState } from '@interfaces/state';
+import { SearchAction, SearchState } from '@interfaces/state';
 
-type State = SearchState | RootState;
-
-export const search = (state = {}, action: SearchAction): State => {
+export const search = (state = {}, action: SearchAction) => {
   let query: string;
-  let s: State;
+  let s: SearchState;
 
-  switch (action.type) {
+  switch (action?.type) {
     case HYDRATE:
       return { ...state, ...action.payload.search };
 
     case 'SEARCH_OPEN':
-      s = state as SearchState;
-
       return {
         ...state,
         ...(action.payload?.query && { query: action.payload.query }),
@@ -80,8 +76,8 @@ export const search = (state = {}, action: SearchAction): State => {
   }
 };
 
-export const getSearchOpen = (state: SearchState) => state.open;
-export const getSearchLoading = (state: SearchState) => state.loading;
+export const getSearchOpen = (state: SearchState) => state?.open;
+export const getSearchLoading = (state: SearchState) => state?.loading;
 export const getSearchQuery = (state: SearchState) => state?.query || '';
 export const getSearchData = (state: SearchState, query: string) =>
-  query && state.searches?.[query.toLowerCase()];
+  query && state?.searches?.[query.toLowerCase()];

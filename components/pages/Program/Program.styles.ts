@@ -3,38 +3,32 @@
  * Theme and styles for Program layout.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
-import { storyLayoutStyles } from '@components/pages/Story/layouts/default/styles/Story.layout';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { storyBodyStyles } from '@components/pages/Story/layouts/default/styles/Story.body';
 
 export const programTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h1: {
         fontSize: theme.typography.pxToRem(46)
       },
       h4: {
         fontSize: theme.typography.pxToRem(20),
-        marginBottom: theme.typography.pxToRem(theme.spacing(2))
+        marginBottom: theme.typography.pxToRem(16)
       }
     },
-    overrides: {
+    components: {
       MuiDivider: {
-        root: {
-          marginBottom: theme.typography.pxToRem(theme.spacing(3))
+        styleOverrides: {
+          root: {
+            marginBottom: theme.typography.pxToRem(24)
+          }
         }
       }
     }
   });
 
-export const programStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    ...storyLayoutStyles(theme),
-    ...storyBodyStyles(theme)
-  })
-);
+export const programStyles = makeStyles()(theme => ({
+  ...storyBodyStyles(theme)
+}));

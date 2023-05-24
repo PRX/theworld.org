@@ -7,8 +7,7 @@ import { fetchPriApiItem } from '../api/fetchPriApi';
 
 export const fetchNewsletter = async (
   id: string
-): Promise<PriApiResourceResponse> => {
-  return fetchPriApiItem('node--newsletter_sign_ups', id, {
+): Promise<PriApiResourceResponse> =>
+  fetchPriApiItem('node--newsletter_sign_ups', id, {
     include: ['image']
   });
-};

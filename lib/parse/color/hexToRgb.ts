@@ -8,7 +8,7 @@ export type RgbValues = number[];
  * Helper to convert hex string into array of number values.
  *
  * @param hex
- *    Hexidecimal color string.
+ *    Hexadecimal color string.
  */
 export const hexToRgb = (hex: string): RgbValues =>
   hex
@@ -22,34 +22,12 @@ export const hexToRgb = (hex: string): RgbValues =>
     .map((x: string) => parseInt(x, 16));
 
 /**
- * Convert hexidecimal colors strings to rgba.
+ * Convert hexadecimal colors strings to rgba.
  *
  * @param hex
- *    Hexidecimal color string.
+ *    Hexadecimal color string.
  * @param alpha
  *    Number between 0 and 1.
  */
 export const hexToCssRgba = (hex: string, alpha: number) =>
   `rgba(${hexToRgb(hex)},${alpha})`;
-
-/**
- * Add alpha value to CSS color. Hexideciaml strings will be converted to rgba.
- *
- * @param color
- *    CSS color string.
- * @param alpha
- *    Number bewteen 0 and 1.
- */
-export const addCssColorAlpha = (color: string, alpha: number) =>
-  color.match(/^#?(?:(?:[a-f\d]{2}){3}|(?:[a-f\d]){3})$/i)
-    ? hexToCssRgba(color, alpha)
-    : color
-        .replace(/^rgb\(/, 'rgba(')
-        .replace(/^hsl\(/, 'hsla(')
-        .replace(/\(([^)]+)\)/, (m: string, p: string) => {
-          const rgba = p.split(/,\s?|\s\/\s|\s/).slice(0, 3);
-
-          rgba.push(`${alpha}`);
-
-          return `(${rgba})`;
-        });

@@ -12,7 +12,7 @@ export interface INoJsPlayerProps {
 }
 
 export const NoJsPlayer = ({ url }: INoJsPlayerProps) => {
-  const styles = useNoJsPlayerStyles({});
+  const { classes: styles } = useNoJsPlayerStyles();
 
   return <audio className={styles.root} src={url} controls preload="none" />;
 };

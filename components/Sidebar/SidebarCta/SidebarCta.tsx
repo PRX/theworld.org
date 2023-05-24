@@ -4,23 +4,24 @@
  */
 
 import React from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { Box } from '@mui/material';
 import { ICtaRegionProps } from '@interfaces/cta';
 import { getShownMessage } from '@lib/cta';
-import { sidebarCtaTheme } from './SidebarCta.styles';
+import { useSidebarCtaStyles } from './SidebarCta.styles';
 import { ctaTypeComponentMap } from './components';
 
 export const SidebarCta = ({ data }: ICtaRegionProps) => {
   const shownMessage = getShownMessage(data);
   const { type } = shownMessage;
   const CtaMessageComponent = ctaTypeComponentMap[type] || null;
+  const { classes } = useSidebarCtaStyles();
 
   return (
     data &&
     CtaMessageComponent && (
-      <ThemeProvider theme={sidebarCtaTheme}>
+      <Box className={classes.root}>
         <CtaMessageComponent data={{ ...shownMessage }} />
-      </ThemeProvider>
+      </Box>
     )
   );
 };

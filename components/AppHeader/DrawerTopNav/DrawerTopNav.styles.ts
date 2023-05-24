@@ -3,12 +3,10 @@
  * Styles for DrawerTopNav.
  */
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const drawerTopNavStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      padding: theme.spacing(2)
-    }
-  })
-);
+export const drawerTopNavStyles = makeStyles()(theme => ({
+  root: {
+    padding: theme.spacing(2)
+  }
+}));

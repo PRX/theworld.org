@@ -3,17 +3,13 @@
  * Theme and styles for default Story layout.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 import { storyLayoutStyles } from './styles/Story.layout';
 import { storyBodyStyles } from './styles/Story.body';
 
 export const storyTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h1: {
         fontSize: theme.typography.pxToRem(46),
@@ -24,9 +20,7 @@ export const storyTheme = (theme: Theme) =>
     }
   });
 
-export const storyStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    ...storyLayoutStyles(theme),
-    ...storyBodyStyles(theme)
-  })
-);
+export const useStoryStyles = makeStyles()((theme) => ({
+  ...storyLayoutStyles(theme),
+  ...storyBodyStyles(theme)
+}));

@@ -30,14 +30,14 @@ import {
   Modal,
   NoSsr,
   Toolbar
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   CodeSharp,
   DeleteForeverSharp,
   DeleteSharp,
   GetAppSharp,
   MoreVertSharp
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import { AutoplayButton } from '@components/Player/components/AutoPlayButton';
 import { PlayerContext } from '@components/Player/contexts';
 import { appPlayerStyles } from './AppPlayer.styles';
@@ -52,8 +52,7 @@ export const AppPlayer = () => {
   const [showEmbedModal, setShowEmbedModal] = useState(false);
   const { tracks, currentTrackIndex } = playerState || {};
   const currentTrack = tracks?.[currentTrackIndex];
-  const isOpen = !!tracks?.length;
-  const styles = appPlayerStyles({ isOpen });
+  const { classes: styles } = appPlayerStyles();
   const toolbarClasses = {
     root: styles.toolbarRoot
   };

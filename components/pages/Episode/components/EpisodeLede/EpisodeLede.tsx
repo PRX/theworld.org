@@ -15,9 +15,9 @@ interface Props {
 export const EpisodeLede = ({ data }: Props) => {
   const { image, video } = data;
 
-  return image || video ? (
-    <>
-      {(video && <LedeVideo data={video[0]} />) || <LedeImage data={image} />}
-    </>
-  ) : null;
+  if (video) return <LedeVideo data={video[0]} />;
+
+  if (image) return <LedeImage data={image} />;
+
+  return null;
 };

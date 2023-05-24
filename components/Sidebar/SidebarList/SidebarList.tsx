@@ -4,26 +4,25 @@
  */
 
 import React from 'react';
-import clsx from 'clsx';
 import {
   List,
   ListProps,
-  ListItem,
   ListItemText,
   ListItemAvatar,
   Avatar,
   ListSubheader,
-  ListItemSecondaryAction
-} from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+  ListItemSecondaryAction,
+  ListItemButton
+} from '@mui/material';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ContentLink } from '@components/ContentLink';
 import { AudioControls } from '@components/Player/components';
-import { sidebarListStyles, sidebarListTheme } from './SidebarList.styles';
+import { sidebarListStyles } from './SidebarList.styles';
 
 export interface ISidebarListProps extends ListProps {
   data: IPriApiResource[];
-  formatTitle?: (data: IPriApiResource) => string;
+  // eslint-disable-next-line no-unused-vars
+  formatTitle?(data: IPriApiResource): string;
   subheaderText?: string;
 }
 
@@ -34,15 +33,19 @@ export const SidebarList = ({
   subheaderText,
   ...other
 }: ISidebarListProps) => {
-  const classes = sidebarListStyles({});
-  const listClasses = clsx(className, classes.root);
+  const { classes, cx } = sidebarListStyles();
+  const listClasses = cx(classes.root, className);
   const listProps = {
     component: 'nav',
     className: listClasses,
     ...other,
     ...(subheaderText && {
       subheader: (
-        <ListSubheader component="header" disableSticky>
+        <ListSubheader
+          classes={{ root: classes.MuiListSubheaderRoot }}
+          component="header"
+          disableSticky
+        >
           {subheaderText}
         </ListSubheader>
       )
@@ -56,14 +59,8 @@ export const SidebarList = ({
     switch (item.type) {
       case 'file--audio':
         return (
-          <ListItem
-            button
-            component={ContentLink}
-            ContainerComponent="div"
-            data={item}
-            key={item.id}
-          >
-            <ListItemText className={classes.noBullet}>{text}</ListItemText>
+          <ListItemButton component={ContentLink} data={item} key={item.id}>
+            <ListItemText className={cx('noBullet')}>{text}</ListItemText>
             <ListItemSecondaryAction>
               <AudioControls
                 id={item.id as string}
@@ -75,18 +72,12 @@ export const SidebarList = ({
                 }}
               />
             </ListItemSecondaryAction>
-          </ListItem>
+          </ListItemButton>
         );
 
       case 'node--people':
         return (
-          <ListItem
-            button
-            component={ContentLink}
-            ContainerComponent="div"
-            data={item}
-            key={item.id}
-          >
+          <ListItemButton component={ContentLink} data={item} key={item.id}>
             <ListItemAvatar>
               {item.avatar ? (
                 <Avatar
@@ -100,15 +91,15 @@ export const SidebarList = ({
                 </Avatar>
               )}
             </ListItemAvatar>
-            <ListItemText className={classes.noBullet}>{text}</ListItemText>
-          </ListItem>
+            <ListItemText className={cx('noBullet')}>{text}</ListItemText>
+          </ListItemButton>
         );
 
       case 'node--stories':
         if (item.audio) {
           return (
-            <ListItem button ContainerComponent="div" key={item.id}>
-              <ListItemText className={classes.noBullet}>
+            <ListItemButton key={item.id}>
+              <ListItemText className={cx('noBullet')}>
                 <ContentLink data={item}>{text}</ContentLink>
               </ListItemText>
               <ListItemSecondaryAction>
@@ -123,52 +114,38 @@ export const SidebarList = ({
                   variant="minimal"
                 />
               </ListItemSecondaryAction>
-            </ListItem>
+            </ListItemButton>
           );
         }
 
         return (
-          <ListItem
-            button
-            component={ContentLink}
-            ContainerComponent="div"
-            data={item}
-            key={item.id}
-          >
-            <ListItemText className={classes.noBullet}>{text}</ListItemText>
-          </ListItem>
+          <ListItemButton component={ContentLink} data={item} key={item.id}>
+            <ListItemText className={cx('noBullet')}>{text}</ListItemText>
+          </ListItemButton>
         );
 
       default:
         return (
-          <ListItem
-            button
-            component={ContentLink}
-            ContainerComponent="div"
-            data={item}
-            key={item.id}
-          >
+          <ListItemButton component={ContentLink} data={item} key={item.id}>
             <ListItemText>{text}</ListItemText>
-          </ListItem>
+          </ListItemButton>
         );
     }
   };
 
   return (
     !!data && (
-      <ThemeProvider theme={sidebarListTheme}>
-        <List {...listProps}>
-          {data.map((item) =>
-            item.id ? (
-              renderItemContent(item)
-            ) : (
-              <ListItem button component="a" href={item.url} key={item.url}>
-                <ListItemText>{item.title}</ListItemText>
-              </ListItem>
-            )
-          )}
-        </List>
-      </ThemeProvider>
+      <List {...listProps}>
+        {data.map(item =>
+          item.id ? (
+            renderItemContent(item)
+          ) : (
+            <ListItemButton component="a" href={item.url} key={item.url}>
+              <ListItemText>{item.title}</ListItemText>
+            </ListItemButton>
+          )
+        )}
+      </List>
     )
   );
 };

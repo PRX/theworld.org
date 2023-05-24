@@ -4,11 +4,10 @@
  */
 
 import React, { useContext } from 'react';
-import clsx from 'clsx';
-import { IconButtonProps, Tooltip } from '@material-ui/core';
-import { SkipPrevious } from '@material-ui/icons';
+import { IconButtonProps, Tooltip } from '@mui/material';
+import { SkipPrevious } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { usePreviousButtonStyles } from './PreviousButton.styles';
 
 export interface IPreviousButtonProps extends IconButtonProps {}
@@ -20,8 +19,8 @@ export const PreviousButton = ({
   const { previousTrack, state } = useContext(PlayerContext);
   const { currentTrackIndex } = state;
   const disabled = !currentTrackIndex;
-  const styles = usePreviousButtonStyles({});
-  const rootClassNames = clsx(className, styles.root);
+  const { classes: styles, cx } = usePreviousButtonStyles();
+  const rootClassNames = cx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };
@@ -38,6 +37,7 @@ export const PreviousButton = ({
         disabled={disabled}
         onClick={handleClick}
         disableRipple
+        {...(disabled && { component: 'span' })}
       >
         <SkipPrevious classes={iconClasses} />
       </IconButton>

@@ -13,8 +13,8 @@ import {
   Grid,
   Typography,
   ThemeProvider
-} from '@material-ui/core';
-import { CheckCircleOutlineSharp } from '@material-ui/icons';
+} from '@mui/material';
+import { CheckCircleOutlineSharp } from '@mui/icons-material';
 import { HtmlContent } from '@components/HtmlContent';
 import { NewsletterForm } from '@components/NewsletterForm';
 import { ICtaMessageProps } from '@interfaces/cta';
@@ -60,14 +60,14 @@ export const CtaMessageNewsletter = ({ data }: ICtaMessageProps) => {
               <Grid
                 container
                 spacing={4}
-                justify="center"
+                justifyContent="center"
                 alignContent="center"
               >
                 <Grid item xs={12}>
                   <Box
                     display="grid"
                     gridTemplateColumns="min-content 1fr"
-                    gridGap={16}
+                    gap={2}
                     justifyContent="center"
                     alignItems="center"
                   >

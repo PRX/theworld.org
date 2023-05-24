@@ -7,7 +7,7 @@ import React from 'react';
 import InstagramEmbed from 'react-instagram-embed';
 import { DomElement } from 'htmlparser2';
 
-export const instagramEmebed = (node: DomElement) => {
+export const instagramEmbed = (node: DomElement) => {
   let url: string;
   switch (true) {
     case node.type === 'tag' &&

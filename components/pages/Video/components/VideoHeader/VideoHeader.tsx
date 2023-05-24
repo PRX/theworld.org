@@ -7,7 +7,7 @@ import React from 'react';
 import 'moment-timezone';
 import Moment from 'react-moment';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { videoHeaderStyles } from './VideoHeader.styles';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 
 export const VideoHeader = ({ data }: Props) => {
   const { title, date } = data;
-  const classes = videoHeaderStyles({});
+  const { classes } = videoHeaderStyles();
 
   return (
     <Box className={classes.root} mt={4} mb={2}>

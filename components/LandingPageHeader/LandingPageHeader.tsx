@@ -4,10 +4,9 @@
  */
 
 import React from 'react';
-import Image from 'next/image';
-import classNames from 'classnames/bind';
+import Image from 'next/legacy/image';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Container, Typography, ThemeProvider } from '@material-ui/core';
+import { Box, Container, Typography, ThemeProvider } from '@mui/material';
 import {
   landingPageHeaderStyles,
   landingPageHeaderTheme
@@ -26,17 +25,15 @@ export const LandingPageHeader = ({
   title,
   subhead
 }: ILandingPageHeaderProps) => {
-  const classes = landingPageHeaderStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = landingPageHeaderStyles();
   const { alt } = image || ({} as any);
   return (
     <ThemeProvider theme={landingPageHeaderTheme}>
-      <Box className={cx('root', { withImage: !!image })}>
+      <Box className={cx(classes.root, { [classes.withImage]: !!image })}>
         {image && (
-          <Box className={cx('imageWrapper')}>
+          <Box>
             <Image
               alt={alt}
-              className={cx('image')}
               src={image.url}
               layout="fill"
               objectFit="cover"
@@ -44,20 +41,19 @@ export const LandingPageHeader = ({
             />
           </Box>
         )}
-        <Box className={cx('content')}>
-          <Container fixed className={cx('header')}>
+        <Box className={classes.content}>
+          <Container fixed className={classes.header}>
             {logo && (
-              <Box className={cx('logo')}>
+              <Box className={classes.logo}>
                 <Image
                   src={logo.url}
                   alt={logo.alt}
                   layout="fill"
                   objectFit="cover"
-                  className={cx('logo')}
                 />
               </Box>
             )}
-            <Box className={cx('text')}>
+            <Box className={classes.text}>
               <Typography variant="h1">{title}</Typography>
               {subhead && (
                 <Typography variant="subtitle1" component="p">

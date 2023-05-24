@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import classNames from 'classnames/bind';
 import { UrlWithParsedQuery } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 import {
@@ -18,11 +17,11 @@ import {
   Grid,
   LinearProgress,
   Typography
-} from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
-import PlayCircleOutlineRounded from '@material-ui/icons/PlayCircleOutlineRounded';
-import ImageRounded from '@material-ui/icons/ImageRounded';
-import VideocamRounded from '@material-ui/icons/VideocamRounded';
+} from '@mui/material';
+import { ThemeProvider } from '@mui/styles';
+import PlayCircleOutlineRounded from '@mui/icons-material/PlayCircleOutlineRounded';
+import ImageRounded from '@mui/icons-material/ImageRounded';
+import VideocamRounded from '@mui/icons-material/VideocamRounded';
 import { ContentLink } from '@components/ContentLink';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { mediaCardStyles, mediaCardTheme } from './MediaCard.styles';
@@ -51,8 +50,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
     data,
     true
   ) as UrlWithParsedQuery;
-  const classes = mediaCardStyles({ isLoading });
-  const cx = classNames.bind(classes);
+  const { classes, cx } = mediaCardStyles({ isLoading });
 
   useEffect(() => {
     const handleRouteChangeStart = (url: string) => {
@@ -71,7 +69,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
     };
-  }, []);
+  }, [pathname, router.events]);
 
   return (
     <ThemeProvider theme={mediaCardTheme}>
@@ -97,7 +95,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
             {cardDate && (
               <Grid
                 container
-                justify="space-between"
+                justifyContent="space-between"
                 spacing={1}
                 style={{ marginBottom: 0 }}
               >

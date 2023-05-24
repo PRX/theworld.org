@@ -5,10 +5,9 @@
 
 import React, { HTMLAttributes, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Box, IconButton } from '@material-ui/core';
-import { CheckSharp, SelectAllSharp, WarningSharp } from '@material-ui/icons';
-import { ThemeProvider } from '@material-ui/core/styles';
-import classNames from 'classnames/bind';
+import { Box, IconButton } from '@mui/material';
+import { CheckSharp, SelectAllSharp, WarningSharp } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/styles';
 import { embedCodeTheme, embedCodeStyles } from './EmbedCode.styles';
 
 export interface IEmbedCodeProps extends HTMLAttributes<{}> {
@@ -21,8 +20,7 @@ export interface IEmbedCodeState {
 }
 
 export const EmbedCode = ({ src, className }: IEmbedCodeProps) => {
-  const classes = embedCodeStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = embedCodeStyles();
   const elmRef = useRef<HTMLElement>(null);
   const [{ copied, failed }, setState] = useState<IEmbedCodeState>({
     copied: false,
@@ -44,12 +42,15 @@ export const EmbedCode = ({ src, className }: IEmbedCodeProps) => {
 
   return (
     <ThemeProvider theme={embedCodeTheme}>
-      <Box className={cx(className, { root: true })}>
+      <Box className={cx(classes.root, className)}>
         <code ref={elmRef} className={classes.code}>
           {embedCode}
         </code>
         <CopyToClipboard text={embedCode} onCopy={handleCopy}>
-          <IconButton disableRipple>
+          <IconButton
+            classes={{ root: classes.MuiIconButtonRoot }}
+            disableRipple
+          >
             <EmbedCodeCopyIcon titleAccess={EmbedCodeCopyIconTitle} />
           </IconButton>
         </CopyToClipboard>

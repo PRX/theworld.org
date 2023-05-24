@@ -11,7 +11,7 @@ import {
   Toolbar,
   Typography,
   ButtonProps
-} from '@material-ui/core';
+} from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 

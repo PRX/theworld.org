@@ -7,16 +7,15 @@ import React, { useState } from 'react';
 import { useStore } from 'react-redux';
 import { handleButtonClick } from '@lib/routing';
 import { IButton } from '@interfaces';
-import classNames from 'classnames/bind';
 import {
   Box,
   Collapse,
   List,
-  ListItem,
+  ListItemButton,
   ListItemText,
   ThemeProvider
-} from '@material-ui/core';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { getMenusData } from '@store/reducers';
 import {
   drawerMainNavTheme,
@@ -49,8 +48,7 @@ export const DrawerMainNav = () => {
         )
       : {}
   });
-  const classes = drawerMainNavStyles({});
-  const cx = classNames.bind(classes);
+  const { classes, cx } = drawerMainNavStyles();
 
   const handleToggleCollapse = (key: string | number) => () => {
     setState({
@@ -69,8 +67,7 @@ export const DrawerMainNav = () => {
             ({ name, url, key, children }, index: number) =>
               (children && (
                 <Box className={classes.accordion} key={key}>
-                  <ListItem
-                    button
+                  <ListItemButton
                     onClick={handleToggleCollapse(key)}
                     className={cx({
                       opened: open[key]
@@ -78,12 +75,11 @@ export const DrawerMainNav = () => {
                   >
                     <ListItemText primary={name} />
                     <ExpandMore
-                      className={cx({
-                        expandIndicator: true,
+                      className={cx(classes.expandIndicator, {
                         opened: open[key]
                       })}
                     />
-                  </ListItem>
+                  </ListItemButton>
                   <Collapse in={open[key]} data-index={index}>
                     <List
                       component="nav"
@@ -92,27 +88,25 @@ export const DrawerMainNav = () => {
                     >
                       {children.map(
                         ({ name: childName, url: childUrl, key: childKey }) => (
-                          <ListItem
-                            button
+                          <ListItemButton
                             className={classes.subMenuItem}
                             onClick={handleButtonClick(childUrl)}
                             key={childKey}
                           >
                             <ListItemText primary={childName} />
-                          </ListItem>
+                          </ListItemButton>
                         )
                       )}
                     </List>
                   </Collapse>
                 </Box>
               )) || (
-                <ListItem
-                  button
+                <ListItemButton
                   onClick={handleButtonClick(url)}
                   data-index={index}
                 >
                   <ListItemText primary={name} />
-                </ListItem>
+                </ListItemButton>
               )
           )}
         </List>

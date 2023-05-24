@@ -4,11 +4,10 @@
  */
 
 import React, { useContext } from 'react';
-import clsx from 'clsx';
-import { IconButtonProps, Tooltip } from '@material-ui/core';
-import { PauseSharp, PlayArrowSharp } from '@material-ui/icons';
+import { IconButtonProps, Tooltip } from '@mui/material';
+import { PauseSharp, PlayArrowSharp } from '@mui/icons-material';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 import { usePlayButtonStyles } from './PlayButton.styles';
 
 export interface IPlayButtonProps extends IconButtonProps {}
@@ -17,10 +16,10 @@ export const PlayButton = ({ className, ...other }: IPlayButtonProps) => {
   const { state, togglePlayPause } = useContext(PlayerContext);
   const { playing } = state;
   const tooltipTitle = playing ? 'Pause' : 'Play';
-  const styles = usePlayButtonStyles({
+  const { classes: styles, cx } = usePlayButtonStyles({
     playing
   });
-  const rootClassNames = clsx(className, styles.root);
+  const rootClassNames = cx(styles.root, className);
   const iconClasses = {
     root: styles.iconRoot
   };

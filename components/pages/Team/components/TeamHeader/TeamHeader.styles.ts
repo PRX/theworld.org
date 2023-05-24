@@ -3,12 +3,13 @@
  * Styles for team header.
  */
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const teamHeaderStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      fontSize: '1.2rem'
-    }
-  })
-);
+export const teamHeaderStyles = makeStyles()((theme) => ({
+  root: {
+    fontSize: '1.2rem'
+  },
+  title: {
+    fontSize: theme.typography.pxToRem(46)
+  }
+}));

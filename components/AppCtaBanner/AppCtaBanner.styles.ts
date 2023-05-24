@@ -3,15 +3,11 @@
  * Styles for appCtaBanner.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { createTheme, Theme } from '@mui/material/styles';
+import { makeStyles } from 'tss-react/mui';
 
 export const appCtaBannerTheme = (theme: Theme) =>
-  createMuiTheme(theme, {
+  createTheme(theme, {
     typography: {
       h2: {
         color: theme.palette.primary.contrastText,
@@ -22,54 +18,62 @@ export const appCtaBannerTheme = (theme: Theme) =>
         lineHeight: 1.3
       }
     },
-    overrides: {
+    components: {
       MuiButton: {
-        containedPrimary: {
-          '&:hover': {
-            backgroundColor: theme.palette.secondary.main
+        styleOverrides: {
+          containedPrimary: {
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.main
+            }
           }
         }
       },
       MuiCheckbox: {
-        root: {
-          color: 'inherit'
+        styleOverrides: {
+          root: {
+            color: 'inherit'
+          }
         }
       },
       MuiFormControlLabel: {
-        root: {
-          paddingLeft: theme.spacing(2)
-        },
-        label: {
-          paddingTop: theme.spacing(1),
-          paddingBottom: theme.spacing(0),
-          textAlign: 'left'
+        styleOverrides: {
+          root: {
+            paddingLeft: theme.spacing(2)
+          },
+          label: {
+            paddingTop: theme.spacing(1),
+            paddingBottom: theme.spacing(0),
+            textAlign: 'left'
+          }
         }
       },
       MuiIconButton: {
-        root: {
-          '&:hover': {
-            backgroundColor: theme.palette.action.focus
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              backgroundColor: theme.palette.action.focus
+            }
           }
         }
       },
       MuiToolbar: {
-        root: {
-          justifyContent: 'center',
-          marginTop: 0,
-          marginBottom: 0,
-          '& > * + *': {
-            marginLeft: theme.spacing(2)
+        styleOverrides: {
+          root: {
+            justifyContent: 'center',
+            marginTop: 0,
+            marginBottom: 0,
+            '& > * + *': {
+              marginLeft: theme.spacing(2)
+            }
           }
         }
       }
     }
   });
 
-export const appCtaBannerStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      backgroundColor: theme.palette.primary.dark,
-      color: theme.palette.getContrastText(theme.palette.primary.dark)
-    }
-  })
-);
+export const appCtaBannerStyles = makeStyles()((theme: Theme) => ({
+  root: {
+    backgroundColor: theme.palette.primary.dark,
+    color: theme.palette.getContrastText(theme.palette.primary.dark)
+  }
+}));

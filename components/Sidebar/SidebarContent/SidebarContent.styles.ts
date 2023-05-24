@@ -3,27 +3,15 @@
  * Styles for SidebarContent.
  */
 
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-  Theme
-} from '@material-ui/core/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const sidebarContentTheme = (theme: Theme) => {
-  return createMuiTheme(theme, {});
-};
-
-export const sidebarContentStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      ...theme.typography.body1,
-      '& > *': {
-        margin: 0
-      },
-      '& > * + *': {
-        marginTop: theme.typography.pxToRem(theme.spacing(2))
-      }
+export const sidebarContentStyles = makeStyles()(theme => ({
+  root: {
+    '& > *': {
+      margin: 0
+    },
+    '& > * + *': {
+      marginTop: theme.typography.pxToRem(16)
     }
-  })
-);
+  }
+}));
