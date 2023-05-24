@@ -14,17 +14,15 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Grid,
   LinearProgress,
   Typography
 } from '@mui/material';
-import { ThemeProvider } from '@mui/styles';
 import PlayCircleOutlineRounded from '@mui/icons-material/PlayCircleOutlineRounded';
 import ImageRounded from '@mui/icons-material/ImageRounded';
 import VideocamRounded from '@mui/icons-material/VideocamRounded';
 import { ContentLink } from '@components/ContentLink';
 import { generateLinkHrefForContent } from '@lib/routing';
-import { mediaCardStyles, mediaCardTheme } from './MediaCard.styles';
+import { mediaCardStyles } from './MediaCard.styles';
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
@@ -72,59 +70,48 @@ export const MediaCard = ({ data }: MediaCardProps) => {
   }, [pathname, router.events]);
 
   return (
-    <ThemeProvider theme={mediaCardTheme}>
-      <Card
-        square
-        elevation={1}
-        className={cx({
-          [classes.isLoading]: isLoading
-        })}
-      >
-        <CardActionArea classes={{ root: classes.MuiCardActionAreaRoot }}>
-          {CardIcon && (
-            <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
-              <CardIcon style={{ fontSize: '5rem' }} />
-              <LinearProgress
-                className={classes.loadingBar}
-                color="secondary"
-                aria-label="Progress Bar"
-              />
-            </CardMedia>
-          )}
-          <CardContent classes={{ root: classes.MuiCardContentRoot }}>
-            {cardDate && (
-              <Grid
-                container
-                justifyContent="space-between"
-                spacing={1}
-                style={{ marginBottom: 0 }}
-              >
-                <Grid item xs="auto" zeroMinWidth>
-                  <Typography
-                    variant="subtitle2"
-                    component="span"
-                    color="textSecondary"
-                    noWrap
-                  >
-                    <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
-                      {cardDate}
-                    </Moment>
-                  </Typography>
-                </Grid>
-              </Grid>
-            )}
+    <Card
+      square
+      elevation={1}
+      className={cx(classes.root, {
+        [classes.isLoading]: isLoading
+      })}
+    >
+      <CardActionArea classes={{ root: classes.MuiCardActionAreaRoot }}>
+        {CardIcon && (
+          <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
+            <CardIcon style={{ fontSize: '5rem' }} />
+            <LinearProgress
+              className={classes.loadingBar}
+              color="secondary"
+              aria-label="Progress Bar"
+            />
+          </CardMedia>
+        )}
+        <CardContent classes={{ root: classes.MuiCardContentRoot }}>
+          {cardDate && (
             <Typography
-              variant="h5"
-              component="h2"
-              gutterBottom
-              className={classes.title}
+              variant="subtitle2"
+              component="span"
+              color="textSecondary"
+              noWrap
             >
-              {cardTitle}
+              <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                {cardDate}
+              </Moment>
             </Typography>
-          </CardContent>
-          <ContentLink data={data} className={cx('link')} />
-        </CardActionArea>
-      </Card>
-    </ThemeProvider>
+          )}
+          <Typography
+            variant="h5"
+            component="h2"
+            gutterBottom
+            className={classes.title}
+          >
+            {cardTitle}
+          </Typography>
+        </CardContent>
+        <ContentLink data={data} className={classes.link} />
+      </CardActionArea>
+    </Card>
   );
 };
