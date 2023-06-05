@@ -10,7 +10,6 @@ import {
 import { IncomingMessage } from 'http';
 import { ParsedUrlQuery } from 'querystring';
 import { parse, format } from 'url';
-import { customsearch_v1 as customSearch } from 'googleapis';
 import {
   INewsletterOptions,
   INewsletterData,
@@ -559,18 +558,6 @@ export const fetchApiSearch = (
   label: string,
   start: string | number
 ) =>
-  fetch(
-    format({
-      protocol: 'https',
-      hostname: 'search.theworld.org', // TODO: Update to `search.theworld.org` when DNS is ready.
-      pathname: 'query',
-      query: {
-        ...(q && { q }),
-        ...(label && { l: `${label}` }),
-        ...(start && { s: `${start}` }),
-        t: 'metatags-pubdate:d,date:d:s'
-      }
-    })
-  ).then(
-    (r) => r.status === 200 && r.json()
-  ) as Promise<customSearch.Schema$Search>;
+  fetchApi(`query/search/${label}/${q}`, undefined, {
+    start: start as string
+  });

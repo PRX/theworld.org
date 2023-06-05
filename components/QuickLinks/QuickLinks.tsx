@@ -25,6 +25,7 @@ export const QuickLinks = () => {
           classes={{ root: classes.MuiBreadcrumbsRoot }}
           separator=" "
           aria-label="Quick Links"
+          maxItems={20}
         >
           <Label
             color="secondary"

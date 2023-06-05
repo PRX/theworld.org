@@ -27,7 +27,6 @@ import { AppPlayer } from '@components/AppPlayer/AppPlayer';
 import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
 import { Playlist } from '@components/Player/components';
 import createEmotionCache from '@lib/generate/cache/emotion/createEmotionCache';
-import '@theme/css/fonts.css';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -178,8 +177,8 @@ const TwApp = ({
                   <AppLayout>
                     <AnyComponent {...pageProps} />
                   </AppLayout>
+                  <AppSearch />
                 </Player>
-                <AppSearch />
               </AppContext.Provider>
               <CssBaseline />
             </ThemeProvider>
