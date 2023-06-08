@@ -34,10 +34,6 @@ export const fetchAliasData =
         alias
       });
 
-      const twData = await fetchTwApiQueryAlias(alias);
-
-      console.log('fetchAliasData >> twData', alias, twData);
-
       data = await (isOnServer ? fetchTwApiQueryAlias : fetchApiQueryAlias)(
         alias
       ).then((resp: IPriApiResourceResponse) => resp && resp.data);

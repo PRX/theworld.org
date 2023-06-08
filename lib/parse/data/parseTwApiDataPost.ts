@@ -55,7 +55,5 @@ export function parseTwApiDataPost(data: TwApiPost) {
     ...(content && { body: content.rendered })
   } as IPost;
 
-  console.log(result);
-
   return result;
 }

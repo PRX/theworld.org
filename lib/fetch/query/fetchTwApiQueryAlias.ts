@@ -46,8 +46,6 @@ export const fetchTwApiQueryAlias = async (
     init
   ).then((resp) => resp && resp.data);
 
-  console.log(restResp);
-
   if (!restResp?.type) return undefined;
 
   if (restResp.type === 'redirect--external') return restResp;
