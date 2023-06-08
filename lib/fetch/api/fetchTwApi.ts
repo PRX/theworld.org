@@ -5,10 +5,6 @@
 
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import { stringify as qsStringify } from 'qs';
-import { twApi as configTwApi } from '@config';
-
-const twApiConfig = configTwApi || process.env.TW_API_CONFIG;
-const { apiUrlBase } = twApiConfig;
 
 /**
  * Fetch data from TW (WP) API.
@@ -23,7 +19,7 @@ export async function fetchTwApi<T>(
   params?: { [k: string]: any },
   init?: RequestInit
 ) {
-  let url = `${apiUrlBase}/${path}`;
+  let url = `${process.env.API_URL_BASE}/${process.env.WP_REST_ENDPOINT}/${path}`;
 
   if (params) {
     const qs = qsStringify(params);

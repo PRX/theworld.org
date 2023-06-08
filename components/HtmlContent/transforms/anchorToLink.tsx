@@ -44,19 +44,23 @@ export const anchorToLink = (
 
     if (isLocalUrl(url.href)) {
       const id = gen.next().value as number;
-      const { href: linkHref, as: linkAs } = generateLinkPropsForContent({
-        id: '',
-        type: '',
-        self: '',
-        metatags: { canonical: url.href }
-      });
+      const { href: linkHref, as: linkAs } = generateLinkPropsForContent(
+        url.href
+      );
+      const children = convertNodeToElement(
+        { ...node, attribs },
+        index,
+        transform
+      );
 
       delete attribs.target;
 
-      return (
+      return linkHref && linkAs ? (
         <Link href={linkHref} as={linkAs} passHref key={id} legacyBehavior>
-          {convertNodeToElement({ ...node, attribs }, index, transform)}
+          {children}
         </Link>
+      ) : (
+        children
       );
     }
   }
