@@ -3,14 +3,14 @@
  * Component for Tags elements.
  */
 
-import React, { HTMLAttributes } from 'react';
+import type { TermNode } from '@interfaces';
+import type { HTMLAttributes } from 'react';
 import { Box } from '@mui/material';
-import { IPriApiResource } from 'pri-api-library/types';
 import { ContentButton } from '@components/ContentButton';
 import { tagsStyles } from './Tags.styles';
 
 export interface ITagsProps extends HTMLAttributes<{}> {
-  data: IPriApiResource[];
+  data: TermNode[];
   label?: string;
 }
 
@@ -23,7 +23,13 @@ export const Tags = ({ data, label }: ITagsProps) => {
       {data.map(
         (item) =>
           item && (
-            <ContentButton className={classes.link} data={item} key={item.id} />
+            <ContentButton
+              className={classes.link}
+              url={item.link || ''}
+              key={item.id}
+            >
+              {item.name}
+            </ContentButton>
           )
       )}
     </Box>

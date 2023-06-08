@@ -2,6 +2,7 @@
  * Defines story data interface and types.
  */
 
+import type { Maybe, Post, PostToCategoryConnection } from '@interfaces/api';
 import type { IAudio } from './audio.interface';
 import type { IContributor } from './contributor.interface';
 import type { IPost } from './post.interface';
@@ -24,3 +25,7 @@ export interface IStory extends IPost {
   resourceDevelopment: number[] | ITerm[];
   storyFormat: number[] | ITerm[];
 }
+
+export type PostStory = Post & {
+  primaryCategory?: Maybe<PostToCategoryConnection>;
+};

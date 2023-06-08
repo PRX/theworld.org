@@ -4,46 +4,48 @@
  */
 
 import React from 'react';
-import { IImageStyle } from '@interfaces/content';
+import { MetaTags } from '@interfaces';
 
 export interface IOpenGraphProps {
-  type: string;
-  title: string;
-  url: string;
-  description?: string;
-  image?: IImageStyle | IImageStyle[];
-  children?: React.ReactNode;
+  data: MetaTags;
 }
 
-export const OpenGraph = ({
-  type,
-  title,
-  url,
-  description,
-  image,
-  children
-}: IOpenGraphProps) => (
-  <>
-    <meta property="fb:admins" content={process.env.FB_ADMINS} />
-    <meta property="fb:app_id" content={process.env.FB_APP_ID} />
-    <meta property="og:site_name" content="The World from PRX" />
-    <meta property="og:type" content={type} />
-    <meta property="og:title" content={title} />
-    <meta property="og:url" content={url} />
-    {description && <meta property="og:description" content={description} />}
-    {image &&
-      (Array.isArray(image) ? image : [image]).map(
-        ({ src, type: imageType, width, height }) => (
-          <React.Fragment key={`i:${src}`}>
-            <meta property="og:image" content={src} />
-            {imageType && <meta property="og:image:type" content={imageType} />}
-            {width && <meta property="og:image:width" content={`${width}`} />}
-            {height && (
-              <meta property="og:image:height" content={`${height}`} />
-            )}
-          </React.Fragment>
-        )
+export const OpenGraph = ({ data }: IOpenGraphProps) => {
+  const {
+    opengraphType,
+    opengraphTitle,
+    opengraphUrl,
+    opengraphDescription,
+    opengraphImage
+  } = data;
+  return (
+    <>
+      <meta property="fb:admins" content={process.env.FB_ADMINS} />
+      <meta property="fb:app_id" content={process.env.FB_APP_ID} />
+      <meta property="og:site_name" content="The World from PRX" />
+      {opengraphType && <meta property="og:type" content={opengraphType} />}
+      {opengraphTitle && <meta property="og:title" content={opengraphTitle} />}
+      {opengraphUrl && <meta property="og:url" content={opengraphUrl} />}
+      {opengraphDescription && (
+        <meta property="og:description" content={opengraphDescription} />
       )}
-    {children}
-  </>
-);
+      {opengraphImage?.sourceUrl && (
+        <>
+          <meta property="og:image" content={opengraphImage.sourceUrl} />
+          {opengraphImage.mediaDetails?.width && (
+            <meta
+              property="og:image:width"
+              content={`${opengraphImage.mediaDetails.width}`}
+            />
+          )}
+          {opengraphImage.mediaDetails?.height && (
+            <meta
+              property="og:image:height"
+              content={`${opengraphImage.mediaDetails.height}`}
+            />
+          )}
+        </>
+      )}
+    </>
+  );
+};

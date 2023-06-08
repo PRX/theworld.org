@@ -15,7 +15,7 @@ import { useStore } from 'react-redux';
 import { useRouter } from 'next/router';
 import { parse } from 'url';
 import { customsearch_v1 as customSearch } from 'googleapis';
-import { SearchFacet, searchFacetLabels } from '@interfaces/state';
+import { RootState, SearchFacet, searchFacetLabels } from '@interfaces/state';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -53,11 +53,11 @@ export interface AppSearchProps {
   q?: string;
 }
 
-export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
+export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
   const router = useRouter();
-  const queryRef = useRef(null);
-  const dialogContentRef = useRef(null);
-  const store = useStore();
+  const queryRef = useRef<HTMLInputElement>(null);
+  const dialogContentRef = useRef<HTMLDivElement>(null);
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const [label, setLabel] = useState('story' as SearchFacet);
   const unsub = store.subscribe(() => {
@@ -77,8 +77,9 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
     (results || [])
       .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
       .map(({ link }) => {
+        if (!link) return undefined;
         const { pathname } = parse(link);
-        return getContentDataByAlias(state, pathname);
+        return pathname && getContentDataByAlias(state, pathname);
       })
       .filter((item) => !!item && item);
   const storyData = getContentData(story);
@@ -87,7 +88,7 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
   const { classes } = appSearchStyles();
 
   const formatTabLabel = (l: SearchFacet) =>
-    `${l} (${data[l]?.[0].searchInformation?.totalResults || 0})`;
+    `${l} (${data?.[l]?.[0].searchInformation?.totalResults || 0})`;
 
   const handleClose = () => {
     store.dispatch({ type: 'SEARCH_CLOSE' });
@@ -96,7 +97,9 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    store.dispatch<any>(fetchSearchData(queryRef.current.value, 'all'));
+    if (queryRef?.current) {
+      store.dispatch<any>(fetchSearchData(queryRef.current.value, 'all'));
+    }
   };
 
   const handleLoadMore =
@@ -109,8 +112,11 @@ export const AppSearch = ({ static: staticPage, q = null }: AppSearchProps) => {
 
   const handleClearQuery = () => {
     store.dispatch({ type: 'SEARCH_CLEAR_QUERY' });
-    queryRef.current.value = '';
-    queryRef.current.focus();
+
+    if (queryRef?.current) {
+      queryRef.current.value = '';
+      queryRef.current.focus();
+    }
   };
 
   const handleFilterChange = (e: object, value: any) => {

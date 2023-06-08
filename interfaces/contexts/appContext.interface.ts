@@ -7,9 +7,10 @@
 export interface IAppContext {
   page: {
     resource: {
-      type: string;
-      id?: string;
+      type?: string;
+      id?: string | number;
     };
   };
+  cookies?: any;
   copyrightDate?: string | number;
 }

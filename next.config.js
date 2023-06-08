@@ -27,7 +27,10 @@ module.exports = withPlausibleProxy({
     TW_API_COLLECTION_CACHE_CONTROL:
       process.env.TW_API_COLLECTION_CACHE_CONTROL,
     TW_API_CTA_CACHE_CONTROL: process.env.TW_API_CTA_CACHE_CONTROL,
-    TW_STATIC_PREBUILD: process.env.TW_STATIC_PREBUILD
+    TW_STATIC_PREBUILD: process.env.TW_STATIC_PREBUILD,
+    API_URL_BASE: process.env.API_URL_BASE,
+    WP_REST_ENDPOINT: process.env.WP_REST_ENDPOINT,
+    WP_GRAPHQL_ENDPOINT: process.env.WP_GRAPHQL_ENDPOINT
   },
   images: {
     domains: [

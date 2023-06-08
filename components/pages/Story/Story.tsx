@@ -2,65 +2,59 @@
  * @file Story.tsx
  * Component for Story.
  */
-import React, { useContext, useEffect, useState } from 'react';
-import { useStore } from 'react-redux';
-import { AppContext } from '@contexts/AppContext';
+import type {
+  Contributor,
+  IContentComponentProps,
+  Post,
+  Post_Additionaldates as PostAdditionalDates,
+  Post_Presentation as PostPresentation
+} from '@interfaces';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { RootState, UiAction } from '@interfaces/state';
-import { parseUtcDate } from '@lib/parse/date';
-import { getDataByResource } from '@store/reducers';
+import { parseDateParts } from '@lib/parse/date';
 import { layoutComponentMap } from './layouts';
 
-export const Story = () => {
+export const Story = ({ data }: IContentComponentProps<Post>) => {
   const {
-    page: {
-      resource: { type, id = '' }
-    }
-  } = useContext(AppContext);
-  const store = useStore<RootState>();
-  const [state, updateForce] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    updateForce(store.getState());
-  });
-  const data = getDataByResource(state, type, id);
-  const {
-    metatags: dataMetatags,
+    seo,
+    link,
     title,
-    bylines,
-    dateBroadcast,
-    datePublished,
-    displayTemplate,
-    format,
-    resourceDevelopment,
-    shareLinks
+    date,
+    additionalDates,
+    contributors,
+    presentation,
+    resourceDevelopmentTags,
+    storyFormats
   } = data;
+  const { broadcastDate } = additionalDates as PostAdditionalDates;
+  const { format } = presentation as PostPresentation;
   const metatags = {
-    ...dataMetatags,
-    ...((dateBroadcast || datePublished) && {
-      pubdate: dateBroadcast || datePublished
+    ...seo,
+    canonical: seo?.canonical || link,
+    ...((broadcastDate || date) && {
+      pubdate: broadcastDate || date
     })
   };
   const LayoutComponent =
-    layoutComponentMap[displayTemplate] || layoutComponentMap.standard;
+    (format && layoutComponentMap[format]) || layoutComponentMap.standard;
   const props = {
     Title: title,
-    ...(format && { 'Story Format': format.title }),
-    ...(resourceDevelopment && {
-      'Resource Development': resourceDevelopment.title
+    ...(storyFormats && { 'Story Format': storyFormats.nodes[0].name }),
+    ...(!!resourceDevelopmentTags?.nodes.length && {
+      'Resource Development': resourceDevelopmentTags.nodes[0].name
     }),
-    ...(dateBroadcast &&
+    ...(broadcastDate &&
       (() => {
-        const dt = parseUtcDate(dateBroadcast * 1000);
+        const dt = parseDateParts(broadcastDate);
         return {
           'Broadcast Year': dt[0],
           'Broadcast Month': dt.slice(0, 2).join('-'),
           'Broadcast Date': dt.join('-')
         };
       })()),
-    ...(datePublished &&
+    ...(date &&
       (() => {
-        const dt = parseUtcDate(datePublished * 1000);
+        const dt = parseDateParts(date);
         return {
           'Published Year': dt[0],
           'Published Month': dt.slice(0, 2).join('-'),
@@ -70,16 +64,14 @@ export const Story = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Story', { props }]];
 
-  if (bylines) {
-    bylines.forEach(([, persons]) => {
-      persons.forEach(({ title: name }) => {
-        plausibleEvents.push([
-          `Person: ${name}`,
-          {
-            props: { 'Page Type': 'Story' }
-          }
-        ]);
-      });
+  if (contributors) {
+    contributors.nodes.forEach(({ name }: Contributor) => {
+      plausibleEvents.push([
+        `Person: ${name}`,
+        {
+          props: { 'Page Type': 'Story' }
+        }
+      ]);
     });
   }
 
@@ -88,63 +80,66 @@ export const Story = () => {
     console.log(plausibleEvents);
   }
 
-  useEffect(() => {
-    if (shareLinks) {
-      store.dispatch<UiAction>({
-        type: 'UI_SHOW_SOCIAL_SHARE_MENU',
-        payload: {
-          ui: {
-            socialShareMenu: {
-              links: [
-                {
-                  key: 'twitter',
-                  link: shareLinks.twitter
-                },
-                {
-                  key: 'facebook',
-                  link: shareLinks.facebook
-                },
-                {
-                  key: 'linkedin',
-                  link: shareLinks.linkedin
-                },
-                {
-                  key: 'flipboard',
-                  link: shareLinks.flipboard
-                },
-                {
-                  key: 'whatsapp',
-                  link: shareLinks.whatsapp
-                },
-                {
-                  key: 'email',
-                  link: shareLinks.email
-                }
-              ]
-            }
-          }
-        }
-      });
-    }
-    return () => {
-      // Show social hare menu.
-      store.dispatch<UiAction>({
-        type: 'UI_HIDE_SOCIAL_SHARE_MENU'
-      });
-    };
-  }, [shareLinks, store]);
+  // useEffect(() => {
+  //   if (shareLinks) {
+  //     store.dispatch<UiAction>({
+  //       type: 'UI_SHOW_SOCIAL_SHARE_MENU',
+  //       payload: {
+  //         ui: {
+  //           socialShareMenu: {
+  //             links: [
+  //               {
+  //                 key: 'twitter',
+  //                 link: shareLinks.twitter
+  //               },
+  //               {
+  //                 key: 'facebook',
+  //                 link: shareLinks.facebook
+  //               },
+  //               {
+  //                 key: 'linkedin',
+  //                 link: shareLinks.linkedin
+  //               },
+  //               {
+  //                 key: 'flipboard',
+  //                 link: shareLinks.flipboard
+  //               },
+  //               {
+  //                 key: 'whatsapp',
+  //                 link: shareLinks.whatsapp
+  //               },
+  //               {
+  //                 key: 'email',
+  //                 link: shareLinks.email
+  //               }
+  //             ]
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
+  //   return () => {
+  //     // Show social hare menu.
+  //     store.dispatch<UiAction>({
+  //       type: 'UI_HIDE_SOCIAL_SHARE_MENU'
+  //     });
+  //   };
+  // }, [shareLinks, store]);
 
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
+  // useEffect(
+  //   () => () => {
+  //     unsub();
+  //   },
+  //   [unsub]
+  // );
 
   return (
     <>
       <MetaTags data={metatags} />
-      <Plausible events={plausibleEvents} subject={{ type, id }} />
+      <Plausible
+        events={plausibleEvents}
+        subject={{ type: 'post--story', id: data.id }}
+      />
       <LayoutComponent data={data} />
     </>
   );

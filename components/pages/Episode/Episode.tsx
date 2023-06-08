@@ -33,7 +33,7 @@ import { StoryCard } from '@components/StoryCard';
 import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
 import { UiAction } from '@interfaces/state';
-import { parseUtcDate } from '@lib/parse/date';
+import { parseDateParts } from '@lib/parse/date';
 import {
   getDataByResource,
   getCollectionData,
@@ -75,7 +75,7 @@ export const Episode = () => {
   const metatags = {
     ...dataMetatags,
     ...((dateBroadcast || datePublished) && {
-      pubdate: parseUtcDate((dateBroadcast || datePublished) * 1000).join('-')
+      pubdate: parseDateParts((dateBroadcast || datePublished) * 1000).join('-')
     })
   };
   const { segments } = audio || {};
@@ -111,7 +111,7 @@ export const Episode = () => {
     }),
     ...(dateBroadcast &&
       (() => {
-        const dt = parseUtcDate(dateBroadcast * 1000);
+        const dt = parseDateParts(dateBroadcast * 1000);
         return {
           'Broadcast Year': dt[0],
           'Broadcast Month': dt.slice(0, 2).join('-'),
@@ -120,7 +120,7 @@ export const Episode = () => {
       })()),
     ...(datePublished &&
       (() => {
-        const dt = parseUtcDate(datePublished * 1000);
+        const dt = parseDateParts(datePublished * 1000);
         return {
           'Published Year': dt[0],
           'Published Month': dt.slice(0, 2).join('-'),

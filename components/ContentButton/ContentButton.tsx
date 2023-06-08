@@ -6,11 +6,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button, ButtonProps } from '@mui/material';
-import { IPriApiResource } from 'pri-api-library/types';
 import { generateLinkPropsForContent } from '@lib/routing';
 
 export interface ContentButtonProps extends ButtonProps {
-  data: IPriApiResource;
+  url: string;
   query?: { [k: string]: string };
 }
 
@@ -18,18 +17,19 @@ export type ContentButtonRef = HTMLAnchorElement;
 
 export const ContentButton = ({
   children,
-  data,
+  url,
   query,
   ...other
 }: ContentButtonProps) => {
-  const { title } = data || ({} as IPriApiResource);
-  const { href, as: alias } = generateLinkPropsForContent(data, query);
+  const { href, as: alias } = generateLinkPropsForContent(url, query);
 
-  return (
+  return href && alias ? (
     <Link href={href} as={alias} passHref legacyBehavior>
       <Button href="" {...other}>
-        {children || title}
+        {children}
       </Button>
     </Link>
+  ) : (
+    children
   );
 };

@@ -27,11 +27,16 @@ import { AppPlayer } from '@components/AppPlayer/AppPlayer';
 import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
 import { Playlist } from '@components/Player/components';
 import createEmotionCache from '@lib/generate/cache/emotion/createEmotionCache';
+import { IContentComponentProxyProps } from '@interfaces';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-interface MyAppProps extends AppProps {
+type AppPageProps = IContentComponentProxyProps & {
+  contentOnly?: boolean;
+};
+
+interface MyAppProps extends AppProps<AppPageProps> {
   emotionCache?: EmotionCache;
 }
 
@@ -112,7 +117,7 @@ const TwApp = ({
 }: MyAppProps) => {
   const AnyComponent = Component as any;
   const { store, props } = wrapper.useWrappedStore(rest);
-  const { pageProps } = props;
+  const { pageProps } = props as AppProps<AppPageProps>;
   const [plausibleDomain, setPlausibleDomain] = useState('');
   const { type, id, contentOnly } = pageProps;
   const contextValue = useMemo(

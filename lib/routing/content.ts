@@ -3,7 +3,6 @@
  * Handler functions for routing to content.
  */
 
-import type { IContent } from '@interfaces';
 import { parse, UrlWithParsedQuery } from 'url';
 
 /**
@@ -19,25 +18,23 @@ import { parse, UrlWithParsedQuery } from 'url';
  * @returns
  *    Canonical URL for the resource.
  */
-export const generateLinkHrefForContent = (
-  data: IContent,
-  parseUrl?: boolean
-): string | UrlWithParsedQuery => {
-  const { link } = data || ({} as typeof data);
-  const href = link && parseUrl ? parse(link, true) : link;
+export const generateLinkHrefForContent = (url: string, parseUrl?: boolean) => {
+  if (!url) return undefined;
 
-  return href;
+  if (parseUrl) return parse(url, true);
+
+  return url;
 };
 
 export const generateLinkPropsForContent = (
-  data: IContent,
+  url: string,
   query?: { [k: string]: string }
 ) => {
-  const url = parse(data.link, true);
+  const parsedUrl = url ? parse(url, true) : undefined;
 
-  if (url?.pathname) {
+  if (parsedUrl?.pathname) {
     const alias = {
-      ...parse(url.pathname),
+      ...parse(parsedUrl.pathname),
       ...(query && { query })
     } as UrlWithParsedQuery;
     const href = {

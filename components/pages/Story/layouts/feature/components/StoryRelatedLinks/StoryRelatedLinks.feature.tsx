@@ -3,9 +3,8 @@
  * Component for default story related links.
  */
 
-import React from 'react';
+import type { Post } from '@interfaces';
 import Image from 'next/legacy/image';
-import { IPriApiResource } from 'pri-api-library/types';
 import {
   Card,
   CardActionArea,
@@ -18,7 +17,7 @@ import { ContentLink } from '@components/ContentLink';
 import { storyRelatedLinksStyles } from './StoryRelatedLinks.feature.styles';
 
 export interface IStoryRelatedLinksProps {
-  data: IPriApiResource[];
+  data: Post[];
 }
 
 export const StoryRelatedLinks = ({
@@ -39,38 +38,41 @@ export const StoryRelatedLinks = ({
       classes={{ root: classes.root }}
     >
       {related.map((story) => {
-        const { id: storyId, title, image } = story;
+        const { id: storyId, title, featuredImage, link } = story;
+        const image = featuredImage?.node;
         return (
-          <Grid item display="grid" md={3} sm={6} xs={12} key={storyId}>
-            <Card square elevation={1}>
-              <CardActionArea
-                component={ContentLink}
-                data={story}
-                classes={{ root: classes.MuiCardActionAreaRoot }}
-              >
-                {image && (
-                  <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
-                    <Image
-                      src={image.url}
-                      alt={image.alt}
-                      layout="fill"
-                      objectFit="cover"
-                      sizes={sizes}
-                    />
-                  </CardMedia>
-                )}
-                <CardContent>
-                  <Typography
-                    variant="h5"
-                    component="h2"
-                    className={classes.title}
-                  >
-                    {title}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
+          link && (
+            <Grid item display="grid" md={3} sm={6} xs={12} key={storyId}>
+              <Card square elevation={1}>
+                <CardActionArea
+                  LinkComponent={ContentLink}
+                  classes={{ root: classes.MuiCardActionAreaRoot }}
+                >
+                  {image?.sourceUrl && (
+                    <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
+                      <Image
+                        src={image.sourceUrl}
+                        alt={image.altText || ''}
+                        layout="fill"
+                        objectFit="cover"
+                        sizes={sizes}
+                      />
+                    </CardMedia>
+                  )}
+                  <CardContent>
+                    <Typography
+                      variant="h5"
+                      component="h2"
+                      className={classes.title}
+                    >
+                      {title}
+                    </Typography>
+                    <ContentLink url={link || ''} className={classes.link} />
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          )
         );
       })}
     </Grid>

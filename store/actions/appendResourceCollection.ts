@@ -3,19 +3,18 @@
  *
  * Actions to append collections data to contend data and collection refs.
  */
+import { Connection } from '@interfaces';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IPriApiCollectionResponse } from 'pri-api-library/types';
 
-export const appendResourceCollection =
-  (
-    resp: IPriApiCollectionResponse,
-    type: string,
-    id: number | string | undefined,
-    collection: string
-  ): ThunkAction<void, {}, {}, AnyAction> =>
-  (dispatch: ThunkDispatch<{}, {}, AnyAction>): void => {
-    const payloadItems = resp.data?.filter((v) => !!v);
+export function appendResourceCollection(
+  data: Connection,
+  type: string,
+  id: number | string | undefined,
+  collection: string
+): ThunkAction<void, {}, {}, AnyAction> {
+  return (dispatch: ThunkDispatch<{}, {}, AnyAction>): void => {
+    const payloadItems = data.edges.map(({ node }) => node);
 
     if (payloadItems) {
       dispatch({
@@ -28,8 +27,9 @@ export const appendResourceCollection =
         payload: {
           resource: { type, id },
           collection,
-          ...resp
+          data
         }
       });
     }
   };
+}

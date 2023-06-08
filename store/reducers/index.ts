@@ -45,8 +45,8 @@ export const getDataByAlias = (state: RootState, alias: string) =>
 
 export const getDataByResource = (
   state: RootState,
-  type: string,
-  id: string | number
+  type?: string,
+  id?: string | number
 ) => fromContentData.getContentData(state.contentData, type, id);
 
 export const getContentDataByAlias = (state: RootState, alias: string) => {

@@ -7,7 +7,6 @@ import { FunctionComponent } from 'react';
 import { IncomingMessage } from 'http';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
-import { IPriApiResource } from 'pri-api-library/types';
 
 export interface FetchDataFunc {
   // eslint-disable-next-line no-unused-vars
@@ -18,16 +17,17 @@ export interface IContentComponent extends FunctionComponent {
   fetchData: FetchDataFunc;
 }
 
-export interface IContentComponentProps {
-  id: number;
-  data: IPriApiResource;
+export interface IContentComponentProps<D> {
+  data: D;
 }
 
 export interface IContentComponentProxyProps {
   type?: string;
-  id?: number;
+  id?: string | number;
   errorCode?: number;
   redirect?: string;
+  data?: any;
+  cookies?: any;
 }
 
 export interface IContentContext {

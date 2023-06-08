@@ -1,9 +1,9 @@
-import { parseUtcDate } from './index';
+import { parseDateParts } from './index';
 
 describe('lib/parse/date', () => {
   describe('parseUtcDate', () => {
     test('should parse UTC date into array of padded date parts', () => {
-      const result = parseUtcDate(1645044300000); // UTC Date for February 16, 2022 · 3:45 PM EST
+      const result = parseDateParts(1645044300000); // UTC Date for February 16, 2022 · 3:45 PM EST
 
       expect(result).toBeInstanceOf(Array);
       expect(result).toHaveLength(3);

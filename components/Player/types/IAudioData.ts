@@ -1,3 +1,4 @@
+import { ContentNode } from '@interfaces';
 import { IPriApiResource } from 'pri-api-library/types';
 
 /**
@@ -53,5 +54,5 @@ export interface IAudioData {
   /**
    * Content link resource data.
    */
-  linkResource?: IPriApiResource;
+  linkResource?: ContentNode;
 }

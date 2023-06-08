@@ -4,32 +4,28 @@
  */
 
 import React from 'react';
-import { IImageStyle } from '@interfaces/content';
+import { MetaTags } from '@interfaces';
 
 export interface ITwitterCardProps {
-  type: string;
-  title: string;
-  url: string;
-  description?: string;
-  image?: IImageStyle;
-  children?: React.ReactNode;
+  data: MetaTags;
 }
 
-export const TwitterCard = ({
-  type,
-  title,
-  url,
-  description,
-  image,
-  children
-}: ITwitterCardProps) => (
-  <>
-    <meta name="twitter:account_id" content={process.env.TWITTER_ACCOUNT_ID} />
-    <meta name="twitter:card" content={type} />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:url" content={url} />
-    {description && <meta name="twitter:description" content={description} />}
-    {image && <meta name="twitter:image" content={image.src} />}
-    {children}
-  </>
-);
+export const TwitterCard = ({ data }: ITwitterCardProps) => {
+  const { twitterTitle, twitterDescription, twitterImage } = data;
+  return (
+    <>
+      <meta
+        name="twitter:account_id"
+        content={process.env.TWITTER_ACCOUNT_ID}
+      />
+      <meta name="twitter:card" content="summary" />
+      {twitterTitle && <meta name="twitter:title" content={twitterTitle} />}
+      {twitterDescription && (
+        <meta name="twitter:description" content={twitterDescription} />
+      )}
+      {twitterImage?.sourceUrl && (
+        <meta name="twitter:image" content={twitterImage.sourceUrl} />
+      )}
+    </>
+  );
+};

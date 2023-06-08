@@ -3,12 +3,12 @@
  * Component for story card links.
  */
 
-import React, { useEffect, useState } from 'react';
+import { type UrlWithParsedQuery } from 'url';
+import type { IContent } from '@interfaces';
+import { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { UrlWithParsedQuery } from 'url';
-import { IPriApiResource } from 'pri-api-library/types';
 import {
   Card,
   CardActionArea,
@@ -27,7 +27,7 @@ import { mediaCardStyles } from './MediaCard.styles';
 const Moment = dynamic(() => import('react-moment')) as any;
 
 export interface MediaCardProps {
-  data: IPriApiResource;
+  data: IContent;
 }
 
 export const MediaCard = ({ data }: MediaCardProps) => {
