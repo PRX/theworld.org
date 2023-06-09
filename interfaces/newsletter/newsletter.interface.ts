@@ -30,5 +30,5 @@ export interface INewsletterOptions {
 }
 
 export interface INewsletterData {
-  emailAddress?: string;
+  emailAddress: string;
 }

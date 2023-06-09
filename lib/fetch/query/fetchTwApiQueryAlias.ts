@@ -1,5 +1,5 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import { ContentNode, TwApiResource } from '@interfaces';
+import type { ContentNode } from '@interfaces';
 import { fetchTwApi, gqlClient } from '@lib/fetch/api';
 import { gql } from '@apollo/client';
 
@@ -12,9 +12,15 @@ const GET_CONTENT_NODE = gql`
 `;
 
 type AliasData = {
-  id: number | string;
+  id: number;
   type: string;
   taxonomy?: string;
+  url?: string;
+};
+
+type AliasResp = {
+  id: string;
+  type: string;
   url?: string;
 };
 
@@ -36,7 +42,7 @@ export const fetchTwApiQueryAlias = async (
   params?: object,
   init?: RequestInit
 ) => {
-  const restResp = await fetchTwApi<TwApiResource<AliasData>>(
+  const restResp = await fetchTwApi<AliasData>(
     `tw/v2/alias`,
     {
       _fields: 'id,type,taxonomy',
@@ -48,7 +54,12 @@ export const fetchTwApiQueryAlias = async (
 
   if (!restResp?.type) return undefined;
 
-  if (restResp.type === 'redirect--external') return restResp;
+  if (restResp.type === 'redirect--external')
+    return {
+      type: restResp.type,
+      id: `${restResp.id}`,
+      url: restResp.url
+    } as AliasResp;
 
   const gqlResp = await gqlClient.query<{
     contentNode: ContentNode;
@@ -68,7 +79,7 @@ export const fetchTwApiQueryAlias = async (
       ? `term--${restResp.taxonomy}`
       : `post--${restResp.type === 'post' ? 'story' : restResp.type}`,
     id: contentNode.id
-  } as AliasData;
+  } as AliasResp;
 };
 
 export default fetchTwApiQueryAlias;

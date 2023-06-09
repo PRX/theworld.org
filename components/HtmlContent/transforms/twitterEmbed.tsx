@@ -10,7 +10,7 @@ import { parse } from 'url';
 import { findDescendant } from '@lib/parse/html';
 
 export const twitterEmbed = (node: DomElement) => {
-  let embedUrl: string;
+  let embedUrl: string | null;
 
   switch (true) {
     case node.type === 'tag' &&
@@ -41,12 +41,13 @@ export const twitterEmbed = (node: DomElement) => {
     }
 
     default:
+      embedUrl = null;
       break;
   }
 
   if (embedUrl && embedUrl.match(/twitter.com/)) {
     const { pathname } = parse(embedUrl);
-    const [, id] = pathname.match(/\/(\w+)\W*$/);
+    const [, id] = (pathname || '').match(/\/(\w+)\W*$/) || [];
 
     return <TwitterTweetEmbed tweetId={id} />;
   }

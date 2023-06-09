@@ -68,5 +68,5 @@ export const getCtaRegionData = (
       )
     : state?.data?.[region];
 
-  return messages?.length ? messages : null;
+  return messages?.length ? messages : undefined;
 };

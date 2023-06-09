@@ -13,7 +13,6 @@ export const initialState: RootState = {
   contentData: {},
   collections: {},
   ctaRegionData: {},
-  loading: {},
   menusData: {},
   search: {
     open: false,
@@ -61,8 +60,8 @@ export const getContentDataByAlias = (state: RootState, alias: string) => {
 
 export const getCollectionData = (
   state: RootState,
-  type: string,
-  id: string | undefined,
+  type: string | undefined,
+  id: string | number | undefined,
   collection: string
 ) => {
   const collectionState = fromCollections.getResourceCollection(
@@ -75,9 +74,7 @@ export const getCollectionData = (
   return (
     collectionState && {
       ...collectionState,
-      items: collectionState.items.map((page: string[]) =>
-        page ? page.map((key: string) => state.contentData[key]) : []
-      )
+      items: collectionState.items.map((item) => state.contentData[item.id])
     }
   );
 };
@@ -104,7 +101,7 @@ export const getCtaRegionData = (
   state: RootState,
   region: string,
   type?: string,
-  id?: string
+  id?: string | number
 ) =>
   fromCtaRegionGroupData.getCtaRegionData(
     state.ctaRegionData,

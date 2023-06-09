@@ -8,7 +8,7 @@ export interface IAppContext {
   page: {
     resource: {
       type?: string;
-      id?: string | number;
+      id?: string;
     };
   };
   cookies?: any;

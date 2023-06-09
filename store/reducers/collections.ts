@@ -5,7 +5,6 @@
  */
 
 import type { AnyAction } from 'redux';
-import type { IPriApiResource } from 'pri-api-library/types';
 import type { Edge, PageInfo } from '@interfaces';
 import type {
   CollectionState,
@@ -90,11 +89,11 @@ export const collections = (state: State = {}, action: AnyAction) => {
 
 export const getResourceCollection = (
   state: CollectionsState,
-  type: string,
-  id: string | undefined,
+  type: string | undefined,
+  id: string | number | undefined,
   collection: string
 ) => {
-  const key = makeResourceSignature({ type, id } as IPriApiResource);
+  const key = makeResourceSignature({ type, id });
   const resourceCollections = (state || {})[key];
 
   return resourceCollections && resourceCollections[collection];

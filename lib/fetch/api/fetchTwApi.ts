@@ -31,7 +31,7 @@ export async function fetchTwApi<T>(
   if (!resp.ok) return undefined;
 
   try {
-    const data = await resp.json();
+    const data: T = await resp.json();
     const isCollection = !!resp.headers['x-wp-total'];
 
     if (isCollection) {
@@ -52,10 +52,10 @@ export async function fetchTwApi<T>(
           size
         },
         data
-      } as T;
+      };
     }
 
-    return { data } as T;
+    return { data };
   } catch (error) {
     return undefined;
   }

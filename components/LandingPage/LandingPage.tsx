@@ -31,7 +31,7 @@ export const LandingPage = ({
   ...other
 }: ILandingPageProps) => {
   const max = Math.max(main.length, sidebar.length);
-  const mainItems = [];
+  const mainItems: ILandingPageItem[] = [];
 
   // Interlace main items with sidebar items wrapped in Hidden elements.
   for (let index = 0; index < max; index += 1) {

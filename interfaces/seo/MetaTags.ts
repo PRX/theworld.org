@@ -1,4 +1,4 @@
-import { PostTypeSeo, TaxonomySeo } from '@interfaces';
+import { PostTypeSeo, TaxonomySeo } from '@interfaces/api';
 
 export type MetaTags = PostTypeSeo | TaxonomySeo;
 

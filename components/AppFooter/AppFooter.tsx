@@ -3,6 +3,7 @@
  * Component for links to content page.
  */
 
+import type { RootState } from '@interfaces';
 import React from 'react';
 import Image from 'next/legacy/image';
 import { useStore } from 'react-redux';
@@ -17,7 +18,7 @@ import GBHLogo from '@svg/GBH-Logo-Purple.svg';
 import { appFooterStyles } from './AppFooter.styles';
 
 export const AppFooter = () => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const footerNav = getMenusData(store.getState(), 'footerNav');
   const copyrightDate = new Date().getFullYear();
   const { classes, cx } = appFooterStyles();
@@ -132,7 +133,7 @@ export const AppFooter = () => {
               .map(({ name, url, key, attributes }) =>
                 isLocalUrl(url.href) ? (
                   <Link
-                    href={url.path}
+                    href={url.path || '/'}
                     onClick={handleButtonClick(url)}
                     key={key}
                     className={classes.link}

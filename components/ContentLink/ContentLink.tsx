@@ -62,7 +62,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
         </MuiLink>
       </Link>
     ) : (
-      children
+      <span>{children}</span>
     );
   }
 );

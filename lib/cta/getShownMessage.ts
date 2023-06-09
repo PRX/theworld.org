@@ -16,10 +16,10 @@ import { getCookieKey } from './getCookieKey';
  * @return {object|null} - Message data object that should be rendered.
  */
 export const getShownMessage = (
-  messages: ICtaMessage[],
+  messages?: ICtaMessage[],
   cookies?: Cookies
-): ICtaMessage => {
-  let message = null;
+) => {
+  let message: ICtaMessage | undefined;
 
   if (messages) {
     message = !cookies
@@ -32,7 +32,7 @@ export const getShownMessage = (
             return msg;
           }
           return result;
-        }, null);
+        }, message);
   }
 
   return message;

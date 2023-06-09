@@ -12,14 +12,17 @@ export interface IMarqueeProps extends React.PropsWithChildren<{}> {}
 export const Marquee = ({ children }: IMarqueeProps) => {
   const [marqueeOffset, setMarqueeOffset] = useState(0);
   const [marqueeSpeed, setMarqueeSpeed] = useState(0);
-  const contentRef = useRef(null);
-  const rootRef = useRef(null);
-  const timeoutRef = useRef(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<any>(null);
   const { classes } = useMarqueeStyles();
 
   const updateMarqueeOffset = useCallback(() => {
     const rootRec = rootRef.current?.getBoundingClientRect();
     const contentRec = contentRef.current?.getBoundingClientRect();
+
+    if (!rootRec || !contentRec) return;
+
     const offset = Math.min(Math.ceil(rootRec.width - contentRec.width), 0);
     const speed = Math.abs(offset / 200) * 5;
 

@@ -6,7 +6,7 @@ import { HTMLAttributes } from 'react';
 import { IAudioResource } from '@interfaces';
 
 export interface IAudioPlayerProps extends HTMLAttributes<{}> {
-  data: IAudioResource;
+  data: IAudioResource | string;
   downloadFilename?: string | true;
   embeddedPlayerUrl?: string;
   message?: string;
@@ -14,10 +14,10 @@ export interface IAudioPlayerProps extends HTMLAttributes<{}> {
 }
 
 export interface IProgressState {
-  played: number;
-  playedSeconds: number;
-  loaded: number;
-  loadedSeconds: number;
+  played: number | null;
+  playedSeconds: number | null;
+  loaded: number | null;
+  loadedSeconds: number | null;
 }
 
 export interface IAudioPlayerState extends IProgressState {
@@ -25,8 +25,8 @@ export interface IAudioPlayerState extends IProgressState {
   playing: boolean;
   volume: number;
   muted: boolean;
-  duration: number;
-  seeking: number;
+  duration: number | null;
+  seeking: number | null;
   embedCodeShown: boolean;
   prevTop?: number;
   stuck: boolean;

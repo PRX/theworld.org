@@ -8,6 +8,6 @@ export const makeResourceSignature = ({
   type,
   id
 }: {
-  type: string;
+  type?: string;
   id?: string | number;
 }) => [type, id].filter((v) => !!v).join(':');

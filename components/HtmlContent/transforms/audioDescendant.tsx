@@ -26,27 +26,7 @@ export const audioDescendant = (node: DomElement) => {
     const {
       attribs: { src }
     } = audioSource;
-    return (
-      <AudioPlayer
-        data={{
-          id: '',
-          type: '',
-          self: '',
-          metatags: null,
-          title: '',
-          audioTitle: '',
-          description: '',
-          date: null,
-          broadcastDate: null,
-          metadata: null,
-          audioAuthor: null,
-          program: null,
-          segments: null,
-          usage: null,
-          url: src
-        }}
-      />
-    );
+    return <AudioPlayer data={src as string} />;
   }
 
   return undefined;

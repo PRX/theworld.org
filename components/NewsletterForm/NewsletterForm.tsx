@@ -38,21 +38,19 @@ export const NewsletterForm = ({
   compact,
   className
 }: INewsletterProps) => {
-  const [data, setData] = useState({
-    name: '',
-    emailAddress: ''
-  } as INewsletterData);
-  const [error, setError] = useState(null);
+  const [data, setData] = useState<INewsletterData>();
+  const [error, setError] = useState<{ message: string }>();
   const [optedIn, setOptedIn] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const emailError =
     !!error && !!error.message && !!error.message.match(/\bemail\b/i);
-  const readyToSubmit = optedIn && validateEmailAddress(data.emailAddress);
+  const readyToSubmit =
+    optedIn && data && validateEmailAddress(data.emailAddress);
   const icon = (submitted && (
     <CircularProgress color="inherit" size={20} aria-label="Progress Bar" />
   )) || <SendSharp />;
   const isAmp = useAmp();
-  const { classes, cx } = newsletterFormStyles({ compact });
+  const { classes, cx } = newsletterFormStyles({ compact: !!compact });
 
   const handleChangeEmailAddress = (e: ChangeEvent<HTMLInputElement>) => {
     setData({
@@ -66,16 +64,19 @@ export const NewsletterForm = ({
   };
 
   const handleSubscribe = async () => {
+    if (!data) return;
+
     const resp = await postNewsletterSubscription(data, {
       ...options,
-      ...(isAmp && { 'source-position': `${options['source-position']}-amp` })
+      ...(isAmp &&
+        options && { 'source-position': `${options['source-position']}-amp` })
     });
     const { error: err } = resp;
 
     if (err) {
       setError(err);
     } else {
-      setError(null);
+      setError(undefined);
       if (onSubscribed) {
         onSubscribed();
       }
@@ -111,7 +112,7 @@ export const NewsletterForm = ({
               type="email"
               id="email"
               label="Email Address"
-              value={data.emailAddress}
+              value={data?.emailAddress}
               onChange={handleChangeEmailAddress}
               error={emailError}
               helperText={emailError && error.message}

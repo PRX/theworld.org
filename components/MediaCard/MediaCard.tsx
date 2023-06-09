@@ -45,7 +45,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
     return iconMap.get(mt);
   })(type);
   const { pathname } = generateLinkHrefForContent(
-    data,
+    metatags.canonical,
     true
   ) as UrlWithParsedQuery;
   const { classes, cx } = mediaCardStyles({ isLoading });
@@ -110,7 +110,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
             {cardTitle}
           </Typography>
         </CardContent>
-        <ContentLink data={data} className={classes.link} />
+        <ContentLink url={metatags.canonical} className={classes.link} />
       </CardActionArea>
     </Card>
   );

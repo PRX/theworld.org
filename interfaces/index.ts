@@ -3,6 +3,7 @@ export * from './button';
 export * from './content';
 export * from './cta';
 export * from './link';
+export * from './newsletter';
 export * from './page';
 export * from './seo';
 export * from './social';

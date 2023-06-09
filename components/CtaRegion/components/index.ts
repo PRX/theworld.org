@@ -8,9 +8,10 @@ export * from './CtaMessageInfo';
 export * from './CtaMessageNewsletter';
 export * from './CtaMessageOptIn';
 
-export const ctaTypeComponentMap = {
-  info: CtaMessageInfo,
-  donation: CtaMessageDonation,
-  optin: CtaMessageOptIn,
-  newsletter: CtaMessageNewsletter
-};
+const ctaTypeComponentMap = new Map();
+ctaTypeComponentMap.set('info', CtaMessageInfo);
+ctaTypeComponentMap.set('donation', CtaMessageDonation);
+ctaTypeComponentMap.set('optin', CtaMessageOptIn);
+ctaTypeComponentMap.set('newsletter', CtaMessageNewsletter);
+
+export { ctaTypeComponentMap };

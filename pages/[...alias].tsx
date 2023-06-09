@@ -51,7 +51,7 @@ const ContentProxy = ({ type, data }: Props) => {
 
     case 'term--contributor':
     case 'node--people':
-      return <DynamicBio />;
+      return <DynamicBio data={data} />;
 
     case 'term--program':
     case 'node--programs':
@@ -81,7 +81,7 @@ export const getServerSideProps: GetServerSideProps<
   IContentComponentProxyProps
 > = async ({ req, params }) => {
   let resourceType: string | undefined = 'homepage';
-  let resourceId: string | number | undefined;
+  let resourceId: string | undefined;
   let redirect: string | undefined;
   const { alias = [] } = params || {};
   const aliasPath = (alias as string[]).join('/');
@@ -125,10 +125,8 @@ export const getServerSideProps: GetServerSideProps<
     if (resourceType) {
       const fetchData = getResourceFetchData(resourceType);
 
-      if (fetchData) {
+      if (fetchData && resourceId) {
         const data = await fetchData(resourceId);
-
-        console.log(data);
 
         // await store.dispatch<any>(fetchAppData());
 

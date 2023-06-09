@@ -55,6 +55,6 @@ export const contentData = (state: State = {}, action: AnyAction) => {
 
 export const getContentData = (
   state: ContentDataState,
-  type: string,
-  id?: string
+  type?: string,
+  id?: string | number
 ) => (state || {})[makeResourceSignature({ type, id })];

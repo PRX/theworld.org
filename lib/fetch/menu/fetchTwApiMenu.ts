@@ -1,8 +1,7 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import { URL } from 'url';
-import fetchTwApi from '@lib/fetch/api/fetchTwApi';
+import { fetchTwApi } from '@lib/fetch/api';
 import { MenuItem, MenuItemAttributes, TwApiMenuItem } from '@interfaces/menu';
-import { isLocalUrl } from '@lib/parse/url';
 
 const servicesMap = new Map<string, string>();
 servicesMap.set('give.prx.org', 'prx:give');
@@ -19,8 +18,7 @@ function getServiceFromUrl(url: string) {
     const service = servicesMap.get(hostname);
 
     return service;
-
-  } catch(e) {
+  } catch (e) {
     return undefined;
   }
 }
@@ -60,7 +58,7 @@ export const fetchTwApiMenu = async (
   params?: object,
   init?: RequestInit
 ) =>
-  fetchTwApi(
+  fetchTwApi<TwApiMenuItem[]>(
     `menus/v1/locations/${location}`,
     {
       fields: 'title,url',
@@ -70,7 +68,7 @@ export const fetchTwApiMenu = async (
   ).then(
     (resp) =>
       resp &&
-      (resp.data as TwApiMenuItem[])
+      resp.data
         .map(({ ID, title, url, menu_item_parent: parent }) => {
           const [name, attributesJson] = title.split('|');
           const service = getServiceFromUrl(url);

@@ -4,122 +4,97 @@
  */
 
 import type React from 'react';
-import type { IPriApiResource } from 'pri-api-library/types';
-import type { RootState } from '@interfaces';
+import type {
+  Contributor,
+  Contributor_Contributordetails as ContributorDetails,
+  Contributor_Landingpage as ContributorLandingPage,
+  IContentComponentProps,
+  PostStory
+} from '@interfaces';
 import { useContext, useEffect, useState } from 'react';
-import { useStore } from 'react-redux';
-import { Box, Button, Hidden, Typography } from '@mui/material';
-import { EqualizerRounded, PublicRounded } from '@mui/icons-material';
-import Pagination from '@mui/material/Pagination';
+import { Box, Button, Typography } from '@mui/material';
+import { EqualizerRounded } from '@mui/icons-material';
+// import Pagination from '@mui/material/Pagination';
 import { LandingPage } from '@components/LandingPage';
-import { CtaRegion } from '@components/CtaRegion';
+// import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import {
   Sidebar,
-  SidebarAudioList,
-  SidebarCta,
-  SidebarFooter,
   SidebarHeader,
-  SidebarLatestStories,
-  SidebarList
+  SidebarLatestStories
+  // SidebarAudioList,
+  // SidebarCta,
+  // SidebarFooter,
+  // SidebarList
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
-import { fetchApiPersonAudio, fetchApiPersonStories } from '@lib/fetch';
+import { fetchApiPersonStories } from '@lib/fetch';
 import { AppContext } from '@contexts/AppContext';
-import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import {
-  getCollectionData,
-  getCtaRegionData,
-  getDataByResource
-} from '@store/reducers';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { BioHeader } from './components/BioHeader';
 import { bioStyles } from './Bio.styles';
 
-export const Bio = () => {
+export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
   const { page: pageData } = useContext(AppContext);
   const { resource } = pageData;
-  const { type, id = '' } = resource;
-  const store = useStore<RootState>();
-  const [state, setState] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
-  const data = getDataByResource(state, type, id);
+  const { type = 'term--contributor', id = '' } = resource;
 
-  // CTA data.
-  const ctaSidebarTop = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_sidebar_01',
-    type,
-    id
-  );
-  const ctaSidebarBottom = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_sidebar_02',
-    type,
-    id
-  );
-  const featuredStoryState = getCollectionData(
-    state,
-    type,
-    id,
-    'featured story'
-  );
+  // // CTA data.
+  // const ctaSidebarTop = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_landing_sidebar_01',
+  //   type,
+  //   id
+  // );
+  // const ctaSidebarBottom = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_landing_sidebar_02',
+  //   type,
+  //   id
+  // );
 
-  const featuredStory = featuredStoryState.items[1][0];
-  const { items: featuredStories } =
-    getCollectionData(state, type, id, 'featured stories') || {};
-  const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page, next } = storiesState || {};
-  const segmentsState = getCollectionData(state, type, id, 'segments');
   const {
-    items: segments,
-    count: segmentsCount,
-    size: segmentsSize
-  } = segmentsState || {};
-  const segmentsPageCount = Math.ceil(segmentsCount / segmentsSize);
-  const {
-    metatags,
-    title,
-    teaser,
-    image,
-    bio,
-    program,
-    position,
-    socialLinks
+    seo,
+    name,
+    contributorDetails,
+    description,
+    posts,
+    landingPage,
+    segments
   } = data;
-  const { twitter, tumblr, podcast, blog, website, rss, contact } =
-    socialLinks || {};
-  const followLinks = [
-    twitter,
-    tumblr,
-    podcast,
-    blog,
-    website,
-    rss,
-    contact
-  ].filter((v) => !!v);
+  const { image, teaser, program, position } =
+    contributorDetails as ContributorDetails;
+  const { featuredStories: allFeaturedStories } =
+    landingPage as ContributorLandingPage;
+  const [featuredStory, ...stories] = [
+    ...(allFeaturedStories || []),
+    ...(posts?.edges?.map(({ node }) => node) || [])
+  ] as PostStory[];
+  const featuredStories = stories.splice(0, 4);
+  // const { twitter, tumblr, podcast, blog, website, rss, contact } =
+  //   socialLinks || {};
+  // const followLinks = [
+  //   twitter,
+  //   tumblr,
+  //   podcast,
+  //   blog,
+  //   website,
+  //   rss,
+  //   contact
+  // ].filter((v) => !!v);
 
   const [loading, setLoading] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);
-  const [segmentsPage, setSegmentsPage] = useState(1);
+  // const [segmentsPage, setSegmentsPage] = useState(1);
   const { classes } = bioStyles();
 
   // Plausible Events.
   const props = {
-    Name: title
+    Name: name
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Person', { props }]];
-
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
 
   useEffect(() => {
     // Something wants to keep the last interacted element in view.
@@ -128,61 +103,51 @@ export const Bio = () => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [oldScrollY, page]);
+  }, [oldScrollY, posts?.pageInfo?.endCursor]);
 
   const loadMoreStories = async () => {
+    if (!posts?.pageInfo?.endCursor) return;
+
     setLoading(true);
 
-    const moreStories = await fetchApiPersonStories(id, page + 1);
-
-    setOldScrollY(window.scrollY);
-    setLoading(false);
-
-    store.dispatch<any>(
-      appendResourceCollection(moreStories, type, id, 'stories')
+    const moreStories = await fetchApiPersonStories(
+      id,
+      posts?.pageInfo?.endCursor
     );
-  };
 
-  const handleSegmentsPageChange = async (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    const pageItems = segmentsState.items[value];
+    if (moreStories) {
+      setOldScrollY(window.scrollY);
+      setLoading(false);
 
-    if (!pageItems || !pageItems.length) {
-      const moreSegments = await fetchApiPersonAudio(
-        id as string,
-        'program-segment',
-        value,
-        10
-      );
-
-      store.dispatch<any>(
-        appendResourceCollection(moreSegments, type, id, 'segments')
-      );
+      // Add stories to state.
     }
-
-    setSegmentsPage(value);
   };
+
+  // const handleSegmentsPageChange = async (
+  //   event: React.ChangeEvent<unknown>,
+  //   value: number
+  // ) => {
+  //   setSegmentsPage(value);
+  // };
 
   const mainElements = [
     {
       key: 'main top',
       children: (
         <>
-          {bio && (
+          {description && (
             <Box mt={3}>
               <Box className={classes.body}>
-                <HtmlContent html={bio} />
+                <HtmlContent html={description} />
               </Box>
             </Box>
           )}
-          <Box mt={bio ? 6 : 3} mb={3} display="grid" gap={1}>
+          <Box mt={description ? 6 : 3} mb={3} display="grid" gap={1}>
             {featuredStory && (
               <StoryCard data={featuredStory} feature priority />
             )}
             {featuredStories && (
-              <StoryCardGrid data={featuredStories[1]} gap={1} />
+              <StoryCardGrid data={featuredStories} gap={1} />
             )}
           </Box>
         </>
@@ -192,18 +157,14 @@ export const Bio = () => {
       key: 'main bottom',
       children: stories && (
         <>
-          {stories
-            .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource) => (
-              <StoryCard
-                data={item}
-                feature={
-                  item.displayTemplate && item.displayTemplate !== 'standard'
-                }
-                key={item.id}
-              />
-            ))}
-          {next && (
+          {stories.map((story) => (
+            <StoryCard
+              data={story}
+              feature={story.presentation?.format !== 'standard'}
+              key={story.id}
+            />
+          ))}
+          {posts?.pageInfo.hasNextPage && (
             <Box mt={3}>
               <Button
                 variant="contained"
@@ -229,16 +190,16 @@ export const Bio = () => {
       key: 'sidebar top',
       children: (
         <>
-          {segments && !!segments[1].length && (
+          {segments && (
             <Sidebar item elevated>
               <SidebarHeader>
                 <EqualizerRounded />
                 <Typography variant="h2">
-                  Latest segments from {title}
+                  Latest segments from {name}
                 </Typography>
               </SidebarHeader>
-              <SidebarAudioList disablePadding data={segments[segmentsPage]} />
-              <SidebarFooter>
+              {/* <SidebarAudioList disablePadding data={segments[segmentsPage]} /> */}
+              {/* <SidebarFooter>
                 {segmentsPageCount > 1 && (
                   <Pagination
                     count={segmentsPageCount}
@@ -247,10 +208,10 @@ export const Bio = () => {
                     onChange={handleSegmentsPageChange}
                   />
                 )}
-              </SidebarFooter>
+              </SidebarFooter> */}
             </Sidebar>
           )}
-          {!!followLinks.length && (
+          {/* {!!followLinks.length && (
             <Sidebar item elevated>
               <SidebarHeader>
                 <PublicRounded />
@@ -259,8 +220,8 @@ export const Bio = () => {
               <SidebarList disablePadding data={followLinks} />
               <SidebarFooter />
             </Sidebar>
-          )}
-          {ctaSidebarTop && (
+          )} */}
+          {/* {ctaSidebarTop && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarTop} />
@@ -269,7 +230,7 @@ export const Bio = () => {
                 <CtaRegion data={ctaSidebarTop} />
               </Hidden>
             </>
-          )}
+          )} */}
         </>
       )
     },
@@ -278,7 +239,7 @@ export const Bio = () => {
       children: (
         <>
           <SidebarLatestStories />
-          {ctaSidebarBottom && (
+          {/* {ctaSidebarBottom && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarBottom} />
@@ -287,7 +248,7 @@ export const Bio = () => {
                 <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
             </>
-          )}
+          )} */}
         </>
       )
     }
@@ -295,14 +256,16 @@ export const Bio = () => {
 
   return (
     <>
-      <MetaTags data={metatags} />
+      {seo && <MetaTags data={seo} />}
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <BioHeader
-        title={title}
-        position={position}
-        subhead={teaser}
-        image={image}
-        program={program}
+        {...{
+          ...(name && { title: name }),
+          ...(position && { position }),
+          ...(teaser && { subhead: teaser }),
+          ...(image && { image }),
+          ...(program && { programs: program })
+        }}
       />
       <LandingPage main={mainElements} sidebar={sidebarElements} gap={1} />
     </>

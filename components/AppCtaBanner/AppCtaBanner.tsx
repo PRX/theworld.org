@@ -39,9 +39,12 @@ export const AppCtaBanner = () => {
 
     // Prompt if saving cookie is ok.
 
-    const { name, hash, cookieLifespan } = shownMessage;
-    // Set cookie for region message.
-    setCtaCookie(name, hash, cookieLifespan);
+    if (shownMessage) {
+      const { name, hash, cookieLifespan } = shownMessage;
+      // Set cookie for region message.
+      setCtaCookie(name, hash, cookieLifespan);
+    }
+
     // Close prompt.
     setClosed(true);
   };

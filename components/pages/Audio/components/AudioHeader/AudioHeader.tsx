@@ -3,9 +3,13 @@
  * Component for default story header.
  */
 
-import React from 'react';
+import type {
+  Contributor,
+  PostSegment,
+  Segment_Segmentdates as SegmentSegmentDates
+} from '@interfaces';
+import type React from 'react';
 import dynamic from 'next/dynamic';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Typography } from '@mui/material';
 import { ContentLink } from '@components/ContentLink';
 import { IAudioControlsProps } from '@components/Player/components';
@@ -22,13 +26,15 @@ const AudioControls = dynamic(() =>
 ) as React.FC<IAudioControlsProps>;
 
 interface Props {
-  data: IPriApiResource;
+  data: PostSegment;
 }
 
 export const AudioHeader = ({ data }: Props) => {
-  const { audioAuthor, audioTitle, broadcastDate, program, title, id } = data;
+  const { title, id, contributors, programs, segmentDates } = data;
+  const program = programs?.nodes[0];
+  const { broadcastDate } = segmentDates as SegmentSegmentDates;
   const audioProps = {
-    title: audioTitle || title,
+    title,
     queuedFrom: 'Page Header Controls',
     linkResource: data
   } as Partial<IAudioData>;
@@ -38,13 +44,15 @@ export const AudioHeader = ({ data }: Props) => {
     <Box className={classes.root} mt={4} mb={2}>
       <Box mb={3}>
         <Typography variant="h1" className={classes.title}>
-          {audioTitle}
+          {title}
         </Typography>
       </Box>
       <Box className={classes.meta} mb={2}>
         <Box className={classes.info}>
-          {program?.metatags && (
-            <ContentLink data={program} className={classes.programLink} />
+          {program?.link && (
+            <ContentLink url={program.link} className={classes.programLink}>
+              {program.name}
+            </ContentLink>
           )}
           {broadcastDate && (
             <Moment
@@ -56,16 +64,18 @@ export const AudioHeader = ({ data }: Props) => {
               {broadcastDate}
             </Moment>
           )}
-          {audioAuthor && !!audioAuthor.length && (
+          {!!contributors?.nodes.length && (
             <ul className={classes.byline}>
-              {audioAuthor.map(
-                (person: IPriApiResource) =>
-                  person?.metatags && (
+              {contributors.nodes.map(
+                (person: Contributor) =>
+                  person?.link && (
                     <li className={classes.bylineItem} key={person.id}>
                       <ContentLink
                         className={classes.bylineLink}
-                        data={person}
-                      />
+                        url={person.link}
+                      >
+                        {person.name}
+                      </ContentLink>
                     </li>
                   )
               )}

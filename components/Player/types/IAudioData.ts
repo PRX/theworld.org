@@ -1,5 +1,4 @@
 import { ContentNode } from '@interfaces';
-import { IPriApiResource } from 'pri-api-library/types';
 
 /**
  * Audio data interface.
