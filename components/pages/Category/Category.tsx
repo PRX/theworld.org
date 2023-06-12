@@ -3,9 +3,21 @@
  * Component for Category.
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import type React from 'react';
+import type { SidebarListItem } from '@components/Sidebar';
+import type {
+  Category as CategoryType,
+  Category_Taxonomyimages as CategoryTaxonomyImages,
+  IContentComponentProps,
+  RootState,
+  Category_Teaserfields as CategoryTeaserFields,
+  Category_Sponsorship as CategorySponsorship,
+  Category_Landingpage as CategoryLandingpage,
+  PostStory,
+  AcfLink
+} from '@interfaces';
+import { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Button, Hidden, Typography } from '@mui/material';
 import { ListAltRounded } from '@mui/icons-material';
 import { LandingPage } from '@components/LandingPage';
@@ -26,25 +38,19 @@ import { LandingPageHeader } from '@components/LandingPageHeader';
 import { MetaTags } from '@components/MetaTags';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { AppContext } from '@contexts/AppContext';
-import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import {
-  getCollectionData,
-  getCtaRegionData,
-  getDataByResource
-} from '@store/reducers';
+import { getCtaRegionData } from '@store/reducers';
 
-export const Category = () => {
+export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
   const {
     page: {
-      resource: { type, id }
+      resource: { type = 'term--category', id = '' }
     }
   } = useContext(AppContext);
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const data = getDataByResource(state, type, id);
 
   // CTA data.
   const ctaInlineTop = getCtaRegionData(
@@ -71,38 +77,43 @@ export const Category = () => {
     type,
     id
   );
-  const featuredStoryState = getCollectionData(
-    state,
-    type,
-    id,
-    'featured story'
-  );
-  const featuredStory = featuredStoryState.items[1][0];
-  const { items: featuredStories } = getCollectionData(
-    state,
-    type,
-    id,
-    'featured stories'
-  );
-  const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page, next } = storiesState;
   const {
-    metatags,
-    title,
-    teaser,
-    bannerImage,
-    logo,
-    hosts,
-    sponsors,
-    body,
+    seo,
+    name,
+    teaserFields,
+    taxonomyImages,
+    landingPage,
+    posts,
+    sponsorship,
+    description,
     children
   } = data;
+  const { teaser } = teaserFields as CategoryTeaserFields;
+  const { imageBanner, logo } = taxonomyImages as CategoryTaxonomyImages;
+  const { featuredStories: allFeaturedStories } =
+    landingPage as CategoryLandingpage;
+  const [featuredStory, ...stories] = [
+    ...(allFeaturedStories || []),
+    ...(posts?.edges?.map(({ node }) => node) || [])
+  ] as PostStory[];
+  const featuredStories = stories.splice(0, 4);
+  const { collectionSponsorLinks } = sponsorship as CategorySponsorship;
+  const sponsors = collectionSponsorLinks
+    ?.map((collection) => collection?.sponsorLinks)
+    .filter((v) => !!(v?.title && v.url))
+    .map(
+      ({ title, url }: AcfLink) =>
+        ({
+          title,
+          url
+        } as SidebarListItem)
+    );
   const [loading, setLoading] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);
 
   // Plausible Events.
   const props = {
-    Title: title
+    Title: name
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Category', { props }]];
 
@@ -120,19 +131,24 @@ export const Category = () => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [oldScrollY, page]);
+  }, [oldScrollY, posts?.pageInfo?.endCursor]);
 
   const loadMoreStories = async () => {
+    if (!posts?.pageInfo?.endCursor) return;
+
     setLoading(true);
 
-    const moreStories = await fetchApiCategoryStories(id, page + 1);
-
-    setOldScrollY(window.scrollY);
-    setLoading(false);
-
-    store.dispatch<any>(
-      appendResourceCollection(moreStories, type, id, 'stories')
+    const moreStories = await fetchApiCategoryStories(
+      id,
+      posts?.pageInfo?.endCursor
     );
+
+    if (moreStories) {
+      setOldScrollY(window.scrollY);
+      setLoading(false);
+
+      // Add stories to state.
+    }
   };
 
   const mainElements = [
@@ -145,7 +161,7 @@ export const Category = () => {
               <StoryCard data={featuredStory} feature priority />
             )}
             {featuredStories && (
-              <StoryCardGrid data={featuredStories[1]} gap={1} />
+              <StoryCardGrid data={featuredStories} gap={1} />
             )}
           </Box>
           {ctaInlineTop && (
@@ -165,19 +181,14 @@ export const Category = () => {
       key: 'main bottom',
       children: (
         <>
-          {stories &&
-            stories
-              .reduce((a, p) => [...a, ...p], [])
-              .map((item: IPriApiResource) => (
-                <StoryCard
-                  data={item}
-                  feature={
-                    item.displayTemplate && item.displayTemplate !== 'standard'
-                  }
-                  key={item.id}
-                />
-              ))}
-          {next && (
+          {stories.map((story) => (
+            <StoryCard
+              data={story}
+              feature={story.presentation?.format !== 'standard'}
+              key={story.id}
+            />
+          ))}
+          {posts?.pageInfo.hasNextPage && (
             <Box>
               <Button
                 variant="contained"
@@ -214,12 +225,12 @@ export const Category = () => {
       children: (
         <>
           <Sidebar item elevated>
-            {body && (
+            {description && (
               <SidebarContent>
-                <HtmlContent html={body} />
+                <HtmlContent html={description} />
               </SidebarContent>
             )}
-            {hosts && !!hosts.length && (
+            {/* {hosts && !!hosts.length && (
               <SidebarList
                 data={hosts.map((item: IPriApiResource) => ({
                   ...item,
@@ -227,13 +238,23 @@ export const Category = () => {
                 }))}
                 subheaderText="Hosted by"
               />
-            )}
-            {sponsors && !!sponsors.length && (
-              <SidebarList data={sponsors} subheaderText="Supported by" />
-            )}
-            {children && !!children.length && (
+            )} */}
+            {!!sponsors?.length && (
               <SidebarList
-                data={children}
+                data={sponsors}
+                subheaderText="Supported by"
+                bulleted
+              />
+            )}
+            {children && !!children.nodes.length && (
+              <SidebarList
+                data={children.nodes.map(
+                  (child) =>
+                    ({
+                      title: child.name,
+                      url: child.link
+                    } as SidebarListItem)
+                )}
                 subheader={
                   <SidebarHeader>
                     <Typography variant="h2">
@@ -241,6 +262,7 @@ export const Category = () => {
                     </Typography>
                   </SidebarHeader>
                 }
+                bulleted
               />
             )}
           </Sidebar>
@@ -279,13 +301,15 @@ export const Category = () => {
 
   return (
     <>
-      <MetaTags data={metatags} />
+      {seo && <MetaTags data={seo} />}
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <LandingPageHeader
-        title={title}
-        subhead={teaser}
-        image={bannerImage}
-        logo={logo}
+        {...{
+          ...(name && { title: name }),
+          ...(teaser && { subhead: teaser }),
+          ...(imageBanner && { image: imageBanner }),
+          ...(logo && { logo })
+        }}
       />
       <LandingPage
         main={mainElements}

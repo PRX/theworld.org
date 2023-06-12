@@ -132,106 +132,102 @@ export const StoryCard = ({
     };
   }, [pathname, router.events]);
 
+  if (!data.link) return null;
+
   return (
-    data.link && (
-      <ThemeProvider theme={storyCardTheme}>
-        <Card
-          square
-          elevation={1}
-          className={cx({
-            feature: feature || !image,
-            short,
-            isLoading
-          })}
+    <ThemeProvider theme={storyCardTheme}>
+      <Card
+        square
+        elevation={1}
+        className={cx({
+          feature: feature || !image,
+          short,
+          isLoading
+        })}
+      >
+        <CardActionArea
+          classes={{ root: classes.MuiCardActionAreaRoot }}
+          component="div"
         >
-          <CardActionArea
-            classes={{ root: classes.MuiCardActionAreaRoot }}
-            component="div"
-          >
-            <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
-              {image?.sourceUrl && (
-                <Image
-                  src={image.sourceUrl}
-                  alt={image.altText || ''}
-                  layout="fill"
-                  objectFit="cover"
-                  sizes={sizes}
-                  priority={priority}
-                />
-              )}
-              <LinearProgress
-                className={classes.loadingBar}
-                color="secondary"
-                aria-label="Progress Bar"
+          <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
+            {image?.sourceUrl && (
+              <Image
+                src={image.sourceUrl}
+                alt={image.altText || ''}
+                layout="fill"
+                objectFit="cover"
+                sizes={sizes}
+                priority={priority}
               />
-            </CardMedia>
-            <CardContent classes={{ root: classes.MuiCardContentRoot }}>
-              <Box className={classes.heading}>
-                <Box>
-                  <Typography
-                    variant="h5"
-                    component="h2"
-                    gutterBottom
-                    className={classes.title}
-                  >
-                    {title}
-                  </Typography>
-                  <Grid
-                    container
-                    justifyContent="flex-start"
-                    spacing={1}
-                    // style={{ marginBottom: 0 }}
-                  >
+            )}
+            <LinearProgress
+              className={classes.loadingBar}
+              color="secondary"
+              aria-label="Progress Bar"
+            />
+          </CardMedia>
+          <CardContent classes={{ root: classes.MuiCardContentRoot }}>
+            <Box className={classes.heading}>
+              <Box>
+                <Typography
+                  variant="h5"
+                  component="h2"
+                  gutterBottom
+                  className={classes.title}
+                >
+                  {title}
+                </Typography>
+                <Grid
+                  container
+                  justifyContent="flex-start"
+                  spacing={1}
+                  // style={{ marginBottom: 0 }}
+                >
+                  <Grid item xs="auto" zeroMinWidth>
+                    <Typography component="span">
+                      <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                        {broadcastDate || date}
+                      </Moment>
+                    </Typography>
+                  </Grid>
+                  {primaryCategory?.nodes[0] && (
                     <Grid item xs="auto" zeroMinWidth>
-                      <Typography component="span">
-                        <Moment
-                          format="MMMM D, YYYY"
-                          tz="America/New_York"
-                          unix
-                        >
-                          {broadcastDate || date}
-                        </Moment>
+                      <Typography
+                        variant="overline"
+                        noWrap
+                        className={classes.primaryCategory}
+                      >
+                        <Label color="secondary" />
+                        {primaryCategory.nodes[0].link ? (
+                          <ContentLink url={primaryCategory.nodes[0].link}>
+                            {primaryCategory.nodes[0].name}
+                          </ContentLink>
+                        ) : (
+                          <span>{primaryCategory.nodes[0].name}</span>
+                        )}
                       </Typography>
                     </Grid>
-                    {primaryCategory?.nodes[0] && (
-                      <Grid item xs="auto" zeroMinWidth>
-                        <Typography
-                          variant="overline"
-                          noWrap
-                          className={classes.primaryCategory}
-                        >
-                          <Label color="secondary" />
-                          {primaryCategory.nodes[0].link ? (
-                            <ContentLink url={primaryCategory.nodes[0].link}>
-                              {primaryCategory.nodes[0].name}
-                            </ContentLink>
-                          ) : (
-                            <span>{primaryCategory.nodes[0].name}</span>
-                          )}
-                        </Typography>
-                      </Grid>
-                    )}
-                  </Grid>
-                </Box>
-                {audio && (
-                  <Box className={classes.audio}>
-                    <AudioControls id={audio.id} fallbackProps={audioProps} />
-                  </Box>
-                )}
+                  )}
+                </Grid>
               </Box>
-              <Typography variant="body1" component="p" color="textSecondary">
-                {excerpt}
-              </Typography>
-            </CardContent>
-            <ContentLink url={data.link} className={classes.link} />
-          </CardActionArea>
-          {/* {feature && !!(crossLinks && crossLinks.length) && (
+              {audio && (
+                <Box className={classes.audio}>
+                  <AudioControls id={audio.id} fallbackProps={audioProps} />
+                </Box>
+              )}
+            </Box>
+            <Typography variant="body1" component="p" color="textSecondary">
+              {excerpt}
+            </Typography>
+          </CardContent>
+          <ContentLink url={data.link} className={classes.link} />
+        </CardActionArea>
+        {/* {feature && !!(crossLinks && crossLinks.length) && (
           <CardActions>
             <List>{crossLinks.map((link: ILink) => renderLink(link))}</List>
           </CardActions>
         )} */}
-        </Card>
-      </ThemeProvider>
-    )
+      </Card>
+    </ThemeProvider>
   );
 };

@@ -20,6 +20,17 @@ export type AcfFieldGroup = {
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
+/** ACF Link field */
+export type AcfLink = {
+  __typename?: 'AcfLink';
+  /** The target of the link (_blank, etc) */
+  target?: Maybe<Scalars['String']['output']>;
+  /** The title of the link */
+  title?: Maybe<Scalars['String']['output']>;
+  /** The url of the link */
+  url?: Maybe<Scalars['String']['output']>;
+};
+
 /** Avatars are profile images for users. WordPress by default uses the Gravatar service to host and fetch avatars from. */
 export type Avatar = {
   __typename?: 'Avatar';
@@ -113,6 +124,8 @@ export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermN
   seo?: Maybe<TaxonomySeo>;
   /** An alphanumeric identifier for the object unique to its type. */
   slug?: Maybe<Scalars['String']['output']>;
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Sponsorship&quot; was set to Show in GraphQL. */
+  sponsorship?: Maybe<Category_Sponsorship>;
   /** Connection between the Category type and the Taxonomy type */
   taxonomy?: Maybe<CategoryToTaxonomyConnectionEdge>;
   /** Added to the GraphQL Schema because the ACF Field Group &quot;Taxonomy Images&quot; was set to Show in GraphQL. */
@@ -120,7 +133,7 @@ export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermN
   /** The name of the taxonomy that the object is associated with */
   taxonomyName?: Maybe<Scalars['String']['output']>;
   /** Added to the GraphQL Schema because the ACF Field Group &quot;Teaser&quot; was set to Show in GraphQL. */
-  teaser?: Maybe<Category_Teaser>;
+  teaserFields?: Maybe<Category_Teaserfields>;
   /** The ID of the term group that this term object belongs to */
   termGroupId?: Maybe<Scalars['Int']['output']>;
   /** The taxonomy ID that the object is associated with */
@@ -664,6 +677,22 @@ export type Category_Landingpage = AcfFieldGroup & {
 export type Category_Landingpage_FeaturedStories = Post;
 
 /** Field Group */
+export type Category_Sponsorship = AcfFieldGroup & {
+  __typename?: 'Category_Sponsorship';
+  collectionSponsorLinks?: Maybe<Array<Maybe<Category_Sponsorship_CollectionSponsorLinks>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Field Group */
+export type Category_Sponsorship_CollectionSponsorLinks = AcfFieldGroup & {
+  __typename?: 'Category_Sponsorship_collectionSponsorLinks';
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  sponsorLinks?: Maybe<AcfLink>;
+};
+
+/** Field Group */
 export type Category_Taxonomyimages = AcfFieldGroup & {
   __typename?: 'Category_Taxonomyimages';
   /** The name of the ACF Field Group */
@@ -673,8 +702,8 @@ export type Category_Taxonomyimages = AcfFieldGroup & {
 };
 
 /** Field Group */
-export type Category_Teaser = AcfFieldGroup & {
-  __typename?: 'Category_Teaser';
+export type Category_Teaserfields = AcfFieldGroup & {
+  __typename?: 'Category_Teaserfields';
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
   teaser?: Maybe<Scalars['String']['output']>;
@@ -4576,7 +4605,7 @@ export type Episode = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
   /** Connection between the Episode type and the tag type */
   tags?: Maybe<EpisodeToTagConnection>;
   /** Added to the GraphQL Schema because the ACF Field Group &quot;Teaser&quot; was set to Show in GraphQL. */
-  teaser?: Maybe<Episode_Teaser>;
+  teaserFields?: Maybe<Episode_Teaserfields>;
   /** The template assigned to the node */
   template?: Maybe<ContentTemplate>;
   /** Connection between the Episode type and the TermNode type */
@@ -5152,8 +5181,8 @@ export type Episode_Podcastmetadata = AcfFieldGroup & {
 };
 
 /** Field Group */
-export type Episode_Teaser = AcfFieldGroup & {
-  __typename?: 'Episode_Teaser';
+export type Episode_Teaserfields = AcfFieldGroup & {
+  __typename?: 'Episode_Teaserfields';
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
   teaser?: Maybe<Scalars['String']['output']>;
@@ -10464,6 +10493,8 @@ export type Program = DatabaseIdentifier & Node & TermNode & UniformResourceIden
   seo?: Maybe<TaxonomySeo>;
   /** An alphanumeric identifier for the object unique to its type. */
   slug?: Maybe<Scalars['String']['output']>;
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Sponsorship&quot; was set to Show in GraphQL. */
+  sponsorship?: Maybe<Program_Sponsorship>;
   /** Connection between the Program type and the Taxonomy type */
   taxonomy?: Maybe<ProgramToTaxonomyConnectionEdge>;
   /** Added to the GraphQL Schema because the ACF Field Group &quot;Taxonomy Images&quot; was set to Show in GraphQL. */
@@ -10471,7 +10502,7 @@ export type Program = DatabaseIdentifier & Node & TermNode & UniformResourceIden
   /** The name of the taxonomy that the object is associated with */
   taxonomyName?: Maybe<Scalars['String']['output']>;
   /** Added to the GraphQL Schema because the ACF Field Group &quot;Teaser&quot; was set to Show in GraphQL. */
-  teaser?: Maybe<Program_Teaser>;
+  teaserFields?: Maybe<Program_Teaserfields>;
   /** The ID of the term group that this term object belongs to */
   termGroupId?: Maybe<Scalars['Int']['output']>;
   /** The taxonomy ID that the object is associated with */
@@ -10954,6 +10985,22 @@ export type Program_Programhosts = AcfFieldGroup & {
 };
 
 /** Field Group */
+export type Program_Sponsorship = AcfFieldGroup & {
+  __typename?: 'Program_Sponsorship';
+  collectionSponsorLinks?: Maybe<Array<Maybe<Program_Sponsorship_CollectionSponsorLinks>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Field Group */
+export type Program_Sponsorship_CollectionSponsorLinks = AcfFieldGroup & {
+  __typename?: 'Program_Sponsorship_collectionSponsorLinks';
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  sponsorLinks?: Maybe<AcfLink>;
+};
+
+/** Field Group */
 export type Program_Taxonomyimages = AcfFieldGroup & {
   __typename?: 'Program_Taxonomyimages';
   /** The name of the ACF Field Group */
@@ -10963,8 +11010,8 @@ export type Program_Taxonomyimages = AcfFieldGroup & {
 };
 
 /** Field Group */
-export type Program_Teaser = AcfFieldGroup & {
-  __typename?: 'Program_Teaser';
+export type Program_Teaserfields = AcfFieldGroup & {
+  __typename?: 'Program_Teaserfields';
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
   teaser?: Maybe<Scalars['String']['output']>;

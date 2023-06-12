@@ -3,9 +3,9 @@
  * Component for sidebar elements.
  */
 
+import type { MediaItem } from '@interfaces';
 import React from 'react';
 import Image from 'next/legacy/image';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@mui/material';
 import {
   landingPageHeaderStyles,
@@ -13,9 +13,9 @@ import {
 } from './LandingPageHeader.styles';
 
 export interface ILandingPageHeaderProps {
-  image?: IPriApiResource;
-  logo?: IPriApiResource;
-  title: string;
+  image?: MediaItem;
+  logo?: MediaItem;
+  title?: string;
   subhead?: string;
 }
 
@@ -26,15 +26,18 @@ export const LandingPageHeader = ({
   subhead
 }: ILandingPageHeaderProps) => {
   const { classes, cx } = landingPageHeaderStyles();
-  const { alt } = image || ({} as any);
   return (
     <ThemeProvider theme={landingPageHeaderTheme}>
-      <Box className={cx(classes.root, { [classes.withImage]: !!image })}>
-        {image && (
+      <Box
+        className={cx(classes.root, {
+          [classes.withImage]: !!image?.sourceUrl
+        })}
+      >
+        {image?.sourceUrl && (
           <Box>
             <Image
-              alt={alt}
-              src={image.url}
+              alt={image.altText || ''}
+              src={image.sourceUrl}
               layout="fill"
               objectFit="cover"
               priority
@@ -43,11 +46,11 @@ export const LandingPageHeader = ({
         )}
         <Box className={classes.content}>
           <Container fixed className={classes.header}>
-            {logo && (
+            {logo?.sourceUrl && (
               <Box className={classes.logo}>
                 <Image
-                  src={logo.url}
-                  alt={logo.alt}
+                  src={logo.sourceUrl}
+                  alt={logo.altText || `Logo for ${title}`}
                   layout="fill"
                   objectFit="cover"
                 />
