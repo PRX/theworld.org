@@ -4555,6 +4555,8 @@ export type Episode = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
   episodeContent?: Maybe<Episode_Episodecontent>;
   /** Added to the GraphQL Schema because the ACF Field Group &quot;Episode Contributors&quot; was set to Show in GraphQL. */
   episodeContributors?: Maybe<Episode_Episodecontributors>;
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Episode Dates&quot; was set to Show in GraphQL. */
+  episodeDates?: Maybe<Episode_Episodedates>;
   /**
    * The id field matches the WP_Post-&gt;ID field.
    * @deprecated Deprecated in favor of the databaseId field
@@ -5167,6 +5169,14 @@ export type Episode_Episodecontributors = AcfFieldGroup & {
   hosts?: Maybe<Array<Maybe<Contributor>>>;
   producers?: Maybe<Array<Maybe<Contributor>>>;
   reporters?: Maybe<Array<Maybe<Contributor>>>;
+};
+
+/** Field Group */
+export type Episode_Episodedates = AcfFieldGroup & {
+  __typename?: 'Episode_Episodedates';
+  broadcastDate?: Maybe<Scalars['String']['output']>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
 /** Field Group */

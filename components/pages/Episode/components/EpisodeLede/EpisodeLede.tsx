@@ -3,19 +3,16 @@
  * Component for episode lede.
  */
 
-import React from 'react';
+import type { Episode } from '@interfaces';
 import { LedeImage } from '@components/LedeImage';
-import { LedeVideo } from '@components/LedeVideo';
-import { IPriApiResource } from 'pri-api-library/types';
 
 interface Props {
-  data: IPriApiResource;
+  data: Episode;
 }
 
 export const EpisodeLede = ({ data }: Props) => {
-  const { image, video } = data;
-
-  if (video) return <LedeVideo data={video[0]} />;
+  const { featuredImage } = data;
+  const image = featuredImage?.node;
 
   if (image) return <LedeImage data={image} />;
 

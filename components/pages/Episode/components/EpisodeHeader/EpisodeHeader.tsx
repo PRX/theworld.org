@@ -3,14 +3,17 @@
  * Component for default story header.
  */
 
-import React from 'react';
-
-import { IPriApiResource } from 'pri-api-library/types';
+import type React from 'react';
+import type { IAudioControlsProps } from '@components/Player/components';
+import type { IAudioData } from '@components/Player/types';
+import type {
+  Episode,
+  Episode_Episodedates as EpisodeEpisodeDates,
+  Episode_Episodeaudio as EpisodeEpisodeAudio
+} from '@interfaces';
 import dynamic from 'next/dynamic';
 import { Box, Typography } from '@mui/material';
 import { ContentLink } from '@components/ContentLink';
-import { IAudioControlsProps } from '@components/Player/components';
-import { IAudioData } from '@components/Player/types';
 import { episodeHeaderStyles } from './EpisodeHeader.styles';
 
 const Moment = dynamic(() => {
@@ -19,20 +22,26 @@ const Moment = dynamic(() => {
 }) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 interface Props {
-  data: IPriApiResource;
+  data: Episode;
 }
 
 export const EpisodeHeader = ({ data }: Props) => {
-  const { dateBroadcast, datePublished, program, title, image, audio } = data;
+  const { title, date, episodeDates, featuredImage, episodeAudio, programs } =
+    data;
+  const { broadcastDate } = episodeDates as EpisodeEpisodeDates;
+  const { audio } = episodeAudio as EpisodeEpisodeAudio;
   const audioProps = {
     title,
     queuedFrom: 'Page Header Controls',
-    ...(image && { imageUrl: image.url })
+    ...(featuredImage?.node.sourceUrl && {
+      imageUrl: featuredImage.node.sourceUrl
+    })
   } as Partial<IAudioData>;
+  const program = programs?.nodes[0];
   const { classes } = episodeHeaderStyles();
 
   return (
@@ -45,7 +54,9 @@ export const EpisodeHeader = ({ data }: Props) => {
       <Box className={classes.meta} mb={2}>
         <Box className={classes.info}>
           {program && (
-            <ContentLink data={program} className={classes.programLink} />
+            <ContentLink url={program.link} className={classes.programLink}>
+              {program.name}
+            </ContentLink>
           )}
           <Moment
             className={classes.date}
@@ -53,7 +64,7 @@ export const EpisodeHeader = ({ data }: Props) => {
             tz="America/New_York"
             unix
           >
-            {dateBroadcast || datePublished}
+            {broadcastDate || date}
           </Moment>
         </Box>
         {audio && (

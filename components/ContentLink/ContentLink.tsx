@@ -13,7 +13,7 @@ import { generateLinkPropsForContent } from '@lib/routing';
 import { contentLinkStyles } from './ContentLink.styles';
 
 export interface IContentLinkProps extends LinkProps {
-  url: string;
+  url?: string | null;
   query?: { [k: string]: string };
 }
 
@@ -23,7 +23,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
   ({ children, url, query, className, ...other }: IContentLinkProps, ref) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const props = generateLinkPropsForContent(url, query);
+    const props = generateLinkPropsForContent(url || '', query);
     const { href, as: alias } = props || {};
     const pathname = alias?.pathname;
     const { classes, cx } = contentLinkStyles();
@@ -62,7 +62,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
         </MuiLink>
       </Link>
     ) : (
-      <span>{children}</span>
+      <span className={cx(className, classes.root)}>{children}</span>
     );
   }
 );
