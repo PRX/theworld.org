@@ -10,7 +10,7 @@ import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@mui/icons-material';
 import { type IPriApiResource } from 'pri-api-library/types';
 import { type IAudioData } from '@components/Player/types';
-import { type IAudioResource } from '@interfaces';
+import { RootState, type IAudioResource } from '@interfaces';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { parseAudioData } from '@lib/parse/audio/audioData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
@@ -31,7 +31,7 @@ export const AddAudioButton = ({
   fallbackProps,
   ...other
 }: IAddAudioButtonProps) => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const [audio, setAudio] = useState<IAudioResource>();
   const [audioData, setAudioData] = useState<IAudioData>();
   const [loading, setLoading] = useState(false);
@@ -60,11 +60,11 @@ export const AddAudioButton = ({
   };
 
   const handleAddClick = () => {
-    addTrack(audioData);
+    if (audioData) addTrack(audioData);
   };
 
   const handleRemoveClick = () => {
-    removeTrack(audioData);
+    if (audioData) removeTrack(audioData);
   };
 
   const handleLoadClick: MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -72,7 +72,7 @@ export const AddAudioButton = ({
     (async () => {
       setLoading(true);
       const ar = await store.dispatch<any>(fetchAudioData(id));
-      let linkResource: IPriApiResource;
+      let linkResource: IPriApiResource | undefined;
 
       if (ar.usage?.story) {
         linkResource = await store.dispatch<any>(
