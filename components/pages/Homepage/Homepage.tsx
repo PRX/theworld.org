@@ -14,8 +14,8 @@ import { Plausible } from '@components/Plausible';
 import {
   Sidebar,
   SidebarHeader,
-  SidebarLatestStories,
-  SidebarList
+  SidebarLatestStories
+  // SidebarList
 } from '@components/Sidebar';
 import { QuickLinks } from '@components/QuickLinks';
 import { StoryCard } from '@components/StoryCard';
@@ -27,15 +27,15 @@ import {
   getCtaRegionData,
   getMenusData
 } from '@store/reducers';
-import { IButton } from '@interfaces';
+import { IButton, RootState } from '@interfaces';
 import { AppContext } from '@contexts/AppContext';
 
 const CtaRegion = dynamic(
-  () => import('@components/CtaRegion').then(mod => mod.CtaRegion) as any
+  () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
 ) as React.FC<ICtaRegionProps>;
 
 const SidebarCta = dynamic(
-  () => import('@components/Sidebar').then(mod => mod.SidebarCta) as any
+  () => import('@components/Sidebar').then((mod) => mod.SidebarCta) as any
 ) as React.FC<ICtaRegionProps>;
 
 export const Homepage = () => {
@@ -44,7 +44,7 @@ export const Homepage = () => {
       resource: { type, id }
     }
   } = useContext(AppContext);
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
@@ -68,13 +68,12 @@ export const Homepage = () => {
     undefined,
     'episodes'
   );
-  const latestEpisode =
-    episodesState?.count > 0 && episodesState.items[1].shift();
+  const latestEpisode = episodesState.items.shift();
   const drawerMainNav = getMenusData(state, 'drawerMainNav');
   const categoriesMenu = drawerMainNav
     ?.filter((item: IButton) => item.name === 'Categories')?.[0]
-    ?.children.map(
-      item =>
+    ?.children?.map(
+      (item) =>
         ({
           id: item.key,
           type: 'link',
@@ -137,17 +136,15 @@ export const Homepage = () => {
       key: 'main bottom',
       children: (
         <>
-          {stories
-            .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource) => (
-              <StoryCard
-                data={item}
-                feature={
-                  item.displayTemplate && item.displayTemplate !== 'standard'
-                }
-                key={item.id}
-              />
-            ))}
+          {stories.map((item) => (
+            <StoryCard
+              data={item}
+              feature={
+                item.displayTemplate && item.displayTemplate !== 'standard'
+              }
+              key={item.id}
+            />
+          ))}
           {inlineBottom && (
             <>
               <Hidden xsDown>
@@ -196,7 +193,7 @@ export const Homepage = () => {
                 <StyleRounded />
                 <Typography variant="h2">Categories</Typography>
               </SidebarHeader>
-              <SidebarList data={categoriesMenu} />
+              {/* <SidebarList data={categoriesMenu} /> */}
             </Sidebar>
           )}
           {sidebarBottom && (
@@ -249,7 +246,7 @@ export const Homepage = () => {
   return (
     <>
       <MetaTags data={metatags} />
-      <Plausible subject={{ type: 'homepage', id: null }} />
+      <Plausible subject={{ type: 'homepage' }} />
       <QuickLinks />
       <LandingPage
         main={mainElements}
