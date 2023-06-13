@@ -3,7 +3,7 @@
  * Component for default story related links.
  */
 
-import type { Post } from '@interfaces';
+import type { PostStory } from '@interfaces';
 import Image from 'next/legacy/image';
 import {
   Card,
@@ -17,7 +17,7 @@ import { ContentLink } from '@components/ContentLink';
 import { storyRelatedLinksStyles } from './StoryRelatedLinks.feature.styles';
 
 export interface IStoryRelatedLinksProps {
-  data: Post[];
+  data: PostStory[];
 }
 
 export const StoryRelatedLinks = ({

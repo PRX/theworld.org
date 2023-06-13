@@ -16,9 +16,8 @@ import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 // import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
-import type { IStoryRelatedLinksProps } from '../default/components/StoryRelatedLinks';
 import { storyStyles, storyTheme } from './Story.feature.styles';
-import { StoryHeader } from './components';
+import { StoryHeader, IStoryRelatedLinksProps } from './components';
 
 const StoryRelatedLinks = dynamic(
   () =>
