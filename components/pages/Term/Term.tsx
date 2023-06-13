@@ -2,6 +2,8 @@
  * @file Term.tsx
  * Component for Term.
  */
+
+import type { RootState } from '@interfaces';
 import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useStore } from 'react-redux';
@@ -21,13 +23,13 @@ import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { SidebarCta, SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { fetchApiTermEpisodes, fetchApiTermStories } from '@lib/fetch';
+// import { fetchApiTermEpisodes, fetchApiTermStories } from '@lib/fetch';
 import { EpisodeCard } from '@components/EpisodeCard';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { MetaTags } from '@components/MetaTags';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
 import { AppContext } from '@contexts/AppContext';
-import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+// import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import {
   getCollectionData,
   getCtaRegionData,
@@ -43,7 +45,7 @@ export const Term = () => {
   } = useContext(AppContext);
   const router = useRouter();
   const { query } = router;
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
@@ -86,16 +88,11 @@ export const Term = () => {
   const { items: featuredStories } =
     getCollectionData(state, type, id, 'featured stories') || {};
   const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories, page, next, count } = storiesState || {};
-  const hasStories = count > 0;
+  const { items: stories, pageInfo } = storiesState || {};
+  const hasStories = !!stories.length;
   const episodesState = getCollectionData(state, type, id, 'episodes');
-  const {
-    items: episodes,
-    page: episodesPage,
-    next: episodesNext,
-    count: episodesCount
-  } = episodesState || {};
-  const hasEpisodes = episodesCount > 0;
+  const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
+  const hasEpisodes = !!episodes.length;
   const isEpisodesView =
     (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
   const latestEpisode = episodes && episodes[1].shift();
@@ -124,32 +121,32 @@ export const Term = () => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [oldScrollY, page]);
+  }, [oldScrollY, pageInfo.endCursor]);
 
   const loadMoreStories = async () => {
     setLoadingStories(true);
 
-    const moreStories = await fetchApiTermStories(id, page + 1);
+    // const moreStories = await fetchApiTermStories(id, page + 1);
 
     setOldScrollY(window.scrollY);
     setLoadingStories(false);
 
-    store.dispatch<any>(
-      appendResourceCollection(moreStories, type, id, 'stories')
-    );
+    // store.dispatch<any>(
+    //   appendResourceCollection(moreStories, type, id, 'stories')
+    // );
   };
 
   const loadMoreEpisodes = async () => {
     setLoadingEpisodes(true);
 
-    const moreEpisodes = await fetchApiTermEpisodes(id, episodesPage + 1);
+    // const moreEpisodes = await fetchApiTermEpisodes(id, episodesPage + 1);
 
     setOldScrollY(window.scrollY);
     setLoadingEpisodes(false);
 
-    store.dispatch<any>(
-      appendResourceCollection(moreEpisodes, type, id, 'episodes')
-    );
+    // store.dispatch<any>(
+    //   appendResourceCollection(moreEpisodes, type, id, 'episodes')
+    // );
   };
 
   const handleFilterChange = (e: object, value: any) => {
@@ -157,7 +154,9 @@ export const Term = () => {
       ...(value === 1 && { v: 'episodes' })
     });
 
-    router.push(href, alias);
+    if (href) {
+      router.push(href, alias);
+    }
   };
 
   const mainElements = [
@@ -196,19 +195,17 @@ export const Term = () => {
           {!isEpisodesView && (
             <>
               {stories &&
-                stories
-                  .reduce((a, p) => [...a, ...p], [])
-                  .map((item: IPriApiResource) => (
-                    <StoryCard
-                      data={item}
-                      feature={
-                        item.displayTemplate &&
-                        item.displayTemplate !== 'standard'
-                      }
-                      key={item.id}
-                    />
-                  ))}
-              {next && (
+                stories.map((item) => (
+                  <StoryCard
+                    data={item}
+                    feature={
+                      item.displayTemplate &&
+                      item.displayTemplate !== 'standard'
+                    }
+                    key={item.id}
+                  />
+                ))}
+              {pageInfo.hasNextPage && (
                 <Box>
                   <Button
                     variant="contained"
@@ -234,7 +231,7 @@ export const Term = () => {
                 .map((item: IPriApiResource) => (
                   <EpisodeCard data={item} key={item.id} />
                 ))}
-              {episodesNext && (
+              {episodesPageInfo.hasNextPage && (
                 <Box>
                   <Button
                     variant="contained"
