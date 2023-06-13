@@ -3,6 +3,7 @@
  * Component for default Story layout.
  */
 
+import type { IPriApiResource } from 'pri-api-library/types';
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { convertNodeToElement, Transform } from 'react-html-parser';
@@ -46,7 +47,7 @@ const Tags = dynamic(() =>
 
 interface StateProps extends RootState {}
 
-type Props = StateProps & IContentComponentProps;
+type Props = StateProps & IContentComponentProps<IPriApiResource>;
 
 export const StoryDefault = ({ data }: Props) => {
   const {
@@ -64,7 +65,7 @@ export const StoryDefault = ({ data }: Props) => {
     opencalaisRegion,
     opencalaisPerson
   } = data;
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
     updateForce(store.getState());
