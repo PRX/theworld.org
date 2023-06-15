@@ -16,8 +16,6 @@ export const SidebarAudioList = ({
   data,
   ...other
 }: ISidebarAudioListProps) => {
-  const formatTitle = ({ audioTitle: at, title: t }: IPriApiResource) =>
-    at || t;
   const linksList =
     data &&
     data.map((item: IPriApiResource) =>
@@ -26,9 +24,5 @@ export const SidebarAudioList = ({
         : item
     );
 
-  return (
-    linksList && (
-      <SidebarList data={linksList} formatTitle={formatTitle} {...other} />
-    )
-  );
+  return linksList && <SidebarList data={linksList} {...other} />;
 };
