@@ -12,7 +12,7 @@ export interface IPlayerProgressState {
   /**
    * Position user wants to change playback to as a value between 0 and 1.
    */
-  scrubPosition: number;
+  scrubPosition?: number;
 
   /**
    * How much of the track has played as a value between 0 and 1.
