@@ -6,6 +6,15 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import { stringify as qsStringify } from 'qs';
 
+export type TwApiCollectionMeta = {
+  count: number;
+  size: number;
+  page: number;
+  first: number;
+  last: number;
+  next?: number;
+};
+
 /**
  * Fetch data from TW (WP) API.
  *
@@ -50,7 +59,7 @@ export async function fetchTwApi<T>(
           ...(next <= last && { next }),
           page,
           size
-        },
+        } as TwApiCollectionMeta,
         data
       };
     }
