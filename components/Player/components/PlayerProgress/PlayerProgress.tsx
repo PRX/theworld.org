@@ -150,7 +150,7 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
    * @param e Pointer Event
    */
   const handlePointerUp = useCallback(() => {
-    seekTo(scrubPosition * totalDurationSeconds);
+    seekTo((scrubPosition || played) * totalDurationSeconds);
 
     dispatch({
       type: PlayerActionTypes.PLAYER_UPDATE_PROGRESS_TO_SCRUB_POSITION
