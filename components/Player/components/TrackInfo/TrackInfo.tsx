@@ -78,8 +78,8 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
                   component="span"
                 >
                   {info
-                    .filter(t => !!t)
-                    .map(text => (
+                    .filter((t) => !!t)
+                    .map((text) => (
                       <span className={styles.infoItem} key={text}>
                         {text}
                       </span>
@@ -90,9 +90,11 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
           </Box>
         </motion.div>
       </AnimatePresence>
-      {linkResource ? (
-        <ContentLink data={linkResource} className={styles.link} />
-      ) : null}
+      {linkResource && (
+        <ContentLink url={linkResource.link} className={styles.link}>
+          {linkResource.title}
+        </ContentLink>
+      )}
     </Box>
   );
 };
