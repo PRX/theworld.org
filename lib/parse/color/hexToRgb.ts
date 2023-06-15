@@ -10,16 +10,16 @@ export type RgbValues = number[];
  * @param hex
  *    Hexadecimal color string.
  */
-export const hexToRgb = (hex: string): RgbValues =>
+export const hexToRgb = (hex: string) =>
   hex
     .replace(
       /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
-      (m: string, r: string, g: string, b: string) =>
+      (_m: string, r: string, g: string, b: string) =>
         `#${r}${r}${g}${g}${b}${b}`
     )
     .replace(/^#/, '')
     .match(/.{2}/g)
-    .map((x: string) => parseInt(x, 16));
+    ?.map((x: string) => parseInt(x, 16));
 
 /**
  * Convert hexadecimal colors strings to rgba.
