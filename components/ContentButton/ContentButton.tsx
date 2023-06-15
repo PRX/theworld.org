@@ -30,6 +30,6 @@ export const ContentButton = ({
       </Button>
     </Link>
   ) : (
-    children
+    <span>{children}</span>
   );
 };
