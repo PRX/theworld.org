@@ -88,7 +88,7 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
    */
   const updateProgress = useCallback(
     (seconds?: number) => {
-      const { currentTime: ct, duration: d } = audioElm;
+      const { currentTime: ct = 0, duration: d } = audioElm || {};
       const updatedPlayed = seconds || seconds === 0 ? seconds : ct;
 
       dispatch({
