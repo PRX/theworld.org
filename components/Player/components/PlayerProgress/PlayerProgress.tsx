@@ -35,8 +35,8 @@ export interface IPlayerProgressCssProps extends React.CSSProperties {
 export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
   updateFrequency = 500
 }: IPlayerProgressProps) => {
-  const trackRef = useRef<HTMLDivElement>();
-  const updateInterval = useRef(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const updateInterval = useRef<any>();
   const { audioElm, state: playerState, seekTo } = useContext(PlayerContext);
   const [loaded, setLoaded] = useState(0);
   const [state, dispatch] = useReducer(
@@ -72,6 +72,8 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
    * progress track.
    */
   const updateScrubPosition = useCallback((e: PointerEvent) => {
+    if (!trackRef.current) return;
+
     const rect = trackRef.current.getBoundingClientRect();
     const position = Math.max(0, Math.min(e.offsetX / rect.width, 1));
 
@@ -132,6 +134,8 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
    */
   const handlePointerDown = useCallback(
     (e: PointerEvent) => {
+      if (!trackRef.current) return;
+
       trackRef.current.addEventListener('pointermove', handlePointerMove);
       trackRef.current.setPointerCapture(e.pointerId);
       trackRef.current.dataset.scrubbing = 'scrubbing';
@@ -142,7 +146,7 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
   );
 
   /**
-   * Handle pointer down event on progress track.
+   * Handle pointer up event on progress track.
    * @param e Pointer Event
    */
   const handlePointerUp = useCallback(() => {
@@ -152,8 +156,10 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
       type: PlayerActionTypes.PLAYER_UPDATE_PROGRESS_TO_SCRUB_POSITION
     });
 
-    trackRef.current.removeEventListener('pointermove', handlePointerMove);
-    delete trackRef.current.dataset.scrubbing;
+    if (trackRef.current) {
+      trackRef.current.removeEventListener('pointermove', handlePointerMove);
+      delete trackRef.current.dataset.scrubbing;
+    }
   }, [totalDurationSeconds, handlePointerMove, scrubPosition, seekTo]);
 
   /**
