@@ -43,15 +43,17 @@ import { PlayerContext } from '@components/Player/contexts';
 import { appPlayerStyles } from './AppPlayer.styles';
 
 export const AppPlayer = () => {
-  const { state: playerState, removeTrack, clearPlaylist } = useContext(
-    PlayerContext
-  );
+  const {
+    state: playerState,
+    removeTrack,
+    clearPlaylist
+  } = useContext(PlayerContext);
   const [menuButtonElm, setMenuButtonEl] = React.useState<null | HTMLElement>(
     null
   );
   const [showEmbedModal, setShowEmbedModal] = useState(false);
-  const { tracks, currentTrackIndex } = playerState || {};
-  const currentTrack = tracks?.[currentTrackIndex];
+  const { tracks = [], currentTrackIndex = 0 } = playerState || {};
+  const currentTrack = tracks[currentTrackIndex];
   const { classes: styles } = appPlayerStyles();
   const toolbarClasses = {
     root: styles.toolbarRoot
@@ -93,7 +95,7 @@ export const AppPlayer = () => {
         className={styles.root}
         component="div"
         position="static"
-        {...(!tracks?.length && {
+        {...(!tracks.length && {
           inert: 'inert'
         })}
       >
