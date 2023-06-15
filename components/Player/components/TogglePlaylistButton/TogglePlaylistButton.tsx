@@ -3,9 +3,10 @@
  * Play button component to toggle playing state of player.
  */
 
-import React from 'react';
+import type { RootState } from '@interfaces';
+import type { IconButtonProps } from '@mui/material';
 import { useStore } from 'react-redux';
-import { IconButtonProps, Tooltip } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import { CloseSharp, PlaylistPlaySharp } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
 import { getUiPlayerPlaylistOpen } from '@store/reducers';
@@ -17,7 +18,7 @@ export const TogglePlaylistButton = ({
   className,
   ...other
 }: ITogglePlaylistButtonProps) => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const state = store.getState();
   const playlistOpen = getUiPlayerPlaylistOpen(state);
   const tooltipTitle = playlistOpen ? 'Close Playlist' : 'Open Playlist';
