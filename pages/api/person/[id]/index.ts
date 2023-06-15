@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'image',
         'social_links',
         ...(basicStoryParams.include || []).map(
-          param => `featured_stories.${param}`
+          (param) => `featured_stories.${param}`
         )
       ]
     };
@@ -35,33 +35,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { featuredStories } = person.data;
 
       // Fetch first page of stories.
-      const stories = await fetchApiPersonStories(
-        id as string,
-        1,
-        undefined,
-        req
+      const stories = await fetchApiPersonStories(id as string).then((resp) =>
+        resp?.edges.map((edge) => edge.node)
       );
 
       // Latest audio segments.
-      const segments = await fetchApiPersonAudio(
-        id as string,
-        'program-segment',
-        1,
-        10,
-        req
-      );
+      const segments = await fetchApiPersonAudio(id as string);
 
       // Build response object.
       const apiResp = {
         ...person.data,
         featuredStory: featuredStories
           ? featuredStories.shift()
-          : stories.data.shift(),
+          : stories?.shift(),
         featuredStories: featuredStories
           ? featuredStories.concat(
-              stories.data.splice(0, 4 - featuredStories.length)
+              stories?.splice(0, 4 - featuredStories.length)
             )
-          : stories.data.splice(0, 4),
+          : stories?.splice(0, 4),
         stories,
         segments
       };

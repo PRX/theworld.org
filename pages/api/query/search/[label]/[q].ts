@@ -9,7 +9,7 @@ import { fetchQuerySearch } from '@lib/fetch';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { label, q, start } = req.query;
 
-  if (q.length) {
+  if (q?.length) {
     const apiResp = await fetchQuerySearch(
       q as string,
       label as string,

@@ -40,7 +40,7 @@ const ContentProxy = ({ type, data }: Props) => {
 
     case 'post--episode':
     case 'node--episodes':
-      return <DynamicEpisode />;
+      return <DynamicEpisode data={data} />;
 
     case 'node--newsletter_sign_ups':
       return <DynamicNewsletter />;
@@ -63,7 +63,7 @@ const ContentProxy = ({ type, data }: Props) => {
 
     case 'term--category':
     case 'taxonomy_term--categories':
-      return <DynamicCategory />;
+      return <DynamicCategory data={data} />;
 
     case 'term--tag':
     case 'taxonomy_term--terms':
