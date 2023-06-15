@@ -16,8 +16,8 @@ export const fetchCategoryStories = async (
   id: string | IPriApiResource,
   page: number = 1,
   range: number = 15,
-  field = 'categories',
-  exclude: string[] | string = null
+  field: string = 'categories',
+  exclude?: string[] | string
 ): Promise<PriApiResourceResponse> => {
   let category: IPriApiResource;
 
