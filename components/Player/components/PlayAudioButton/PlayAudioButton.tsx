@@ -44,8 +44,8 @@ export const PlayAudioButton = ({
     playAudio,
     togglePlayPause
   } = useContext(PlayerContext);
-  const { playing, currentTrackIndex, tracks } = playerState;
-  const currentTrack = tracks?.[currentTrackIndex];
+  const { playing, currentTrackIndex = 0, tracks = [] } = playerState;
+  const currentTrack = tracks[currentTrackIndex];
   const [audioIsPlaying, setAudioIsPlaying] = useState(
     playing &&
       !!(audio ?? audioData) &&
