@@ -9,7 +9,7 @@ import { IAudioData } from './IAudioData';
 import { IPlayerState } from './IPlayerState';
 
 export interface IPlayerContext {
-  audioElm: HTMLAudioElement;
+  audioElm: HTMLAudioElement | null;
   state: IPlayerState;
   play(): void;
   playTrack(index: number): void;
