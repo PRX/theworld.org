@@ -12,10 +12,8 @@ import {
 export const playerInitialState: IPlayerState = {
   playing: false,
   autoplay: true,
-  currentTrackIndex: null,
-  tracks: null,
-  currentTime: null,
-  currentDuration: null,
+  currentTime: 0,
+  currentDuration: 0,
   muted: false,
   volume: 0.8
 };
@@ -27,8 +25,8 @@ export const playerStateReducer = (
   const {
     autoplay,
     playing,
-    currentTrackIndex,
-    tracks,
+    currentTrackIndex = 0,
+    tracks = [],
     muted,
     currentTime
   } = state;
@@ -64,7 +62,7 @@ export const playerStateReducer = (
         currentTrackIndex: Math.max(
           0,
           action.payload.findIndex(
-            ({ guid }) => guid === (tracks || [])[currentTrackIndex]?.guid
+            ({ guid }) => guid === tracks[currentTrackIndex]?.guid
           )
         )
       };
@@ -90,7 +88,7 @@ export const playerStateReducer = (
       };
 
     case ActionTypes.PLAYER_PLAY_AUDIO:
-      audioTrackIndex = (tracks || []).findIndex(
+      audioTrackIndex = tracks.findIndex(
         ({ guid }) => guid === action.payload.guid
       );
       isInTracks = audioTrackIndex !== -1;
@@ -100,9 +98,9 @@ export const playerStateReducer = (
         ...(isInTracks && { currentTrackIndex: audioTrackIndex }),
         ...(!isInTracks && {
           tracks: [
-            ...(tracks || []).slice(0, currentTrackIndex + 1),
+            ...tracks.slice(0, currentTrackIndex + 1),
             action.payload,
-            ...(tracks || []).slice(currentTrackIndex + 1)
+            ...tracks.slice(currentTrackIndex + 1)
           ],
           currentTrackIndex: tracks?.length ? currentTrackIndex + 1 : 0
         }),
@@ -113,7 +111,7 @@ export const playerStateReducer = (
     case ActionTypes.PLAYER_ADD_TRACK:
       return {
         ...state,
-        tracks: [...(tracks || []), action.payload],
+        tracks: [...tracks, action.payload],
         currentTrackIndex: currentTrackIndex || 0
       };
 
@@ -136,10 +134,10 @@ export const playerStateReducer = (
     case ActionTypes.PLAYER_REMOVE_ALL_TRACKS:
       return {
         ...state,
-        tracks: null,
-        currentTrackIndex: null,
-        currentDuration: null,
-        currentTime: null,
+        tracks: undefined,
+        currentTrackIndex: undefined,
+        currentDuration: 0,
+        currentTime: 0,
         playing: false
       };
 
@@ -153,9 +151,9 @@ export const playerStateReducer = (
         currentTrackIndex:
           tracks.length - 1 > 0
             ? Math.min(tracks.length - 2, currentTrackIndex)
-            : null,
-        currentTime: null,
-        currentDuration: null,
+            : undefined,
+        currentTime: 0,
+        currentDuration: 0,
         playing:
           // Not last track...
           tracks.length - 1 !== currentTrackIndex &&

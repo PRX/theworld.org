@@ -21,7 +21,7 @@ export const TimeInfo: React.FC<ITimeInfoProps> = ({
   const { audioElm, state: playerState } = useContext(PlayerContext);
   const { classes: styles, cx } = useTimeInfoStyles();
   const {
-    currentTrackIndex,
+    currentTrackIndex = 0,
     tracks,
     currentTime: playerCurrentTime
   } = playerState;

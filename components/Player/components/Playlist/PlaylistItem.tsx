@@ -23,7 +23,7 @@ export const PlaylistItem = ({
   ...other
 }: IPlaylistItemProps) => {
   const { state, removeTrack } = useContext(PlayerContext);
-  const { tracks, currentTrackIndex } = state;
+  const { tracks, currentTrackIndex = 0 } = state;
   const currentTrack = tracks?.[currentTrackIndex];
   const { guid: currentTrackGuid } = currentTrack || {};
   const { guid, title, imageUrl, info, linkResource } = audio;

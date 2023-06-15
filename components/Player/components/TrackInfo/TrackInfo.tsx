@@ -18,7 +18,7 @@ export interface ITrackInfoProps {
 
 export const TrackInfo = ({ className }: ITrackInfoProps) => {
   const { state } = useContext(PlayerContext);
-  const { tracks, currentTrackIndex } = state;
+  const { tracks, currentTrackIndex = 0 } = state;
   const currentTrack = tracks?.[currentTrackIndex];
   const { title, info, imageUrl, linkResource } = currentTrack || {};
   const thumbnailAspectRatio = 16 / 9;

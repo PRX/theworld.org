@@ -33,8 +33,14 @@ export const Player = ({ children }: IPlayerProps) => {
   const [state, dispatch] = useReducer(playerStateReducer, {
     ...playerInitialState
   });
-  const { tracks, playing, currentTrackIndex, currentTime, muted, volume } =
-    state;
+  const {
+    tracks = [],
+    playing,
+    currentTrackIndex = 0,
+    currentTime,
+    muted,
+    volume
+  } = state;
   const currentTrack = tracks?.[currentTrackIndex] || ({} as IAudioData);
   const currentTrackDurationSeconds = useMemo(
     () => convertDurationToSeconds(currentTrack.duration),
@@ -538,7 +544,7 @@ export const Player = ({ children }: IPlayerProps) => {
   }, [state]);
 
   useEffect(() => {
-    if (tracks?.length) {
+    if (tracks.length) {
       store.dispatch<UiAction>({
         type: 'UI_PLAYER_OPEN'
       });
@@ -547,7 +553,7 @@ export const Player = ({ children }: IPlayerProps) => {
         type: 'UI_PLAYER_CLOSE'
       });
     }
-  }, [store, tracks]);
+  }, [store, tracks.length]);
 
   useEffect(() => {
     // Setup event handlers on audio element.

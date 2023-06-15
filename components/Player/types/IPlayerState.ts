@@ -29,12 +29,12 @@ export interface IPlayerState {
   /**
    * Holds the currently playing audio data.
    */
-  currentTrackIndex: number;
+  currentTrackIndex?: number;
 
   /**
    * Holds all the audio data that can be played.
    */
-  tracks: IAudioData[];
+  tracks?: IAudioData[];
 
   /**
    * Current volume of the player as a value between 0 and 1.

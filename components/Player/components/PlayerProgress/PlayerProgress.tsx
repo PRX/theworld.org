@@ -46,7 +46,7 @@ export const PlayerProgress: React.FC<IPlayerProgressProps> = ({
   const { classes } = usePlayerProgressStyles();
   const { scrubPosition, played, playedSeconds, duration } = state;
   const {
-    currentTrackIndex,
+    currentTrackIndex = 0,
     tracks,
     currentTime: playerCurrentTime,
     currentDuration: playerCurrentDuration
