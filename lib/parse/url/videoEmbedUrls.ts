@@ -18,10 +18,10 @@ export const getYoutubeVideoId = (videoId: string) => {
       ? // This is a url
         videoId.indexOf('/watch') > -1
         ? // URL is pattern 3
-          videoId.match(/v=([^&]+)(?:&|$)/i)[1]
+          videoId.match(/v=([^&]+)(?:&|$)/i)?.[1]
         : // All other URL patterns have the video id at the end of the path segment,
-          // after the last '/' up to the end of the string (or '?' if pressent)
-          videoId.match(/\/([^?/]+)(?:\?|$)/i)[1]
+          // after the last '/' up to the end of the string (or '?' if present)
+          videoId.match(/\/([^?/]+)(?:\?|$)/i)?.[1]
       : // Not URL. Assume original value is the id
         videoId;
 
@@ -51,7 +51,7 @@ export const getVimeoVideoId = (videoId: string) => {
     videoId.indexOf('/') > -1
       ? // Vimeo's urls all have the video id at the end of the path segment,
         // after the last '/' up to the end of the string (or '?' if pressent)
-        videoId.match(/\/([^?/]+)(?:\?|$)/i)[1]
+        videoId.match(/\/([^?/]+)(?:\?|$)/i)?.[1]
       : // Not URL. Assume original value is the Id
         videoId;
 
