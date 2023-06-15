@@ -1,5 +1,4 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import type { TwApiCollection } from '@interfaces/api';
 import type { TwApiDataPostEpisode } from '@lib/parse/data';
 import { fetchTwApi } from '@lib/fetch/api';
 import { basicTwApiStoryParams } from '../api/params';
@@ -28,7 +27,7 @@ export const fetchTwApiProgramEpisodes = async (
     );
 
   // Fetch list of stories. Paginated.
-  return fetchTwApi<TwApiCollection<TwApiDataPostEpisode>>(
+  return fetchTwApi<TwApiDataPostEpisode[]>(
     'wp/v2/posts',
     {
       ...basicTwApiStoryParams,

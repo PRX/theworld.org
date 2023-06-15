@@ -3,7 +3,7 @@
  */
 
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import type { IStory, TwApiCollection, TwApiResource } from '@interfaces';
+import type { IStory, TwApiResource } from '@interfaces';
 import { fetchTwApi } from '@lib/fetch/api';
 import { fullTwApiStoryParams } from '@lib/fetch/api/params';
 import {
@@ -14,7 +14,7 @@ import {
 } from '@lib/parse/data';
 
 export const fetchTwApiStory = async (id: number, init?: RequestInit) =>
-  fetchTwApi<TwApiResource<TwApiDataPostStory>>(
+  fetchTwApi<TwApiDataPostStory>(
     `wp/v2/posts/${id}`,
     {
       ...fullTwApiStoryParams
@@ -45,7 +45,7 @@ export const fetchTwApiStory = async (id: number, init?: RequestInit) =>
       // Construct Term Data Requests.
       const getTermsRequest = (path: string, ids: number[]) =>
         ids.length
-          ? fetchTwApi<TwApiCollection<TwApiTerm>>(
+          ? fetchTwApi<TwApiTerm[]>(
               path,
               {
                 include: ids,

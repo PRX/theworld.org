@@ -12,5 +12,5 @@ export interface TwApiResource<DataType> {
 }
 
 export interface TwApiCollection<DataType> extends TwApiResource<DataType[]> {
-  meta: TwApiCollectionMeta;
+  meta?: TwApiCollectionMeta;
 }

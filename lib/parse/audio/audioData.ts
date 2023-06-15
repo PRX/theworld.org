@@ -26,16 +26,19 @@ export const parseAudioData = (
   } = data;
   const { canonical } = metatags || {};
   const { duration } = metadata || {};
-  const { imageUrl, title: fallbackTitle, linkResource, queuedFrom } =
-    fallbackProps || {};
-  const broadcastDate =
-    audioBroadcastDate ||
-    linkResource?.broadcastDate ||
-    linkResource?.dateBroadcast ||
-    linkResource?.datePublished;
+  const {
+    imageUrl,
+    title: fallbackTitle,
+    linkResource,
+    queuedFrom
+  } = fallbackProps || {};
+  const broadcastDate = audioBroadcastDate;
+  // linkResource?.broadcastDate ||
+  // linkResource?.dateBroadcast ||
+  // linkResource?.datePublished;
   const dataString =
     broadcastDate &&
-    (d => {
+    ((d) => {
       const timeStamp = parseInt(d, 10) * 1000;
       const date = new Date(timeStamp);
       return date.toLocaleDateString(undefined, { dateStyle: 'medium' });

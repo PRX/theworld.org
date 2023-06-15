@@ -1,7 +1,7 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import type { ParsedUrlQuery } from 'querystring';
 import type { IEpisode, IProgram, IStory } from '@interfaces';
-import type { TwApiCollection, TwApiResource } from '@interfaces/api';
+import type { TwApiCollection } from '@interfaces/api';
 import { fetchTwApi } from '@lib/fetch/api';
 import {
   TwApiDataTermProgram,
@@ -21,7 +21,7 @@ export const fetchTwApiProgram = async (
   params?: ParsedUrlQuery,
   init?: RequestInit
 ) => {
-  const programResp = await fetchTwApi<TwApiResource<TwApiDataTermProgram>>(
+  const programResp = await fetchTwApi<TwApiDataTermProgram>(
     `wp/v2/program/${id}`,
     undefined,
     init
@@ -48,7 +48,7 @@ export const fetchTwApiProgram = async (
     );
 
     parallelRequests.push(
-      fetchTwApi<TwApiCollection<TwApiDataPostStory>>(
+      fetchTwApi<TwApiDataPostStory[]>(
         'wp/v1/posts',
         {
           ...basicTwApiStoryParams,

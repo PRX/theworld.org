@@ -16,7 +16,7 @@ import { basicStoryParams } from '../api/params';
 
 export const generateFieldNameFromPath = (pathname: string): string | false => {
   const [, vocabSlug] = pathname.split('/');
-  const fn = (slug => {
+  const fn = ((slug) => {
     switch (slug) {
       case 'countries-regions':
         return false;
@@ -53,7 +53,7 @@ export const fetchTermStories = async (
   id: string | IPriApiResource,
   page: number = 1,
   range: number = 15,
-  exclude: string[] | string = null
+  exclude?: string[] | string
 ): Promise<PriApiResourceResponse> => {
   let term: IPriApiResource;
 
@@ -76,8 +76,8 @@ export const fetchTermStories = async (
         .filter((v: string) => !!v)
         .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
     const { pathname } =
-      (generateLinkHrefForContent(term, true) as UrlWithParsedQuery) || {};
-    const fieldName = generateFieldNameFromPath(pathname);
+      (generateLinkHrefForContent(term.link, true) as UrlWithParsedQuery) || {};
+    const fieldName = pathname && generateFieldNameFromPath(pathname);
 
     if (fieldName) {
       // Fetch list of stories. Paginated.
