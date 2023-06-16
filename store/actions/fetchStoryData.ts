@@ -38,7 +38,7 @@ import { fetchGqlStory } from '@lib/fetch';
 //   };
 // };
 
-export const fetchStoryData = async (id: number) => {
+export const fetchStoryData = async (id: string) => {
   const dataPromise = fetchGqlStory(id);
 
   // const ctaDataPromise = dispatch<any>(
