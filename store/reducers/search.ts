@@ -31,7 +31,7 @@ export const search = (state = {}, action: SearchAction) => {
     case 'SEARCH_CLEAR_QUERY':
       return {
         ...state,
-        query: null
+        query: undefined
       } as SearchState;
 
     case 'FETCH_SEARCH_REQUEST':

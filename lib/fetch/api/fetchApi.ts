@@ -15,7 +15,7 @@ import type {
   ICMApiCustomField,
   ContributorToPostConnection
 } from '@interfaces';
-import type { fetchGqlStory } from '@lib/fetch';
+import type { IApp, fetchGqlStory, fetchQuerySearch } from '@lib/fetch';
 import { format } from 'url';
 
 /**
@@ -95,7 +95,7 @@ export const fetchApiQueryAlias = async (alias: string, init?: RequestInit) =>
  *    App data object.
  */
 export const fetchApiApp = async (init?: RequestInit) =>
-  fetchApi({ path: 'app', init });
+  fetchApi<IApp>({ path: 'app', init });
 
 /**
  * Method that simplifies GET queries for homepage data.
@@ -572,7 +572,7 @@ export const fetchApiSearch = (
   start: string | number,
   init?: RequestInit
 ) =>
-  fetchApi({
+  fetchApi<ReturnType<typeof fetchQuerySearch>>({
     path: `query/search/${label}/${q}`,
     query: {
       start: start as string
