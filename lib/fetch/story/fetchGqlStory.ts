@@ -181,7 +181,7 @@ const GET_POST = gql`
   }
 `;
 
-export const fetchGqlStory = async (id: number) => {
+export const fetchGqlStory = async (id: string) => {
   const response = await gqlClient.query<{
     post: Post & {
       primaryCategory?: Maybe<PostToCategoryConnection>;
