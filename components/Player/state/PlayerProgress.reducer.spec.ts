@@ -97,7 +97,7 @@ describe('states/player', () => {
         expect(result1.played).toBe(0.75);
         expect(result1.scrubPosition).toBe(0.25);
         expect(result2.played).toBe(0.25);
-        expect(result2.scrubPosition).toBeNull();
+        expect(result2.scrubPosition).toBeUndefined();
       });
     });
 

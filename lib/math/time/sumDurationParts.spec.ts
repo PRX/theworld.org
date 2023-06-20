@@ -3,6 +3,7 @@ import sumDurationParts from './sumDurationParts';
 describe('lib/math/time', () => {
   describe('sumDurationParts', () => {
     test('should handle falsy input.', () => {
+      /* @ts-ignore */
       const result1 = sumDurationParts(null);
 
       expect(result1.length).toBe(3);

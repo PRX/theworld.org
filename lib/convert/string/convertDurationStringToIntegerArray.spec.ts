@@ -18,6 +18,7 @@ describe('lib/convert/string', () => {
     });
 
     test('should return zero when passed undefined.', () => {
+      /* @ts-ignore */
       const result1 = convertDurationStringToIntegerArray(undefined);
 
       expect(result1.length).toBe(1);
