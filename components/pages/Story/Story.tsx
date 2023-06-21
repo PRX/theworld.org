@@ -35,8 +35,7 @@ export const Story = ({ data }: IContentComponentProps<Post>) => {
       pubdate: broadcastDate || date
     })
   };
-  const LayoutComponent =
-    (format && layoutComponentMap[format]) || layoutComponentMap.standard;
+  const LayoutComponent = layoutComponentMap.get(format || 'standard');
   const props = {
     Title: title,
     ...(storyFormats && { 'Story Format': storyFormats.nodes[0].name }),

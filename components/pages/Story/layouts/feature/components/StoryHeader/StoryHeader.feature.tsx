@@ -65,6 +65,8 @@ export const StoryHeader = ({ data }: Props) => {
   const hasFooter = hasCaption;
   const { classes, cx } = storyHeaderStyles();
 
+  console.log(broadcastDate, date);
+
   if (contributors?.nodes.length) {
     bylines.push(['By', contributors.nodes]);
   }
@@ -123,10 +125,7 @@ export const StoryHeader = ({ data }: Props) => {
                     component="div"
                     className={classes.date}
                   >
-                    <Moment
-                      format="MMMM D, YYYY · h:mm A z"
-                      tz="America/New_York"
-                    >
+                    <Moment format="MMMM D, YYYY" tz="America/New_York">
                       {broadcastDate || date}
                     </Moment>
                   </Typography>

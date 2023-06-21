@@ -3,13 +3,18 @@
  * Component for default story header.
  */
 
-import React from 'react';
+import type React from 'react';
+import type {
+  PostStory,
+  Post_Additionaldates as PostAdditionalDates,
+  Contributor,
+  Post_Additionalmedia as PostAdditionalMedia
+} from '@interfaces';
+import type { IContentLinkProps } from '@components/ContentLink';
+import type { IAudioControlsProps } from '@components/Player/components';
+import type { IAudioData } from '@components/Player/types';
 import dynamic from 'next/dynamic';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Typography } from '@mui/material';
-import { IContentLinkProps } from '@components/ContentLink';
-import { IAudioControlsProps } from '@components/Player/components';
-import { IAudioData } from '@components/Player/types';
 import { storyHeaderStyles } from './StoryHeader.default.styles';
 
 const Moment = dynamic(() => {
@@ -25,34 +30,49 @@ const ContentLink = dynamic(() =>
   import('@components/ContentLink').then((mod) => mod.ContentLink)
 ) as React.FC<IContentLinkProps>;
 interface Props {
-  data: IPriApiResource;
+  data: PostStory;
 }
 
 export const StoryHeader = ({ data }: Props) => {
   const {
-    audio,
-    image,
-    bylines,
-    dateBroadcast,
-    datePublished,
-    dateUpdated,
+    title,
+    date,
+    featuredImage,
+    additionalMedia,
+    additionalDates,
     primaryCategory,
-    program,
-    title
+    programs,
+    contributors
   } = data;
+  const { audio } = additionalMedia as PostAdditionalMedia;
+  const { broadcastDate, updatedDate } = additionalDates as PostAdditionalDates;
+  const image = featuredImage?.node;
+  const program = programs?.nodes[0];
+  const bylines: [string, Contributor[]][] = [];
   const audioProps = {
     title,
     queuedFrom: 'Page Header Controls',
-    ...(image && { imageUrl: image.url }),
+    ...(image?.sourceUrl && { imageUrl: image.sourceUrl }),
     linkResource: data
   } as Partial<IAudioData>;
   const { classes } = storyHeaderStyles();
 
+  console.log(broadcastDate, date);
+
+  if (contributors?.nodes.length) {
+    bylines.push(['By', contributors.nodes]);
+  }
+
   return (
     <Box component="header" className={classes.root} mt={4} mb={2}>
-      {primaryCategory && (
+      {primaryCategory?.nodes[0].link && (
         <Box mb={2}>
-          <ContentLink className={classes.categoryLink} url={primaryCategory} />
+          <ContentLink
+            className={classes.categoryLink}
+            url={primaryCategory.nodes[0].link}
+          >
+            {primaryCategory.nodes[0].name}
+          </ContentLink>
         </Box>
       )}
       <Box mb={3}>
@@ -62,25 +82,23 @@ export const StoryHeader = ({ data }: Props) => {
       </Box>
       <Box className={classes.heading} mb={2}>
         <Box className={classes.info}>
-          {program && (
-            <ContentLink url={program} className={classes.programLink} />
+          {program?.link && (
+            <ContentLink url={program.link} className={classes.programLink}>
+              {program.name}
+            </ContentLink>
           )}
-          {(dateBroadcast || datePublished) && (
+          {(broadcastDate || date) && (
             <Typography
               variant="subtitle1"
               component="div"
               className={classes.date}
             >
-              <Moment
-                format="MMMM D, YYYY · h:mm A z"
-                tz="America/New_York"
-                unix
-              >
-                {dateBroadcast || datePublished}
+              <Moment format="MMMM D, YYYY" tz="America/New_York">
+                {broadcastDate || date}
               </Moment>
             </Typography>
           )}
-          {dateUpdated && (
+          {updatedDate && (
             <Typography
               variant="subtitle1"
               component="div"
@@ -93,7 +111,7 @@ export const StoryHeader = ({ data }: Props) => {
                 tz="America/New_York"
                 unix
               >
-                {dateUpdated}
+                {updatedDate}
               </Moment>
             </Typography>
           )}
@@ -103,7 +121,7 @@ export const StoryHeader = ({ data }: Props) => {
                 <li className={classes.bylineItem} key={creditTitle}>
                   {creditTitle}{' '}
                   <Box className={classes.bylinePeople} component="span">
-                    {people.map((person: IPriApiResource) => (
+                    {people.map((person) => (
                       <Box
                         className={classes.bylinePerson}
                         component="span"
@@ -112,7 +130,9 @@ export const StoryHeader = ({ data }: Props) => {
                         <ContentLink
                           className={classes.bylineLink}
                           url={person.link}
-                        />
+                        >
+                          {person.name}
+                        </ContentLink>
                       </Box>
                     ))}
                   </Box>
