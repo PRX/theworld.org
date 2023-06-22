@@ -57,8 +57,6 @@ export const StoryHeader = ({ data }: Props) => {
   } as Partial<IAudioData>;
   const { classes } = storyHeaderStyles();
 
-  console.log(broadcastDate, date);
-
   if (contributors?.nodes.length) {
     bylines.push(['By', contributors.nodes]);
   }

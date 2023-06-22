@@ -65,8 +65,6 @@ export const StoryHeader = ({ data }: Props) => {
   const hasFooter = hasCaption;
   const { classes, cx } = storyHeaderStyles();
 
-  console.log(broadcastDate, date);
-
   if (contributors?.nodes.length) {
     bylines.push(['By', contributors.nodes]);
   }
