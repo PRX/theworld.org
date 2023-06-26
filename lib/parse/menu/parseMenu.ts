@@ -3,49 +3,32 @@
  * Helper functions to parse menu API data into button objects.
  */
 
-import { IButton } from '@interfaces';
-import { MenuItem } from '@interfaces/menu';
+import { IButton, MenuItem } from '@interfaces';
 import { isLocalUrl } from '../url';
 
-export const parseMenu = (data: MenuItem[]) => {
+export const parseMenu = (data: MenuItem[]): IButton[] => {
   // If no data or links exist, return empty array.
   if (!data || !data.length) {
-    return [] as IButton[];
+    return [];
   }
 
-  const menu = data.map<IButton>(
-    ({ id, name, url, attributes, children = null, ...rest }) => {
-      const {
-        class: className,
-        color,
-        icon,
-        title,
-        referrerpolicy,
-        ...otherAttributes
-      } = attributes || {};
-      const isLocal = isLocalUrl(url);
+  const menu = data
+    .filter((v) => !!v.url)
+    .map<IButton>(({ id, label, url, childItems }) => {
+      const isLocal = isLocalUrl(url || '/');
 
       return {
-        ...rest,
         key: id,
-        name,
+        name: label,
         url,
-        ...(color && { color }),
-        ...(icon && { icon }),
-        ...(title && { title }),
-        ...(className && {
-          itemLinkClass: className.join(' ')
-        }),
-        children: children && parseMenu(children),
+        children: childItems?.nodes && parseMenu(childItems.nodes),
         attributes: {
-          ...otherAttributes,
           ...(!isLocal && {
             referrerPolicy: 'no-referrer-when-downgrade'
           })
         }
       } as IButton;
-    }
-  ) as IButton[];
+    });
 
   return menu;
 };

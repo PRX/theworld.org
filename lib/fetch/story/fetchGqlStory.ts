@@ -6,6 +6,29 @@ import type { Maybe, Post, PostToCategoryConnection } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 
+export const STORY_CARD_PROPS = gql`
+  fragment StoryCardProps on Post {
+    id
+    name
+    link
+    posts(first: 4, where: { notIn: [$id] }) {
+      nodes {
+        id
+        title
+        excerpt
+        link
+        featuredImage {
+          node {
+            id
+            altText
+            sourceUrl
+          }
+        }
+      }
+    }
+  }
+`;
+
 const GET_POST = gql`
   query getPost($id: ID!) {
     post(id: $id) {
@@ -72,30 +95,7 @@ const GET_POST = gql`
       }
       primaryCategory: categories(first: 1) {
         nodes {
-          id
-          name
-          link
-          taxonomy {
-            node {
-              id
-              name
-            }
-          }
-          posts(first: 4, where: { notIn: [$id] }) {
-            nodes {
-              id
-              title
-              excerpt
-              link
-              featuredImage {
-                node {
-                  id
-                  altText
-                  sourceUrl
-                }
-              }
-            }
-          }
+          ...StoryCardProps
         }
       }
       tags {
@@ -179,6 +179,7 @@ const GET_POST = gql`
       }
     }
   }
+  ${STORY_CARD_PROPS}
 `;
 
 export const fetchGqlStory = async (id: string) => {
