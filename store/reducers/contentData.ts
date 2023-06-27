@@ -6,7 +6,6 @@
 
 import { AnyAction } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
-import { IPriApiResource } from 'pri-api-library/types';
 import { ContentDataState, RootState } from '@interfaces/state';
 import { makeResourceSignature } from '@lib/parse/state';
 
@@ -20,17 +19,16 @@ export const contentData = (state: State = {}, action: AnyAction) => {
       return { ...state, ...action.payload.contentData };
 
     case 'FETCH_CONTENT_DATA_SUCCESS':
-      key = action.payload && makeResourceSignature(action.payload);
+      if (!action.payload?.id) return state;
+
+      key = makeResourceSignature(action.payload);
+
       return {
         ...state,
-        ...(key && {
-          [key]: {
-            ...(state[key] && state[key].complete
-              ? state[key]
-              : action.payload),
-            ...(action.payload.complete ? action.payload : {})
-          }
-        })
+        [key]: {
+          ...(state[key] && state[key].complete ? state[key] : action.payload),
+          ...(action.payload.complete ? action.payload : {})
+        }
       };
 
     case 'FETCH_BULK_CONTENT_DATA_SUCCESS':
@@ -57,6 +55,6 @@ export const contentData = (state: State = {}, action: AnyAction) => {
 
 export const getContentData = (
   state: ContentDataState,
-  type: string,
-  id: string
-) => (state || {})[makeResourceSignature({ type, id } as IPriApiResource)];
+  type?: string,
+  id?: string | number
+) => (state || {})[makeResourceSignature({ type, id })];

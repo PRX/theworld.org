@@ -3,6 +3,7 @@
  * Component for sidebar latest story links list.
  */
 
+import type { RootState } from '@interfaces';
 import React from 'react';
 import { useStore } from 'react-redux';
 import Link from 'next/link';
@@ -24,10 +25,10 @@ export const SidebarLatestStories = ({
   data,
   label
 }: SidebarLatestStoriesProps) => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const state = store.getState();
   const listItems =
-    data || getCollectionData(state, 'app', null, 'latest')?.items[1];
+    data || getCollectionData(state, 'app', undefined, 'latest')?.items[1];
 
   return listItems?.length ? (
     <Sidebar item elevated>

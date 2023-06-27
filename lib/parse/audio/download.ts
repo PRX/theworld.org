@@ -8,13 +8,13 @@ import { IPriApiResource } from 'pri-api-library/types';
 
 export const generateAudioDownloadFilename = (
   { url, program, metatags, metadata }: IPriApiResource,
-  prefixOverride: string = null
+  prefixOverride?: string
 ) => {
   const { canonical } = metatags || {};
   const { pathname } = parse(canonical || url);
-  const parts = pathname
+  const parts = (pathname || '')
     .split('/')
-    .filter(item => !!item && !!item.length && item !== 'file');
+    .filter((item) => !!item && !!item.length && item !== 'file');
   const prefix =
     prefixOverride ||
     (!!program && program.title.toLowerCase().replace(/\s+/, '-')) ||

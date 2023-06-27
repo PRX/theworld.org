@@ -1,5 +1,4 @@
 /**
-import { PriApiResource } from 'pri-api-library/types';
  * @file interfaces/link/link.interface.tsx
  * Interfaces for link.
  */
@@ -12,6 +11,7 @@ export interface ILinkHtmlAttributes {
   name?: string;
   id?: string;
   url?: string;
+  [k: string]: any;
 }
 
 export interface ILink extends IPriApiResource {

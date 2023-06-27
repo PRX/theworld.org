@@ -9,7 +9,7 @@ describe('lib/routing', () => {
 
       expect(result).toHaveProperty('query');
       expect(result.query).toHaveProperty('alias');
-      expect(result.query.alias).toEqual(['alias', 'path', 'foo']);
+      expect(result.query?.alias).toEqual(['alias', 'path', 'foo']);
     });
 
     test('should return with query property as `null`', () => {

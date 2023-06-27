@@ -36,7 +36,7 @@ export const videoSourceDescendant = (node: DomElement) => {
       videoSource.attribs['data-oembed-url'] ||
       ''
     ).replace(/^\s+|\s+$/, '');
-    let src: string;
+    let src: string | null;
 
     switch (true) {
       case rgxYoutube.test(videoUrl):
@@ -48,6 +48,7 @@ export const videoSourceDescendant = (node: DomElement) => {
         break;
 
       default:
+        src = null;
         break;
     }
 

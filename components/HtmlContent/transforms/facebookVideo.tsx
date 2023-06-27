@@ -8,7 +8,7 @@ import { FacebookProvider, EmbeddedVideo } from 'react-facebook';
 import { DomElement } from 'htmlparser2';
 
 export const facebookVideo = (node: DomElement) => {
-  let embedUrl: string;
+  let embedUrl: string | null;
 
   switch (true) {
     case node.type === 'tag' &&
@@ -28,10 +28,11 @@ export const facebookVideo = (node: DomElement) => {
       break;
 
     default:
+      embedUrl = null;
       break;
   }
 
-  if (embedUrl) {
+  if (embedUrl && process.env.FB_APP_ID) {
     return (
       <FacebookProvider appId={process.env.FB_APP_ID}>
         <EmbeddedVideo href={embedUrl} />

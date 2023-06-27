@@ -15,8 +15,8 @@ export type PlausibleEventArgs = [string, EventOptions<any>];
 export interface IPlausibleProps {
   events?: PlausibleEventArgs[];
   subject: {
-    type: string;
-    id: string;
+    type?: string;
+    id?: string | number;
   };
 }
 

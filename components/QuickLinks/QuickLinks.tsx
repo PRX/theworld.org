@@ -3,6 +3,7 @@
  * Component for links to content page.
  */
 
+import type { RootState } from '@interfaces';
 import React from 'react';
 import { useStore } from 'react-redux';
 import { parse } from 'url';
@@ -14,7 +15,7 @@ import { getMenusData } from '@store/reducers';
 import { QuickLinksStyles } from './QuickLinks.styles';
 
 export const QuickLinks = () => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const quickLinks = getMenusData(store.getState(), 'quickLinks');
   const { classes } = QuickLinksStyles();
 
@@ -37,7 +38,7 @@ export const QuickLinks = () => {
             .map(({ name, url, key, attributes }) =>
               isLocalUrl(url.href) ? (
                 <Link
-                  href={url.pathname}
+                  href={url.pathname || '/'}
                   onClick={handleButtonClick(url)}
                   key={key}
                   className={classes.link}

@@ -12,7 +12,15 @@ export const storyRelatedLinksStyles = makeStyles()((theme) => ({
   title: {
     fontSize: 'inherit'
   },
+  link: {
+    position: 'absolute',
+    inset: 0,
+    overflow: 'hidden',
+    textIndent: '-2000vw'
+  },
+
   MuiCardActionAreaRoot: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',

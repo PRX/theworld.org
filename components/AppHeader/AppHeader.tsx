@@ -3,6 +3,7 @@
  * Component for links to content page.
  */
 
+import type { RootState } from '@interfaces';
 import React, { useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import Link from 'next/link';
@@ -29,7 +30,7 @@ import { DrawerSocialNav } from './DrawerSocialNav';
 import { appHeaderStyles } from './AppHeader.styles';
 
 export const AppHeader = () => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());

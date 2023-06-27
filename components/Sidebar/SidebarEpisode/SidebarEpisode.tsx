@@ -56,14 +56,16 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
               {dateBroadcast || datePublished}
             </Moment>
           </Typography>
-          <ContentLink data={data} className={classes.link} />
+          <ContentLink url={data.link} className={classes.link}>
+            {data.title}
+          </ContentLink>
         </CardContent>
       </CardActionArea>
       {segments && <SidebarAudioList disablePadding data={segments} />}
       {program?.metatags && (
         <SidebarFooter>
           <ContentButton
-            data={program}
+            url={program.link}
             query={{ v: 'episodes' }}
             variant="contained"
             color="primary"

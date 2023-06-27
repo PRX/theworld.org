@@ -22,7 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         'logo',
         'podcast_logo',
         ...(basicStoryParams.include || []).map(
-          param => `featured_stories.${param}`
+          (param) => `featured_stories.${param}`
         )
       ]
     };
@@ -36,23 +36,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { featuredStories } = program.data;
 
       // Fetch list of stories. Paginated.
-      const stories = await fetchApiProgramStories(
-        id as string,
-        1,
-        undefined,
-        undefined,
-        req
-      );
-      const storiesData = [...stories.data];
+      const stories = await fetchApiProgramStories(id as string);
+      const storiesData = [...(stories?.data || [])];
 
       // Fetch list of episodes. Paginated.
-      const episodes = await fetchApiProgramEpisodes(
-        id as string,
-        1,
-        undefined,
-        undefined,
-        req
-      );
+      const episodes = await fetchApiProgramEpisodes(id as string);
 
       // Build response object.
       const apiResp = {

@@ -3,6 +3,7 @@
  * Component for app drawer top nav.
  */
 
+import type { RootState } from '@interfaces';
 import React from 'react';
 import { useStore } from 'react-redux';
 import { parse } from 'url';
@@ -13,7 +14,7 @@ import { getMenusData } from '@store/reducers';
 import { drawerTopNavStyles } from './DrawerTopNav.styles';
 
 export const DrawerTopNav = () => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const drawerTopNav = getMenusData(store.getState(), 'drawerTopNav');
   const { classes } = drawerTopNavStyles();
 
@@ -31,7 +32,7 @@ export const DrawerTopNav = () => {
           .map(({ name, url, key, attributes }) => (
             <Button
               component="a"
-              href={isLocalUrl(url.href) ? url.path : url.href}
+              href={isLocalUrl(url.href) ? url.path || '/' : url.href}
               onClick={handleButtonClick(url)}
               key={key}
               disableRipple

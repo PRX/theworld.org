@@ -3,17 +3,19 @@
  * Component for Episode.
  */
 
-import React, { useContext, useEffect, useState } from 'react';
-import { useStore } from 'react-redux';
-import { IPriApiResource } from 'pri-api-library/types';
-import {
-  Box,
-  Container,
-  Divider,
-  Grid,
-  Hidden,
-  Typography
-} from '@mui/material';
+import type {
+  Episode as EpisodeType,
+  Episode_Episodeaudio as EpisodeEpisodeAudio,
+  Episode_Episodedates as EpisodeEpisodeDates,
+  Episode_Episodecontributors as EpisodeEpisodeContributors,
+  IContentComponentProps,
+  MediaItem,
+  MediaItem_Audiofields as MediaItemAudioFields,
+  Episode_Episodecontent as EpisodeEpisodeContent,
+  PostStory
+} from '@interfaces';
+import React, { useContext } from 'react';
+import { Box, Container, Divider, Grid, Typography } from '@mui/material';
 import { EqualizerRounded } from '@mui/icons-material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { HtmlContent } from '@components/HtmlContent';
@@ -21,8 +23,6 @@ import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import {
   Sidebar,
-  SidebarAudioList,
-  SidebarCta,
   SidebarHeader,
   SidebarFooter,
   SidebarList,
@@ -30,97 +30,90 @@ import {
 } from '@components/Sidebar';
 import { SpotifyPlayer } from '@components/SpotifyPlayer';
 import { StoryCard } from '@components/StoryCard';
-import { CtaRegion } from '@components/CtaRegion';
+// import { CtaRegion } from '@components/CtaRegion';
 import { AppContext } from '@contexts/AppContext';
-import { UiAction } from '@interfaces/state';
-import { parseUtcDate } from '@lib/parse/date';
-import {
-  getDataByResource,
-  getCollectionData,
-  getCtaRegionData
-} from '@store/reducers';
+// import { UiAction } from '@interfaces/state';
+import { parseDateParts } from '@lib/parse/date';
 import { episodeStyles } from './Episode.styles';
 import { EpisodeLede } from './components/EpisodeLede';
 import { EpisodeHeader } from './components/EpisodeHeader';
 
-export const Episode = () => {
+export const Episode = ({ data }: IContentComponentProps<EpisodeType>) => {
   const {
     page: {
       resource: { type, id }
     }
   } = useContext(AppContext);
-  const store = useStore();
-  const [state, setState] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
   const { classes } = episodeStyles();
-  const data = getDataByResource(state, type, id);
 
   const {
-    metatags: dataMetatags,
+    seo: dataMetatags,
     title,
-    season,
-    dateBroadcast,
-    datePublished,
-    body,
-    audio,
-    hosts,
-    producers,
-    guests,
-    reporters,
-    spotifyPlaylist,
-    shareLinks
+    content,
+    date,
+    episodeDates,
+    episodeAudio,
+    episodeContributors,
+    episodeContent
   } = data || ({} as typeof data);
+  const { broadcastDate } = episodeDates as EpisodeEpisodeDates;
   const metatags = {
     ...dataMetatags,
-    ...((dateBroadcast || datePublished) && {
-      pubdate: parseUtcDate((dateBroadcast || datePublished) * 1000).join('-')
+    ...((broadcastDate || date) && {
+      pubdate: broadcastDate || date
     })
   };
-  const { segments } = audio || {};
+  const { audio } = episodeAudio || ({} as EpisodeEpisodeAudio);
+  const { audioFields } = (audio || {}) as MediaItem;
+  const { segmentsList } = (audioFields || {}) as MediaItemAudioFields;
+  const { hosts, producers, guests, reporters } =
+    episodeContributors as EpisodeEpisodeContributors;
+  const { spotifyPlaylists, relatedStories } =
+    episodeContent as EpisodeEpisodeContent;
+  const spotifyPlaylist = spotifyPlaylists
+    ?.map(
+      (fieldGroup) => fieldGroup?.spotifyPlaylist && fieldGroup.spotifyPlaylist
+    )
+    .filter((v): v is string => !!v);
+  const stories = relatedStories?.filter(
+    (story): story is PostStory => !!story
+  );
 
-  const storiesState = getCollectionData(state, type, id, 'stories');
-  const { items: stories } = storiesState || {};
-
-  // CTA data.
-  const ctaInlineEnd = getCtaRegionData(
-    state,
-    'tw_cta_region_content_inline_end',
-    type,
-    id
-  );
-  const ctaSidebarTop = getCtaRegionData(
-    state,
-    'tw_cta_region_content_sidebar_01',
-    type,
-    id
-  );
-  const ctaSidebarBottom = getCtaRegionData(
-    state,
-    'tw_cta_region_content_sidebar_02',
-    type,
-    id
-  );
+  // // CTA data.
+  // const ctaInlineEnd = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_content_inline_end',
+  //   type,
+  //   id
+  // );
+  // const ctaSidebarTop = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_content_sidebar_01',
+  //   type,
+  //   id
+  // );
+  // const ctaSidebarBottom = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_content_sidebar_02',
+  //   type,
+  //   id
+  // );
 
   // Plausible Events.
   const props = {
     Title: title,
-    ...(season && {
-      Season: season
-    }),
-    ...(dateBroadcast &&
+    ...(broadcastDate &&
       (() => {
-        const dt = parseUtcDate(dateBroadcast * 1000);
+        const dt = parseDateParts(broadcastDate);
         return {
           'Broadcast Year': dt[0],
           'Broadcast Month': dt.slice(0, 2).join('-'),
           'Broadcast Date': dt.join('-')
         };
       })()),
-    ...(datePublished &&
+    ...(date &&
       (() => {
-        const dt = parseUtcDate(datePublished * 1000);
+        const dt = parseDateParts(date);
         return {
           'Published Year': dt[0],
           'Published Month': dt.slice(0, 2).join('-'),
@@ -136,68 +129,63 @@ export const Episode = () => {
     ...(guests || []),
     ...(reporters || [])
   ].forEach((person) => {
-    plausibleEvents.push([
-      `Person: ${person.title}`,
-      {
-        props: { 'Page Type': 'Episode' }
-      }
-    ]);
+    if (person?.name) {
+      plausibleEvents.push([
+        `Person: ${person.name}`,
+        {
+          props: { 'Page Type': 'Episode' }
+        }
+      ]);
+    }
   });
 
-  useEffect(() => {
-    if (shareLinks) {
-      // Show social hare menu.
-      store.dispatch<UiAction>({
-        type: 'UI_SHOW_SOCIAL_SHARE_MENU',
-        payload: {
-          ui: {
-            socialShareMenu: {
-              links: [
-                {
-                  key: 'twitter',
-                  link: shareLinks.twitter
-                },
-                {
-                  key: 'facebook',
-                  link: shareLinks.facebook
-                },
-                {
-                  key: 'linkedin',
-                  link: shareLinks.linkedin
-                },
-                {
-                  key: 'flipboard',
-                  link: shareLinks.flipboard
-                },
-                {
-                  key: 'whatsapp',
-                  link: shareLinks.whatsapp
-                },
-                {
-                  key: 'email',
-                  link: shareLinks.email
-                }
-              ]
-            }
-          }
-        }
-      });
-    }
+  // useEffect(() => {
+  //   if (shareLinks) {
+  //     // Show social hare menu.
+  //     store.dispatch<UiAction>({
+  //       type: 'UI_SHOW_SOCIAL_SHARE_MENU',
+  //       payload: {
+  //         ui: {
+  //           socialShareMenu: {
+  //             links: [
+  //               {
+  //                 key: 'twitter',
+  //                 link: shareLinks.twitter
+  //               },
+  //               {
+  //                 key: 'facebook',
+  //                 link: shareLinks.facebook
+  //               },
+  //               {
+  //                 key: 'linkedin',
+  //                 link: shareLinks.linkedin
+  //               },
+  //               {
+  //                 key: 'flipboard',
+  //                 link: shareLinks.flipboard
+  //               },
+  //               {
+  //                 key: 'whatsapp',
+  //                 link: shareLinks.whatsapp
+  //               },
+  //               {
+  //                 key: 'email',
+  //                 link: shareLinks.email
+  //               }
+  //             ]
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
 
-    return () => {
-      // Hide social hare menu.
-      store.dispatch<UiAction>({
-        type: 'UI_HIDE_SOCIAL_SHARE_MENU'
-      });
-    };
-  }, [shareLinks, store]);
-
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
+  //   return () => {
+  //     // Hide social hare menu.
+  //     store.dispatch<UiAction>({
+  //       type: 'UI_HIDE_SOCIAL_SHARE_MENU'
+  //     });
+  //   };
+  // }, [shareLinks, store]);
 
   return (
     <>
@@ -207,15 +195,17 @@ export const Episode = () => {
         <Grid container>
           <Grid item xs={12}>
             <EpisodeHeader data={data} />
-            {audio ? <NoJsPlayer url={audio.url} /> : null}
+            {audio?.sourceUrl ? <NoJsPlayer url={audio.sourceUrl} /> : null}
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <EpisodeLede data={data} />
-                <Box className={classes.body} my={2}>
-                  <HtmlContent html={body} />
-                </Box>
+                {content && (
+                  <Box className={classes.body} my={2}>
+                    <HtmlContent html={content} />
+                  </Box>
+                )}
                 {spotifyPlaylist && !!spotifyPlaylist.length && (
                   <Box my={3}>
                     <Divider classes={{ root: classes.MuiDividerRoot }} />
@@ -227,7 +217,7 @@ export const Episode = () => {
                       Music heard on air
                     </Typography>
                     <Grid container spacing={2}>
-                      {spotifyPlaylist.map(({ uri }) => (
+                      {spotifyPlaylist.map((uri) => (
                         <Grid item xs={12} sm={6} lg={4} key={uri}>
                           <SpotifyPlayer uri={uri} size="large" stretch />
                         </Grid>
@@ -245,37 +235,41 @@ export const Episode = () => {
                     >
                       Stories from this episode
                     </Typography>
-                    {stories
-                      .reduce((a, p) => [...a, ...p], [])
-                      .map((item: IPriApiResource) => (
-                        <Box mt={2} key={item.id}>
-                          <StoryCard
-                            data={item}
-                            feature={item.displayTemplate !== 'standard'}
-                          />
-                        </Box>
-                      ))}
+                    {stories.map((item) => (
+                      <Box mt={2} key={item.id}>
+                        <StoryCard
+                          data={item}
+                          feature={item.presentation?.format !== 'standard'}
+                        />
+                      </Box>
+                    ))}
                   </Box>
                 )}
-                {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
+                {/* {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />} */}
               </Box>
               <Sidebar container className={classes.sidebar}>
-                {segments && (
+                {segmentsList && (
                   <Sidebar item elevated>
                     <SidebarHeader>
                       <EqualizerRounded />
                       <Typography variant="h2">In this episode:</Typography>
                     </SidebarHeader>
-                    <SidebarAudioList disablePadding data={segments} />
+                    <SidebarList
+                      disablePadding
+                      data={segmentsList.map((segment) => ({
+                        data: segment,
+                        audio: segment?.segmentContent?.audio
+                      }))}
+                    />
                     <SidebarFooter />
                   </Sidebar>
                 )}
                 {hosts && !!hosts.length && (
                   <Sidebar item elevated>
                     <SidebarList
-                      data={hosts.map((item: IPriApiResource) => ({
-                        ...item,
-                        avatar: item.image
+                      data={hosts.map((item) => ({
+                        data: item,
+                        avatar: item?.contributorDetails?.image
                       }))}
                       subheaderText="Hosts"
                     />
@@ -284,9 +278,9 @@ export const Episode = () => {
                 {producers && !!producers.length && (
                   <Sidebar item elevated>
                     <SidebarList
-                      data={producers.map((item: IPriApiResource) => ({
-                        ...item,
-                        avatar: item.image
+                      data={producers.map((item) => ({
+                        data: item,
+                        avatar: item?.contributorDetails?.image
                       }))}
                       subheaderText="Producers"
                     />
@@ -295,9 +289,9 @@ export const Episode = () => {
                 {guests && !!guests.length && (
                   <Sidebar item elevated>
                     <SidebarList
-                      data={guests.map((item: IPriApiResource) => ({
-                        ...item,
-                        avatar: item.image
+                      data={guests.map((item) => ({
+                        data: item,
+                        avatar: item?.contributorDetails?.image
                       }))}
                       subheaderText="Guests"
                     />
@@ -306,29 +300,29 @@ export const Episode = () => {
                 {reporters && !!reporters.length && (
                   <Sidebar item elevated>
                     <SidebarList
-                      data={reporters.map((item: IPriApiResource) => ({
-                        ...item,
-                        avatar: item.image
+                      data={reporters.map((item) => ({
+                        data: item,
+                        avatar: item?.contributorDetails?.image
                       }))}
                       subheaderText="Reporters"
                     />
                   </Sidebar>
                 )}
-                {ctaSidebarTop && (
+                {/* {ctaSidebarTop && (
                   <Hidden smDown>
                     <Sidebar item>
                       <SidebarCta data={ctaSidebarTop} />
                     </Sidebar>
                   </Hidden>
-                )}
+                )} */}
                 <SidebarLatestStories />
-                {ctaSidebarBottom && (
+                {/* {ctaSidebarBottom && (
                   <Hidden smDown>
                     <Sidebar item>
                       <SidebarCta data={ctaSidebarBottom} />
                     </Sidebar>
                   </Hidden>
-                )}
+                )} */}
               </Sidebar>
             </Box>
           </Grid>

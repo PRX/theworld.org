@@ -3,12 +3,12 @@
  * Component for story card links.
  */
 
-import React, { useEffect, useState } from 'react';
+import { type UrlWithParsedQuery } from 'url';
+import type { IContent } from '@interfaces';
+import { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { UrlWithParsedQuery } from 'url';
-import { IPriApiResource } from 'pri-api-library/types';
 import {
   Card,
   CardActionArea,
@@ -27,7 +27,7 @@ import { mediaCardStyles } from './MediaCard.styles';
 const Moment = dynamic(() => import('react-moment')) as any;
 
 export interface MediaCardProps {
-  data: IPriApiResource;
+  data: IContent;
 }
 
 export const MediaCard = ({ data }: MediaCardProps) => {
@@ -45,7 +45,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
     return iconMap.get(mt);
   })(type);
   const { pathname } = generateLinkHrefForContent(
-    data,
+    metatags.canonical,
     true
   ) as UrlWithParsedQuery;
   const { classes, cx } = mediaCardStyles({ isLoading });
@@ -110,7 +110,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
             {cardTitle}
           </Typography>
         </CardContent>
-        <ContentLink data={data} className={classes.link} />
+        <ContentLink url={metatags.canonical} className={classes.link} />
       </CardActionArea>
     </Card>
   );

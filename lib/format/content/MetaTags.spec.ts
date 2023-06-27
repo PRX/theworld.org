@@ -3,12 +3,14 @@ import { sanitizeContent } from './sanitizeContent';
 describe('Components/MetaTags', () => {
   describe('sanitizeContent', () => {
     test('should handle undefined value', () => {
+      /* @ts-ignore */
       const result = sanitizeContent(undefined);
 
       expect(result).toBeUndefined();
     });
 
     test('should handle null value', () => {
+      /* @ts-ignore */
       const result = sanitizeContent(null);
 
       expect(result).toBeUndefined();

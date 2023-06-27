@@ -3,6 +3,7 @@
  * Component for Image.
  */
 
+import type { RootState } from '@interfaces';
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { Box, Container, Grid } from '@mui/material';
@@ -23,7 +24,7 @@ export const Image = () => {
       resource: { type, id }
     }
   } = useContext(AppContext);
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());

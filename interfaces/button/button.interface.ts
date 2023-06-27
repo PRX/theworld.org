@@ -10,23 +10,33 @@ import type {
 } from '@mui/material';
 
 export type IconButtonColors = OverridableStringUnion<
-    | 'inherit'
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'error'
-    | 'info'
-    | 'success'
-    | 'warning',
-    IconButtonPropsColorOverrides
-  >;
+  | 'inherit'
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning',
+  IconButtonPropsColorOverrides
+>;
 
-export type ButtonColors = OverridableStringUnion<"inherit" | "primary" | "secondary" | "error" | "info" | "success" | "warning", ButtonPropsColorOverrides>;
+export type ButtonColors = OverridableStringUnion<
+  | 'inherit'
+  | 'primary'
+  | 'secondary'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning',
+  ButtonPropsColorOverrides
+>;
 
 export interface IButton {
-  key?: string | number;
+  key: string | number;
   name: string;
-  url?: string;
+  url: string;
+  service?: string;
   itemLinkClass?: string;
   color?: IconButtonColors | ButtonColors;
   icon?: string;

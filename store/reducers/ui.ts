@@ -13,7 +13,7 @@ export const ui = (state = {}, action: UiAction) => {
 
   switch (action?.type) {
     case HYDRATE:
-      return { ...state, ...action.payload.ui };
+      return { ...state, ...action.payload?.ui };
 
     case 'UI_DRAWER_OPEN':
       return {
@@ -81,8 +81,8 @@ export const ui = (state = {}, action: UiAction) => {
         ...state,
         socialShareMenu: {
           shown: true,
-          links: action.payload.ui.socialShareMenu.links,
-          icons: action.payload.ui.socialShareMenu.icons
+          links: action.payload?.ui?.socialShareMenu?.links,
+          icons: action.payload?.ui?.socialShareMenu?.icons
         }
       } as UiState;
 
@@ -99,8 +99,8 @@ export const ui = (state = {}, action: UiAction) => {
   }
 };
 
-export const getUiDrawerOpen = (state: UiState) => state?.drawer?.open;
-export const getUiPlayerOpen = (state: UiState) => state?.player?.open;
+export const getUiDrawerOpen = (state: UiState) => !!state?.drawer?.open;
+export const getUiPlayerOpen = (state: UiState) => !!state?.player?.open;
 export const getUiPlayerPlaylistOpen = (state: UiState) =>
-  state?.player?.playlistOpen;
+  !!state?.player?.playlistOpen;
 export const getUiSocialShareMenu = (state: UiState) => state?.socialShareMenu;

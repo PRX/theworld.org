@@ -8,7 +8,7 @@ import { FacebookProvider, EmbeddedPost } from 'react-facebook';
 import { DomElement } from 'htmlparser2';
 
 export const facebookPost = (node: DomElement) => {
-  let embedUrl: string;
+  let embedUrl: string | null;
 
   switch (true) {
     case node.type === 'tag' &&
@@ -26,10 +26,11 @@ export const facebookPost = (node: DomElement) => {
       break;
 
     default:
+      embedUrl = null;
       break;
   }
 
-  if (embedUrl) {
+  if (embedUrl && process.env.FB_APP_ID) {
     return (
       <FacebookProvider appId={process.env.FB_APP_ID}>
         <EmbeddedPost href={embedUrl} />

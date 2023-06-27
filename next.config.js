@@ -6,7 +6,7 @@
 const path = require('path');
 const { withPlausibleProxy } = require('next-plausible');
 const { uid } = require('uid');
-const { priApi } = require('./config');
+const { priApi, twApi } = require('./config');
 
 module.exports = withPlausibleProxy({
   subdirectory: uid(6),
@@ -20,13 +20,17 @@ module.exports = withPlausibleProxy({
     FB_ADMINS: process.env.FB_ADMINS,
     FB_APP_ID: process.env.FB_APP_ID,
     PRI_API_CONFIG: priApi,
+    TW_API_CONFIG: twApi,
     ISR_REVALIDATE: process.env.ISR_REVALIDATE,
     TWITTER_ACCOUNT_ID: process.env.TWITTER_ACCOUNT_ID,
     TW_API_RESOURCE_CACHE_CONTROL: process.env.TW_API_RESOURCE_CACHE_CONTROL,
     TW_API_COLLECTION_CACHE_CONTROL:
       process.env.TW_API_COLLECTION_CACHE_CONTROL,
     TW_API_CTA_CACHE_CONTROL: process.env.TW_API_CTA_CACHE_CONTROL,
-    TW_STATIC_PREBUILD: process.env.TW_STATIC_PREBUILD
+    TW_STATIC_PREBUILD: process.env.TW_STATIC_PREBUILD,
+    API_URL_BASE: process.env.API_URL_BASE,
+    WP_REST_ENDPOINT: process.env.WP_REST_ENDPOINT,
+    WP_GRAPHQL_ENDPOINT: process.env.WP_GRAPHQL_ENDPOINT
   },
   images: {
     domains: [
@@ -41,6 +45,9 @@ module.exports = withPlausibleProxy({
     ],
     deviceSizes: [370, 600, 960, 1280, 1920],
     imageSizes: [50, 86, 100, 172, 300, 400, 568, 808]
+  },
+  sassOptions: {
+    includePaths: [path.join(__dirname, 'styles')]
   },
   async redirects() {
     return [

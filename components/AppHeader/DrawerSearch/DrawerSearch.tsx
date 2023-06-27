@@ -3,6 +3,7 @@
  * Component for DrawerSearch.
  */
 
+import type { RootState } from '@interfaces';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { useStore } from 'react-redux';
 import Box from '@mui/material/Box';
@@ -15,8 +16,8 @@ import { getSearchQuery } from '@store/reducers';
 import { appDrawerSearchStyles } from './DrawerSearch.styles';
 
 export const DrawerSearch = () => {
-  const queryRef = useRef(null);
-  const store = useStore();
+  const queryRef = useRef<HTMLInputElement>(null);
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
@@ -27,17 +28,21 @@ export const DrawerSearch = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
+    if (!queryRef.current?.value) return;
+
     store.dispatch({
       type: 'SEARCH_OPEN',
-      payload: { query: queryRef.current.value }
+      payload: { query: queryRef.current?.value }
     });
-    store.dispatch<any>(fetchSearchData(queryRef.current.value, 'all'));
+    store.dispatch<any>(fetchSearchData(queryRef.current?.value, 'all'));
     store.dispatch({ type: 'UI_DRAWER_CLOSE' });
   };
 
   const handleClearQuery = () => {
+    if (!queryRef.current) return;
+
     queryRef.current.value = '';
-    queryRef.current.focus();
+    queryRef.current?.focus();
   };
 
   useEffect(

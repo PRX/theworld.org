@@ -3,33 +3,33 @@
  *
  * Actions to append collections data to contend data and collection refs.
  */
+import { Connection } from '@interfaces';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IPriApiCollectionResponse } from 'pri-api-library/types';
 
-export const appendResourceCollection = (
-  resp: IPriApiCollectionResponse,
+export function appendResourceCollection(
+  data: Connection,
   type: string,
-  id: number | string,
+  id: number | string | undefined,
   collection: string
-): ThunkAction<void, {}, {}, AnyAction> => (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>
-): void => {
-  const payloadItems = resp.data?.filter(v => !!v);
+): ThunkAction<void, {}, {}, AnyAction> {
+  return (dispatch: ThunkDispatch<{}, {}, AnyAction>): void => {
+    const payloadItems = data.edges.map(({ node }) => node);
 
-  if (payloadItems) {
-    dispatch({
-      type: 'FETCH_BULK_CONTENT_DATA_SUCCESS',
-      payload: payloadItems
-    });
+    if (payloadItems) {
+      dispatch({
+        type: 'FETCH_BULK_CONTENT_DATA_SUCCESS',
+        payload: payloadItems
+      });
 
-    dispatch({
-      type: 'APPEND_REFS_TO_COLLECTION',
-      payload: {
-        resource: { type, id },
-        collection,
-        ...resp
-      }
-    });
-  }
-};
+      dispatch({
+        type: 'APPEND_REFS_TO_COLLECTION',
+        payload: {
+          resource: { type, id },
+          collection,
+          data
+        }
+      });
+    }
+  };
+}

@@ -21,7 +21,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (episode) {
       const { audio } = episode.data;
       const { segments } = audio || {};
-      let stories: IPriApiResource[];
+      let stories: IPriApiResource[] | undefined;
 
       if (segments && segments.length) {
         stories = (await Promise.all(

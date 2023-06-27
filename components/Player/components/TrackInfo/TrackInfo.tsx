@@ -18,7 +18,7 @@ export interface ITrackInfoProps {
 
 export const TrackInfo = ({ className }: ITrackInfoProps) => {
   const { state } = useContext(PlayerContext);
-  const { tracks, currentTrackIndex } = state;
+  const { tracks, currentTrackIndex = 0 } = state;
   const currentTrack = tracks?.[currentTrackIndex];
   const { title, info, imageUrl, linkResource } = currentTrack || {};
   const thumbnailAspectRatio = 16 / 9;
@@ -78,8 +78,8 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
                   component="span"
                 >
                   {info
-                    .filter(t => !!t)
-                    .map(text => (
+                    .filter((t) => !!t)
+                    .map((text) => (
                       <span className={styles.infoItem} key={text}>
                         {text}
                       </span>
@@ -90,9 +90,11 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
           </Box>
         </motion.div>
       </AnimatePresence>
-      {linkResource ? (
-        <ContentLink data={linkResource} className={styles.link} />
-      ) : null}
+      {linkResource && (
+        <ContentLink url={linkResource.link} className={styles.link}>
+          {linkResource.title}
+        </ContentLink>
+      )}
     </Box>
   );
 };

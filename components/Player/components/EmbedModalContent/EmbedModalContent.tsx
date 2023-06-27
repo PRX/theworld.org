@@ -24,8 +24,8 @@ export interface IEmbedModalContentProps {
 export const EmbedModalContent = forwardRef<any, IEmbedModalContentProps>(
   ({ className, onClose, ...other }: IEmbedModalContentProps, ref) => {
     const { state } = useContext(PlayerContext);
-    const { tracks, currentTrackIndex } = state;
-    const currentTrack = tracks?.[currentTrackIndex];
+    const { tracks = [], currentTrackIndex = 0 } = state;
+    const currentTrack = tracks[currentTrackIndex];
     const { title, linkResource } = currentTrack || {};
     const { id: embedUrlId } = linkResource || {};
     const embedCode = `<iframe title="TheWorld.org Embedded Audio Player - ${title}" src="https://theworld.org/embed/audio/${embedUrlId}" frameborder="0" height="50" width="100%" style="margin-block: 1rem"></iframe>`;

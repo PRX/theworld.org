@@ -16,7 +16,6 @@ export const initialState: RootState = {
   menusData: {},
   search: {
     open: false,
-    query: null,
     loading: false,
     searches: {}
   },
@@ -43,18 +42,26 @@ export const reducers = combineReducers({
 export const getDataByAlias = (state: RootState, alias: string) =>
   fromAliasData.getAliasData(state.aliasData, alias);
 
-export const getDataByResource = (state: RootState, type: string, id: string) =>
-  fromContentData.getContentData(state.contentData, type, id);
+export const getDataByResource = (
+  state: RootState,
+  type?: string,
+  id?: string | number
+) => fromContentData.getContentData(state.contentData, type, id);
 
 export const getContentDataByAlias = (state: RootState, alias: string) => {
-  const { id, type } = fromAliasData.getAliasData(state.aliasData, alias) || {};
-  return fromContentData.getContentData(state.contentData, type, id as string);
+  const aliasData = fromAliasData.getAliasData(state.aliasData, alias);
+  const { id, type } = aliasData || {};
+  return fromContentData.getContentData(
+    state.contentData || {},
+    type,
+    id as string
+  );
 };
 
 export const getCollectionData = (
   state: RootState,
-  type: string,
-  id: string,
+  type: string | undefined,
+  id: string | number | undefined,
   collection: string
 ) => {
   const collectionState = fromCollections.getResourceCollection(
@@ -67,9 +74,7 @@ export const getCollectionData = (
   return (
     collectionState && {
       ...collectionState,
-      items: collectionState.items.map((page: string[]) =>
-        page ? page.map((key: string) => state.contentData[key]) : []
-      )
+      items: collectionState.items.map((item) => state.contentData[item.id])
     }
   );
 };
@@ -96,7 +101,7 @@ export const getCtaRegionData = (
   state: RootState,
   region: string,
   type?: string,
-  id?: string
+  id?: string | number
 ) =>
   fromCtaRegionGroupData.getCtaRegionData(
     state.ctaRegionData,

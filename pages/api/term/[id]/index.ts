@@ -24,23 +24,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { featuredStories } = term.data;
 
       // Fetch list of stories. Paginated.
-      const stories = await fetchApiTermStories(
-        id as string,
-        1,
-        undefined,
-        undefined,
-        req
-      );
-      const storiesData = [...stories.data];
+      const stories = await fetchApiTermStories(id as string);
+      const storiesData = [...(stories?.data || [])];
 
       // Fetch list of episodes. Paginated.
-      const episodes = await fetchApiTermEpisodes(
-        id as string,
-        1,
-        undefined,
-        undefined,
-        req
-      );
+      const episodes = await fetchApiTermEpisodes(id as string);
 
       // Build response object.
       const apiResp = {

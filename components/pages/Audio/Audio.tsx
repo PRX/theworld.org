@@ -3,6 +3,7 @@
  * Component for Episode.
  */
 
+import type { RootState } from '@interfaces';
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { Box, Container, Grid } from '@mui/material';
@@ -12,7 +13,7 @@ import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { parseUtcDate } from '@lib/parse/date';
+import { parseDateParts } from '@lib/parse/date';
 import { getDataByResource, getCtaRegionData } from '@store/reducers';
 import { audioStyles } from './Audio.styles';
 import { AudioHeader } from './components/AudioHeader';
@@ -23,7 +24,7 @@ export const Audio = () => {
       resource: { type, id }
     }
   } = useContext(AppContext);
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
@@ -45,7 +46,7 @@ export const Audio = () => {
   const metatags = {
     ...dataMetatags,
     ...(broadcastDate && {
-      pubdate: parseUtcDate(broadcastDate * 1000).join('-')
+      pubdate: parseDateParts(broadcastDate * 1000).join('-')
     })
   };
 
@@ -67,7 +68,7 @@ export const Audio = () => {
     }),
     ...(broadcastDate &&
       (() => {
-        const dt = parseUtcDate(broadcastDate * 1000);
+        const dt = parseDateParts(broadcastDate * 1000);
         return {
           'Broadcast Year': dt[0],
           'Broadcast Month': dt.slice(0, 2).join('-'),

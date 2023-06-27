@@ -2,6 +2,8 @@
  * @file Story.tsx
  * Component for Story.
  */
+
+import type { RootState } from '@interfaces';
 import React, { useContext, useState, useEffect } from 'react';
 import Image from 'next/legacy/image';
 import { useStore } from 'react-redux';
@@ -23,7 +25,7 @@ export const Newsletter = () => {
       resource: { type, id }
     }
   } = useContext(AppContext);
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());

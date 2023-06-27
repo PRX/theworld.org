@@ -43,14 +43,11 @@ const ContentProxy = ({ type }: Props) => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({
-      res,
-      req,
-      params: { slug }
-    }): Promise<GetServerSidePropsResult<any>> => {
-      let resourceId: string;
-      let resourceType: string = 'homepage';
-      let redirect: string;
+    async ({ res, req, params }): Promise<GetServerSidePropsResult<any>> => {
+      const { slug } = params || {};
+      let resourceId: string | null | undefined;
+      let resourceType: string | null = 'homepage';
+      let redirect: string | undefined;
       const aliasPath = ['media', ...(slug as string[])];
 
       let aliasData = await store.dispatch<any>(

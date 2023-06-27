@@ -2,7 +2,7 @@
  * Fetch homepage data from CMS API.
  */
 
-import { parseMenu } from '@lib/parse/menu';
+// import { parseMenu } from '@lib/parse/menu';
 import {
   IPriApiCollectionResponse,
   IPriApiResourceResponse,
@@ -13,7 +13,7 @@ import { basicStoryParams } from '../api/params';
 import { fetchProgram } from '../program';
 
 export const fetchHomepage = async (): Promise<PriApiResourceResponse> => {
-  const [program, latestStories, quickLinks] = await Promise.all([
+  const [program, latestStories] = await Promise.all([
     fetchProgram('3704').then(
       (resp: IPriApiResourceResponse) => resp && resp.data
     ),
@@ -31,10 +31,10 @@ export const fetchHomepage = async (): Promise<PriApiResourceResponse> => {
   const resp = {
     data: {
       ...program,
-      latestStories,
-      menus: {
-        quickLinks: parseMenu(quickLinks)
-      }
+      latestStories
+      // menus: {
+      //   quickLinks: parseMenu(quickLinks)
+      // }
     }
   } as IPriApiResourceResponse;
 

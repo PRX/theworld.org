@@ -15,6 +15,7 @@ module.exports = {
     '^@interfaces(.*)$': '<rootDir>/interfaces$1',
     '^@lib(.*)$': '<rootDir>/lib$1',
     '^@store(.*)$': '<rootDir>/store$1',
+    '^@styles(.*)$': '<rootDir>/styles$1',
     '^@svg(.*)$': '<rootDir>/assets/svg$1',
     '^@theme(.*)$': '<rootDir>/theme$1'
   },

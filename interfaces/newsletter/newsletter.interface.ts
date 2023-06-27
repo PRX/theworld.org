@@ -25,10 +25,10 @@ export interface INewsletterCustomFields {
 }
 
 export interface INewsletterOptions {
-  listId: string;
+  listId?: string;
   customFields?: INewsletterCustomFields;
 }
 
 export interface INewsletterData {
-  emailAddress?: string;
+  emailAddress: string;
 }

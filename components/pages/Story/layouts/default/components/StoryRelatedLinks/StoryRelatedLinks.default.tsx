@@ -45,7 +45,7 @@ export const StoryRelatedLinks = ({
             <Card square elevation={1}>
               <CardActionArea
                 component={ContentLink}
-                data={story}
+                url={story.link}
                 classes={{ root: classes.MuiCardActionAreaRoot }}
               >
                 {image && (

@@ -50,24 +50,24 @@ export const drawerMainNavTheme = (theme: Theme) =>
     }
   });
 
-export const drawerMainNavStyles = makeStyles()(theme => ({
+export const drawerMainNavStyles = makeStyles()((theme) => ({
   root: {},
 
   accordion: {
     '--accent-color': orange[500],
-    '--accent-color-rgb': hexToRgb(orange[500]).toString(),
+    '--accent-color-rgb': hexToRgb(orange[500])?.toString(),
     '--accent-color-contrast': theme.palette.getContrastText(orange[500]),
     boxShadow: `-${theme.spacing(0.5)} 0 0 0 var(--accent-color)`,
 
     '&:nth-of-type(2n)': {
       '--accent-color': yellow[500],
-      '--accent-color-rgb': hexToRgb(yellow[500]).toString(),
+      '--accent-color-rgb': hexToRgb(yellow[500])?.toString(),
       '--accent-color-contrast': theme.palette.getContrastText(yellow[500])
     },
 
     '&:nth-of-type(3n)': {
       '--accent-color': cyan[500],
-      '--accent-color-rgb': hexToRgb(cyan[500]).toString(),
+      '--accent-color-rgb': hexToRgb(cyan[500])?.toString(),
       '--accent-color-contrast': theme.palette.getContrastText(cyan[500])
     },
     '& + &': {

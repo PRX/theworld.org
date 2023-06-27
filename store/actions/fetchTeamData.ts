@@ -6,7 +6,6 @@
 
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IPriApiCollectionResponse } from 'pri-api-library/types';
 import { RootState } from '@interfaces/state';
 import { fetchApiTeam, fetchTeam } from '@lib/fetch';
 import { getCollectionData } from '@store/reducers';
@@ -30,7 +29,7 @@ export const fetchTeamData = (): ThunkAction<void, {}, {}, AnyAction> => async (
     const teamMembers = await (isOnServer
       ? fetchTeam(id)
       : fetchApiTeam()
-    ).then((resp: IPriApiCollectionResponse) => resp);
+    ).then((resp) => resp);
 
     dispatch(appendResourceCollection(teamMembers, type, id, 'members'));
 

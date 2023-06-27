@@ -21,7 +21,7 @@ export const TimeInfo: React.FC<ITimeInfoProps> = ({
   const { audioElm, state: playerState } = useContext(PlayerContext);
   const { classes: styles, cx } = useTimeInfoStyles();
   const {
-    currentTrackIndex,
+    currentTrackIndex = 0,
     tracks,
     currentTime: playerCurrentTime
   } = playerState;
@@ -41,11 +41,11 @@ export const TimeInfo: React.FC<ITimeInfoProps> = ({
    */
   const updateProgress = useCallback(
     (seconds?: number) => {
-      const { currentTime: ct, duration: d } = audioElm;
+      const { currentTime: ct, duration: d } = audioElm || {};
       const updatedPlayed = seconds || seconds === 0 ? seconds : ct;
 
-      setCurrentTime(updatedPlayed);
-      setDuration(d);
+      setCurrentTime(updatedPlayed || currentTime);
+      setDuration(d || duration);
     },
     [audioElm]
   );

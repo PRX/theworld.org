@@ -3,7 +3,8 @@
  * Override the main app component.
  */
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import type { RootState } from '@interfaces/state';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore, Provider } from 'react-redux';
 import { AppProps } from 'next/app';
 import PlausibleProvider from 'next-plausible';
@@ -26,18 +27,23 @@ import { AppPlayer } from '@components/AppPlayer/AppPlayer';
 import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
 import { Playlist } from '@components/Player/components';
 import createEmotionCache from '@lib/generate/cache/emotion/createEmotionCache';
+import { IContentComponentProxyProps } from '@interfaces';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-interface MyAppProps extends AppProps {
+type AppPageProps = IContentComponentProxyProps & {
+  contentOnly?: boolean;
+};
+
+interface MyAppProps extends AppProps<AppPageProps> {
   emotionCache?: EmotionCache;
 }
 
 const AppLayout = ({ children }) => {
-  const rootRef = useRef<HTMLDivElement>();
-  const uiFooterRef = useRef<HTMLDivElement>();
-  const store = useStore();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const uiFooterRef = useRef<HTMLDivElement>(null);
+  const store = useStore<RootState>();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
     updateForce(store.getState());
@@ -111,8 +117,8 @@ const TwApp = ({
 }: MyAppProps) => {
   const AnyComponent = Component as any;
   const { store, props } = wrapper.useWrappedStore(rest);
-  const { pageProps } = props;
-  const [plausibleDomain, setPlausibleDomain] = useState(null);
+  const { pageProps } = props as AppProps<AppPageProps>;
+  const [plausibleDomain, setPlausibleDomain] = useState('');
   const { type, id, contentOnly } = pageProps;
   const contextValue = useMemo(
     () => ({
@@ -129,12 +135,12 @@ const TwApp = ({
   useEffect(() => {
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
 
-    // // Remove the server-side injected CSS.
-    // // Fix for https://github.com/mui-org/material-ui/issues/15073
-    // const jssStyles = document.querySelector('#jss-server-side');
-    // if (jssStyles) {
-    //   jssStyles.parentElement.removeChild(jssStyles);
-    // }
+    // Remove the server-side injected CSS.
+    // Fix for https://github.com/mui-org/material-ui/issues/15073
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles) {
+      jssStyles.parentElement?.removeChild(jssStyles);
+    }
 
     // Remove `no-js` styling flag class.
     document.documentElement.classList.remove('no-js');

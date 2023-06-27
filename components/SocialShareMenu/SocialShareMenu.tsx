@@ -3,7 +3,10 @@
  * Component for social share menu.
  */
 
-import React, { HTMLAttributes, useEffect, useState } from 'react';
+import type { HTMLAttributes } from 'react';
+import type { IIconsMap } from '@interfaces/icons';
+import type { RootState } from '@interfaces/state';
+import { useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -20,7 +23,6 @@ import CloseRounded from '@mui/icons-material/CloseRounded';
 import EmailRounded from '@mui/icons-material/EmailRounded';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import SvgIcon from '@mui/material/SvgIcon';
-import { IIconsMap } from '@interfaces/icons';
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import { getUiPlayerPlaylistOpen, getUiSocialShareMenu } from '@store/reducers';
 import { useSocialShareMenuStyles } from './SocialShareMenu.styles';
@@ -52,7 +54,7 @@ const getIconsMap = (icons?: IIconsMap) => {
 export interface ISocialShareMenuProps extends HTMLAttributes<{}> {}
 
 export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, updateForce] = useState(store.getState());
   const unsub = store.subscribe(() => {
     updateForce(store.getState());
@@ -98,40 +100,38 @@ export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
     [unsub]
   );
 
-  return (
-    !!links && (
-      <NoSsr>
-        <Box className={rootClassNames}>
-          <SpeedDial
-            ariaLabel="Show Share Links"
-            classes={speedDialClasses}
-            hidden={!shown || playlistOpen}
-            icon={
-              <SpeedDialIcon
-                icon={<ShareRoundedIcon />}
-                openIcon={<CloseRounded />}
-              />
-            }
-            onClose={handleClose}
-            onOpen={handleOpen}
-            onTouchStart={handleTouchStart}
-            open={open}
-          >
-            {links.map(({ key, link: { title, url } }, index) => (
-              <SpeedDialAction
-                key={key}
-                classes={speedDialActionClasses}
-                icon={<SvgIcon color="primary">{iconsMap.get(key)}</SvgIcon>}
-                tooltipTitle={title}
-                delay={index * 50}
-                onClick={handleActionClick(url)}
-                tooltipOpen={isTouch}
-              />
-            ))}
-          </SpeedDial>
-          {isTouch && <Backdrop classes={backdropClasses} open={open} />}
-        </Box>
-      </NoSsr>
-    )
-  );
+  return links ? (
+    <NoSsr>
+      <Box className={rootClassNames}>
+        <SpeedDial
+          ariaLabel="Show Share Links"
+          classes={speedDialClasses}
+          hidden={!shown || playlistOpen}
+          icon={
+            <SpeedDialIcon
+              icon={<ShareRoundedIcon />}
+              openIcon={<CloseRounded />}
+            />
+          }
+          onClose={handleClose}
+          onOpen={handleOpen}
+          onTouchStart={handleTouchStart}
+          open={open}
+        >
+          {links.map(({ key, link: { title, url } }, index) => (
+            <SpeedDialAction
+              key={key}
+              classes={speedDialActionClasses}
+              icon={<SvgIcon color="primary">{iconsMap.get(key)}</SvgIcon>}
+              tooltipTitle={title}
+              delay={index * 50}
+              onClick={handleActionClick(url)}
+              tooltipOpen={isTouch}
+            />
+          ))}
+        </SpeedDial>
+        {isTouch && <Backdrop classes={backdropClasses} open={open} />}
+      </Box>
+    </NoSsr>
+  ) : null;
 };

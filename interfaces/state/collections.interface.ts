@@ -4,16 +4,15 @@
  * Define interfaces for collections state.
  */
 
+import { PageInfo } from '@interfaces/api';
+
+export type RefItem = {
+  cursor: string;
+  id: string;
+};
 export interface CollectionState {
-  count?: number;
-  page?: number;
-  range?: number;
-  size?: number;
-  first?: number;
-  last?: number;
-  next?: number;
-  prev?: number;
-  items: string[][];
+  pageInfo: PageInfo;
+  items: RefItem[];
 }
 
 export interface CollectionsState {

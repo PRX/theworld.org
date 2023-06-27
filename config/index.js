@@ -35,23 +35,45 @@ const config = {
   priApi: {
     ...(defaultConfig.priApi || {}),
     ...(localConfig.priApi || {})
+  },
+  twApi: {
+    ...(defaultConfig.twApi || {}),
+    ...(localConfig.twApi || {})
   }
 };
 
-const {
-  priApi,
-  priApi: { protocol, domain, apiPath, apiVersion }
-} = config;
-// Get env domain, fall back to configured domain.
-const apiDomain = process.env.PRI_API_DOMAIN || domain;
-// Construct base API URL.
-const apiUrlBase = `${protocol}://${apiDomain}/${apiPath}/v${apiVersion}`;
+if (config.priApi) {
+  const {
+    priApi,
+    priApi: { protocol, domain, apiPath, apiVersion }
+  } = config;
+  // Get env domain, fall back to configured domain.
+  const apiDomain = process.env.PRI_API_DOMAIN || domain;
+  // Construct base API URL.
+  const apiUrlBase = `${protocol}://${apiDomain}/${apiPath}/v${apiVersion}`;
 
-module.exports = {
-  ...config,
-  priApi: {
+  config.priApi = {
     ...priApi,
     domain: apiDomain,
     apiUrlBase
-  }
-};
+  };
+}
+
+if (config.twApi) {
+  const {
+    twApi,
+    twApi: { protocol, domain, apiPath }
+  } = config;
+  // Get env domain, fall back to configured domain.
+  const apiDomain = process.env.TW_API_DOMAIN || domain;
+  // Construct base API URL.
+  const apiUrlBase = `${protocol}://${apiDomain}/${apiPath}`;
+
+  config.twApi = {
+    ...twApi,
+    domain: apiDomain,
+    apiUrlBase
+  };
+}
+
+module.exports = config;

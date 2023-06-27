@@ -6,7 +6,7 @@ import { convertDurationStringToIntegerArray } from './convertDurationStringToIn
  * @param duration Duration string in format `[HH:]MM:SS`.
  * @returns Duration in seconds as number.
  */
-export const convertDurationToSeconds = (duration: string) => {
+export const convertDurationToSeconds = (duration?: string) => {
   const [seconds, minutes, hours] = convertDurationStringToIntegerArray(
     duration || '0'
   );

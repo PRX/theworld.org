@@ -50,10 +50,10 @@ export const VolumeControls: React.FC<IVolumeControlsProps> = ({
    */
   const updateVolume = useCallback(
     (newVolume?: number) => {
-      const { volume: v } = audioElm;
+      const { volume: v } = audioElm || {};
       const updatedVolume = newVolume || newVolume === 0 ? newVolume : v;
 
-      setVolume(updatedVolume);
+      setVolume(updatedVolume || volume);
     },
     [audioElm, setVolume]
   );

@@ -18,106 +18,98 @@ import { getDataByResource } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
-export const fetchProgramData = (
-  id: string,
-  req: IncomingMessage
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<IPriApiResource> => {
-  const state = getState();
-  const type = 'node--programs';
-  const isOnServer = typeof window === 'undefined';
-  const params = req?.url ? parse(req.url, true).query : null;
-  let data = getDataByResource(state, type, id);
+export const fetchProgramData =
+  (id: string, req: IncomingMessage): ThunkAction<void, {}, {}, AnyAction> =>
+  async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>,
+    getState: () => RootState
+  ): Promise<IPriApiResource> => {
+    const state = getState();
+    const type = 'node--programs';
+    const isOnServer = typeof window === 'undefined';
+    const params = req?.url ? parse(req.url, true).query : undefined;
+    let data = getDataByResource(state, type, id);
 
-  if (!data || !data.complete || isOnServer) {
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_REQUEST',
-      payload: {
-        type,
-        id
-      }
-    });
-
-    const dataPromise = (isOnServer
-      ? fetchProgram(id, params)
-      : fetchApiProgram(id)
-    ).then((resp: IPriApiResourceResponse) => resp && resp.data);
-
-    const ctaDataPromise = dispatch<any>(
-      fetchCtaRegionGroupData('tw_cta_regions_landing')
-    );
-
-    data = await dataPromise;
-    await ctaDataPromise;
-
-    const {
-      featuredStory,
-      featuredStories,
-      stories,
-      episodes,
-      ...payload
-    } = data;
-
-    // Set CTA filter props.
-    dispatch({
-      type: 'SET_RESOURCE_CTA_FILTER_PROPS',
-      payload: {
-        filterProps: {
+    if (!data || !data.complete || isOnServer) {
+      dispatch({
+        type: 'FETCH_CONTENT_DATA_REQUEST',
+        payload: {
           type,
-          id,
-          props: {
-            program: id
-          }
+          id
         }
-      } as ICtaFilterProps
-    });
+      });
 
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload: {
-        ...payload,
-        complete: true
-      }
-    });
+      const dataPromise = (
+        isOnServer ? fetchProgram(id, params) : fetchApiProgram(id)
+      ).then((resp: IPriApiResourceResponse) => resp && resp.data);
 
-    if (featuredStories) {
-      dispatch(
-        appendResourceCollection(
-          {
-            data: [featuredStory],
-            meta: { count: 1 }
-          },
-          type,
-          id,
-          'featured story'
-        )
+      const ctaDataPromise = dispatch<any>(
+        fetchCtaRegionGroupData('tw_cta_regions_landing')
       );
 
-      dispatch(
-        appendResourceCollection(
-          {
-            data: [...featuredStories],
-            meta: {
-              count: featuredStories.length
+      data = await dataPromise;
+      await ctaDataPromise;
+
+      const { featuredStory, featuredStories, stories, episodes, ...payload } =
+        data;
+
+      // Set CTA filter props.
+      dispatch({
+        type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+        payload: {
+          filterProps: {
+            type,
+            id,
+            props: {
+              program: id
             }
-          },
-          type,
-          id,
-          'featured stories'
-        )
-      );
+          }
+        } as ICtaFilterProps
+      });
+
+      dispatch({
+        type: 'FETCH_CONTENT_DATA_SUCCESS',
+        payload: {
+          ...payload,
+          complete: true
+        }
+      });
+
+      if (featuredStories) {
+        // dispatch(
+        //   appendResourceCollection(
+        //     {
+        //       data: [featuredStory],
+        //       meta: { count: 1 }
+        //     },
+        //     type,
+        //     id,
+        //     'featured story'
+        //   )
+        // );
+        // dispatch(
+        //   appendResourceCollection(
+        //     {
+        //       data: [...featuredStories],
+        //       meta: {
+        //         count: featuredStories.length
+        //       }
+        //     },
+        //     type,
+        //     id,
+        //     'featured stories'
+        //   )
+        // );
+      }
+
+      if (stories) {
+        dispatch(appendResourceCollection(stories, type, id, 'stories'));
+      }
+
+      if (episodes) {
+        dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
+      }
     }
 
-    if (stories) {
-      dispatch(appendResourceCollection(stories, type, id, 'stories'));
-    }
-
-    if (episodes) {
-      dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
-    }
-  }
-
-  return data;
-};
+    return data;
+  };

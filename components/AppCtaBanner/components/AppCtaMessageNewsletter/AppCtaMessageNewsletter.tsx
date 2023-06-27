@@ -55,9 +55,11 @@ export const AppCtaMessageNewsletter = ({
         )}
         {hasActions && (
           <Toolbar>
-            <Button {...actionAttrs} onClick={handleActionClick}>
-              {action.name}
-            </Button>
+            {action && (
+              <Button {...actionAttrs} onClick={handleActionClick}>
+                {action.name}
+              </Button>
+            )}
             {dismiss && (
               <Button {...dismissAttrs} onClick={handleDismissClick}>
                 {dismiss.name}

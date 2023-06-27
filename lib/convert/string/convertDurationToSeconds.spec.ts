@@ -14,6 +14,7 @@ describe('lib/convert/string', () => {
 
     test('should treat falsy argument as 0.', () => {
       const result1 = convertDurationToSeconds(undefined);
+      /* @ts-ignore */
       const result2 = convertDurationToSeconds(null);
 
       expect(result1).toBe(0);

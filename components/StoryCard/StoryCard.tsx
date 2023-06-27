@@ -3,34 +3,40 @@
  * Component for story card links.
  */
 
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import type { UrlWithParsedQuery } from 'url';
+import type {
+  // ILink,
+  PostStory,
+  Post_Additionaldates as PostAdditionalDates,
+  Post_Additionalmedia as PostAdditionalMedia
+} from '@interfaces';
+import type { IAudioControlsProps } from '@components/Player/components';
+import type { IAudioData } from '@components/Player/types';
+import { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
-import { parse, UrlWithParsedQuery } from 'url';
-import { IPriApiResource } from 'pri-api-library/types';
+// import { parse } from 'url';
 import {
   Box,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
   Grid,
   LinearProgress,
-  Link as MuiLink,
-  List,
-  ListItemText,
-  Typography,
-  ListItemButton
+  Typography
+  // CardActions,
+  // Link as MuiLink,
+  // List,
+  // ListItemText,
+  // ListItemButton
 } from '@mui/material';
 import { Label } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
-import { IAudioControlsProps } from '@components/Player/components';
-import { IAudioData } from '@components/Player/types';
-import { ILink } from '@interfaces';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { useStoryCardStyles, storyCardTheme } from './StoryCard.styles';
 
@@ -41,7 +47,7 @@ const AudioControls = dynamic(() =>
 ) as React.FC<IAudioControlsProps>;
 
 export interface StoryCardProps {
-  data: IPriApiResource;
+  data: PostStory;
   feature?: boolean;
   short?: boolean;
   priority?: boolean;
@@ -56,23 +62,26 @@ export const StoryCard = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {
+    link,
     title,
-    teaser,
-    image,
+    date,
+    excerpt,
+    featuredImage,
     primaryCategory,
-    crossLinks,
-    dateBroadcast,
-    datePublished,
-    audio
+    additionalDates,
+    additionalMedia
   } = data;
+  const image = featuredImage?.node;
+  const { broadcastDate } = additionalDates as PostAdditionalDates;
+  const { audio } = additionalMedia as PostAdditionalMedia;
   const audioProps = {
     title,
     queuedFrom: 'Card Controls',
-    ...(image && { imageUrl: image.url }),
+    ...(image?.sourceUrl && { imageUrl: image.sourceUrl }),
     linkResource: data
   } as Partial<IAudioData>;
   const { pathname } = generateLinkHrefForContent(
-    data,
+    link || '',
     true
   ) as UrlWithParsedQuery;
   const { classes, cx } = useStoryCardStyles();
@@ -84,25 +93,25 @@ export const StoryCard = ({
   ];
   const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
-  const renderLink = ({ title: linkTitle, url }: ILink) => {
-    const oUrl = parse(url, true, true);
-    const LinkComponent = oUrl.host ? MuiLink : ContentLink;
-    const other = oUrl.host
-      ? {
-          href: url
-        }
-      : {
-          data: {
-            metatags: { canonical: `/${url}` }
-          }
-        };
+  // const renderLink = ({ title: linkTitle, url }: ILink) => {
+  //   const oUrl = parse(url, true, true);
+  //   const LinkComponent = oUrl.host ? MuiLink : ContentLink;
+  //   const other = oUrl.host
+  //     ? {
+  //         href: url
+  //       }
+  //     : {
+  //         data: {
+  //           metatags: { canonical: `/${url}` }
+  //         }
+  //       };
 
-    return (
-      <ListItemButton component={LinkComponent} key={url} {...other}>
-        <ListItemText>{linkTitle}</ListItemText>
-      </ListItemButton>
-    );
-  };
+  //   return (
+  //     <ListItemButton component={LinkComponent} key={url} {...other}>
+  //       <ListItemText>{linkTitle}</ListItemText>
+  //     </ListItemButton>
+  //   );
+  // };
 
   useEffect(() => {
     const handleRouteChangeStart = (url: string) => {
@@ -123,6 +132,8 @@ export const StoryCard = ({
     };
   }, [pathname, router.events]);
 
+  if (!data.link) return null;
+
   return (
     <ThemeProvider theme={storyCardTheme}>
       <Card
@@ -139,10 +150,10 @@ export const StoryCard = ({
           component="div"
         >
           <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
-            {image && (
+            {image?.sourceUrl && (
               <Image
-                src={image.url}
-                alt={image.alt}
+                src={image.sourceUrl}
+                alt={image.altText || ''}
                 layout="fill"
                 objectFit="cover"
                 sizes={sizes}
@@ -175,11 +186,11 @@ export const StoryCard = ({
                   <Grid item xs="auto" zeroMinWidth>
                     <Typography component="span">
                       <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
-                        {dateBroadcast || datePublished}
+                        {broadcastDate || date}
                       </Moment>
                     </Typography>
                   </Grid>
-                  {primaryCategory && (
+                  {primaryCategory?.nodes[0] && (
                     <Grid item xs="auto" zeroMinWidth>
                       <Typography
                         variant="overline"
@@ -187,9 +198,13 @@ export const StoryCard = ({
                         className={classes.primaryCategory}
                       >
                         <Label color="secondary" />
-                        <ContentLink data={primaryCategory}>
-                          {primaryCategory.title}
-                        </ContentLink>
+                        {primaryCategory.nodes[0].link ? (
+                          <ContentLink url={primaryCategory.nodes[0].link}>
+                            {primaryCategory.nodes[0].name}
+                          </ContentLink>
+                        ) : (
+                          <span>{primaryCategory.nodes[0].name}</span>
+                        )}
                       </Typography>
                     </Grid>
                   )}
@@ -202,16 +217,16 @@ export const StoryCard = ({
               )}
             </Box>
             <Typography variant="body1" component="p" color="textSecondary">
-              {teaser}
+              {excerpt}
             </Typography>
           </CardContent>
-          <ContentLink data={data} className={classes.link} />
+          <ContentLink url={data.link} className={classes.link} />
         </CardActionArea>
-        {feature && !!(crossLinks && crossLinks.length) && (
+        {/* {feature && !!(crossLinks && crossLinks.length) && (
           <CardActions>
             <List>{crossLinks.map((link: ILink) => renderLink(link))}</List>
           </CardActions>
-        )}
+        )} */}
       </Card>
     </ThemeProvider>
   );

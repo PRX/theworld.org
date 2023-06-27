@@ -25,7 +25,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
         ...state,
         [action.alias]: {
           id: action.data.id,
-          type: action.data.type
+          ...(action.data.type && { type: action.data.type })
         }
       };
 
@@ -38,7 +38,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
             [alias, { id, type }]: [string, IPriApiResource]
           ) => ({
             ...a,
-            [alias]: { id, type }
+            [alias]: { id, type: type || null }
           }),
           {}
         )
@@ -52,7 +52,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
       return {
         ...state,
         ...(action.payload &&
-          href && {
+          href?.pathname && {
             [href.pathname.substr(1)]: {
               id: action.payload.id,
               type: action.payload.type
@@ -72,7 +72,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
                 item,
                 true
               ) as UrlWithParsedQuery;
-              return !h
+              return !h?.pathname
                 ? a
                 : {
                     ...a,
@@ -91,4 +91,4 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
 };
 
 export const getAliasData = (state: ContentDataState, alias: string) =>
-  (state || {})[alias];
+  (state || {})[alias] || undefined;

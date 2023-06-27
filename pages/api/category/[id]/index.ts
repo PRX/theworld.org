@@ -19,8 +19,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           'banner_image',
           'logo',
           ...(basicStoryParams.include || [])
-            .filter(param => param !== 'primary_category')
-            .map(param => `featured_stories.${param}`)
+            .filter((param) => param !== 'primary_category')
+            .map((param) => `featured_stories.${param}`)
         ]
       }
     )) as PriApiResponseBody;
@@ -29,15 +29,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const { featuredStories } = category as IPriApiResource;
 
       // Fetch list of stories. Paginated.
-      const stories = await fetchApiCategoryStories(
-        id as string,
-        1,
-        undefined,
-        undefined,
-        undefined,
-        req
-      );
-      const storiesData = [...stories.data];
+      const stories = await fetchApiCategoryStories(id as string);
+      const storiesData = [...(stories?.data || [])];
 
       // Build response object.
       const apiResp = {

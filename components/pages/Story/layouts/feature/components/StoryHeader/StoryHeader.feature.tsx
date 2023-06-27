@@ -3,16 +3,21 @@
  * Component for sidebar elements.
  */
 
-import React from 'react';
+import type React from 'react';
+import type {
+  PostStory,
+  Post_Additionaldates as PostAdditionalDates,
+  Contributor,
+  Post_Additionalmedia as PostAdditionalMedia
+} from '@interfaces';
+import type { IContentLinkProps } from '@components/ContentLink';
+import type { IAudioControlsProps } from '@components/Player/components';
+import type { IAudioData } from '@components/Player/types';
 import Image from 'next/legacy/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography, ThemeProvider } from '@mui/material';
-import { IContentLinkProps } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
-import { IAudioControlsProps } from '@components/Player/components';
-import { IAudioData } from '@components/Player/types';
 import {
   storyHeaderStyles,
   storyHeaderTheme
@@ -27,47 +32,55 @@ const AudioControls = dynamic(() =>
 const ContentLink = dynamic(() =>
   import('@components/ContentLink').then((mod) => mod.ContentLink)
 ) as React.FC<IContentLinkProps>;
+
 interface Props {
-  data: IPriApiResource;
+  data: PostStory;
 }
 
 export const StoryHeader = ({ data }: Props) => {
   const {
-    audio,
-    bylines,
-    dateBroadcast,
-    datePublished,
-    dateUpdated,
-    image,
-    primaryCategory,
-    program,
     title,
-    teaser
+    date,
+    excerpt,
+    featuredImage,
+    additionalMedia,
+    additionalDates,
+    primaryCategory,
+    programs,
+    contributors
   } = data;
-  const { alt, caption, credit } = image || {};
+  const { audio } = additionalMedia as PostAdditionalMedia;
+  const { broadcastDate, updatedDate } = additionalDates as PostAdditionalDates;
+  const image = featuredImage?.node;
+  const program = programs?.nodes[0];
+  const bylines: [string, Contributor[]][] = [];
   const audioProps = {
     title,
     queuedFrom: 'Page Header Controls',
-    ...(image && { imageUrl: image.url }),
+    ...(image?.sourceUrl && { imageUrl: image.sourceUrl }),
     linkResource: data
   } as Partial<IAudioData>;
-  const hasCaption = caption && !!caption.length;
-  const hasCredit = credit && !!credit.length;
-  const hasFooter = hasCaption || hasCredit;
+  const caption = image?.caption;
+  const hasCaption = !!caption?.length;
+  const hasFooter = hasCaption;
   const { classes, cx } = storyHeaderStyles();
+
+  if (contributors?.nodes.length) {
+    bylines.push(['By', contributors.nodes]);
+  }
 
   return (
     <ThemeProvider theme={storyHeaderTheme}>
       <Box
         component="header"
-        className={cx(classes.root, { [classes.withImage]: !!image })}
+        className={cx(classes.root, { [classes.withImage]: !!featuredImage })}
       >
-        {image && (
+        {image?.sourceUrl && (
           <Box className={classes.imageWrapper}>
             <Image
-              alt={alt}
+              alt={image.altText || ''}
               className={cx('image')}
-              src={image.url}
+              src={image.sourceUrl}
               layout="fill"
               objectFit="cover"
               priority
@@ -76,28 +89,35 @@ export const StoryHeader = ({ data }: Props) => {
         )}
         <Box className={classes.content}>
           <Container fixed className={classes.header}>
-            {primaryCategory && (
+            {primaryCategory?.nodes[0].link && (
               <Box mb={2}>
                 <ContentLink
                   className={classes.categoryLink}
-                  data={primaryCategory}
-                />
+                  url={primaryCategory.nodes[0].link}
+                >
+                  {primaryCategory.nodes[0].name}
+                </ContentLink>
               </Box>
             )}
             <Box mb={3}>
               <Typography variant="h1">{title}</Typography>
-              {teaser && (
-                <Typography className={classes.teaser}>
-                  <HtmlContent html={teaser} />
+              {excerpt && (
+                <Typography component="div" className={classes.teaser}>
+                  <HtmlContent html={excerpt} />
                 </Typography>
               )}
             </Box>
             <Box mb={2} display="flex" alignItems="center">
               <Box className={classes.info} flexGrow={1}>
-                {program && (
-                  <ContentLink data={program} className={classes.programLink} />
+                {program?.link && (
+                  <ContentLink
+                    url={program.link}
+                    className={classes.programLink}
+                  >
+                    {program.name}
+                  </ContentLink>
                 )}
-                {(dateBroadcast || datePublished) && (
+                {(broadcastDate || date) && (
                   <Typography
                     variant="subtitle1"
                     component="div"
@@ -106,13 +126,12 @@ export const StoryHeader = ({ data }: Props) => {
                     <Moment
                       format="MMMM D, YYYY · h:mm A z"
                       tz="America/New_York"
-                      unix
                     >
-                      {dateBroadcast || datePublished}
+                      {broadcastDate || date}
                     </Moment>
                   </Typography>
                 )}
-                {dateUpdated && (
+                {updatedDate && (
                   <Typography
                     variant="subtitle1"
                     component="div"
@@ -123,19 +142,18 @@ export const StoryHeader = ({ data }: Props) => {
                     <Moment
                       format="MMM. D, YYYY · h:mm A z"
                       tz="America/New_York"
-                      unix
                     >
-                      {dateUpdated}
+                      {updatedDate}
                     </Moment>
                   </Typography>
                 )}
-                {bylines && (
+                {!!bylines.length && (
                   <ul className={classes.byline}>
                     {bylines.map(([creditTitle, people]) => (
                       <li className={classes.bylineItem} key={creditTitle}>
                         {creditTitle}{' '}
                         <Box className={classes.bylinePeople} component="span">
-                          {people.map((person: IPriApiResource) => (
+                          {people.map((person) => (
                             <Box
                               className={classes.bylinePerson}
                               component="span"
@@ -143,8 +161,10 @@ export const StoryHeader = ({ data }: Props) => {
                             >
                               <ContentLink
                                 className={classes.bylineLink}
-                                data={person}
-                              />
+                                url={person.link || ''}
+                              >
+                                {person.name}
+                              </ContentLink>
                             </Box>
                           ))}
                         </Box>
@@ -172,11 +192,6 @@ export const StoryHeader = ({ data }: Props) => {
             {hasCaption && (
               <Box className={classes.caption}>
                 <HtmlContent html={caption} />
-              </Box>
-            )}
-            {hasCredit && (
-              <Box className={classes.credit}>
-                <HtmlContent html={credit} />
               </Box>
             )}
           </Typography>

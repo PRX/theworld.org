@@ -3,6 +3,7 @@
  * Component for CTA banner region.
  */
 
+import type { RootState } from '@interfaces/state';
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
@@ -15,18 +16,17 @@ import { appCtaBannerStyles, appCtaBannerTheme } from './AppCtaBanner.styles';
 import { ctaTypeComponentMap } from './components';
 
 export const AppCtaBanner = () => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
-  const {
-    page: {
-      resource: { type, id }
-    }
-  } = useContext(AppContext);
-  const banner = getCtaRegionData(state, 'tw_cta_region_site_banner', type, id);
+  const { page } = useContext(AppContext);
+  const { resource } = page || {};
+  const { type, id } = resource || {};
+  const banner =
+    getCtaRegionData(state, 'tw_cta_region_site_banner', type, id) || [];
   const cookies = getCookies(state);
   const shownMessage = getShownMessage(banner, cookies);
   const { type: msgType } = shownMessage || {};
-  const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
+  const CtaMessageComponent = ctaTypeComponentMap.get(msgType);
   const [closed, setClosed] = useState(false);
   const unsub = store.subscribe(() => {
     setClosed(false);
@@ -39,9 +39,12 @@ export const AppCtaBanner = () => {
 
     // Prompt if saving cookie is ok.
 
-    const { name, hash, cookieLifespan } = shownMessage;
-    // Set cookie for region message.
-    setCtaCookie(name, hash, cookieLifespan);
+    if (shownMessage) {
+      const { name, hash, cookieLifespan } = shownMessage;
+      // Set cookie for region message.
+      setCtaCookie(name, hash, cookieLifespan);
+    }
+
     // Close prompt.
     setClosed(true);
   };

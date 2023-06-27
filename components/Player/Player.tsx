@@ -29,12 +29,18 @@ export interface KeyboardEventWithTarget extends KeyboardEvent {
 export const Player = ({ children }: IPlayerProps) => {
   const plausible = usePlausible();
   const store = useStore();
-  const audioElm = useRef<HTMLAudioElement>();
+  const audioElm = useRef<HTMLAudioElement>(null);
   const [state, dispatch] = useReducer(playerStateReducer, {
     ...playerInitialState
   });
-  const { tracks, playing, currentTrackIndex, currentTime, muted, volume } =
-    state;
+  const {
+    tracks = [],
+    playing,
+    currentTrackIndex = 0,
+    currentTime,
+    muted,
+    volume
+  } = state;
   const currentTrack = tracks?.[currentTrackIndex] || ({} as IAudioData);
   const currentTrackDurationSeconds = useMemo(
     () => convertDurationToSeconds(currentTrack.duration),
@@ -46,7 +52,7 @@ export const Player = ({ children }: IPlayerProps) => {
     (time: number) =>
       Math.min(
         Math.max(0.00001, time),
-        audioElm.current.duration || currentTrackDurationSeconds
+        audioElm.current?.duration || currentTrackDurationSeconds
       ),
     [currentTrackDurationSeconds]
   );
@@ -135,7 +141,7 @@ export const Player = ({ children }: IPlayerProps) => {
 
   const seekBy = useCallback(
     (seconds: number) => {
-      seekTo(audioElm.current.currentTime + seconds);
+      seekTo((audioElm.current?.currentTime || 0) + seconds);
     },
     [seekTo]
   );
@@ -143,7 +149,7 @@ export const Player = ({ children }: IPlayerProps) => {
   const seekToRelative = useCallback(
     (ratio: number) => {
       seekTo(
-        (audioElm.current.duration || currentTrackDurationSeconds) * ratio
+        (audioElm.current?.duration || currentTrackDurationSeconds) * ratio
       );
     },
     [currentTrackDurationSeconds, seekTo]
@@ -217,14 +223,14 @@ export const Player = ({ children }: IPlayerProps) => {
   const volumeUp = useCallback(() => {
     dispatch({
       type: PlayerActionTypes.PLAYER_UPDATE_VOLUME,
-      payload: boundedVolume(audioElm.current.volume + 0.05)
+      payload: boundedVolume((audioElm.current?.volume || state.volume) + 0.05)
     });
   }, [boundedVolume]);
 
   const volumeDown = useCallback(() => {
     dispatch({
       type: PlayerActionTypes.PLAYER_UPDATE_VOLUME,
-      payload: boundedVolume(audioElm.current.volume - 0.05)
+      payload: boundedVolume((audioElm.current?.volume || state.volume) - 0.05)
     });
   }, [boundedVolume]);
 
@@ -336,7 +342,7 @@ export const Player = ({ children }: IPlayerProps) => {
 
   const startPlaying = useCallback(() => {
     audioElm.current
-      .play()
+      ?.play()
       .then(() => {
         updateMediaSession();
       })
@@ -347,11 +353,11 @@ export const Player = ({ children }: IPlayerProps) => {
   }, [updateMediaSession]);
 
   const pauseAudio = useCallback(() => {
-    audioElm.current.pause();
+    audioElm.current?.pause();
   }, []);
 
   const loadAudio = (src: string, isPlaying: boolean) => {
-    if (src !== audioElm.current.src) {
+    if (audioElm.current && src !== audioElm.current.src) {
       audioElm.current.preload = isPlaying ? 'auto' : 'none';
       audioElm.current.src = src;
     }
@@ -366,7 +372,7 @@ export const Player = ({ children }: IPlayerProps) => {
   }, [playing]);
 
   const handlePause = useCallback(() => {
-    if (!audioElm.current.ended) {
+    if (audioElm.current && !audioElm.current.ended) {
       dispatch({
         type: PlayerActionTypes.PLAYER_PAUSE
       });
@@ -378,7 +384,7 @@ export const Player = ({ children }: IPlayerProps) => {
     // playing if we were playing before.
     dispatch({
       type: PlayerActionTypes.PLAYER_UPDATE_CURRENT_DURATION,
-      payload: audioElm.current.duration
+      payload: audioElm.current?.duration || currentTrackDurationSeconds
     });
 
     if (playing) {
@@ -421,7 +427,9 @@ export const Player = ({ children }: IPlayerProps) => {
           toggleAutoplay();
           break;
         case 'KeyS':
-          audioElm.current.playbackRate = 3 - audioElm.current.playbackRate;
+          if (audioElm.current) {
+            audioElm.current.playbackRate = 3 - audioElm.current.playbackRate;
+          }
           break;
         case 'KeyM':
           toggleMute();
@@ -536,7 +544,7 @@ export const Player = ({ children }: IPlayerProps) => {
   }, [state]);
 
   useEffect(() => {
-    if (tracks?.length) {
+    if (tracks.length) {
       store.dispatch<UiAction>({
         type: 'UI_PLAYER_OPEN'
       });
@@ -545,31 +553,26 @@ export const Player = ({ children }: IPlayerProps) => {
         type: 'UI_PLAYER_CLOSE'
       });
     }
-  }, [store, tracks]);
+  }, [store, tracks.length]);
 
   useEffect(() => {
-    // Initialize audio element.
-    if (!audioElm.current) {
-      audioElm.current = new Audio();
-    }
-
     // Setup event handlers on audio element.
-    audioElm.current.addEventListener('play', handlePlay);
-    audioElm.current.addEventListener('pause', handlePause);
-    audioElm.current.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audioElm.current.addEventListener('ended', handleEnded);
+    audioElm.current?.addEventListener('play', handlePlay);
+    audioElm.current?.addEventListener('pause', handlePause);
+    audioElm.current?.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audioElm.current?.addEventListener('ended', handleEnded);
 
     window.addEventListener('keydown', handleHotkey);
 
     return () => {
       // Cleanup event handlers between dependency changes.
-      audioElm.current.removeEventListener('play', handlePlay);
-      audioElm.current.removeEventListener('pause', handlePause);
-      audioElm.current.removeEventListener(
+      audioElm.current?.removeEventListener('play', handlePlay);
+      audioElm.current?.removeEventListener('pause', handlePause);
+      audioElm.current?.removeEventListener(
         'loadedmetadata',
         handleLoadedMetadata
       );
-      audioElm.current.removeEventListener('ended', handleEnded);
+      audioElm.current?.removeEventListener('ended', handleEnded);
 
       window.removeEventListener('keydown', handleHotkey);
     };
@@ -601,15 +604,16 @@ export const Player = ({ children }: IPlayerProps) => {
   }
 
   useEffect(() => {
-    audioElm.current.muted = muted;
+    if (audioElm.current) audioElm.current.muted = muted;
   }, [muted]);
 
   useEffect(() => {
-    audioElm.current.volume = volume || audioElm.current.volume;
+    if (audioElm.current)
+      audioElm.current.volume = volume || audioElm.current.volume;
   }, [volume]);
 
   useEffect(() => {
-    audioElm.current.currentTime = currentTime;
+    if (audioElm.current) audioElm.current.currentTime = currentTime;
   }, [currentTime]);
 
   useEffect(() => {
@@ -626,6 +630,7 @@ export const Player = ({ children }: IPlayerProps) => {
 
   return (
     <PlayerContext.Provider value={playerContextValue}>
+      <audio ref={audioElm} />
       {children}
     </PlayerContext.Provider>
   );

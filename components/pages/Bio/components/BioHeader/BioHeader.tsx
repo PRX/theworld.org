@@ -3,24 +3,23 @@
  * Component for bio header elements.
  */
 
-import React from 'react';
+import type { Maybe, MediaItem, Program } from '@interfaces';
 import Image from 'next/legacy/image';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Container, Typography } from '@mui/material';
 import { ContentLink } from '@components/ContentLink';
 import { bioHeaderStyles } from './BioHeader.styles';
 
 export interface IBioHeaderProps {
-  image?: IPriApiResource;
-  program?: IPriApiResource;
-  title: string;
+  image?: Maybe<MediaItem>;
+  programs?: Maybe<Program>[];
+  title?: string;
   position?: string;
   subhead?: string;
 }
 
 export const BioHeader = ({
   image,
-  program,
+  programs,
   title,
   position,
   subhead
@@ -31,9 +30,9 @@ export const BioHeader = ({
     <Box className={classes.root}>
       <Box className={classes.content}>
         <Container fixed className={classes.header}>
-          {image && (
+          {image?.sourceUrl && (
             <Image
-              src={image.url}
+              src={image.sourceUrl}
               layout="fixed"
               width={220}
               height={220}
@@ -54,7 +53,15 @@ export const BioHeader = ({
                 {position}
               </Typography>
             )}
-            {program && <ContentLink className={classes.link} data={program} />}
+            {programs?.length &&
+              programs.map(
+                (program) =>
+                  program?.link && (
+                    <ContentLink className={classes.link} url={program.link}>
+                      {program.name}
+                    </ContentLink>
+                  )
+              )}
             {subhead && (
               <Typography
                 variant="subtitle1"

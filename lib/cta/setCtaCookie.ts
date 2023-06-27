@@ -20,7 +20,7 @@ import { getCookieKey } from './getCookieKey';
 export const setCtaCookie = (
   id: string | number,
   hash: string,
-  maxAgeDays: number
+  maxAgeDays?: number
 ) => {
   const key = getCookieKey(id);
   const maxAge = (maxAgeDays || 0) * 24 * 60 * 60 * 1000;

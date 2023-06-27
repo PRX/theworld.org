@@ -16,7 +16,7 @@ export const fetchProgramStories = async (
   id: string | IPriApiResource,
   page: number = 1,
   range: number = 15,
-  exclude: string[] | string = undefined
+  exclude?: string[] | string
 ): Promise<PriApiResourceResponse> => {
   let program: IPriApiResource;
 

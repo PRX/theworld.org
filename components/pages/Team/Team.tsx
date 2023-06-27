@@ -3,6 +3,7 @@
  * Component for Team.
  */
 
+import type { RootState } from '@interfaces';
 import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
@@ -36,8 +37,8 @@ export const Team = () => {
     }
   } = useContext(AppContext);
   const router = useRouter();
-  const [loadingUrl, setLoadingUrl] = useState(null);
-  const store = useStore();
+  const [loadingUrl, setLoadingUrl] = useState<string>();
+  const store = useStore<RootState>();
   const state = store.getState();
   const { classes, cx } = teamStyles();
   const { items } = getCollectionData(state, type, id, 'members');
@@ -76,7 +77,7 @@ export const Team = () => {
       setLoadingUrl(url);
     };
     const handleRouteChangeEnd = () => {
-      setLoadingUrl(null);
+      setLoadingUrl(undefined);
     };
 
     router.events.on('routeChangeStart', handleRouteChangeStart);
@@ -101,7 +102,7 @@ export const Team = () => {
             .reduce((a, p) => [...a, ...p], [])
             .map((item: IPriApiResource, index) => {
               const { pathname } = generateLinkHrefForContent(
-                item,
+                item.link,
                 true
               ) as UrlWithParsedQuery;
               const isLoading = loadingUrl === pathname;
@@ -154,7 +155,7 @@ export const Team = () => {
                           {item.position}
                         </Typography>
                       </CardContent>
-                      <ContentLink data={item} className={classes.link} />
+                      <ContentLink url={item.link} className={classes.link} />
                     </CardActionArea>
                   </Card>
                 </Grid>

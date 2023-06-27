@@ -8,7 +8,8 @@ import InstagramEmbed from 'react-instagram-embed';
 import { DomElement } from 'htmlparser2';
 
 export const instagramEmbed = (node: DomElement) => {
-  let url: string;
+  let url: string | null;
+
   switch (true) {
     case node.type === 'tag' &&
       node.name === 'div' &&
@@ -25,10 +26,11 @@ export const instagramEmbed = (node: DomElement) => {
       break;
 
     default:
+      url = null;
       break;
   }
 
-  if (url) {
+  if (url && process.env.FB_ACCESS_TOKEN) {
     return (
       <InstagramEmbed
         url={url}

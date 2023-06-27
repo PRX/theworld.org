@@ -6,7 +6,7 @@ import React from 'react';
 import { DomElement } from 'htmlparser2';
 import Image from 'next/legacy/image';
 
-export type ImageWidth = [string, string];
+export type ImageWidth = [string | null, string];
 
 export interface IImageWidthsFunc {
   // eslint-disable-next-line no-unused-vars
@@ -29,7 +29,7 @@ export const enhanceImage =
       const absoluteSrc = /^\/[^/]/.test(src)
         ? `https://theworld.org${src}`
         : src;
-      let wrapperClass: string;
+      let wrapperClass: string | undefined;
 
       switch (true) {
         case /\bfile-full-width\b/.test(className):

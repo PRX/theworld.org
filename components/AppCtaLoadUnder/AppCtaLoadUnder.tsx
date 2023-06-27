@@ -3,6 +3,7 @@
  * Component for CTA load-under region.
  */
 
+import type { RootState } from '@interfaces';
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { Box, Container, IconButton } from '@mui/material';
@@ -18,7 +19,7 @@ import {
 import { ctaTypeComponentMap } from './components';
 
 export const AppCtaLoadUnder = () => {
-  const store = useStore();
+  const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
@@ -37,14 +38,17 @@ export const AppCtaLoadUnder = () => {
   const cookies = getCookies(state);
   const shownMessage = getShownMessage(banner, cookies);
   const { type: msgType } = shownMessage || {};
-  const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
+  const CtaMessageComponent = ctaTypeComponentMap.get(msgType);
   const [closed, setClosed] = useState(false);
   const { classes } = appCtaLoadUnderStyles();
 
   const handleClose = () => {
-    const { name, hash, cookieLifespan } = shownMessage;
-    // Set cookie for region message.
-    setCtaCookie(name, hash, cookieLifespan);
+    if (shownMessage) {
+      const { name, hash, cookieLifespan } = shownMessage;
+      // Set cookie for region message.
+      setCtaCookie(name, hash, cookieLifespan);
+    }
+
     // Close prompt.
     setClosed(true);
   };

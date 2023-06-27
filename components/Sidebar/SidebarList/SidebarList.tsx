@@ -3,7 +3,16 @@
  * Component for link lists in sidebar.
  */
 
-import React from 'react';
+import type { IAudioData } from '@components/Player/types';
+import type {
+  ContentNode,
+  Maybe,
+  MediaItem,
+  NodeWithFeaturedImage,
+  NodeWithTitle,
+  TermNode
+} from '@interfaces';
+import Image from 'next/image';
 import {
   List,
   ListProps,
@@ -12,25 +21,36 @@ import {
   Avatar,
   ListSubheader,
   ListItemSecondaryAction,
-  ListItemButton
+  ListItemButton,
+  ListItemTextProps
 } from '@mui/material';
-import { IPriApiResource } from 'pri-api-library/types';
+import { Person } from '@mui/icons-material';
 import { ContentLink } from '@components/ContentLink';
 import { AudioControls } from '@components/Player/components';
 import { sidebarListStyles } from './SidebarList.styles';
 
+export type SidebarListItem = {
+  title?: Maybe<string>;
+  url?: Maybe<string>;
+  audio?: Maybe<MediaItem>;
+  audioProps?: Partial<IAudioData>;
+  avatar?: Maybe<MediaItem>;
+  data?:
+    | (ContentNode & NodeWithTitle & NodeWithFeaturedImage)
+    | TermNode
+    | null;
+};
 export interface ISidebarListProps extends ListProps {
-  data: IPriApiResource[];
-  // eslint-disable-next-line no-unused-vars
-  formatTitle?(data: IPriApiResource): string;
+  data: SidebarListItem[];
   subheaderText?: string;
+  bulleted?: boolean;
 }
 
 export const SidebarList = ({
   className,
   data,
-  formatTitle,
   subheaderText,
+  bulleted = false,
   ...other
 }: ISidebarListProps) => {
   const { classes, cx } = sidebarListStyles();
@@ -51,100 +71,65 @@ export const SidebarList = ({
       )
     })
   } as ListProps;
-  const getTitle = (item: IPriApiResource) =>
-    formatTitle ? formatTitle(item) : (item.title as string);
-
-  const renderItemContent = (item: IPriApiResource) => {
-    const text = getTitle(item);
-    switch (item.type) {
-      case 'file--audio':
-        return (
-          <ListItemButton component={ContentLink} data={item} key={item.id}>
-            <ListItemText className={cx('noBullet')}>{text}</ListItemText>
-            <ListItemSecondaryAction>
-              <AudioControls
-                id={item.id as string}
-                variant="minimal"
-                fallbackProps={{
-                  title: text,
-                  queuedFrom: 'Sidebar List Controls',
-                  linkResource: item
-                }}
-              />
-            </ListItemSecondaryAction>
-          </ListItemButton>
-        );
-
-      case 'node--people':
-        return (
-          <ListItemButton component={ContentLink} data={item} key={item.id}>
-            <ListItemAvatar>
-              {item.avatar ? (
-                <Avatar
-                  alt={`${text}'s Avatar`}
-                  src={item.avatar.styles.w128.src}
-                  aria-hidden
-                />
-              ) : (
-                <Avatar className={classes.noAvatarImage} aria-hidden>
-                  {[...text.matchAll(/\b[A-Z]/g)].join('')}
-                </Avatar>
-              )}
-            </ListItemAvatar>
-            <ListItemText className={cx('noBullet')}>{text}</ListItemText>
-          </ListItemButton>
-        );
-
-      case 'node--stories':
-        if (item.audio) {
-          return (
-            <ListItemButton key={item.id}>
-              <ListItemText className={cx('noBullet')}>
-                <ContentLink data={item}>{text}</ContentLink>
-              </ListItemText>
-              <ListItemSecondaryAction>
-                <AudioControls
-                  id={item.audio.id as string}
-                  fallbackProps={{
-                    title: item.title,
-                    queuedFrom: 'Sidebar List Controls',
-                    ...(item.image && { imageUrl: item.image.url }),
-                    linkResource: item
-                  }}
-                  variant="minimal"
-                />
-              </ListItemSecondaryAction>
-            </ListItemButton>
-          );
-        }
-
-        return (
-          <ListItemButton component={ContentLink} data={item} key={item.id}>
-            <ListItemText className={cx('noBullet')}>{text}</ListItemText>
-          </ListItemButton>
-        );
-
-      default:
-        return (
-          <ListItemButton component={ContentLink} data={item} key={item.id}>
-            <ListItemText>{text}</ListItemText>
-          </ListItemButton>
-        );
-    }
-  };
+  const listItemTextProps = {
+    className: cx({ noBullet: !bulleted })
+  } as ListItemTextProps;
 
   return (
     !!data && (
       <List {...listProps}>
-        {data.map(item =>
-          item.id ? (
-            renderItemContent(item)
-          ) : (
-            <ListItemButton component="a" href={item.url} key={item.url}>
-              <ListItemText>{item.title}</ListItemText>
+        {data.map((item) => {
+          const text =
+            item.title ||
+            (item.data &&
+              (('title' in item.data && item.data?.title) ||
+                ('name' in item.data && item.data?.name)));
+          const url = item.url || item.data?.link;
+          return item.data ? (
+            <ListItemButton
+              component={ContentLink}
+              url={url}
+              key={item.data.id}
+            >
+              {item.avatar && (
+                <ListItemAvatar>
+                  {item.avatar.sourceUrl ? (
+                    <Avatar
+                      component={Image}
+                      alt={`Avatar of ${text}`}
+                      src={item.avatar.sourceUrl}
+                      aria-hidden
+                    />
+                  ) : (
+                    <Avatar className={classes.noAvatarImage} aria-hidden>
+                      {text ? (
+                        [...text.matchAll(/\b[A-Z]/g)].join('')
+                      ) : (
+                        <Person />
+                      )}
+                    </Avatar>
+                  )}
+                </ListItemAvatar>
+              )}
+              <ListItemText {...listItemTextProps}>{text}</ListItemText>
+              {item.audio && (
+                <ListItemSecondaryAction>
+                  <AudioControls
+                    id={item.audio.id}
+                    fallbackProps={item.audioProps}
+                    variant="minimal"
+                  />
+                </ListItemSecondaryAction>
+              )}
             </ListItemButton>
-          )
-        )}
+          ) : (
+            (url && (
+              <ListItemButton component="a" href={url} key={url}>
+                <ListItemText {...listItemTextProps}>{text}</ListItemText>
+              </ListItemButton>
+            )) || <ListItemText {...listItemTextProps}>{text}</ListItemText>
+          );
+        })}
       </List>
     )
   );

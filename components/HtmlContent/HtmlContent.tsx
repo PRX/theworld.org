@@ -31,6 +31,8 @@ export interface IHtmlContentProps {
 }
 
 export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
+  if (!html) return null;
+
   const cleanHtml = (dirtyHtml: string) =>
     [(h: string) => h.replace(/<[^>/]+>(\s|&nbsp;)*<\/[^>]+>/g, '')].reduce(
       (acc, func) => func(acc),
@@ -54,12 +56,10 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
     );
 
   return (
-    !!html && (
       <>
         {ReactHtmlParser(cleanHtml(html), {
           transform: transform as Transform
         })}
       </>
-    )
   );
 };

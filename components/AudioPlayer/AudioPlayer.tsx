@@ -10,7 +10,6 @@ import { Box, IconButton, NoSsr } from '@mui/material';
 import { GetAppSharp, PlayArrowSharp } from '@mui/icons-material';
 import { IDurationProps } from '@components/Duration';
 import { formatDuration } from '@lib/parse/time';
-import { generateAudioDownloadFilename } from '@lib/parse/audio';
 import TwGlobeLogo from '@svg/tw-globe.svg';
 import { AudioPlayerActionTypes as ActionTypes } from './AudioPlayer.actions';
 import { IAudioPlayerProps, IProgressState } from './AudioPlayer.interfaces';
@@ -74,10 +73,8 @@ export const AudioPlayer = ({
   popoutPlayerUrl,
   ...other
 }: IAudioPlayerProps) => {
-  const { url } = data;
-  const audioDownloadFilename =
-    downloadFilename || generateAudioDownloadFilename(data);
-  const playerElm = useRef(null);
+  const url = typeof data === 'string' ? data : data.url;
+  const playerElm = useRef<HTMLAudioElement>(null);
   const rootElm = useRef<HTMLDivElement>(null);
   const [
     {
@@ -151,11 +148,13 @@ export const AudioPlayer = ({
     },
     max: 1,
     step: 0.001,
-    value: seeking || played,
+    value: seeking || played || undefined,
     // valueLabelDisplay: 'auto',
-    valueLabelFormat: (seek: number) => formatDuration(duration * seek),
+    valueLabelFormat: (seek: number) => formatDuration((duration || 0) * seek),
     onChangeCommitted: () => {
-      playerElm.current.seekTo(seeking);
+      if (!seeking) return;
+
+      playerElm.current?.fastSeek(seeking);
       dispatch({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_PROGRESS_TO_SEEKING
       });
@@ -186,7 +185,7 @@ export const AudioPlayer = ({
     VolumeMuteSharp;
 
   const handleScroll = () => {
-    const { top } = rootElm.current.getBoundingClientRect();
+    const { top } = rootElm.current?.getBoundingClientRect() || {};
 
     dispatch({ type: ActionTypes.AUDIO_PLAYER_UPDATE_STUCK, payload: top });
   };
@@ -220,18 +219,18 @@ export const AudioPlayer = ({
             <Box className={classes.progressControls}>
               <Duration
                 className={cx(classes.duration, classes.played)}
-                seconds={playedSeconds}
+                seconds={playedSeconds || 0}
               />
               <Box className={classes.progress}>
                 <Box
                   className={classes.loaded}
-                  style={{ width: `${loaded * 100}%` }}
+                  style={{ width: `${(loaded || 0) * 100}%` }}
                 />
                 <Slider {...seekAttr} valueLabelDisplay="auto" />
               </Box>
               <Duration
                 className={cx(classes.duration, classes.total)}
-                seconds={duration}
+                seconds={duration || 0}
               />
             </Box>
             <Box className={classes.volumeControls}>
@@ -250,7 +249,9 @@ export const AudioPlayer = ({
           </Box>
         )}
         {showMessage && <Box className={classes.message}>{message}</Box>}
-        {embedCodeShown && <EmbedCode src={embeddedPlayerUrl} />}
+        {embedCodeShown && embeddedPlayerUrl && (
+          <EmbedCode src={embeddedPlayerUrl} />
+        )}
         <Box className={classes.menu}>
           {!!embeddedPlayerUrl && (
             <IconButton
@@ -272,7 +273,6 @@ export const AudioPlayer = ({
             classes={iconButtonClasses}
             component="a"
             href={url}
-            download={audioDownloadFilename}
             title="Download Audio"
             disableRipple
           >

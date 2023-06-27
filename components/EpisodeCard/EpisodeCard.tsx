@@ -103,7 +103,10 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
                 <HtmlContent html={teaser} />
               </Box>
             </Typography>
-            <ContentLink data={data} className={classes.link} />
+            <ContentLink
+              url={data.metatags.canonical}
+              className={classes.link}
+            />
           </CardContent>
         </CardActionArea>
         {segments && (

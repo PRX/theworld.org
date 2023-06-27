@@ -12,16 +12,15 @@ import { ctaTypeComponentMap } from './components';
 
 export const SidebarCta = ({ data }: ICtaRegionProps) => {
   const shownMessage = getShownMessage(data);
-  const { type } = shownMessage;
-  const CtaMessageComponent = ctaTypeComponentMap[type] || null;
+  const { type } = shownMessage || {};
+  const CtaMessageComponent = type && ctaTypeComponentMap[type];
   const { classes } = useSidebarCtaStyles();
 
+  if (!shownMessage || !CtaMessageComponent) return null;
+
   return (
-    data &&
-    CtaMessageComponent && (
-      <Box className={classes.root}>
-        <CtaMessageComponent data={{ ...shownMessage }} />
-      </Box>
-    )
+    <Box className={classes.root}>
+      <CtaMessageComponent data={{ ...shownMessage }} />
+    </Box>
   );
 };

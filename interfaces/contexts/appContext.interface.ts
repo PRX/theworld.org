@@ -5,11 +5,12 @@
  */
 
 export interface IAppContext {
-  page?: {
-    resource?: {
+  page: {
+    resource: {
       type?: string;
       id?: string;
     };
   };
+  cookies?: any;
   copyrightDate?: string | number;
 }

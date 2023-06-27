@@ -3,18 +3,20 @@
  * Exports a mechanism that makes GET requests to API easier to manage.
  */
 
-import {
+import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
+import type { ParsedUrlQuery } from 'querystring';
+import type {
   IPriApiCollectionResponse,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
-import { IncomingMessage } from 'http';
-import { ParsedUrlQuery } from 'querystring';
-import { parse, format } from 'url';
-import {
+import type {
   INewsletterOptions,
   INewsletterData,
-  ICMApiCustomField
-} from '@interfaces/newsletter';
+  ICMApiCustomField,
+  ContributorToPostConnection
+} from '@interfaces';
+import type { IApp, fetchGqlStory, fetchQuerySearch } from '@lib/fetch';
+import { format } from 'url';
 
 /**
  * Method that simplifies GET requests.
@@ -31,23 +33,20 @@ import {
  * @returns
  *    Denormalized response to request, or error object.
  */
-export const fetchApi = async (
-  path: string,
-  req?: IncomingMessage,
-  query?: ParsedUrlQuery,
-  body?: Object
-) => {
-  const baseUrl = req
-    ? `${req.headers['x-forwarded-proto'] || 'http'}://${req.headers.host}`
-    : '';
-  const { query: reqQuery = {} } = (req && parse(req.url, true)) || {};
-
-  delete reqQuery.alias;
-
+export async function fetchApi<T>({
+  path,
+  query,
+  body,
+  init
+}: {
+  path: string;
+  query?: ParsedUrlQuery;
+  body?: Object;
+  init?: RequestInit;
+}): Promise<T | undefined> {
   const url = format({
-    pathname: `${baseUrl}/api/${path}`,
+    pathname: `/api/${path}`,
     query: {
-      ...reqQuery,
       ...(query || {})
     }
   });
@@ -56,15 +55,18 @@ export const fetchApi = async (
     url,
     body
       ? {
+          ...init,
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(body)
         }
-      : {}
-  ).then((r) => r.status === 200 && r.json());
-};
+      : {
+          ...init
+        }
+  ).then((r) => (r.status === 200 ? (r.json() as T) : undefined));
+}
 
 /**
  * Method that simplifies GET queries for resource item using URL path alias.
@@ -77,11 +79,11 @@ export const fetchApi = async (
  * @returns
  *    Denormalized resource item.
  */
-export const fetchApiQueryAlias = async (
-  alias: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> =>
-  fetchApi(`query/alias/${alias.replace(/^\/+|\/+$/, '')}`, req);
+export const fetchApiQueryAlias = async (alias: string, init?: RequestInit) =>
+  fetchApi<any>({
+    path: `query/alias/${alias.replace(/^\/+|\/+$/, '')}`,
+    init
+  });
 
 /**
  * Method that simplifies GET queries for app data.
@@ -92,8 +94,8 @@ export const fetchApiQueryAlias = async (
  * @returns
  *    App data object.
  */
-export const fetchApiApp = async (req?: IncomingMessage) =>
-  fetchApi('app', req);
+export const fetchApiApp = async (init?: RequestInit) =>
+  fetchApi<IApp>({ path: 'app', init });
 
 /**
  * Method that simplifies GET queries for homepage data.
@@ -104,8 +106,8 @@ export const fetchApiApp = async (req?: IncomingMessage) =>
  * @returns
  *    Homepage data object.
  */
-export const fetchApiHomepage = async (req?: IncomingMessage) =>
-  fetchApi('homepage', req);
+export const fetchApiHomepage = async (init?: RequestInit) =>
+  fetchApi({ path: 'homepage', init });
 
 /**
  * Method that simplifies GET queries for newsletter data.
@@ -118,8 +120,8 @@ export const fetchApiHomepage = async (req?: IncomingMessage) =>
  * @returns
  *    Story data object.
  */
-export const fetchApiNewsletter = async (id: string, req?: IncomingMessage) =>
-  fetchApi(`newsletter/${id}`, req);
+export const fetchApiNewsletter = async (id: string, init?: RequestInit) =>
+  fetchApi({ path: `newsletter/${id}`, init });
 
 /**
  * Post subscription data to Campaign Monitor.
@@ -129,25 +131,29 @@ export const fetchApiNewsletter = async (id: string, req?: IncomingMessage) =>
  */
 export const postNewsletterSubscription = async (
   newsletter: INewsletterData,
-  options: INewsletterOptions
+  options: INewsletterOptions,
+  init?: RequestInit
 ) => {
   const { emailAddress } = newsletter;
   const { listId, customFields: cflds } = {
     listId: '04472db22d3fa6920bb38f18358b0f72',
     ...options
   };
-  const customFields = Object.entries(cflds).map(
-    ([Key, Value]: [string, string]): ICMApiCustomField => ({
-      Key,
-      Value
-    })
-  );
+  const customFields =
+    cflds &&
+    Object.entries(cflds).map(
+      ([Key, Value]: [string, string]): ICMApiCustomField => ({
+        Key,
+        Value
+      })
+    );
   const payload = {
     listId,
     emailAddress,
     customFields
   };
   return fetch('/api/newsletter/subscribe', {
+    ...init,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -167,10 +173,8 @@ export const postNewsletterSubscription = async (
  * @returns
  *    Story data object.
  */
-export const fetchApiStory = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`story/${id}`, req);
+export const fetchApiStory = async (id: number, init?: RequestInit) =>
+  fetchApi<ReturnType<typeof fetchGqlStory>>({ path: `story/${id}`, init });
 
 /**
  * Method that simplifies GET queries for episode data.
@@ -183,10 +187,8 @@ export const fetchApiStory = async (
  * @returns
  *    Episode data object.
  */
-export const fetchApiEpisode = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`episode/${id}`, req);
+export const fetchApiEpisode = async (id: string, init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: `episode/${id}`, init });
 
 /**
  * Method that simplifies GET queries for audio file data.
@@ -199,10 +201,8 @@ export const fetchApiEpisode = async (
  * @returns
  *    Audio file data object.
  */
-export const fetchApiFileAudio = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`file/audio/${id}`, req);
+export const fetchApiFileAudio = async (id: string, init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: `file/audio/${id}`, init });
 
 /**
  * Method that simplifies GET queries for video file data.
@@ -215,10 +215,8 @@ export const fetchApiFileAudio = async (
  * @returns
  *    Video file data object.
  */
-export const fetchApiFileVideo = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`file/video/${id}`, req);
+export const fetchApiFileVideo = async (id: string, init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: `file/video/${id}`, init });
 
 /**
  * Method that simplifies GET queries for image file data.
@@ -231,10 +229,8 @@ export const fetchApiFileVideo = async (
  * @returns
  *    Image file data object.
  */
-export const fetchApiFileImage = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`file/image/${id}`, req);
+export const fetchApiFileImage = async (id: string, init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: `file/image/${id}`, init });
 
 /**
  * Method that simplifies GET queries for program data.
@@ -247,10 +243,8 @@ export const fetchApiFileImage = async (
  * @returns
  *    Story data object.
  */
-export const fetchApiProgram = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`program/${id}`, req);
+export const fetchApiProgram = async (id: string, init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: `program/${id}`, init });
 
 /**
  * Method that simplifies GET queries for program stories data.
@@ -265,14 +259,19 @@ export const fetchApiProgram = async (
  */
 export const fetchApiProgramStories = async (
   id: string,
-  page: number = 1,
+  endCursor?: string,
   range?: number,
   exclude?: string[],
-  req?: IncomingMessage
-): Promise<IPriApiCollectionResponse> =>
-  fetchApi(`program/${id}/stories/${page}`, req, {
-    ...(range && { range: `${range}` }),
-    ...(exclude && { exclude })
+  init?: RequestInit
+) =>
+  fetchApi<IPriApiCollectionResponse>({
+    path: `program/${id}/stories`,
+    query: {
+      ...(endCursor && { endCursor }),
+      ...(range && { range: `${range}` }),
+      ...(exclude && { exclude })
+    },
+    init
   });
 
 /**
@@ -288,14 +287,19 @@ export const fetchApiProgramStories = async (
  */
 export const fetchApiProgramEpisodes = async (
   id: string,
-  page: number = 1,
+  endCursor?: string,
   range?: number,
   exclude?: string[],
-  req?: IncomingMessage
-): Promise<IPriApiCollectionResponse> =>
-  fetchApi(`program/${id}/episodes/${page}`, req, {
-    ...(range && { range: `${range}` }),
-    ...(exclude && { exclude })
+  init?: RequestInit
+) =>
+  fetchApi<IPriApiCollectionResponse>({
+    path: `program/${id}/episodes`,
+    query: {
+      ...(endCursor && { endCursor }),
+      ...(range && { range: `${range}` }),
+      ...(exclude && { exclude })
+    },
+    init
   });
 
 /**
@@ -309,10 +313,8 @@ export const fetchApiProgramEpisodes = async (
  * @returns
  *    Category data object.
  */
-export const fetchApiCategory = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`category/${id}`, req);
+export const fetchApiCategory = async (id: string, init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: `category/${id}`, init });
 
 /**
  * Method that simplifies GET queries for category stories data.
@@ -335,16 +337,19 @@ export const fetchApiCategory = async (
  */
 export const fetchApiCategoryStories = async (
   id: string,
-  page: number = 1,
+  endCursor?: string,
   range?: number,
-  field?: string,
   exclude?: string[],
-  req?: IncomingMessage
-): Promise<IPriApiCollectionResponse> =>
-  fetchApi(`category/${id}/stories/${page}`, req, {
-    ...(range && { range: `${range}` }),
-    ...(exclude && { exclude }),
-    ...(field && { field })
+  init?: RequestInit
+) =>
+  fetchApi<IPriApiCollectionResponse>({
+    path: `category/${id}/stories`,
+    query: {
+      ...(endCursor && { endCursor }),
+      ...(range && { range: `${range}` }),
+      ...(exclude && { exclude })
+    },
+    init
   });
 
 /**
@@ -358,10 +363,8 @@ export const fetchApiCategoryStories = async (
  * @returns
  *    Term data object.
  */
-export const fetchApiTerm = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`term/${id}`, req);
+export const fetchApiTerm = async (id: string, init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: `term/${id}`, init });
 
 /**
  * Method that simplifies GET queries for term stories data.
@@ -382,14 +385,19 @@ export const fetchApiTerm = async (
  */
 export const fetchApiTermStories = async (
   id: string,
-  page: number = 1,
+  endCursor?: string,
   range?: number,
   exclude?: string[],
-  req?: IncomingMessage
-): Promise<IPriApiCollectionResponse> =>
-  fetchApi(`term/${id}/stories/${page}`, req, {
-    ...(range && { range: `${range}` }),
-    ...(exclude && { exclude })
+  init?: RequestInit
+) =>
+  fetchApi<IPriApiCollectionResponse>({
+    path: `term/${id}/stories`,
+    query: {
+      ...(endCursor && { endCursor }),
+      ...(range && { range: `${range}` }),
+      ...(exclude && { exclude })
+    },
+    init
   });
 
 /**
@@ -411,14 +419,19 @@ export const fetchApiTermStories = async (
  */
 export const fetchApiTermEpisodes = async (
   id: string,
-  page: number = 1,
+  endCursor?: string,
   range?: number,
   exclude?: string[],
-  req?: IncomingMessage
-): Promise<IPriApiCollectionResponse> =>
-  fetchApi(`term/${id}/episodes/${page}`, req, {
-    ...(range && { range: `${range}` }),
-    ...(exclude && { exclude })
+  init?: RequestInit
+) =>
+  fetchApi<IPriApiCollectionResponse>({
+    path: `term/${id}/episodes`,
+    query: {
+      ...(endCursor && { endCursor }),
+      ...(range && { range: `${range}` }),
+      ...(exclude && { exclude })
+    },
+    init
   });
 
 /**
@@ -432,10 +445,8 @@ export const fetchApiTermEpisodes = async (
  * @returns
  *    Page data object.
  */
-export const fetchApiPage = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`page/${id}`, req);
+export const fetchApiPage = async (id: string, init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: `page/${id}`, init });
 
 /**
  * Method that simplifies GET queries for team data.
@@ -446,9 +457,8 @@ export const fetchApiPage = async (
  * @returns
  *    Person data object.
  */
-export const fetchApiTeam = async (
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi('team', req);
+export const fetchApiTeam = async (init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: 'team', init });
 
 /**
  * Method that simplifies GET queries for person data.
@@ -461,10 +471,8 @@ export const fetchApiTeam = async (
  * @returns
  *    Person data object.
  */
-export const fetchApiPerson = async (
-  id: string,
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> => fetchApi(`person/${id}`, req);
+export const fetchApiPerson = async (id: string, init?: RequestInit) =>
+  fetchApi<IPriApiResourceResponse>({ path: `person/${id}`, init });
 
 /**
  * Method that simplifies GET queries for person stories data.
@@ -483,12 +491,19 @@ export const fetchApiPerson = async (
  */
 export const fetchApiPersonStories = async (
   id: string,
-  page: number = 1,
+  endCursor?: string,
   range?: number,
-  req?: IncomingMessage
-): Promise<IPriApiCollectionResponse> =>
-  fetchApi(`person/${id}/stories/${page}`, req, {
-    ...(range && { range: `${range}` })
+  exclude?: string[],
+  init?: RequestInit
+) =>
+  fetchApi<ContributorToPostConnection>({
+    path: `person/${id}/stories`,
+    query: {
+      ...(endCursor && { endCursor }),
+      ...(range && { range: `${range}` }),
+      ...(exclude && { exclude })
+    },
+    init
   });
 
 /**
@@ -508,17 +523,19 @@ export const fetchApiPersonStories = async (
  */
 export const fetchApiPersonAudio = async (
   id: string,
-  audioType?: string,
-  page: number = 1,
-  range: number = 10,
-  req?: IncomingMessage
-): Promise<IPriApiCollectionResponse> =>
-  fetchApi('file/audio', req, {
-    'filter[audioAuthor]': id,
-    sort: '-broadcast_date',
-    ...(audioType && { 'filter[type]': audioType }),
-    ...(page && { page: `${page}` }),
-    ...(range && { range: `${range}` })
+  endCursor?: string,
+  range?: number,
+  exclude?: string[],
+  init?: RequestInit
+) =>
+  fetchApi<IPriApiCollectionResponse>({
+    path: `person/${id}/segments`,
+    query: {
+      ...(endCursor && { endCursor }),
+      ...(range && { range: `${range}` }),
+      ...(exclude && { exclude })
+    },
+    init
   });
 
 /**
@@ -539,22 +556,26 @@ export const fetchApiPersonAudio = async (
 export const fetchApiCtaRegionGroup = async (
   regionGroup: string,
   context?: string[],
-  req?: IncomingMessage
-): Promise<IPriApiResourceResponse> =>
-  fetchApi(
-    `cta/${regionGroup}`,
-    req,
-    undefined,
-    context && {
+  init?: RequestInit
+) =>
+  fetchApi<IPriApiResourceResponse>({
+    path: `cta/${regionGroup}`,
+    body: context && {
       context
-    }
-  );
+    },
+    init
+  });
 
 export const fetchApiSearch = (
   q: string,
   label: string,
-  start: string | number
+  start: string | number,
+  init?: RequestInit
 ) =>
-  fetchApi(`query/search/${label}/${q}`, undefined, {
-    start: start as string
+  fetchApi<ReturnType<typeof fetchQuerySearch>>({
+    path: `query/search/${label}/${q}`,
+    query: {
+      start: start as string
+    },
+    init
   });

@@ -21,7 +21,7 @@ import { isLocalUrl } from '../parse/url';
 export const generateLinkHrefFromUrl = (url: Url) => {
   const pathname = url.pathname !== '/' ? '/[...alias]' : '/';
   const query =
-    url.pathname !== '/'
+    pathname !== '/' && url.pathname
       ? { alias: url.pathname.replace(/^\/+|\/+$/g, '').split('/') }
       : null;
 
@@ -52,7 +52,7 @@ export const handleButtonClick =
         isLocalUrl(parsedUrl.href)
           ? generateLinkHrefFromUrl(parsedUrl)
           : parsedUrl,
-        parsedUrl.pathname
+        parsedUrl.pathname || undefined
       );
     }
 

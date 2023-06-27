@@ -21,7 +21,7 @@ ResourceFetchDataMap.set('node--newsletter_sign_ups', fetchNewsletterData);
 ResourceFetchDataMap.set('node--pages', fetchPageData);
 ResourceFetchDataMap.set('node--people', fetchPersonData);
 ResourceFetchDataMap.set('node--programs', fetchProgramData);
-ResourceFetchDataMap.set('node--stories', fetchStoryData);
+ResourceFetchDataMap.set('post--story', fetchStoryData);
 ResourceFetchDataMap.set('taxonomy_term--categories', fetchCategoryData);
 ResourceFetchDataMap.set('taxonomy_term--terms', fetchTermData);
 ResourceFetchDataMap.set('team', fetchTeamData);

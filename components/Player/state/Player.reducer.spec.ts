@@ -52,7 +52,7 @@ describe('states/player', () => {
       expect(result.autoplay).toBe(true);
       expect(result.currentTrackIndex).toBe(0);
       expect(result.tracks).not.toBeNull();
-      expect(result.tracks.length).toBe(3);
+      expect(result.tracks?.length).toBe(3);
     });
 
     describe('`playing` actions', () => {
@@ -328,9 +328,9 @@ describe('states/player', () => {
         );
 
         expect(result.currentTrackIndex).toBe(1);
-        expect(result.tracks[0].guid).toBe('GUID:1');
-        expect(result.tracks[1].guid).toBe('1337');
-        expect(result.tracks[2].guid).toBe('GUID:2');
+        expect(result.tracks?.[0].guid).toBe('GUID:1');
+        expect(result.tracks?.[1].guid).toBe('1337');
+        expect(result.tracks?.[2].guid).toBe('GUID:2');
         expect(result.currentTime).toBe(0);
         expect(result.playing).toBe(true);
       });
@@ -345,7 +345,7 @@ describe('states/player', () => {
         const result = playerStateReducer(
           {
             ...mockState,
-            tracks: null,
+            tracks: undefined,
             playing: true
           },
           {
@@ -356,7 +356,7 @@ describe('states/player', () => {
 
         expect(result.tracks).not.toBeNull();
         expect(result.currentTrackIndex).toBe(0);
-        expect(result.tracks[0].guid).toBe('1337');
+        expect(result.tracks?.[0].guid).toBe('1337');
         expect(result.currentTime).toBe(0);
         expect(result.playing).toBe(true);
       });
@@ -461,7 +461,7 @@ describe('states/player', () => {
         );
 
         expect(result.tracks).not.toBeNull();
-        expect(result.tracks[0]).toStrictEqual(mockTrack);
+        expect(result.tracks?.[0]).toStrictEqual(mockTrack);
       });
 
       test('should set `tracks` and update `currentIndex`', () => {
@@ -484,9 +484,9 @@ describe('states/player', () => {
         );
 
         expect(result.tracks).not.toBeNull();
-        expect(result.tracks[0]).toStrictEqual(mockTrack);
-        expect(result.tracks[1]).toStrictEqual(mockTracks[0]);
-        expect(result.tracks[2]).toStrictEqual(mockTracks[1]);
+        expect(result.tracks?.[0]).toStrictEqual(mockTrack);
+        expect(result.tracks?.[1]).toStrictEqual(mockTracks[0]);
+        expect(result.tracks?.[2]).toStrictEqual(mockTracks[1]);
         expect(result.currentTrackIndex).toBe(2);
       });
 
@@ -504,8 +504,8 @@ describe('states/player', () => {
         );
 
         expect(result.tracks).not.toBeNull();
-        expect(result.tracks[0]).toStrictEqual(mockTracks[0]);
-        expect(result.tracks[1]).toStrictEqual(mockTracks[2]);
+        expect(result.tracks?.[0]).toStrictEqual(mockTracks[0]);
+        expect(result.tracks?.[1]).toStrictEqual(mockTracks[2]);
         expect(result.currentTrackIndex).toBe(0);
       });
 
@@ -528,7 +528,7 @@ describe('states/player', () => {
 
         expect(result.tracks).not.toBeNull();
         expect(result.currentTrackIndex).toBe(0);
-        expect(result.tracks[0].guid).toBe('1337');
+        expect(result.tracks?.[0].guid).toBe('1337');
       });
 
       test('should append audio to tracks', () => {
@@ -549,9 +549,9 @@ describe('states/player', () => {
             payload: mockTrack
           }
         );
-        const lastIndex = result.tracks.length - 1;
+        const lastIndex = (result.tracks?.length || 0) - 1;
 
-        expect(result.tracks[lastIndex].guid).toBe('1337');
+        expect(result.tracks?.[lastIndex].guid).toBe('1337');
       });
 
       test('should do nothing (tracks null)', () => {
@@ -571,7 +571,7 @@ describe('states/player', () => {
           }
         );
 
-        expect(result.tracks).toBeNull();
+        expect(result.tracks).toStrictEqual([]);
       });
 
       test('should remove audio from tracks', () => {
@@ -589,7 +589,7 @@ describe('states/player', () => {
         );
 
         expect(result.tracks).not.toBeNull();
-        expect(result.tracks[1].guid).not.toBe('2');
+        expect(result.tracks?.[1].guid).not.toBe('2');
       });
 
       test('should remove audio from tracks, and pause', () => {
@@ -607,7 +607,7 @@ describe('states/player', () => {
         );
 
         expect(result.tracks).not.toBeNull();
-        expect(result.tracks[0].guid).not.toBe('1');
+        expect(result.tracks?.[0].guid).not.toBe('1');
         expect(result.playing).toBe(false);
       });
 
@@ -627,7 +627,7 @@ describe('states/player', () => {
 
         expect(result.tracks).not.toBeNull();
         expect(result.currentTrackIndex).toBe(1);
-        expect(result.tracks.length).toBe(2);
+        expect(result.tracks?.length).toBe(2);
         expect(result.playing).toBe(false);
       });
 
@@ -646,7 +646,7 @@ describe('states/player', () => {
         );
 
         expect(result.tracks).not.toBeNull();
-        expect(result.tracks[0].guid).not.toBe('1');
+        expect(result.tracks?.[0].guid).not.toBe('1');
         expect(result.currentTrackIndex).toBe(1);
       });
 
@@ -665,10 +665,10 @@ describe('states/player', () => {
           }
         );
 
-        expect(result.tracks).toBeNull();
-        expect(result.currentTrackIndex).toBeNull();
-        expect(result.currentDuration).toBeNull();
-        expect(result.currentTime).toBeNull();
+        expect(result.tracks).toBeUndefined();
+        expect(result.currentTrackIndex).toBeUndefined();
+        expect(result.currentDuration).toBe(0);
+        expect(result.currentTime).toBe(0);
         expect(result.playing).toBe(false);
       });
 
@@ -685,8 +685,8 @@ describe('states/player', () => {
         );
 
         expect(result.tracks).not.toBeNull();
-        expect(result.tracks[0]).toStrictEqual(mockTracks[0]);
-        expect(result.tracks[1]).toStrictEqual(mockTracks[2]);
+        expect(result.tracks?.[0]).toStrictEqual(mockTracks[0]);
+        expect(result.tracks?.[1]).toStrictEqual(mockTracks[2]);
         expect(result.currentTrackIndex).toBe(1);
       });
     });

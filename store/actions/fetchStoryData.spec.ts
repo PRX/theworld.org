@@ -29,9 +29,10 @@ describe('store/actions/fetchStoryData', () => {
       });
 
       expect(result).toHaveProperty('bylines');
-      expect(result.bylines[0][0]).toEqual('By');
-      expect(result.bylines[0][1]).toBeInstanceOf(Array);
-      expect(result.bylines[0][1][0].id).toEqual('2345');
+      expect(result.bylines).not.toBeUndefined();
+      expect(result.bylines?.[0][0]).toEqual('By');
+      expect(result.bylines?.[0][1]).toBeInstanceOf(Array);
+      expect(result.bylines?.[0][1][0].id).toEqual('2345');
     });
 
     test('should add bylines prop w/ "By" credits using old byline model, before API update', () => {
@@ -52,9 +53,10 @@ describe('store/actions/fetchStoryData', () => {
       });
 
       expect(result).toHaveProperty('bylines');
-      expect(result.bylines[0][0]).toEqual('By');
-      expect(result.bylines[0][1]).toBeInstanceOf(Array);
-      expect(result.bylines[0][1][0].id).toEqual('2345');
+      expect(result.bylines).not.toBeUndefined();
+      expect(result.bylines?.[0][0]).toEqual('By');
+      expect(result.bylines?.[0][1]).toBeInstanceOf(Array);
+      expect(result.bylines?.[0][1][0].id).toEqual('2345');
     });
 
     test('should add bylines prop w/ "By" credits using old byline model', () => {
@@ -75,9 +77,10 @@ describe('store/actions/fetchStoryData', () => {
       });
 
       expect(result).toHaveProperty('bylines');
-      expect(result.bylines[0][0]).toEqual('By');
-      expect(result.bylines[0][1]).toBeInstanceOf(Array);
-      expect(result.bylines[0][1][0].id).toEqual('2345');
+      expect(result.bylines).not.toBeUndefined();
+      expect(result.bylines?.[0][0]).toEqual('By');
+      expect(result.bylines?.[0][1]).toBeInstanceOf(Array);
+      expect(result.bylines?.[0][1][0].id).toEqual('2345');
     });
 
     test('should add bylines prop w/ "By" credits uniquely combining byline props', () => {
@@ -120,16 +123,17 @@ describe('store/actions/fetchStoryData', () => {
       });
 
       expect(result).toHaveProperty('bylines');
-      expect(result.bylines.length).toEqual(2);
-      expect(result.bylines[0][0]).toEqual('By');
-      expect(result.bylines[0][1]).toBeInstanceOf(Array);
-      expect(result.bylines[0][1].length).toEqual(2);
-      expect(result.bylines[0][1][0].id).toEqual('2345');
-      expect(result.bylines[0][1][1].id).toEqual('3456');
-      expect(result.bylines[1][0]).toEqual('Produced by');
-      expect(result.bylines[1][1]).toBeInstanceOf(Array);
-      expect(result.bylines[1][1].length).toEqual(1);
-      expect(result.bylines[1][1][0].id).toEqual('3456');
+      expect(result.bylines).not.toBeUndefined();
+      expect(result.bylines?.length).toEqual(2);
+      expect(result.bylines?.[0][0]).toEqual('By');
+      expect(result.bylines?.[0][1]).toBeInstanceOf(Array);
+      expect(result.bylines?.[0][1].length).toEqual(2);
+      expect(result.bylines?.[0][1][0].id).toEqual('2345');
+      expect(result.bylines?.[0][1][1].id).toEqual('3456');
+      expect(result.bylines?.[1][0]).toEqual('Produced by');
+      expect(result.bylines?.[1][1]).toBeInstanceOf(Array);
+      expect(result.bylines?.[1][1].length).toEqual(1);
+      expect(result.bylines?.[1][1][0].id).toEqual('3456');
     });
 
     test('should add bylines prop w/ "By" credits using old byline model, missing creditType', () => {
@@ -150,9 +154,10 @@ describe('store/actions/fetchStoryData', () => {
       });
 
       expect(result).toHaveProperty('bylines');
-      expect(result.bylines[0][0]).toEqual('By');
-      expect(result.bylines[0][1]).toBeInstanceOf(Array);
-      expect(result.bylines[0][1][0].id).toEqual('2345');
+      expect(result.bylines).not.toBeUndefined();
+      expect(result.bylines?.[0][0]).toEqual('By');
+      expect(result.bylines?.[0][1]).toBeInstanceOf(Array);
+      expect(result.bylines?.[0][1][0].id).toEqual('2345');
     });
 
     test('should add bylines prop w/ "By" credits using old byline model, keeping credits w/ person', () => {
@@ -177,10 +182,11 @@ describe('store/actions/fetchStoryData', () => {
       });
 
       expect(result).toHaveProperty('bylines');
-      expect(result.bylines[0][0]).toEqual('By');
-      expect(result.bylines[0][1]).toBeInstanceOf(Array);
-      expect(result.bylines[0][1].length).toEqual(1);
-      expect(result.bylines[0][1][0].id).toEqual('2345');
+      expect(result.bylines).not.toBeUndefined();
+      expect(result.bylines?.[0][0]).toEqual('By');
+      expect(result.bylines?.[0][1]).toBeInstanceOf(Array);
+      expect(result.bylines?.[0][1].length).toEqual(1);
+      expect(result.bylines?.[0][1][0].id).toEqual('2345');
     });
   });
 });

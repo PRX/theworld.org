@@ -3,22 +3,21 @@
  * Component for default Story layout.
  */
 
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import type { ITagsProps } from '@components/Tags';
+import type {
+  Post_Additionalmedia as PostAdditionalMedia,
+  PostStory
+} from '@interfaces';
 import dynamic from 'next/dynamic';
-import { useStore } from 'react-redux';
 import { ThemeProvider } from '@mui/styles';
 import { Box, Container } from '@mui/material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
-import { CtaRegion } from '@components/CtaRegion';
+// import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
-import { ITagsProps } from '@components/Tags';
-import { IContentComponentProps } from '@interfaces/content';
-import { RootState } from '@interfaces/state';
-import { getCollectionData, getCtaRegionData } from '@store/reducers';
-import { IStoryRelatedLinksProps } from '../default/components/StoryRelatedLinks';
 import { storyStyles, storyTheme } from './Story.feature.styles';
-import { StoryHeader } from './components';
+import { StoryHeader, IStoryRelatedLinksProps } from './components';
 
 const StoryRelatedLinks = dynamic(
   () =>
@@ -31,59 +30,37 @@ const Tags = dynamic(() =>
   import('@components/Tags').then((mod) => mod.Tags)
 ) as React.FC<ITagsProps>;
 
-interface StateProps extends RootState {}
+export interface IStoryFeaturedProps {
+  data: PostStory;
+}
 
-type Props = StateProps & IContentComponentProps;
-
-export const StoryDefault = ({ data }: Props) => {
+export const StoryFeatured = ({ data }: IStoryFeaturedProps) => {
   const {
-    type,
-    id,
-    audio,
-    body,
+    additionalMedia,
+    content,
     categories,
     primaryCategory,
     tags,
-    opencalaisCity,
-    opencalaisContinent,
-    opencalaisCountry,
-    opencalaisProvince,
-    opencalaisRegion,
-    opencalaisPerson
+    cities,
+    continents,
+    countries,
+    provincesOrStates,
+    regions,
+    people
   } = data;
-  const store = useStore();
-  const [state, updateForce] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    updateForce(store.getState());
-  });
-  const relatedState =
-    primaryCategory &&
-    getCollectionData(
-      state,
-      primaryCategory.type,
-      primaryCategory.id as string,
-      'related'
-    );
-  const related =
-    relatedState &&
-    relatedState.items[1].filter((item) => item.id !== id).slice(0, 4);
-  const ctaInlineEnd = getCtaRegionData(
-    state,
-    'tw_cta_region_content_inline_end',
-    type,
-    id as string
-  );
+  const { audio } = additionalMedia as PostAdditionalMedia;
+  const related = primaryCategory?.nodes[0].posts?.nodes;
   const { classes } = storyStyles();
   const hasRelated = related && !!related.length;
-  const hasCategories = categories && !!categories.length;
+  const hasCategories = !!categories?.nodes?.length;
   const allTags = [
-    ...(tags || []),
-    ...(opencalaisCity || []),
-    ...(opencalaisContinent || []),
-    ...(opencalaisCountry || []),
-    ...(opencalaisProvince || []),
-    ...(opencalaisRegion || []),
-    ...(opencalaisPerson || [])
+    ...(tags?.nodes || []),
+    ...(cities?.nodes || []),
+    ...(continents?.nodes || []),
+    ...(countries?.nodes || []),
+    ...(provincesOrStates?.nodes || []),
+    ...(regions?.nodes || []),
+    ...(people?.nodes || [])
   ];
   const hasTags = !!allTags.length;
 
@@ -108,22 +85,17 @@ export const StoryDefault = ({ data }: Props) => {
     }
   });
 
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
-
   return (
     <ThemeProvider theme={storyTheme}>
       <StoryHeader data={data} />
       <Container classes={{ maxWidthLg: classes.MuiContainerMaxWidthLg }} fixed>
         <Box className={classes.body} my={2}>
-          {audio ? <NoJsPlayer url={audio.url} /> : null}
-          <HtmlContent html={body} transforms={[enhanceImages]} />
+          {audio?.sourceUrl ? <NoJsPlayer url={audio.sourceUrl} /> : null}
+          {content && (
+            <HtmlContent html={content} transforms={[enhanceImages]} />
+          )}
         </Box>
-        {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
+        {/* {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />} */}
         {hasRelated && (
           <aside>
             <header>
@@ -132,7 +104,7 @@ export const StoryDefault = ({ data }: Props) => {
             <StoryRelatedLinks data={related} />
           </aside>
         )}
-        {hasCategories && <Tags data={categories} label="Categories" />}
+        {hasCategories && <Tags data={categories.nodes} label="Categories" />}
         {hasTags && <Tags data={allTags} label="Tags" />}
       </Container>
     </ThemeProvider>

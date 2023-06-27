@@ -23,7 +23,7 @@ export const PlaylistItem = ({
   ...other
 }: IPlaylistItemProps) => {
   const { state, removeTrack } = useContext(PlayerContext);
-  const { tracks, currentTrackIndex } = state;
+  const { tracks, currentTrackIndex = 0 } = state;
   const currentTrack = tracks?.[currentTrackIndex];
   const { guid: currentTrackGuid } = currentTrack || {};
   const { guid, title, imageUrl, info, linkResource } = audio;
@@ -74,8 +74,8 @@ export const PlaylistItem = ({
               component="span"
             >
               {info
-                .filter(t => !!t)
-                .map(text => (
+                .filter((t) => !!t)
+                .map((text) => (
                   <span className={styles.infoItem} key={text}>
                     {text}
                   </span>
@@ -83,9 +83,11 @@ export const PlaylistItem = ({
             </Typography>
           ) : null}
         </Box>
-        {linkResource ? (
-          <ContentLink data={linkResource} className={styles.link} />
-        ) : null}
+        {linkResource && (
+          <ContentLink url={linkResource.link} className={styles.link}>
+            {linkResource.title}
+          </ContentLink>
+        )}
       </Box>
       <Box className={styles.controls}>
         <PlayAudioButton audio={audio} />

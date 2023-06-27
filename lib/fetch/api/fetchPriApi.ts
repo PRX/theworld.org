@@ -141,7 +141,7 @@ export const fetchPriApiQueryAlias = async (
     `query/alias/${encodeURIComponent(alias.replace(/^\/+|\/+$/, ''))}`,
     params,
     keys
-  ).then(resp => !resp.isFailure && resp.response);
+  ).then((resp) => !resp.isFailure && resp.response);
 
 /**
  * Method that simplifies GET queries for menu.
@@ -152,9 +152,7 @@ export const fetchPriApiQueryAlias = async (
  * @returns
  *    Denormalized resource item.
  */
-export const fetchPriApiQueryMenu = async (
-  menuName: string
-): Promise<ILink[]> =>
+export const fetchPriApiQueryMenu = async (menuName: string) =>
   fetchPriApi(`menu/tree/${menuName}`).then(
     ({ isFailure, response }) => !isFailure && (response.data as ILink[])
   );
@@ -180,7 +178,7 @@ export const fetchPriApiCtaRegion = async (
   keys?: object
 ): Promise<PriApiResourceResponse> =>
   fetchPriApi(`cta/region/${name.replace(/^\/+|\/+$/, '')}`, params, keys).then(
-    resp => !resp.isFailure && resp.response
+    (resp) => !resp.isFailure && resp.response
   );
 
 /**
@@ -205,7 +203,7 @@ export const postJsonPriApiCtaRegion = async (
     },
     body
   )
-    .then(resp => !resp.isFailure && resp.response)
+    .then((resp) => !resp.isFailure && resp.response)
     .then(
       (resp: IPriApiResourceResponse) =>
         resp && {
@@ -217,13 +215,13 @@ export const postJsonPriApiCtaRegion = async (
               .map(
                 ([key, items]: [string, JSONAPI.CollectionResourceDoc[]]) => [
                   key,
-                  items.map(item => denormalizeJsonApi(item))
+                  items.map((item) => denormalizeJsonApi(item))
                 ]
               )
               // Parse Message data
               .map(([key, items]: [string, IPriApiResource[]]) => [
                 key,
-                items.map(item => parseCtaMessage(item.data, key))
+                items.map((item) => parseCtaMessage(item.data, key))
               ])
               // Convert back to object.
               .reduce(

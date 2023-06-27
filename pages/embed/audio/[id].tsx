@@ -57,55 +57,58 @@ const ContentProxy = ({ data, embeddedPlayerUrl }: IEmbedAudioPageProps) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
-  params: { id }
+  params
 }): Promise<GetServerSidePropsResult<any>> => {
+  const { id } = params || {};
   const resourceId = Array.isArray(id) ? id[0] : id;
   const embeddedPlayerUrl = `https://theworld.org/embed/audio/${id}`;
   let data: IPriApiResource;
 
-  // Attempt to fetch story data.
-  data = await fetchStory(resourceId).then(
-    (resp: IPriApiResourceResponse) => resp && resp.data
-  );
+  if (resourceId) {
+    // Attempt to fetch story data.
+    data = await fetchStory(resourceId).then(
+      (resp: IPriApiResourceResponse) => resp && resp.data
+    );
 
-  if (data) {
-    return {
-      props: {
-        contentOnly: true,
-        embeddedPlayerUrl,
-        data
-      }
-    };
-  }
+    if (data) {
+      return {
+        props: {
+          contentOnly: true,
+          embeddedPlayerUrl,
+          data
+        }
+      };
+    }
 
-  // Attempt to fetch episode data.
-  data = await fetchEpisode(resourceId).then(
-    (resp: IPriApiResourceResponse) => resp && resp.data
-  );
+    // Attempt to fetch episode data.
+    data = await fetchEpisode(resourceId).then(
+      (resp: IPriApiResourceResponse) => resp && resp.data
+    );
 
-  if (data) {
-    return {
-      props: {
-        contentOnly: true,
-        embeddedPlayerUrl,
-        data
-      }
-    };
-  }
+    if (data) {
+      return {
+        props: {
+          contentOnly: true,
+          embeddedPlayerUrl,
+          data
+        }
+      };
+    }
 
-  // Attempt to get audio data.
-  data = await fetchAudio(resourceId).then(
-    (resp: IPriApiResourceResponse) => resp && resp.data
-  );
+    // Attempt to get audio data.
+    data = await fetchAudio(resourceId).then(
+      (resp: IPriApiResourceResponse) => resp && resp.data
+    );
 
-  if (data) {
-    return {
-      props: {
-        contentOnly: true,
-        embeddedPlayerUrl,
-        data
-      }
-    };
+    if (data) {
+      return {
+        props: {
+          contentOnly: true,
+          embeddedPlayerUrl,
+          data
+        }
+      };
+    }
   }
 
   return { notFound: true };

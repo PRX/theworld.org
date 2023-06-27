@@ -3,55 +3,49 @@
  * Helper functions to parse menu API data into button objects.
  */
 
-import { IButton, ILink } from '@interfaces';
+import { IButton } from '@interfaces';
+import { MenuItem } from '@interfaces/menu';
+import { isLocalUrl } from '../url';
 
-export const parseMenu = (data: ILink[]): IButton[] => {
+export const parseMenu = (data: MenuItem[]) => {
   // If no data or links exist, return empty array.
   if (!data || !data.length) {
-    return [];
+    return [] as IButton[];
   }
-  return data.map(
-    ({
-      id,
-      name,
-      url,
-      attributes: {
+
+  const menu = data.map<IButton>(
+    ({ id, name, url, attributes, children = null, ...rest }) => {
+      const {
         class: className,
+        color,
+        icon,
         title,
         referrerpolicy,
         ...otherAttributes
-      },
-      children = null
-    }) => ({
-      key: id,
-      name,
-      ...(title && { title }),
-      url,
-      ...(className && {
-        itemLinkClass: className.join(' '),
-        color: className.reduce(
-          (color: string, cn: string) =>
-            color || (cn === 'btn-danger' && 'secondary'),
-          null
-        ),
-        icon: className.reduce(
-          (icon: string, cn: string) =>
-            icon || (cn.indexOf('icon-') > -1 && cn.split('-')[1]),
-          null
-        )
-      }),
-      children:
-        children &&
-        parseMenu(
-          children.map(
-            ({ id: childId, attributes }): ILink =>
-              ({ id: childId, ...attributes } as ILink)
-          )
-        ),
-      attributes: {
-        ...otherAttributes,
-        ...(referrerpolicy && { referrerPolicy: referrerpolicy })
-      }
-    })
-  );
+      } = attributes || {};
+      const isLocal = isLocalUrl(url);
+
+      return {
+        ...rest,
+        key: id,
+        name,
+        url,
+        ...(color && { color }),
+        ...(icon && { icon }),
+        ...(title && { title }),
+        ...(className && {
+          itemLinkClass: className.join(' ')
+        }),
+        children: children && parseMenu(children),
+        attributes: {
+          ...otherAttributes,
+          ...(!isLocal && {
+            referrerPolicy: 'no-referrer-when-downgrade'
+          })
+        }
+      } as IButton;
+    }
+  ) as IButton[];
+
+  return menu;
 };

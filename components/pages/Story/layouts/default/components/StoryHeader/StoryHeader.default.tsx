@@ -18,11 +18,11 @@ const Moment = dynamic(() => {
 }) as any;
 
 const AudioControls = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AudioControls)
+  import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
 
 const ContentLink = dynamic(() =>
-  import('@components/ContentLink').then(mod => mod.ContentLink)
+  import('@components/ContentLink').then((mod) => mod.ContentLink)
 ) as React.FC<IContentLinkProps>;
 interface Props {
   data: IPriApiResource;
@@ -52,10 +52,7 @@ export const StoryHeader = ({ data }: Props) => {
     <Box component="header" className={classes.root} mt={4} mb={2}>
       {primaryCategory && (
         <Box mb={2}>
-          <ContentLink
-            className={classes.categoryLink}
-            data={primaryCategory}
-          />
+          <ContentLink className={classes.categoryLink} url={primaryCategory} />
         </Box>
       )}
       <Box mb={3}>
@@ -66,7 +63,7 @@ export const StoryHeader = ({ data }: Props) => {
       <Box className={classes.heading} mb={2}>
         <Box className={classes.info}>
           {program && (
-            <ContentLink data={program} className={classes.programLink} />
+            <ContentLink url={program} className={classes.programLink} />
           )}
           {(dateBroadcast || datePublished) && (
             <Typography
@@ -114,7 +111,7 @@ export const StoryHeader = ({ data }: Props) => {
                       >
                         <ContentLink
                           className={classes.bylineLink}
-                          data={person}
+                          url={person.link}
                         />
                       </Box>
                     ))}

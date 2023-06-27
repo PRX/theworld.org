@@ -3,57 +3,63 @@
  * Component for story card links grid.
  */
 
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import type { UrlWithParsedQuery } from 'url';
+import type {
+  PostStory,
+  Post_Additionaldates as PostAdditionalDates,
+  Post_Additionalmedia as PostAdditionalMedia
+} from '@interfaces';
+// import type { ILink } from '@interfaces/link';
+import type {
+  IPlayAudioButtonProps,
+  IAddAudioButtonProps
+} from '@components/Player/components';
+import type { IAudioData } from '@components/Player/types';
+import { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
-import { parse, UrlWithParsedQuery } from 'url';
-import { IPriApiResource } from 'pri-api-library/types';
+// import { parse } from 'url';
 import {
   Box,
   BoxProps,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
   Grid,
   LinearProgress,
-  Link as MuiLink,
-  List,
-  ListItem,
-  ListItemText,
   Typography
+  // CardActions,
+  // Link as MuiLink,
+  // List,
+  // ListItem,
+  // ListItemText,
 } from '@mui/material';
 import { Label } from '@mui/icons-material';
 import { ContentLink } from '@components/ContentLink';
-import { ILink } from '@interfaces/link';
-import {
-  IPlayAudioButtonProps,
-  IAddAudioButtonProps
-} from '@components/Player/components';
-import { IAudioData } from '@components/Player/types';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { storyCardGridStyles } from './StoryCardGrid.styles';
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
 const PlayAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.PlayAudioButton)
+  import('@components/Player/components').then((mod) => mod.PlayAudioButton)
 ) as React.FC<IPlayAudioButtonProps>;
 
 const AddAudioButton = dynamic(() =>
-  import('@components/Player/components').then(mod => mod.AddAudioButton)
+  import('@components/Player/components').then((mod) => mod.AddAudioButton)
 ) as React.FC<IAddAudioButtonProps>;
 
 export interface StoryCardGridProps extends BoxProps {
-  data: IPriApiResource[];
+  data: PostStory[];
 }
 
 export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
   const router = useRouter();
-  const [loadingUrl, setLoadingUrl] = useState(null);
+  const [loadingUrl, setLoadingUrl] = useState<string>();
   const { classes, cx } = storyCardGridStyles();
   const imageWidth = [
     ['max-width: 600px', '100px'],
@@ -63,32 +69,32 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
   ];
   const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
-  const renderLink = ({ title: linkTitle, url }: ILink) => {
-    const oUrl = parse(url, true, true);
-    const LinkComponent = oUrl.host ? MuiLink : ContentLink;
-    const attrs = oUrl.host
-      ? {
-          href: url
-        }
-      : {
-          data: {
-            metatags: { canonical: `/${url}` }
-          }
-        };
+  // const renderLink = ({ title: linkTitle, url }: ILink) => {
+  //   const oUrl = parse(url, true, true);
+  //   const LinkComponent = oUrl.host ? MuiLink : ContentLink;
+  //   const attrs = oUrl.host
+  //     ? {
+  //         href: url
+  //       }
+  //     : {
+  //         data: {
+  //           metatags: { canonical: `/${url}` }
+  //         }
+  //       };
 
-    return (
-      <ListItem button component={LinkComponent} key={url} {...attrs}>
-        <ListItemText>{linkTitle}</ListItemText>
-      </ListItem>
-    );
-  };
+  //   return (
+  //     <ListItem button component={LinkComponent} key={url} {...attrs}>
+  //       <ListItemText>{linkTitle}</ListItemText>
+  //     </ListItem>
+  //   );
+  // };
 
   useEffect(() => {
     const handleRouteChangeStart = (url: string) => {
       setLoadingUrl(url);
     };
     const handleRouteChangeEnd = () => {
-      setLoadingUrl(null);
+      setLoadingUrl(undefined);
     };
 
     router.events.on('routeChangeStart', handleRouteChangeStart);
@@ -106,114 +112,128 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
     <Box className={classes.root} {...other}>
       {data.map((item, index) => {
         const {
+          link,
           id,
           title,
-          image,
-          audio,
-          primaryCategory,
-          crossLinks,
-          dateBroadcast,
-          datePublished
+          date,
+          featuredImage,
+          additionalMedia,
+          additionalDates,
+          primaryCategory
         } = item;
+        const image = featuredImage?.node;
+        const { broadcastDate } = additionalDates as PostAdditionalDates;
+        const { audio } = additionalMedia as PostAdditionalMedia;
         const { pathname } = generateLinkHrefForContent(
-          item,
+          link || '',
           true
         ) as UrlWithParsedQuery;
         const isLoading = pathname === loadingUrl;
         const audioProps = {
           title,
           queuedFrom: 'Card Controls',
-          ...(image && { imageUrl: image.url }),
+          ...(image?.sourceUrl && { imageUrl: image.sourceUrl }),
           linkResource: item
         } as Partial<IAudioData>;
+
         return (
-          <Card classes={{ root: classes.MuiCardRoot }} square key={id}>
-            <CardActionArea
-              component="div"
-              classes={{ root: classes.MuiCardActionAreaRoot }}
-            >
-              <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
-                {image && (
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    layout="fill"
-                    objectFit="cover"
-                    sizes={sizes}
-                    priority={index <= 1}
-                  />
-                )}
-                {audio && (
-                  <PlayAudioButton
-                    classes={{ root: classes.audioPlayButton }}
-                    id={audio.id}
-                    fallbackProps={audioProps}
-                  />
-                )}
-                <LinearProgress
-                  className={cx(classes.loadingBar, {
-                    isLoading
-                  })}
-                  color="secondary"
-                  aria-label="Progress Bar"
-                />
-              </CardMedia>
-              <CardContent classes={{ root: classes.MuiCardContentRoot }}>
-                <Box className={classes.heading}>
-                  <Typography
-                    variant="h5"
-                    component="h2"
-                    gutterBottom
-                    className={classes.title}
-                  >
-                    {title}
-                  </Typography>
-                  {audio && (
-                    <Box className={classes.audio}>
-                      <AddAudioButton
-                        id={audio.id}
-                        fallbackProps={audioProps}
-                      />
-                    </Box>
+          link && (
+            <Card classes={{ root: classes.MuiCardRoot }} square key={id}>
+              <CardActionArea
+                component="div"
+                classes={{ root: classes.MuiCardActionAreaRoot }}
+              >
+                <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
+                  {image?.sourceUrl && (
+                    <Image
+                      src={image.sourceUrl}
+                      alt={image.altText || ''}
+                      layout="fill"
+                      objectFit="cover"
+                      sizes={sizes}
+                      priority={index <= 1}
+                    />
                   )}
-                </Box>
-                <Grid
-                  container
-                  justifyContent="flex-start"
-                  spacing={1}
-                  style={{ marginBottom: 0 }}
-                >
-                  <Grid item xs="auto" zeroMinWidth>
-                    <Typography component="span">
-                      <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
-                        {dateBroadcast || datePublished}
-                      </Moment>
+                  {audio && (
+                    <PlayAudioButton
+                      classes={{ root: classes.audioPlayButton }}
+                      id={audio.id}
+                      fallbackProps={audioProps}
+                    />
+                  )}
+                  <LinearProgress
+                    className={cx(classes.loadingBar, {
+                      isLoading
+                    })}
+                    color="secondary"
+                    aria-label="Progress Bar"
+                  />
+                </CardMedia>
+                <CardContent classes={{ root: classes.MuiCardContentRoot }}>
+                  <Box className={classes.heading}>
+                    <Typography
+                      variant="h5"
+                      component="h2"
+                      gutterBottom
+                      className={classes.title}
+                    >
+                      {title}
                     </Typography>
-                  </Grid>
-                  {primaryCategory && (
+                    {audio && (
+                      <Box className={classes.audio}>
+                        <AddAudioButton
+                          id={audio.id}
+                          fallbackProps={audioProps}
+                        />
+                      </Box>
+                    )}
+                  </Box>
+                  <Grid
+                    container
+                    justifyContent="flex-start"
+                    spacing={1}
+                    style={{ marginBottom: 0 }}
+                  >
                     <Grid item xs="auto" zeroMinWidth>
-                      <Typography
-                        className={classes.primaryCategory}
-                        variant="overline"
-                        noWrap
-                      >
-                        <Label color="secondary" />
-                        <ContentLink data={primaryCategory}>
-                          {primaryCategory.title}
-                        </ContentLink>
+                      <Typography component="span">
+                        <Moment
+                          format="MMMM D, YYYY"
+                          tz="America/New_York"
+                          unix
+                        >
+                          {broadcastDate || date}
+                        </Moment>
                       </Typography>
                     </Grid>
-                  )}
-                </Grid>
-                <ContentLink data={item} className={classes.link} />
-              </CardContent>
-            </CardActionArea>
-            {!!(crossLinks && crossLinks.length) && (
+                    {primaryCategory?.nodes[0] && (
+                      <Grid item xs="auto" zeroMinWidth>
+                        <Typography
+                          className={classes.primaryCategory}
+                          variant="overline"
+                          noWrap
+                        >
+                          <Label color="secondary" />
+                          {primaryCategory.nodes[0].link ? (
+                            <ContentLink url={primaryCategory.nodes[0].link}>
+                              {primaryCategory.nodes[0].name}
+                            </ContentLink>
+                          ) : (
+                            <span>{primaryCategory.nodes[0].name}</span>
+                          )}
+                        </Typography>
+                      </Grid>
+                    )}
+                  </Grid>
+                  <ContentLink url={link} className={classes.link} />
+                </CardContent>
+              </CardActionArea>
+              {/* {!!(crossLinks && crossLinks.length) && (
               <CardActions>
                 <List>{crossLinks.map((link: ILink) => renderLink(link))}</List>
               </CardActions>
-            )}
-          </Card>
+            )} */}
+            </Card>
+          )
         );
       })}
     </Box>
