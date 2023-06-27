@@ -3,6 +3,8 @@
  * Interfaces for content.
  */
 
+import { IApp } from "@interfaces/app";
+
 export interface IContentComponentProps<D> {
   data: D;
 }
@@ -14,6 +16,7 @@ export interface IContentComponentProxyProps {
   redirect?: string;
   data?: any;
   cookies?: any;
+  appData?: IApp
 }
 
 export interface IContentContext {

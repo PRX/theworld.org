@@ -8,6 +8,7 @@ import type { IContentComponentProxyProps } from '@interfaces';
 import dynamic from 'next/dynamic';
 import { getResourceFetchData } from '@lib/import/fetchData';
 import { fetchTwApiQueryAlias } from '@lib/fetch';
+import { fetchAppData } from '@store/actions/fetchAppData';
 // import { fetchCtaRegionGroupData } from '@store/actions/fetchCtaRegionGroupData';
 // import { fetchAppData } from '@store/actions/fetchAppData';
 
@@ -127,6 +128,7 @@ export const getServerSideProps: GetServerSideProps<
 
       if (fetchData && resourceId) {
         const data = await fetchData(resourceId);
+        const appData = await fetchAppData();
 
         // await store.dispatch<any>(fetchAppData());
 
@@ -139,7 +141,8 @@ export const getServerSideProps: GetServerSideProps<
             type: resourceType,
             id: resourceId,
             cookies: req.cookies,
-            data
+            data,
+            appData
           }
         };
       }

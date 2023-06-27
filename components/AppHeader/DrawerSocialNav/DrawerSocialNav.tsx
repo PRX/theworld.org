@@ -3,8 +3,7 @@
  * Component for app drawer social nav.
  */
 
-import type { RootState } from '@interfaces/state';
-import { useStore } from 'react-redux';
+import { useContext } from 'react';
 import { parse } from 'url';
 import { IconButton, Toolbar } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
@@ -15,7 +14,7 @@ import {
   Instagram,
   WhatsApp
 } from '@mui/icons-material';
-import { getMenusData } from '@store/reducers';
+import { AppContext } from '@contexts/AppContext';
 import { drawerTopNavStyles } from './DrawerSocialNav.styles';
 
 const iconComponentMap = new Map();
@@ -32,8 +31,15 @@ const renderIcon = (icon: string, label: string) => {
 };
 
 export const DrawerSocialNav = () => {
-  const store = useStore<RootState>();
-  const drawerSocialNav = getMenusData(store.getState(), 'drawerSocialNav');
+  const {
+    data
+  } = useContext(AppContext);
+  const {
+    menus
+  } = data || {};
+  const {
+    drawerSocialNav
+  } = menus || {};
   const { classes } = drawerTopNavStyles();
 
   return (

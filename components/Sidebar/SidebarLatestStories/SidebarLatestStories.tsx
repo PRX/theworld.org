@@ -3,21 +3,19 @@
  * Component for sidebar latest story links list.
  */
 
-import type { RootState } from '@interfaces';
-import React from 'react';
-import { useStore } from 'react-redux';
+import type { PostStory } from '@interfaces';
+import { useContext } from 'react';
 import Link from 'next/link';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Button, Typography } from '@mui/material';
 import { MenuBookRounded, NavigateNext } from '@mui/icons-material';
-import { getCollectionData } from '@store/reducers';
+import { AppContext } from '@contexts/AppContext';
 import { Sidebar } from '../Sidebar';
 import { SidebarHeader } from '../SidebarHeader';
 import { SidebarFooter } from '../SidebarFooter';
-import { SidebarList } from '../SidebarList';
+import { SidebarList, SidebarListItem } from '../SidebarList';
 
 export interface SidebarLatestStoriesProps {
-  data?: IPriApiResource[];
+  data?: PostStory[];
   label?: string;
 }
 
@@ -25,12 +23,27 @@ export const SidebarLatestStories = ({
   data,
   label
 }: SidebarLatestStoriesProps) => {
-  const store = useStore<RootState>();
-  const state = store.getState();
-  const listItems =
-    data || getCollectionData(state, 'app', undefined, 'latest')?.items[1];
+  const {
+    data: appData
+  } = useContext(AppContext);
+  const {
+    latestStories
+  } = appData || {};
+  const stories = data || latestStories;
+  const listItems = stories?.map<SidebarListItem>((story) => ({
+    data: story,
+    ...(story.additionalMedia?.audio && {
+      audio: story.additionalMedia.audio,
+      // audioProps: {
+      //   title: additionalMedia.audio.audioFields?.audioTitle || title
+      // }
+    })
+  }))
 
-  return listItems?.length ? (
+
+  if (!listItems?.length) return null;
+
+  return (
     <Sidebar item elevated>
       <SidebarHeader>
         <MenuBookRounded />
@@ -56,5 +69,5 @@ export const SidebarLatestStories = ({
         </Link>
       </SidebarFooter>
     </Sidebar>
-  ) : null;
+  );
 };

@@ -9,20 +9,28 @@ import { gqlClient } from '@lib/fetch/api';
 export const STORY_CARD_PROPS = gql`
   fragment StoryCardProps on Post {
     id
-    name
+    title
+    excerpt
     link
-    posts(first: 4, where: { notIn: [$id] }) {
+    featuredImage {
+      node {
+        id
+        altText
+        sourceUrl
+      }
+    }
+    primaryCategory: categories(first: 1) {
       nodes {
         id
-        title
-        excerpt
+        name
         link
-        featuredImage {
-          node {
-            id
-            altText
-            sourceUrl
-          }
+      }
+    }
+    additionalMedia {
+      audio {
+        id
+        audioFields {
+          audioTitle
         }
       }
     }
@@ -95,7 +103,14 @@ const GET_POST = gql`
       }
       primaryCategory: categories(first: 1) {
         nodes {
-          ...StoryCardProps
+          id
+          name
+          link
+          posts(first: 4, where: { notIn: [$id] }) {
+            nodes {
+              ...StoryCardProps
+            }
+          }
         }
       }
       tags {

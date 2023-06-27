@@ -16,7 +16,7 @@ export const sidebarHeaderStyles = makeStyles()((theme) => ({
       fontSize: theme.typography.pxToRem(15),
       fontWeight: 400
     },
-    '& > :where(.MuiSvgIcon-root)': {
+    '& > :is(.MuiSvgIcon-root)': {
       marginRight: '0.25rem',
       fill: theme.palette.secondary.main,
       verticalAlign: 'text-bottom'

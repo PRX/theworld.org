@@ -119,9 +119,12 @@ const TwApp = ({
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props as AppProps<AppPageProps>;
   const [plausibleDomain, setPlausibleDomain] = useState('');
-  const { type, id, contentOnly } = pageProps;
+  const { cookies, appData, contentOnly, ...componentProps } = pageProps;
+  const { type, id } = componentProps;
   const contextValue = useMemo(
     () => ({
+      ...(appData && { data: appData }),
+      ...(cookies && { cookies }),
       page: {
         resource: {
           type,
@@ -157,7 +160,7 @@ const TwApp = ({
         <Provider store={store}>
           <CacheProvider value={emotionCache}>
             <ThemeProvider theme={baseMuiTheme}>
-              <AnyComponent {...pageProps} />
+              <AnyComponent {...componentProps} />
               <CssBaseline />
             </ThemeProvider>
           </CacheProvider>
@@ -180,7 +183,7 @@ const TwApp = ({
               <AppContext.Provider value={contextValue}>
                 <Player>
                   <AppLayout>
-                    <AnyComponent {...pageProps} />
+                    <AnyComponent {...componentProps} />
                   </AppLayout>
                   <AppSearch />
                 </Player>

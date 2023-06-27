@@ -3,23 +3,28 @@
  * Component for links to content page.
  */
 
-import type { RootState } from '@interfaces';
-import React from 'react';
+import React, { useContext } from 'react';
 import Image from 'next/legacy/image';
-import { useStore } from 'react-redux';
 import { parse } from 'url';
 import { Box, Breadcrumbs, Container, Divider, Link } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
-import { getMenusData } from '@store/reducers';
 import TwLogo from '@svg/tw-white.svg';
 import PrxLogo from '@svg/PRX-Logo-Horizontal-Color.svg';
 import GBHLogo from '@svg/GBH-Logo-Purple.svg';
+import { AppContext } from '@contexts/AppContext';
 import { appFooterStyles } from './AppFooter.styles';
 
 export const AppFooter = () => {
-  const store = useStore<RootState>();
-  const footerNav = getMenusData(store.getState(), 'footerNav');
+  const {
+    data
+  } = useContext(AppContext);
+  const {
+    menus
+  } = data || {};
+  const {
+    footerNav
+  } = menus || {};
   const copyrightDate = new Date().getFullYear();
   const { classes, cx } = appFooterStyles();
   const producedByLogoClasses = cx(classes.logo, classes.producedByLogo);

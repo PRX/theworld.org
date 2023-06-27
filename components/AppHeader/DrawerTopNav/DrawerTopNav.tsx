@@ -3,19 +3,24 @@
  * Component for app drawer top nav.
  */
 
-import type { RootState } from '@interfaces';
-import React from 'react';
-import { useStore } from 'react-redux';
+import { useContext } from 'react';
 import { parse } from 'url';
 import { Button, ButtonGroup } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
-import { getMenusData } from '@store/reducers';
+import { AppContext } from '@contexts/AppContext';
 import { drawerTopNavStyles } from './DrawerTopNav.styles';
 
 export const DrawerTopNav = () => {
-  const store = useStore<RootState>();
-  const drawerTopNav = getMenusData(store.getState(), 'drawerTopNav');
+  const {
+    data
+  } = useContext(AppContext);
+  const {
+    menus
+  } = data || {};
+  const {
+    drawerTopNav
+  } = menus || {};
   const { classes } = drawerTopNavStyles();
 
   return (

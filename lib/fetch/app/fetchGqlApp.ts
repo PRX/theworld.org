@@ -10,6 +10,8 @@ import { STORY_CARD_PROPS } from '../story';
 
 const MENU_ITEM_PROPS = gql`
   fragment MenuItemProps on MenuItem {
+    id
+    parentId
     label
     url
   }
@@ -20,11 +22,6 @@ const MENU_PROPS = gql`
     menuItems {
       nodes {
         ...MenuItemProps
-        childItems {
-          nodes {
-            ...MenuItemProps
-          }
-        }
       }
     }
   }
@@ -60,7 +57,7 @@ const GET_APP = gql`
   ${MENU_PROPS}
 `;
 
-export const fetchGqlStory = async () => {
+export const fetchGqlApp = async () => {
   const response = await gqlClient.query<{
     program: Maybe<Program>;
     headerMenu: Maybe<Menu>;
@@ -94,4 +91,4 @@ export const fetchGqlStory = async () => {
   };
 };
 
-export default fetchGqlStory;
+export default fetchGqlApp;

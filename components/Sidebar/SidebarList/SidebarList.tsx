@@ -40,6 +40,7 @@ export type SidebarListItem = {
     | TermNode
     | null;
 };
+
 export interface ISidebarListProps extends ListProps {
   data: SidebarListItem[];
   subheaderText?: string;
