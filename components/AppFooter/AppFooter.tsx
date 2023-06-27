@@ -16,15 +16,9 @@ import { AppContext } from '@contexts/AppContext';
 import { appFooterStyles } from './AppFooter.styles';
 
 export const AppFooter = () => {
-  const {
-    data
-  } = useContext(AppContext);
-  const {
-    menus
-  } = data || {};
-  const {
-    footerNav
-  } = menus || {};
+  const { data } = useContext(AppContext);
+  const { menus } = data || {};
+  const { footerNav } = menus || {};
   const copyrightDate = new Date().getFullYear();
   const { classes, cx } = appFooterStyles();
   const producedByLogoClasses = cx(classes.logo, classes.producedByLogo);

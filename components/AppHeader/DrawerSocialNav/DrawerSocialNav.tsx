@@ -31,15 +31,9 @@ const renderIcon = (icon: string, label: string) => {
 };
 
 export const DrawerSocialNav = () => {
-  const {
-    data
-  } = useContext(AppContext);
-  const {
-    menus
-  } = data || {};
-  const {
-    drawerSocialNav
-  } = menus || {};
+  const { data } = useContext(AppContext);
+  const { menus } = data || {};
+  const { drawerSocialNav } = menus || {};
   const { classes } = drawerTopNavStyles();
 
   return (
@@ -65,7 +59,7 @@ export const DrawerSocialNav = () => {
             return {
               ...options,
               ...other,
-              service,
+              service
             };
           })
           .map(({ name, url, icon, key, title, attributes }) => (

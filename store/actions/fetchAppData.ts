@@ -6,17 +6,16 @@
 import { fetchGqlApp } from '@lib/fetch';
 // import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
-export const fetchAppData =
-  async () => {
-    const appData = await fetchGqlApp();
+export const fetchAppData = async () => {
+  const appData = await fetchGqlApp();
 
-    if (appData) {
-      // const ctaDataPromise = dispatch<any>(
-      //   fetchCtaRegionGroupData('tw_cta_regions_site')
-      // );
+  if (appData) {
+    // const ctaDataPromise = dispatch<any>(
+    //   fetchCtaRegionGroupData('tw_cta_regions_site')
+    // );
 
-      return appData;
-    }
+    return appData;
+  }
 
-    return undefined;
-  };
+  return undefined;
+};

@@ -53,7 +53,7 @@ export const parseMenu = (data: MenuItem[]): IButton[] => {
   }
 
   const menu = data
-    .filter(v => !!v.url && !v.parentId)
+    .filter((v) => !!v.url && !v.parentId)
     .map<IButton>(({ id, label, url }) => {
       const isLocal = isLocalUrl(url || '/');
       const service = getServiceFromUrl(url);

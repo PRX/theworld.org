@@ -12,15 +12,9 @@ import { AppContext } from '@contexts/AppContext';
 import { drawerTopNavStyles } from './DrawerTopNav.styles';
 
 export const DrawerTopNav = () => {
-  const {
-    data
-  } = useContext(AppContext);
-  const {
-    menus
-  } = data || {};
-  const {
-    drawerTopNav
-  } = menus || {};
+  const { data } = useContext(AppContext);
+  const { menus } = data || {};
+  const { drawerTopNav } = menus || {};
   const { classes } = drawerTopNavStyles();
 
   return (

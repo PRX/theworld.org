@@ -23,23 +23,18 @@ export const SidebarLatestStories = ({
   data,
   label
 }: SidebarLatestStoriesProps) => {
-  const {
-    data: appData
-  } = useContext(AppContext);
-  const {
-    latestStories
-  } = appData || {};
+  const { data: appData } = useContext(AppContext);
+  const { latestStories } = appData || {};
   const stories = data || latestStories;
   const listItems = stories?.map<SidebarListItem>((story) => ({
     data: story,
     ...(story.additionalMedia?.audio && {
-      audio: story.additionalMedia.audio,
+      audio: story.additionalMedia.audio
       // audioProps: {
       //   title: additionalMedia.audio.audioFields?.audioTitle || title
       // }
     })
-  }))
-
+  }));
 
   if (!listItems?.length) return null;
 

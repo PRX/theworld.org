@@ -123,7 +123,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.4",
-    "prettier": "^2.8.1",
+    "prettier": "^2.8.8",
     "react-test-renderer": "^18.2.0",
     "redux-devtools-extension": "^2.13.9",
     "sass": "^1.60.0",

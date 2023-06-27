@@ -26,15 +26,9 @@ export interface OpenStateMap {
 }
 
 export const DrawerMainNav = () => {
-  const {
-    data
-  } = useContext(AppContext);
-  const {
-    menus
-  } = data || {};
-  const {
-    drawerMainNav
-  } = menus || {};
+  const { data } = useContext(AppContext);
+  const { menus } = data || {};
+  const { drawerMainNav } = menus || {};
   const [{ open }, setState] = useState({
     open: drawerMainNav
       ? drawerMainNav.reduce(
