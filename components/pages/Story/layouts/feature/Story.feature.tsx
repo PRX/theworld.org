@@ -6,6 +6,7 @@
 import type React from 'react';
 import type { ITagsProps } from '@components/Tags';
 import type {
+  IContentComponentProps,
   Post_Additionalmedia as PostAdditionalMedia,
   PostStory
 } from '@interfaces';
@@ -30,11 +31,7 @@ const Tags = dynamic(() =>
   import('@components/Tags').then((mod) => mod.Tags)
 ) as React.FC<ITagsProps>;
 
-export interface IStoryFeaturedProps {
-  data: PostStory;
-}
-
-export const StoryFeatured = ({ data }: IStoryFeaturedProps) => {
+export const StoryFeatured = ({ data }: IContentComponentProps<PostStory>) => {
   const {
     additionalMedia,
     content,

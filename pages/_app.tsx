@@ -4,6 +4,7 @@
  */
 
 import type { RootState } from '@interfaces/state';
+import type { IContentComponentProxyProps } from '@interfaces';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore, Provider } from 'react-redux';
 import { AppProps } from 'next/app';
@@ -27,7 +28,6 @@ import { AppPlayer } from '@components/AppPlayer/AppPlayer';
 import { getUiPlayerOpen, getUiPlayerPlaylistOpen } from '@store/reducers';
 import { Playlist } from '@components/Player/components';
 import createEmotionCache from '@lib/generate/cache/emotion/createEmotionCache';
-import { IContentComponentProxyProps } from '@interfaces';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

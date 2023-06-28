@@ -3,36 +3,36 @@
  * Component for default Story layout.
  */
 
-import type { IPriApiResource } from 'pri-api-library/types';
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import type { ITagsProps } from '@components/Tags';
+import type {
+  IContentComponentProps,
+  Post_Additionalmedia as PostAdditionalMedia,
+  PostStory
+} from '@interfaces';
 import dynamic from 'next/dynamic';
 import { convertNodeToElement, Transform } from 'react-html-parser';
 import { DomElement } from 'htmlparser2';
-import { useStore } from 'react-redux';
 import { ThemeProvider } from '@mui/styles';
-import { Box, Container, Grid, Hidden } from '@mui/material';
+import { Box, Container, Grid } from '@mui/material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { Sidebar, SidebarLatestStories } from '@components/Sidebar';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
-import { ITagsProps } from '@components/Tags';
-import { IContentComponentProps } from '@interfaces/content';
-import { ICtaRegionProps } from '@interfaces/cta';
-import { RootState } from '@interfaces/state';
-import { getCollectionData, getCtaRegionData } from '@store/reducers';
+// import { ICtaRegionProps } from '@interfaces/cta';
 import { useStoryStyles, storyTheme } from './Story.default.styles';
 import { IStoryRelatedLinksProps, StoryHeader, StoryLede } from './components';
 
-const CtaRegion = dynamic(
-  () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
-) as React.FC<ICtaRegionProps>;
+// const CtaRegion = dynamic(
+//   () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
+// ) as React.FC<ICtaRegionProps>;
 
-const SidebarCta = dynamic(
-  () =>
-    import('@components/Sidebar/SidebarCta').then(
-      (mod) => mod.SidebarCta
-    ) as any
-) as React.FC<ICtaRegionProps>;
+// const SidebarCta = dynamic(
+//   () =>
+//     import('@components/Sidebar/SidebarCta').then(
+//       (mod) => mod.SidebarCta
+//     ) as any
+// ) as React.FC<ICtaRegionProps>;
 
 const StoryRelatedLinks = dynamic(
   () =>
@@ -45,90 +45,73 @@ const Tags = dynamic(() =>
   import('@components/Tags').then((mod) => mod.Tags)
 ) as React.FC<ITagsProps>;
 
-interface StateProps extends RootState {}
+export interface IStoryDefaultProps {
+  data: PostStory;
+}
 
-type Props = StateProps & IContentComponentProps<IPriApiResource>;
-
-export const StoryDefault = ({ data }: Props) => {
+export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
   const {
-    type,
-    id,
-    audio,
-    body,
+    additionalMedia,
+    content,
     categories,
     primaryCategory,
     tags,
-    opencalaisCity,
-    opencalaisContinent,
-    opencalaisCountry,
-    opencalaisProvince,
-    opencalaisRegion,
-    opencalaisPerson
+    cities,
+    continents,
+    countries,
+    provincesOrStates,
+    regions,
+    people
   } = data;
-  const store = useStore<RootState>();
-  const [state, updateForce] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    updateForce(store.getState());
-  });
-  const relatedState =
-    primaryCategory &&
-    getCollectionData(
-      state,
-      primaryCategory.type,
-      primaryCategory.id as string,
-      'related'
-    );
-  const related =
-    relatedState &&
-    relatedState.items[1].filter((item) => item.id !== id).slice(0, 4);
-
-  // CTA data.
-  const ctaInlineMobile01 = getCtaRegionData(
-    state,
-    'tw_cta_region_content_inline_mobile_01',
-    type,
-    id as string
-  );
-  const ctaInlineMobile02 = getCtaRegionData(
-    state,
-    'tw_cta_region_content_inline_mobile_02',
-    type,
-    id as string
-  );
-  const ctaInlineEnd = getCtaRegionData(
-    state,
-    'tw_cta_region_content_inline_end',
-    type,
-    id as string
-  );
-  const ctaSidebarTop = getCtaRegionData(
-    state,
-    'tw_cta_region_content_sidebar_01',
-    type,
-    id as string
-  );
-  const ctaSidebarBottom = getCtaRegionData(
-    state,
-    'tw_cta_region_content_sidebar_02',
-    type,
-    id as string
-  );
-
+  const { audio } = additionalMedia as PostAdditionalMedia;
+  const related = primaryCategory?.nodes[0].posts?.nodes;
   const { classes } = useStoryStyles();
   const hasRelated = related && !!related.length;
-  const hasCategories = categories && !!categories.length;
+  const hasCategories = !!categories?.nodes?.length;
   const allTags = [
-    ...(tags || []),
-    ...(opencalaisCity || []),
-    ...(opencalaisContinent || []),
-    ...(opencalaisCountry || []),
-    ...(opencalaisProvince || []),
-    ...(opencalaisRegion || []),
-    ...(opencalaisPerson || [])
+    ...(tags?.nodes || []),
+    ...(cities?.nodes || []),
+    ...(continents?.nodes || []),
+    ...(countries?.nodes || []),
+    ...(provincesOrStates?.nodes || []),
+    ...(regions?.nodes || []),
+    ...(people?.nodes || [])
   ];
   const hasTags = !!allTags.length;
   let ctaMobile01Position: number;
   let ctaMobile02Position: number;
+
+  // // CTA data.
+  // const ctaInlineMobile01 = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_content_inline_mobile_01',
+  //   type,
+  //   id as string
+  // );
+  // const ctaInlineMobile02 = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_content_inline_mobile_02',
+  //   type,
+  //   id as string
+  // );
+  // const ctaInlineEnd = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_content_inline_end',
+  //   type,
+  //   id as string
+  // );
+  // const ctaSidebarTop = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_content_sidebar_01',
+  //   type,
+  //   id as string
+  // );
+  // const ctaSidebarBottom = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_content_sidebar_02',
+  //   type,
+  //   id as string
+  // );
 
   const insertCtaMobile01 = (
     node: DomElement,
@@ -147,11 +130,11 @@ export const StoryDefault = ({ data }: Props) => {
       return (
         <>
           {convertNodeToElement(node, index, transform)}
-          {ctaInlineMobile01 && (
+          {/* {ctaInlineMobile01 && (
             <Hidden mdUp>
               <CtaRegion data={ctaInlineMobile01} />
             </Hidden>
-          )}
+          )} */}
         </>
       );
     }
@@ -177,11 +160,11 @@ export const StoryDefault = ({ data }: Props) => {
       return (
         <>
           {convertNodeToElement(node, index, transform)}
-          {ctaInlineMobile02 && (
+          {/* {ctaInlineMobile02 && (
             <Hidden mdUp>
               <CtaRegion data={ctaInlineMobile02} />
             </Hidden>
-          )}
+          )} */}
         </>
       );
     }
@@ -209,36 +192,31 @@ export const StoryDefault = ({ data }: Props) => {
     }
   });
 
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
-
   return (
     <ThemeProvider theme={storyTheme}>
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
             <StoryHeader data={data} />
-            {audio ? <NoJsPlayer url={audio.url} /> : null}
+            {audio?.sourceUrl ? <NoJsPlayer url={audio.sourceUrl} /> : null}
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.main}>
               <Box className={classes.content}>
                 <StoryLede data={data} />
                 <Box className={classes.body} my={2}>
-                  <HtmlContent
-                    html={body}
-                    transforms={[
-                      insertCtaMobile01,
-                      insertCtaMobile02,
-                      enhanceImages
-                    ]}
-                  />
+                  {content && (
+                    <HtmlContent
+                      html={content}
+                      transforms={[
+                        insertCtaMobile01,
+                        insertCtaMobile02,
+                        enhanceImages
+                      ]}
+                    />
+                  )}
                 </Box>
-                {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
+                {/* {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />} */}
                 {hasRelated && (
                   <aside>
                     <header>
@@ -247,12 +225,14 @@ export const StoryDefault = ({ data }: Props) => {
                     <StoryRelatedLinks data={related} />
                   </aside>
                 )}
-                {hasCategories && <Tags data={categories} label="Categories" />}
+                {hasCategories && (
+                  <Tags data={categories.nodes} label="Categories" />
+                )}
                 {hasTags && <Tags data={allTags} label="Tags" />}
               </Box>
               <Sidebar container className={classes.sidebar}>
                 <SidebarLatestStories />
-                <Hidden smDown>
+                {/* <Hidden smDown>
                   {ctaSidebarTop && (
                     <Sidebar item stretch>
                       <SidebarCta data={ctaSidebarTop} />
@@ -263,7 +243,7 @@ export const StoryDefault = ({ data }: Props) => {
                       <SidebarCta data={ctaSidebarBottom} />
                     </Sidebar>
                   )}
-                </Hidden>
+                </Hidden> */}
               </Sidebar>
             </Box>
           </Grid>

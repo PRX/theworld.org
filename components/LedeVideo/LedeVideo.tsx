@@ -11,7 +11,11 @@ import { useTheme } from '@mui/styles';
 import { ledeVideoStyles } from './LedeVideo.styles';
 
 export interface ILedeVideoProps {
-  data: any;
+  data: {
+    url: string;
+    description?: string;
+    credit?: string;
+  };
 }
 
 export const LedeVideo = ({ data }: ILedeVideoProps) => {

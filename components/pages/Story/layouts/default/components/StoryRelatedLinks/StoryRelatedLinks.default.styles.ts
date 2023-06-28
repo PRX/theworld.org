@@ -12,6 +12,13 @@ export const storyRelatedLinksStyles = makeStyles()((theme) => ({
   title: {
     fontSize: 'inherit'
   },
+  link: {
+    position: 'absolute',
+    inset: 0,
+    overflow: 'hidden',
+    textIndent: '-2000vw'
+  },
+
   MuiCardActionAreaRoot: {
     display: 'flex',
     flexDirection: 'column',
@@ -24,6 +31,7 @@ export const storyRelatedLinksStyles = makeStyles()((theme) => ({
       color: theme.palette.primary.main
     }
   },
+
   MuiCardMediaRoot: {
     position: 'relative',
     paddingTop: `${100 / (16 / 9)}%`

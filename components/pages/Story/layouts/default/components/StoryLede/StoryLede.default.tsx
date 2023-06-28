@@ -3,11 +3,14 @@
  * Component for default story lede.
  */
 
-import React from 'react';
+import type React from 'react';
+import type {
+  PostStory,
+  Post_Additionalmedia as PostAdditionalMedia
+} from '@interfaces';
+import type { ILedeImageProps } from '@components/LedeImage';
+import type { ILedeVideoProps } from '@components/LedeVideo';
 import dynamic from 'next/dynamic';
-import { IPriApiResource } from 'pri-api-library/types';
-import { ILedeImageProps } from '@components/LedeImage';
-import { ILedeVideoProps } from '@components/LedeVideo';
 
 const LedeImage = dynamic(
   () => import('@components/LedeImage').then((mod) => mod.LedeImage) as any
@@ -18,13 +21,15 @@ const LedeVideo = dynamic(
 ) as React.FC<ILedeVideoProps>;
 
 interface Props {
-  data: IPriApiResource;
+  data: PostStory;
 }
 
 export const StoryLede = ({ data }: Props) => {
-  const { image, video } = data;
+  const { featuredImage, additionalMedia } = data;
+  const image = featuredImage?.node;
+  const { video } = additionalMedia as PostAdditionalMedia;
 
-  if (video) return <LedeVideo data={video[0]} />;
+  if (video) return <LedeVideo data={{ url: video }} />;
 
   if (image) return <LedeImage data={image} />;
 
