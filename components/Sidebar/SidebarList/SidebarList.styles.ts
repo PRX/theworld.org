@@ -7,7 +7,13 @@ import { alpha } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 import { headingProps } from '@theme/App.theme';
 
-export const sidebarListStyles = makeStyles()(theme => ({
+export const styleOptions = {
+  avatar: {
+    size: 75
+  }
+};
+
+export const sidebarListStyles = makeStyles()((theme) => ({
   root: {
     '& :is(.MuiLink-root)': {
       '&:hover': {
@@ -62,8 +68,8 @@ export const sidebarListStyles = makeStyles()(theme => ({
     },
 
     '& :is(.MuiAvatar-root)': {
-      width: '75px',
-      height: '75px',
+      width: `${styleOptions.avatar.size}px`,
+      height: `${styleOptions.avatar.size}px`,
       marginRight: theme.spacing(2),
       boxShadow: theme.shadows[3]
     },

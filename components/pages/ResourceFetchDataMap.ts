@@ -16,7 +16,7 @@ export const ResourceFetchDataMap = new Map();
 ResourceFetchDataMap.set('file--audio', fetchAudioData);
 ResourceFetchDataMap.set('file--images', fetchImageData);
 ResourceFetchDataMap.set('file--videos', fetchVideoData);
-ResourceFetchDataMap.set('node--episodes', fetchEpisodeData);
+ResourceFetchDataMap.set('post--episode', fetchEpisodeData);
 ResourceFetchDataMap.set('node--newsletter_sign_ups', fetchNewsletterData);
 ResourceFetchDataMap.set('node--pages', fetchPageData);
 ResourceFetchDataMap.set('node--people', fetchPersonData);
