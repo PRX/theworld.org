@@ -4,7 +4,10 @@
  * Interface for app context.
  */
 
+import { IApp } from '@interfaces/app';
+
 export interface IAppContext {
+  data?: IApp;
   page: {
     resource: {
       type?: string;

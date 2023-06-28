@@ -2,19 +2,12 @@
  * Fetch App data from CMS API.
  */
 
-import { IButton } from '@interfaces';
+import type { IApp } from '@interfaces/app';
 import { parseMenu } from '@lib/parse/menu';
 import { IPriApiCollectionResponse } from 'pri-api-library/types';
 import { fetchPriApiQuery } from '../api/fetchPriApi';
 import { basicStoryParams } from '../api/params';
 import { fetchTwApiMenu } from '../menu';
-
-export interface IApp {
-  latestStories: IPriApiCollectionResponse;
-  menus: {
-    [k: string]: IButton[];
-  };
-}
 
 export const fetchApp = async (): Promise<IApp> => {
   const [

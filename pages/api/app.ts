@@ -3,10 +3,10 @@
  * Gather app data from CMS API.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchApp } from '@lib/fetch/app';
+import { fetchGqlApp } from '@lib/fetch/app';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const apiResp = await fetchApp();
+  const apiResp = await fetchGqlApp();
 
   res.setHeader(
     'Cache-Control',

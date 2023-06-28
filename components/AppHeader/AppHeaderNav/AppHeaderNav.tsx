@@ -3,9 +3,7 @@
  * Component for app header nav.
  */
 
-import type { RootState } from '@interfaces/state';
-import React from 'react';
-import { useStore } from 'react-redux';
+import React, { useContext } from 'react';
 import { parse } from 'url';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -14,7 +12,7 @@ import { FavoriteSharp } from '@mui/icons-material';
 import { ButtonColors, IconButtonColors } from '@interfaces';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
-import { getMenusData } from '@store/reducers';
+import { AppContext } from '@contexts/AppContext';
 import { appHeaderNavTheme } from './AppHeaderNav.styles';
 
 const iconComponentMap = new Map();
@@ -26,8 +24,9 @@ const renderIcon = (icon: string) => {
 };
 
 export const AppHeaderNav = () => {
-  const store = useStore<RootState>();
-  const headerNav = getMenusData(store.getState(), 'headerNav');
+  const { data } = useContext(AppContext);
+  const { menus } = data || {};
+  const { headerNav } = menus || {};
 
   return headerNav?.length ? (
     <ThemeProvider theme={appHeaderNavTheme}>
@@ -37,17 +36,20 @@ export const AppHeaderNav = () => {
           if (!service) return other;
 
           const servicesOptions = new Map([
-            ['prx:give', {
-              icon: 'heart',
-              color: 'secondary'
-            }]
-          ])
+            [
+              'prx:give',
+              {
+                icon: 'heart',
+                color: 'secondary'
+              }
+            ]
+          ]);
           const options = servicesOptions.get(service);
 
           return {
             ...options,
             ...other,
-            service,
+            service
           };
         })
         .map(

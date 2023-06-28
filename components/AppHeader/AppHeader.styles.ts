@@ -7,7 +7,9 @@ import { makeStyles } from 'tss-react/mui';
 
 export const appHeaderStyles = makeStyles()((theme) => ({
   root: {},
-  toolbar: {},
+  toolbar: {
+    gap: theme.spacing(1)
+  },
 
   closeBtn: {
     textTransform: 'capitalize'

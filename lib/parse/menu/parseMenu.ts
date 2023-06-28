@@ -3,49 +3,75 @@
  * Helper functions to parse menu API data into button objects.
  */
 
-import { IButton } from '@interfaces';
-import { MenuItem } from '@interfaces/menu';
+import { IButton, Maybe, MenuItem } from '@interfaces';
 import { isLocalUrl } from '../url';
 
-export const parseMenu = (data: MenuItem[]) => {
+const servicesMap = new Map<string, string>();
+servicesMap.set('give.prx.org', 'prx:give');
+servicesMap.set('facebook.com', 'facebook');
+servicesMap.set('www.facebook.com', 'facebook');
+servicesMap.set('instagram.com', 'instagram');
+servicesMap.set('www.instagram.com', 'instagram');
+servicesMap.set('twitter.com', 'twitter');
+servicesMap.set('www.twitter.com', 'twitter');
+
+function getServiceFromUrl(url?: Maybe<string>) {
+  if (!url) return undefined;
+
+  try {
+    const { hostname } = new URL(url, 'https://theworld.org');
+    const service = servicesMap.get(hostname);
+
+    return service;
+  } catch (e) {
+    return undefined;
+  }
+}
+
+function getChildren(itemId: string, allItems: MenuItem[]) {
+  let children = allItems.filter(({ parentId }) => parentId === itemId);
+
+  if (!children.length) return null;
+
+  children = children.map(
+    ({ id, ...rest }) =>
+      ({
+        ...rest,
+        id,
+        parentId: null,
+        childItems: getChildren(id, allItems)
+      } as MenuItem)
+  );
+
+  return children;
+}
+
+export const parseMenu = (data: MenuItem[]): IButton[] => {
   // If no data or links exist, return empty array.
   if (!data || !data.length) {
-    return [] as IButton[];
+    return [];
   }
 
-  const menu = data.map<IButton>(
-    ({ id, name, url, attributes, children = null, ...rest }) => {
-      const {
-        class: className,
-        color,
-        icon,
-        title,
-        referrerpolicy,
-        ...otherAttributes
-      } = attributes || {};
-      const isLocal = isLocalUrl(url);
+  const menu = data
+    .filter((v) => !!v.url && !v.parentId)
+    .map<IButton>(({ id, label, url }) => {
+      const isLocal = isLocalUrl(url || '/');
+      const service = getServiceFromUrl(url);
+      const children = getChildren(id, data);
 
       return {
-        ...rest,
         key: id,
-        name,
+        name: label,
         url,
-        ...(color && { color }),
-        ...(icon && { icon }),
-        ...(title && { title }),
-        ...(className && {
-          itemLinkClass: className.join(' ')
-        }),
-        children: children && parseMenu(children),
+        ...(service && { service }),
+        ...(children && { children: parseMenu(children) }),
         attributes: {
-          ...otherAttributes,
           ...(!isLocal && {
             referrerPolicy: 'no-referrer-when-downgrade'
           })
         }
       } as IButton;
-    }
-  ) as IButton[];
+    });
 
   return menu;
 };

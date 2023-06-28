@@ -3,9 +3,7 @@
  * Component for app drawer top nav.
  */
 
-import type { RootState } from '@interfaces/state';
-import React, { useState } from 'react';
-import { useStore } from 'react-redux';
+import React, { useContext, useState } from 'react';
 import { handleButtonClick } from '@lib/routing';
 import { IButton } from '@interfaces';
 import {
@@ -17,7 +15,7 @@ import {
   ThemeProvider
 } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { getMenusData } from '@store/reducers';
+import { AppContext } from '@contexts/AppContext';
 import {
   drawerMainNavTheme,
   drawerMainNavStyles
@@ -28,8 +26,9 @@ export interface OpenStateMap {
 }
 
 export const DrawerMainNav = () => {
-  const store = useStore<RootState>();
-  const drawerMainNav = getMenusData(store.getState(), 'drawerMainNav');
+  const { data } = useContext(AppContext);
+  const { menus } = data || {};
+  const { drawerMainNav } = menus || {};
   const [{ open }, setState] = useState({
     open: drawerMainNav
       ? drawerMainNav.reduce(

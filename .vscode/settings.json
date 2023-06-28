@@ -2,7 +2,7 @@
   "editor.formatOnSave": true,
   "eslint.packageManager": "yarn",
   "npm.packageManager": "yarn",
-  "prettier.prettierPath": "./node_modules/prettier",
+  "prettier.prettierPath": "",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -52,5 +52,6 @@
     "VERCEL"
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "prettier.configPath": "prettier.config.js"
 }
