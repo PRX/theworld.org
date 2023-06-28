@@ -16,8 +16,6 @@ export const fetchEpisodeData = async (id: string) => {
   const episode = await dataPromise;
   // await ctaDataPromise;
 
-  console.log(episode);
-
   if (episode) {
     // Set CTA filter props.
     // dispatch({

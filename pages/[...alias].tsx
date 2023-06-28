@@ -98,8 +98,6 @@ export const getServerSideProps: GetServerSideProps<
       default: {
         const aliasData = await fetchTwApiQueryAlias(aliasPath);
 
-        console.log(aliasData);
-
         // Update resource id and type.
         if (aliasData?.url) {
           redirect = aliasData.url;
@@ -131,8 +129,6 @@ export const getServerSideProps: GetServerSideProps<
       if (fetchData && resourceId) {
         const data = await fetchData(resourceId);
         const appData = await fetchAppData();
-
-        console.log(data);
 
         // await store.dispatch<any>(fetchAppData());
 
