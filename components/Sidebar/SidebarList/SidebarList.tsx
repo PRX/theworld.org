@@ -27,7 +27,7 @@ import {
 import { Person } from '@mui/icons-material';
 import { ContentLink } from '@components/ContentLink';
 import { AudioControls } from '@components/Player/components';
-import { sidebarListStyles } from './SidebarList.styles';
+import { sidebarListStyles, styleOptions } from './SidebarList.styles';
 
 export type SidebarListItem = {
   title?: Maybe<string>;
@@ -86,6 +86,8 @@ export const SidebarList = ({
               (('title' in item.data && item.data?.title) ||
                 ('name' in item.data && item.data?.name)));
           const url = item.url || item.data?.link;
+          const avatarSrc = item.avatar?.sourceUrl || item.avatar?.mediaItemUrl;
+
           return item.data ? (
             <ListItemButton
               component={ContentLink}
@@ -94,13 +96,16 @@ export const SidebarList = ({
             >
               {item.avatar && (
                 <ListItemAvatar>
-                  {item.avatar.sourceUrl ? (
-                    <Avatar
-                      component={Image}
-                      alt={`Avatar of ${text}`}
-                      src={item.avatar.sourceUrl}
-                      aria-hidden
-                    />
+                  {avatarSrc ? (
+                    <Avatar aria-hidden>
+                      <Image
+                        src={avatarSrc}
+                        alt={`Avatar of ${text}`}
+                        width={styleOptions.avatar.size}
+                        height={styleOptions.avatar.size}
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </Avatar>
                   ) : (
                     <Avatar className={classes.noAvatarImage} aria-hidden>
                       {text ? (

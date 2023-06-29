@@ -13,9 +13,10 @@ import type {
   INewsletterOptions,
   INewsletterData,
   ICMApiCustomField,
-  ContributorToPostConnection
+  ContributorToPostConnection,
+  IApp
 } from '@interfaces';
-import type { IApp, fetchGqlStory, fetchQuerySearch } from '@lib/fetch';
+import type { fetchGqlStory, fetchQuerySearch } from '@lib/fetch';
 import { format } from 'url';
 
 /**

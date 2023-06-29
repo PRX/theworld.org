@@ -2,6 +2,7 @@
  * @file story/[id].ts
  * Gather story data from CMS API.
  */
+
 import { NextApiRequest, NextApiResponse } from 'next';
 import { fetchGqlStory } from '@lib/fetch';
 

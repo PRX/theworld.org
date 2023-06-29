@@ -36,9 +36,10 @@ export const Story = ({ data }: IContentComponentProps<Post>) => {
     })
   };
   const LayoutComponent = layoutComponentMap.get(format || 'standard');
+  const storyFormat = storyFormats?.nodes[0]?.name;
   const props = {
     Title: title,
-    ...(storyFormats && { 'Story Format': storyFormats.nodes[0].name }),
+    ...(storyFormat && { 'Story Format': storyFormat }),
     ...(!!resourceDevelopmentTags?.nodes.length && {
       'Resource Development': resourceDevelopmentTags.nodes[0].name
     }),

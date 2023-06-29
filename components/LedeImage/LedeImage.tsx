@@ -14,9 +14,10 @@ export interface ILedeImageProps {
 }
 
 export const LedeImage = ({ data }: ILedeImageProps) => {
-  const { altText, caption, sourceUrl, mediaDetails } = data;
+  const { altText, caption, sourceUrl, mediaItemUrl, mediaDetails } = data;
   const { width, height } = mediaDetails || {};
   const { classes } = ledeImageStyles();
+  const imageSrc = sourceUrl || mediaItemUrl;
   const hasCaption = caption && !!caption.length;
   const hasFooter = hasCaption;
   const imageWidth = [
@@ -27,12 +28,12 @@ export const LedeImage = ({ data }: ILedeImageProps) => {
   ];
   const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
-  if (!sourceUrl) return null;
+  if (!imageSrc) return null;
 
   return (
     <figure className={classes.root}>
       <Image
-        src={sourceUrl}
+        src={imageSrc}
         width={width || 16}
         height={height || 9}
         layout="responsive"
