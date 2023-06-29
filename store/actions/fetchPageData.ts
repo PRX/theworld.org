@@ -1,59 +1,40 @@
 /**
- * @file fetchAudioData.ts
+ * @file fetchGqlPage.ts
  *
- * Actions to fetch data for a audio resource.
+ * Fetch data for a page resource.
  */
 
-import { AnyAction } from 'redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import {
-  IPriApiResource,
-  IPriApiResourceResponse
-} from 'pri-api-library/types';
-import { RootState } from '@interfaces/state';
-import { fetchApiPage, fetchPage } from '@lib/fetch';
-import { getDataByResource } from '@store/reducers';
-import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
+import { fetchGqlPage } from '@lib/fetch';
 
-export const fetchPageData = (
-  id: string
-): ThunkAction<void, {}, {}, AnyAction> => async (
-  dispatch: ThunkDispatch<{}, {}, AnyAction>,
-  getState: () => RootState
-): Promise<IPriApiResource> => {
-  const state = getState();
-  const type = 'node--pages';
-  const isOnServer = typeof window === 'undefined';
-  let data = getDataByResource(state, type, id);
+export const fetchPageData = async (id: string) => {
+  const dataPromise = fetchGqlPage(id);
 
-  if (!data || !data.complete || isOnServer) {
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_REQUEST',
-      payload: {
-        type,
-        id
-      }
-    });
+  // const ctaDataPromise = dispatch<any>(
+  //   fetchCtaRegionGroupData('tw_cta_regions_content')
+  // );
 
-    const dataPromise = (isOnServer ? fetchPage : fetchApiPage)(id).then(
-      (resp: IPriApiResourceResponse) => resp && resp.data
-    );
+  const page = await dataPromise;
+  // await ctaDataPromise;
 
-    const ctaDataPromise = dispatch<any>(
-      fetchCtaRegionGroupData('tw_cta_regions_content')
-    );
-
-    data = await dataPromise;
-    await ctaDataPromise;
-
-    dispatch({
-      type: 'FETCH_CONTENT_DATA_SUCCESS',
-      payload: {
-        ...data,
-        complete: true
-      }
-    });
+  if (page) {
+    // Set CTA filter props.
+    // dispatch({
+    //   type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+    //   payload: {
+    //     filterProps: {
+    //       type,
+    //       id,
+    //       props: {
+    //         id,
+    //         categories: [
+    //           ...(story.categories?.nodes || []).map(({ id: tid }) => tid)
+    //         ].filter((v: any) => !!v),
+    //         program: story.programs?.nodes[0].id || null
+    //       }
+    //     }
+    //   } as ICtaFilterProps
+    // });
   }
 
-  return data;
+  return page;
 };

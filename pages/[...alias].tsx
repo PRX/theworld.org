@@ -48,7 +48,7 @@ const ContentProxy = ({ type, data }: Props) => {
 
     case 'post--page':
     case 'node--pages':
-      return <DynamicPage />;
+      return <DynamicPage data={data} />;
 
     case 'term--contributor':
     case 'node--people':
