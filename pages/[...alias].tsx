@@ -127,8 +127,10 @@ export const getServerSideProps: GetServerSideProps<
       const fetchData = getResourceFetchData(resourceType);
 
       if (fetchData && resourceId) {
-        const data = await fetchData(resourceId);
-        const appData = await fetchAppData();
+        const [data, appData] = await Promise.all([
+          fetchData(resourceId),
+          fetchAppData()
+        ]);
 
         // await store.dispatch<any>(fetchAppData());
 
