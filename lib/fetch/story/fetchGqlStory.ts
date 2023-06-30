@@ -5,6 +5,7 @@
 import type { Maybe, Post, PostToCategoryConnection } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
+import { IMAGE_PROPS, POST_SEO_PROPS } from '@lib/fetch/api/graphql';
 
 export const STORY_CARD_PROPS = gql`
   fragment StoryCardProps on Post {
@@ -14,9 +15,7 @@ export const STORY_CARD_PROPS = gql`
     link
     featuredImage {
       node {
-        id
-        altText
-        sourceUrl
+        ...ImageProps
       }
     }
     primaryCategory: categories(first: 1) {
@@ -35,6 +34,7 @@ export const STORY_CARD_PROPS = gql`
       }
     }
   }
+  ${IMAGE_PROPS}
 `;
 
 const GET_POST = gql`
@@ -47,14 +47,8 @@ const GET_POST = gql`
       content
       featuredImage {
         node {
-          id
-          sourceUrl
-          altText
+          ...ImageProps
           caption
-          mediaDetails {
-            width
-            height
-          }
         }
       }
       additionalDates {
@@ -163,38 +157,12 @@ const GET_POST = gql`
         }
       }
       seo {
-        canonical
-        metaDesc
-        metaKeywords
-        metaRobotsNofollow
-        metaRobotsNoindex
-        opengraphDescription
-        opengraphTitle
-        opengraphImage {
-          sourceUrl
-          mediaDetails {
-            width
-            height
-          }
-          mimeType
-        }
-        opengraphUrl
-        title
-        twitterDescription
-        twitterTitle
-        twitterImage {
-          mediaDetails {
-            height
-            width
-          }
-          sourceUrl
-          mimeType
-        }
-        opengraphType
+        ...PostSEOProps
       }
     }
   }
   ${STORY_CARD_PROPS}
+  ${POST_SEO_PROPS}
 `;
 
 export const fetchGqlStory = async (id: string) => {

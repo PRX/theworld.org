@@ -5,18 +5,7 @@
 import type { Episode } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
-
-const IMAGE_PROPS = gql`
-  fragment ImageProps on MediaItem {
-    id
-    altText
-    mediaItemUrl
-    mediaDetails {
-      width
-      height
-    }
-  }
-`;
+import { IMAGE_PROPS, POST_SEO_PROPS } from '@lib/fetch/api/graphql';
 
 const CONTRIBUTOR_PROPS = gql`
   fragment ContributorProps on Contributor {
@@ -92,10 +81,14 @@ const GET_EPISODE = gql`
           ...ContributorProps
         }
       }
+      seo {
+        ...PostSEOProps
+      }
     }
   }
   ${CONTRIBUTOR_PROPS}
   ${IMAGE_PROPS}
+  ${POST_SEO_PROPS}
 `;
 
 export async function fetchGqlEpisode(id: string) {

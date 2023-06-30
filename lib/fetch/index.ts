@@ -10,6 +10,7 @@ export * from './page';
 export * from './person';
 export * from './program';
 export * from './query';
+export * from './segment';
 export * from './story';
 export * from './team';
 export * from './term';

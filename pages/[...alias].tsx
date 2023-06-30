@@ -22,6 +22,7 @@ const DynamicEpisode = dynamic(() => import('@components/pages/Episode'));
 const DynamicNewsletter = dynamic(() => import('@components/pages/Newsletter'));
 const DynamicPage = dynamic(() => import('@components/pages/Page'));
 const DynamicProgram = dynamic(() => import('@components/pages/Program'));
+const DynamicSegment = dynamic(() => import('@components/pages/Segment'));
 const DynamicStory = dynamic(() => import('@components/pages/Story'));
 const DynamicTeam = dynamic(() => import('@components/pages/Team'));
 const DynamicTerm = dynamic(() => import('@components/pages/Term'));
@@ -57,6 +58,9 @@ const ContentProxy = ({ type, data }: Props) => {
     case 'term--program':
     case 'node--programs':
       return <DynamicProgram />;
+
+    case 'post--segment':
+      return <DynamicSegment data={data} />;
 
     case 'post--story':
     case 'node--stories':
