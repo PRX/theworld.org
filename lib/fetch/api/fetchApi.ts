@@ -16,7 +16,12 @@ import type {
   ContributorToPostConnection,
   IApp
 } from '@interfaces';
-import type { fetchGqlStory, fetchQuerySearch } from '@lib/fetch';
+import type {
+  fetchGqlAudio,
+  fetchGqlEpisode,
+  fetchGqlStory,
+  fetchQuerySearch
+} from '@lib/fetch';
 import { format } from 'url';
 
 /**
@@ -189,7 +194,7 @@ export const fetchApiStory = async (id: number, init?: RequestInit) =>
  *    Episode data object.
  */
 export const fetchApiEpisode = async (id: string, init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: `episode/${id}`, init });
+  fetchApi<ReturnType<typeof fetchGqlEpisode>>({ path: `episode/${id}`, init });
 
 /**
  * Method that simplifies GET queries for audio file data.
@@ -203,7 +208,10 @@ export const fetchApiEpisode = async (id: string, init?: RequestInit) =>
  *    Audio file data object.
  */
 export const fetchApiFileAudio = async (id: string, init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: `file/audio/${id}`, init });
+  fetchApi<ReturnType<typeof fetchGqlAudio>>({
+    path: `file/audio/${id}`,
+    init
+  });
 
 /**
  * Method that simplifies GET queries for video file data.

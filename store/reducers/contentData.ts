@@ -25,10 +25,7 @@ export const contentData = (state: State = {}, action: AnyAction) => {
 
       return {
         ...state,
-        [key]: {
-          ...(state[key] && state[key].complete ? state[key] : action.payload),
-          ...(action.payload.complete ? action.payload : {})
-        }
+        ...(key && { [key]: action.payload })
       };
 
     case 'FETCH_BULK_CONTENT_DATA_SUCCESS':
@@ -40,10 +37,7 @@ export const contentData = (state: State = {}, action: AnyAction) => {
             ? a
             : {
                 ...a,
-                [k]: {
-                  ...(state[k] && state[k].complete ? state[k] : item),
-                  ...(item.complete ? item : {})
-                }
+                [k]: item
               };
         }, {})
       };
@@ -53,8 +47,11 @@ export const contentData = (state: State = {}, action: AnyAction) => {
   }
 };
 
-export const getContentData = (
+export function getContentData<T>(
   state: ContentDataState,
   type?: string,
   id?: string | number
-) => (state || {})[makeResourceSignature({ type, id })];
+) {
+  const data = (state || {})[makeResourceSignature({ type, id })];
+  return data ? (data as T) : undefined;
+}

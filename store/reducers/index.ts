@@ -42,11 +42,13 @@ export const reducers = combineReducers({
 export const getDataByAlias = (state: RootState, alias: string) =>
   fromAliasData.getAliasData(state.aliasData, alias);
 
-export const getDataByResource = (
+export function getDataByResource<T>(
   state: RootState,
   type?: string,
   id?: string | number
-) => fromContentData.getContentData(state.contentData, type, id);
+) {
+  return fromContentData.getContentData<T>(state.contentData, type, id);
+}
 
 export const getContentDataByAlias = (state: RootState, alias: string) => {
   const aliasData = fromAliasData.getAliasData(state.aliasData, alias);

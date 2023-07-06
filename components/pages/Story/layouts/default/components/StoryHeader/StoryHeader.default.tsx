@@ -37,7 +37,6 @@ export const StoryHeader = ({ data }: Props) => {
   const {
     title,
     date,
-    featuredImage,
     additionalMedia,
     additionalDates,
     primaryCategory,
@@ -46,13 +45,11 @@ export const StoryHeader = ({ data }: Props) => {
   } = data;
   const { audio } = additionalMedia as PostAdditionalMedia;
   const { broadcastDate, updatedDate } = additionalDates as PostAdditionalDates;
-  const image = featuredImage?.node;
   const program = programs?.nodes[0];
   const bylines: [string, Contributor[]][] = [];
   const audioProps = {
     title,
     queuedFrom: 'Page Header Controls',
-    ...(image?.sourceUrl && { imageUrl: image.sourceUrl }),
     linkResource: data
   } as Partial<IAudioData>;
   const { classes } = storyHeaderStyles();

@@ -46,6 +46,7 @@ export const StoryFeatured = ({ data }: IContentComponentProps<PostStory>) => {
     people
   } = data;
   const { audio } = additionalMedia as PostAdditionalMedia;
+  const audioUrl = audio?.sourceUrl || audio?.mediaItemUrl;
   const related = primaryCategory?.nodes[0].posts?.nodes;
   const { classes } = storyStyles();
   const hasRelated = related && !!related.length;
@@ -87,7 +88,7 @@ export const StoryFeatured = ({ data }: IContentComponentProps<PostStory>) => {
       <StoryHeader data={data} />
       <Container classes={{ maxWidthLg: classes.MuiContainerMaxWidthLg }} fixed>
         <Box className={classes.body} my={2}>
-          {audio?.sourceUrl ? <NoJsPlayer url={audio.sourceUrl} /> : null}
+          {audioUrl && <NoJsPlayer url={audioUrl} />}
           {content && (
             <HtmlContent html={content} transforms={[enhanceImages]} />
           )}

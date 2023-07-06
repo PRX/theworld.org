@@ -5,63 +5,106 @@
  */
 
 import { IAudioData } from '@components/Player/types';
-import { IAudioResource } from '@interfaces';
+import {
+  Contributor,
+  Episode,
+  MediaItem,
+  PostStory,
+  Segment
+} from '@interfaces';
 import { generateAudioUrl } from '@lib/generate/string';
 
 export const parseAudioData = (
-  data: IAudioResource,
+  data: MediaItem,
   fallbackProps?: Partial<IAudioData>
-): IAudioData => {
+) => {
   const {
-    guid,
-    type,
     id,
-    metatags,
-    url,
-    audioTitle,
-    audioAuthor,
-    metadata,
-    program,
-    broadcastDate: audioBroadcastDate
+    date: dataDate,
+    sourceUrl,
+    mediaItemUrl,
+    title: dataTitle,
+    audioFields,
+    parent,
+    contributors
   } = data;
-  const { canonical } = metatags || {};
-  const { duration } = metadata || {};
+  const url = sourceUrl || mediaItemUrl;
+
+  if (!url) return undefined;
+
   const {
-    imageUrl,
+    audioTitle,
+    program: programs,
+    broadcastDate: audioBroadcastDate
+  } = audioFields || {};
+  const program = programs?.[0];
+  const programImage = program?.taxonomyImages?.logo;
+  const programImageUrl = programImage?.sourceUrl || programImage?.mediaItemUrl;
+  const audioAuthor = contributors?.nodes;
+  const {
+    imageUrl: fallbackImageUrl,
     title: fallbackTitle,
     linkResource,
     queuedFrom
   } = fallbackProps || {};
-  const broadcastDate = audioBroadcastDate;
-  // linkResource?.broadcastDate ||
-  // linkResource?.dateBroadcast ||
-  // linkResource?.datePublished;
-  const dataString =
+  const {
+    title: parentTitle,
+    featuredImage,
+    link: parentLink
+  } = (parent?.node as PostStory | Segment | Episode) || {};
+  const link = linkResource?.link || parentLink;
+  const linkResourceImage = linkResource?.featuredImage?.node;
+  const linkResourceImageUrl =
+    linkResourceImage?.sourceUrl || linkResourceImage?.mediaItemUrl;
+  const parentFeatureImage = featuredImage?.node;
+  const parentImageUrl =
+    parentFeatureImage?.sourceUrl || parentFeatureImage?.mediaItemUrl;
+  const imageUrl =
+    linkResourceImageUrl ||
+    parentImageUrl ||
+    fallbackImageUrl ||
+    programImageUrl;
+  const title =
+    linkResource?.title ||
+    parentTitle ||
+    fallbackTitle ||
+    audioTitle ||
+    dataTitle;
+  const broadcastDate =
+    (linkResource &&
+      ((linkResource as PostStory).additionalDates?.broadcastDate ||
+        (linkResource as Segment).segmentDates?.broadcastDate ||
+        (linkResource as Episode).episodeDates?.broadcastDate ||
+        linkResource.date)) ||
+    (parent?.node &&
+      ((parent.node as PostStory).additionalDates?.broadcastDate ||
+        (parent.node as Segment).segmentDates?.broadcastDate ||
+        (parent.node as Episode).episodeDates?.broadcastDate ||
+        parent.node.date)) ||
+    audioBroadcastDate ||
+    dataDate;
+  const dateString =
     broadcastDate &&
     ((d) => {
-      const timeStamp = parseInt(d, 10) * 1000;
-      const date = new Date(timeStamp);
+      const date = new Date(d);
       return date.toLocaleDateString(undefined, { dateStyle: 'medium' });
     })(broadcastDate);
   const info = [
-    ...(program ? [program.title] : [metatags?.['og:site_name']]),
-    ...(audioAuthor ? audioAuthor.map(({ title }) => title) : []),
-    ...(dataString ? [dataString] : [])
+    ...(program ? [program.name] : []),
+    ...(audioAuthor
+      ? audioAuthor.map(({ name }: Contributor) => name).filter((v) => !!v)
+      : []),
+    ...(dateString ? [dateString] : [])
   ];
 
   return {
-    guid: guid || `${type}:${id}`,
+    guid: id,
     url: generateAudioUrl(url),
-    title: audioTitle || fallbackTitle || metatags?.['og:title'],
-    queuedFrom,
-    link: canonical,
-    ...(program?.metatags?.['og:image'] && {
-      imageUrl: program.metatags['og:image']
-    }),
-    ...(metatags?.['og:image'] && { imageUrl: metatags?.['og:image'] }),
+    ...(title && { title }),
+    ...(queuedFrom && { queuedFrom }),
+    ...(link && { link }),
     ...(imageUrl && { imageUrl }),
-    ...(duration && { duration }),
     ...(info.length ? { info } : {}),
     ...(linkResource && { linkResource })
-  };
+  } as IAudioData;
 };

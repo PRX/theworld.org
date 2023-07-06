@@ -8,14 +8,17 @@ import { useStore } from 'react-redux';
 import { CircularProgress, NoSsr, Tooltip } from '@mui/material';
 import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 import { PlaylistAddSharp, PlaylistAddCheckSharp } from '@mui/icons-material';
-import { type IPriApiResource } from 'pri-api-library/types';
 import { type IAudioData } from '@components/Player/types';
-import { RootState, type IAudioResource } from '@interfaces';
+import type {
+  RootState,
+  MediaItem,
+  PostStory,
+  Segment,
+  Episode
+} from '@interfaces';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { parseAudioData } from '@lib/parse/audio/audioData';
 import { fetchAudioData } from '@store/actions/fetchAudioData';
-import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
-import { fetchStoryData } from '@store/actions/fetchStoryData';
 import { getDataByResource } from '@store/reducers';
 import { useAddAudioButtonStyles } from './AddAudioButton.styles';
 
@@ -32,7 +35,7 @@ export const AddAudioButton = ({
   ...other
 }: IAddAudioButtonProps) => {
   const store = useStore<RootState>();
-  const [audio, setAudio] = useState<IAudioResource>();
+  const [audio, setAudio] = useState<MediaItem>();
   const [audioData, setAudioData] = useState<IAudioData>();
   const [loading, setLoading] = useState(false);
   const {
@@ -71,53 +74,55 @@ export const AddAudioButton = ({
     e.preventDefault();
     (async () => {
       setLoading(true);
-      const ar = await store.dispatch<any>(fetchAudioData(id));
-      let linkResource: IPriApiResource | undefined;
+      const ar = (await store.dispatch<any>(fetchAudioData(id))) as
+        | MediaItem
+        | undefined;
 
-      if (ar.usage?.story) {
-        linkResource = await store.dispatch<any>(
-          fetchStoryData(ar.usage.story[0].id)
-        );
-      }
+      if (!ar) return;
 
-      if (ar.usage?.episode) {
-        linkResource = await store.dispatch<any>(
-          fetchEpisodeData(ar.usage.episode[0].id)
-        );
-      }
+      const linkResource = ar.parent?.node as PostStory | Segment | Episode;
+      const linkResourceImage = linkResource.featuredImage?.node;
+      const linkResourceImageUrl =
+        linkResourceImage?.sourceUrl || linkResourceImage?.mediaItemUrl;
+      const ad = parseAudioData(
+        ar,
+        linkResource
+          ? {
+              ...fallbackProps,
+              ...(linkResource.title && { title: linkResource.title }),
+              ...(linkResourceImageUrl && { imageUrl: linkResourceImageUrl }),
+              linkResource
+            }
+          : fallbackProps
+      );
 
       setLoading(false);
       setAudio(ar);
-      addTrack(
-        parseAudioData(
-          ar,
-          linkResource
-            ? {
-                ...fallbackProps,
-                title: linkResource.title,
-                ...(linkResource.image && { imageUrl: linkResource.image.url }),
-                linkResource
-              }
-            : fallbackProps
-        )
-      );
+
+      if (ad) {
+        addTrack(ad);
+      }
     })();
   };
 
   useEffect(() => {
-    setAudio(
-      getDataByResource(store.getState(), 'file--audio', id) as IAudioResource
+    const ar = getDataByResource<MediaItem>(
+      store.getState(),
+      'file--audio',
+      id
     );
+    setAudio(ar);
   }, [id, store]);
 
   useEffect(() => {
-    setAudioData(audio && parseAudioData(audio, fallbackProps));
+    if (audio) {
+      const ad = parseAudioData(audio, fallbackProps);
+      setAudioData(ad);
+    }
   }, [audio, fallbackProps]);
 
   useEffect(() => {
-    const track = (tracks || []).find(
-      ({ guid }) => guid === `file--audio:${id}`
-    );
+    const track = (tracks || []).find(({ guid }) => guid === id);
     if (track) {
       if (!audioData) setAudioData(track);
       setIsQueued(true);

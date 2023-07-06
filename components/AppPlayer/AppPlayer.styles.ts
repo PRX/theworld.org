@@ -6,7 +6,7 @@
 import { alpha } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const appPlayerStyles = makeStyles()(theme => ({
+export const appPlayerStyles = makeStyles()((theme) => ({
   root: {
     position: 'relative',
     isolation: 'isolate',
@@ -82,5 +82,9 @@ export const appPlayerStyles = makeStyles()(theme => ({
     [theme.breakpoints.down('xs')]: {
       display: 'none'
     }
+  },
+
+  MuiMenuItemRoot: {
+    textAlign: 'start'
   }
 }));
