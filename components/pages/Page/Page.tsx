@@ -3,31 +3,16 @@
  * Component for Pages.
  */
 
-import type { RootState } from '@interfaces';
-import React, { useContext, useEffect, useState } from 'react';
-import { useStore } from 'react-redux';
+import type { IContentComponentProps, Page as PageType } from '@interfaces';
 import { Box, Container, Grid } from '@mui/material';
-import { AppContext } from '@contexts/AppContext';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
-import { getDataByResource } from '@store/reducers';
 import { pageStyles } from './Page.styles';
 import { PageHeader } from './components/PageHeader';
 
-export const Page = () => {
-  const {
-    page: {
-      resource: { type, id }
-    }
-  } = useContext(AppContext);
-  const store = useStore<RootState>();
-  const [state, setState] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
-  const data = getDataByResource(state, type, id);
-  const { metatags, title, body } = data || ({} as typeof data);
+export const Page = ({ data }: IContentComponentProps<PageType>) => {
+  const { id, seo, title, content } = data || {};
   const { classes } = pageStyles();
 
   // Plausible Events.
@@ -36,24 +21,22 @@ export const Page = () => {
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Page', { props }]];
 
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
-
   return (
     <>
-      <MetaTags data={metatags} />
-      <Plausible events={plausibleEvents} subject={{ type, id }} />
+      {seo && <MetaTags data={seo} />}
+      <Plausible
+        events={plausibleEvents}
+        subject={{ type: 'post--page', id }}
+      />
       <Container fixed>
         <Grid container>
           <Grid item xs={12}>
             <PageHeader data={data} />
-            <Box className={classes.body} my={2}>
-              <HtmlContent html={body} />
-            </Box>
+            {content && (
+              <Box className={classes.body} my={2}>
+                <HtmlContent html={content} />
+              </Box>
+            )}
           </Grid>
         </Grid>
       </Container>

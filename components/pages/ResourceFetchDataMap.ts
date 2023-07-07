@@ -18,7 +18,7 @@ ResourceFetchDataMap.set('file--images', fetchImageData);
 ResourceFetchDataMap.set('file--videos', fetchVideoData);
 ResourceFetchDataMap.set('post--episode', fetchEpisodeData);
 ResourceFetchDataMap.set('node--newsletter_sign_ups', fetchNewsletterData);
-ResourceFetchDataMap.set('node--pages', fetchPageData);
+ResourceFetchDataMap.set('post--page', fetchPageData);
 ResourceFetchDataMap.set('node--people', fetchPersonData);
 ResourceFetchDataMap.set('node--programs', fetchProgramData);
 ResourceFetchDataMap.set('post--story', fetchStoryData);

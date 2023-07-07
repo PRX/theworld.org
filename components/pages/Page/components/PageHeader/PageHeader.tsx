@@ -3,13 +3,12 @@
  * Component for page header.
  */
 
-import React from 'react';
+import type { Page } from '@interfaces';
 import { Box, Typography } from '@mui/material';
-import { IPriApiResource } from 'pri-api-library/types';
 import { pageHeaderStyles } from './PageHeader.styles';
 
 interface Props {
-  data: IPriApiResource;
+  data: Page;
 }
 
 export const PageHeader = ({ data }: Props) => {
