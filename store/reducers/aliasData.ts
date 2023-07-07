@@ -46,12 +46,12 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
 
     case 'FETCH_CONTENT_DATA_SUCCESS':
       href = generateLinkHrefForContent(
-        action.payload,
+        action.payload.link,
         true
       ) as UrlWithParsedQuery;
       return {
         ...state,
-        ...(action.payload &&
+        ...(href &&
           href?.pathname && {
             [href.pathname.substr(1)]: {
               id: action.payload.id,

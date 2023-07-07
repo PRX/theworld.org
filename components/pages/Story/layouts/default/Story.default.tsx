@@ -64,6 +64,7 @@ export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
     people
   } = data;
   const { audio } = additionalMedia as PostAdditionalMedia;
+  const audioUrl = audio?.sourceUrl || audio?.mediaItemUrl;
   const related = primaryCategory?.nodes[0].posts?.nodes;
   const { classes } = useStoryStyles();
   const hasRelated = related && !!related.length;
@@ -198,7 +199,7 @@ export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
         <Grid container>
           <Grid item xs={12}>
             <StoryHeader data={data} />
-            {audio?.sourceUrl ? <NoJsPlayer url={audio.sourceUrl} /> : null}
+            {audioUrl && <NoJsPlayer url={audioUrl} />}
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.main}>

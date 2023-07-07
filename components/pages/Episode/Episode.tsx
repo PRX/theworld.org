@@ -257,7 +257,9 @@ export const Episode = ({ data }: IContentComponentProps<EpisodeType>) => {
                     <SidebarList
                       disablePadding
                       data={segmentsList.map((segment) => ({
-                        data: segment,
+                        data:
+                          segment?.segmentContent?.audio?.parent?.node ||
+                          segment,
                         audio: segment?.segmentContent?.audio
                       }))}
                     />

@@ -30,11 +30,11 @@ interface Props {
 }
 
 export const AudioHeader = ({ data }: Props) => {
-  const { title, id, contributors, programs, segmentDates } = data;
+  const { title, contributors, programs, segmentDates, segmentContent } = data;
+  const { audio } = segmentContent || {};
   const program = programs?.nodes[0];
   const { broadcastDate } = segmentDates as SegmentSegmentDates;
   const audioProps = {
-    title,
     queuedFrom: 'Page Header Controls',
     linkResource: data
   } as Partial<IAudioData>;
@@ -82,7 +82,7 @@ export const AudioHeader = ({ data }: Props) => {
           )}
         </Box>
         <Box className={classes.audio}>
-          <AudioControls id={id as string} fallbackProps={audioProps} />
+          {audio && <AudioControls id={audio.id} fallbackProps={audioProps} />}
         </Box>
       </Box>
     </Box>

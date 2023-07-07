@@ -59,6 +59,7 @@ const GET_POST = gql`
         audio {
           id
           sourceUrl
+          mediaItemUrl
         }
       }
       presentation {

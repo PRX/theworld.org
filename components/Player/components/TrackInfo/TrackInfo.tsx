@@ -25,7 +25,8 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
   const thumbnailHeight = 48;
   const thumbnailWidth = thumbnailHeight * thumbnailAspectRatio;
   const { classes: styles, cx } = useTrackInfoStyles({
-    hasLink: !!linkResource
+    hasLink: !!linkResource,
+    hasImage: !!imageUrl
   });
   const rootClassNames = cx(styles.root, className);
 
@@ -48,7 +49,7 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
             duration: 0.2
           }}
         >
-          {imageUrl ? (
+          {imageUrl && (
             <Image
               className={styles.image}
               src={imageUrl}
@@ -57,8 +58,6 @@ export const TrackInfo = ({ className }: ITrackInfoProps) => {
               layout="fixed"
               alt={`Thumbnail for "${title}"`}
             />
-          ) : (
-            <div className={styles.image} />
           )}
           <Box className={styles.text}>
             <Marquee>

@@ -5,14 +5,13 @@
 
 import React, { forwardRef, useContext, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, Skeleton } from '@mui/material';
 import {
   CheckSharp,
   CloseSharp,
   SelectAllSharp,
   WarningSharp
 } from '@mui/icons-material';
-import { Skeleton } from '@mui/lab';
 import { PlayerContext } from '@components/Player/contexts/PlayerContext';
 import { useEmbedModalContentStyles } from './EmbedModalContent.styles';
 

@@ -61,6 +61,9 @@ export const AppPlayer = () => {
   const buttonClasses = {
     root: styles.iconButtonRoot
   };
+  const menuItemClasses = {
+    root: styles.MuiMenuItemRoot
+  };
 
   const handleMenuOpen = (e: MouseEvent<HTMLButtonElement>) => {
     setMenuButtonEl(e.currentTarget);
@@ -168,25 +171,42 @@ export const AppPlayer = () => {
           { component: 'nav', style: { display: 'grid' } } as ListProps
         }
       >
-        <MenuItem component="button" onClick={handleClearPlaylistClick}>
+        <MenuItem
+          component="button"
+          classes={menuItemClasses}
+          onClick={handleClearPlaylistClick}
+        >
           <ListItemIcon>
             <DeleteForeverSharp />
           </ListItemIcon>
           <ListItemText>Clear Playlist</ListItemText>
         </MenuItem>
-        <MenuItem component="button" onClick={handleRemoveTrackClick}>
+        <MenuItem
+          component="button"
+          classes={menuItemClasses}
+          onClick={handleRemoveTrackClick}
+        >
           <ListItemIcon>
             <DeleteSharp />
           </ListItemIcon>
           <ListItemText>Remove From Playlist</ListItemText>
         </MenuItem>
-        <MenuItem component="button" onClick={handleShowEmbedModalClick}>
+        <MenuItem
+          component="button"
+          classes={menuItemClasses}
+          onClick={handleShowEmbedModalClick}
+        >
           <ListItemIcon>
             <CodeSharp />
           </ListItemIcon>
           <ListItemText>Embed Audio</ListItemText>
         </MenuItem>
-        <MenuItem component="a" href={currentTrack?.url} download>
+        <MenuItem
+          component="a"
+          classes={menuItemClasses}
+          href={currentTrack?.url}
+          download
+        >
           <ListItemIcon>
             <GetAppSharp />
           </ListItemIcon>
