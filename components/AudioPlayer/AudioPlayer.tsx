@@ -5,20 +5,23 @@
 
 import React, { useEffect, useReducer, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import ReactPlayer, { FilePlayerProps } from 'react-player/file';
+import ReactPlayer, { type FilePlayerProps } from 'react-player/file';
 import { Box, IconButton, NoSsr } from '@mui/material';
 import { GetAppSharp, PlayArrowSharp } from '@mui/icons-material';
-import { IDurationProps } from '@components/Duration';
+import { type IDurationProps } from '@components/Duration';
 import { formatDuration } from '@lib/parse/time';
 import TwGlobeLogo from '@svg/tw-globe.svg';
 import { AudioPlayerActionTypes as ActionTypes } from './AudioPlayer.actions';
-import { IAudioPlayerProps, IProgressState } from './AudioPlayer.interfaces';
+import type {
+  IAudioPlayerProps,
+  IProgressState
+} from './AudioPlayer.interfaces';
 import {
   audioPlayerStateReducer,
   audioPlayerInitialState
 } from './AudioPlayer.reducer';
 import { audioPlayerStyles } from './AudioPlayer.styles';
-import { IEmbedCodeProps } from './EmbedCode';
+import type { IEmbedCodeProps } from './EmbedCode';
 import { NoJsPlayer } from './NoJsPlayer';
 
 const Duration = dynamic(() =>
@@ -73,8 +76,9 @@ export const AudioPlayer = ({
   popoutPlayerUrl,
   ...other
 }: IAudioPlayerProps) => {
-  const url = typeof data === 'string' ? data : data.url;
-  const playerElm = useRef<HTMLAudioElement>(null);
+  const url =
+    typeof data === 'string' ? data : data?.sourceUrl || data?.mediaItemUrl;
+  const playerElm = useRef<ReactPlayer>(null);
   const rootElm = useRef<HTMLDivElement>(null);
   const [
     {
@@ -148,13 +152,14 @@ export const AudioPlayer = ({
     },
     max: 1,
     step: 0.001,
-    value: seeking || played || undefined,
+    value: seeking || played || 0,
     // valueLabelDisplay: 'auto',
     valueLabelFormat: (seek: number) => formatDuration((duration || 0) * seek),
     onChangeCommitted: () => {
-      if (!seeking) return;
+      if (!seeking || !playerElm.current) return;
 
-      playerElm.current?.fastSeek(seeking);
+      playerElm.current.seekTo(seeking);
+
       dispatch({
         type: ActionTypes.AUDIO_PLAYER_UPDATE_PROGRESS_TO_SEEKING
       });
@@ -199,101 +204,103 @@ export const AudioPlayer = ({
   }, []);
 
   return (
-    <NoSsr defer fallback={<NoJsPlayer url={url} />}>
-      <ReactPlayer {...playerAttrs} />
-      <div ref={rootElm} className={rootClasses} {...other}>
-        <IconButton
-          className={playBtnClassNames}
-          classes={iconButtonClasses}
-          aria-label={playing ? 'Pause' : 'Play'}
-          onClick={() =>
-            dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_PLAYING })
-          }
-          disableRipple
-        >
-          {!playing && <PlayArrowSharp titleAccess="Play" />}
-          {playing && <PauseSharp titleAccess="Pause" />}
-        </IconButton>
-        {showControls && (
-          <Box className={classes.controls}>
-            <Box className={classes.progressControls}>
-              <Duration
-                className={cx(classes.duration, classes.played)}
-                seconds={playedSeconds || 0}
-              />
-              <Box className={classes.progress}>
-                <Box
-                  className={classes.loaded}
-                  style={{ width: `${(loaded || 0) * 100}%` }}
+    url && (
+      <NoSsr defer fallback={<NoJsPlayer url={url} />}>
+        <ReactPlayer {...playerAttrs} />
+        <div ref={rootElm} className={rootClasses} {...other}>
+          <IconButton
+            className={playBtnClassNames}
+            classes={iconButtonClasses}
+            aria-label={playing ? 'Pause' : 'Play'}
+            onClick={() =>
+              dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_PLAYING })
+            }
+            disableRipple
+          >
+            {!playing && <PlayArrowSharp titleAccess="Play" />}
+            {playing && <PauseSharp titleAccess="Pause" />}
+          </IconButton>
+          {showControls && (
+            <Box className={classes.controls}>
+              <Box className={classes.progressControls}>
+                <Duration
+                  className={cx(classes.duration, classes.played)}
+                  seconds={playedSeconds || 0}
                 />
-                <Slider {...seekAttr} valueLabelDisplay="auto" />
+                <Box className={classes.progress}>
+                  <Box
+                    className={classes.loaded}
+                    style={{ width: `${(loaded || 0) * 100}%` }}
+                  />
+                  <Slider {...seekAttr} valueLabelDisplay="auto" />
+                </Box>
+                <Duration
+                  className={cx(classes.duration, classes.total)}
+                  seconds={duration || 0}
+                />
               </Box>
-              <Duration
-                className={cx(classes.duration, classes.total)}
-                seconds={duration || 0}
-              />
+              <Box className={classes.volumeControls}>
+                <IconButton
+                  classes={iconButtonClasses}
+                  title={muted ? 'Mute' : 'Unmute'}
+                  onClick={() =>
+                    dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_MUTED })
+                  }
+                  disableRipple
+                >
+                  <VolumeBtnIcon />
+                </IconButton>
+                <Slider {...volumeAdjustAttrs} />
+              </Box>
             </Box>
-            <Box className={classes.volumeControls}>
+          )}
+          {showMessage && <Box className={classes.message}>{message}</Box>}
+          {embedCodeShown && embeddedPlayerUrl && (
+            <EmbedCode src={embeddedPlayerUrl} />
+          )}
+          <Box className={classes.menu}>
+            {!!embeddedPlayerUrl && (
               <IconButton
                 classes={iconButtonClasses}
-                title={muted ? 'Mute' : 'Unmute'}
+                className={classes.embedBtn}
+                title={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
                 onClick={() =>
-                  dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_MUTED })
+                  dispatch({
+                    type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
+                  })
                 }
                 disableRipple
               >
-                <VolumeBtnIcon />
+                {!embedCodeShown && <CodeSharp />}
+                {embedCodeShown && <CloseSharp />}
               </IconButton>
-              <Slider {...volumeAdjustAttrs} />
-            </Box>
-          </Box>
-        )}
-        {showMessage && <Box className={classes.message}>{message}</Box>}
-        {embedCodeShown && embeddedPlayerUrl && (
-          <EmbedCode src={embeddedPlayerUrl} />
-        )}
-        <Box className={classes.menu}>
-          {!!embeddedPlayerUrl && (
+            )}
             <IconButton
-              classes={iconButtonClasses}
-              className={classes.embedBtn}
-              title={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
-              onClick={() =>
-                dispatch({
-                  type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
-                })
-              }
-              disableRipple
-            >
-              {!embedCodeShown && <CodeSharp />}
-              {embedCodeShown && <CloseSharp />}
-            </IconButton>
-          )}
-          <IconButton
-            classes={iconButtonClasses}
-            component="a"
-            href={url}
-            title="Download Audio"
-            disableRipple
-          >
-            <GetAppSharp />
-          </IconButton>
-          {!!popoutPlayerUrl && (
-            <IconButton
-              className={classes.popoutBtn}
               classes={iconButtonClasses}
               component="a"
-              href={popoutPlayerUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="View on TheWorld.org"
+              href={url}
+              title="Download Audio"
               disableRipple
             >
-              <TwGlobeLogo />
+              <GetAppSharp />
             </IconButton>
-          )}
-        </Box>
-      </div>
-    </NoSsr>
+            {!!popoutPlayerUrl && (
+              <IconButton
+                className={classes.popoutBtn}
+                classes={iconButtonClasses}
+                component="a"
+                href={popoutPlayerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="View on TheWorld.org"
+                disableRipple
+              >
+                <TwGlobeLogo />
+              </IconButton>
+            )}
+          </Box>
+        </div>
+      </NoSsr>
+    )
   );
 };

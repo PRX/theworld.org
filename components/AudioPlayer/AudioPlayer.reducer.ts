@@ -28,7 +28,7 @@ export const audioPlayerStateReducer = (
   state: IAudioPlayerState,
   action: AudioPlayerAction
 ): IAudioPlayerState => {
-  const { playing, muted, seeking, embedCodeShown, prevTop } = state;
+  const { playing, muted, seeking, duration, embedCodeShown, prevTop } = state;
 
   switch (action.type) {
     case ActionTypes.AUDIO_PLAYER_INIT:
@@ -64,16 +64,17 @@ export const audioPlayerStateReducer = (
     case ActionTypes.AUDIO_PLAYER_UPDATE_PROGRESS_TO_SEEKING:
       return {
         ...state,
-        played: seeking,
+        played: seeking || 0,
+        playedSeconds: (duration || 0) * (seeking || 0),
         seeking: null
       };
 
     case ActionTypes.AUDIO_PLAYER_UPDATE_DURATION:
       return {
         ...state,
-        duration: action.payload,
-        playing: false,
-        hasPlayed: false
+        duration: action.payload
+        // playing: false,
+        // hasPlayed: false
       };
 
     case ActionTypes.AUDIO_PLAYER_SHOW_EMBED_CODE:

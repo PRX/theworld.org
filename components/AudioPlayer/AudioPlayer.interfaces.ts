@@ -3,10 +3,10 @@
  * Defines interfaces used by audio player.
  */
 import { HTMLAttributes } from 'react';
-import { IAudioResource } from '@interfaces';
+import { Maybe, MediaItem } from '@interfaces';
 
 export interface IAudioPlayerProps extends HTMLAttributes<{}> {
-  data: IAudioResource | string;
+  data?: Maybe<MediaItem> | string;
   downloadFilename?: string | true;
   embeddedPlayerUrl?: string;
   message?: string;
