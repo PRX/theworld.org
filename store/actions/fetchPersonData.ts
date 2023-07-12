@@ -25,7 +25,7 @@ export const fetchPersonData =
     const state = getState();
     const type = 'node--people';
     const isOnServer = typeof window === 'undefined';
-    let data = getDataByResource(state, type, id);
+    let data = getDataByResource<any>(state, type, id);
 
     if (!data || !data.complete || isOnServer) {
       dispatch({

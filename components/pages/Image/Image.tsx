@@ -30,7 +30,7 @@ export const Image = () => {
     setState(store.getState());
   });
   const { cx } = imageStyles();
-  const data = getDataByResource(state, type, id);
+  const data = getDataByResource<any>(state, type, id);
   const { metatags, title, description } = data;
 
   // CTA data.

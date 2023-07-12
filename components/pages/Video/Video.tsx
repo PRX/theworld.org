@@ -29,7 +29,7 @@ export const Video = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const data = getDataByResource(state, type, id);
+  const data = getDataByResource<any>(state, type, id);
   const { metatags, title, description } = data;
   const { cx } = videoStyles();
 

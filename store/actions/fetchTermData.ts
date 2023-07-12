@@ -27,7 +27,7 @@ export const fetchTermData =
     const type = 'taxonomy_term--terms';
     const params = req?.url ? parse(req.url, true).query : undefined;
     const isOnServer = typeof window === 'undefined';
-    let data = getDataByResource(state, type, id);
+    let data = getDataByResource<any>(state, type, id);
 
     if (!data || !data.complete || isOnServer) {
       dispatch({

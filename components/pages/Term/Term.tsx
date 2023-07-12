@@ -3,11 +3,10 @@
  * Component for Term.
  */
 
-import type { RootState } from '@interfaces';
+import type { Episode, PostStory, RootState } from '@interfaces';
 import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useStore } from 'react-redux';
-import { IPriApiResource } from 'pri-api-library/types';
 import {
   AppBar,
   Box,
@@ -50,7 +49,7 @@ export const Term = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const data = getDataByResource(state, type, id);
+  const data = getDataByResource<any>(state, type, id);
 
   // CTA data.
   const ctaInlineTop = getCtaRegionData(
@@ -78,24 +77,24 @@ export const Term = () => {
     id
   );
 
-  const featuredStoryState = getCollectionData(
+  const featuredStoryState = getCollectionData<PostStory>(
     state,
     type,
     id,
     'featured story'
   );
-  const featuredStory = featuredStoryState?.items[1][0];
+  const featuredStory = featuredStoryState?.items[0];
   const { items: featuredStories } =
-    getCollectionData(state, type, id, 'featured stories') || {};
-  const storiesState = getCollectionData(state, type, id, 'stories');
+    getCollectionData<PostStory>(state, type, id, 'featured stories') || {};
+  const storiesState = getCollectionData<PostStory>(state, type, id, 'stories');
   const { items: stories, pageInfo } = storiesState || {};
   const hasStories = !!stories.length;
-  const episodesState = getCollectionData(state, type, id, 'episodes');
+  const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
   const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
   const hasEpisodes = !!episodes.length;
   const isEpisodesView =
     (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
-  const latestEpisode = episodes && episodes[1].shift();
+  const latestEpisode = episodes && episodes.shift();
   const { metatags, title, description } = data;
   const [loadingStories, setLoadingStories] = useState(false);
   const [loadingEpisodes, setLoadingEpisodes] = useState(false);
@@ -170,11 +169,13 @@ export const Term = () => {
                 <StoryCard data={featuredStory} feature priority />
               )}
               {featuredStories && (
-                <StoryCardGrid data={featuredStories[1]} gap={1} />
+                <StoryCardGrid data={featuredStories} gap={1} />
               )}
             </Box>
           )}
-          {isEpisodesView && <EpisodeCard data={latestEpisode} />}
+          {isEpisodesView && latestEpisode && (
+            <EpisodeCard data={latestEpisode} />
+          )}
           {ctaInlineTop && (
             <>
               <Hidden xsDown>
@@ -199,8 +200,8 @@ export const Term = () => {
                   <StoryCard
                     data={item}
                     feature={
-                      item.displayTemplate &&
-                      item.displayTemplate !== 'standard'
+                      !!item.presentation?.format &&
+                      item.presentation?.format !== 'standard'
                     }
                     key={item.id}
                   />
@@ -226,11 +227,9 @@ export const Term = () => {
           )}
           {isEpisodesView && (
             <>
-              {episodes
-                .reduce((a, p) => [...a, ...p], [])
-                .map((item: IPriApiResource) => (
-                  <EpisodeCard data={item} key={item.id} />
-                ))}
+              {episodes.map((item) => (
+                <EpisodeCard data={item} key={item.id} />
+              ))}
               {episodesPageInfo.hasNextPage && (
                 <Box>
                   <Button
@@ -274,7 +273,7 @@ export const Term = () => {
             <SidebarEpisode
               data={{
                 ...latestEpisode,
-                program: data
+                programs: data
               }}
               label="Latest Episode"
             />

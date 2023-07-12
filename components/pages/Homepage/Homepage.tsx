@@ -27,7 +27,7 @@ import {
   getCtaRegionData,
   getMenusData
 } from '@store/reducers';
-import { IButton, RootState } from '@interfaces';
+import { Episode, IButton, PostStory, RootState } from '@interfaces';
 import { AppContext } from '@contexts/AppContext';
 
 const CtaRegion = dynamic(
@@ -49,20 +49,25 @@ export const Homepage = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const featuredStoryState = getCollectionData(
+  const featuredStoryState = getCollectionData<PostStory>(
     state,
     'homepage',
     undefined,
     'featured story'
   );
-  const featuredStory = featuredStoryState?.items[1][0];
+  const featuredStory = featuredStoryState?.items[0];
   const { items: featuredStories } =
-    getCollectionData(state, 'homepage', undefined, 'featured stories') || {};
+    getCollectionData<PostStory>(
+      state,
+      'homepage',
+      undefined,
+      'featured stories'
+    ) || {};
   const { items: stories } =
-    getCollectionData(state, 'homepage', undefined, 'stories') || {};
+    getCollectionData<PostStory>(state, 'homepage', undefined, 'stories') || {};
   const { items: latestStories } =
-    getCollectionData(state, 'homepage', undefined, 'latest') || {};
-  const episodesState = getCollectionData(
+    getCollectionData<PostStory>(state, 'homepage', undefined, 'latest') || {};
+  const episodesState = getCollectionData<Episode>(
     state,
     'homepage',
     undefined,
@@ -117,7 +122,7 @@ export const Homepage = () => {
         <>
           <Box display="grid" gridTemplateColumns="1fr" gap={1}>
             <StoryCard data={featuredStory} feature priority />
-            <StoryCardGrid data={featuredStories[1]} gap={1} />
+            <StoryCardGrid data={featuredStories} gap={1} />
           </Box>
           {inlineTop && (
             <>
@@ -140,7 +145,8 @@ export const Homepage = () => {
             <StoryCard
               data={item}
               feature={
-                item.displayTemplate && item.displayTemplate !== 'standard'
+                !!item.presentation?.format &&
+                item.presentation?.format !== 'standard'
               }
               key={item.id}
             />
@@ -165,13 +171,15 @@ export const Homepage = () => {
       key: 'sidebar top',
       children: (
         <>
-          <SidebarEpisode data={latestEpisode} label="Latest Episode" />
+          {latestEpisode && (
+            <SidebarEpisode data={latestEpisode} label="Latest Episode" />
+          )}
           {sidebarTop && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={sidebarTop} />
                 <SidebarLatestStories
-                  data={latestStories[1]}
+                  data={latestStories}
                   label="Latest from our partners"
                 />
               </Hidden>

@@ -203,104 +203,104 @@ export const AudioPlayer = ({
     };
   }, []);
 
+  if (!url) return null;
+
   return (
-    url && (
-      <NoSsr defer fallback={<NoJsPlayer url={url} />}>
-        <ReactPlayer {...playerAttrs} />
-        <div ref={rootElm} className={rootClasses} {...other}>
-          <IconButton
-            className={playBtnClassNames}
-            classes={iconButtonClasses}
-            aria-label={playing ? 'Pause' : 'Play'}
-            onClick={() =>
-              dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_PLAYING })
-            }
-            disableRipple
-          >
-            {!playing && <PlayArrowSharp titleAccess="Play" />}
-            {playing && <PauseSharp titleAccess="Pause" />}
-          </IconButton>
-          {showControls && (
-            <Box className={classes.controls}>
-              <Box className={classes.progressControls}>
-                <Duration
-                  className={cx(classes.duration, classes.played)}
-                  seconds={playedSeconds || 0}
+    <NoSsr defer fallback={<NoJsPlayer url={url} />}>
+      <ReactPlayer {...playerAttrs} />
+      <div ref={rootElm} className={rootClasses} {...other}>
+        <IconButton
+          className={playBtnClassNames}
+          classes={iconButtonClasses}
+          aria-label={playing ? 'Pause' : 'Play'}
+          onClick={() =>
+            dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_PLAYING })
+          }
+          disableRipple
+        >
+          {!playing && <PlayArrowSharp titleAccess="Play" />}
+          {playing && <PauseSharp titleAccess="Pause" />}
+        </IconButton>
+        {showControls && (
+          <Box className={classes.controls}>
+            <Box className={classes.progressControls}>
+              <Duration
+                className={cx(classes.duration, classes.played)}
+                seconds={playedSeconds || 0}
+              />
+              <Box className={classes.progress}>
+                <Box
+                  className={classes.loaded}
+                  style={{ width: `${(loaded || 0) * 100}%` }}
                 />
-                <Box className={classes.progress}>
-                  <Box
-                    className={classes.loaded}
-                    style={{ width: `${(loaded || 0) * 100}%` }}
-                  />
-                  <Slider {...seekAttr} valueLabelDisplay="auto" />
-                </Box>
-                <Duration
-                  className={cx(classes.duration, classes.total)}
-                  seconds={duration || 0}
-                />
+                <Slider {...seekAttr} valueLabelDisplay="auto" />
               </Box>
-              <Box className={classes.volumeControls}>
-                <IconButton
-                  classes={iconButtonClasses}
-                  title={muted ? 'Mute' : 'Unmute'}
-                  onClick={() =>
-                    dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_MUTED })
-                  }
-                  disableRipple
-                >
-                  <VolumeBtnIcon />
-                </IconButton>
-                <Slider {...volumeAdjustAttrs} />
-              </Box>
+              <Duration
+                className={cx(classes.duration, classes.total)}
+                seconds={duration || 0}
+              />
             </Box>
-          )}
-          {showMessage && <Box className={classes.message}>{message}</Box>}
-          {embedCodeShown && embeddedPlayerUrl && (
-            <EmbedCode src={embeddedPlayerUrl} />
-          )}
-          <Box className={classes.menu}>
-            {!!embeddedPlayerUrl && (
+            <Box className={classes.volumeControls}>
               <IconButton
                 classes={iconButtonClasses}
-                className={classes.embedBtn}
-                title={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
+                title={muted ? 'Mute' : 'Unmute'}
                 onClick={() =>
-                  dispatch({
-                    type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
-                  })
+                  dispatch({ type: ActionTypes.AUDIO_PLAYER_TOGGLE_MUTED })
                 }
                 disableRipple
               >
-                {!embedCodeShown && <CodeSharp />}
-                {embedCodeShown && <CloseSharp />}
+                <VolumeBtnIcon />
               </IconButton>
-            )}
+              <Slider {...volumeAdjustAttrs} />
+            </Box>
+          </Box>
+        )}
+        {showMessage && <Box className={classes.message}>{message}</Box>}
+        {embedCodeShown && embeddedPlayerUrl && (
+          <EmbedCode src={embeddedPlayerUrl} />
+        )}
+        <Box className={classes.menu}>
+          {!!embeddedPlayerUrl && (
             <IconButton
               classes={iconButtonClasses}
-              component="a"
-              href={url}
-              title="Download Audio"
+              className={classes.embedBtn}
+              title={embedCodeShown ? 'Hide embed code' : 'Show embed code'}
+              onClick={() =>
+                dispatch({
+                  type: ActionTypes.AUDIO_PLAYER_TOGGLE_EMBED_CODE_SHOWN
+                })
+              }
               disableRipple
             >
-              <GetAppSharp />
+              {!embedCodeShown && <CodeSharp />}
+              {embedCodeShown && <CloseSharp />}
             </IconButton>
-            {!!popoutPlayerUrl && (
-              <IconButton
-                className={classes.popoutBtn}
-                classes={iconButtonClasses}
-                component="a"
-                href={popoutPlayerUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="View on TheWorld.org"
-                disableRipple
-              >
-                <TwGlobeLogo />
-              </IconButton>
-            )}
-          </Box>
-        </div>
-      </NoSsr>
-    )
+          )}
+          <IconButton
+            classes={iconButtonClasses}
+            component="a"
+            href={url}
+            title="Download Audio"
+            disableRipple
+          >
+            <GetAppSharp />
+          </IconButton>
+          {!!popoutPlayerUrl && (
+            <IconButton
+              className={classes.popoutBtn}
+              classes={iconButtonClasses}
+              component="a"
+              href={popoutPlayerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="View on TheWorld.org"
+              disableRipple
+            >
+              <TwGlobeLogo />
+            </IconButton>
+          )}
+        </Box>
+      </div>
+    </NoSsr>
   );
 };

@@ -90,7 +90,7 @@ export const PlaylistItem = ({
         )}
       </Box>
       <Box className={styles.controls}>
-        <PlayAudioButton audio={audio} />
+        <PlayAudioButton id={audio.guid} />
         <Tooltip title="Remove From Playlist" placement="top" arrow>
           <IconButton
             classes={iconButtonClasses}
