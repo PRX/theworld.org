@@ -123,7 +123,11 @@ export const StoryHeader = ({ data }: Props) => {
                     component="div"
                     className={classes.date}
                   >
-                    <Moment format="MMMM D, YYYY" tz="America/New_York">
+                    <Moment
+                      format="MMMM D, YYYY"
+                      tz="America/New_York"
+                      {...(broadcastDate && { parse: 'YYYY-MM-DD' })}
+                    >
                       {broadcastDate || date}
                     </Moment>
                   </Typography>

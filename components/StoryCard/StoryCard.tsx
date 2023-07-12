@@ -7,9 +7,7 @@ import type React from 'react';
 import type { UrlWithParsedQuery } from 'url';
 import type {
   // ILink,
-  PostStory,
-  Post_Additionaldates as PostAdditionalDates,
-  Post_Additionalmedia as PostAdditionalMedia
+  PostStory
 } from '@interfaces';
 import type { IAudioControlsProps } from '@components/Player/components';
 import type { IAudioData } from '@components/Player/types';
@@ -37,6 +35,7 @@ import {
 import { Label } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
+import { HtmlContent } from '@components/HtmlContent';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { useStoryCardStyles, storyCardTheme } from './StoryCard.styles';
 
@@ -72,8 +71,8 @@ export const StoryCard = ({
     additionalMedia
   } = data;
   const image = featuredImage?.node;
-  const { broadcastDate } = additionalDates as PostAdditionalDates;
-  const { audio } = additionalMedia as PostAdditionalMedia;
+  const { broadcastDate } = additionalDates || {};
+  const { audio } = additionalMedia || {};
   const audioProps = {
     title,
     queuedFrom: 'Card Controls',
@@ -185,7 +184,11 @@ export const StoryCard = ({
                 >
                   <Grid item xs="auto" zeroMinWidth>
                     <Typography component="span">
-                      <Moment format="MMMM D, YYYY" tz="America/New_York" unix>
+                      <Moment
+                        format="MMMM D, YYYY"
+                        tz="America/New_York"
+                        {...(broadcastDate && { parse: 'YYYY-MM-DD' })}
+                      >
                         {broadcastDate || date}
                       </Moment>
                     </Typography>
@@ -216,9 +219,11 @@ export const StoryCard = ({
                 </Box>
               )}
             </Box>
-            <Typography variant="body1" component="p" color="textSecondary">
-              {excerpt}
-            </Typography>
+            {excerpt && (
+              <Typography variant="body1" component="div" color="textSecondary">
+                <HtmlContent html={excerpt} />
+              </Typography>
+            )}
           </CardContent>
           <ContentLink url={data.link} className={classes.link} />
         </CardActionArea>

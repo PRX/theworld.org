@@ -14,11 +14,14 @@ import type {
   INewsletterData,
   ICMApiCustomField,
   ContributorToPostConnection,
-  IApp
+  IApp,
+  ProgramToPostConnection,
+  CollectionQueryOptions
 } from '@interfaces';
 import type {
   fetchGqlAudio,
   fetchGqlEpisode,
+  fetchGqlProgram,
   fetchGqlStory,
   fetchQuerySearch
 } from '@lib/fetch';
@@ -253,35 +256,37 @@ export const fetchApiFileImage = async (id: string, init?: RequestInit) =>
  *    Story data object.
  */
 export const fetchApiProgram = async (id: string, init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: `program/${id}`, init });
+  fetchApi<ReturnType<typeof fetchGqlProgram>>({ path: `program/${id}`, init });
 
 /**
  * Method that simplifies GET queries for program stories data.
  *
  * @param id
  *    API id of program.
- * @param req
- *    Request object from `getInitialProps` ctx object.
+ * @param options
+ *    Collection query options.
+ * @param init
+ *    Fetch init options.
  *
  * @returns
  *    Story collection data object.
  */
 export const fetchApiProgramStories = async (
   id: string,
-  endCursor?: string,
-  range?: number,
-  exclude?: string[],
+  options?: CollectionQueryOptions,
   init?: RequestInit
-) =>
-  fetchApi<IPriApiCollectionResponse>({
-    path: `program/${id}/stories`,
+) => {
+  const { cursor, pageSize, exclude } = options || {};
+  return fetchApi<ProgramToPostConnection>({
+    path: `program/${id}/posts`,
     query: {
-      ...(endCursor && { endCursor }),
-      ...(range && { range: `${range}` }),
-      ...(exclude && { exclude })
+      ...(options && { c: cursor }),
+      ...(pageSize && { f: `${pageSize}` }),
+      ...(exclude && { e: exclude })
     },
     init
   });
+};
 
 /**
  * Method that simplifies GET queries for program stories data.
@@ -296,20 +301,20 @@ export const fetchApiProgramStories = async (
  */
 export const fetchApiProgramEpisodes = async (
   id: string,
-  endCursor?: string,
-  range?: number,
-  exclude?: string[],
+  options?: CollectionQueryOptions,
   init?: RequestInit
-) =>
-  fetchApi<IPriApiCollectionResponse>({
+) => {
+  const { cursor, pageSize, exclude } = options || {};
+  return fetchApi<ProgramToPostConnection>({
     path: `program/${id}/episodes`,
     query: {
-      ...(endCursor && { endCursor }),
-      ...(range && { range: `${range}` }),
-      ...(exclude && { exclude })
+      ...(options && { c: cursor }),
+      ...(pageSize && { f: `${pageSize}` }),
+      ...(exclude && { e: exclude })
     },
     init
   });
+};
 
 /**
  * Method that simplifies GET queries for category data.

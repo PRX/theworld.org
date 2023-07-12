@@ -10,6 +10,7 @@ export const pageHeaderStyles = makeStyles()((theme) => ({
     fontSize: '1.2rem'
   },
   title: {
-    fontSize: theme.typography.pxToRem(46)
+    fontSize: theme.typography.pxToRem(46),
+    textWrap: 'balance'
   }
 }));

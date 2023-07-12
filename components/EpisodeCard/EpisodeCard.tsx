@@ -3,11 +3,13 @@
  * Component for story card links.
  */
 
-import React from 'react';
+import type React from 'react';
+import type { Episode } from '@interfaces';
+import type { IAudioControlsProps } from '@components/Player/components';
+import type { IAudioData } from '@components/Player/types';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
 import Image from 'next/legacy/image';
-import { IPriApiResource } from 'pri-api-library/types';
 import {
   Box,
   Card,
@@ -22,9 +24,7 @@ import { EqualizerRounded } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
-import { IAudioControlsProps } from '@components/Player/components';
-import { IAudioData } from '@components/Player/types';
-import { SidebarAudioList } from '@components/Sidebar/SidebarAudioList';
+import { SidebarList } from '@components/Sidebar';
 import { episodeCardStyles, episodeCardTheme } from './EpisodeCard.styles';
 
 const Moment = dynamic(() => import('react-moment')) as any;
@@ -34,19 +34,32 @@ const AudioControls = dynamic(() =>
 ) as React.FC<IAudioControlsProps>;
 
 export interface EpisodeCardProps {
-  data: IPriApiResource;
+  data: Episode;
   priority?: boolean;
 }
 
 export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
-  const { title, teaser, image, audio, dateBroadcast, datePublished } = data;
+  const {
+    link,
+    title,
+    date,
+    excerpt,
+    featuredImage,
+    episodeAudio,
+    episodeDates
+  } = data;
+  const image = featuredImage?.node;
+  const imageUrl = image?.sourceUrl || image?.mediaItemUrl;
+  const { audio } = episodeAudio || {};
+  const { broadcastDate } = episodeDates || {};
   const audioProps = {
     title,
     queuedFrom: 'Card Controls',
-    ...(image && { imageUrl: image.url }),
+    ...(imageUrl && { imageUrl }),
     linkResource: data
   } as Partial<IAudioData>;
-  const { segments } = audio || {};
+  const { audioFields } = audio || {};
+  const segments = audioFields?.segmentsList;
   const { classes } = episodeCardStyles();
   const imageWidth = [
     ['max-width: 600px', '100vw'],
@@ -59,11 +72,11 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
     <ThemeProvider theme={episodeCardTheme}>
       <Card square elevation={1} classes={{ root: classes.MuiCardRoot }}>
         <CardActionArea component="div">
-          {image && (
+          {imageUrl && (
             <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
               <Image
-                src={image.url}
-                alt={image.alt}
+                src={imageUrl}
+                alt={image?.altText || ''}
                 layout="fill"
                 objectFit="cover"
                 sizes={sizes}
@@ -78,9 +91,9 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
                   <Moment
                     format="dddd, MMMM D, YYYY"
                     tz="America/New_York"
-                    unix
+                    {...(broadcastDate && { parse: 'YYYY-MM-DD' })}
                   >
-                    {dateBroadcast || datePublished}
+                    {broadcastDate || date}
                   </Moment>
                 </Typography>
                 <Typography
@@ -99,20 +112,22 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
               )}
             </Box>
             <Typography variant="body1" component="div" color="textSecondary">
-              <Box className={classes.body}>
-                <HtmlContent html={teaser} />
-              </Box>
+              {excerpt && (
+                <Box className={classes.body}>
+                  <HtmlContent html={excerpt} />
+                </Box>
+              )}
             </Typography>
-            <ContentLink
-              url={data.metatags.canonical}
-              className={classes.link}
-            />
+            <ContentLink url={link} className={classes.link} />
           </CardContent>
         </CardActionArea>
         {segments && (
           <CardActions classes={{ root: classes.MuiCardActionsRoot }}>
-            <SidebarAudioList
-              data={segments}
+            <SidebarList
+              data={segments.map((segment) => ({
+                data: segment?.segmentContent?.audio?.parent?.node || segment,
+                audio: segment?.segmentContent?.audio
+              }))}
               classes={{
                 root: classes.MuiListRoot,
                 padding: classes.MuiListPadding

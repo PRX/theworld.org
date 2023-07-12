@@ -3,11 +3,16 @@
  * Component for Program.
  */
 
-import type { RootState } from '@interfaces';
-import React, { useContext, useEffect, useState } from 'react';
+import type {
+  Episode,
+  IContentComponentProps,
+  PostStory,
+  Program as ProgramType,
+  RootState
+} from '@interfaces';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useStore } from 'react-redux';
-import { IPriApiResource } from 'pri-api-library/types';
 import {
   AppBar,
   Box,
@@ -33,34 +38,48 @@ import {
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-// import { fetchApiProgramEpisodes, fetchApiProgramStories } from '@lib/fetch';
+import { fetchApiProgramEpisodes, fetchApiProgramStories } from '@lib/fetch';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { EpisodeCard } from '@components/EpisodeCard';
-import { AppContext } from '@contexts/AppContext';
-// import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import {
-  getCollectionData,
-  getCtaRegionData,
-  getDataByResource
-} from '@store/reducers';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { generateLinkPropsForContent } from '@lib/routing';
 import { programStyles, programTheme } from './Program.styles';
 
-export const Program = () => {
-  const {
-    page: {
-      resource: { type, id }
-    }
-  } = useContext(AppContext);
+export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   const router = useRouter();
   const { query } = router;
   const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
+  const [moreStoriesController, setMoreStoriesController] =
+    useState<AbortController>();
+  const [moreEpisodesController, setMoreEpisodesController] =
+    useState<AbortController>();
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
+  const type = 'term--program';
+  const {
+    id,
+    seo,
+    name,
+    description,
+    teaserFields,
+    taxonomyImages,
+    programHosts,
+    sponsorship,
+    landingPage
+  } = data;
+  const { teaser } = teaserFields || {};
+  const { imageBanner, logo } = taxonomyImages || {};
+  const { hosts } = programHosts || {};
+  const { collectionSponsorLinks } = sponsorship || {};
+  const sponsors = collectionSponsorLinks?.reduce(
+    (a, sl) => (sl?.sponsorLinks ? [...a, sl.sponsorLinks] : a),
+    []
+  );
+  const { featuredPosts } = landingPage || {};
   const { classes } = programStyles();
-  const data = getDataByResource(state, type, id);
 
   // CTA data.
   const ctaInlineTop = getCtaRegionData(
@@ -88,35 +107,22 @@ export const Program = () => {
     id
   );
 
-  const featuredStoryState = getCollectionData(
-    state,
-    type,
-    id,
-    'featured story'
-  );
-  const featuredStory = featuredStoryState?.items[1][0];
-  const { items: featuredStories } =
-    getCollectionData(state, type, id, 'featured stories') || {};
-  const storiesState = getCollectionData(state, type, id, 'stories');
+  const storiesState = getCollectionData<PostStory>(state, type, id, 'stories');
+  const featuredStory = (featuredPosts || storiesState?.items || []).shift();
+  const featuredStories = [
+    ...(featuredPosts || []),
+    ...(storiesState?.items || []).splice(0, 4 - (featuredPosts?.length || 0))
+  ];
   const { items: stories, pageInfo } = storiesState || {};
-  const hasStories = !!stories.length;
-  const episodesState = getCollectionData(state, type, id, 'episodes');
+  const hasStories = !!stories?.length;
+
+  const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
   const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
   const hasEpisodes = !!episodes?.length;
   const isEpisodesView =
     (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
-  const latestEpisode = episodes && episodes[1].shift();
+  const latestEpisode = episodes?.shift();
   const hasContentLinks = hasStories || hasEpisodes;
-  const {
-    metatags,
-    title,
-    teaser,
-    bannerImage,
-    podcastLogo,
-    hosts,
-    sponsors,
-    body
-  } = data;
   // const context = [`node:${id}`];
   const [loadingStories, setLoadingStories] = useState(false);
   const [loadingEpisodes, setLoadingEpisodes] = useState(false);
@@ -124,13 +130,15 @@ export const Program = () => {
 
   // Plausible Events.
   const props = {
-    Title: title
+    Title: name
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Page', { props }]];
 
   useEffect(
     () => () => {
       unsub();
+      moreStoriesController?.abort();
+      moreEpisodesController?.abort();
     },
     [unsub]
   );
@@ -142,21 +150,35 @@ export const Program = () => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [pageInfo.endCursor, episodesPageInfo.endCursor, oldScrollY]);
+  }, [pageInfo?.endCursor, episodesPageInfo?.endCursor, oldScrollY]);
 
   const loadMoreStories = async () => {
     if (!id || !pageInfo.endCursor) return;
 
     setLoadingStories(true);
 
-    // const moreStories = await fetchApiProgramStories(id, pageInfo.endCursor);
+    const controller = new AbortController();
+    setMoreStoriesController(controller);
+
+    const options = {
+      cursor: pageInfo.endCursor,
+      exclude: featuredPosts?.reduce(
+        (a, post) => (post?.id ? [...a, post.id] : a),
+        []
+      )
+    };
+    const moreStories = await fetchApiProgramStories(id, options, {
+      signal: controller.signal
+    });
+
+    if (!moreStories) return;
 
     setOldScrollY(window.scrollY);
     setLoadingStories(false);
 
-    // store.dispatch<any>(
-    //   appendResourceCollection(moreStories, type, id, 'stories')
-    // );
+    store.dispatch<any>(
+      appendResourceCollection(moreStories, type, id, 'stories', options)
+    );
   };
 
   const loadMoreEpisodes = async () => {
@@ -164,18 +186,28 @@ export const Program = () => {
 
     setLoadingEpisodes(true);
 
-    // const moreEpisodes = await fetchApiProgramEpisodes(id, episodesPageInfo.endCursor);
+    const controller = new AbortController();
+    setMoreEpisodesController(controller);
+
+    const options = {
+      cursor: episodesPageInfo.endCursor
+    };
+    const moreEpisodes = await fetchApiProgramEpisodes(id, options, {
+      signal: controller.signal
+    });
+
+    if (!moreEpisodes) return;
 
     setOldScrollY(window.scrollY);
     setLoadingEpisodes(false);
 
-    // store.dispatch<any>(
-    //   appendResourceCollection(moreEpisodes, type, id, 'episodes')
-    // );
+    store.dispatch<any>(
+      appendResourceCollection(moreEpisodes, type, id, 'episodes', options)
+    );
   };
 
   const handleFilterChange = (e: object, value: any) => {
-    const { href, as: alias } = generateLinkPropsForContent(data, {
+    const { href, as: alias } = generateLinkPropsForContent(router.asPath, {
       ...(value === 1 && { v: 'episodes' })
     });
 
@@ -189,9 +221,9 @@ export const Program = () => {
       key: 'main top',
       children: (
         <>
-          {body && !hasContentLinks && (
+          {description && !hasContentLinks && (
             <Box className={classes.body}>
-              <HtmlContent html={body} />
+              <HtmlContent html={description} />
             </Box>
           )}
           {!isEpisodesView && (
@@ -200,11 +232,13 @@ export const Program = () => {
                 <StoryCard data={featuredStory} feature priority />
               )}
               {featuredStories && (
-                <StoryCardGrid data={featuredStories[1]} gap={1} />
+                <StoryCardGrid data={featuredStories} gap={1} />
               )}
             </Box>
           )}
-          {isEpisodesView && <EpisodeCard data={latestEpisode} />}
+          {isEpisodesView && latestEpisode && (
+            <EpisodeCard data={latestEpisode} />
+          )}
           {ctaInlineTop && (
             <>
               <Hidden xsDown>
@@ -225,17 +259,20 @@ export const Program = () => {
           {!isEpisodesView && (
             <>
               {stories &&
-                stories.map((item) => (
-                  <StoryCard
-                    data={item}
-                    feature={
-                      item.displayTemplate &&
-                      item.displayTemplate !== 'standard'
-                    }
-                    key={item.id}
-                  />
-                ))}
-              {pageInfo.hasNextPage && (
+                stories.map(
+                  (item) =>
+                    item && (
+                      <StoryCard
+                        data={item}
+                        feature={
+                          !!item.presentation?.format &&
+                          item.presentation.format !== 'standard'
+                        }
+                        key={item.id}
+                      />
+                    )
+                )}
+              {pageInfo?.hasNextPage && (
                 <Box>
                   <Button
                     variant="contained"
@@ -256,12 +293,10 @@ export const Program = () => {
           )}
           {isEpisodesView && (
             <>
-              {episodes
-                .reduce((a, p) => [...a, ...p], [])
-                .map((item: IPriApiResource) => (
-                  <EpisodeCard data={item} key={item.id} />
-                ))}
-              {episodesPageInfo.hasNextPage && (
+              {episodes?.map(
+                (item) => item && <EpisodeCard data={item} key={item.id} />
+              )}
+              {episodesPageInfo?.hasNextPage && (
                 <Box>
                   <Button
                     variant="contained"
@@ -304,16 +339,16 @@ export const Program = () => {
             <SidebarEpisode data={latestEpisode} label="Latest Episode" />
           )}
           <Sidebar item elevated>
-            {body && hasContentLinks && (
+            {description && hasContentLinks && (
               <SidebarContent>
-                <HtmlContent html={body} />
+                <HtmlContent html={description} />
               </SidebarContent>
             )}
             {hosts && !!hosts.length && (
               <SidebarList
-                data={hosts.map((item: IPriApiResource) => ({
-                  ...item,
-                  avatar: item.image
+                data={hosts.map((item) => ({
+                  data: item,
+                  avatar: item?.contributorDetails?.image
                 }))}
                 subheaderText="Hosted by"
               />
@@ -359,18 +394,18 @@ export const Program = () => {
     <ThemeProvider theme={programTheme}>
       <MetaTags
         data={{
-          ...metatags,
-          title: `${metatags.title} | ${
+          ...seo,
+          title: `${seo?.title || name} | ${
             !isEpisodesView ? 'Stories' : 'Episodes'
           }`
         }}
       />
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <LandingPageHeader
-        title={title}
+        title={name}
         subhead={teaser}
-        image={bannerImage}
-        logo={podcastLogo}
+        image={imageBanner}
+        logo={logo}
       />
       {hasStories && hasEpisodes && (
         <AppBar position="static" color="transparent" elevation={0}>

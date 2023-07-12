@@ -21,7 +21,7 @@ ResourceFetchDataMap.set('post--episode', fetchEpisodeData);
 ResourceFetchDataMap.set('node--newsletter_sign_ups', fetchNewsletterData);
 ResourceFetchDataMap.set('post--page', fetchPageData);
 ResourceFetchDataMap.set('node--people', fetchPersonData);
-ResourceFetchDataMap.set('node--programs', fetchProgramData);
+ResourceFetchDataMap.set('term--program', fetchProgramData);
 ResourceFetchDataMap.set('post--segment', fetchSegmentData);
 ResourceFetchDataMap.set('post--story', fetchStoryData);
 ResourceFetchDataMap.set('taxonomy_term--categories', fetchCategoryData);

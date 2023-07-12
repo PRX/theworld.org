@@ -3,113 +3,101 @@
  *
  * Actions to fetch data for program page.
  */
-import { AnyAction } from 'redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IncomingMessage } from 'http';
-import { parse } from 'url';
+import type { AnyAction } from 'redux';
+import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import type { Program, RootState } from '@interfaces';
 import {
-  IPriApiResource,
-  IPriApiResourceResponse
-} from 'pri-api-library/types';
-import { ICtaFilterProps } from '@interfaces/cta';
-import { RootState } from '@interfaces/state';
-import { fetchApiProgram, fetchProgram } from '@lib/fetch';
-import { getDataByResource } from '@store/reducers';
+  fetchApiProgram,
+  fetchGqlProgram,
+  fetchGqlProgramEpisodes,
+  fetchGqlProgramPosts
+} from '@lib/fetch';
+import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
-import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchProgramData =
-  (id: string, req: IncomingMessage): ThunkAction<void, {}, {}, AnyAction> =>
+  (id: string): ThunkAction<Promise<Program | undefined>, {}, {}, AnyAction> =>
   async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
     getState: () => RootState
-  ): Promise<IPriApiResource> => {
+  ) => {
     const state = getState();
-    const type = 'node--programs';
+    const type = 'term--program';
     const isOnServer = typeof window === 'undefined';
-    const params = req?.url ? parse(req.url, true).query : undefined;
-    let data = getDataByResource(state, type, id);
+    const program = await (isOnServer
+      ? fetchGqlProgram(id)
+      : fetchApiProgram(id));
 
-    if (!data || !data.complete || isOnServer) {
-      dispatch({
-        type: 'FETCH_CONTENT_DATA_REQUEST',
-        payload: {
-          type,
-          id
-        }
-      });
+    if (program) {
+      // const ctaDataPromise = dispatch<any>(
+      //   fetchCtaRegionGroupData('tw_cta_regions_landing')
+      // );
 
-      const dataPromise = (
-        isOnServer ? fetchProgram(id, params) : fetchApiProgram(id)
-      ).then((resp: IPriApiResourceResponse) => resp && resp.data);
+      // // Set CTA filter props.
+      // dispatch({
+      //   type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+      //   payload: {
+      //     filterProps: {
+      //       type,
+      //       id,
+      //       props: {
+      //         program: id
+      //       }
+      //     }
+      //   } as ICtaFilterProps
+      // });
 
-      const ctaDataPromise = dispatch<any>(
-        fetchCtaRegionGroupData('tw_cta_regions_landing')
+      // Get first page of stories.
+      const storiesCollection = getCollectionData(
+        state,
+        type,
+        program.id,
+        'stories'
       );
 
-      data = await dataPromise;
-      await ctaDataPromise;
+      if (!storiesCollection) {
+        const exclude = program.landingPage?.featuredPosts?.reduce(
+          (a, post) => (post ? [...a, post.id] : a),
+          []
+        );
+        const options = {
+          ...(exclude && { exclude })
+        };
+        const posts = await fetchGqlProgramPosts(id, options);
 
-      const { featuredStory, featuredStories, stories, episodes, ...payload } =
-        data;
-
-      // Set CTA filter props.
-      dispatch({
-        type: 'SET_RESOURCE_CTA_FILTER_PROPS',
-        payload: {
-          filterProps: {
-            type,
-            id,
-            props: {
-              program: id
-            }
-          }
-        } as ICtaFilterProps
-      });
-
-      dispatch({
-        type: 'FETCH_CONTENT_DATA_SUCCESS',
-        payload: {
-          ...payload,
-          complete: true
+        if (posts) {
+          dispatch(
+            appendResourceCollection(
+              posts,
+              type,
+              program.id,
+              'stories',
+              options
+            )
+          );
         }
-      });
-
-      if (featuredStories) {
-        // dispatch(
-        //   appendResourceCollection(
-        //     {
-        //       data: [featuredStory],
-        //       meta: { count: 1 }
-        //     },
-        //     type,
-        //     id,
-        //     'featured story'
-        //   )
-        // );
-        // dispatch(
-        //   appendResourceCollection(
-        //     {
-        //       data: [...featuredStories],
-        //       meta: {
-        //         count: featuredStories.length
-        //       }
-        //     },
-        //     type,
-        //     id,
-        //     'featured stories'
-        //   )
-        // );
       }
 
-      if (stories) {
-        dispatch(appendResourceCollection(stories, type, id, 'stories'));
+      // Get first page of episodes.
+      const episodesCollection = getCollectionData(
+        state,
+        type,
+        program.id,
+        'episodes'
+      );
+
+      if (!episodesCollection) {
+        const episodes = await fetchGqlProgramEpisodes(id);
+
+        if (episodes) {
+          dispatch(
+            appendResourceCollection(episodes, type, program.id, 'episodes')
+          );
+        }
       }
 
-      if (episodes) {
-        dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
-      }
+      return program;
     }
 
-    return data;
+    return undefined;
   };

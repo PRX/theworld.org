@@ -10,9 +10,17 @@ export type RefItem = {
   cursor: string;
   id: string;
 };
+
+export type CollectionQueryOptions = {
+  pageSize?: number;
+  cursor?: string;
+  exclude?: string[];
+};
+
 export interface CollectionState {
   pageInfo: PageInfo;
   items: RefItem[];
+  options?: CollectionQueryOptions;
 }
 
 export interface CollectionsState {

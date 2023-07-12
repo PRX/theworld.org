@@ -5,7 +5,7 @@
  */
 
 import type { AnyAction } from 'redux';
-import type { Edge, PageInfo } from '@interfaces';
+import type { CollectionQueryOptions, Edge, PageInfo } from '@interfaces';
 import type {
   CollectionState,
   CollectionsState,
@@ -17,15 +17,12 @@ import { makeResourceSignature } from '@lib/parse/state';
 
 type State = CollectionsState | RootState;
 
-const addCollectionPage = (
-  items: RefItem[],
-  pageItems: RefItem[],
-  pageInfo: PageInfo
-) => {
-  const endIndex = items.findIndex(
-    (item) => item.cursor === pageInfo.endCursor
+const addCollectionPage = (state: CollectionState, pageItems: RefItem[]) => {
+  const endIndex = state.items.findIndex(
+    (item) => item.cursor === state.pageInfo.endCursor
   );
-  const result = [...items].splice(endIndex + 1, 0, ...pageItems);
+  const result = [...state.items];
+  result.splice(endIndex + 1, 0, ...pageItems);
 
   return result;
 };
@@ -35,23 +32,26 @@ export const collections = (state: State = {}, action: AnyAction) => {
   let refs: RefItem[];
   let newCollection: CollectionState;
   let pageInfo: PageInfo;
+  let options: CollectionQueryOptions;
 
   switch (action?.type) {
     case HYDRATE:
       return { ...state, ...action.payload.collections };
 
     case 'APPEND_REFS_TO_COLLECTION':
-      key = action.payload.resource.id;
-      refs = (action.payload.edges || []).map((edge: Edge) => ({
+      key = makeResourceSignature(action.payload.resource);
+      refs = (action.payload.data.edges || []).map((edge: Edge) => ({
         cursor: edge.cursor,
         id: edge.node.id
       }));
       pageInfo = {
-        ...action.payload.pageInfo
+        ...action.payload.data.pageInfo
       };
+      options = action.payload.data.options;
       newCollection = {
         pageInfo,
-        items: addCollectionPage([], refs, pageInfo)
+        items: refs,
+        ...(options && { options })
       };
 
       return {
@@ -66,9 +66,8 @@ export const collections = (state: State = {}, action: AnyAction) => {
                         ...state[key][action.payload.collection],
                         pageInfo,
                         items: addCollectionPage(
-                          state[key][action.payload.collection].items,
-                          refs,
-                          pageInfo
+                          state[key][action.payload.collection],
+                          refs
                         )
                       }
                     }

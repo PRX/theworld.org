@@ -5,7 +5,7 @@
 
 import { makeStyles } from 'tss-react/mui';
 
-export const episodeHeaderStyles = makeStyles()(theme => ({
+export const episodeHeaderStyles = makeStyles()((theme) => ({
   root: {
     fontSize: '1.2rem'
   },
@@ -15,7 +15,8 @@ export const episodeHeaderStyles = makeStyles()(theme => ({
   title: {
     fontSize: `clamp(${theme.typography.pxToRem(
       32
-    )}, 5vw, ${theme.typography.pxToRem(48)})`
+    )}, 5vw, ${theme.typography.pxToRem(48)})`,
+    textWrap: 'balance'
   },
 
   byline: {

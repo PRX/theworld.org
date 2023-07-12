@@ -5,11 +5,7 @@
 
 import type React from 'react';
 import type { UrlWithParsedQuery } from 'url';
-import type {
-  PostStory,
-  Post_Additionaldates as PostAdditionalDates,
-  Post_Additionalmedia as PostAdditionalMedia
-} from '@interfaces';
+import type { PostStory, Maybe } from '@interfaces';
 // import type { ILink } from '@interfaces/link';
 import type {
   IPlayAudioButtonProps,
@@ -54,7 +50,7 @@ const AddAudioButton = dynamic(() =>
 ) as React.FC<IAddAudioButtonProps>;
 
 export interface StoryCardGridProps extends BoxProps {
-  data: PostStory[];
+  data: Maybe<PostStory>[];
 }
 
 export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
@@ -111,6 +107,8 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
   return (
     <Box className={classes.root} {...other}>
       {data.map((item, index) => {
+        if (!item) return null;
+
         const {
           link,
           id,
@@ -122,8 +120,8 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
           primaryCategory
         } = item;
         const image = featuredImage?.node;
-        const { broadcastDate } = additionalDates as PostAdditionalDates;
-        const { audio } = additionalMedia as PostAdditionalMedia;
+        const { broadcastDate } = additionalDates || {};
+        const { audio } = additionalMedia || {};
         const { pathname } = generateLinkHrefForContent(
           link || '',
           true
@@ -199,7 +197,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                         <Moment
                           format="MMMM D, YYYY"
                           tz="America/New_York"
-                          unix
+                          {...(broadcastDate && { parse: 'YYYY-MM-DD' })}
                         >
                           {broadcastDate || date}
                         </Moment>
