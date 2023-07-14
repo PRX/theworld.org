@@ -10,8 +10,8 @@ import { gqlClient } from '@lib/fetch/api';
 import { IMAGE_PROPS, POST_CARD_PROPS } from '@lib/fetch/api/graphql';
 
 const GET_PROGRAM = gql`
-  query getProgram($id: ID!) {
-    program(id: $id) {
+  query getProgram($id: ID!, $idType: ProgramIdType) {
+    program(id: $id, idType: $idType) {
       id
       link
       name
@@ -52,13 +52,14 @@ const GET_PROGRAM = gql`
   ${IMAGE_PROPS}
 `;
 
-export async function fetchGqlProgram(id: string) {
+export async function fetchGqlProgram(id: string, idType?: string) {
   const response = await gqlClient.query<{
     program: Program;
   }>({
     query: GET_PROGRAM,
     variables: {
-      id
+      id,
+      idType
     }
   });
   const program = response?.data?.program;

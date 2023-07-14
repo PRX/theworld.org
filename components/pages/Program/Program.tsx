@@ -207,12 +207,13 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   };
 
   const handleFilterChange = (e: object, value: any) => {
-    const { href, as: alias } = generateLinkPropsForContent(router.asPath, {
-      ...(value === 1 && { v: 'episodes' })
-    });
+    let href = generateLinkPropsForContent(router.asPath);
 
     if (href) {
-      router.push(href, alias);
+      if (value === 1) {
+        href = `${href}?v=episodes`;
+      }
+      router.push(href, undefined, { shallow: true });
     }
   };
 

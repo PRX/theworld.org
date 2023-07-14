@@ -3,7 +3,7 @@
  * Exports the Home component.
  */
 
-import type { GetServerSideProps } from 'next';
+import type { GetServerSideProps, Redirect } from 'next';
 import type { IContentComponentProxyProps } from '@interfaces';
 import dynamic from 'next/dynamic';
 import { getResourceFetchData } from '@lib/import/fetchData';
@@ -87,7 +87,7 @@ export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps>
   wrapper.getServerSideProps((store) => async ({ req, params }) => {
     let resourceType: string | undefined = 'homepage';
     let resourceId: string | undefined;
-    let redirect: string | undefined;
+    let redirect: Redirect | undefined;
     const { alias = [] } = params || {};
     const aliasPath = (alias as string[]).join('/');
     const rgxFileExt = /\.\w+$/;
@@ -103,8 +103,11 @@ export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps>
           const aliasData = await fetchTwApiQueryAlias(aliasPath);
 
           // Update resource id and type.
-          if (aliasData?.url) {
-            redirect = aliasData.url;
+          if (aliasData?.redirectUrl) {
+            redirect = {
+              permanent: aliasData.type === 'redirect--internal',
+              destination: aliasData.redirectUrl
+            };
           } else if (aliasData?.id) {
             const { id, type } = aliasData;
             resourceId = id;
@@ -119,10 +122,7 @@ export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps>
       // Return object with redirect url.
       if (redirect) {
         return {
-          redirect: {
-            permanent: false,
-            destination: redirect
-          }
+          redirect
         };
       }
 

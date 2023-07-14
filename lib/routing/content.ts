@@ -3,8 +3,6 @@
  * Handler functions for routing to content.
  */
 
-import { parse, UrlWithParsedQuery } from 'url';
-
 /**
  * Helper function to convert API data object for use in app relative aliased
  * Url object for use in Link components.
@@ -18,41 +16,24 @@ import { parse, UrlWithParsedQuery } from 'url';
  * @returns
  *    Canonical URL for the resource.
  */
-export const generateLinkHrefForContent = (url: string, parseUrl?: boolean) => {
+export const generateLinkHrefForContent = (
+  url?: string | null,
+  parseUrl?: boolean
+) => {
   if (!url) return undefined;
 
-  if (parseUrl) return parse(url, true);
+  if (parseUrl) return new URL(url);
 
   return url;
 };
 
-export const generateLinkPropsForContent = (
-  url: string,
-  query?: { [k: string]: string }
-) => {
-  const parsedUrl = url ? parse(url, true) : undefined;
+export const generateLinkPropsForContent = (url?: string | null) => {
+  const urlBase = url?.startsWith('/') ? 'https://theworld.org' : undefined;
+  const parsedUrl = url ? new URL(url, urlBase) : undefined;
 
   if (parsedUrl?.pathname) {
-    const alias = {
-      ...parse(parsedUrl.pathname),
-      ...(query && { query })
-    } as UrlWithParsedQuery;
-    const href = {
-      ...parse('/[...alias]'),
-      query: {
-        alias: alias.pathname?.replace(/^\//, '').split('/'),
-        ...query
-      }
-    } as UrlWithParsedQuery;
-
-    return {
-      href,
-      as: alias
-    };
+    return parsedUrl.pathname;
   }
 
-  return {
-    href: null,
-    as: null
-  };
+  return undefined;
 };

@@ -40,8 +40,8 @@ export const decorateWithBylines = (story: IPriApiResource) => {
   };
 };
 
-export const fetchStoryData = async (id: string) => {
-  const dataPromise = fetchGqlStory(id);
+export const fetchStoryData = async (id: string, idType?: string) => {
+  const dataPromise = fetchGqlStory(id, idType);
 
   // const ctaDataPromise = dispatch<any>(
   //   fetchCtaRegionGroupData('tw_cta_regions_content')

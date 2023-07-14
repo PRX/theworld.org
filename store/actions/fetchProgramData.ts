@@ -7,7 +7,6 @@ import type { AnyAction } from 'redux';
 import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import type { Program, RootState } from '@interfaces';
 import {
-  fetchApiProgram,
   fetchGqlProgram,
   fetchGqlProgramEpisodes,
   fetchGqlProgramPosts
@@ -16,17 +15,17 @@ import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
 export const fetchProgramData =
-  (id: string): ThunkAction<Promise<Program | undefined>, {}, {}, AnyAction> =>
+  (
+    id: string,
+    idType?: string
+  ): ThunkAction<Promise<Program | undefined>, {}, {}, AnyAction> =>
   async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
     getState: () => RootState
   ) => {
     const state = getState();
     const type = 'term--program';
-    const isOnServer = typeof window === 'undefined';
-    const program = await (isOnServer
-      ? fetchGqlProgram(id)
-      : fetchApiProgram(id));
+    const program = await fetchGqlProgram(id, idType);
 
     if (program) {
       // const ctaDataPromise = dispatch<any>(
@@ -63,7 +62,7 @@ export const fetchProgramData =
         const options = {
           ...(exclude && { exclude })
         };
-        const posts = await fetchGqlProgramPosts(id, options);
+        const posts = await fetchGqlProgramPosts(program.id, options);
 
         if (posts) {
           dispatch(
@@ -87,7 +86,7 @@ export const fetchProgramData =
       );
 
       if (!episodesCollection) {
-        const episodes = await fetchGqlProgramEpisodes(id);
+        const episodes = await fetchGqlProgramEpisodes(program.id);
 
         if (episodes) {
           dispatch(

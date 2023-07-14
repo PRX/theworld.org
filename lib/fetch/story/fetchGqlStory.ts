@@ -2,7 +2,7 @@
  * Fetch Story data from WP GraphQL API.
  */
 
-import type { Maybe, Post, PostToCategoryConnection } from '@interfaces';
+import type { Maybe, Post, PostStory } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import { IMAGE_PROPS, POST_SEO_PROPS } from '@lib/fetch/api/graphql';
@@ -38,8 +38,8 @@ export const STORY_CARD_PROPS = gql`
 `;
 
 const GET_POST = gql`
-  query getPost($id: ID!) {
-    post(id: $id) {
+  query getPost($id: ID!, $idType: PostIdType) {
+    post(id: $id, idType: $idType) {
       id
       link
       title
@@ -166,15 +166,35 @@ const GET_POST = gql`
   ${POST_SEO_PROPS}
 `;
 
-export const fetchGqlStory = async (id: string) => {
+export const fetchGqlStory = async (id?: string, idType?: string) => {
+  let storyId = id;
+
+  if (idType) {
+    const response = await gqlClient.query<{ post: Maybe<Post> }>({
+      query: gql`
+        query getPost($id: ID!, $idType: PostIdType) {
+          post(id: $id, idType: $idType) {
+            id
+          }
+        }
+      `,
+      variables: {
+        id,
+        idType
+      }
+    });
+
+    storyId = response.data.post?.id;
+  }
+
+  if (!storyId) return undefined;
+
   const response = await gqlClient.query<{
-    post: Post & {
-      primaryCategory?: Maybe<PostToCategoryConnection>;
-    };
+    post: Maybe<PostStory>;
   }>({
     query: GET_POST,
     variables: {
-      id
+      id: storyId
     }
   });
   const post = response?.data?.post;

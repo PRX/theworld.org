@@ -6,8 +6,8 @@
 
 import { fetchGqlSegment } from '@lib/fetch';
 
-export const fetchSegmentData = async (id: string) => {
-  const dataPromise = await fetchGqlSegment(id);
+export const fetchSegmentData = async (id: string, idType?: string) => {
+  const dataPromise = await fetchGqlSegment(id, idType);
 
   // const ctaDataPromise = dispatch<any>(
   //   fetchCtaRegionGroupData('tw_cta_regions_content')
