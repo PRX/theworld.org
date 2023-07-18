@@ -13,7 +13,48 @@ const httpLink = new HttpLink({
 });
 
 export const gqlClient = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Post: {
+        fields: {
+          additionalDates: {
+            merge: true
+          },
+          additionalMedia: {
+            merge: true
+          },
+          presentation: {
+            merge: true
+          }
+        }
+      },
+      Episode: {
+        fields: {
+          episodeAudio: {
+            merge: true
+          },
+          episodeDates: {
+            merge: true
+          },
+          episodeContributors: {
+            merge: true
+          }
+        }
+      },
+      Segment: {
+        fields: {
+          segmentContent: {
+            merge: true
+          }
+        }
+      },
+      MediaItem: {
+        fields: {
+          audioFields: { merge: true }
+        }
+      }
+    }
+  }),
   link: from([httpLink])
 });
 

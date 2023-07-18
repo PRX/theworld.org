@@ -1,23 +1,23 @@
 /**
- * Fetch Program posts data from CMS API.
+ * Fetch Category posts data from CMS API.
  *
- * @param id Program identifier.
+ * @param id Category identifier.
  * @param options Query options.
  */
 
-import type { CollectionQueryOptions, Program } from '@interfaces';
+import type { CollectionQueryOptions, Category } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import { IMAGE_PROPS, POST_CARD_PROPS } from '@lib/fetch/api/graphql';
 
-const GET_PROGRAM_POSTS = gql`
-  query getProgramPosts(
+const GET_CATEGORY_POSTS = gql`
+  query getCategoryPosts(
     $id: ID!
     $pageSize: Int = 10
     $cursor: String
     $exclude: [ID]
   ) {
-    program(id: $id) {
+    category(id: $id) {
       id
       posts(first: $pageSize, after: $cursor, where: { notIn: $exclude }) {
         pageInfo {
@@ -37,24 +37,24 @@ const GET_PROGRAM_POSTS = gql`
   ${IMAGE_PROPS}
 `;
 
-export async function fetchGqlProgramPosts(
+export async function fetchGqlCategoryPosts(
   id: string,
   options?: CollectionQueryOptions
 ) {
   const response = await gqlClient.query<{
-    program: Program;
+    category: Category;
   }>({
-    query: GET_PROGRAM_POSTS,
+    query: GET_CATEGORY_POSTS,
     variables: {
       id,
       ...options
     }
   });
-  const posts = response?.data?.program.posts;
+  const posts = response?.data?.category.posts;
 
   if (!posts) return undefined;
 
   return posts;
 }
 
-export default fetchGqlProgramPosts;
+export default fetchGqlCategoryPosts;

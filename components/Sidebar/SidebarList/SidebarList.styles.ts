@@ -47,7 +47,7 @@ export const sidebarListStyles = makeStyles()((theme) => ({
       position: 'static',
       transform: 'none'
     },
-    '& :where(.MuiListItemText-root)': {
+    '& :is(.MuiListItemText-root)': {
       display: 'list-item',
       listStyle: 'disc',
       marginTop: 0,

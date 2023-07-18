@@ -16,7 +16,8 @@ import type {
   ContributorToPostConnection,
   IApp,
   ProgramToPostConnection,
-  CollectionQueryOptions
+  CollectionQueryOptions,
+  CategoryToPostConnection
 } from '@interfaces';
 import type {
   fetchGqlAudio,
@@ -351,20 +352,20 @@ export const fetchApiCategory = async (id: string, init?: RequestInit) =>
  */
 export const fetchApiCategoryStories = async (
   id: string,
-  endCursor?: string,
-  range?: number,
-  exclude?: string[],
+  options?: CollectionQueryOptions,
   init?: RequestInit
-) =>
-  fetchApi<IPriApiCollectionResponse>({
-    path: `category/${id}/stories`,
+) => {
+  const { cursor, pageSize, exclude } = options || {};
+  return fetchApi<CategoryToPostConnection>({
+    path: `category/${id}/posts`,
     query: {
-      ...(endCursor && { endCursor }),
-      ...(range && { range: `${range}` }),
-      ...(exclude && { exclude })
+      ...(options && { c: cursor }),
+      ...(pageSize && { f: `${pageSize}` }),
+      ...(exclude && { e: exclude })
     },
     init
   });
+};
 
 /**
  * Method that simplifies GET queries for term data.

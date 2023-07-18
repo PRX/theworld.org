@@ -1,28 +1,28 @@
 /**
- * @file pages/programs/[slug].tsx
+ * @file pages/categories/[slug].tsx
  *
- * Program page.
+ * Category page.
  */
 
-import { Program } from '@components/pages/Program';
+import { Category } from '@components/pages/Category';
 import { IContentComponentProxyProps } from '@interfaces';
 import { wrapper } from '@store';
 import { fetchAppData } from '@store/actions/fetchAppData';
-import { fetchProgramData } from '@store/actions/fetchProgramData';
+import { fetchCategoryData } from '@store/actions/fetchCategoryData';
 import { GetServerSideProps } from 'next';
 
-const ProgramPage = ({ data }: IContentComponentProxyProps) => (
-  <Program data={data} />
+const CategoryPage = ({ data }: IContentComponentProxyProps) => (
+  <Category data={data} />
 );
 
 export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps> =
   wrapper.getServerSideProps((store) => async ({ req, params }) => {
     const slug =
-      params?.slug &&
-      (typeof params.slug === 'string' ? params.slug : params.slug[0]);
+      params?.slugs &&
+      (typeof params.slugs === 'string' ? params.slugs : params.slugs.pop());
 
     if (slug) {
-      const dataResponse = fetchProgramData(slug, 'SLUG');
+      const dataResponse = fetchCategoryData(slug, 'SLUG');
       const [data, appData] = await Promise.all([
         store.dispatch<any>(dataResponse),
         fetchAppData()
@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps>
       if (data) {
         return {
           props: {
-            type: 'term--program',
+            type: 'term--category',
             id: data.id,
             cookies: req.cookies,
             data,
@@ -44,4 +44,4 @@ export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps>
     return { notFound: true };
   });
 
-export default ProgramPage;
+export default CategoryPage;
