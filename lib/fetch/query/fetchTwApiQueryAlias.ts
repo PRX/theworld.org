@@ -1,27 +1,37 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import type { ContentNode } from '@interfaces';
+import type { Maybe, Page } from '@interfaces';
 import { fetchTwApi, gqlClient } from '@lib/fetch/api';
 import { gql } from '@apollo/client';
 
-const GET_CONTENT_NODE = gql`
-  query getContentNode($id: ID!) {
-    contentNode(id: $id, idType: DATABASE_ID) {
+const GET_PAGE_NODE = gql`
+  query getPage($id: ID!) {
+    page(id: $id, idType: DATABASE_ID) {
       id
     }
   }
 `;
 
-type AliasData = {
-  id: number;
-  type: string;
-  taxonomy?: string;
-  url?: string;
+type RedirectData = {
+  type: 'redirect--external';
+  attributes: {
+    url: string;
+  };
 };
 
+type ResourceData = {
+  id: number;
+  type?: string;
+  taxonomy?: string;
+  link: string;
+};
+
+type AliasData = RedirectData | ResourceData;
+
 type AliasResp = {
-  id: string;
+  id?: string;
   type: string;
-  url?: string;
+  link?: string;
+  redirectUrl?: string;
 };
 
 /**
@@ -45,41 +55,49 @@ export const fetchTwApiQueryAlias = async (
   const restResp = await fetchTwApi<AliasData>(
     `tw/v2/alias`,
     {
-      _fields: 'id,type,taxonomy',
+      _fields: 'id,type,taxonomy,link,attributes',
       ...params,
       slug: alias
     },
     init
   ).then((resp) => resp && resp.data);
 
-  if (!restResp?.type) return undefined;
+  if (!restResp) return undefined;
 
-  if (restResp.type === 'redirect--external')
+  if (restResp.type === 'redirect--external') {
+    const redirectData = restResp as RedirectData;
     return {
-      type: restResp.type,
-      id: `${restResp.id}`,
-      url: restResp.url
+      type: 'redirect--external',
+      redirectUrl: redirectData.attributes.url
     } as AliasResp;
+  }
 
-  const gqlResp = await gqlClient.query<{
-    contentNode: ContentNode;
-  }>({
-    query: GET_CONTENT_NODE,
-    variables: {
-      id: restResp.id
+  const resourceData = restResp as ResourceData;
+
+  if (resourceData.type === 'page') {
+    const gqlResp = await gqlClient.query<{
+      page: Maybe<Page>;
+    }>({
+      query: GET_PAGE_NODE,
+      variables: {
+        id: resourceData.id
+      }
+    });
+    const id = gqlResp.data.page?.id;
+
+    if (id) {
+      return {
+        type: `post--page`,
+        id
+      } as AliasResp;
     }
-  });
+  }
 
-  const contentNode = gqlResp?.data?.contentNode;
-
-  if (!contentNode) return undefined;
-
+  const redirectUrl = new URL(resourceData.link).pathname;
   return {
-    type: restResp.taxonomy
-      ? `term--${restResp.taxonomy}`
-      : `post--${restResp.type === 'post' ? 'story' : restResp.type}`,
-    id: contentNode.id
-  } as AliasResp;
+    type: 'redirect--internal',
+    redirectUrl
+  };
 };
 
 export default fetchTwApiQueryAlias;

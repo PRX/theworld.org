@@ -8,6 +8,7 @@ import { AnyAction } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 import { ContentDataState, RootState } from '@interfaces/state';
 import { makeResourceSignature } from '@lib/parse/state';
+import { Node } from '@interfaces';
 
 type State = ContentDataState | RootState;
 
@@ -31,8 +32,11 @@ export const contentData = (state: State = {}, action: AnyAction) => {
     case 'FETCH_BULK_CONTENT_DATA_SUCCESS':
       return {
         ...state,
-        ...action.payload.reduce((a: any, item: any) => {
-          const k = item && makeResourceSignature(item);
+        ...action.payload.reduce((a: { [k: string]: Node }, item: Node) => {
+          const sigOptions = {
+            id: item.id
+          };
+          const k = makeResourceSignature(sigOptions);
           return !k
             ? a
             : {

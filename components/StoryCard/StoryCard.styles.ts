@@ -27,7 +27,8 @@ export const useStoryCardStyles = makeStyles()((theme) => ({
     [theme.breakpoints.down('sm')]: {
       fontSize: theme.typography.pxToRem(18)
     },
-    lineHeight: '1.3'
+    lineHeight: '1.3',
+    textWrap: 'balance'
   },
   primaryCategory: {
     display: 'flex',

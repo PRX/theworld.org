@@ -3,11 +3,12 @@
  * Exports the Home component.
  */
 
-import type { GetServerSideProps } from 'next';
+import type { GetServerSideProps, Redirect } from 'next';
 import type { IContentComponentProxyProps } from '@interfaces';
 import dynamic from 'next/dynamic';
 import { getResourceFetchData } from '@lib/import/fetchData';
 import { fetchTwApiQueryAlias } from '@lib/fetch';
+import { wrapper } from '@store';
 import { fetchAppData } from '@store/actions/fetchAppData';
 // import { fetchCtaRegionGroupData } from '@store/actions/fetchCtaRegionGroupData';
 // import { fetchAppData } from '@store/actions/fetchAppData';
@@ -57,7 +58,7 @@ const ContentProxy = ({ type, data }: Props) => {
 
     case 'term--program':
     case 'node--programs':
-      return <DynamicProgram />;
+      return <DynamicProgram data={data} />;
 
     case 'post--segment':
       return <DynamicSegment data={data} />;
@@ -82,80 +83,80 @@ const ContentProxy = ({ type, data }: Props) => {
   }
 };
 
-export const getServerSideProps: GetServerSideProps<
-  IContentComponentProxyProps
-> = async ({ req, params }) => {
-  let resourceType: string | undefined = 'homepage';
-  let resourceId: string | undefined;
-  let redirect: string | undefined;
-  const { alias = [] } = params || {};
-  const aliasPath = (alias as string[]).join('/');
-  const rgxFileExt = /\.\w+$/;
+export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps> =
+  wrapper.getServerSideProps((store) => async ({ req, params }) => {
+    let resourceType: string | undefined = 'homepage';
+    let resourceId: string | undefined;
+    let redirect: Redirect | undefined;
+    const { alias = [] } = params || {};
+    const aliasPath = (alias as string[]).join('/');
+    const rgxFileExt = /\.\w+$/;
 
-  if (!rgxFileExt.test(aliasPath)) {
-    switch (aliasPath) {
-      case 'programs/the-world/team':
-        resourceId = 'the_world';
-        resourceType = 'team';
-        break;
+    if (!rgxFileExt.test(aliasPath)) {
+      switch (aliasPath) {
+        case 'programs/the-world/team':
+          resourceId = 'the_world';
+          resourceType = 'team';
+          break;
 
-      default: {
-        const aliasData = await fetchTwApiQueryAlias(aliasPath);
+        default: {
+          const aliasData = await fetchTwApiQueryAlias(aliasPath);
 
-        // Update resource id and type.
-        if (aliasData?.url) {
-          redirect = aliasData.url;
-        } else if (aliasData?.id) {
-          const { id, type } = aliasData;
-          resourceId = id;
-          resourceType = type;
-        } else {
-          resourceType = undefined;
-        }
-        break;
-      }
-    }
-
-    // Return object with redirect url.
-    if (redirect) {
-      return {
-        redirect: {
-          permanent: false,
-          destination: redirect
-        }
-      };
-    }
-
-    // Fetch resource data.
-    if (resourceType) {
-      const fetchData = getResourceFetchData(resourceType);
-
-      if (fetchData && resourceId) {
-        const [data, appData] = await Promise.all([
-          fetchData(resourceId),
-          fetchAppData()
-        ]);
-
-        // await store.dispatch<any>(fetchAppData());
-
-        // await store.dispatch<any>(
-        //   fetchCtaRegionGroupData('tw_cta_regions_site')
-        // );
-
-        return {
-          props: {
-            type: resourceType,
-            id: resourceId,
-            cookies: req.cookies,
-            data,
-            appData
+          // Update resource id and type.
+          if (aliasData?.redirectUrl) {
+            redirect = {
+              permanent: aliasData.type === 'redirect--internal',
+              destination: aliasData.redirectUrl
+            };
+          } else if (aliasData?.id) {
+            const { id, type } = aliasData;
+            resourceId = id;
+            resourceType = type;
+          } else {
+            resourceType = undefined;
           }
+          break;
+        }
+      }
+
+      // Return object with redirect url.
+      if (redirect) {
+        return {
+          redirect
         };
       }
-    }
-  }
 
-  return { notFound: true };
-};
+      // Fetch resource data.
+      if (resourceType && resourceId) {
+        const fetchData = getResourceFetchData(resourceType);
+
+        if (fetchData) {
+          const fetchDataResp = fetchData(resourceId);
+          const [data, appData] = await Promise.all([
+            typeof fetchDataResp !== 'function'
+              ? fetchDataResp
+              : store.dispatch(fetchDataResp),
+            fetchAppData()
+          ]);
+
+          // await store.dispatch<any>(
+          //   fetchCtaRegionGroupData('tw_cta_regions_site')
+          // );
+
+          return {
+            props: {
+              type: resourceType,
+              id: data.id,
+              cookies: req.cookies,
+              data,
+              appData
+            }
+          };
+        }
+      }
+    }
+
+    return { notFound: true };
+  });
 
 export default ContentProxy;

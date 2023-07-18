@@ -30,7 +30,7 @@ export const Newsletter = () => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const data = getDataByResource(state, type, id);
+  const data = getDataByResource<any>(state, type, id);
   const [subscribed, setSubscribed] = useState(false);
   const { metatags, title, body, buttonLabel, summary, image } = data;
   const options = parseNewsletterOptions(

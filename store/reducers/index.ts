@@ -1,3 +1,4 @@
+import type { ContentNode } from '@interfaces';
 import { combineReducers } from 'redux';
 import { RootState } from '@interfaces/state';
 import * as fromAliasData from './aliasData';
@@ -53,19 +54,19 @@ export function getDataByResource<T>(
 export const getContentDataByAlias = (state: RootState, alias: string) => {
   const aliasData = fromAliasData.getAliasData(state.aliasData, alias);
   const { id, type } = aliasData || {};
-  return fromContentData.getContentData(
+  return fromContentData.getContentData<ContentNode>(
     state.contentData || {},
     type,
     id as string
   );
 };
 
-export const getCollectionData = (
+export function getCollectionData<T>(
   state: RootState,
   type: string | undefined,
   id: string | number | undefined,
   collection: string
-) => {
+) {
   const collectionState = fromCollections.getResourceCollection(
     state.collections,
     type,
@@ -76,10 +77,12 @@ export const getCollectionData = (
   return (
     collectionState && {
       ...collectionState,
-      items: collectionState.items.map((item) => state.contentData[item.id])
+      items: collectionState.items.map(
+        (item) => state.contentData[item.id] as T
+      )
     }
   );
-};
+}
 
 export const getHomepageData = (state: RootState) => ({
   featuredStory: getCollectionData(

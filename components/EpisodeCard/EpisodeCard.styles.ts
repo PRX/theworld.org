@@ -16,7 +16,12 @@ export const episodeCardStyles = makeStyles()((theme) => {
     root: {},
 
     body: {
-      fontSize: theme.typography.pxToRem(16)
+      display: 'grid',
+      gap: theme.typography.pxToRem(16),
+      fontSize: theme.typography.pxToRem(16),
+      '& > *': {
+        margin: 0
+      }
     },
 
     header: {
@@ -71,7 +76,8 @@ export const episodeCardStyles = makeStyles()((theme) => {
     title: {
       marginTop: theme.typography.pxToRem(8),
       marginBottom: theme.typography.pxToRem(12),
-      fontSize: theme.typography.pxToRem(18)
+      fontSize: theme.typography.pxToRem(18),
+      textWrap: 'balance'
     },
 
     audio: {

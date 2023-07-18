@@ -6,8 +6,6 @@
 import type React from 'react';
 import type {
   Contributor,
-  Contributor_Contributordetails as ContributorDetails,
-  Contributor_Landingpage as ContributorLandingPage,
   IContentComponentProps,
   PostStory
 } from '@interfaces';
@@ -64,10 +62,8 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
     landingPage,
     segments
   } = data;
-  const { image, teaser, program, position } =
-    contributorDetails as ContributorDetails;
-  const { featuredStories: allFeaturedStories } =
-    landingPage as ContributorLandingPage;
+  const { image, teaser, program, position } = contributorDetails || {};
+  const { featuredPosts: allFeaturedStories } = landingPage || {};
   const [featuredStory, ...stories] = [
     ...(allFeaturedStories || []),
     ...(posts?.edges?.map(({ node }) => node) || [])

@@ -10,6 +10,7 @@ import { UrlWithParsedQuery } from 'url';
 import { IPriApiResource } from 'pri-api-library/types';
 import { ContentDataState, RootState } from '@interfaces/state';
 import { generateLinkHrefForContent } from '@lib/routing/content';
+import { ContentNode } from '@interfaces';
 
 type State = ContentDataState | RootState;
 
@@ -65,20 +66,21 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
         ...state,
         ...(action.payload && {
           ...action.payload
-            .filter((item) => !!item)
-            .reduce((a, item) => {
-              const { id, type } = item;
-              const h = generateLinkHrefForContent(
-                item,
-                true
-              ) as UrlWithParsedQuery;
+            .filter((item: ContentNode) => !!item?.link)
+            .reduce((a, item: ContentNode) => {
+              const { id, link } = item;
+              const h = !link?.length
+                ? null
+                : (generateLinkHrefForContent(
+                    link,
+                    true
+                  ) as UrlWithParsedQuery);
               return !h?.pathname
                 ? a
                 : {
                     ...a,
                     [h.pathname.substring(1)]: {
-                      id,
-                      type
+                      id
                     }
                   };
             }, {})

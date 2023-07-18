@@ -30,7 +30,7 @@ export const Audio = () => {
     setState(store.getState());
   });
   const { classes } = audioStyles();
-  const data = getDataByResource(state, type, id);
+  const data = getDataByResource<any>(state, type, id);
 
   const {
     metatags: dataMetatags,
@@ -42,7 +42,7 @@ export const Audio = () => {
     season,
     broadcastDate,
     description
-  } = data;
+  } = data || {};
   const metatags = {
     ...dataMetatags,
     ...(broadcastDate && {

@@ -12,6 +12,7 @@ export const storyHeaderTheme = (theme: Theme) =>
       h1: {
         color: theme.palette.primary.contrastText,
         fontSize: theme.typography.pxToRem(28),
+        textWrap: 'balance',
         [theme.breakpoints.up('sm')]: {
           fontSize: theme.typography.pxToRem(48)
         }

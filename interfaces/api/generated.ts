@@ -669,12 +669,12 @@ export type Category_Categoryeditors = AcfFieldGroup & {
 /** Field Group */
 export type Category_Landingpage = AcfFieldGroup & {
   __typename?: 'Category_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<Category_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<Category_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type Category_Landingpage_FeaturedStories = Post;
+export type Category_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type Category_Sponsorship = AcfFieldGroup & {
@@ -1035,12 +1035,12 @@ export type CityToTaxonomyConnectionEdge = Edge & OneToOneConnection & TaxonomyC
 /** Field Group */
 export type City_Landingpage = AcfFieldGroup & {
   __typename?: 'City_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<City_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<City_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type City_Landingpage_FeaturedStories = Post;
+export type City_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type City_Taxonomyimages = AcfFieldGroup & {
@@ -2362,12 +2362,12 @@ export type ContinentToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxo
 /** Field Group */
 export type Continent_Landingpage = AcfFieldGroup & {
   __typename?: 'Continent_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<Continent_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<Continent_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type Continent_Landingpage_FeaturedStories = Post;
+export type Continent_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type Continent_Taxonomyimages = AcfFieldGroup & {
@@ -2896,12 +2896,12 @@ export type Contributor_Contributordetails = AcfFieldGroup & {
 /** Field Group */
 export type Contributor_Landingpage = AcfFieldGroup & {
   __typename?: 'Contributor_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<Contributor_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<Contributor_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type Contributor_Landingpage_FeaturedStories = Post;
+export type Contributor_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type Contributor_Taxonomyimages = AcfFieldGroup & {
@@ -3238,12 +3238,12 @@ export type CountryToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxono
 /** Field Group */
 export type Country_Landingpage = AcfFieldGroup & {
   __typename?: 'Country_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<Country_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<Country_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type Country_Landingpage_FeaturedStories = Post;
+export type Country_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type Country_Taxonomyimages = AcfFieldGroup & {
@@ -3418,6 +3418,8 @@ export type CreateEpisodeInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars['String']['input']>;
+  /** The excerpt of the object */
+  excerpt?: InputMaybe<Scalars['String']['input']>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The password used to protect the content of the object */
@@ -4523,7 +4525,7 @@ export type EnqueuedStylesheetConnectionPageInfo = {
 };
 
 /** The episode type */
-export type Episode = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
+export type Episode = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithExcerpt & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
   __typename?: 'Episode';
   /** Connection between the Episode type and the category type */
   categories?: Maybe<EpisodeToCategoryConnection>;
@@ -4562,6 +4564,8 @@ export type Episode = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
    * @deprecated Deprecated in favor of the databaseId field
    */
   episodeId: Scalars['Int']['output'];
+  /** The excerpt of the post. */
+  excerpt?: Maybe<Scalars['String']['output']>;
   /** Connection between the NodeWithFeaturedImage type and the MediaItem type */
   featuredImage?: Maybe<NodeWithFeaturedImageToMediaItemConnectionEdge>;
   /** The database identifier for the featured image node assigned to the content node */
@@ -4650,6 +4654,12 @@ export type EpisodeEnqueuedStylesheetsArgs = {
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The episode type */
+export type EpisodeExcerptArgs = {
+  format?: InputMaybe<PostObjectFieldFormatEnum>;
 };
 
 
@@ -5862,12 +5872,12 @@ export type LicenseToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxono
 /** Field Group */
 export type License_Landingpage = AcfFieldGroup & {
   __typename?: 'License_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<License_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<License_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type License_Landingpage_FeaturedStories = Post;
+export type License_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type License_Taxonomyimages = AcfFieldGroup & {
@@ -6506,7 +6516,6 @@ export type MediaItem_Audiofields = AcfFieldGroup & {
   audioTitle?: Maybe<Scalars['String']['output']>;
   audioType?: Maybe<Scalars['String']['output']>;
   broadcastDate?: Maybe<Scalars['String']['output']>;
-  expirationDate?: Maybe<Scalars['String']['output']>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
   program?: Maybe<Array<Maybe<Program>>>;
@@ -6798,8 +6807,18 @@ export type MenuItemToMenuItemLinkableConnectionEdge = Edge & MenuItemLinkableCo
 
 /** Registered menu locations */
 export enum MenuLocationEnum {
-  /** Empty menu location */
-  Empty = 'EMPTY'
+  /** Put the menu in the footer-menu location */
+  FooterMenu = 'FOOTER_MENU',
+  /** Put the menu in the header-menu location */
+  HeaderMenu = 'HEADER_MENU',
+  /** Put the menu in the homepage-quick-links-menu location */
+  HomepageQuickLinksMenu = 'HOMEPAGE_QUICK_LINKS_MENU',
+  /** Put the menu in the main-menu location */
+  MainMenu = 'MAIN_MENU',
+  /** Put the menu in the social-menu location */
+  SocialMenu = 'SOCIAL_MENU',
+  /** Put the menu in the top-menu location */
+  TopMenu = 'TOP_MENU'
 }
 
 /** The Type of Identifier used to fetch a single node. Default is "ID". To be used along with the "id" field. */
@@ -7824,12 +7843,12 @@ export type PersonToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxonom
 /** Field Group */
 export type Person_Landingpage = AcfFieldGroup & {
   __typename?: 'Person_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<Person_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<Person_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type Person_Landingpage_FeaturedStories = Post;
+export type Person_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type Person_Taxonomyimages = AcfFieldGroup & {
@@ -8695,12 +8714,12 @@ export type PostFormatToTaxonomyConnectionEdge = Edge & OneToOneConnection & Tax
 /** Field Group */
 export type PostFormat_Landingpage = AcfFieldGroup & {
   __typename?: 'PostFormat_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<PostFormat_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<PostFormat_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type PostFormat_Landingpage_FeaturedStories = Post;
+export type PostFormat_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type PostFormat_Taxonomyimages = AcfFieldGroup & {
@@ -10979,12 +10998,12 @@ export type ProgramToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxono
 /** Field Group */
 export type Program_Landingpage = AcfFieldGroup & {
   __typename?: 'Program_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<Program_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<Program_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type Program_Landingpage_FeaturedStories = Post;
+export type Program_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type Program_Programhosts = AcfFieldGroup & {
@@ -11353,12 +11372,12 @@ export type ProvinceOrStateToTaxonomyConnectionEdge = Edge & OneToOneConnection 
 /** Field Group */
 export type ProvinceOrState_Landingpage = AcfFieldGroup & {
   __typename?: 'ProvinceOrState_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<ProvinceOrState_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<ProvinceOrState_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type ProvinceOrState_Landingpage_FeaturedStories = Post;
+export type ProvinceOrState_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type ProvinceOrState_Taxonomyimages = AcfFieldGroup & {
@@ -11708,12 +11727,12 @@ export type RegionToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxonom
 /** Field Group */
 export type Region_Landingpage = AcfFieldGroup & {
   __typename?: 'Region_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<Region_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<Region_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type Region_Landingpage_FeaturedStories = Post;
+export type Region_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type Region_Taxonomyimages = AcfFieldGroup & {
@@ -12126,12 +12145,12 @@ export type ResourceDevelopmentTagToTaxonomyConnectionEdge = Edge & OneToOneConn
 /** Field Group */
 export type ResourceDevelopmentTag_Landingpage = AcfFieldGroup & {
   __typename?: 'ResourceDevelopmentTag_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<ResourceDevelopmentTag_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<ResourceDevelopmentTag_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type ResourceDevelopmentTag_Landingpage_FeaturedStories = Post;
+export type ResourceDevelopmentTag_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type ResourceDevelopmentTag_Taxonomyimages = AcfFieldGroup & {
@@ -17110,12 +17129,12 @@ export type SocialTagToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxo
 /** Field Group */
 export type SocialTag_Landingpage = AcfFieldGroup & {
   __typename?: 'SocialTag_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<SocialTag_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<SocialTag_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type SocialTag_Landingpage_FeaturedStories = Post;
+export type SocialTag_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type SocialTag_Taxonomyimages = AcfFieldGroup & {
@@ -17452,12 +17471,12 @@ export type StoryFormatToTaxonomyConnectionEdge = Edge & OneToOneConnection & Ta
 /** Field Group */
 export type StoryFormat_Landingpage = AcfFieldGroup & {
   __typename?: 'StoryFormat_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<StoryFormat_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<StoryFormat_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type StoryFormat_Landingpage_FeaturedStories = Post;
+export type StoryFormat_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type StoryFormat_Taxonomyimages = AcfFieldGroup & {
@@ -17899,12 +17918,12 @@ export type TagToTaxonomyConnectionEdge = Edge & OneToOneConnection & TaxonomyCo
 /** Field Group */
 export type Tag_Landingpage = AcfFieldGroup & {
   __typename?: 'Tag_Landingpage';
-  featuredStories?: Maybe<Array<Maybe<Tag_Landingpage_FeaturedStories>>>;
+  featuredPosts?: Maybe<Array<Maybe<Tag_Landingpage_FeaturedPosts>>>;
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-export type Tag_Landingpage_FeaturedStories = Post;
+export type Tag_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
 export type Tag_Taxonomyimages = AcfFieldGroup & {
@@ -18541,6 +18560,8 @@ export type UpdateEpisodeInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars['String']['input']>;
+  /** The excerpt of the object */
+  excerpt?: InputMaybe<Scalars['String']['input']>;
   /** The ID of the episode object */
   id: Scalars['ID']['input'];
   /** Override the edit lock when another user is editing the post */

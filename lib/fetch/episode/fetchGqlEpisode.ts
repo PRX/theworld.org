@@ -25,8 +25,8 @@ const CONTRIBUTOR_PROPS = gql`
 `;
 
 const GET_EPISODE = gql`
-  query getEpisode($id: ID!) {
-    episode(id: $id) {
+  query getEpisode($id: ID!, $idType: EpisodeIdType) {
+    episode(id: $id, idType: $idType) {
       id
       link
       title
@@ -99,13 +99,14 @@ const GET_EPISODE = gql`
   ${AUDIO_PARENT_PROPS}
 `;
 
-export async function fetchGqlEpisode(id: string) {
+export async function fetchGqlEpisode(id: string, idType?: string) {
   const response = await gqlClient.query<{
     episode: Episode;
   }>({
     query: GET_EPISODE,
     variables: {
-      id
+      id,
+      idType
     }
   });
   const episode = response?.data?.episode;

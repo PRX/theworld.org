@@ -88,7 +88,11 @@ export const StoryHeader = ({ data }: Props) => {
               component="div"
               className={classes.date}
             >
-              <Moment format="MMMM D, YYYY" tz="America/New_York">
+              <Moment
+                format="MMMM D, YYYY"
+                tz="America/New_York"
+                {...(broadcastDate && { parse: 'YYYY-MM-DD' })}
+              >
                 {broadcastDate || date}
               </Moment>
             </Typography>
@@ -101,11 +105,7 @@ export const StoryHeader = ({ data }: Props) => {
             >
               {' '}
               Updated on{' '}
-              <Moment
-                format="MMM. D, YYYY · h:mm A z"
-                tz="America/New_York"
-                unix
-              >
+              <Moment format="MMM. D, YYYY · h:mm A z" tz="America/New_York">
                 {updatedDate}
               </Moment>
             </Typography>

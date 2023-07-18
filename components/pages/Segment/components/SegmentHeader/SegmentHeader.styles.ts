@@ -13,7 +13,8 @@ export const audioHeaderStyles = makeStyles()((theme) => ({
   title: {
     fontSize: `clamp(${theme.typography.pxToRem(
       32
-    )}, 5vw, ${theme.typography.pxToRem(48)})`
+    )}, 5vw, ${theme.typography.pxToRem(48)})`,
+    textWrap: 'balance'
   },
 
   byline: {

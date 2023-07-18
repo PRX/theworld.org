@@ -41,7 +41,7 @@ export const Team = () => {
   const store = useStore<RootState>();
   const state = store.getState();
   const { classes, cx } = teamStyles();
-  const { items } = getCollectionData(state, type, id, 'members');
+  const { items } = getCollectionData<any>(state, type, id, 'members');
   const imageWidth = [
     ['max-width: 600px', '100wv'],
     [null, '300px']

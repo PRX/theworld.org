@@ -3,7 +3,7 @@
  * Component for sidebar elements.
  */
 
-import type { MediaItem } from '@interfaces';
+import type { Maybe, MediaItem } from '@interfaces';
 import React from 'react';
 import Image from 'next/legacy/image';
 import { Box, Container, Typography, ThemeProvider } from '@mui/material';
@@ -13,10 +13,10 @@ import {
 } from './LandingPageHeader.styles';
 
 export interface ILandingPageHeaderProps {
-  image?: MediaItem;
-  logo?: MediaItem;
-  title?: string;
-  subhead?: string;
+  image?: Maybe<MediaItem>;
+  logo?: Maybe<MediaItem>;
+  title?: Maybe<string>;
+  subhead?: Maybe<string>;
 }
 
 export const LandingPageHeader = ({

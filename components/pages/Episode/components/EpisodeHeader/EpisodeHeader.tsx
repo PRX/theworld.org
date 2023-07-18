@@ -62,6 +62,7 @@ export const EpisodeHeader = ({ data }: Props) => {
             className={classes.date}
             format="MMM. D, YYYY"
             tz="America/New_York"
+            {...(broadcastDate && { parse: 'YYYY-MM-DD' })}
           >
             {broadcastDate || date}
           </Moment>

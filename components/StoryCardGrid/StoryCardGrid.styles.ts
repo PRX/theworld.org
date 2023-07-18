@@ -36,7 +36,8 @@ export const storyCardGridStyles = makeStyles()((theme) => ({
   },
 
   title: {
-    fontSize: theme.typography.pxToRem(16)
+    fontSize: theme.typography.pxToRem(16),
+    textWrap: 'balance'
   },
 
   primaryCategory: {

@@ -10,8 +10,8 @@ import { gqlClient } from '@lib/fetch/api';
 import { POST_SEO_PROPS } from '@lib/fetch/api/graphql';
 
 const GET_SEGMENT = gql`
-  query getSegment($id: ID!) {
-    segment(id: $id) {
+  query getSegment($id: ID!, $idType: SegmentIdType) {
+    segment(id: $id, idType: $idType) {
       id
       title
       content
@@ -48,13 +48,14 @@ const GET_SEGMENT = gql`
   ${POST_SEO_PROPS}
 `;
 
-export async function fetchGqlSegment(id: string) {
+export async function fetchGqlSegment(id: string, idType?: string) {
   const response = await gqlClient.query<{
     segment: Segment;
   }>({
     query: GET_SEGMENT,
     variables: {
-      id
+      id,
+      idType
     }
   });
   const segment = response?.data?.segment;

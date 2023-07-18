@@ -21,7 +21,7 @@ export const landingPageHeaderTheme = (theme: Theme) =>
     }
   });
 
-export const landingPageHeaderStyles = makeStyles()(theme => ({
+export const landingPageHeaderStyles = makeStyles()((theme) => ({
   root: {
     position: 'relative',
     display: 'grid',
@@ -67,7 +67,7 @@ export const landingPageHeaderStyles = makeStyles()(theme => ({
     gap: theme.typography.pxToRem(16),
     alignItems: 'center',
     zIndex: 1,
-    '& > :first-child': {
+    '& > :first-of-type': {
       flexShrink: 0
     },
     [theme.breakpoints.up('sm')]: {

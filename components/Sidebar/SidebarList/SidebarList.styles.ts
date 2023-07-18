@@ -64,7 +64,8 @@ export const sidebarListStyles = makeStyles()((theme) => ({
       display: 'grid',
       color: theme.palette.primary.main,
       fontWeight: theme.typography.fontWeightBold,
-      lineHeight: 1
+      lineHeight: 1,
+      textWrap: 'balance'
     },
 
     '& :is(.MuiAvatar-root)': {

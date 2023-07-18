@@ -25,7 +25,7 @@ export const enhanceImage =
       const sizes = imageWidths
         .map(([q, w]) => (q ? `(${q}) ${w}` : w))
         .join(', ');
-      const { class: className, width, height, src, ...otherAttribs } = attribs;
+      const { class: className, width, height, src, alt } = attribs;
       const absoluteSrc = /^\/[^/]/.test(src)
         ? `https://theworld.org${src}`
         : src;
@@ -47,8 +47,8 @@ export const enhanceImage =
       return wrapperClass ? (
         <div className={wrapperClass} key={attribs.src}>
           <Image
-            {...otherAttribs}
             src={absoluteSrc}
+            alt={alt || ''}
             width={width || 16}
             height={height || 9}
             layout="responsive"
@@ -57,8 +57,8 @@ export const enhanceImage =
         </div>
       ) : (
         <Image
-          {...otherAttribs}
           src={absoluteSrc}
+          alt={alt || ''}
           width={width || 16}
           height={height || 9}
           layout="responsive"

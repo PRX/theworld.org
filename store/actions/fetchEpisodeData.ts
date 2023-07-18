@@ -6,8 +6,8 @@
 
 import { fetchGqlEpisode } from '@lib/fetch';
 
-export const fetchEpisodeData = async (id: string) => {
-  const dataPromise = fetchGqlEpisode(id);
+export const fetchEpisodeData = async (id: string, idType?: string) => {
+  const dataPromise = fetchGqlEpisode(id, idType);
 
   // const ctaDataPromise = dispatch<any>(
   //   fetchCtaRegionGroupData('tw_cta_regions_content')

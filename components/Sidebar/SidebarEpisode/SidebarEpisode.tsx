@@ -3,30 +3,34 @@
  * Component for story card links.
  */
 
-import React from 'react';
+import type { Episode } from '@interfaces';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material';
 import { Headset } from '@mui/icons-material';
 import { ContentButton } from '@components/ContentButton';
 import { ContentLink } from '@components/ContentLink';
 import { AudioControls } from '@components/Player/components';
 import { sidebarEpisodeStyles } from './SidebarEpisode.styles';
-import { SidebarAudioList } from '../SidebarAudioList';
 import { SidebarHeader } from '../SidebarHeader';
 import { SidebarFooter } from '../SidebarFooter';
+import { SidebarList } from '../SidebarList';
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
 export interface SidebarEpisodeProps {
-  data: IPriApiResource;
+  data: Episode;
   label?: string;
 }
 
 export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
-  const { audio, program, dateBroadcast, datePublished, title, image } = data;
-  const { id: audioId, segments } = audio || {};
+  const { link, title, date, featuredImage, episodeDates, episodeAudio } = data;
+  const image = featuredImage?.node;
+  const imageUrl = image?.sourceUrl || image?.mediaItemUrl;
+  const { audio } = episodeAudio || {};
+  const { id: audioId, audioFields } = audio || {};
+  const { segmentsList } = audioFields || {};
+  const { broadcastDate } = episodeDates || {};
   const { classes } = sidebarEpisodeStyles();
 
   return (
@@ -35,15 +39,17 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
         <SidebarHeader className={classes.header}>
           <Headset />
           <Typography variant="h2"> {label}</Typography>
-          <AudioControls
-            className={classes.audio}
-            id={audioId}
-            fallbackProps={{
-              title,
-              queuedFrom: 'Sidebar Episode Controls',
-              ...(image && { imageUrl: image.url })
-            }}
-          />
+          {audioId && (
+            <AudioControls
+              className={classes.audio}
+              id={audioId}
+              fallbackProps={{
+                ...(title && { title }),
+                queuedFrom: 'Sidebar Episode Controls',
+                ...(imageUrl && { imageUrl })
+              }}
+            />
+          )}
         </SidebarHeader>
         <CardContent>
           <Typography
@@ -52,8 +58,12 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
             gutterBottom
             className={classes.title}
           >
-            <Moment format="dddd, MMMM D, YYYY" tz="America/New_York" unix>
-              {dateBroadcast || datePublished}
+            <Moment
+              format="dddd, MMMM D, YYYY"
+              tz="America/New_York"
+              {...(broadcastDate && { parse: 'YYYY-MM-DD' })}
+            >
+              {broadcastDate || date}
             </Moment>
           </Typography>
           <ContentLink url={data.link} className={classes.link}>
@@ -61,11 +71,19 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
           </ContentLink>
         </CardContent>
       </CardActionArea>
-      {segments && <SidebarAudioList disablePadding data={segments} />}
-      {program?.metatags && (
+      {segmentsList && (
+        <SidebarList
+          disablePadding
+          data={segmentsList.map((segment) => ({
+            data: segment?.segmentContent?.audio?.parent?.node || segment,
+            audio: segment?.segmentContent?.audio
+          }))}
+        />
+      )}
+      {link && (
         <SidebarFooter>
           <ContentButton
-            url={program.link}
+            url={link}
             query={{ v: 'episodes' }}
             variant="contained"
             color="primary"

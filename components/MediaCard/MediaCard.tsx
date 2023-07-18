@@ -4,7 +4,7 @@
  */
 
 import { type UrlWithParsedQuery } from 'url';
-import type { IContent } from '@interfaces';
+import type { MediaItem } from '@interfaces';
 import { useEffect, useState } from 'react';
 import 'moment-timezone';
 import dynamic from 'next/dynamic';
@@ -27,27 +27,29 @@ import { mediaCardStyles } from './MediaCard.styles';
 const Moment = dynamic(() => import('react-moment')) as any;
 
 export interface MediaCardProps {
-  data: IContent;
+  data: MediaItem;
 }
 
 export const MediaCard = ({ data }: MediaCardProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { title, audioTitle, metatags, type, date, broadcastDate } = data;
+  const { mediaType, link, title, date, audioFields } = data;
+  const { audioTitle, broadcastDate } = audioFields || {};
   const cardDate = broadcastDate || date;
-  const cardTitle = audioTitle || title || metatags['og:title'];
-  const CardIcon = ((mt: string) => {
-    const iconMap = new Map();
-    iconMap.set('file--audio', PlayCircleOutlineRounded);
-    iconMap.set('file--images', ImageRounded);
-    iconMap.set('file--videos', VideocamRounded);
+  const cardTitle = audioTitle || title;
+  const CardIcon =
+    mediaType &&
+    ((mt: string) => {
+      const iconMap = new Map<string, typeof PlayCircleOutlineRounded>();
+      iconMap.set('audio', PlayCircleOutlineRounded);
+      iconMap.set('image', ImageRounded);
+      iconMap.set('video', VideocamRounded);
 
-    return iconMap.get(mt);
-  })(type);
-  const { pathname } = generateLinkHrefForContent(
-    metatags.canonical,
-    true
-  ) as UrlWithParsedQuery;
+      return iconMap.get(mt);
+    })(mediaType);
+  const linkUrl =
+    link && (generateLinkHrefForContent(link, true) as UrlWithParsedQuery);
+  const { pathname } = linkUrl || {};
   const { classes, cx } = mediaCardStyles({ isLoading });
 
   useEffect(() => {
@@ -110,7 +112,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
             {cardTitle}
           </Typography>
         </CardContent>
-        <ContentLink url={metatags.canonical} className={classes.link} />
+        <ContentLink url={link} className={classes.link} />
       </CardActionArea>
     </Card>
   );

@@ -3,6 +3,7 @@
  * Component for Category.
  */
 
+import type { Episode, MediaItem, PostStory } from '@interfaces';
 import React, {
   FormEvent,
   MouseEvent,
@@ -223,11 +224,14 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
           {!!storyData.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {storyData.map((item) => (
-                  <Grid item xs={12} key={item.id}>
-                    <StoryCard data={item} short />
-                  </Grid>
-                ))}
+                {storyData.map(
+                  (item: PostStory) =>
+                    item && (
+                      <Grid item xs={12} key={item.id}>
+                        <StoryCard data={item} short />
+                      </Grid>
+                    )
+                )}
               </Grid>
               {nextPageStory && (
                 <Box mt={3}>
@@ -251,11 +255,14 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
           {!!episodeData.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {episodeData.map((item) => (
-                  <Grid item xs={12} md={6} key={item.id}>
-                    <EpisodeCard data={item} />
-                  </Grid>
-                ))}
+                {episodeData.map(
+                  (item: Episode) =>
+                    item && (
+                      <Grid item xs={12} md={6} key={item.id}>
+                        <EpisodeCard data={item} />
+                      </Grid>
+                    )
+                )}
               </Grid>
               {nextPageEpisode && (
                 <Box mt={3}>
@@ -279,11 +286,14 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
           {!!mediaData.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {mediaData.map((item) => (
-                  <Grid item xs={12} md={6} key={item.id}>
-                    <MediaCard data={item} />
-                  </Grid>
-                ))}
+                {mediaData.map(
+                  (item: MediaItem) =>
+                    item && (
+                      <Grid item xs={12} md={6} key={item.id}>
+                        <MediaCard data={item} />
+                      </Grid>
+                    )
+                )}
               </Grid>
               {nextPageMedia && (
                 <Box mt={3}>

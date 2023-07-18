@@ -3,7 +3,7 @@
  *
  * Actions to append collections data to contend data and collection refs.
  */
-import { Connection } from '@interfaces';
+import { CollectionQueryOptions, Connection } from '@interfaces';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
@@ -11,7 +11,8 @@ export function appendResourceCollection(
   data: Connection,
   type: string,
   id: number | string | undefined,
-  collection: string
+  collection: string,
+  options?: CollectionQueryOptions
 ): ThunkAction<void, {}, {}, AnyAction> {
   return (dispatch: ThunkDispatch<{}, {}, AnyAction>): void => {
     const payloadItems = data.edges.map(({ node }) => node);
@@ -27,7 +28,8 @@ export function appendResourceCollection(
         payload: {
           resource: { type, id },
           collection,
-          data
+          data,
+          ...(options && { options })
         }
       });
     }

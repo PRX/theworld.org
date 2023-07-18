@@ -23,14 +23,12 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
   ({ children, url, query, className, ...other }: IContentLinkProps, ref) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const props = generateLinkPropsForContent(url || '', query);
-    const { href, as: alias } = props || {};
-    const pathname = alias?.pathname;
+    const href = generateLinkPropsForContent(url);
     const { classes, cx } = contentLinkStyles();
 
     useEffect(() => {
       const handleRouteChangeStart = (newUrl: string) => {
-        setIsLoading(newUrl === pathname);
+        setIsLoading(newUrl === href);
       };
       const handleRouteChangeEnd = () => {
         setIsLoading(false);
@@ -45,10 +43,10 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
         router.events.off('routeChangeComplete', handleRouteChangeEnd);
         router.events.off('routeChangeError', handleRouteChangeEnd);
       };
-    }, [pathname, router.events]);
+    }, [href, router.events]);
 
     return href ? (
-      <Link href={href} as={alias} passHref legacyBehavior>
+      <Link href={href} passHref legacyBehavior>
         <MuiLink
           ref={ref}
           component="a"

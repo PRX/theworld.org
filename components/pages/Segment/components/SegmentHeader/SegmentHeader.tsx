@@ -59,6 +59,7 @@ export const AudioHeader = ({ data }: Props) => {
               className={classes.date}
               format="MMM. D, YYYY"
               tz="America/New_York"
+              parse="YYYY-MM-DD"
             >
               {broadcastDate}
             </Moment>

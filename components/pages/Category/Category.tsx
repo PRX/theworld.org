@@ -7,12 +7,8 @@ import type React from 'react';
 import type { SidebarListItem } from '@components/Sidebar';
 import type {
   Category as CategoryType,
-  Category_Taxonomyimages as CategoryTaxonomyImages,
   IContentComponentProps,
   RootState,
-  Category_Teaserfields as CategoryTeaserFields,
-  Category_Sponsorship as CategorySponsorship,
-  Category_Landingpage as CategoryLandingpage,
   PostStory,
   AcfLink
 } from '@interfaces';
@@ -88,16 +84,15 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
     description,
     children
   } = data;
-  const { teaser } = teaserFields as CategoryTeaserFields;
-  const { imageBanner, logo } = taxonomyImages as CategoryTaxonomyImages;
-  const { featuredStories: allFeaturedStories } =
-    landingPage as CategoryLandingpage;
+  const { teaser } = teaserFields || {};
+  const { imageBanner, logo } = taxonomyImages || {};
+  const { featuredPosts: allFeaturedStories } = landingPage || {};
   const [featuredStory, ...stories] = [
     ...(allFeaturedStories || []),
     ...(posts?.edges?.map(({ node }) => node) || [])
   ] as PostStory[];
   const featuredStories = stories.splice(0, 4);
-  const { collectionSponsorLinks } = sponsorship as CategorySponsorship;
+  const { collectionSponsorLinks } = sponsorship || {};
   const sponsors = collectionSponsorLinks
     ?.map((collection) => collection?.sponsorLinks)
     .filter((v) => !!(v?.title && v.url))
