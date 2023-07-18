@@ -4,13 +4,11 @@
  * @param id Term data or identifier.
  */
 
-import { UrlWithParsedQuery } from 'url';
 import {
   PriApiResourceResponse,
   IPriApiResource,
   IPriApiResourceResponse
 } from 'pri-api-library/types';
-import { generateLinkHrefForContent } from '@lib/routing';
 import { fetchPriApiItem, fetchPriApiQuery } from '../api/fetchPriApi';
 import { basicStoryParams } from '../api/params';
 
@@ -75,8 +73,7 @@ export const fetchTermStories = async (
       ]
         .filter((v: string) => !!v)
         .reduce((a, v, i) => ({ ...a, [`filter[id][value][${i}]`]: v }), {});
-    const { pathname } =
-      (generateLinkHrefForContent(term.link, true) as UrlWithParsedQuery) || {};
+    const pathname = term.link && new URL(term.link).pathname;
     const fieldName = pathname && generateFieldNameFromPath(pathname);
 
     if (fieldName) {

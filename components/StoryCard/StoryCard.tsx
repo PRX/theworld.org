@@ -4,7 +4,6 @@
  */
 
 import type React from 'react';
-import type { UrlWithParsedQuery } from 'url';
 import type {
   // ILink,
   PostStory
@@ -36,7 +35,6 @@ import { Label } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
 import { HtmlContent } from '@components/HtmlContent';
-import { generateLinkHrefForContent } from '@lib/routing';
 import { useStoryCardStyles, storyCardTheme } from './StoryCard.styles';
 
 const Moment = dynamic(() => import('react-moment')) as any;
@@ -79,10 +77,7 @@ export const StoryCard = ({
     ...(image?.sourceUrl && { imageUrl: image.sourceUrl }),
     linkResource: data
   } as Partial<IAudioData>;
-  const { pathname } = generateLinkHrefForContent(
-    link || '',
-    true
-  ) as UrlWithParsedQuery;
+  const pathname = link && new URL(link).pathname;
   const { classes, cx } = useStoryCardStyles();
   const imageWidth = [
     ['max-width: 600px', '100vw'],

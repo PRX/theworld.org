@@ -43,7 +43,7 @@ import { LandingPageHeader } from '@components/LandingPageHeader';
 import { EpisodeCard } from '@components/EpisodeCard';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
-import { generateLinkPropsForContent } from '@lib/routing';
+import { generateContentLinkHref } from '@lib/routing';
 import { programStyles, programTheme } from './Program.styles';
 
 export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
@@ -64,6 +64,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   const type = 'term--program';
   const {
     id,
+    link,
     seo,
     name,
     description,
@@ -213,7 +214,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   };
 
   const handleFilterChange = (e: object, value: any) => {
-    let href = generateLinkPropsForContent(router.asPath);
+    let href = generateContentLinkHref(link);
 
     if (href) {
       if (value === 1) {
@@ -343,7 +344,14 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
       children: (
         <>
           {latestEpisode && !isEpisodesView && (
-            <SidebarEpisode data={latestEpisode} label="Latest Episode" />
+            <SidebarEpisode
+              data={latestEpisode}
+              label="Latest Episode"
+              {...(link && {
+                collectionLink: `${link}?v=episodes`,
+                collectionLinkShallow: true
+              })}
+            />
           )}
           <Sidebar item elevated>
             {description && hasContentLinks && (

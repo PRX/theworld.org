@@ -34,7 +34,7 @@ import {
   getCtaRegionData,
   getDataByResource
 } from '@store/reducers';
-import { generateLinkPropsForContent } from '@lib/routing';
+import { generateContentLinkHref } from '@lib/routing';
 
 export const Term = () => {
   const {
@@ -149,12 +149,13 @@ export const Term = () => {
   };
 
   const handleFilterChange = (e: object, value: any) => {
-    const { href, as: alias } = generateLinkPropsForContent(data, {
-      ...(value === 1 && { v: 'episodes' })
-    });
+    let href = generateContentLinkHref(router.asPath);
 
     if (href) {
-      router.push(href, alias);
+      if (value === 1) {
+        href = `${href}?v=episodes`;
+      }
+      router.push(href, undefined, { shallow: true });
     }
   };
 

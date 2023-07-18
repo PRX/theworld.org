@@ -4,7 +4,6 @@
  */
 
 import type React from 'react';
-import type { UrlWithParsedQuery } from 'url';
 import type { PostStory, Maybe } from '@interfaces';
 // import type { ILink } from '@interfaces/link';
 import type {
@@ -36,7 +35,6 @@ import {
 } from '@mui/material';
 import { Label } from '@mui/icons-material';
 import { ContentLink } from '@components/ContentLink';
-import { generateLinkHrefForContent } from '@lib/routing';
 import { storyCardGridStyles } from './StoryCardGrid.styles';
 
 const Moment = dynamic(() => import('react-moment')) as any;
@@ -122,10 +120,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
         const image = featuredImage?.node;
         const { broadcastDate } = additionalDates || {};
         const { audio } = additionalMedia || {};
-        const { pathname } = generateLinkHrefForContent(
-          link || '',
-          true
-        ) as UrlWithParsedQuery;
+        const pathname = link && new URL(link).pathname;
         const isLoading = pathname === loadingUrl;
         const audioProps = {
           title,
