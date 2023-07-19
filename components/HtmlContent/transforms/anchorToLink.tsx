@@ -34,7 +34,7 @@ export const anchorToLink = (
       attribs,
       attribs: { href }
     } = node;
-    let url: URL | undefined = new URL(href);
+    let url: URL | undefined = new URL(href, 'https://theworld.org');
 
     // Handle links copied from google searches for internal URL's.
     if (/\/\/(www\.)?google\.com\/url/.test(url.href) && url.searchParams) {
