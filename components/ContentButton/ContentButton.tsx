@@ -6,11 +6,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button, ButtonProps } from '@mui/material';
-import { generateLinkPropsForContent } from '@lib/routing';
+import { generateContentLinkHref } from '@lib/routing';
 
 export interface ContentButtonProps extends ButtonProps {
   url: string;
-  query?: { [k: string]: string };
+  shallow?: boolean;
 }
 
 export type ContentButtonRef = HTMLAnchorElement;
@@ -18,13 +18,13 @@ export type ContentButtonRef = HTMLAnchorElement;
 export const ContentButton = ({
   children,
   url,
-  query,
+  shallow,
   ...other
 }: ContentButtonProps) => {
-  const { href, as: alias } = generateLinkPropsForContent(url, query);
+  const href = generateContentLinkHref(url);
 
-  return href && alias ? (
-    <Link href={href} as={alias} passHref legacyBehavior>
+  return href ? (
+    <Link href={href} shallow={shallow} passHref legacyBehavior>
       <Button href="" {...other}>
         {children}
       </Button>

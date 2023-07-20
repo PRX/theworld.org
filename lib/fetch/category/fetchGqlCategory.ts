@@ -1,17 +1,17 @@
 /**
- * Fetch Program data from CMS API.
+ * Fetch Category data from CMS API.
  *
- * @param id Program identifier.
+ * @param id Category identifier.
  */
 
-import type { Program } from '@interfaces';
+import type { Category } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import { IMAGE_PROPS, POST_CARD_PROPS } from '@lib/fetch/api/graphql';
 
-const GET_PROGRAM = gql`
-  query getProgram($id: ID!, $idType: ProgramIdType) {
-    program(id: $id, idType: $idType) {
+const GET_CATEGORY = gql`
+  query getCategory($id: ID!, $idType: CategoryIdType) {
+    category(id: $id, idType: $idType) {
       id
       link
       name
@@ -34,8 +34,8 @@ const GET_PROGRAM = gql`
           }
         }
       }
-      programHosts {
-        hosts {
+      categoryEditors {
+        editors {
           id
           link
           name
@@ -54,27 +54,34 @@ const GET_PROGRAM = gql`
           }
         }
       }
+      children(first: 100) {
+        nodes {
+          id
+          name
+          link
+        }
+      }
     }
   }
   ${POST_CARD_PROPS}
   ${IMAGE_PROPS}
 `;
 
-export async function fetchGqlProgram(id: string, idType?: string) {
+export async function fetchGqlCategory(id: string, idType?: string) {
   const response = await gqlClient.query<{
-    program: Program;
+    category: Category;
   }>({
-    query: GET_PROGRAM,
+    query: GET_CATEGORY,
     variables: {
       id,
       idType
     }
   });
-  const program = response?.data?.program;
+  const category = response?.data?.category;
 
-  if (!program) return undefined;
+  if (!category) return undefined;
 
-  return program;
+  return category;
 }
 
-export default fetchGqlProgram;
+export default fetchGqlCategory;

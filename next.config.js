@@ -91,23 +91,23 @@ module.exports = withPlausibleProxy({
     if (!isServer) {
       newConfig.optimization.splitChunks.cacheGroups = {
         ...newConfig.optimization.splitChunks.cacheGroups,
-        reactCommon: {
-          chunks: 'all',
-          test: /(?<!node_modules.*)[\\/]node_modules[\\/]react-(cookies|copy-to-clipboard|html-parser|markdown|moment|player|redux)[\\/]/,
-          name: (module, chunks, cacheGroupKey) => {
-            const moduleFileName = module
-              .identifier()
-              .split('/')
-              .reduceRight((item) => item.toLowerCase());
-            const allChunksNames = chunks
-              .map((item) => (item.name || '').toLowerCase())
-              .join('~');
-            return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
-          },
-          priority: 30,
-          reuseExistingChunk: true,
-          enforce: true
-        },
+        // reactCommon: {
+        //   chunks: 'all',
+        //   test: /(?<!node_modules.*)[\\/]node_modules[\\/]react-(cookies|copy-to-clipboard|html-parser|markdown|moment|player|redux)[\\/]/,
+        //   name: (module, chunks, cacheGroupKey) => {
+        //     const moduleFileName = module
+        //       .identifier()
+        //       .split('/')
+        //       .reduceRight((item) => item.toLowerCase());
+        //     const allChunksNames = chunks
+        //       .map((item) => (item.name || '').toLowerCase())
+        //       .join('~');
+        //     return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+        //   },
+        //   priority: 30,
+        //   reuseExistingChunk: true,
+        //   enforce: true
+        // },
         moment: {
           chunks: 'all',
           test: /[\\/]node_modules[\\/]moment(-[^\\/]+)?[\\/]/,
@@ -173,41 +173,41 @@ module.exports = withPlausibleProxy({
           priority: 40,
           reuseExistingChunk: true,
           enforce: true
-        },
-        lib: {
-          chunks: 'all',
-          test: /[\\/]lib[\\/]/,
-          name: (module, chunks, cacheGroupKey) => {
-            const moduleFileName = module
-              .identifier()
-              .split('/')
-              .reduceRight((item) => item.toLowerCase());
-            const allChunksNames = chunks
-              .map((item) => (item.name || '').toLowerCase())
-              .join('~');
-            return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
-          },
-          priority: 40,
-          reuseExistingChunk: true,
-          enforce: true
-        },
-        store: {
-          chunks: 'all',
-          test: /[\\/]store[\\/]/,
-          name: (module, chunks, cacheGroupKey) => {
-            const moduleFileName = module
-              .identifier()
-              .split('/')
-              .reduceRight((item) => item.toLowerCase());
-            const allChunksNames = chunks
-              .map((item) => (item.name || '').toLowerCase())
-              .join('~');
-            return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
-          },
-          priority: 40,
-          reuseExistingChunk: true,
-          enforce: true
         }
+        // lib: {
+        //   chunks: 'all',
+        //   test: /[\\/]lib[\\/]/,
+        //   name: (module, chunks, cacheGroupKey) => {
+        //     const moduleFileName = module
+        //       .identifier()
+        //       .split('/')
+        //       .reduceRight((item) => item.toLowerCase());
+        //     const allChunksNames = chunks
+        //       .map((item) => (item.name || '').toLowerCase())
+        //       .join('~');
+        //     return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+        //   },
+        //   priority: 40,
+        //   reuseExistingChunk: true,
+        //   enforce: true
+        // },
+        // store: {
+        //   chunks: 'all',
+        //   test: /[\\/]store[\\/]/,
+        //   name: (module, chunks, cacheGroupKey) => {
+        //     const moduleFileName = module
+        //       .identifier()
+        //       .split('/')
+        //       .reduceRight((item) => item.toLowerCase());
+        //     const allChunksNames = chunks
+        //       .map((item) => (item.name || '').toLowerCase())
+        //       .join('~');
+        //     return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+        //   },
+        //   priority: 40,
+        //   reuseExistingChunk: true,
+        //   enforce: true
+        // }
       };
     }
 

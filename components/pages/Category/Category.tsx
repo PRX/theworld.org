@@ -9,10 +9,9 @@ import type {
   Category as CategoryType,
   IContentComponentProps,
   RootState,
-  PostStory,
-  AcfLink
+  PostStory
 } from '@interfaces';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { Box, Button, Hidden, Typography } from '@mui/material';
 import { ListAltRounded } from '@mui/icons-material';
@@ -33,20 +32,55 @@ import { HtmlContent } from '@components/HtmlContent';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { MetaTags } from '@components/MetaTags';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
-import { AppContext } from '@contexts/AppContext';
-import { getCtaRegionData } from '@store/reducers';
+import { getCollectionData, getCtaRegionData } from '@store/reducers';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 
 export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
-  const {
-    page: {
-      resource: { type = 'term--category', id = '' }
-    }
-  } = useContext(AppContext);
   const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
+  const [loadingStories, setLoadingStories] = useState(false);
+  const [oldScrollY, setOldScrollY] = useState(0);
+  const [moreStoriesController, setMoreStoriesController] =
+    useState<AbortController>();
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
+  const type = 'term--category';
+  const {
+    id,
+    seo,
+    name,
+    description,
+    teaserFields,
+    taxonomyImages,
+    categoryEditors,
+    sponsorship,
+    landingPage,
+    children
+  } = data;
+  const { teaser } = teaserFields || {};
+  const { imageBanner, logo } = taxonomyImages || {};
+  const { editors } = categoryEditors || {};
+  const { collectionSponsorLinks } = sponsorship || {};
+  const sponsors = collectionSponsorLinks?.reduce(
+    (a, sl) => (sl?.sponsorLinks ? [...a, sl.sponsorLinks] : a),
+    []
+  );
+  const featuredPosts =
+    landingPage?.featuredPosts &&
+    (landingPage.featuredPosts || []).reduce(
+      (a, post) => (post ? [...a, post] : a),
+      []
+    );
+
+  const storiesState = getCollectionData<PostStory>(state, type, id, 'stories');
+  const featuredStories = [
+    ...(featuredPosts || []),
+    ...(storiesState?.items || []).splice(0, 5 - (featuredPosts?.length || 0))
+  ];
+  const featuredStory = featuredStories.shift();
+  const { items: stories, pageInfo } = storiesState || {};
+  const hasStories = !!stories?.length;
 
   // CTA data.
   const ctaInlineTop = getCtaRegionData(
@@ -73,38 +107,6 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
     type,
     id
   );
-  const {
-    seo,
-    name,
-    teaserFields,
-    taxonomyImages,
-    landingPage,
-    posts,
-    sponsorship,
-    description,
-    children
-  } = data;
-  const { teaser } = teaserFields || {};
-  const { imageBanner, logo } = taxonomyImages || {};
-  const { featuredPosts: allFeaturedStories } = landingPage || {};
-  const [featuredStory, ...stories] = [
-    ...(allFeaturedStories || []),
-    ...(posts?.edges?.map(({ node }) => node) || [])
-  ] as PostStory[];
-  const featuredStories = stories.splice(0, 4);
-  const { collectionSponsorLinks } = sponsorship || {};
-  const sponsors = collectionSponsorLinks
-    ?.map((collection) => collection?.sponsorLinks)
-    .filter((v) => !!(v?.title && v.url))
-    .map(
-      ({ title, url }: AcfLink) =>
-        ({
-          title,
-          url
-        } as SidebarListItem)
-    );
-  const [loading, setLoading] = useState(false);
-  const [oldScrollY, setOldScrollY] = useState(0);
 
   // Plausible Events.
   const props = {
@@ -115,6 +117,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
   useEffect(
     () => () => {
       unsub();
+      moreStoriesController?.abort();
     },
     [unsub]
   );
@@ -126,24 +129,35 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
       top: oldScrollY - window.scrollY
     });
     setOldScrollY(window.scrollY);
-  }, [oldScrollY, posts?.pageInfo?.endCursor]);
+  }, [oldScrollY, pageInfo?.endCursor]);
 
   const loadMoreStories = async () => {
-    if (!posts?.pageInfo?.endCursor) return;
+    if (!id || !pageInfo.endCursor) return;
 
-    setLoading(true);
+    setLoadingStories(true);
 
-    const moreStories = await fetchApiCategoryStories(
-      id,
-      posts?.pageInfo?.endCursor
+    const controller = new AbortController();
+    setMoreStoriesController(controller);
+
+    const options = {
+      cursor: pageInfo.endCursor,
+      exclude: featuredPosts?.reduce(
+        (a, post) => (post?.id ? [...a, post.id] : a),
+        []
+      )
+    };
+    const moreStories = await fetchApiCategoryStories(id, options, {
+      signal: controller.signal
+    });
+
+    if (!moreStories) return;
+
+    setOldScrollY(window.scrollY);
+    setLoadingStories(false);
+
+    store.dispatch<any>(
+      appendResourceCollection(moreStories, type, id, 'stories', options)
     );
-
-    if (moreStories) {
-      setOldScrollY(window.scrollY);
-      setLoading(false);
-
-      // Add stories to state.
-    }
   };
 
   const mainElements = [
@@ -176,26 +190,27 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
       key: 'main bottom',
       children: (
         <>
-          {stories.map((story) => (
-            <StoryCard
-              data={story}
-              feature={story.presentation?.format !== 'standard'}
-              key={story.id}
-            />
-          ))}
-          {posts?.pageInfo.hasNextPage && (
+          {hasStories &&
+            stories.map((story) => (
+              <StoryCard
+                data={story}
+                feature={story.presentation?.format !== 'standard'}
+                key={story.id}
+              />
+            ))}
+          {pageInfo?.hasNextPage && (
             <Box>
               <Button
                 variant="contained"
                 size="large"
                 color="primary"
                 fullWidth
-                disabled={loading}
+                disabled={loadingStories}
                 onClick={() => {
                   loadMoreStories();
                 }}
               >
-                {loading ? 'Loading Stories...' : 'More Stories'}
+                {loadingStories ? 'Loading Stories...' : 'More Stories'}
               </Button>
             </Box>
           )}
@@ -225,15 +240,15 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
                 <HtmlContent html={description} />
               </SidebarContent>
             )}
-            {/* {hosts && !!hosts.length && (
+            {editors && !!editors.length && (
               <SidebarList
-                data={hosts.map((item: IPriApiResource) => ({
-                  ...item,
-                  avatar: item.image
+                data={editors.map((item) => ({
+                  data: item,
+                  avatar: item?.contributorDetails?.image
                 }))}
-                subheaderText="Hosted by"
+                subheaderText="Edited by"
               />
-            )} */}
+            )}
             {!!sponsors?.length && (
               <SidebarList
                 data={sponsors}
@@ -246,15 +261,13 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
                 data={children.nodes.map(
                   (child) =>
                     ({
-                      title: child.name,
-                      url: child.link
+                      data: child
                     } as SidebarListItem)
                 )}
                 subheader={
                   <SidebarHeader>
-                    <Typography variant="h2">
-                      <ListAltRounded /> Subcategories
-                    </Typography>
+                    <ListAltRounded />
+                    <Typography variant="h2">Subcategories</Typography>
                   </SidebarHeader>
                 }
                 bulleted

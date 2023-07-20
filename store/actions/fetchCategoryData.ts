@@ -3,102 +3,65 @@
  *
  * Actions to fetch data for category page.
  */
-import { AnyAction } from 'redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import {
-  IPriApiResource,
-  IPriApiResourceResponse
-} from 'pri-api-library/types';
-import { ICtaFilterProps } from '@interfaces/cta';
-import { RootState } from '@interfaces/state';
-import { fetchApiCategory, fetchCategory } from '@lib/fetch';
-import { getDataByResource } from '@store/reducers';
+import type { AnyAction } from 'redux';
+import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import type { Category, RootState } from '@interfaces';
+import { fetchGqlCategory, fetchGqlCategoryPosts } from '@lib/fetch';
+import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
-import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchCategoryData =
-  (id: string): ThunkAction<void, {}, {}, AnyAction> =>
+  (
+    id: string,
+    idType?: string
+  ): ThunkAction<Promise<Category | undefined>, {}, {}, AnyAction> =>
   async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
     getState: () => RootState
-  ): Promise<IPriApiResource> => {
+  ) => {
     const state = getState();
-    const type = 'taxonomy_term--categories';
-    const isOnServer = typeof window === 'undefined';
-    let data = getDataByResource<any>(state, type, id);
+    const type = 'term--category';
+    const category = await fetchGqlCategory(id, idType);
 
-    if (!data || !data.complete || isOnServer) {
-      dispatch({
-        type: 'FETCH_CONTENT_DATA_REQUEST',
-        payload: {
-          type,
-          id
-        }
-      });
+    if (category) {
+      // const ctaDataPromise = dispatch<any>(
+      //   fetchCtaRegionGroupData('tw_cta_regions_landing')
+      // );
 
-      const dataPromise = (isOnServer ? fetchCategory : fetchApiCategory)(
-        id
-      ).then((resp: IPriApiResourceResponse) => resp && resp.data);
+      // // Set CTA filter props.
+      // dispatch({
+      //   type: 'SET_RESOURCE_CTA_FILTER_PROPS',
+      //   payload: {
+      //     filterProps: {
+      //       type,
+      //       id,
+      //       props: {
+      //         category: id
+      //       }
+      //     }
+      //   } as ICtaFilterProps
+      // });
 
-      const ctaDataPromise = dispatch<any>(
-        fetchCtaRegionGroupData('tw_cta_regions_landing')
+      // Get first page of stories.
+      const storiesCollection = getCollectionData(
+        state,
+        type,
+        category.id,
+        'stories'
       );
 
-      data = await dataPromise;
-      await ctaDataPromise;
+      if (!storiesCollection) {
+        const posts = await fetchGqlCategoryPosts(category.id);
 
-      const { featuredStory, featuredStories, stories, ...payload } = data;
-
-      // Set CTA filter props.
-      dispatch({
-        type: 'SET_RESOURCE_CTA_FILTER_PROPS',
-        payload: {
-          filterProps: {
-            type,
-            id,
-            props: {
-              categories: [id]
-            }
-          }
-        } as ICtaFilterProps
-      });
-
-      dispatch({
-        type: 'FETCH_CONTENT_DATA_SUCCESS',
-        payload: {
-          ...payload,
-          complete: true
+        if (posts) {
+          dispatch(
+            appendResourceCollection(posts, type, category.id, 'stories')
+          );
         }
-      });
+      }
 
-      // dispatch(
-      //   appendResourceCollection(
-      //     {
-      //       data: [featuredStory],
-      //       meta: { count: 1 }
-      //     },
-      //     type,
-      //     id,
-      //     'featured story'
-      //   )
-      // );
-
-      // dispatch(
-      //   appendResourceCollection(
-      //     {
-      //       data: [...featuredStories],
-      //       meta: {
-      //         count: featuredStories.length
-      //       }
-      //     },
-      //     type,
-      //     id,
-      //     'featured stories'
-      //   )
-      // );
-
-      dispatch(appendResourceCollection(stories, type, id, 'stories'));
+      return category;
     }
 
-    return data;
+    return undefined;
   };

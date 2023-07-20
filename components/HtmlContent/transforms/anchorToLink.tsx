@@ -5,8 +5,7 @@
  */
 import { convertNodeToElement, Transform } from 'react-html-parser';
 import Link from 'next/link';
-import { parse } from 'url';
-import { generateLinkPropsForContent } from '@lib/routing';
+import { generateContentLinkHref } from '@lib/routing';
 import { isLocalUrl } from '@lib/parse/url';
 import { DomElement } from 'htmlparser2';
 
@@ -35,18 +34,17 @@ export const anchorToLink = (
       attribs,
       attribs: { href }
     } = node;
-    let url = parse(href, true);
+    let url: URL | undefined = new URL(href, 'https://theworld.org');
 
     // Handle links copied from google searches for internal URL's.
-    if (/\/\/(www\.)?google\.com\/url/.test(href)) {
-      url = parse(url.query.q as string, true);
+    if (/\/\/(www\.)?google\.com\/url/.test(url.href) && url.searchParams) {
+      const q = url.searchParams.get('q');
+      url = q ? new URL(q) : undefined;
     }
 
-    if (isLocalUrl(url.href)) {
+    if (url?.href && isLocalUrl(url.href)) {
       const id = gen.next().value as number;
-      const { href: linkHref, as: linkAs } = generateLinkPropsForContent(
-        url.href
-      );
+      const linkHref = generateContentLinkHref(url.href);
       const children = convertNodeToElement(
         { ...node, attribs },
         index,
@@ -55,8 +53,8 @@ export const anchorToLink = (
 
       delete attribs.target;
 
-      return linkHref && linkAs ? (
-        <Link href={linkHref} as={linkAs} passHref key={id} legacyBehavior>
+      return linkHref ? (
+        <Link href={linkHref} passHref key={id} legacyBehavior>
           {children}
         </Link>
       ) : (

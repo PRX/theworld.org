@@ -19,6 +19,7 @@ const GET_PROGRAM_EPISODES = gql`
     $exclude: [ID]
   ) {
     program(id: $id) {
+      id
       episodes(first: $pageSize, after: $cursor, where: { notIn: $exclude }) {
         pageInfo {
           hasNextPage

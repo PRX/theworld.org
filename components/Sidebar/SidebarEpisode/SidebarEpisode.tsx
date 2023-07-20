@@ -21,10 +21,17 @@ const Moment = dynamic(() => import('react-moment')) as any;
 export interface SidebarEpisodeProps {
   data: Episode;
   label?: string;
+  collectionLink?: string;
+  collectionLinkShallow?: boolean;
 }
 
-export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
-  const { link, title, date, featuredImage, episodeDates, episodeAudio } = data;
+export const SidebarEpisode = ({
+  data,
+  label,
+  collectionLink,
+  collectionLinkShallow
+}: SidebarEpisodeProps) => {
+  const { title, date, featuredImage, episodeDates, episodeAudio } = data;
   const image = featuredImage?.node;
   const imageUrl = image?.sourceUrl || image?.mediaItemUrl;
   const { audio } = episodeAudio || {};
@@ -38,7 +45,7 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
       <CardActionArea component="div">
         <SidebarHeader className={classes.header}>
           <Headset />
-          <Typography variant="h2"> {label}</Typography>
+          <Typography variant="h2"> {label || 'Episode'}</Typography>
           {audioId && (
             <AudioControls
               className={classes.audio}
@@ -80,11 +87,11 @@ export const SidebarEpisode = ({ data, label }: SidebarEpisodeProps) => {
           }))}
         />
       )}
-      {link && (
+      {collectionLink && (
         <SidebarFooter>
           <ContentButton
-            url={link}
-            query={{ v: 'episodes' }}
+            url={collectionLink}
+            shallow={collectionLinkShallow}
             variant="contained"
             color="primary"
             fullWidth

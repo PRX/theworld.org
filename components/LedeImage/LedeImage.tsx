@@ -15,7 +15,9 @@ export interface ILedeImageProps {
 
 export const LedeImage = ({ data }: ILedeImageProps) => {
   const { altText, caption, sourceUrl, mediaItemUrl, mediaDetails } = data;
-  const { width, height } = mediaDetails || {};
+  const { width: w, height: h } = mediaDetails || {};
+  const width = w || 16;
+  const height = h && h === width ? width / (16 / 9) : 9;
   const { classes } = ledeImageStyles();
   const imageSrc = sourceUrl || mediaItemUrl;
   const hasCaption = caption && !!caption.length;
@@ -26,7 +28,9 @@ export const LedeImage = ({ data }: ILedeImageProps) => {
     ['max-width: 1280px', '600px'],
     [null, '920px']
   ];
-  const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
+  const sizes = imageWidth
+    .map(([q, iw]) => (q ? `(${q}) ${iw}` : iw))
+    .join(', ');
 
   if (!imageSrc) return null;
 
@@ -40,6 +44,7 @@ export const LedeImage = ({ data }: ILedeImageProps) => {
         sizes={sizes}
         priority
         alt={altText || ''}
+        objectFit="cover"
       />
       {hasFooter && (
         <Typography

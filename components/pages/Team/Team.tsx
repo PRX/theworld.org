@@ -8,8 +8,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
 import { useStore } from 'react-redux';
-import { UrlWithParsedQuery } from 'url';
-import { IPriApiResource } from 'pri-api-library/types';
 import {
   Card,
   CardActionArea,
@@ -25,7 +23,6 @@ import { ContentLink } from '@components/ContentLink';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible } from '@components/Plausible';
 import { AppContext } from '@contexts/AppContext';
-import { generateLinkHrefForContent } from '@lib/routing';
 import { getCollectionData } from '@store/reducers';
 import { teamStyles, teamTheme } from './Team.styles';
 import { TeamHeader } from './components/TeamHeader';
@@ -98,69 +95,64 @@ export const Team = () => {
       <Container fixed>
         <TeamHeader title={title} />
         <Grid container spacing={3}>
-          {items
-            .reduce((a, p) => [...a, ...p], [])
-            .map((item: IPriApiResource, index) => {
-              const { pathname } = generateLinkHrefForContent(
-                item.link,
-                true
-              ) as UrlWithParsedQuery;
-              const isLoading = loadingUrl === pathname;
+          {items.map((item, index) => {
+            const pathname = item.link && new URL(item.link).pathname;
+            const isLoading = loadingUrl === pathname;
 
-              return (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
-                  <Card
-                    className={cx({
-                      [classes.isLoading]: isLoading
-                    })}
+            return (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
+                <Card
+                  className={cx({
+                    [classes.isLoading]: isLoading
+                  })}
+                  classes={{
+                    root: classes.MuiCardRoot
+                  }}
+                >
+                  <CardActionArea
                     classes={{
-                      root: classes.MuiCardRoot
+                      root: classes.MuiCardActionAreaRoot
                     }}
                   >
-                    <CardActionArea
-                      classes={{
-                        root: classes.MuiCardActionAreaRoot
-                      }}
-                    >
-                      {item.image && (
-                        <CardMedia
-                          classes={{
-                            root: classes.MuiCardMediaRoot
-                          }}
-                        >
-                          <Image
-                            alt={item.image.alt}
-                            src={item.image.url}
-                            layout="fill"
-                            objectFit="cover"
-                            sizes={sizes}
-                            priority={index <= 1}
-                          />
-                        </CardMedia>
-                      )}
-                      <CardContent
+                    {item.image && (
+                      <CardMedia
                         classes={{
-                          root: classes.MuiCardContentRoot
+                          root: classes.MuiCardMediaRoot
                         }}
                       >
-                        <LinearProgress
-                          className={classes.loadingBar}
-                          color="secondary"
-                          aria-label="Progress Bar"
+                        <Image
+                          alt={item.image.alt}
+                          src={item.image.url}
+                          layout="fill"
+                          objectFit="cover"
+                          sizes={sizes}
+                          priority={index <= 1}
                         />
-                        <Typography variant="h4" className={classes.title}>
-                          {item.title}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                          {item.position}
-                        </Typography>
-                      </CardContent>
-                      <ContentLink url={item.link} className={classes.link} />
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-              );
-            })}
+                      </CardMedia>
+                    )}
+                    <CardContent
+                      classes={{
+                        root: classes.MuiCardContentRoot
+                      }}
+                    >
+                      <LinearProgress
+                        className={classes.loadingBar}
+                        color="secondary"
+                        aria-label="Progress Bar"
+                      />
+                      <Typography variant="h4" className={classes.title}>
+                        {item.title}
+                      </Typography>
+                      <Typography variant="subtitle1">
+                        {item.position}
+                      </Typography>
+                    </CardContent>
+                    <ContentLink url={item.link} className={classes.link} />
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            );
+          })}
         </Grid>
       </Container>
     </ThemeProvider>

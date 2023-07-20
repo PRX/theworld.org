@@ -9,7 +9,7 @@ import { forwardRef, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Link as MuiLink } from '@mui/material';
-import { generateLinkPropsForContent } from '@lib/routing';
+import { generateContentLinkHref } from '@lib/routing';
 import { contentLinkStyles } from './ContentLink.styles';
 
 export interface IContentLinkProps extends LinkProps {
@@ -23,7 +23,7 @@ export const ContentLink = forwardRef<ContentLinkRef, IContentLinkProps>(
   ({ children, url, query, className, ...other }: IContentLinkProps, ref) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
-    const href = generateLinkPropsForContent(url);
+    const href = generateContentLinkHref(url);
     const { classes, cx } = contentLinkStyles();
 
     useEffect(() => {

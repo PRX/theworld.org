@@ -4,18 +4,16 @@
  * Reducers for handling data by URL path alias.
  */
 
-import { AnyAction } from 'redux';
+import type { AnyAction } from 'redux';
+import type { IPriApiResource } from 'pri-api-library/types';
+import type { ContentNode } from '@interfaces';
+import type { ContentDataState, RootState } from '@interfaces/state';
 import { HYDRATE } from 'next-redux-wrapper';
-import { UrlWithParsedQuery } from 'url';
-import { IPriApiResource } from 'pri-api-library/types';
-import { ContentDataState, RootState } from '@interfaces/state';
-import { generateLinkHrefForContent } from '@lib/routing/content';
-import { ContentNode } from '@interfaces';
 
 type State = ContentDataState | RootState;
 
 export const aliasData = (state: State = {}, action: AnyAction) => {
-  let href: UrlWithParsedQuery;
+  let href: URL | undefined;
 
   switch (action?.type) {
     case HYDRATE:
@@ -46,10 +44,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
       };
 
     case 'FETCH_CONTENT_DATA_SUCCESS':
-      href = generateLinkHrefForContent(
-        action.payload.link,
-        true
-      ) as UrlWithParsedQuery;
+      href = action.payload.link && new URL(action.payload.link);
       return {
         ...state,
         ...(href &&
@@ -69,17 +64,12 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
             .filter((item: ContentNode) => !!item?.link)
             .reduce((a, item: ContentNode) => {
               const { id, link } = item;
-              const h = !link?.length
-                ? null
-                : (generateLinkHrefForContent(
-                    link,
-                    true
-                  ) as UrlWithParsedQuery);
-              return !h?.pathname
+              const h = link && new URL(link).pathname;
+              return !h
                 ? a
                 : {
                     ...a,
-                    [h.pathname.substring(1)]: {
+                    [h.substring(1)]: {
                       id
                     }
                   };

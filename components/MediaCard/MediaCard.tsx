@@ -3,7 +3,6 @@
  * Component for story card links.
  */
 
-import { type UrlWithParsedQuery } from 'url';
 import type { MediaItem } from '@interfaces';
 import { useEffect, useState } from 'react';
 import 'moment-timezone';
@@ -21,7 +20,6 @@ import PlayCircleOutlineRounded from '@mui/icons-material/PlayCircleOutlineRound
 import ImageRounded from '@mui/icons-material/ImageRounded';
 import VideocamRounded from '@mui/icons-material/VideocamRounded';
 import { ContentLink } from '@components/ContentLink';
-import { generateLinkHrefForContent } from '@lib/routing';
 import { mediaCardStyles } from './MediaCard.styles';
 
 const Moment = dynamic(() => import('react-moment')) as any;
@@ -47,9 +45,7 @@ export const MediaCard = ({ data }: MediaCardProps) => {
 
       return iconMap.get(mt);
     })(mediaType);
-  const linkUrl =
-    link && (generateLinkHrefForContent(link, true) as UrlWithParsedQuery);
-  const { pathname } = linkUrl || {};
+  const pathname = link && new URL(link).pathname;
   const { classes, cx } = mediaCardStyles({ isLoading });
 
   useEffect(() => {

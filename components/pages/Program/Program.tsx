@@ -43,7 +43,7 @@ import { LandingPageHeader } from '@components/LandingPageHeader';
 import { EpisodeCard } from '@components/EpisodeCard';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
-import { generateLinkPropsForContent } from '@lib/routing';
+import { generateContentLinkHref } from '@lib/routing';
 import { programStyles, programTheme } from './Program.styles';
 
 export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
@@ -51,6 +51,9 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   const { query } = router;
   const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
+  const [loadingStories, setLoadingStories] = useState(false);
+  const [loadingEpisodes, setLoadingEpisodes] = useState(false);
+  const [oldScrollY, setOldScrollY] = useState(0);
   const [moreStoriesController, setMoreStoriesController] =
     useState<AbortController>();
   const [moreEpisodesController, setMoreEpisodesController] =
@@ -61,6 +64,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   const type = 'term--program';
   const {
     id,
+    link,
     seo,
     name,
     description,
@@ -78,7 +82,31 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
     (a, sl) => (sl?.sponsorLinks ? [...a, sl.sponsorLinks] : a),
     []
   );
-  const { featuredPosts } = landingPage || {};
+  const featuredPosts =
+    landingPage?.featuredPosts &&
+    (landingPage.featuredPosts || []).reduce(
+      (a, post) => (post ? [...a, post] : a),
+      []
+    );
+
+  const storiesState = getCollectionData<PostStory>(state, type, id, 'stories');
+  const featuredStories = [
+    ...(featuredPosts || []),
+    ...(storiesState?.items || []).splice(0, 5 - (featuredPosts?.length || 0))
+  ];
+  const featuredStory = featuredStories.shift();
+  const { items: stories, pageInfo } = storiesState || {};
+  const hasStories = !!stories?.length;
+
+  const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
+  const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
+  const hasEpisodes = !!episodes?.length;
+  const isEpisodesView =
+    (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
+  const latestEpisode = episodes?.shift();
+
+  const hasContentLinks = hasStories || hasEpisodes;
+
   const { classes } = programStyles();
 
   // CTA data.
@@ -106,27 +134,6 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
     type,
     id
   );
-
-  const storiesState = getCollectionData<PostStory>(state, type, id, 'stories');
-  const featuredStory = (featuredPosts || storiesState?.items || []).shift();
-  const featuredStories = [
-    ...(featuredPosts || []),
-    ...(storiesState?.items || []).splice(0, 4 - (featuredPosts?.length || 0))
-  ];
-  const { items: stories, pageInfo } = storiesState || {};
-  const hasStories = !!stories?.length;
-
-  const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
-  const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
-  const hasEpisodes = !!episodes?.length;
-  const isEpisodesView =
-    (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
-  const latestEpisode = episodes?.shift();
-  const hasContentLinks = hasStories || hasEpisodes;
-  // const context = [`node:${id}`];
-  const [loadingStories, setLoadingStories] = useState(false);
-  const [loadingEpisodes, setLoadingEpisodes] = useState(false);
-  const [oldScrollY, setOldScrollY] = useState(0);
 
   // Plausible Events.
   const props = {
@@ -207,7 +214,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   };
 
   const handleFilterChange = (e: object, value: any) => {
-    let href = generateLinkPropsForContent(router.asPath);
+    let href = generateContentLinkHref(link);
 
     if (href) {
       if (value === 1) {
@@ -337,7 +344,14 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
       children: (
         <>
           {latestEpisode && !isEpisodesView && (
-            <SidebarEpisode data={latestEpisode} label="Latest Episode" />
+            <SidebarEpisode
+              data={latestEpisode}
+              label="Latest Episode"
+              {...(link && {
+                collectionLink: `${link}?v=episodes`,
+                collectionLinkShallow: true
+              })}
+            />
           )}
           <Sidebar item elevated>
             {description && hasContentLinks && (
