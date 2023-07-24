@@ -14866,6 +14866,8 @@ export type RootQueryToPostConnectionWhereArgs = {
   parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Show posts with a specific password. */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** Filter by post objects that do not have the specified programs. */
+  programNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   /** Show Posts based on a keyword search */
   search?: InputMaybe<Scalars['String']['input']>;
   /** Retrieve posts where post status is in an array. */

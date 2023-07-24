@@ -7,31 +7,12 @@ import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import { parseMenu } from '@lib/parse/menu';
 import { STORY_CARD_PROPS } from '../story';
-
-const MENU_ITEM_PROPS = gql`
-  fragment MenuItemProps on MenuItem {
-    id
-    parentId
-    label
-    url
-  }
-`;
-
-const MENU_PROPS = gql`
-  fragment MenuProps on Menu {
-    menuItems {
-      nodes {
-        ...MenuItemProps
-      }
-    }
-  }
-  ${MENU_ITEM_PROPS}
-`;
+import { MENU_PROPS } from '../api/graphql';
 
 const GET_APP = gql`
   query getApp {
     program(id: "the-world", idType: SLUG) {
-      posts(first: 10) {
+      posts(first: 10, where: { orderby: { field: DATE, order: DESC } }) {
         nodes {
           ...StoryCardProps
         }
