@@ -42,7 +42,7 @@ const GET_HOMEPAGE = gql`
 `;
 
 const GET_HOMEPAGE_LATEST_STORIES = gql`
-  query getHomepage($id: ID!) {
+  query getHomepageLatestStories($id: ID!) {
     posts(
       first: 10
       where: { programNotIn: [$id], orderby: { field: DATE, order: DESC } }
