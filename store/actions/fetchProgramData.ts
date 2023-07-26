@@ -23,11 +23,12 @@ export const fetchProgramData =
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
     getState: () => RootState
   ) => {
-    const state = getState();
     const type = 'term--program';
     const program = await fetchGqlProgram(id, idType);
 
     if (program) {
+      const state = getState();
+
       // const ctaDataPromise = dispatch<any>(
       //   fetchCtaRegionGroupData('tw_cta_regions_landing')
       // );

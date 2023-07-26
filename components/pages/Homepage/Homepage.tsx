@@ -2,10 +2,18 @@
  * @file Homepage.tsx
  * Component for Homepage.
  */
-import React, { useContext, useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
+
+import type {
+  Episode,
+  Homepage as HomepageType,
+  IContentComponentProps,
+  Post,
+  RootState
+} from '@interfaces';
+// import type { ICtaRegionProps } from '@interfaces/cta';
+import { useContext, useEffect, useState } from 'react';
+// import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
-import { IPriApiResource } from 'pri-api-library/types';
 import { Box, Hidden, Typography } from '@mui/material';
 import StyleRounded from '@mui/icons-material/StyleRounded';
 import { LandingPage } from '@components/LandingPage';
@@ -14,106 +22,105 @@ import { Plausible } from '@components/Plausible';
 import {
   Sidebar,
   SidebarHeader,
-  SidebarLatestStories
+  SidebarLatestStories,
+  SidebarList,
+  SidebarListItem
   // SidebarList
 } from '@components/Sidebar';
 import { QuickLinks } from '@components/QuickLinks';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
-import { ICtaRegionProps } from '@interfaces/cta';
 import {
-  getCollectionData,
-  getCtaRegionData,
-  getMenusData
+  getCollectionData
+  // getCtaRegionData
 } from '@store/reducers';
-import { Episode, IButton, PostStory, RootState } from '@interfaces';
 import { AppContext } from '@contexts/AppContext';
 
-const CtaRegion = dynamic(
-  () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
-) as React.FC<ICtaRegionProps>;
+// const CtaRegion = dynamic(
+//   () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
+// ) as React.FC<ICtaRegionProps>;
 
-const SidebarCta = dynamic(
-  () => import('@components/Sidebar').then((mod) => mod.SidebarCta) as any
-) as React.FC<ICtaRegionProps>;
+// const SidebarCta = dynamic(
+//   () => import('@components/Sidebar').then((mod) => mod.SidebarCta) as any
+// ) as React.FC<ICtaRegionProps>;
 
-export const Homepage = () => {
-  const {
-    page: {
-      resource: { type, id }
-    }
-  } = useContext(AppContext);
+export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
+  const { data: appData } = useContext(AppContext);
+  const { menus: appMenus } = appData || {};
+  const { drawerMainNav } = appMenus || {};
   const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const featuredStoryState = getCollectionData<PostStory>(
+  const { landingPage, menus, latestStories } = data;
+  const featuredPosts =
+    landingPage?.featuredPosts &&
+    (landingPage.featuredPosts || []).reduce(
+      (a, post) => (post ? [...a, post] : a),
+      []
+    );
+  const { quickLinks } = menus || {};
+
+  const storiesState = getCollectionData<Post>(
     state,
     'homepage',
     undefined,
-    'featured story'
+    'stories'
   );
-  const featuredStory = featuredStoryState?.items[0];
-  const { items: featuredStories } =
-    getCollectionData<PostStory>(
-      state,
-      'homepage',
-      undefined,
-      'featured stories'
-    ) || {};
-  const { items: stories } =
-    getCollectionData<PostStory>(state, 'homepage', undefined, 'stories') || {};
-  const { items: latestStories } =
-    getCollectionData<PostStory>(state, 'homepage', undefined, 'latest') || {};
+  const featuredStories = [
+    ...(featuredPosts || []),
+    ...(storiesState?.items || []).splice(0, 5 - (featuredPosts?.length || 0))
+  ];
+  const featuredStory = featuredStories.shift();
+  const hasFeaturedStories = !!featuredStories.length;
+  const { items: stories } = storiesState || {};
+
   const episodesState = getCollectionData<Episode>(
     state,
     'homepage',
     undefined,
     'episodes'
   );
-  const latestEpisode = episodesState.items.shift();
-  const drawerMainNav = getMenusData(state, 'drawerMainNav');
+  const { items: episodes } = episodesState || {};
+  const latestEpisode = episodes?.shift();
+
   const categoriesMenu = drawerMainNav
-    ?.filter((item: IButton) => item.name === 'Categories')?.[0]
+    ?.filter((item) => item.name === 'Categories')?.[0]
     ?.children?.map(
       (item) =>
         ({
-          id: item.key,
-          type: 'link',
           title: item.name,
-          metatags: {
-            canonical: item.url
-          }
-        } as IPriApiResource)
+          url: item.url
+        } as SidebarListItem)
     );
 
-  // CTA data.
-  const inlineTop = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_inline_01',
-    type,
-    id
-  );
-  const inlineBottom = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_inline_02',
-    type,
-    id
-  );
-  const sidebarTop = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_sidebar_01',
-    type,
-    id
-  );
-  const sidebarBottom = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_sidebar_02',
-    type,
-    id
-  );
+  // // CTA data.
+  // const inlineTop = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_landing_inline_01',
+  //   type,
+  //   id
+  // );
+  // const inlineBottom = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_landing_inline_02',
+  //   type,
+  //   id
+  // );
+  // const sidebarTop = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_landing_sidebar_01',
+  //   type,
+  //   id
+  // );
+  // const sidebarBottom = getCtaRegionData(
+  //   state,
+  //   'tw_cta_region_landing_sidebar_02',
+  //   type,
+  //   id
+  // );
 
   const mainElements = [
     {
@@ -121,10 +128,14 @@ export const Homepage = () => {
       children: (
         <>
           <Box display="grid" gridTemplateColumns="1fr" gap={1}>
-            <StoryCard data={featuredStory} feature priority />
-            <StoryCardGrid data={featuredStories} gap={1} />
+            {featuredStory && (
+              <StoryCard data={featuredStory} feature priority />
+            )}
+            {hasFeaturedStories && (
+              <StoryCardGrid data={featuredStories} gap={1} />
+            )}
           </Box>
-          {inlineTop && (
+          {/* {inlineTop && (
             <>
               <Hidden xsDown>
                 <CtaRegion data={inlineTop} />
@@ -133,7 +144,7 @@ export const Homepage = () => {
                 <SidebarCta data={inlineTop} />
               </Hidden>
             </>
-          )}
+          )} */}
         </>
       )
     },
@@ -151,7 +162,7 @@ export const Homepage = () => {
               key={item.id}
             />
           ))}
-          {inlineBottom && (
+          {/* {inlineBottom && (
             <>
               <Hidden xsDown>
                 <CtaRegion data={inlineBottom} />
@@ -160,7 +171,7 @@ export const Homepage = () => {
                 <SidebarCta data={inlineBottom} />
               </Hidden>
             </>
-          )}
+          )} */}
         </>
       )
     }
@@ -174,20 +185,16 @@ export const Homepage = () => {
           {latestEpisode && (
             <SidebarEpisode data={latestEpisode} label="Latest Episode" />
           )}
-          {sidebarTop && (
-            <>
-              <Hidden only="sm">
-                <SidebarCta data={sidebarTop} />
-                <SidebarLatestStories
-                  data={latestStories}
-                  label="Latest from our partners"
-                />
-              </Hidden>
-              <Hidden xsDown mdUp>
-                <CtaRegion data={sidebarTop} />
-              </Hidden>
-            </>
-          )}
+          <Hidden only="sm">
+            {/* {sidebarTop && <SidebarCta data={sidebarTop} />} */}
+            <SidebarLatestStories
+              data={latestStories}
+              label="Latest from our partners"
+            />
+          </Hidden>
+          <Hidden xsDown mdUp>
+            {/* {sidebarTop && <CtaRegion data={sidebarTop} />} */}
+          </Hidden>
         </>
       )
     },
@@ -201,10 +208,10 @@ export const Homepage = () => {
                 <StyleRounded />
                 <Typography variant="h2">Categories</Typography>
               </SidebarHeader>
-              {/* <SidebarList data={categoriesMenu} /> */}
+              <SidebarList data={categoriesMenu} />
             </Sidebar>
           )}
-          {sidebarBottom && (
+          {/* {sidebarBottom && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={sidebarBottom} />
@@ -213,7 +220,7 @@ export const Homepage = () => {
                 <CtaRegion data={sidebarBottom} />
               </Hidden>
             </>
-          )}
+          )} */}
         </>
       )
     }
@@ -255,7 +262,7 @@ export const Homepage = () => {
     <>
       <MetaTags data={metatags} />
       <Plausible subject={{ type: 'homepage' }} />
-      <QuickLinks />
+      {quickLinks && <QuickLinks data={quickLinks} />}
       <LandingPage
         main={mainElements}
         sidebar={sidebarElements}

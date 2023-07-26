@@ -19,7 +19,11 @@ const GET_CATEGORY_POSTS = gql`
   ) {
     category(id: $id) {
       id
-      posts(first: $pageSize, after: $cursor, where: { notIn: $exclude }) {
+      posts(
+        first: $pageSize
+        after: $cursor
+        where: { notIn: $exclude, orderby: { field: DATE, order: DESC } }
+      ) {
         pageInfo {
           hasNextPage
           endCursor

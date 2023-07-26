@@ -3,112 +3,74 @@
  *
  * Actions to fetch data for homepage.
  */
-import { AnyAction } from 'redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
-import { ICtaFilterProps } from '@interfaces/cta';
-import { RootState } from '@interfaces/state';
-import { fetchApiHomepage } from '@lib/fetch/api';
-import { fetchHomepage } from '@lib/fetch/homepage/fetchHomepage';
-import { getHomepageData } from '@store/reducers';
+import type { AnyAction } from 'redux';
+import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import type { RootState } from '@interfaces/state';
+import {
+  fetchGqlHomepage,
+  fetchGqlProgramEpisodes,
+  fetchGqlProgramPosts
+} from '@lib/fetch';
+import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
-import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
 
 export const fetchHomepageData =
   (): ThunkAction<void, {}, {}, AnyAction> =>
   async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
     getState: () => RootState
-  ): Promise<{ [k: string]: any }> => {
-    const state = getState();
+  ) => {
     const type = 'homepage';
-    const id = undefined;
-    const isOnServer = typeof window === 'undefined';
-    const data = getHomepageData(state);
-    const dataCheck = Object.values(data).filter((v) => !!v).length > 0;
+    const homepage = await fetchGqlHomepage();
 
-    if (!dataCheck || isOnServer) {
-      dispatch({
-        type: 'FETCH_HOMEPAGE_DATA_REQUEST'
-      });
+    if (homepage) {
+      const state = getState();
 
-      const dataPromise = (
-        isOnServer ? fetchHomepage : fetchApiHomepage
-      )().then((resp: IPriApiResourceResponse) => resp && resp.data);
-
-      const ctaDataPromise = dispatch<any>(
-        fetchCtaRegionGroupData('tw_cta_regions_landing')
+      // Get first page of stories.
+      const storiesCollection = getCollectionData(
+        state,
+        type,
+        undefined,
+        'stories'
       );
 
-      const apiResp = await dataPromise;
-      await ctaDataPromise;
+      if (!storiesCollection) {
+        const exclude = homepage.landingPage?.featuredPosts?.reduce(
+          (a, post) => (post ? [...a, post.id] : a),
+          []
+        );
+        const options = {
+          ...(exclude && { exclude })
+        };
+        const posts = await fetchGqlProgramPosts(homepage.id, options);
 
-      const {
-        // featuredStory,
-        // featuredStories,
-        latestStories,
-        stories,
-        episodes,
-        menus
-      } = apiResp;
-
-      // Set CTA filter props.
-      dispatch({
-        type: 'SET_RESOURCE_CTA_FILTER_PROPS',
-        payload: {
-          filterProps: {
-            type,
-            id,
-            props: {
-              program: '3704'
-            }
-          }
-        } as ICtaFilterProps
-      });
-
-      // dispatch(
-      //   appendResourceCollection(
-      //     {
-      //       data: [featuredStory],
-      //       meta: { count: 1 }
-      //     },
-      //     type,
-      //     id,
-      //     'featured story'
-      //   )
-      // );
-
-      // dispatch(
-      //   appendResourceCollection(
-      //     {
-      //       data: [...featuredStories],
-      //       meta: { count: featuredStories.length }
-      //     },
-      //     type,
-      //     id,
-      //     'featured stories'
-      //   )
-      // );
-
-      dispatch(appendResourceCollection(stories, type, id, 'stories'));
-
-      if (episodes) {
-        dispatch(appendResourceCollection(episodes, type, id, 'episodes'));
+        if (posts) {
+          dispatch(
+            appendResourceCollection(posts, type, undefined, 'stories', options)
+          );
+        }
       }
 
-      dispatch(appendResourceCollection(latestStories, type, id, 'latest'));
+      // Get first page of episodes.
+      const episodesCollection = getCollectionData(
+        state,
+        type,
+        undefined,
+        'episodes'
+      );
 
-      dispatch({
-        type: 'FETCH_HOMEPAGE_DATA_SUCCESS'
-      });
+      if (!episodesCollection) {
+        const episodes = await fetchGqlProgramEpisodes(homepage.id);
 
-      dispatch({
-        type: 'FETCH_MENUS_DATA_SUCCESS',
-        payload: menus
-      });
+        if (episodes) {
+          dispatch(
+            appendResourceCollection(episodes, type, undefined, 'episodes')
+          );
+        }
+      }
 
-      return { ...apiResp };
+      return homepage;
     }
 
-    return { ...data };
+    return undefined;
   };

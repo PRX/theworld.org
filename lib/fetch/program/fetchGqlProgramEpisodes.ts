@@ -20,7 +20,11 @@ const GET_PROGRAM_EPISODES = gql`
   ) {
     program(id: $id) {
       id
-      episodes(first: $pageSize, after: $cursor, where: { notIn: $exclude }) {
+      episodes(
+        first: $pageSize
+        after: $cursor
+        where: { notIn: $exclude, orderby: { field: DATE, order: DESC } }
+      ) {
         pageInfo {
           hasNextPage
           endCursor

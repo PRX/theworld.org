@@ -3,24 +3,24 @@
  * Component for links to content page.
  */
 
-import type { RootState } from '@interfaces';
+import type { IButton } from '@interfaces';
 import React from 'react';
-import { useStore } from 'react-redux';
 import { parse } from 'url';
 import { Label } from '@mui/icons-material';
 import { Breadcrumbs, Container, Link } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
-import { getMenusData } from '@store/reducers';
 import { QuickLinksStyles } from './QuickLinks.styles';
 
-export const QuickLinks = () => {
-  const store = useStore<RootState>();
-  const quickLinks = getMenusData(store.getState(), 'quickLinks');
+type QuickLinksProps = {
+  data: IButton[];
+};
+
+export const QuickLinks = ({ data }: QuickLinksProps) => {
   const { classes } = QuickLinksStyles();
 
   return (
-    (quickLinks && (
+    (data && (
       <Container>
         <Breadcrumbs
           classes={{ root: classes.MuiBreadcrumbsRoot }}
@@ -33,7 +33,7 @@ export const QuickLinks = () => {
             aria-hidden="true"
             className={classes.label}
           />
-          {quickLinks
+          {data
             .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
             .map(({ name, url, key, attributes }) =>
               isLocalUrl(url.href) ? (
