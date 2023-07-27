@@ -80,10 +80,10 @@ const ContentProxy = ({ type }: Props) => {
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ res, req, params }): Promise<GetServerSidePropsResult<any>> => {
-      let resourceId: string;
-      let resourceType: string = 'homepage';
-      let redirect: string;
-      const { alias } = params;
+      let resourceId: string | undefined;
+      let resourceType: string | null = 'homepage';
+      let redirect: string | undefined;
+      const { alias } = params || {};
       const aliasPath = (alias as string[]).join('/');
       const rgxFileExt = /\.\w+$/;
 
