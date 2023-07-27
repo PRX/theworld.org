@@ -245,7 +245,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
             </Box>
           )}
           {isEpisodesView && latestEpisode && (
-            <EpisodeCard data={latestEpisode} />
+            <EpisodeCard data={latestEpisode} hideProgramLink />
           )}
           {ctaInlineTop && (
             <>
@@ -302,7 +302,10 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
           {isEpisodesView && (
             <>
               {episodes?.map(
-                (item) => item && <EpisodeCard data={item} key={item.id} />
+                (item) =>
+                  item && (
+                    <EpisodeCard data={item} key={item.id} hideProgramLink />
+                  )
               )}
               {episodesPageInfo?.hasNextPage && (
                 <Box>

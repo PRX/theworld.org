@@ -12,6 +12,7 @@ export * from './program';
 export * from './query';
 export * from './segment';
 export * from './story';
+export * from './tag';
 export * from './team';
 export * from './term';
 export * from './video';

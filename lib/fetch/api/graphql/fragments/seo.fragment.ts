@@ -1,7 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const POST_SEO_PROPS = gql`
-  fragment PostSEOProps on PostTypeSEO {
+const SEO_PROPS = `
     canonical
     metaDesc
     metaKeywords
@@ -10,11 +9,7 @@ export const POST_SEO_PROPS = gql`
     opengraphDescription
     opengraphTitle
     opengraphImage {
-      sourceUrl
-      mediaDetails {
-        width
-        height
-      }
+      ...ImageProps
       mimeType
     }
     opengraphUrl
@@ -22,13 +17,20 @@ export const POST_SEO_PROPS = gql`
     twitterDescription
     twitterTitle
     twitterImage {
-      mediaDetails {
-        height
-        width
-      }
-      sourceUrl
+      ...ImageProps
       mimeType
     }
     opengraphType
+`;
+
+export const POST_SEO_PROPS = gql`
+  fragment PostSEOProps on PostTypeSEO {
+    ${SEO_PROPS}
+  }
+`;
+
+export const TAXONOMY_SEO_PROPS = gql`
+  fragment TaxonomySEOProps on TaxonomySEO {
+    ${SEO_PROPS}
   }
 `;

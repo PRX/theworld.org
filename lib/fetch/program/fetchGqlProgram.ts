@@ -7,7 +7,11 @@
 import type { Program } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
-import { IMAGE_PROPS, POST_CARD_PROPS } from '@lib/fetch/api/graphql';
+import {
+  IMAGE_PROPS,
+  POST_CARD_PROPS,
+  TAXONOMY_SEO_PROPS
+} from '@lib/fetch/api/graphql';
 
 const GET_PROGRAM = gql`
   query getProgram($id: ID!, $idType: ProgramIdType) {
@@ -54,10 +58,14 @@ const GET_PROGRAM = gql`
           }
         }
       }
+      seo {
+        ...TaxonomySEOProps
+      }
     }
   }
   ${POST_CARD_PROPS}
   ${IMAGE_PROPS}
+  ${TAXONOMY_SEO_PROPS}
 `;
 
 export async function fetchGqlProgram(id: string, idType?: string) {

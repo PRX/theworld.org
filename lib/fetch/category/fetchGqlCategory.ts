@@ -7,7 +7,11 @@
 import type { Category } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
-import { IMAGE_PROPS, POST_CARD_PROPS } from '@lib/fetch/api/graphql';
+import {
+  IMAGE_PROPS,
+  POST_CARD_PROPS,
+  TAXONOMY_SEO_PROPS
+} from '@lib/fetch/api/graphql';
 
 const GET_CATEGORY = gql`
   query getCategory($id: ID!, $idType: CategoryIdType) {
@@ -54,6 +58,9 @@ const GET_CATEGORY = gql`
           }
         }
       }
+      seo {
+        ...TaxonomySEOProps
+      }
       children(first: 100) {
         nodes {
           id
@@ -65,6 +72,7 @@ const GET_CATEGORY = gql`
   }
   ${POST_CARD_PROPS}
   ${IMAGE_PROPS}
+  ${TAXONOMY_SEO_PROPS}
 `;
 
 export async function fetchGqlCategory(id: string, idType?: string) {
