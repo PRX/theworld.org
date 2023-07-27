@@ -244,6 +244,7 @@ export const Bio = () => {
                     count={segmentsPageCount}
                     page={segmentsPage}
                     color="primary"
+                    size="small"
                     onChange={handleSegmentsPageChange}
                   />
                 )}
