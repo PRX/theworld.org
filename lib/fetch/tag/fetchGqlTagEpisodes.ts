@@ -11,14 +11,14 @@ import { gqlClient } from '@lib/fetch/api';
 import { IMAGE_PROPS } from '@lib/fetch/api/graphql';
 import { EPISODE_CARD_PROPS } from '../api/graphql/fragments/episode.fragment';
 
-const GET_TAG_EPISODES = (taxonomySingleName?: Maybe<string>) => gql`
+const GET_TAG_EPISODES = gql`
   query getTagEpisodes(
     $id: ID!
     $pageSize: Int = 10
     $cursor: String
     $exclude: [ID]
   ) {
-    ${taxonomySingleName || 'tag'}(id: $id) {
+    tag(id: $id) {
       id
       episodes(
         first: $pageSize
@@ -44,19 +44,18 @@ const GET_TAG_EPISODES = (taxonomySingleName?: Maybe<string>) => gql`
 
 export async function fetchGqlTagEpisodes(
   id: string,
-  options?: CollectionQueryOptions,
-  taxonomySingleName?: Maybe<string>
+  options?: CollectionQueryOptions
 ) {
   const response = await gqlClient.query<{
-    tag: Tag;
+    tag: Maybe<Tag>;
   }>({
-    query: GET_TAG_EPISODES(taxonomySingleName),
+    query: GET_TAG_EPISODES,
     variables: {
       id,
       ...options
     }
   });
-  const episodes = response?.data?.tag.episodes;
+  const episodes = response?.data?.tag?.episodes;
 
   if (!episodes) return undefined;
 

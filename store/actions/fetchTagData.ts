@@ -5,7 +5,7 @@
  */
 import type { AnyAction } from 'redux';
 import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import type { Tag, RootState, Maybe } from '@interfaces';
+import type { RootState, Maybe, PostTag } from '@interfaces';
 import { fetchGqlTag, fetchGqlTagEpisodes, fetchGqlTagPosts } from '@lib/fetch';
 import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
@@ -15,7 +15,7 @@ export const fetchTagData =
     id: string,
     idType?: string,
     taxonomySingleName?: Maybe<string>
-  ): ThunkAction<Promise<Tag | undefined>, {}, {}, AnyAction> =>
+  ): ThunkAction<Promise<PostTag | undefined>, {}, {}, AnyAction> =>
   async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
     getState: () => RootState
@@ -73,25 +73,23 @@ export const fetchTagData =
         }
       }
 
-      // Get first page of episodes.
-      const episodesCollection = getCollectionData(
-        state,
-        type,
-        tag.id,
-        'episodes'
-      );
-
-      if (!episodesCollection) {
-        const episodes = await fetchGqlTagEpisodes(
+      if (!taxonomySingleName) {
+        // Get first page of episodes.
+        const episodesCollection = getCollectionData(
+          state,
+          type,
           tag.id,
-          undefined,
-          taxonomySingleName
+          'episodes'
         );
 
-        if (episodes) {
-          dispatch(
-            appendResourceCollection(episodes, type, tag.id, 'episodes')
-          );
+        if (!episodesCollection) {
+          const episodes = await fetchGqlTagEpisodes(tag.id);
+
+          if (episodes) {
+            dispatch(
+              appendResourceCollection(episodes, type, tag.id, 'episodes')
+            );
+          }
         }
       }
 

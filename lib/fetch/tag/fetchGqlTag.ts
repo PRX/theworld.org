@@ -4,7 +4,7 @@
  * @param id Tag identifier.
  */
 
-import type { Maybe, Tag } from '@interfaces';
+import type { Maybe, PostTag } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import {
@@ -13,13 +13,20 @@ import {
   TAXONOMY_SEO_PROPS
 } from '@lib/fetch/api/graphql';
 
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 const GET_TAG = (taxonomySingleName?: Maybe<string>) => gql`
-  query getTag($id: ID!, $idType: TagIdType) {
+  query getTag($id: ID!, $idType: ${capitalize(
+    taxonomySingleName || 'tag'
+  )}IdType) {
     ${taxonomySingleName || 'tag'}(id: $id, idType: $idType) {
       taxonomy {
         node {
           id
           name
+          restBase
           graphqlSingleName
           graphqlPluralName
         }
@@ -58,8 +65,9 @@ export async function fetchGqlTag(
   idType?: string,
   taxonomySingleName?: Maybe<string>
 ) {
+  const dataPropKey = taxonomySingleName || 'tag';
   const response = await gqlClient.query<{
-    tag: Tag;
+    [k: string]: PostTag;
   }>({
     query: GET_TAG(taxonomySingleName),
     variables: {
@@ -67,7 +75,7 @@ export async function fetchGqlTag(
       idType
     }
   });
-  const tag = response?.data?.tag;
+  const tag = response?.data?.[dataPropKey];
 
   if (!tag) return undefined;
 

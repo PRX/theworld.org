@@ -3,19 +3,7 @@
  * Component for Term.
  */
 
-import type {
-  City,
-  Continent,
-  Country,
-  Episode,
-  Person,
-  PostStory,
-  ProvinceOrState,
-  Region,
-  RootState,
-  SocialTag,
-  Tag
-} from '@interfaces';
+import type { Episode, PostStory, RootState, PostTag } from '@interfaces';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useStore } from 'react-redux';
@@ -44,15 +32,7 @@ import { fetchApiTagEpisodes, fetchApiTagStories } from '@lib/fetch';
 import { generateContentLinkHref } from '@lib/routing';
 
 type TermProps = {
-  data:
-    | Tag
-    | City
-    | Continent
-    | Country
-    | Person
-    | ProvinceOrState
-    | Region
-    | SocialTag;
+  data: PostTag;
 };
 
 export const Term = ({ data }: TermProps) => {
@@ -201,14 +181,9 @@ export const Term = ({ data }: TermProps) => {
     const options = {
       cursor: episodesPageInfo.endCursor
     };
-    const moreEpisodes = await fetchApiTagEpisodes(
-      id,
-      taxonomyRestBase,
-      options,
-      {
-        signal: controller.signal
-      }
-    );
+    const moreEpisodes = await fetchApiTagEpisodes(id, options, {
+      signal: controller.signal
+    });
 
     if (!moreEpisodes) return;
 

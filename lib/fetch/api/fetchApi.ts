@@ -391,8 +391,11 @@ export const fetchApiTagStories = async (
   init?: RequestInit
 ) => {
   const { cursor, pageSize, exclude } = options || {};
+  const path = ['tag', taxonomyRestBase, id, 'posts']
+    .filter((v) => !!v)
+    .join('/');
   return fetchApi<PostConnection>({
-    path: `${taxonomyRestBase || 'tags'}/${id}/posts`,
+    path,
     query: {
       ...(options && { c: cursor }),
       ...(pageSize && { f: `${pageSize}` }),
@@ -407,8 +410,6 @@ export const fetchApiTagStories = async (
  *
  * @param id
  *    API id of tag.
- * @param taxonomyRestBase
- *    Name of tag's taxonomy.
  * @param req
  *    Request object from `getInitialProps` ctx object.
  *
@@ -417,13 +418,12 @@ export const fetchApiTagStories = async (
  */
 export const fetchApiTagEpisodes = async (
   id: string,
-  taxonomyRestBase?: Maybe<string>,
   options?: CollectionQueryOptions,
   init?: RequestInit
 ) => {
   const { cursor, pageSize, exclude } = options || {};
   return fetchApi<PostConnection>({
-    path: `${taxonomyRestBase || 'tags'}/${id}/episodes`,
+    path: `tag/${id}/episodes`,
     query: {
       ...(options && { c: cursor }),
       ...(pageSize && { f: `${pageSize}` }),

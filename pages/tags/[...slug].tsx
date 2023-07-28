@@ -6,6 +6,7 @@
 
 import { Term } from '@components/pages/Term';
 import { IContentComponentProxyProps } from '@interfaces';
+import { taxonomySlugToSingularName } from '@lib/map/taxonomy';
 import { wrapper } from '@store';
 import { fetchAppData } from '@store/actions/fetchAppData';
 import { fetchTagData } from '@store/actions/fetchTagData';
@@ -13,25 +14,15 @@ import { GetServerSideProps } from 'next';
 
 const TagPage = ({ data }: IContentComponentProxyProps) => <Term data={data} />;
 
-const taxonomySlugToSingularName = new Map<string, string>();
-taxonomySlugToSingularName.set('cities', 'city');
-taxonomySlugToSingularName.set('continents', 'continent');
-taxonomySlugToSingularName.set('countries', 'country');
-taxonomySlugToSingularName.set('people', 'person');
-taxonomySlugToSingularName.set('provinces_or_states', 'provinceOrState');
-taxonomySlugToSingularName.set('regions', 'region');
-taxonomySlugToSingularName.set('social_tags', 'socialTag');
-
 export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps> =
   wrapper.getServerSideProps((store) => async ({ req, params }) => {
-    const [taxonomySlug, slug] =
+    const slugs =
       (params?.slug &&
-        (typeof params.slug === 'string'
-          ? [undefined, params.slug]
-          : params.slug)) ||
-      [];
+        (typeof params.slug === 'string' ? [params.slug] : params.slug)) ||
+      undefined;
+    const slug = slugs?.pop();
     const taxonomySingleName =
-      taxonomySlug && taxonomySlugToSingularName.get(taxonomySlug);
+      slugs && taxonomySlugToSingularName.get(slugs.join('/'));
 
     if (slug) {
       const dataResponse = fetchTagData(slug, 'SLUG', taxonomySingleName);
