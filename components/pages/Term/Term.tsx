@@ -181,9 +181,14 @@ export const Term = ({ data }: TermProps) => {
     const options = {
       cursor: episodesPageInfo.endCursor
     };
-    const moreEpisodes = await fetchApiTagEpisodes(id, options, {
-      signal: controller.signal
-    });
+    const moreEpisodes = await fetchApiTagEpisodes(
+      id,
+      taxonomyRestBase,
+      options,
+      {
+        signal: controller.signal
+      }
+    );
 
     if (!moreEpisodes) return;
 

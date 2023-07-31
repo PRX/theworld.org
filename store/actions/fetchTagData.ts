@@ -73,23 +73,25 @@ export const fetchTagData =
         }
       }
 
-      if (!taxonomySingleName) {
-        // Get first page of episodes.
-        const episodesCollection = getCollectionData(
-          state,
-          type,
+      // Get first page of episodes.
+      const episodesCollection = getCollectionData(
+        state,
+        type,
+        tag.id,
+        'episodes'
+      );
+
+      if (!episodesCollection) {
+        const episodes = await fetchGqlTagEpisodes(
           tag.id,
-          'episodes'
+          undefined,
+          taxonomySingleName
         );
 
-        if (!episodesCollection) {
-          const episodes = await fetchGqlTagEpisodes(tag.id);
-
-          if (episodes) {
-            dispatch(
-              appendResourceCollection(episodes, type, tag.id, 'episodes')
-            );
-          }
+        if (episodes) {
+          dispatch(
+            appendResourceCollection(episodes, type, tag.id, 'episodes')
+          );
         }
       }
 

@@ -418,12 +418,16 @@ export const fetchApiTagStories = async (
  */
 export const fetchApiTagEpisodes = async (
   id: string,
+  taxonomyRestBase?: Maybe<string>,
   options?: CollectionQueryOptions,
   init?: RequestInit
 ) => {
   const { cursor, pageSize, exclude } = options || {};
+  const path = ['tag', taxonomyRestBase, id, 'episodes']
+    .filter((v) => !!v)
+    .join('/');
   return fetchApi<PostConnection>({
-    path: `tag/${id}/episodes`,
+    path,
     query: {
       ...(options && { c: cursor }),
       ...(pageSize && { f: `${pageSize}` }),

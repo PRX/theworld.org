@@ -5,20 +5,20 @@
  * @param options Query options.
  */
 
-import type { CollectionQueryOptions, Maybe, Tag } from '@interfaces';
+import type { CollectionQueryOptions, Maybe, PostTag } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import { IMAGE_PROPS } from '@lib/fetch/api/graphql';
 import { EPISODE_CARD_PROPS } from '../api/graphql/fragments/episode.fragment';
 
-const GET_TAG_EPISODES = gql`
+const GET_TAG_EPISODES = (taxonomySingleName: Maybe<string>) => gql`
   query getTagEpisodes(
     $id: ID!
     $pageSize: Int = 10
     $cursor: String
     $exclude: [ID]
   ) {
-    tag(id: $id) {
+    ${taxonomySingleName}(id: $id) {
       id
       episodes(
         first: $pageSize
@@ -44,18 +44,20 @@ const GET_TAG_EPISODES = gql`
 
 export async function fetchGqlTagEpisodes(
   id: string,
-  options?: CollectionQueryOptions
+  options?: CollectionQueryOptions,
+  taxonomySingleName?: Maybe<string>
 ) {
+  const dataPropKey = taxonomySingleName || 'tag';
   const response = await gqlClient.query<{
-    tag: Maybe<Tag>;
+    [k: string]: Maybe<PostTag>;
   }>({
-    query: GET_TAG_EPISODES,
+    query: GET_TAG_EPISODES(dataPropKey),
     variables: {
       id,
       ...options
     }
   });
-  const episodes = response?.data?.tag?.episodes;
+  const episodes = response?.data?.[dataPropKey]?.episodes;
 
   if (!episodes) return undefined;
 

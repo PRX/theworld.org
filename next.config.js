@@ -41,6 +41,7 @@ module.exports = withPlausibleProxy({
       'media-pri-dev.s3.us-east-1.amazonaws.com',
       'www.loe.org',
       'www.globalpost.com',
+      'media.wnyc.org',
       'media2.wnyc.org'
     ],
     deviceSizes: [370, 600, 960, 1280, 1920],

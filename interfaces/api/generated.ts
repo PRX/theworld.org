@@ -729,6 +729,8 @@ export type City = DatabaseIdentifier & Node & TermNode & UniformResourceIdentif
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
+  /** Connection between the City type and the episode type */
+  episodes?: Maybe<CityToEpisodeConnection>;
   /** The unique resource identifier path */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
@@ -745,6 +747,8 @@ export type City = DatabaseIdentifier & Node & TermNode & UniformResourceIdentif
   name?: Maybe<Scalars['String']['output']>;
   /** Connection between the City type and the post type */
   posts?: Maybe<CityToPostConnection>;
+  /** Connection between the City type and the segment type */
+  segments?: Maybe<CityToSegmentConnection>;
   /** The Yoast SEO data of the Cities taxonomy. */
   seo?: Maybe<TaxonomySeo>;
   /** An alphanumeric identifier for the object unique to its type. */
@@ -793,12 +797,32 @@ export type CityEnqueuedStylesheetsArgs = {
 
 
 /** The city type */
+export type CityEpisodesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CityToEpisodeConnectionWhereArgs>;
+};
+
+
+/** The city type */
 export type CityPostsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CityToPostConnectionWhereArgs>;
+};
+
+
+/** The city type */
+export type CitySegmentsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CityToSegmentConnectionWhereArgs>;
 };
 
 /** Connection to city Nodes */
@@ -922,6 +946,99 @@ export type CityToContentNodeConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Connection between the City type and the episode type */
+export type CityToEpisodeConnection = Connection & EpisodeConnection & {
+  __typename?: 'CityToEpisodeConnection';
+  /** Edges for the CityToEpisodeConnection connection */
+  edges: Array<CityToEpisodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Episode>;
+  /** Information about pagination in a connection. */
+  pageInfo: CityToEpisodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type CityToEpisodeConnectionEdge = Edge & EpisodeConnectionEdge & {
+  __typename?: 'CityToEpisodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Episode;
+};
+
+/** Page Info on the &quot;CityToEpisodeConnection&quot; */
+export type CityToEpisodeConnectionPageInfo = EpisodeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'CityToEpisodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the CityToEpisodeConnection connection */
+export type CityToEpisodeConnectionWhereArgs = {
+  /** Category ID */
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Use Category Slug */
+  categoryName?: InputMaybe<Scalars['String']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Tag Slug */
+  tag?: InputMaybe<Scalars['String']['input']>;
+  /** Use Tag ID */
+  tagId?: InputMaybe<Scalars['String']['input']>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag slugs, used to display objects from one tag AND another */
+  tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of tag slugs, used to include objects in ANY specified tags */
+  tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection between the City type and the post type */
 export type CityToPostConnection = Connection & PostConnection & {
   __typename?: 'CityToPostConnection';
@@ -1019,6 +1136,79 @@ export type CityToPostConnectionWhereArgs = {
   tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the City type and the segment type */
+export type CityToSegmentConnection = Connection & SegmentConnection & {
+  __typename?: 'CityToSegmentConnection';
+  /** Edges for the CityToSegmentConnection connection */
+  edges: Array<CityToSegmentConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Segment>;
+  /** Information about pagination in a connection. */
+  pageInfo: CityToSegmentConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type CityToSegmentConnectionEdge = Edge & SegmentConnectionEdge & {
+  __typename?: 'CityToSegmentConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Segment;
+};
+
+/** Page Info on the &quot;CityToSegmentConnection&quot; */
+export type CityToSegmentConnectionPageInfo = PageInfo & SegmentConnectionPageInfo & WpPageInfo & {
+  __typename?: 'CityToSegmentConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the CityToSegmentConnection connection */
+export type CityToSegmentConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1945,13 +2135,21 @@ export enum ContentTypesOfCategoryEnum {
 /** Allowed Content Types of the City taxonomy. */
 export enum ContentTypesOfCityEnum {
   /** The Type of Content object */
-  Post = 'POST'
+  Episode = 'EPISODE',
+  /** The Type of Content object */
+  Post = 'POST',
+  /** The Type of Content object */
+  Segment = 'SEGMENT'
 }
 
 /** Allowed Content Types of the Continent taxonomy. */
 export enum ContentTypesOfContinentEnum {
   /** The Type of Content object */
-  Post = 'POST'
+  Episode = 'EPISODE',
+  /** The Type of Content object */
+  Post = 'POST',
+  /** The Type of Content object */
+  Segment = 'SEGMENT'
 }
 
 /** Allowed Content Types of the Contributor taxonomy. */
@@ -1967,7 +2165,11 @@ export enum ContentTypesOfContributorEnum {
 /** Allowed Content Types of the Country taxonomy. */
 export enum ContentTypesOfCountryEnum {
   /** The Type of Content object */
-  Post = 'POST'
+  Episode = 'EPISODE',
+  /** The Type of Content object */
+  Post = 'POST',
+  /** The Type of Content object */
+  Segment = 'SEGMENT'
 }
 
 /** Allowed Content Types of the License taxonomy. */
@@ -1979,7 +2181,11 @@ export enum ContentTypesOfLicenseEnum {
 /** Allowed Content Types of the Person taxonomy. */
 export enum ContentTypesOfPersonEnum {
   /** The Type of Content object */
-  Post = 'POST'
+  Episode = 'EPISODE',
+  /** The Type of Content object */
+  Post = 'POST',
+  /** The Type of Content object */
+  Segment = 'SEGMENT'
 }
 
 /** Allowed Content Types of the PostFormat taxonomy. */
@@ -2001,13 +2207,21 @@ export enum ContentTypesOfProgramEnum {
 /** Allowed Content Types of the ProvinceOrState taxonomy. */
 export enum ContentTypesOfProvinceOrStateEnum {
   /** The Type of Content object */
-  Post = 'POST'
+  Episode = 'EPISODE',
+  /** The Type of Content object */
+  Post = 'POST',
+  /** The Type of Content object */
+  Segment = 'SEGMENT'
 }
 
 /** Allowed Content Types of the Region taxonomy. */
 export enum ContentTypesOfRegionEnum {
   /** The Type of Content object */
-  Post = 'POST'
+  Episode = 'EPISODE',
+  /** The Type of Content object */
+  Post = 'POST',
+  /** The Type of Content object */
+  Segment = 'SEGMENT'
 }
 
 /** Allowed Content Types of the ResourceDevelopmentTag taxonomy. */
@@ -2019,7 +2233,11 @@ export enum ContentTypesOfResourceDevelopmentTagEnum {
 /** Allowed Content Types of the SocialTag taxonomy. */
 export enum ContentTypesOfSocialTagEnum {
   /** The Type of Content object */
-  Post = 'POST'
+  Episode = 'EPISODE',
+  /** The Type of Content object */
+  Post = 'POST',
+  /** The Type of Content object */
+  Segment = 'SEGMENT'
 }
 
 /** Allowed Content Types of the StoryFormat taxonomy. */
@@ -2056,6 +2274,8 @@ export type Continent = DatabaseIdentifier & Node & TermNode & UniformResourceId
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
+  /** Connection between the Continent type and the episode type */
+  episodes?: Maybe<ContinentToEpisodeConnection>;
   /** The unique resource identifier path */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
@@ -2072,6 +2292,8 @@ export type Continent = DatabaseIdentifier & Node & TermNode & UniformResourceId
   name?: Maybe<Scalars['String']['output']>;
   /** Connection between the Continent type and the post type */
   posts?: Maybe<ContinentToPostConnection>;
+  /** Connection between the Continent type and the segment type */
+  segments?: Maybe<ContinentToSegmentConnection>;
   /** The Yoast SEO data of the Continents taxonomy. */
   seo?: Maybe<TaxonomySeo>;
   /** An alphanumeric identifier for the object unique to its type. */
@@ -2120,12 +2342,32 @@ export type ContinentEnqueuedStylesheetsArgs = {
 
 
 /** The continent type */
+export type ContinentEpisodesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ContinentToEpisodeConnectionWhereArgs>;
+};
+
+
+/** The continent type */
 export type ContinentPostsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ContinentToPostConnectionWhereArgs>;
+};
+
+
+/** The continent type */
+export type ContinentSegmentsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ContinentToSegmentConnectionWhereArgs>;
 };
 
 /** Connection to continent Nodes */
@@ -2249,6 +2491,99 @@ export type ContinentToContentNodeConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Connection between the Continent type and the episode type */
+export type ContinentToEpisodeConnection = Connection & EpisodeConnection & {
+  __typename?: 'ContinentToEpisodeConnection';
+  /** Edges for the ContinentToEpisodeConnection connection */
+  edges: Array<ContinentToEpisodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Episode>;
+  /** Information about pagination in a connection. */
+  pageInfo: ContinentToEpisodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type ContinentToEpisodeConnectionEdge = Edge & EpisodeConnectionEdge & {
+  __typename?: 'ContinentToEpisodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Episode;
+};
+
+/** Page Info on the &quot;ContinentToEpisodeConnection&quot; */
+export type ContinentToEpisodeConnectionPageInfo = EpisodeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'ContinentToEpisodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the ContinentToEpisodeConnection connection */
+export type ContinentToEpisodeConnectionWhereArgs = {
+  /** Category ID */
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Use Category Slug */
+  categoryName?: InputMaybe<Scalars['String']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Tag Slug */
+  tag?: InputMaybe<Scalars['String']['input']>;
+  /** Use Tag ID */
+  tagId?: InputMaybe<Scalars['String']['input']>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag slugs, used to display objects from one tag AND another */
+  tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of tag slugs, used to include objects in ANY specified tags */
+  tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection between the Continent type and the post type */
 export type ContinentToPostConnection = Connection & PostConnection & {
   __typename?: 'ContinentToPostConnection';
@@ -2346,6 +2681,79 @@ export type ContinentToPostConnectionWhereArgs = {
   tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the Continent type and the segment type */
+export type ContinentToSegmentConnection = Connection & SegmentConnection & {
+  __typename?: 'ContinentToSegmentConnection';
+  /** Edges for the ContinentToSegmentConnection connection */
+  edges: Array<ContinentToSegmentConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Segment>;
+  /** Information about pagination in a connection. */
+  pageInfo: ContinentToSegmentConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type ContinentToSegmentConnectionEdge = Edge & SegmentConnectionEdge & {
+  __typename?: 'ContinentToSegmentConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Segment;
+};
+
+/** Page Info on the &quot;ContinentToSegmentConnection&quot; */
+export type ContinentToSegmentConnectionPageInfo = PageInfo & SegmentConnectionPageInfo & WpPageInfo & {
+  __typename?: 'ContinentToSegmentConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the ContinentToSegmentConnection connection */
+export type ContinentToSegmentConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -2932,6 +3340,8 @@ export type Country = DatabaseIdentifier & Node & TermNode & UniformResourceIden
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
+  /** Connection between the Country type and the episode type */
+  episodes?: Maybe<CountryToEpisodeConnection>;
   /** The unique resource identifier path */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
@@ -2948,6 +3358,8 @@ export type Country = DatabaseIdentifier & Node & TermNode & UniformResourceIden
   name?: Maybe<Scalars['String']['output']>;
   /** Connection between the Country type and the post type */
   posts?: Maybe<CountryToPostConnection>;
+  /** Connection between the Country type and the segment type */
+  segments?: Maybe<CountryToSegmentConnection>;
   /** The Yoast SEO data of the Countries taxonomy. */
   seo?: Maybe<TaxonomySeo>;
   /** An alphanumeric identifier for the object unique to its type. */
@@ -2996,12 +3408,32 @@ export type CountryEnqueuedStylesheetsArgs = {
 
 
 /** The country type */
+export type CountryEpisodesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CountryToEpisodeConnectionWhereArgs>;
+};
+
+
+/** The country type */
 export type CountryPostsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<CountryToPostConnectionWhereArgs>;
+};
+
+
+/** The country type */
+export type CountrySegmentsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CountryToSegmentConnectionWhereArgs>;
 };
 
 /** Connection to country Nodes */
@@ -3125,6 +3557,99 @@ export type CountryToContentNodeConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Connection between the Country type and the episode type */
+export type CountryToEpisodeConnection = Connection & EpisodeConnection & {
+  __typename?: 'CountryToEpisodeConnection';
+  /** Edges for the CountryToEpisodeConnection connection */
+  edges: Array<CountryToEpisodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Episode>;
+  /** Information about pagination in a connection. */
+  pageInfo: CountryToEpisodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type CountryToEpisodeConnectionEdge = Edge & EpisodeConnectionEdge & {
+  __typename?: 'CountryToEpisodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Episode;
+};
+
+/** Page Info on the &quot;CountryToEpisodeConnection&quot; */
+export type CountryToEpisodeConnectionPageInfo = EpisodeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'CountryToEpisodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the CountryToEpisodeConnection connection */
+export type CountryToEpisodeConnectionWhereArgs = {
+  /** Category ID */
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Use Category Slug */
+  categoryName?: InputMaybe<Scalars['String']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Tag Slug */
+  tag?: InputMaybe<Scalars['String']['input']>;
+  /** Use Tag ID */
+  tagId?: InputMaybe<Scalars['String']['input']>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag slugs, used to display objects from one tag AND another */
+  tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of tag slugs, used to include objects in ANY specified tags */
+  tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection between the Country type and the post type */
 export type CountryToPostConnection = Connection & PostConnection & {
   __typename?: 'CountryToPostConnection';
@@ -3222,6 +3747,79 @@ export type CountryToPostConnectionWhereArgs = {
   tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the Country type and the segment type */
+export type CountryToSegmentConnection = Connection & SegmentConnection & {
+  __typename?: 'CountryToSegmentConnection';
+  /** Edges for the CountryToSegmentConnection connection */
+  edges: Array<CountryToSegmentConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Segment>;
+  /** Information about pagination in a connection. */
+  pageInfo: CountryToSegmentConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type CountryToSegmentConnectionEdge = Edge & SegmentConnectionEdge & {
+  __typename?: 'CountryToSegmentConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Segment;
+};
+
+/** Page Info on the &quot;CountryToSegmentConnection&quot; */
+export type CountryToSegmentConnectionPageInfo = PageInfo & SegmentConnectionPageInfo & WpPageInfo & {
+  __typename?: 'CountryToSegmentConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the CountryToSegmentConnection connection */
+export type CountryToSegmentConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -3412,10 +4010,16 @@ export type CreateCountryPayload = {
 export type CreateEpisodeInput = {
   /** Set connections between the episode and categories */
   categories?: InputMaybe<EpisodeCategoriesInput>;
+  /** Set connections between the episode and cities */
+  cities?: InputMaybe<EpisodeCitiesInput>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The content of the object */
   content?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the episode and continents */
+  continents?: InputMaybe<EpisodeContinentsInput>;
+  /** Set connections between the episode and countries */
+  countries?: InputMaybe<EpisodeCountriesInput>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars['String']['input']>;
   /** The excerpt of the object */
@@ -3424,10 +4028,18 @@ export type CreateEpisodeInput = {
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The password used to protect the content of the object */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the episode and people */
+  people?: InputMaybe<EpisodePeopleInput>;
   /** Set connections between the episode and programs */
   programs?: InputMaybe<EpisodeProgramsInput>;
+  /** Set connections between the episode and provincesOrStates */
+  provincesOrStates?: InputMaybe<EpisodeProvincesOrStatesInput>;
+  /** Set connections between the episode and regions */
+  regions?: InputMaybe<EpisodeRegionsInput>;
   /** The slug of the object */
   slug?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the episode and socialTags */
+  socialTags?: InputMaybe<EpisodeSocialTagsInput>;
   /** The status of the object */
   status?: InputMaybe<PostStatusEnum>;
   /** Set connections between the episode and tags */
@@ -3745,22 +4357,36 @@ export type CreateResourceDevelopmentTagPayload = {
 
 /** Input for the createSegment mutation. */
 export type CreateSegmentInput = {
+  /** Set connections between the segment and cities */
+  cities?: InputMaybe<SegmentCitiesInput>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The content of the object */
   content?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the segment and continents */
+  continents?: InputMaybe<SegmentContinentsInput>;
   /** Set connections between the segment and contributors */
   contributors?: InputMaybe<SegmentContributorsInput>;
+  /** Set connections between the segment and countries */
+  countries?: InputMaybe<SegmentCountriesInput>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars['String']['input']>;
   /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The password used to protect the content of the object */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the segment and people */
+  people?: InputMaybe<SegmentPeopleInput>;
   /** Set connections between the segment and programs */
   programs?: InputMaybe<SegmentProgramsInput>;
+  /** Set connections between the segment and provincesOrStates */
+  provincesOrStates?: InputMaybe<SegmentProvincesOrStatesInput>;
+  /** Set connections between the segment and regions */
+  regions?: InputMaybe<SegmentRegionsInput>;
   /** The slug of the object */
   slug?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the segment and socialTags */
+  socialTags?: InputMaybe<SegmentSocialTagsInput>;
   /** The status of the object */
   status?: InputMaybe<PostStatusEnum>;
   /** The title of the object */
@@ -4529,12 +5155,18 @@ export type Episode = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
   __typename?: 'Episode';
   /** Connection between the Episode type and the category type */
   categories?: Maybe<EpisodeToCategoryConnection>;
+  /** Connection between the Episode type and the city type */
+  cities?: Maybe<EpisodeToCityConnection>;
   /** The content of the post. */
   content?: Maybe<Scalars['String']['output']>;
   /** Connection between the ContentNode type and the ContentType type */
   contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
   /** The name of the Content Type the node belongs to */
   contentTypeName: Scalars['String']['output'];
+  /** Connection between the Episode type and the continent type */
+  continents?: Maybe<EpisodeToContinentConnection>;
+  /** Connection between the Episode type and the country type */
+  countries?: Maybe<EpisodeToCountryConnection>;
   /** The unique identifier stored in the database */
   databaseId: Scalars['Int']['output'];
   /** Post publishing date. */
@@ -4592,6 +5224,8 @@ export type Episode = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
   modified?: Maybe<Scalars['String']['output']>;
   /** The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT. */
   modifiedGmt?: Maybe<Scalars['String']['output']>;
+  /** Connection between the Episode type and the person type */
+  people?: Maybe<EpisodeToPersonConnection>;
   /** Added to the GraphQL Schema because the ACF Field Group &quot;Podcast Metadata&quot; was set to Show in GraphQL. */
   podcastMetadata?: Maybe<Episode_Podcastmetadata>;
   /** Connection between the Episode type and the episode type */
@@ -4602,10 +5236,16 @@ export type Episode = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
   previewRevisionId?: Maybe<Scalars['ID']['output']>;
   /** Connection between the Episode type and the program type */
   programs?: Maybe<EpisodeToProgramConnection>;
+  /** Connection between the Episode type and the provinceOrState type */
+  provincesOrStates?: Maybe<EpisodeToProvinceOrStateConnection>;
+  /** Connection between the Episode type and the region type */
+  regions?: Maybe<EpisodeToRegionConnection>;
   /** The Yoast SEO data of the ContentNode */
   seo?: Maybe<PostTypeSeo>;
   /** The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table. */
   slug?: Maybe<Scalars['String']['output']>;
+  /** Connection between the Episode type and the socialTag type */
+  socialTags?: Maybe<EpisodeToSocialTagConnection>;
   /** The current status of the object */
   status?: Maybe<Scalars['String']['output']>;
   /** Connection between the Episode type and the tag type */
@@ -4634,8 +5274,38 @@ export type EpisodeCategoriesArgs = {
 
 
 /** The episode type */
+export type EpisodeCitiesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EpisodeToCityConnectionWhereArgs>;
+};
+
+
+/** The episode type */
 export type EpisodeContentArgs = {
   format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+
+/** The episode type */
+export type EpisodeContinentsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EpisodeToContinentConnectionWhereArgs>;
+};
+
+
+/** The episode type */
+export type EpisodeCountriesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EpisodeToCountryConnectionWhereArgs>;
 };
 
 
@@ -4664,12 +5334,52 @@ export type EpisodeExcerptArgs = {
 
 
 /** The episode type */
+export type EpisodePeopleArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EpisodeToPersonConnectionWhereArgs>;
+};
+
+
+/** The episode type */
 export type EpisodeProgramsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<EpisodeToProgramConnectionWhereArgs>;
+};
+
+
+/** The episode type */
+export type EpisodeProvincesOrStatesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EpisodeToProvinceOrStateConnectionWhereArgs>;
+};
+
+
+/** The episode type */
+export type EpisodeRegionsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EpisodeToRegionConnectionWhereArgs>;
+};
+
+
+/** The episode type */
+export type EpisodeSocialTagsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<EpisodeToSocialTagConnectionWhereArgs>;
 };
 
 
@@ -4718,6 +5428,26 @@ export type EpisodeCategoriesNodeInput = {
   slug?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Set relationships between the episode to cities */
+export type EpisodeCitiesInput = {
+  /** If true, this will append the city to existing related cities. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<EpisodeCitiesNodeInput>>>;
+};
+
+/** List of cities to connect the episode to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type EpisodeCitiesNodeInput = {
+  /** The description of the city. This field is used to set a description of the city if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the city. If present, this will be used to connect to the episode. If no existing city exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the city. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the city. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection to episode Nodes */
 export type EpisodeConnection = {
   /** A list of edges (relational context) between RootQuery and connected episode Nodes */
@@ -4750,6 +5480,46 @@ export type EpisodeConnectionPageInfo = {
   startCursor?: Maybe<Scalars['String']['output']>;
 };
 
+/** Set relationships between the episode to continents */
+export type EpisodeContinentsInput = {
+  /** If true, this will append the continent to existing related continents. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<EpisodeContinentsNodeInput>>>;
+};
+
+/** List of continents to connect the episode to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type EpisodeContinentsNodeInput = {
+  /** The description of the continent. This field is used to set a description of the continent if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the continent. If present, this will be used to connect to the episode. If no existing continent exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the continent. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the continent. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Set relationships between the episode to countries */
+export type EpisodeCountriesInput = {
+  /** If true, this will append the country to existing related countries. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<EpisodeCountriesNodeInput>>>;
+};
+
+/** List of countries to connect the episode to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type EpisodeCountriesNodeInput = {
+  /** The description of the country. This field is used to set a description of the country if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the country. If present, this will be used to connect to the episode. If no existing country exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the country. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the country. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
 export enum EpisodeIdType {
   /** Identify a resource by the Database ID. */
@@ -4761,6 +5531,26 @@ export enum EpisodeIdType {
   /** Identify a resource by the URI. */
   Uri = 'URI'
 }
+
+/** Set relationships between the episode to people */
+export type EpisodePeopleInput = {
+  /** If true, this will append the person to existing related people. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<EpisodePeopleNodeInput>>>;
+};
+
+/** List of people to connect the episode to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type EpisodePeopleNodeInput = {
+  /** The description of the person. This field is used to set a description of the person if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the person. If present, this will be used to connect to the episode. If no existing person exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the person. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the person. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
 
 /** Set relationships between the episode to programs */
 export type EpisodeProgramsInput = {
@@ -4779,6 +5569,66 @@ export type EpisodeProgramsNodeInput = {
   /** The name of the program. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
   name?: InputMaybe<Scalars['String']['input']>;
   /** The slug of the program. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Set relationships between the episode to provincesOrStates */
+export type EpisodeProvincesOrStatesInput = {
+  /** If true, this will append the provinceOrState to existing related provincesOrStates. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<EpisodeProvincesOrStatesNodeInput>>>;
+};
+
+/** List of provincesOrStates to connect the episode to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type EpisodeProvincesOrStatesNodeInput = {
+  /** The description of the provinceOrState. This field is used to set a description of the provinceOrState if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the provinceOrState. If present, this will be used to connect to the episode. If no existing provinceOrState exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the provinceOrState. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the provinceOrState. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Set relationships between the episode to regions */
+export type EpisodeRegionsInput = {
+  /** If true, this will append the region to existing related regions. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<EpisodeRegionsNodeInput>>>;
+};
+
+/** List of regions to connect the episode to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type EpisodeRegionsNodeInput = {
+  /** The description of the region. This field is used to set a description of the region if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the region. If present, this will be used to connect to the episode. If no existing region exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the region. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the region. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Set relationships between the episode to socialTags */
+export type EpisodeSocialTagsInput = {
+  /** If true, this will append the socialTag to existing related socialTags. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<EpisodeSocialTagsNodeInput>>>;
+};
+
+/** List of socialTags to connect the episode to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type EpisodeSocialTagsNodeInput = {
+  /** The description of the socialTag. This field is used to set a description of the socialTag if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the socialTag. If present, this will be used to connect to the episode. If no existing socialTag exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the socialTag. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the socialTag. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
   slug?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -4885,6 +5735,338 @@ export type EpisodeToCategoryConnectionWhereArgs = {
   updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** Connection between the Episode type and the city type */
+export type EpisodeToCityConnection = CityConnection & Connection & {
+  __typename?: 'EpisodeToCityConnection';
+  /** Edges for the EpisodeToCityConnection connection */
+  edges: Array<EpisodeToCityConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<City>;
+  /** Information about pagination in a connection. */
+  pageInfo: EpisodeToCityConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type EpisodeToCityConnectionEdge = CityConnectionEdge & Edge & {
+  __typename?: 'EpisodeToCityConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary city */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: City;
+};
+
+/** Page Info on the &quot;EpisodeToCityConnection&quot; */
+export type EpisodeToCityConnectionPageInfo = CityConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'EpisodeToCityConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the EpisodeToCityConnection connection */
+export type EpisodeToCityConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Episode type and the continent type */
+export type EpisodeToContinentConnection = Connection & ContinentConnection & {
+  __typename?: 'EpisodeToContinentConnection';
+  /** Edges for the EpisodeToContinentConnection connection */
+  edges: Array<EpisodeToContinentConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Continent>;
+  /** Information about pagination in a connection. */
+  pageInfo: EpisodeToContinentConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type EpisodeToContinentConnectionEdge = ContinentConnectionEdge & Edge & {
+  __typename?: 'EpisodeToContinentConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary continent */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: Continent;
+};
+
+/** Page Info on the &quot;EpisodeToContinentConnection&quot; */
+export type EpisodeToContinentConnectionPageInfo = ContinentConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'EpisodeToContinentConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the EpisodeToContinentConnection connection */
+export type EpisodeToContinentConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Episode type and the country type */
+export type EpisodeToCountryConnection = Connection & CountryConnection & {
+  __typename?: 'EpisodeToCountryConnection';
+  /** Edges for the EpisodeToCountryConnection connection */
+  edges: Array<EpisodeToCountryConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Country>;
+  /** Information about pagination in a connection. */
+  pageInfo: EpisodeToCountryConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type EpisodeToCountryConnectionEdge = CountryConnectionEdge & Edge & {
+  __typename?: 'EpisodeToCountryConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary country */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: Country;
+};
+
+/** Page Info on the &quot;EpisodeToCountryConnection&quot; */
+export type EpisodeToCountryConnectionPageInfo = CountryConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'EpisodeToCountryConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the EpisodeToCountryConnection connection */
+export type EpisodeToCountryConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Episode type and the person type */
+export type EpisodeToPersonConnection = Connection & PersonConnection & {
+  __typename?: 'EpisodeToPersonConnection';
+  /** Edges for the EpisodeToPersonConnection connection */
+  edges: Array<EpisodeToPersonConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Person>;
+  /** Information about pagination in a connection. */
+  pageInfo: EpisodeToPersonConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type EpisodeToPersonConnectionEdge = Edge & PersonConnectionEdge & {
+  __typename?: 'EpisodeToPersonConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary person */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: Person;
+};
+
+/** Page Info on the &quot;EpisodeToPersonConnection&quot; */
+export type EpisodeToPersonConnectionPageInfo = PageInfo & PersonConnectionPageInfo & WpPageInfo & {
+  __typename?: 'EpisodeToPersonConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the EpisodeToPersonConnection connection */
+export type EpisodeToPersonConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 /** Connection between the Episode type and the episode type */
 export type EpisodeToPreviewConnectionEdge = Edge & EpisodeConnectionEdge & OneToOneConnection & {
   __typename?: 'EpisodeToPreviewConnectionEdge';
@@ -4933,6 +6115,255 @@ export type EpisodeToProgramConnectionPageInfo = PageInfo & ProgramConnectionPag
 
 /** Arguments for filtering the EpisodeToProgramConnection connection */
 export type EpisodeToProgramConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Episode type and the provinceOrState type */
+export type EpisodeToProvinceOrStateConnection = Connection & ProvinceOrStateConnection & {
+  __typename?: 'EpisodeToProvinceOrStateConnection';
+  /** Edges for the EpisodeToProvinceOrStateConnection connection */
+  edges: Array<EpisodeToProvinceOrStateConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<ProvinceOrState>;
+  /** Information about pagination in a connection. */
+  pageInfo: EpisodeToProvinceOrStateConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type EpisodeToProvinceOrStateConnectionEdge = Edge & ProvinceOrStateConnectionEdge & {
+  __typename?: 'EpisodeToProvinceOrStateConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary province_or_state */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: ProvinceOrState;
+};
+
+/** Page Info on the &quot;EpisodeToProvinceOrStateConnection&quot; */
+export type EpisodeToProvinceOrStateConnectionPageInfo = PageInfo & ProvinceOrStateConnectionPageInfo & WpPageInfo & {
+  __typename?: 'EpisodeToProvinceOrStateConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the EpisodeToProvinceOrStateConnection connection */
+export type EpisodeToProvinceOrStateConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Episode type and the region type */
+export type EpisodeToRegionConnection = Connection & RegionConnection & {
+  __typename?: 'EpisodeToRegionConnection';
+  /** Edges for the EpisodeToRegionConnection connection */
+  edges: Array<EpisodeToRegionConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Region>;
+  /** Information about pagination in a connection. */
+  pageInfo: EpisodeToRegionConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type EpisodeToRegionConnectionEdge = Edge & RegionConnectionEdge & {
+  __typename?: 'EpisodeToRegionConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary region */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: Region;
+};
+
+/** Page Info on the &quot;EpisodeToRegionConnection&quot; */
+export type EpisodeToRegionConnectionPageInfo = PageInfo & RegionConnectionPageInfo & WpPageInfo & {
+  __typename?: 'EpisodeToRegionConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the EpisodeToRegionConnection connection */
+export type EpisodeToRegionConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Episode type and the socialTag type */
+export type EpisodeToSocialTagConnection = Connection & SocialTagConnection & {
+  __typename?: 'EpisodeToSocialTagConnection';
+  /** Edges for the EpisodeToSocialTagConnection connection */
+  edges: Array<EpisodeToSocialTagConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<SocialTag>;
+  /** Information about pagination in a connection. */
+  pageInfo: EpisodeToSocialTagConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type EpisodeToSocialTagConnectionEdge = Edge & SocialTagConnectionEdge & {
+  __typename?: 'EpisodeToSocialTagConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary social_tags */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: SocialTag;
+};
+
+/** Page Info on the &quot;EpisodeToSocialTagConnection&quot; */
+export type EpisodeToSocialTagConnectionPageInfo = PageInfo & SocialTagConnectionPageInfo & WpPageInfo & {
+  __typename?: 'EpisodeToSocialTagConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the EpisodeToSocialTagConnection connection */
+export type EpisodeToSocialTagConnectionWhereArgs = {
   /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
   cacheDomain?: InputMaybe<Scalars['String']['input']>;
   /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
@@ -6215,32 +7646,6 @@ export enum MediaItemSizeEnum {
   Medium = 'MEDIUM',
   /** MediaItem with the medium_large size */
   MediumLarge = 'MEDIUM_LARGE',
-  /** MediaItem with the newspack-article-block-landscape-large size */
-  NewspackArticleBlockLandscapeLarge = 'NEWSPACK_ARTICLE_BLOCK_LANDSCAPE_LARGE',
-  /** MediaItem with the newspack-article-block-landscape-medium size */
-  NewspackArticleBlockLandscapeMedium = 'NEWSPACK_ARTICLE_BLOCK_LANDSCAPE_MEDIUM',
-  /** MediaItem with the newspack-article-block-landscape-small size */
-  NewspackArticleBlockLandscapeSmall = 'NEWSPACK_ARTICLE_BLOCK_LANDSCAPE_SMALL',
-  /** MediaItem with the newspack-article-block-landscape-tiny size */
-  NewspackArticleBlockLandscapeTiny = 'NEWSPACK_ARTICLE_BLOCK_LANDSCAPE_TINY',
-  /** MediaItem with the newspack-article-block-portrait-large size */
-  NewspackArticleBlockPortraitLarge = 'NEWSPACK_ARTICLE_BLOCK_PORTRAIT_LARGE',
-  /** MediaItem with the newspack-article-block-portrait-medium size */
-  NewspackArticleBlockPortraitMedium = 'NEWSPACK_ARTICLE_BLOCK_PORTRAIT_MEDIUM',
-  /** MediaItem with the newspack-article-block-portrait-small size */
-  NewspackArticleBlockPortraitSmall = 'NEWSPACK_ARTICLE_BLOCK_PORTRAIT_SMALL',
-  /** MediaItem with the newspack-article-block-portrait-tiny size */
-  NewspackArticleBlockPortraitTiny = 'NEWSPACK_ARTICLE_BLOCK_PORTRAIT_TINY',
-  /** MediaItem with the newspack-article-block-square-large size */
-  NewspackArticleBlockSquareLarge = 'NEWSPACK_ARTICLE_BLOCK_SQUARE_LARGE',
-  /** MediaItem with the newspack-article-block-square-medium size */
-  NewspackArticleBlockSquareMedium = 'NEWSPACK_ARTICLE_BLOCK_SQUARE_MEDIUM',
-  /** MediaItem with the newspack-article-block-square-small size */
-  NewspackArticleBlockSquareSmall = 'NEWSPACK_ARTICLE_BLOCK_SQUARE_SMALL',
-  /** MediaItem with the newspack-article-block-square-tiny size */
-  NewspackArticleBlockSquareTiny = 'NEWSPACK_ARTICLE_BLOCK_SQUARE_TINY',
-  /** MediaItem with the newspack-article-block-uncropped size */
-  NewspackArticleBlockUncropped = 'NEWSPACK_ARTICLE_BLOCK_UNCROPPED',
   /** MediaItem with the thumbnail size */
   Thumbnail = 'THUMBNAIL',
   /** MediaItem with the 1536x1536 size */
@@ -7532,6 +8937,8 @@ export type Person = DatabaseIdentifier & Node & TermNode & UniformResourceIdent
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
+  /** Connection between the Person type and the episode type */
+  episodes?: Maybe<PersonToEpisodeConnection>;
   /** The unique resource identifier path */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
@@ -7553,6 +8960,8 @@ export type Person = DatabaseIdentifier & Node & TermNode & UniformResourceIdent
   personId?: Maybe<Scalars['Int']['output']>;
   /** Connection between the Person type and the post type */
   posts?: Maybe<PersonToPostConnection>;
+  /** Connection between the Person type and the segment type */
+  segments?: Maybe<PersonToSegmentConnection>;
   /** The Yoast SEO data of the Persons taxonomy. */
   seo?: Maybe<TaxonomySeo>;
   /** An alphanumeric identifier for the object unique to its type. */
@@ -7601,12 +9010,32 @@ export type PersonEnqueuedStylesheetsArgs = {
 
 
 /** The person type */
+export type PersonEpisodesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PersonToEpisodeConnectionWhereArgs>;
+};
+
+
+/** The person type */
 export type PersonPostsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<PersonToPostConnectionWhereArgs>;
+};
+
+
+/** The person type */
+export type PersonSegmentsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<PersonToSegmentConnectionWhereArgs>;
 };
 
 /** Connection to person Nodes */
@@ -7730,6 +9159,99 @@ export type PersonToContentNodeConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Connection between the Person type and the episode type */
+export type PersonToEpisodeConnection = Connection & EpisodeConnection & {
+  __typename?: 'PersonToEpisodeConnection';
+  /** Edges for the PersonToEpisodeConnection connection */
+  edges: Array<PersonToEpisodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Episode>;
+  /** Information about pagination in a connection. */
+  pageInfo: PersonToEpisodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type PersonToEpisodeConnectionEdge = Edge & EpisodeConnectionEdge & {
+  __typename?: 'PersonToEpisodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Episode;
+};
+
+/** Page Info on the &quot;PersonToEpisodeConnection&quot; */
+export type PersonToEpisodeConnectionPageInfo = EpisodeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'PersonToEpisodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the PersonToEpisodeConnection connection */
+export type PersonToEpisodeConnectionWhereArgs = {
+  /** Category ID */
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Use Category Slug */
+  categoryName?: InputMaybe<Scalars['String']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Tag Slug */
+  tag?: InputMaybe<Scalars['String']['input']>;
+  /** Use Tag ID */
+  tagId?: InputMaybe<Scalars['String']['input']>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag slugs, used to display objects from one tag AND another */
+  tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of tag slugs, used to include objects in ANY specified tags */
+  tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection between the Person type and the post type */
 export type PersonToPostConnection = Connection & PostConnection & {
   __typename?: 'PersonToPostConnection';
@@ -7827,6 +9349,79 @@ export type PersonToPostConnectionWhereArgs = {
   tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the Person type and the segment type */
+export type PersonToSegmentConnection = Connection & SegmentConnection & {
+  __typename?: 'PersonToSegmentConnection';
+  /** Edges for the PersonToSegmentConnection connection */
+  edges: Array<PersonToSegmentConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Segment>;
+  /** Information about pagination in a connection. */
+  pageInfo: PersonToSegmentConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type PersonToSegmentConnectionEdge = Edge & SegmentConnectionEdge & {
+  __typename?: 'PersonToSegmentConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Segment;
+};
+
+/** Page Info on the &quot;PersonToSegmentConnection&quot; */
+export type PersonToSegmentConnectionPageInfo = PageInfo & SegmentConnectionPageInfo & WpPageInfo & {
+  __typename?: 'PersonToSegmentConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the PersonToSegmentConnection connection */
+export type PersonToSegmentConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -11061,6 +12656,8 @@ export type ProvinceOrState = DatabaseIdentifier & Node & TermNode & UniformReso
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
+  /** Connection between the ProvinceOrState type and the episode type */
+  episodes?: Maybe<ProvinceOrStateToEpisodeConnection>;
   /** The unique resource identifier path */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
@@ -11082,6 +12679,8 @@ export type ProvinceOrState = DatabaseIdentifier & Node & TermNode & UniformReso
    * @deprecated Deprecated in favor of databaseId
    */
   provinceOrStateId?: Maybe<Scalars['Int']['output']>;
+  /** Connection between the ProvinceOrState type and the segment type */
+  segments?: Maybe<ProvinceOrStateToSegmentConnection>;
   /** The Yoast SEO data of the Province Or States taxonomy. */
   seo?: Maybe<TaxonomySeo>;
   /** An alphanumeric identifier for the object unique to its type. */
@@ -11130,12 +12729,32 @@ export type ProvinceOrStateEnqueuedStylesheetsArgs = {
 
 
 /** The provinceOrState type */
+export type ProvinceOrStateEpisodesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProvinceOrStateToEpisodeConnectionWhereArgs>;
+};
+
+
+/** The provinceOrState type */
 export type ProvinceOrStatePostsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<ProvinceOrStateToPostConnectionWhereArgs>;
+};
+
+
+/** The provinceOrState type */
+export type ProvinceOrStateSegmentsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<ProvinceOrStateToSegmentConnectionWhereArgs>;
 };
 
 /** Connection to provinceOrState Nodes */
@@ -11259,6 +12878,99 @@ export type ProvinceOrStateToContentNodeConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Connection between the ProvinceOrState type and the episode type */
+export type ProvinceOrStateToEpisodeConnection = Connection & EpisodeConnection & {
+  __typename?: 'ProvinceOrStateToEpisodeConnection';
+  /** Edges for the ProvinceOrStateToEpisodeConnection connection */
+  edges: Array<ProvinceOrStateToEpisodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Episode>;
+  /** Information about pagination in a connection. */
+  pageInfo: ProvinceOrStateToEpisodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type ProvinceOrStateToEpisodeConnectionEdge = Edge & EpisodeConnectionEdge & {
+  __typename?: 'ProvinceOrStateToEpisodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Episode;
+};
+
+/** Page Info on the &quot;ProvinceOrStateToEpisodeConnection&quot; */
+export type ProvinceOrStateToEpisodeConnectionPageInfo = EpisodeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'ProvinceOrStateToEpisodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the ProvinceOrStateToEpisodeConnection connection */
+export type ProvinceOrStateToEpisodeConnectionWhereArgs = {
+  /** Category ID */
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Use Category Slug */
+  categoryName?: InputMaybe<Scalars['String']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Tag Slug */
+  tag?: InputMaybe<Scalars['String']['input']>;
+  /** Use Tag ID */
+  tagId?: InputMaybe<Scalars['String']['input']>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag slugs, used to display objects from one tag AND another */
+  tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of tag slugs, used to include objects in ANY specified tags */
+  tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection between the ProvinceOrState type and the post type */
 export type ProvinceOrStateToPostConnection = Connection & PostConnection & {
   __typename?: 'ProvinceOrStateToPostConnection';
@@ -11360,6 +13072,79 @@ export type ProvinceOrStateToPostConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Connection between the ProvinceOrState type and the segment type */
+export type ProvinceOrStateToSegmentConnection = Connection & SegmentConnection & {
+  __typename?: 'ProvinceOrStateToSegmentConnection';
+  /** Edges for the ProvinceOrStateToSegmentConnection connection */
+  edges: Array<ProvinceOrStateToSegmentConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Segment>;
+  /** Information about pagination in a connection. */
+  pageInfo: ProvinceOrStateToSegmentConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type ProvinceOrStateToSegmentConnectionEdge = Edge & SegmentConnectionEdge & {
+  __typename?: 'ProvinceOrStateToSegmentConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Segment;
+};
+
+/** Page Info on the &quot;ProvinceOrStateToSegmentConnection&quot; */
+export type ProvinceOrStateToSegmentConnectionPageInfo = PageInfo & SegmentConnectionPageInfo & WpPageInfo & {
+  __typename?: 'ProvinceOrStateToSegmentConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the ProvinceOrStateToSegmentConnection connection */
+export type ProvinceOrStateToSegmentConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection between the ProvinceOrState type and the Taxonomy type */
 export type ProvinceOrStateToTaxonomyConnectionEdge = Edge & OneToOneConnection & TaxonomyConnectionEdge & {
   __typename?: 'ProvinceOrStateToTaxonomyConnectionEdge';
@@ -11416,6 +13201,8 @@ export type Region = DatabaseIdentifier & Node & TermNode & UniformResourceIdent
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
+  /** Connection between the Region type and the episode type */
+  episodes?: Maybe<RegionToEpisodeConnection>;
   /** The unique resource identifier path */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
@@ -11437,6 +13224,8 @@ export type Region = DatabaseIdentifier & Node & TermNode & UniformResourceIdent
    * @deprecated Deprecated in favor of databaseId
    */
   regionId?: Maybe<Scalars['Int']['output']>;
+  /** Connection between the Region type and the segment type */
+  segments?: Maybe<RegionToSegmentConnection>;
   /** The Yoast SEO data of the Regions taxonomy. */
   seo?: Maybe<TaxonomySeo>;
   /** An alphanumeric identifier for the object unique to its type. */
@@ -11485,12 +13274,32 @@ export type RegionEnqueuedStylesheetsArgs = {
 
 
 /** The region type */
+export type RegionEpisodesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RegionToEpisodeConnectionWhereArgs>;
+};
+
+
+/** The region type */
 export type RegionPostsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<RegionToPostConnectionWhereArgs>;
+};
+
+
+/** The region type */
+export type RegionSegmentsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RegionToSegmentConnectionWhereArgs>;
 };
 
 /** Connection to region Nodes */
@@ -11614,6 +13423,99 @@ export type RegionToContentNodeConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Connection between the Region type and the episode type */
+export type RegionToEpisodeConnection = Connection & EpisodeConnection & {
+  __typename?: 'RegionToEpisodeConnection';
+  /** Edges for the RegionToEpisodeConnection connection */
+  edges: Array<RegionToEpisodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Episode>;
+  /** Information about pagination in a connection. */
+  pageInfo: RegionToEpisodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type RegionToEpisodeConnectionEdge = Edge & EpisodeConnectionEdge & {
+  __typename?: 'RegionToEpisodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Episode;
+};
+
+/** Page Info on the &quot;RegionToEpisodeConnection&quot; */
+export type RegionToEpisodeConnectionPageInfo = EpisodeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'RegionToEpisodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the RegionToEpisodeConnection connection */
+export type RegionToEpisodeConnectionWhereArgs = {
+  /** Category ID */
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Use Category Slug */
+  categoryName?: InputMaybe<Scalars['String']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Tag Slug */
+  tag?: InputMaybe<Scalars['String']['input']>;
+  /** Use Tag ID */
+  tagId?: InputMaybe<Scalars['String']['input']>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag slugs, used to display objects from one tag AND another */
+  tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of tag slugs, used to include objects in ANY specified tags */
+  tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection between the Region type and the post type */
 export type RegionToPostConnection = Connection & PostConnection & {
   __typename?: 'RegionToPostConnection';
@@ -11711,6 +13613,79 @@ export type RegionToPostConnectionWhereArgs = {
   tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the Region type and the segment type */
+export type RegionToSegmentConnection = Connection & SegmentConnection & {
+  __typename?: 'RegionToSegmentConnection';
+  /** Edges for the RegionToSegmentConnection connection */
+  edges: Array<RegionToSegmentConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Segment>;
+  /** Information about pagination in a connection. */
+  pageInfo: RegionToSegmentConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type RegionToSegmentConnectionEdge = Edge & SegmentConnectionEdge & {
+  __typename?: 'RegionToSegmentConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Segment;
+};
+
+/** Page Info on the &quot;RegionToSegmentConnection&quot; */
+export type RegionToSegmentConnectionPageInfo = PageInfo & SegmentConnectionPageInfo & WpPageInfo & {
+  __typename?: 'RegionToSegmentConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the RegionToSegmentConnection connection */
+export type RegionToSegmentConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -16239,14 +18214,20 @@ export type SeoWebmaster = {
 /** The segment type */
 export type Segment = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
   __typename?: 'Segment';
+  /** Connection between the Segment type and the city type */
+  cities?: Maybe<SegmentToCityConnection>;
   /** The content of the post. */
   content?: Maybe<Scalars['String']['output']>;
   /** Connection between the ContentNode type and the ContentType type */
   contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
   /** The name of the Content Type the node belongs to */
   contentTypeName: Scalars['String']['output'];
+  /** Connection between the Segment type and the continent type */
+  continents?: Maybe<SegmentToContinentConnection>;
   /** Connection between the Segment type and the contributor type */
   contributors?: Maybe<SegmentToContributorConnection>;
+  /** Connection between the Segment type and the country type */
+  countries?: Maybe<SegmentToCountryConnection>;
   /** The unique identifier stored in the database */
   databaseId: Scalars['Int']['output'];
   /** Post publishing date. */
@@ -16289,6 +18270,8 @@ export type Segment = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
   modified?: Maybe<Scalars['String']['output']>;
   /** The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT. */
   modifiedGmt?: Maybe<Scalars['String']['output']>;
+  /** Connection between the Segment type and the person type */
+  people?: Maybe<SegmentToPersonConnection>;
   /** Connection between the Segment type and the segment type */
   preview?: Maybe<SegmentToPreviewConnectionEdge>;
   /** The database id of the preview node */
@@ -16297,6 +18280,10 @@ export type Segment = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
   previewRevisionId?: Maybe<Scalars['ID']['output']>;
   /** Connection between the Segment type and the program type */
   programs?: Maybe<SegmentToProgramConnection>;
+  /** Connection between the Segment type and the provinceOrState type */
+  provincesOrStates?: Maybe<SegmentToProvinceOrStateConnection>;
+  /** Connection between the Segment type and the region type */
+  regions?: Maybe<SegmentToRegionConnection>;
   /** Added to the GraphQL Schema because the ACF Field Group &quot;Segment Content&quot; was set to Show in GraphQL. */
   segmentContent?: Maybe<Segment_Segmentcontent>;
   /** Added to the GraphQL Schema because the ACF Field Group &quot;Segment Dates&quot; was set to Show in GraphQL. */
@@ -16310,6 +18297,8 @@ export type Segment = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
   seo?: Maybe<PostTypeSeo>;
   /** The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table. */
   slug?: Maybe<Scalars['String']['output']>;
+  /** Connection between the Segment type and the socialTag type */
+  socialTags?: Maybe<SegmentToSocialTagConnection>;
   /** The current status of the object */
   status?: Maybe<Scalars['String']['output']>;
   /** The template assigned to the node */
@@ -16324,8 +18313,28 @@ export type Segment = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node
 
 
 /** The segment type */
+export type SegmentCitiesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<SegmentToCityConnectionWhereArgs>;
+};
+
+
+/** The segment type */
 export type SegmentContentArgs = {
   format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+
+/** The segment type */
+export type SegmentContinentsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<SegmentToContinentConnectionWhereArgs>;
 };
 
 
@@ -16336,6 +18345,16 @@ export type SegmentContributorsArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<SegmentToContributorConnectionWhereArgs>;
+};
+
+
+/** The segment type */
+export type SegmentCountriesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<SegmentToCountryConnectionWhereArgs>;
 };
 
 
@@ -16358,12 +18377,52 @@ export type SegmentEnqueuedStylesheetsArgs = {
 
 
 /** The segment type */
+export type SegmentPeopleArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<SegmentToPersonConnectionWhereArgs>;
+};
+
+
+/** The segment type */
 export type SegmentProgramsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<SegmentToProgramConnectionWhereArgs>;
+};
+
+
+/** The segment type */
+export type SegmentProvincesOrStatesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<SegmentToProvinceOrStateConnectionWhereArgs>;
+};
+
+
+/** The segment type */
+export type SegmentRegionsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<SegmentToRegionConnectionWhereArgs>;
+};
+
+
+/** The segment type */
+export type SegmentSocialTagsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<SegmentToSocialTagConnectionWhereArgs>;
 };
 
 
@@ -16380,6 +18439,26 @@ export type SegmentTermsArgs = {
 /** The segment type */
 export type SegmentTitleArgs = {
   format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+/** Set relationships between the segment to cities */
+export type SegmentCitiesInput = {
+  /** If true, this will append the city to existing related cities. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<SegmentCitiesNodeInput>>>;
+};
+
+/** List of cities to connect the segment to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type SegmentCitiesNodeInput = {
+  /** The description of the city. This field is used to set a description of the city if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the city. If present, this will be used to connect to the segment. If no existing city exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the city. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the city. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Connection to segment Nodes */
@@ -16414,6 +18493,26 @@ export type SegmentConnectionPageInfo = {
   startCursor?: Maybe<Scalars['String']['output']>;
 };
 
+/** Set relationships between the segment to continents */
+export type SegmentContinentsInput = {
+  /** If true, this will append the continent to existing related continents. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<SegmentContinentsNodeInput>>>;
+};
+
+/** List of continents to connect the segment to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type SegmentContinentsNodeInput = {
+  /** The description of the continent. This field is used to set a description of the continent if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the continent. If present, this will be used to connect to the segment. If no existing continent exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the continent. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the continent. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Set relationships between the segment to contributors */
 export type SegmentContributorsInput = {
   /** If true, this will append the contributor to existing related contributors. If false, this will replace existing relationships. Default true. */
@@ -16434,6 +18533,26 @@ export type SegmentContributorsNodeInput = {
   slug?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Set relationships between the segment to countries */
+export type SegmentCountriesInput = {
+  /** If true, this will append the country to existing related countries. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<SegmentCountriesNodeInput>>>;
+};
+
+/** List of countries to connect the segment to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type SegmentCountriesNodeInput = {
+  /** The description of the country. This field is used to set a description of the country if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the country. If present, this will be used to connect to the segment. If no existing country exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the country. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the country. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
 export enum SegmentIdType {
   /** Identify a resource by the Database ID. */
@@ -16445,6 +18564,26 @@ export enum SegmentIdType {
   /** Identify a resource by the URI. */
   Uri = 'URI'
 }
+
+/** Set relationships between the segment to people */
+export type SegmentPeopleInput = {
+  /** If true, this will append the person to existing related people. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<SegmentPeopleNodeInput>>>;
+};
+
+/** List of people to connect the segment to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type SegmentPeopleNodeInput = {
+  /** The description of the person. This field is used to set a description of the person if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the person. If present, this will be used to connect to the segment. If no existing person exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the person. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the person. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
 
 /** Set relationships between the segment to programs */
 export type SegmentProgramsInput = {
@@ -16464,6 +18603,232 @@ export type SegmentProgramsNodeInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   /** The slug of the program. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
   slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Set relationships between the segment to provincesOrStates */
+export type SegmentProvincesOrStatesInput = {
+  /** If true, this will append the provinceOrState to existing related provincesOrStates. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<SegmentProvincesOrStatesNodeInput>>>;
+};
+
+/** List of provincesOrStates to connect the segment to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type SegmentProvincesOrStatesNodeInput = {
+  /** The description of the provinceOrState. This field is used to set a description of the provinceOrState if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the provinceOrState. If present, this will be used to connect to the segment. If no existing provinceOrState exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the provinceOrState. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the provinceOrState. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Set relationships between the segment to regions */
+export type SegmentRegionsInput = {
+  /** If true, this will append the region to existing related regions. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<SegmentRegionsNodeInput>>>;
+};
+
+/** List of regions to connect the segment to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type SegmentRegionsNodeInput = {
+  /** The description of the region. This field is used to set a description of the region if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the region. If present, this will be used to connect to the segment. If no existing region exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the region. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the region. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Set relationships between the segment to socialTags */
+export type SegmentSocialTagsInput = {
+  /** If true, this will append the socialTag to existing related socialTags. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<SegmentSocialTagsNodeInput>>>;
+};
+
+/** List of socialTags to connect the segment to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type SegmentSocialTagsNodeInput = {
+  /** The description of the socialTag. This field is used to set a description of the socialTag if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the socialTag. If present, this will be used to connect to the segment. If no existing socialTag exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the socialTag. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the socialTag. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the Segment type and the city type */
+export type SegmentToCityConnection = CityConnection & Connection & {
+  __typename?: 'SegmentToCityConnection';
+  /** Edges for the SegmentToCityConnection connection */
+  edges: Array<SegmentToCityConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<City>;
+  /** Information about pagination in a connection. */
+  pageInfo: SegmentToCityConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type SegmentToCityConnectionEdge = CityConnectionEdge & Edge & {
+  __typename?: 'SegmentToCityConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary city */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: City;
+};
+
+/** Page Info on the &quot;SegmentToCityConnection&quot; */
+export type SegmentToCityConnectionPageInfo = CityConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'SegmentToCityConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the SegmentToCityConnection connection */
+export type SegmentToCityConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Segment type and the continent type */
+export type SegmentToContinentConnection = Connection & ContinentConnection & {
+  __typename?: 'SegmentToContinentConnection';
+  /** Edges for the SegmentToContinentConnection connection */
+  edges: Array<SegmentToContinentConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Continent>;
+  /** Information about pagination in a connection. */
+  pageInfo: SegmentToContinentConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type SegmentToContinentConnectionEdge = ContinentConnectionEdge & Edge & {
+  __typename?: 'SegmentToContinentConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary continent */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: Continent;
+};
+
+/** Page Info on the &quot;SegmentToContinentConnection&quot; */
+export type SegmentToContinentConnectionPageInfo = ContinentConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'SegmentToContinentConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the SegmentToContinentConnection connection */
+export type SegmentToContinentConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 /** Connection between the Segment type and the contributor type */
@@ -16505,6 +18870,172 @@ export type SegmentToContributorConnectionPageInfo = ContributorConnectionPageIn
 
 /** Arguments for filtering the SegmentToContributorConnection connection */
 export type SegmentToContributorConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Segment type and the country type */
+export type SegmentToCountryConnection = Connection & CountryConnection & {
+  __typename?: 'SegmentToCountryConnection';
+  /** Edges for the SegmentToCountryConnection connection */
+  edges: Array<SegmentToCountryConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Country>;
+  /** Information about pagination in a connection. */
+  pageInfo: SegmentToCountryConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type SegmentToCountryConnectionEdge = CountryConnectionEdge & Edge & {
+  __typename?: 'SegmentToCountryConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary country */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: Country;
+};
+
+/** Page Info on the &quot;SegmentToCountryConnection&quot; */
+export type SegmentToCountryConnectionPageInfo = CountryConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'SegmentToCountryConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the SegmentToCountryConnection connection */
+export type SegmentToCountryConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Segment type and the person type */
+export type SegmentToPersonConnection = Connection & PersonConnection & {
+  __typename?: 'SegmentToPersonConnection';
+  /** Edges for the SegmentToPersonConnection connection */
+  edges: Array<SegmentToPersonConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Person>;
+  /** Information about pagination in a connection. */
+  pageInfo: SegmentToPersonConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type SegmentToPersonConnectionEdge = Edge & PersonConnectionEdge & {
+  __typename?: 'SegmentToPersonConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary person */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: Person;
+};
+
+/** Page Info on the &quot;SegmentToPersonConnection&quot; */
+export type SegmentToPersonConnectionPageInfo = PageInfo & PersonConnectionPageInfo & WpPageInfo & {
+  __typename?: 'SegmentToPersonConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the SegmentToPersonConnection connection */
+export type SegmentToPersonConnectionWhereArgs = {
   /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
   cacheDomain?: InputMaybe<Scalars['String']['input']>;
   /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
@@ -16597,6 +19128,255 @@ export type SegmentToProgramConnectionPageInfo = PageInfo & ProgramConnectionPag
 
 /** Arguments for filtering the SegmentToProgramConnection connection */
 export type SegmentToProgramConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Segment type and the provinceOrState type */
+export type SegmentToProvinceOrStateConnection = Connection & ProvinceOrStateConnection & {
+  __typename?: 'SegmentToProvinceOrStateConnection';
+  /** Edges for the SegmentToProvinceOrStateConnection connection */
+  edges: Array<SegmentToProvinceOrStateConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<ProvinceOrState>;
+  /** Information about pagination in a connection. */
+  pageInfo: SegmentToProvinceOrStateConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type SegmentToProvinceOrStateConnectionEdge = Edge & ProvinceOrStateConnectionEdge & {
+  __typename?: 'SegmentToProvinceOrStateConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary province_or_state */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: ProvinceOrState;
+};
+
+/** Page Info on the &quot;SegmentToProvinceOrStateConnection&quot; */
+export type SegmentToProvinceOrStateConnectionPageInfo = PageInfo & ProvinceOrStateConnectionPageInfo & WpPageInfo & {
+  __typename?: 'SegmentToProvinceOrStateConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the SegmentToProvinceOrStateConnection connection */
+export type SegmentToProvinceOrStateConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Segment type and the region type */
+export type SegmentToRegionConnection = Connection & RegionConnection & {
+  __typename?: 'SegmentToRegionConnection';
+  /** Edges for the SegmentToRegionConnection connection */
+  edges: Array<SegmentToRegionConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Region>;
+  /** Information about pagination in a connection. */
+  pageInfo: SegmentToRegionConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type SegmentToRegionConnectionEdge = Edge & RegionConnectionEdge & {
+  __typename?: 'SegmentToRegionConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary region */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: Region;
+};
+
+/** Page Info on the &quot;SegmentToRegionConnection&quot; */
+export type SegmentToRegionConnectionPageInfo = PageInfo & RegionConnectionPageInfo & WpPageInfo & {
+  __typename?: 'SegmentToRegionConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the SegmentToRegionConnection connection */
+export type SegmentToRegionConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the Segment type and the socialTag type */
+export type SegmentToSocialTagConnection = Connection & SocialTagConnection & {
+  __typename?: 'SegmentToSocialTagConnection';
+  /** Edges for the SegmentToSocialTagConnection connection */
+  edges: Array<SegmentToSocialTagConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<SocialTag>;
+  /** Information about pagination in a connection. */
+  pageInfo: SegmentToSocialTagConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type SegmentToSocialTagConnectionEdge = Edge & SocialTagConnectionEdge & {
+  __typename?: 'SegmentToSocialTagConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary social_tags */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: SocialTag;
+};
+
+/** Page Info on the &quot;SegmentToSocialTagConnection&quot; */
+export type SegmentToSocialTagConnectionPageInfo = PageInfo & SocialTagConnectionPageInfo & WpPageInfo & {
+  __typename?: 'SegmentToSocialTagConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the SegmentToSocialTagConnection connection */
+export type SegmentToSocialTagConnectionWhereArgs = {
   /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
   cacheDomain?: InputMaybe<Scalars['String']['input']>;
   /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
@@ -16820,6 +19600,8 @@ export type SocialTag = DatabaseIdentifier & Node & TermNode & UniformResourceId
   enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
   /** Connection between the TermNode type and the EnqueuedStylesheet type */
   enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
+  /** Connection between the SocialTag type and the episode type */
+  episodes?: Maybe<SocialTagToEpisodeConnection>;
   /** The unique resource identifier path */
   id: Scalars['ID']['output'];
   /** Whether the node is a Content Node */
@@ -16836,6 +19618,8 @@ export type SocialTag = DatabaseIdentifier & Node & TermNode & UniformResourceId
   name?: Maybe<Scalars['String']['output']>;
   /** Connection between the SocialTag type and the post type */
   posts?: Maybe<SocialTagToPostConnection>;
+  /** Connection between the SocialTag type and the segment type */
+  segments?: Maybe<SocialTagToSegmentConnection>;
   /** The Yoast SEO data of the Social Tags taxonomy. */
   seo?: Maybe<TaxonomySeo>;
   /** An alphanumeric identifier for the object unique to its type. */
@@ -16889,12 +19673,32 @@ export type SocialTagEnqueuedStylesheetsArgs = {
 
 
 /** The socialTag type */
+export type SocialTagEpisodesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<SocialTagToEpisodeConnectionWhereArgs>;
+};
+
+
+/** The socialTag type */
 export type SocialTagPostsArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   before?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<SocialTagToPostConnectionWhereArgs>;
+};
+
+
+/** The socialTag type */
+export type SocialTagSegmentsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<SocialTagToSegmentConnectionWhereArgs>;
 };
 
 /** Connection to socialTag Nodes */
@@ -17018,6 +19822,99 @@ export type SocialTagToContentNodeConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Connection between the SocialTag type and the episode type */
+export type SocialTagToEpisodeConnection = Connection & EpisodeConnection & {
+  __typename?: 'SocialTagToEpisodeConnection';
+  /** Edges for the SocialTagToEpisodeConnection connection */
+  edges: Array<SocialTagToEpisodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Episode>;
+  /** Information about pagination in a connection. */
+  pageInfo: SocialTagToEpisodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type SocialTagToEpisodeConnectionEdge = Edge & EpisodeConnectionEdge & {
+  __typename?: 'SocialTagToEpisodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Episode;
+};
+
+/** Page Info on the &quot;SocialTagToEpisodeConnection&quot; */
+export type SocialTagToEpisodeConnectionPageInfo = EpisodeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'SocialTagToEpisodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the SocialTagToEpisodeConnection connection */
+export type SocialTagToEpisodeConnectionWhereArgs = {
+  /** Category ID */
+  categoryId?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Use Category Slug */
+  categoryName?: InputMaybe<Scalars['String']['input']>;
+  /** Array of category IDs, used to display objects from one category OR another */
+  categoryNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Tag Slug */
+  tag?: InputMaybe<Scalars['String']['input']>;
+  /** Use Tag ID */
+  tagId?: InputMaybe<Scalars['String']['input']>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag IDs, used to display objects from one tag OR another */
+  tagNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of tag slugs, used to display objects from one tag AND another */
+  tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of tag slugs, used to include objects in ANY specified tags */
+  tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection between the SocialTag type and the post type */
 export type SocialTagToPostConnection = Connection & PostConnection & {
   __typename?: 'SocialTagToPostConnection';
@@ -17115,6 +20012,79 @@ export type SocialTagToPostConnectionWhereArgs = {
   tagSlugAnd?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the SocialTag type and the segment type */
+export type SocialTagToSegmentConnection = Connection & SegmentConnection & {
+  __typename?: 'SocialTagToSegmentConnection';
+  /** Edges for the SocialTagToSegmentConnection connection */
+  edges: Array<SocialTagToSegmentConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Segment>;
+  /** Information about pagination in a connection. */
+  pageInfo: SocialTagToSegmentConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type SocialTagToSegmentConnectionEdge = Edge & SegmentConnectionEdge & {
+  __typename?: 'SocialTagToSegmentConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Segment;
+};
+
+/** Page Info on the &quot;SocialTagToSegmentConnection&quot; */
+export type SocialTagToSegmentConnectionPageInfo = PageInfo & SegmentConnectionPageInfo & WpPageInfo & {
+  __typename?: 'SocialTagToSegmentConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the SocialTagToSegmentConnection connection */
+export type SocialTagToSegmentConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
   /** Title of the object */
   title?: InputMaybe<Scalars['String']['input']>;
 };
@@ -18556,10 +21526,16 @@ export type UpdateCountryPayload = {
 export type UpdateEpisodeInput = {
   /** Set connections between the episode and categories */
   categories?: InputMaybe<EpisodeCategoriesInput>;
+  /** Set connections between the episode and cities */
+  cities?: InputMaybe<EpisodeCitiesInput>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The content of the object */
   content?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the episode and continents */
+  continents?: InputMaybe<EpisodeContinentsInput>;
+  /** Set connections between the episode and countries */
+  countries?: InputMaybe<EpisodeCountriesInput>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars['String']['input']>;
   /** The excerpt of the object */
@@ -18572,10 +21548,18 @@ export type UpdateEpisodeInput = {
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The password used to protect the content of the object */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the episode and people */
+  people?: InputMaybe<EpisodePeopleInput>;
   /** Set connections between the episode and programs */
   programs?: InputMaybe<EpisodeProgramsInput>;
+  /** Set connections between the episode and provincesOrStates */
+  provincesOrStates?: InputMaybe<EpisodeProvincesOrStatesInput>;
+  /** Set connections between the episode and regions */
+  regions?: InputMaybe<EpisodeRegionsInput>;
   /** The slug of the object */
   slug?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the episode and socialTags */
+  socialTags?: InputMaybe<EpisodeSocialTagsInput>;
   /** The status of the object */
   status?: InputMaybe<PostStatusEnum>;
   /** Set connections between the episode and tags */
@@ -18917,12 +21901,18 @@ export type UpdateResourceDevelopmentTagPayload = {
 
 /** Input for the updateSegment mutation. */
 export type UpdateSegmentInput = {
+  /** Set connections between the segment and cities */
+  cities?: InputMaybe<SegmentCitiesInput>;
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The content of the object */
   content?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the segment and continents */
+  continents?: InputMaybe<SegmentContinentsInput>;
   /** Set connections between the segment and contributors */
   contributors?: InputMaybe<SegmentContributorsInput>;
+  /** Set connections between the segment and countries */
+  countries?: InputMaybe<SegmentCountriesInput>;
   /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
   date?: InputMaybe<Scalars['String']['input']>;
   /** The ID of the segment object */
@@ -18933,10 +21923,18 @@ export type UpdateSegmentInput = {
   menuOrder?: InputMaybe<Scalars['Int']['input']>;
   /** The password used to protect the content of the object */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the segment and people */
+  people?: InputMaybe<SegmentPeopleInput>;
   /** Set connections between the segment and programs */
   programs?: InputMaybe<SegmentProgramsInput>;
+  /** Set connections between the segment and provincesOrStates */
+  provincesOrStates?: InputMaybe<SegmentProvincesOrStatesInput>;
+  /** Set connections between the segment and regions */
+  regions?: InputMaybe<SegmentRegionsInput>;
   /** The slug of the object */
   slug?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the segment and socialTags */
+  socialTags?: InputMaybe<SegmentSocialTagsInput>;
   /** The status of the object */
   status?: InputMaybe<PostStatusEnum>;
   /** The title of the object */
