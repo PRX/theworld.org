@@ -6,6 +6,7 @@
  */
 
 import type { CollectionQueryOptions, Maybe, PostTag } from '@interfaces';
+import { capitalize } from 'lodash';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import { IMAGE_PROPS } from '@lib/fetch/api/graphql';
@@ -13,12 +14,12 @@ import { EPISODE_CARD_PROPS } from '../api/graphql/fragments/episode.fragment';
 
 const GET_TAG_EPISODES = (taxonomySingleName: Maybe<string>) => gql`
   query getTagEpisodes(
-    $id: ID!
+    $id: ID!, $idType: ${capitalize(taxonomySingleName || 'tag')}IdType,
     $pageSize: Int = 10
     $cursor: String
     $exclude: [ID]
   ) {
-    ${taxonomySingleName}(id: $id) {
+    ${taxonomySingleName}(id: $id, idType: $idType) {
       id
       episodes(
         first: $pageSize

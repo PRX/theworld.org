@@ -4,6 +4,7 @@
  * @param id Tag identifier.
  */
 
+import { capitalize } from 'lodash';
 import type { Maybe, PostTag } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
@@ -12,10 +13,6 @@ import {
   POST_CARD_PROPS,
   TAXONOMY_SEO_PROPS
 } from '@lib/fetch/api/graphql';
-
-function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
 
 const GET_TAG = (taxonomySingleName?: Maybe<string>) => gql`
   query getTag($id: ID!, $idType: ${capitalize(

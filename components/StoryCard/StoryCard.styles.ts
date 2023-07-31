@@ -30,6 +30,11 @@ export const useStoryCardStyles = makeStyles()((theme) => ({
     lineHeight: '1.3',
     textWrap: 'balance'
   },
+  excerpt: {
+    '& > :last-child': {
+      marginBlockEnd: 0
+    }
+  },
   primaryCategory: {
     display: 'flex',
     position: 'relative',

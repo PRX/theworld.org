@@ -391,7 +391,11 @@ export const fetchApiTagStories = async (
   init?: RequestInit
 ) => {
   const { cursor, pageSize, exclude } = options || {};
-  const path = ['tag', taxonomyRestBase, id, 'posts']
+  const taxonomySlug =
+    taxonomyRestBase && taxonomyRestBase !== 'tags'
+      ? taxonomyRestBase
+      : undefined;
+  const path = ['tag', taxonomySlug, id, 'episodes']
     .filter((v) => !!v)
     .join('/');
   return fetchApi<PostConnection>({
@@ -423,7 +427,11 @@ export const fetchApiTagEpisodes = async (
   init?: RequestInit
 ) => {
   const { cursor, pageSize, exclude } = options || {};
-  const path = ['tag', taxonomyRestBase, id, 'episodes']
+  const taxonomySlug =
+    taxonomyRestBase && taxonomyRestBase !== 'tags'
+      ? taxonomyRestBase
+      : undefined;
+  const path = ['tag', taxonomySlug, id, 'episodes']
     .filter((v) => !!v)
     .join('/');
   return fetchApi<PostConnection>({

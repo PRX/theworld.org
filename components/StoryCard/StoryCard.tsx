@@ -143,8 +143,8 @@ export const StoryCard = ({
           classes={{ root: classes.MuiCardActionAreaRoot }}
           component="div"
         >
-          <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
-            {image?.sourceUrl && (
+          {image?.sourceUrl ? (
+            <CardMedia classes={{ root: classes.MuiCardMediaRoot }}>
               <Image
                 src={image.sourceUrl}
                 alt={image.altText || ''}
@@ -153,13 +153,19 @@ export const StoryCard = ({
                 sizes={sizes}
                 priority={priority}
               />
-            )}
+              <LinearProgress
+                className={classes.loadingBar}
+                color="secondary"
+                aria-label="Progress Bar"
+              />
+            </CardMedia>
+          ) : (
             <LinearProgress
               className={classes.loadingBar}
               color="secondary"
               aria-label="Progress Bar"
             />
-          </CardMedia>
+          )}
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
             <Box className={classes.heading}>
               <Box>
@@ -215,7 +221,12 @@ export const StoryCard = ({
               )}
             </Box>
             {excerpt && (
-              <Typography variant="body1" component="div" color="textSecondary">
+              <Typography
+                className={classes.excerpt}
+                variant="body1"
+                component="div"
+                color="textSecondary"
+              >
                 <HtmlContent html={excerpt} />
               </Typography>
             )}
