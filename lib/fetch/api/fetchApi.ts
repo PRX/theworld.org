@@ -395,9 +395,7 @@ export const fetchApiTagStories = async (
     taxonomyRestBase && taxonomyRestBase !== 'tags'
       ? taxonomyRestBase
       : undefined;
-  const path = ['tag', taxonomySlug, id, 'episodes']
-    .filter((v) => !!v)
-    .join('/');
+  const path = ['tag', taxonomySlug, id, 'posts'].filter((v) => !!v).join('/');
   return fetchApi<PostConnection>({
     path,
     query: {
