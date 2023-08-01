@@ -73,6 +73,17 @@ export const episodeCardStyles = makeStyles()((theme) => {
       textIndent: '-2000vw'
     },
 
+    info: {
+      display: 'flex',
+      gap: theme.typography.pxToRem(8)
+    },
+
+    program: {
+      position: 'relative',
+      zIndex: 1,
+      fontWeight: theme.typography.fontWeightBold
+    },
+
     title: {
       marginTop: theme.typography.pxToRem(8),
       marginBottom: theme.typography.pxToRem(12),

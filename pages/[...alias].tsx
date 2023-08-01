@@ -73,7 +73,7 @@ const ContentProxy = ({ type, data }: Props) => {
 
     case 'term--tag':
     case 'taxonomy_term--terms':
-      return <DynamicTerm />;
+      return <DynamicTerm data={data} />;
 
     case 'team':
       return <DynamicTeam />;

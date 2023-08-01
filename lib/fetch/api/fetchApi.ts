@@ -17,7 +17,9 @@ import type {
   IApp,
   ProgramToPostConnection,
   CollectionQueryOptions,
-  CategoryToPostConnection
+  CategoryToPostConnection,
+  PostConnection,
+  Maybe
 } from '@interfaces';
 import type {
   fetchGqlAudio,
@@ -358,6 +360,80 @@ export const fetchApiCategoryStories = async (
   const { cursor, pageSize, exclude } = options || {};
   return fetchApi<CategoryToPostConnection>({
     path: `category/${id}/posts`,
+    query: {
+      ...(options && { c: cursor }),
+      ...(pageSize && { f: `${pageSize}` }),
+      ...(exclude && { e: exclude })
+    },
+    init
+  });
+};
+
+/**
+ * Method that simplifies GET queries for tag stories data.
+ *
+ * @param id
+ *    API id of tag.
+ * @param taxonomyRestBase
+ *    Rest base of tag's taxonomy.
+ * @param options
+ *    Collection query options.
+ * @param init
+ *    Fetch init options.
+ *
+ * @returns
+ *    Story collection data object.
+ */
+export const fetchApiTagStories = async (
+  id: string,
+  taxonomyRestBase?: Maybe<string>,
+  options?: CollectionQueryOptions,
+  init?: RequestInit
+) => {
+  const { cursor, pageSize, exclude } = options || {};
+  const taxonomySlug =
+    taxonomyRestBase && taxonomyRestBase !== 'tags'
+      ? taxonomyRestBase
+      : undefined;
+  const path = ['tag', taxonomySlug, id, 'posts'].filter((v) => !!v).join('/');
+  return fetchApi<PostConnection>({
+    path,
+    query: {
+      ...(options && { c: cursor }),
+      ...(pageSize && { f: `${pageSize}` }),
+      ...(exclude && { e: exclude })
+    },
+    init
+  });
+};
+
+/**
+ * Method that simplifies GET queries for tag stories data.
+ *
+ * @param id
+ *    API id of tag.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Episode collection data object.
+ */
+export const fetchApiTagEpisodes = async (
+  id: string,
+  taxonomyRestBase?: Maybe<string>,
+  options?: CollectionQueryOptions,
+  init?: RequestInit
+) => {
+  const { cursor, pageSize, exclude } = options || {};
+  const taxonomySlug =
+    taxonomyRestBase && taxonomyRestBase !== 'tags'
+      ? taxonomyRestBase
+      : undefined;
+  const path = ['tag', taxonomySlug, id, 'episodes']
+    .filter((v) => !!v)
+    .join('/');
+  return fetchApi<PostConnection>({
+    path,
     query: {
       ...(options && { c: cursor }),
       ...(pageSize && { f: `${pageSize}` }),

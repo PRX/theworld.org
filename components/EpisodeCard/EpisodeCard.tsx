@@ -17,6 +17,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Divider,
   ListSubheader,
   Typography
 } from '@mui/material';
@@ -36,9 +37,14 @@ const AudioControls = dynamic(() =>
 export interface EpisodeCardProps {
   data: Episode;
   priority?: boolean;
+  hideProgramLink?: boolean;
 }
 
-export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
+export const EpisodeCard = ({
+  data,
+  priority,
+  hideProgramLink
+}: EpisodeCardProps) => {
   const {
     link,
     title,
@@ -46,7 +52,8 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
     excerpt,
     featuredImage,
     episodeAudio,
-    episodeDates
+    episodeDates,
+    programs
   } = data;
   const image = featuredImage?.node;
   const imageUrl = image?.sourceUrl || image?.mediaItemUrl;
@@ -60,6 +67,8 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
   } as Partial<IAudioData>;
   const { audioFields } = audio || {};
   const segments = audioFields?.segmentsList;
+  const program = programs?.nodes[0];
+  const showProgramLink = !!program && !hideProgramLink;
   const { classes } = episodeCardStyles();
   const imageWidth = [
     ['max-width: 600px', '100vw'],
@@ -87,9 +96,22 @@ export const EpisodeCard = ({ data, priority }: EpisodeCardProps) => {
           <CardContent classes={{ root: classes.MuiCardContentRoot }}>
             <Box className={classes.heading}>
               <Box>
-                <Typography component="span">
+                <Typography component="span" className={classes.info}>
+                  {showProgramLink && (
+                    <>
+                      <ContentLink
+                        className={classes.program}
+                        url={program.link}
+                      >
+                        {program.name}
+                      </ContentLink>
+                      <Divider orientation="vertical" flexItem />
+                    </>
+                  )}
                   <Moment
-                    format="dddd, MMMM D, YYYY"
+                    format={
+                      showProgramLink ? 'MMMM D, YYYY' : 'dddd, MMMM D, YYYY'
+                    }
                     tz="America/New_York"
                     {...(broadcastDate && { parse: 'YYYY-MM-DD' })}
                   >

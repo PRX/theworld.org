@@ -13,15 +13,24 @@ class TwDocument extends Document {
     return (
       <Html lang="en" className="no-js">
         <Head>
-          <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+          <link
+            rel="apple-touch-icon"
+            href="/images/apple-touch-icon.png"
+            key="apple-touch-icon"
+          />
           <link
             rel="search"
             title="priorg"
             type="application/opensearchdescription+xml"
             href="/opensearch.xml"
+            key="search"
           />
-          <link rel="icon" href="/images/favicon.png" />
-          <meta name="emotion-insertion-point" content="" />
+          <link rel="icon" href="/images/favicon.png" key="icon" />
+          <meta
+            name="emotion-insertion-point"
+            content=""
+            key="emotion-insert-point"
+          />
           {(this.props as any).emotionStyleTags}
         </Head>
         <body>

@@ -46,5 +46,12 @@ export const EPISODE_CARD_PROPS = gql`
         }
       }
     }
+    programs(first: 1) {
+      nodes {
+        id
+        link
+        name
+      }
+    }
   }
 `;

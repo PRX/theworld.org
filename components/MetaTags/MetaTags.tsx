@@ -36,11 +36,15 @@ export const MetaTags = ({ data }: IMetaTagsProps) => {
 
   return (
     <Head>
-      <title>{title}</title>
+      <title key="title">{title}</title>
       {description && (
-        <meta name="description" content={sanitizeContent(description)} />
+        <meta
+          name="description"
+          content={sanitizeContent(description)}
+          key="description"
+        />
       )}
-      {pageUrl && <link rel="canonical" href={pageUrl} />}
+      {pageUrl && <link rel="canonical" href={pageUrl} key="canonical" />}
       <OpenGraph data={ogProps} />
       <TwitterCard data={data} />
     </Head>

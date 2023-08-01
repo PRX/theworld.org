@@ -62,11 +62,13 @@ export const AddAudioButton = ({
     colorPrimary: styles.circularProgressPrimary
   };
 
-  const handleAddClick = () => {
+  const handleAddClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
     if (audioData) addTrack(audioData);
   };
 
-  const handleRemoveClick = () => {
+  const handleRemoveClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
     if (audioData) removeTrack(audioData);
   };
 

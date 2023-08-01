@@ -3,8 +3,8 @@
  * Component for Term.
  */
 
-import type { Episode, PostStory, RootState } from '@interfaces';
-import React, { useContext, useEffect, useState } from 'react';
+import type { Episode, PostStory, RootState, PostTag } from '@interfaces';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useStore } from 'react-redux';
 import {
@@ -22,34 +22,69 @@ import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { SidebarCta, SidebarLatestStories } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-// import { fetchApiTermEpisodes, fetchApiTermStories } from '@lib/fetch';
 import { EpisodeCard } from '@components/EpisodeCard';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { MetaTags } from '@components/MetaTags';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
-import { AppContext } from '@contexts/AppContext';
-// import { appendResourceCollection } from '@store/actions/appendResourceCollection';
-import {
-  getCollectionData,
-  getCtaRegionData,
-  getDataByResource
-} from '@store/reducers';
+import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+import { getCollectionData, getCtaRegionData } from '@store/reducers';
+import { fetchApiTagEpisodes, fetchApiTagStories } from '@lib/fetch';
 import { generateContentLinkHref } from '@lib/routing';
 
-export const Term = () => {
-  const {
-    page: {
-      resource: { type, id }
-    }
-  } = useContext(AppContext);
+type TermProps = {
+  data: PostTag;
+};
+
+export const Term = ({ data }: TermProps) => {
   const router = useRouter();
   const { query } = router;
   const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
+  const [loadingStories, setLoadingStories] = useState(false);
+  const [loadingEpisodes, setLoadingEpisodes] = useState(false);
+  const [oldScrollY, setOldScrollY] = useState(0);
+  const [moreStoriesController, setMoreStoriesController] =
+    useState<AbortController>();
+  const [moreEpisodesController, setMoreEpisodesController] =
+    useState<AbortController>();
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const data = getDataByResource<any>(state, type, id);
+  const type = 'term--tag';
+  const {
+    taxonomy,
+    id,
+    link,
+    seo,
+    name,
+    description,
+    taxonomyImages,
+    landingPage
+  } = data;
+  const taxonomyRestBase = taxonomy?.node.restBase;
+  const { imageBanner, logo } = taxonomyImages || {};
+  const featuredPosts =
+    landingPage?.featuredPosts &&
+    (landingPage.featuredPosts || []).reduce(
+      (a, post) => (post ? [...a, post] : a),
+      []
+    );
+
+  const storiesState = getCollectionData<PostStory>(state, type, id, 'stories');
+  const featuredStories = [
+    ...(featuredPosts || []),
+    ...(storiesState?.items || []).splice(0, 5 - (featuredPosts?.length || 0))
+  ];
+  const featuredStory = featuredStories.shift();
+  const { items: stories, pageInfo } = storiesState || {};
+  const hasStories = !!stories?.length;
+
+  const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
+  const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
+  const hasEpisodes = !!episodes?.length;
+  const isEpisodesView =
+    (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
+  const latestEpisode = episodes?.shift();
 
   // CTA data.
   const ctaInlineTop = getCtaRegionData(
@@ -77,38 +112,17 @@ export const Term = () => {
     id
   );
 
-  const featuredStoryState = getCollectionData<PostStory>(
-    state,
-    type,
-    id,
-    'featured story'
-  );
-  const featuredStory = featuredStoryState?.items[0];
-  const { items: featuredStories } =
-    getCollectionData<PostStory>(state, type, id, 'featured stories') || {};
-  const storiesState = getCollectionData<PostStory>(state, type, id, 'stories');
-  const { items: stories, pageInfo } = storiesState || {};
-  const hasStories = !!stories.length;
-  const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
-  const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
-  const hasEpisodes = !!episodes.length;
-  const isEpisodesView =
-    (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
-  const latestEpisode = episodes && episodes.shift();
-  const { metatags, title, description } = data;
-  const [loadingStories, setLoadingStories] = useState(false);
-  const [loadingEpisodes, setLoadingEpisodes] = useState(false);
-  const [oldScrollY, setOldScrollY] = useState(0);
-
   // Plausible Events.
   const props = {
-    Title: title
+    Title: name
   };
   const plausibleEvents: PlausibleEventArgs[] = [['Term', { props }]];
 
   useEffect(
     () => () => {
       unsub();
+      moreStoriesController?.abort();
+      moreEpisodesController?.abort();
     },
     [unsub]
   );
@@ -123,33 +137,71 @@ export const Term = () => {
   }, [oldScrollY, pageInfo.endCursor]);
 
   const loadMoreStories = async () => {
+    if (!id || !pageInfo.endCursor) return;
+
     setLoadingStories(true);
 
-    // const moreStories = await fetchApiTermStories(id, page + 1);
+    const controller = new AbortController();
+    setMoreStoriesController(controller);
+
+    const options = {
+      cursor: pageInfo.endCursor,
+      exclude: featuredPosts?.reduce(
+        (a, post) => (post?.id ? [...a, post.id] : a),
+        []
+      )
+    };
+    const moreStories = await fetchApiTagStories(
+      id,
+      taxonomyRestBase,
+      options,
+      {
+        signal: controller.signal
+      }
+    );
+
+    if (!moreStories) return;
 
     setOldScrollY(window.scrollY);
     setLoadingStories(false);
 
-    // store.dispatch<any>(
-    //   appendResourceCollection(moreStories, type, id, 'stories')
-    // );
+    store.dispatch<any>(
+      appendResourceCollection(moreStories, type, id, 'stories', options)
+    );
   };
 
   const loadMoreEpisodes = async () => {
+    if (!id || !episodesPageInfo.endCursor) return;
+
     setLoadingEpisodes(true);
 
-    // const moreEpisodes = await fetchApiTermEpisodes(id, episodesPage + 1);
+    const controller = new AbortController();
+    setMoreEpisodesController(controller);
+
+    const options = {
+      cursor: episodesPageInfo.endCursor
+    };
+    const moreEpisodes = await fetchApiTagEpisodes(
+      id,
+      taxonomyRestBase,
+      options,
+      {
+        signal: controller.signal
+      }
+    );
+
+    if (!moreEpisodes) return;
 
     setOldScrollY(window.scrollY);
     setLoadingEpisodes(false);
 
-    // store.dispatch<any>(
-    //   appendResourceCollection(moreEpisodes, type, id, 'episodes')
-    // );
+    store.dispatch<any>(
+      appendResourceCollection(moreEpisodes, type, id, 'episodes', options)
+    );
   };
 
   const handleFilterChange = (e: object, value: any) => {
-    let href = generateContentLinkHref(router.asPath);
+    let href = generateContentLinkHref(link);
 
     if (href) {
       if (value === 1) {
@@ -272,11 +324,12 @@ export const Term = () => {
         <>
           {latestEpisode && !isEpisodesView && (
             <SidebarEpisode
-              data={{
-                ...latestEpisode,
-                programs: data
-              }}
+              data={latestEpisode}
               label="Latest Episode"
+              {...(link && {
+                collectionLink: `${link}?v=episodes`,
+                collectionLinkShallow: true
+              })}
             />
           )}
           {ctaSidebarTop && (
@@ -314,9 +367,14 @@ export const Term = () => {
 
   return (
     <>
-      <MetaTags data={metatags} />
+      {seo && <MetaTags data={seo} />}
       <Plausible events={plausibleEvents} subject={{ type, id }} />
-      <LandingPageHeader title={title} subhead={description} />
+      <LandingPageHeader
+        title={name}
+        subhead={description}
+        image={imageBanner}
+        logo={logo}
+      />
       {hasStories && hasEpisodes && (
         <AppBar position="static" color="transparent" elevation={0}>
           <Container fixed>

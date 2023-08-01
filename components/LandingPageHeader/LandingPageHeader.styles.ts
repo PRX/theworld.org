@@ -12,7 +12,8 @@ export const landingPageHeaderTheme = (theme: Theme) =>
       h1: {
         fontSize: `clamp(${theme.typography.pxToRem(
           18
-        )}, 10vw, ${theme.typography.pxToRem(48)})`
+        )}, 10vw, ${theme.typography.pxToRem(48)})`,
+        textTransform: 'capitalize'
       },
       subtitle1: {
         fontSize: '1.5rem',
