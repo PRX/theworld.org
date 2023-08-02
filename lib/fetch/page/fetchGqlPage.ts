@@ -7,7 +7,7 @@
 import type { Page } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
-import { POST_SEO_PROPS } from '@lib/fetch/api/graphql';
+import { IMAGE_PROPS, POST_SEO_PROPS } from '@lib/fetch/api/graphql';
 
 const GET_PAGE = gql`
   query getPage($id: ID!) {
@@ -21,6 +21,7 @@ const GET_PAGE = gql`
     }
   }
   ${POST_SEO_PROPS}
+  ${IMAGE_PROPS}
 `;
 
 export async function fetchGqlPage(id: string) {
