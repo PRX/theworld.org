@@ -350,10 +350,11 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
             <SidebarEpisode
               data={latestEpisode}
               label="Latest Episode"
-              {...(link && {
-                collectionLink: `${link}?v=episodes`,
-                collectionLinkShallow: true
-              })}
+              {...(link &&
+                episodes.length > 1 && {
+                  collectionLink: `${link}?v=episodes`,
+                  collectionLinkShallow: true
+                })}
             />
           )}
           <Sidebar item elevated>

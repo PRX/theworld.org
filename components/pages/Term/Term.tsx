@@ -326,10 +326,11 @@ export const Term = ({ data }: TermProps) => {
             <SidebarEpisode
               data={latestEpisode}
               label="Latest Episode"
-              {...(link && {
-                collectionLink: `${link}?v=episodes`,
-                collectionLinkShallow: true
-              })}
+              {...(link &&
+                episodes.length > 1 && {
+                  collectionLink: `${link}?v=episodes`,
+                  collectionLinkShallow: true
+                })}
             />
           )}
           {ctaSidebarTop && (

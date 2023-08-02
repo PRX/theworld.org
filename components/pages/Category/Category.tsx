@@ -9,11 +9,22 @@ import type {
   Category as CategoryType,
   IContentComponentProps,
   RootState,
-  PostStory
+  PostStory,
+  Episode
 } from '@interfaces';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useStore } from 'react-redux';
-import { Box, Button, Hidden, Typography } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Hidden,
+  Tab,
+  Tabs,
+  Typography
+} from '@mui/material';
 import { ListAltRounded } from '@mui/icons-material';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
@@ -21,26 +32,35 @@ import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import {
   Sidebar,
   SidebarCta,
+  SidebarEpisode,
   SidebarHeader,
   SidebarLatestStories,
   SidebarList
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { fetchApiCategoryStories } from '@lib/fetch';
+import { fetchApiCategoryStories, fetchApiProgramEpisodes } from '@lib/fetch';
 import { HtmlContent } from '@components/HtmlContent';
 import { LandingPageHeader } from '@components/LandingPageHeader';
 import { MetaTags } from '@components/MetaTags';
 import { SidebarContent } from '@components/Sidebar/SidebarContent';
 import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
+import { generateContentLinkHref } from '@lib/routing';
+import { EpisodeCard } from '@components/EpisodeCard';
+import { categoryStyles } from './Category.styles';
 
 export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
+  const router = useRouter();
+  const { query } = router;
   const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
   const [loadingStories, setLoadingStories] = useState(false);
+  const [loadingEpisodes, setLoadingEpisodes] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);
   const [moreStoriesController, setMoreStoriesController] =
+    useState<AbortController>();
+  const [moreEpisodesController, setMoreEpisodesController] =
     useState<AbortController>();
   const unsub = store.subscribe(() => {
     setState(store.getState());
@@ -48,6 +68,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
   const type = 'term--category';
   const {
     id,
+    link,
     seo,
     name,
     description,
@@ -81,6 +102,17 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
   const featuredStory = featuredStories.shift();
   const { items: stories, pageInfo } = storiesState || {};
   const hasStories = !!stories?.length;
+
+  const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
+  const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
+  const hasEpisodes = !!episodes?.length;
+  const isEpisodesView =
+    (query.v === 'episodes' && hasEpisodes) || (hasEpisodes && !hasStories);
+  const latestEpisode = episodes?.shift();
+
+  const hasContentLinks = hasStories || hasEpisodes;
+
+  const { classes } = categoryStyles();
 
   // CTA data.
   const ctaInlineTop = getCtaRegionData(
@@ -118,6 +150,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
     () => () => {
       unsub();
       moreStoriesController?.abort();
+      moreEpisodesController?.abort();
     },
     [unsub]
   );
@@ -160,19 +193,65 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
     );
   };
 
+  const loadMoreEpisodes = async () => {
+    if (!id || !episodesPageInfo.endCursor) return;
+
+    setLoadingEpisodes(true);
+
+    const controller = new AbortController();
+    setMoreEpisodesController(controller);
+
+    const options = {
+      cursor: episodesPageInfo.endCursor
+    };
+    const moreEpisodes = await fetchApiProgramEpisodes(id, options, {
+      signal: controller.signal
+    });
+
+    if (!moreEpisodes) return;
+
+    setOldScrollY(window.scrollY);
+    setLoadingEpisodes(false);
+
+    store.dispatch<any>(
+      appendResourceCollection(moreEpisodes, type, id, 'episodes', options)
+    );
+  };
+
+  const handleFilterChange = (e: object, value: any) => {
+    let href = generateContentLinkHref(link);
+
+    if (href) {
+      if (value === 1) {
+        href = `${href}?v=episodes`;
+      }
+      router.push(href, undefined, { shallow: true });
+    }
+  };
+
   const mainElements = [
     {
       key: 'main top',
       children: (
         <>
-          <Box display="grid" gap={1}>
-            {featuredStory && (
-              <StoryCard data={featuredStory} feature priority />
-            )}
-            {featuredStories && (
-              <StoryCardGrid data={featuredStories} gap={1} />
-            )}
-          </Box>
+          {description && !hasContentLinks && (
+            <Box className={classes.body}>
+              <HtmlContent html={description} />
+            </Box>
+          )}
+          {!isEpisodesView && (
+            <Box display="grid" gap={1}>
+              {featuredStory && (
+                <StoryCard data={featuredStory} feature priority />
+              )}
+              {featuredStories && (
+                <StoryCardGrid data={featuredStories} gap={1} />
+              )}
+            </Box>
+          )}
+          {isEpisodesView && latestEpisode && (
+            <EpisodeCard data={latestEpisode} hideProgramLink />
+          )}
           {ctaInlineTop && (
             <>
               <Hidden xsDown>
@@ -190,29 +269,67 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
       key: 'main bottom',
       children: (
         <>
-          {hasStories &&
-            stories.map((story) => (
-              <StoryCard
-                data={story}
-                feature={story.presentation?.format !== 'standard'}
-                key={story.id}
-              />
-            ))}
-          {pageInfo?.hasNextPage && (
-            <Box>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                fullWidth
-                disabled={loadingStories}
-                onClick={() => {
-                  loadMoreStories();
-                }}
-              >
-                {loadingStories ? 'Loading Stories...' : 'More Stories'}
-              </Button>
-            </Box>
+          {!isEpisodesView && (
+            <>
+              {stories &&
+                stories.map(
+                  (item) =>
+                    item && (
+                      <StoryCard
+                        data={item}
+                        feature={
+                          !!item.presentation?.format &&
+                          item.presentation.format !== 'standard'
+                        }
+                        key={item.id}
+                      />
+                    )
+                )}
+              {pageInfo?.hasNextPage && (
+                <Box>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    fullWidth
+                    disabled={loadingStories}
+                    disableElevation={loadingStories}
+                    onClick={() => {
+                      loadMoreStories();
+                    }}
+                  >
+                    {loadingStories ? 'Loading Stories...' : 'More Stories'}
+                  </Button>
+                </Box>
+              )}
+            </>
+          )}
+          {isEpisodesView && (
+            <>
+              {episodes?.map(
+                (item) =>
+                  item && (
+                    <EpisodeCard data={item} key={item.id} hideProgramLink />
+                  )
+              )}
+              {episodesPageInfo?.hasNextPage && (
+                <Box>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    fullWidth
+                    disabled={loadingEpisodes}
+                    disableElevation={loadingEpisodes}
+                    onClick={() => {
+                      loadMoreEpisodes();
+                    }}
+                  >
+                    {loadingEpisodes ? 'Loading Episodes...' : 'More Episodes'}
+                  </Button>
+                </Box>
+              )}
+            </>
           )}
           {ctaInlineBottom && (
             <>
@@ -234,8 +351,19 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
       key: 'sidebar top',
       children: (
         <>
+          {latestEpisode && !isEpisodesView && (
+            <SidebarEpisode
+              data={latestEpisode}
+              label="Latest Episode"
+              {...(link &&
+                episodes.length > 1 && {
+                  collectionLink: `${link}?v=episodes`,
+                  collectionLinkShallow: true
+                })}
+            />
+          )}
           <Sidebar item elevated>
-            {description && (
+            {description && hasContentLinks && (
               <SidebarContent>
                 <HtmlContent html={description} />
               </SidebarContent>
@@ -309,7 +437,14 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
 
   return (
     <>
-      {seo && <MetaTags data={seo} />}
+      <MetaTags
+        data={{
+          ...seo,
+          title: `${seo?.title || name} | ${
+            !isEpisodesView ? 'Stories' : 'Episodes'
+          }`
+        }}
+      />
       <Plausible events={plausibleEvents} subject={{ type, id }} />
       <LandingPageHeader
         {...{
@@ -319,6 +454,22 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
           ...(logo && { logo })
         }}
       />
+      {hasStories && hasEpisodes && (
+        <AppBar position="static" color="transparent" elevation={0}>
+          <Container fixed>
+            <Tabs
+              indicatorColor="primary"
+              centered
+              value={!isEpisodesView ? 0 : 1}
+              onChange={handleFilterChange}
+              aria-label="filter links"
+            >
+              <Tab label="Stories" />
+              <Tab label="Episodes" />
+            </Tabs>
+          </Container>
+        </AppBar>
+      )}
       <LandingPage
         main={mainElements}
         sidebar={sidebarElements}

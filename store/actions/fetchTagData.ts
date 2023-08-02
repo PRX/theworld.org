@@ -6,7 +6,7 @@
 import type { AnyAction } from 'redux';
 import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import type { RootState, Maybe, PostTag } from '@interfaces';
-import { fetchGqlTag, fetchGqlTagEpisodes, fetchGqlTagPosts } from '@lib/fetch';
+import { fetchGqlTag, fetchGqlTagPosts } from '@lib/fetch';
 import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
@@ -24,6 +24,7 @@ export const fetchTagData =
     const tag = await fetchGqlTag(id, idType, taxonomySingleName);
 
     if (tag) {
+      const { episodes, ...tagData } = tag;
       const state = getState();
 
       // const ctaDataPromise = dispatch<any>(
@@ -45,6 +46,7 @@ export const fetchTagData =
       // });
 
       // Get first page of stories.
+      // Has to be synchronous so we known what featured posts to exclude.
       const storiesCollection = getCollectionData(
         state,
         type,
@@ -73,29 +75,12 @@ export const fetchTagData =
         }
       }
 
-      // Get first page of episodes.
-      const episodesCollection = getCollectionData(
-        state,
-        type,
-        tag.id,
-        'episodes'
-      );
-
-      if (!episodesCollection) {
-        const episodes = await fetchGqlTagEpisodes(
-          tag.id,
-          undefined,
-          taxonomySingleName
-        );
-
-        if (episodes) {
-          dispatch(
-            appendResourceCollection(episodes, type, tag.id, 'episodes')
-          );
-        }
+      // Add first page of episodes to collections state.
+      if (episodes) {
+        dispatch(appendResourceCollection(episodes, type, tag.id, 'episodes'));
       }
 
-      return tag;
+      return tagData;
     }
 
     return undefined;

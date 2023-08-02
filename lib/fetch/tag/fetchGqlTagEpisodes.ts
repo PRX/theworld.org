@@ -9,8 +9,7 @@ import type { CollectionQueryOptions, Maybe, PostTag } from '@interfaces';
 import { capitalize } from 'lodash';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
-import { IMAGE_PROPS } from '@lib/fetch/api/graphql';
-import { EPISODE_CARD_PROPS } from '../api/graphql/fragments/episode.fragment';
+import { EPISODE_CARD_PROPS, IMAGE_PROPS } from '@lib/fetch/api/graphql';
 
 const GET_TAG_EPISODES = (taxonomySingleName: Maybe<string>) => gql`
   query getTagEpisodes(

@@ -12,6 +12,7 @@ import { MENU_PROPS } from '../api/graphql';
 const GET_APP = gql`
   query getApp {
     program(id: "the-world", idType: SLUG) {
+      id
       posts(first: 10, where: { orderby: { field: DATE, order: DESC } }) {
         nodes {
           ...StoryCardProps

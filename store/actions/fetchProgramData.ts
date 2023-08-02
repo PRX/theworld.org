@@ -6,11 +6,7 @@
 import type { AnyAction } from 'redux';
 import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import type { Program, RootState } from '@interfaces';
-import {
-  fetchGqlProgram,
-  fetchGqlProgramEpisodes,
-  fetchGqlProgramPosts
-} from '@lib/fetch';
+import { fetchGqlProgram, fetchGqlProgramPosts } from '@lib/fetch';
 import { getCollectionData } from '@store/reducers';
 import { appendResourceCollection } from './appendResourceCollection';
 
@@ -27,6 +23,7 @@ export const fetchProgramData =
     const program = await fetchGqlProgram(id, idType);
 
     if (program) {
+      const { episodes, ...programData } = program;
       const state = getState();
 
       // const ctaDataPromise = dispatch<any>(
@@ -48,6 +45,7 @@ export const fetchProgramData =
       // });
 
       // Get first page of stories.
+      // Has to be synchronous so we known what featured posts to exclude.
       const storiesCollection = getCollectionData(
         state,
         type,
@@ -78,25 +76,15 @@ export const fetchProgramData =
         }
       }
 
-      // Get first page of episodes.
-      const episodesCollection = getCollectionData(
-        state,
-        type,
-        program.id,
-        'episodes'
-      );
-
-      if (!episodesCollection) {
-        const episodes = await fetchGqlProgramEpisodes(program.id);
-
-        if (episodes) {
-          dispatch(
-            appendResourceCollection(episodes, type, program.id, 'episodes')
-          );
-        }
+      // Add first page of episodes to collections state.
+      if (episodes) {
+        dispatch(
+          appendResourceCollection(episodes, type, program.id, 'episodes')
+        );
       }
 
-      return program;
+      // Return everything else as program data.
+      return programData;
     }
 
     return undefined;
