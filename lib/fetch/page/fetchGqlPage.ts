@@ -4,7 +4,7 @@
  * @param id Page identifier.
  */
 
-import type { Page } from '@interfaces';
+import type { Maybe, Page } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import { IMAGE_PROPS, POST_SEO_PROPS } from '@lib/fetch/api/graphql';
@@ -26,7 +26,7 @@ const GET_PAGE = gql`
 
 export async function fetchGqlPage(id: string) {
   const response = await gqlClient.query<{
-    page: Page;
+    page: Maybe<Page>;
   }>({
     query: GET_PAGE,
     variables: {

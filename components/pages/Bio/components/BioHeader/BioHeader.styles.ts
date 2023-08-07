@@ -103,7 +103,9 @@ export const bioHeaderStyles = makeStyles()((theme) => ({
 
   image: {
     flexShrink: 0,
+    overflow: 'hidden',
     margin: theme.typography.pxToRem(24),
+    borderRadius: '50%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: 0
     },

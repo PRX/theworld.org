@@ -4,7 +4,7 @@
  * @param id Category identifier.
  */
 
-import type { Category } from '@interfaces';
+import type { Category, Maybe } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import {
@@ -91,7 +91,7 @@ const GET_CATEGORY = gql`
 
 export async function fetchGqlCategory(id: string, idType?: string) {
   const response = await gqlClient.query<{
-    category: Category;
+    category: Maybe<Category>;
   }>({
     query: GET_CATEGORY,
     variables: {

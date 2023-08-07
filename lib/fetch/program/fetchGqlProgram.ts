@@ -4,7 +4,7 @@
  * @param id Program identifier.
  */
 
-import type { Program } from '@interfaces';
+import type { Maybe, Program } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import {
@@ -84,7 +84,7 @@ const GET_PROGRAM = gql`
 
 export async function fetchGqlProgram(id: string, idType?: string) {
   const response = await gqlClient.query<{
-    program: Program;
+    program: Maybe<Program>;
   }>({
     query: GET_PROGRAM,
     variables: {

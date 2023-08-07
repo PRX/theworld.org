@@ -4,10 +4,10 @@
  * @param id Segment identifier.
  */
 
-import type { Segment } from '@interfaces';
+import type { Maybe, Segment } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
-import { POST_SEO_PROPS } from '@lib/fetch/api/graphql';
+import { IMAGE_PROPS, POST_SEO_PROPS } from '@lib/fetch/api/graphql';
 
 const GET_SEGMENT = gql`
   query getSegment($id: ID!, $idType: SegmentIdType) {
@@ -46,11 +46,12 @@ const GET_SEGMENT = gql`
     }
   }
   ${POST_SEO_PROPS}
+  ${IMAGE_PROPS}
 `;
 
 export async function fetchGqlSegment(id: string, idType?: string) {
   const response = await gqlClient.query<{
-    segment: Segment;
+    segment: Maybe<Segment>;
   }>({
     query: GET_SEGMENT,
     variables: {

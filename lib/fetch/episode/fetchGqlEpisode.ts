@@ -2,7 +2,7 @@
  * Fetch Episode data from WP GraphQL API.
  */
 
-import type { Episode } from '@interfaces';
+import type { Episode, Maybe } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import {
@@ -101,7 +101,7 @@ const GET_EPISODE = gql`
 
 export async function fetchGqlEpisode(id: string, idType?: string) {
   const response = await gqlClient.query<{
-    episode: Episode;
+    episode: Maybe<Episode>;
   }>({
     query: GET_EPISODE,
     variables: {

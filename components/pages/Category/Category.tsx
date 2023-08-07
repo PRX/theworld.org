@@ -20,6 +20,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Hidden,
   Tab,
   Tabs,
@@ -235,8 +236,11 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
       children: (
         <>
           {description && !hasContentLinks && (
-            <Box className={classes.body}>
-              <HtmlContent html={description} />
+            <Box my={3} display="grid" gap={3}>
+              <Box className={classes.body}>
+                <HtmlContent html={description} />
+              </Box>
+              <Divider />
             </Box>
           )}
           {!isEpisodesView && (
@@ -286,7 +290,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
                     )
                 )}
               {pageInfo?.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"
@@ -313,7 +317,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
                   )
               )}
               {episodesPageInfo?.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"

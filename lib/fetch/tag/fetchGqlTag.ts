@@ -78,7 +78,7 @@ export async function fetchGqlTag(
 ) {
   const dataPropKey = taxonomySingleName || 'tag';
   const response = await gqlClient.query<{
-    [k: string]: PostTag;
+    [k: string]: Maybe<PostTag>;
   }>({
     query: GET_TAG(taxonomySingleName),
     variables: {

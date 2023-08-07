@@ -281,7 +281,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
                     )
                 )}
               {pageInfo?.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"
@@ -308,7 +308,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
                   )
               )}
               {episodesPageInfo?.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"

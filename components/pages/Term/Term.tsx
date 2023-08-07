@@ -260,7 +260,7 @@ export const Term = ({ data }: TermProps) => {
                   />
                 ))}
               {pageInfo.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"
@@ -284,7 +284,7 @@ export const Term = ({ data }: TermProps) => {
                 <EpisodeCard data={item} key={item.id} />
               ))}
               {episodesPageInfo.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"
