@@ -76,7 +76,7 @@ const ContentProxy = ({ type, data }: Props) => {
       return <DynamicTerm data={data} />;
 
     case 'team':
-      return <DynamicTeam />;
+      return <DynamicTeam data={data} />;
 
     default:
       return null;
@@ -94,11 +94,6 @@ export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps>
 
     if (!rgxFileExt.test(aliasPath)) {
       switch (aliasPath) {
-        case 'programs/the-world/team':
-          resourceId = 'the_world';
-          resourceType = 'team';
-          break;
-
         default: {
           const aliasData = await fetchTwApiQueryAlias(aliasPath);
 

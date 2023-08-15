@@ -3,12 +3,12 @@
  * Component for Team.
  */
 
-import type { RootState } from '@interfaces';
-import React, { useContext, useEffect, useState } from 'react';
+import type { IContentComponentProps, Program, TaxonomySeo } from '@interfaces';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
-import { useStore } from 'react-redux';
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -18,56 +18,40 @@ import {
   LinearProgress,
   Typography
 } from '@mui/material';
+import { Person } from '@mui/icons-material';
 import { ThemeProvider } from '@mui/styles';
 import { ContentLink } from '@components/ContentLink';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible } from '@components/Plausible';
-import { AppContext } from '@contexts/AppContext';
-import { getCollectionData } from '@store/reducers';
 import { teamStyles, teamTheme } from './Team.styles';
 import { TeamHeader } from './components/TeamHeader';
 
-export const Team = () => {
-  const {
-    page: {
-      resource: { type, id }
-    }
-  } = useContext(AppContext);
+export const Team = ({ data }: IContentComponentProps<Program>) => {
   const router = useRouter();
   const [loadingUrl, setLoadingUrl] = useState<string>();
-  const store = useStore<RootState>();
-  const state = store.getState();
+  const { link, name, programContributors, slug, seo } = data;
+  const { team } = programContributors || {};
   const { classes, cx } = teamStyles();
-  const { items } = getCollectionData<any>(state, type, id, 'members');
   const imageWidth = [
     ['max-width: 600px', '100wv'],
     [null, '300px']
   ];
   const sizes = imageWidth.map(([q, w]) => (q ? `(${q}) ${w}` : w)).join(', ');
 
-  const title = "The World's Team";
-  const description = 'Meet the team who brings you The World.';
-  const metaUrl = '/programs/the-world/team';
-  const image =
-    'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg';
+  const title = `${name}'s Team`;
+  const description = `Meet the team who brings you ${name}.`;
+  const metaUrl = `${link}/team`;
   const metatags = {
+    ...seo,
     title,
     description,
     canonical: metaUrl,
-    'og:type': 'website',
-    'og:title': title,
-    'og:description': description,
-    'og:url': metaUrl,
-    'og:image': image,
-    'og:image:width': '3000',
-    'og:image:height': '3000',
-    'og:local': 'en_US',
-    'twitter:card': 'summary',
-    'twitter:title': title,
-    'twitter:description': description,
-    'twitter:url': metaUrl,
-    'twitter:image': image
-  };
+    opengraphTitle: title,
+    opengraphDescription: description,
+    opengraphUrl: metaUrl,
+    twitterTitle: title,
+    twitterDescription: description
+  } as TaxonomySeo;
 
   useEffect(() => {
     const handleRouteChangeStart = (url: string) => {
@@ -91,11 +75,11 @@ export const Team = () => {
   return (
     <ThemeProvider theme={teamTheme}>
       <MetaTags data={metatags} />
-      <Plausible subject={{ type: 'team', id: 'the_world' }} />
+      <Plausible subject={{ type: 'team', id: slug.replace('-', '_') }} />
       <Container fixed>
         <TeamHeader title={title} />
-        <Grid container spacing={3}>
-          {items.map((item, index) => {
+        <Grid container spacing={3} mb={6}>
+          {team.map((item, index) => {
             const pathname = item.link && new URL(item.link).pathname;
             const isLoading = loadingUrl === pathname;
 
@@ -114,22 +98,26 @@ export const Team = () => {
                       root: classes.MuiCardActionAreaRoot
                     }}
                   >
-                    {item.image && (
-                      <CardMedia
-                        classes={{
-                          root: classes.MuiCardMediaRoot
-                        }}
-                      >
+                    <CardMedia
+                      classes={{
+                        root: classes.MuiCardMediaRoot
+                      }}
+                    >
+                      {item.contributorDetails?.image?.sourceUrl ? (
                         <Image
-                          alt={item.image.alt}
-                          src={item.image.url}
+                          alt={item.contributorDetails.image.altText || ''}
+                          src={item.contributorDetails.image.sourceUrl}
                           layout="fill"
                           objectFit="cover"
                           sizes={sizes}
                           priority={index <= 1}
                         />
-                      </CardMedia>
-                    )}
+                      ) : (
+                        <Box className={classes.placeholder}>
+                          <Person />
+                        </Box>
+                      )}
+                    </CardMedia>
                     <CardContent
                       classes={{
                         root: classes.MuiCardContentRoot
@@ -141,11 +129,13 @@ export const Team = () => {
                         aria-label="Progress Bar"
                       />
                       <Typography variant="h4" className={classes.title}>
-                        {item.title}
+                        {item.name}
                       </Typography>
-                      <Typography variant="subtitle1">
-                        {item.position}
-                      </Typography>
+                      {item.contributorDetails?.position && (
+                        <Typography variant="subtitle1">
+                          {item.contributorDetails.position}
+                        </Typography>
+                      )}
                     </CardContent>
                     <ContentLink url={item.link} className={classes.link} />
                   </CardActionArea>

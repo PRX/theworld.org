@@ -75,6 +75,16 @@ export const teamStyles = makeStyles<void, 'isLoading'>()(
       paddingTop: '100%'
     },
 
+    placeholder: {
+      position: 'absolute',
+      inset: 0,
+      display: 'grid',
+      placeItems: 'center',
+      '> svg': {
+        fontSize: '10rem'
+      }
+    },
+
     link: {
       position: 'absolute',
       top: 0,
@@ -91,6 +101,7 @@ export const teamStyles = makeStyles<void, 'isLoading'>()(
       top: 0,
       left: 0,
       width: '100%',
+      zIndex: 1,
       transform: 'translateY(-100%)',
       [`.${classes.isLoading} &`]: {
         transform: 'translateY(0)'
@@ -117,7 +128,9 @@ export const teamStyles = makeStyles<void, 'isLoading'>()(
     MuiCardMediaRoot: {
       position: 'relative',
       width: '100%',
-      paddingTop: '100%'
+      paddingTop: '100%',
+      color: theme.palette.primary.contrastText,
+      backgroundColor: theme.palette.primary.main
     },
 
     MuiCardContentRoot: {
