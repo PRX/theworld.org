@@ -23,6 +23,7 @@ import type {
 } from '@interfaces';
 import type {
   fetchGqlAudio,
+  fetchGqlContributor,
   fetchGqlEpisode,
   fetchGqlProgram,
   fetchGqlStory,
@@ -246,6 +247,53 @@ export const fetchApiFileVideo = async (id: string, init?: RequestInit) =>
  */
 export const fetchApiFileImage = async (id: string, init?: RequestInit) =>
   fetchApi<IPriApiResourceResponse>({ path: `file/image/${id}`, init });
+
+/**
+ * Method that simplifies GET queries for contributor data.
+ *
+ * @param id
+ *    API id of contributor.
+ * @param req
+ *    Request object from `getInitialProps` ctx object.
+ *
+ * @returns
+ *    Story data object.
+ */
+export const fetchApiContributor = async (id: string, init?: RequestInit) =>
+  fetchApi<ReturnType<typeof fetchGqlContributor>>({
+    path: `contributor/${id}`,
+    init
+  });
+
+/**
+ * Method that simplifies GET queries for contributor stories data.
+ *
+ * @param id
+ *    API id of contributor.
+ * @param options
+ *    Collection query options.
+ * @param init
+ *    Fetch init options.
+ *
+ * @returns
+ *    Story collection data object.
+ */
+export const fetchApiContributorStories = async (
+  id: string,
+  options?: CollectionQueryOptions,
+  init?: RequestInit
+) => {
+  const { cursor, pageSize, exclude } = options || {};
+  return fetchApi<ContributorToPostConnection>({
+    path: `contributor/${id}/posts`,
+    query: {
+      ...(options && { c: cursor }),
+      ...(pageSize && { f: `${pageSize}` }),
+      ...(exclude && { e: exclude })
+    },
+    init
+  });
+};
 
 /**
  * Method that simplifies GET queries for program data.

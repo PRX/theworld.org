@@ -1,25 +1,25 @@
 /**
- * Fetch Program episodes data from CMS API.
+ * Fetch Contributor posts data from CMS API.
  *
- * @param id Program identifier.
+ * @param id Contributor identifier.
  * @param options Query options.
  */
 
-import type { CollectionQueryOptions, Program } from '@interfaces';
+import type { CollectionQueryOptions, Contributor, Maybe } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
-import { EPISODE_CARD_PROPS, IMAGE_PROPS } from '@lib/fetch/api/graphql';
+import { IMAGE_PROPS, POST_CARD_PROPS } from '@lib/fetch/api/graphql';
 
-const GET_PROGRAM_EPISODES = gql`
-  query getProgramEpisodes(
+const GET_CONTRIBUTOR_POSTS = gql`
+  query getContributorPosts(
     $id: ID!
     $pageSize: Int = 10
     $cursor: String
     $exclude: [ID]
   ) {
-    program(id: $id) {
+    contributor(id: $id) {
       id
-      episodes(
+      posts(
         first: $pageSize
         after: $cursor
         where: { notIn: $exclude, orderby: { field: DATE, order: DESC } }
@@ -31,34 +31,34 @@ const GET_PROGRAM_EPISODES = gql`
         edges {
           cursor
           node {
-            ...EpisodeCardProps
+            ...PostCardProps
           }
         }
       }
     }
   }
-  ${EPISODE_CARD_PROPS}
+  ${POST_CARD_PROPS}
   ${IMAGE_PROPS}
 `;
 
-export async function fetchGqlProgramEpisodes(
+export async function fetchGqlContributorPosts(
   id: string,
   options?: CollectionQueryOptions
 ) {
   const response = await gqlClient.query<{
-    program: Program;
+    contributor: Maybe<Contributor>;
   }>({
-    query: GET_PROGRAM_EPISODES,
+    query: GET_CONTRIBUTOR_POSTS,
     variables: {
       id,
       ...options
     }
   });
-  const episodes = response?.data?.program.episodes;
+  const posts = response?.data?.contributor?.posts;
 
-  if (!episodes) return undefined;
+  if (!posts) return undefined;
 
-  return episodes;
+  return posts;
 }
 
-export default fetchGqlProgramEpisodes;
+export default fetchGqlContributorPosts;

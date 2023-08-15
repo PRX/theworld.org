@@ -4,7 +4,7 @@
  * @param id Audio identifier.
  */
 
-import type { MediaItem } from '@interfaces';
+import type { Maybe, MediaItem } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import { AUDIO_PARENT_PROPS, IMAGE_PROPS } from '@lib/fetch/api/graphql';
@@ -49,7 +49,7 @@ const GET_AUDIO = gql`
 
 export async function fetchGqlAudio(id: string) {
   const response = await gqlClient.query<{
-    mediaItem: MediaItem;
+    mediaItem: Maybe<MediaItem>;
   }>({
     query: GET_AUDIO,
     variables: {

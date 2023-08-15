@@ -70,13 +70,13 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
     description,
     teaserFields,
     taxonomyImages,
-    programHosts,
+    programContributors,
     sponsorship,
     landingPage
   } = data;
   const { teaser } = teaserFields || {};
   const { imageBanner, logo } = taxonomyImages || {};
-  const { hosts } = programHosts || {};
+  const { hosts } = programContributors || {};
   const { collectionSponsorLinks } = sponsorship || {};
   const sponsors = collectionSponsorLinks?.reduce(
     (a, sl) => (sl?.sponsorLinks ? [...a, sl.sponsorLinks] : a),
@@ -96,7 +96,11 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   ];
   const featuredStory = featuredStories.shift();
   const { items: stories, pageInfo } = storiesState || {};
-  const hasStories = !!stories?.length;
+  const hasStories = !!(
+    featuredStory ||
+    featuredStories?.length ||
+    stories?.length
+  );
 
   const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
   const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
@@ -281,7 +285,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
                     )
                 )}
               {pageInfo?.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"
@@ -308,7 +312,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
                   )
               )}
               {episodesPageInfo?.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"
@@ -350,10 +354,11 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
             <SidebarEpisode
               data={latestEpisode}
               label="Latest Episode"
-              {...(link && {
-                collectionLink: `${link}?v=episodes`,
-                collectionLinkShallow: true
-              })}
+              {...(link &&
+                episodes.length > 1 && {
+                  collectionLink: `${link}?v=episodes`,
+                  collectionLinkShallow: true
+                })}
             />
           )}
           <Sidebar item elevated>

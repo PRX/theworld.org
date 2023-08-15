@@ -40,7 +40,7 @@ export const landingPageHeaderStyles = makeStyles()((theme) => ({
       bottom: -1,
       left: -1,
       right: -1,
-      zIndex: 0,
+      zIndex: 1,
       backgroundColor: alpha(theme.palette.background.default, 0.65),
       clipPath: 'polygon(0 0, 100% 66.66666%, 100% 100%, 0 100%)'
     },
@@ -58,7 +58,10 @@ export const landingPageHeaderStyles = makeStyles()((theme) => ({
     }
   },
 
-  content: {},
+  content: {
+    position: 'relative',
+    zIndex: 2
+  },
 
   header: {
     position: 'relative',
@@ -99,5 +102,7 @@ export const landingPageHeaderStyles = makeStyles()((theme) => ({
     }
   },
 
-  withImage: {}
+  withImage: {
+    minHeight: '33.33333vh'
+  }
 }));

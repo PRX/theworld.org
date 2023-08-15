@@ -52,6 +52,11 @@ export const gqlClient = new ApolloClient({
         fields: {
           audioFields: { merge: true }
         }
+      },
+      Program: {
+        fields: {
+          posts: { merge: true }
+        }
       }
     }
   }),

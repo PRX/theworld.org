@@ -4,10 +4,11 @@
  * @param id Program identifier.
  */
 
-import type { Program } from '@interfaces';
+import type { Maybe, Program } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import {
+  EPISODE_CARD_PROPS,
   IMAGE_PROPS,
   POST_CARD_PROPS,
   TAXONOMY_SEO_PROPS
@@ -38,7 +39,7 @@ const GET_PROGRAM = gql`
           }
         }
       }
-      programHosts {
+      programContributors {
         hosts {
           id
           link
@@ -61,16 +62,29 @@ const GET_PROGRAM = gql`
       seo {
         ...TaxonomySEOProps
       }
+      episodes(first: 10) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          cursor
+          node {
+            ...EpisodeCardProps
+          }
+        }
+      }
     }
   }
   ${POST_CARD_PROPS}
   ${IMAGE_PROPS}
   ${TAXONOMY_SEO_PROPS}
+  ${EPISODE_CARD_PROPS}
 `;
 
 export async function fetchGqlProgram(id: string, idType?: string) {
   const response = await gqlClient.query<{
-    program: Program;
+    program: Maybe<Program>;
   }>({
     query: GET_PROGRAM,
     variables: {

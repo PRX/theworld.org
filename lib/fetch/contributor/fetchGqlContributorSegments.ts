@@ -1,25 +1,25 @@
 /**
- * Fetch Program episodes data from CMS API.
+ * Fetch Contributor segments data from CMS API.
  *
- * @param id Program identifier.
+ * @param id Contributor identifier.
  * @param options Query options.
  */
 
-import type { CollectionQueryOptions, Program } from '@interfaces';
+import type { CollectionQueryOptions, Contributor, Maybe } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
-import { EPISODE_CARD_PROPS, IMAGE_PROPS } from '@lib/fetch/api/graphql';
+import { SEGMENT_LIST_PROPS } from '@lib/fetch/api/graphql';
 
-const GET_PROGRAM_EPISODES = gql`
-  query getProgramEpisodes(
+const GET_CONTRIBUTOR_SEGMENTS = gql`
+  query getContributorSegments(
     $id: ID!
     $pageSize: Int = 10
     $cursor: String
     $exclude: [ID]
   ) {
-    program(id: $id) {
+    contributor(id: $id) {
       id
-      episodes(
+      segments(
         first: $pageSize
         after: $cursor
         where: { notIn: $exclude, orderby: { field: DATE, order: DESC } }
@@ -31,34 +31,33 @@ const GET_PROGRAM_EPISODES = gql`
         edges {
           cursor
           node {
-            ...EpisodeCardProps
+            ...SegmentListProps
           }
         }
       }
     }
   }
-  ${EPISODE_CARD_PROPS}
-  ${IMAGE_PROPS}
+  ${SEGMENT_LIST_PROPS}
 `;
 
-export async function fetchGqlProgramEpisodes(
+export async function fetchGqlContributorSegments(
   id: string,
   options?: CollectionQueryOptions
 ) {
   const response = await gqlClient.query<{
-    program: Program;
+    contributor: Maybe<Contributor>;
   }>({
-    query: GET_PROGRAM_EPISODES,
+    query: GET_CONTRIBUTOR_SEGMENTS,
     variables: {
       id,
       ...options
     }
   });
-  const episodes = response?.data?.program.episodes;
+  const segments = response?.data?.contributor?.segments;
 
-  if (!episodes) return undefined;
+  if (!segments) return undefined;
 
-  return episodes;
+  return segments;
 }
 
-export default fetchGqlProgramEpisodes;
+export default fetchGqlContributorSegments;

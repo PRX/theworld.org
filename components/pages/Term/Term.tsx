@@ -77,7 +77,11 @@ export const Term = ({ data }: TermProps) => {
   ];
   const featuredStory = featuredStories.shift();
   const { items: stories, pageInfo } = storiesState || {};
-  const hasStories = !!stories?.length;
+  const hasStories = !!(
+    featuredStory ||
+    featuredStories?.length ||
+    stories?.length
+  );
 
   const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
   const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
@@ -260,7 +264,7 @@ export const Term = ({ data }: TermProps) => {
                   />
                 ))}
               {pageInfo.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"
@@ -284,7 +288,7 @@ export const Term = ({ data }: TermProps) => {
                 <EpisodeCard data={item} key={item.id} />
               ))}
               {episodesPageInfo.hasNextPage && (
-                <Box>
+                <Box my={3}>
                   <Button
                     variant="contained"
                     size="large"
@@ -326,10 +330,11 @@ export const Term = ({ data }: TermProps) => {
             <SidebarEpisode
               data={latestEpisode}
               label="Latest Episode"
-              {...(link && {
-                collectionLink: `${link}?v=episodes`,
-                collectionLinkShallow: true
-              })}
+              {...(link &&
+                episodes.length > 1 && {
+                  collectionLink: `${link}?v=episodes`,
+                  collectionLinkShallow: true
+                })}
             />
           )}
           {ctaSidebarTop && (

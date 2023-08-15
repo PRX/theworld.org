@@ -59,7 +59,7 @@ export const LandingPage = ({
             </Box>
           </Grid>
           <Grid item xs md={4}>
-            <Hidden smDown implementation="css">
+            <Hidden mdDown implementation="css">
               <Box display="grid" gap={gap}>
                 {sidebar.map(
                   ({ key, children }: ILandingPageItem) =>
