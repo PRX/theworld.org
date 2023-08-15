@@ -130,7 +130,11 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
   ];
   const featuredStory = featuredStories.shift();
   const { items: stories, pageInfo } = storiesState || {};
-  const hasStories = !!stories?.length;
+  const hasStories = !!(
+    featuredStory ||
+    featuredStories?.length ||
+    stories?.length
+  );
 
   const segmentsState = getCollectionData<Segment>(state, type, id, 'segments');
   const { items: allSegments, options: segmentsOptions } = segmentsState || {};

@@ -96,7 +96,11 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   ];
   const featuredStory = featuredStories.shift();
   const { items: stories, pageInfo } = storiesState || {};
-  const hasStories = !!stories?.length;
+  const hasStories = !!(
+    featuredStory ||
+    featuredStories?.length ||
+    stories?.length
+  );
 
   const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
   const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};

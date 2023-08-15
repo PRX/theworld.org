@@ -102,7 +102,11 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
   ];
   const featuredStory = featuredStories.shift();
   const { items: stories, pageInfo } = storiesState || {};
-  const hasStories = !!stories?.length;
+  const hasStories = !!(
+    featuredStory ||
+    featuredStories?.length ||
+    stories?.length
+  );
 
   const episodesState = getCollectionData<Episode>(state, type, id, 'episodes');
   const { items: episodes, pageInfo: episodesPageInfo } = episodesState || {};
@@ -112,6 +116,8 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
   const latestEpisode = episodes?.shift();
 
   const hasContentLinks = hasStories || hasEpisodes;
+
+  console.log(stories, episodes, hasStories, hasEpisodes, hasContentLinks);
 
   const { classes } = categoryStyles();
 
