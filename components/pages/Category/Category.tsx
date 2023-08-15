@@ -117,8 +117,6 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
 
   const hasContentLinks = hasStories || hasEpisodes;
 
-  console.log(stories, episodes, hasStories, hasEpisodes, hasContentLinks);
-
   const { classes } = categoryStyles();
 
   // CTA data.
