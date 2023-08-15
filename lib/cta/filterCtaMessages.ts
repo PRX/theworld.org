@@ -31,15 +31,16 @@ export const filterCtaMessages = (filterProps: ICtaFilterProps) => (
 
   // Check Category Targets.
   if (targetCategories?.length) {
-    const filterPropsCategories = filterProps?.categories || [];
+    const filterPropsCategories = [...(new Set([...(filterProps?.categories || [])]))];
+    const targetCategoriesUnique = [...(new Set([...targetCategories]))];
     const combinedCategories = new Set([
-      ...targetCategories,
+      ...targetCategoriesUnique,
       ...filterPropsCategories
     ]);
 
     categoriesMatched =
-      [...combinedCategories].length !==
-      targetCategories.length + filterPropsCategories.length;
+      [...combinedCategories].length ===
+      filterPropsCategories.length;
   }
 
   // Check Program Target.
