@@ -34,7 +34,6 @@ import {
   getDataByResource
 } from '@store/reducers';
 import { generateLinkPropsForContent } from '@lib/routing';
-import { RootState } from '@interfaces/state';
 
 export const Term = () => {
   const {
@@ -44,7 +43,7 @@ export const Term = () => {
   } = useContext(AppContext);
   const router = useRouter();
   const { query } = router;
-  const store = useStore<RootState>();
+  const store = useStore();
   const [state, setState] = useState(store.getState());
   const unsub = store.subscribe(() => {
     setState(store.getState());
