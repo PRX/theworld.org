@@ -39,7 +39,7 @@ const GET_PROGRAM = gql`
           }
         }
       }
-      programHosts {
+      programContributors {
         hosts {
           id
           link

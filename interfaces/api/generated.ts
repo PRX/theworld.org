@@ -9871,6 +9871,8 @@ export type Post = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & 
   slug?: Maybe<Scalars['String']['output']>;
   /** Connection between the Post type and the socialTag type */
   socialTags?: Maybe<PostToSocialTagConnection>;
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Sponsorship&quot; was set to Show in GraphQL. */
+  sponsorship?: Maybe<Post_Sponsorship>;
   /** The current status of the object */
   status?: Maybe<Scalars['String']['output']>;
   /** Connection between the Post type and the storyFormat type */
@@ -12293,6 +12295,22 @@ export type Post_Presentation = AcfFieldGroup & {
   format?: Maybe<Scalars['String']['output']>;
 };
 
+/** Field Group */
+export type Post_Sponsorship = AcfFieldGroup & {
+  __typename?: 'Post_Sponsorship';
+  collectionSponsorLinks?: Maybe<Array<Maybe<Post_Sponsorship_CollectionSponsorLinks>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Field Group */
+export type Post_Sponsorship_CollectionSponsorLinks = AcfFieldGroup & {
+  __typename?: 'Post_Sponsorship_collectionSponsorLinks';
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  sponsorLinks?: Maybe<AcfLink>;
+};
+
 /** Nodes that can be seen in a preview (unpublished) state. */
 export type Previewable = {
   /** Whether the object is a node in the preview state */
@@ -12336,8 +12354,8 @@ export type Program = DatabaseIdentifier & MenuItemLinkable & Node & TermNode & 
   name?: Maybe<Scalars['String']['output']>;
   /** Connection between the Program type and the post type */
   posts?: Maybe<ProgramToPostConnection>;
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Program Hosts&quot; was set to Show in GraphQL. */
-  programHosts?: Maybe<Program_Programhosts>;
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Program Contributors&quot; was set to Show in GraphQL. */
+  programContributors?: Maybe<Program_Programcontributors>;
   /**
    * The id field matches the WP_Post-&gt;ID field.
    * @deprecated Deprecated in favor of databaseId
@@ -12853,11 +12871,13 @@ export type Program_Landingpage = AcfFieldGroup & {
 export type Program_Landingpage_FeaturedPosts = Post;
 
 /** Field Group */
-export type Program_Programhosts = AcfFieldGroup & {
-  __typename?: 'Program_Programhosts';
+export type Program_Programcontributors = AcfFieldGroup & {
+  __typename?: 'Program_Programcontributors';
   /** The name of the ACF Field Group */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
   hosts?: Maybe<Array<Maybe<Contributor>>>;
+  /** Contributors selected will be shown on the program&#039;s team page. Make sure to include Hosts in this fields as well. */
+  team?: Maybe<Array<Maybe<Contributor>>>;
 };
 
 /** Field Group */

@@ -70,13 +70,13 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
     description,
     teaserFields,
     taxonomyImages,
-    programHosts,
+    programContributors,
     sponsorship,
     landingPage
   } = data;
   const { teaser } = teaserFields || {};
   const { imageBanner, logo } = taxonomyImages || {};
-  const { hosts } = programHosts || {};
+  const { hosts } = programContributors || {};
   const { collectionSponsorLinks } = sponsorship || {};
   const sponsors = collectionSponsorLinks?.reduce(
     (a, sl) => (sl?.sponsorLinks ? [...a, sl.sponsorLinks] : a),
