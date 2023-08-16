@@ -1,5 +1,5 @@
 /**
- * @file pages/programs/[slug].tsx
+ * @file pages/programs/[slug]/index.tsx
  *
  * Program page.
  */

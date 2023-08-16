@@ -6,6 +6,7 @@
 import { createTheme, Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 import { storyBodyStyles } from '@components/pages/Story/layouts/default/styles/Story.body';
+import { headingProps } from '@theme/App.theme';
 
 export const programTheme = (theme: Theme) =>
   createTheme(theme, {
@@ -29,6 +30,10 @@ export const programTheme = (theme: Theme) =>
     }
   });
 
-export const programStyles = makeStyles()(theme => ({
-  ...storyBodyStyles(theme)
+export const programStyles = makeStyles()((theme) => ({
+  ...storyBodyStyles(theme),
+
+  MuiListSubheaderRoot: {
+    ...headingProps
+  }
 }));

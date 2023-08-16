@@ -19,6 +19,7 @@ const GET_PROGRAM = gql`
     program(id: $id, idType: $idType) {
       id
       link
+      slug
       name
       description
       teaserFields {
@@ -44,6 +45,14 @@ const GET_PROGRAM = gql`
           id
           link
           name
+          contributorDetails {
+            image {
+              ...ImageProps
+            }
+          }
+        }
+        team {
+          id
           contributorDetails {
             image {
               ...ImageProps

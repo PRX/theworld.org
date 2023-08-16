@@ -1,15 +1,6 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import type { Maybe, Page } from '@interfaces';
-import { fetchTwApi, gqlClient } from '@lib/fetch/api';
-import { gql } from '@apollo/client';
-
-const GET_PAGE_NODE = gql`
-  query getPage($id: ID!) {
-    page(id: $id, idType: DATABASE_ID) {
-      id
-    }
-  }
-`;
+import { fetchTwApi } from '@lib/fetch/api';
+import { encode } from 'base-64';
 
 type RedirectData = {
   type: 'redirect--external';
@@ -75,22 +66,12 @@ export const fetchTwApiQueryAlias = async (
   const resourceData = restResp as ResourceData;
 
   if (resourceData.type === 'page') {
-    const gqlResp = await gqlClient.query<{
-      page: Maybe<Page>;
-    }>({
-      query: GET_PAGE_NODE,
-      variables: {
-        id: resourceData.id
-      }
-    });
-    const id = gqlResp.data.page?.id;
+    const id = encode(`post:${resourceData.id}`);
 
-    if (id) {
-      return {
-        type: `post--page`,
-        id
-      } as AliasResp;
-    }
+    return {
+      type: `post--page`,
+      id
+    } as AliasResp;
   }
 
   const redirectUrl = new URL(resourceData.link).pathname;
