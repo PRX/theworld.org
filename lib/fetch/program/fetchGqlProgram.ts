@@ -50,6 +50,14 @@ const GET_PROGRAM = gql`
             }
           }
         }
+        team {
+          id
+          contributorDetails {
+            image {
+              ...ImageProps
+            }
+          }
+        }
       }
       sponsorship {
         collectionSponsorLinks {

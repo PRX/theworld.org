@@ -237,25 +237,16 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
   const description =
     'The World is a public radio program that crosses borders and time zones to bring home the stories that matter. From PRX.';
   const url = '/';
-  const image =
-    'https://media.pri.org/s3fs-public/images/2020/04/tw-globe-bg-3000.jpg';
   const metatags = {
     title,
     description,
     canonical: url,
-    'og:type': 'website',
-    'og:title': title,
-    'og:description': description,
-    'og:url': url,
-    'og:image': image,
-    'og:image:width': '3000',
-    'og:image:height': '3000',
-    'og:local': 'en_US',
-    'twitter:card': 'summary',
-    'twitter:title': title,
-    'twitter:description': description,
-    'twitter:url': url,
-    'twitter:image': image
+    opengraphType: 'website',
+    opengraphTitle: title,
+    opengraphDescription: description,
+    opengraphUrl: url,
+    twitterTitle: title,
+    twitterDescription: description
   };
 
   return (

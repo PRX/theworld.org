@@ -12,17 +12,24 @@ import type {
 } from '@interfaces';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { useStore } from 'react-redux';
 import {
   AppBar,
+  Avatar,
+  AvatarGroup,
   Box,
   Button,
   Container,
   Hidden,
+  List,
+  ListItemButton,
+  ListSubheader,
   Tab,
   Tabs
 } from '@mui/material';
 import { ThemeProvider } from '@mui/styles';
+import { ContentLink } from '@components/ContentLink';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { LandingPage } from '@components/LandingPage';
@@ -76,7 +83,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   } = data;
   const { teaser } = teaserFields || {};
   const { imageBanner, logo } = taxonomyImages || {};
-  const { hosts } = programContributors || {};
+  const { hosts, team } = programContributors || {};
   const { collectionSponsorLinks } = sponsorship || {};
   const sponsors = collectionSponsorLinks?.reduce(
     (a, sl) => (sl?.sponsorLinks ? [...a, sl.sponsorLinks] : a),
@@ -367,7 +374,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
                 <HtmlContent html={description} />
               </SidebarContent>
             )}
-            {hosts && !!hosts.length && (
+            {!!hosts?.length && (
               <SidebarList
                 data={hosts.map((item) => ({
                   data: item,
@@ -375,6 +382,38 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
                 }))}
                 subheaderText="Hosted by"
               />
+            )}
+            {!!team?.length && (
+              <List
+                subheader={
+                  <ListSubheader
+                    classes={{ root: classes.MuiListSubheaderRoot }}
+                  >
+                    <b>{`${name}'s Team`}</b>
+                  </ListSubheader>
+                }
+              >
+                <ListItemButton component={ContentLink} url={`${link}/team`}>
+                  <AvatarGroup max={6}>
+                    {team.map((item) => {
+                      const avatarSrc =
+                        item.contributorDetails?.image?.sourceUrl ||
+                        item.contributorDetails?.image?.mediaItemUrl;
+                      return (
+                        <Avatar aria-hidden key={item.id}>
+                          <Image
+                            src={avatarSrc}
+                            alt={`Avatar of ${item.name}`}
+                            width={45}
+                            height={45}
+                            style={{ objectFit: 'cover' }}
+                          />
+                        </Avatar>
+                      );
+                    })}
+                  </AvatarGroup>
+                </ListItemButton>
+              </List>
             )}
             {sponsors && !!sponsors.length && (
               <SidebarList data={sponsors} subheaderText="Supported by" />

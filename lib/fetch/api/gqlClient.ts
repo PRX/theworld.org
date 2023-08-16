@@ -57,6 +57,11 @@ export const gqlClient = new ApolloClient({
         fields: {
           posts: { merge: true }
         }
+      },
+      Contributor: {
+        fields: {
+          contributorDetails: { merge: true }
+        }
       }
     }
   }),
