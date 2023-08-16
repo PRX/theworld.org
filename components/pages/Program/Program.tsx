@@ -396,19 +396,24 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
                 <ListItemButton component={ContentLink} url={`${link}/team`}>
                   <AvatarGroup max={6}>
                     {team.map((item) => {
+                      if (!item) return null;
+
                       const avatarSrc =
                         item.contributorDetails?.image?.sourceUrl ||
                         item.contributorDetails?.image?.mediaItemUrl;
+
                       return (
-                        <Avatar aria-hidden key={item.id}>
-                          <Image
-                            src={avatarSrc}
-                            alt={`Avatar of ${item.name}`}
-                            width={45}
-                            height={45}
-                            style={{ objectFit: 'cover' }}
-                          />
-                        </Avatar>
+                        avatarSrc && (
+                          <Avatar aria-hidden key={item.id}>
+                            <Image
+                              src={avatarSrc}
+                              alt={`Avatar of ${item.name}`}
+                              width={45}
+                              height={45}
+                              style={{ objectFit: 'cover' }}
+                            />
+                          </Avatar>
+                        )
                       );
                     })}
                   </AvatarGroup>

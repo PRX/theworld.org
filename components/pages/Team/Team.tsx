@@ -75,11 +75,13 @@ export const Team = ({ data }: IContentComponentProps<Program>) => {
   return (
     <ThemeProvider theme={teamTheme}>
       <MetaTags data={metatags} />
-      <Plausible subject={{ type: 'team', id: slug.replace('-', '_') }} />
+      <Plausible subject={{ type: 'team', id: slug?.replace('-', '_') }} />
       <Container fixed>
         <TeamHeader title={title} />
         <Grid container spacing={3} mb={6}>
-          {team.map((item, index) => {
+          {team?.map((item, index) => {
+            if (!item) return null;
+
             const pathname = item.link && new URL(item.link).pathname;
             const isLoading = loadingUrl === pathname;
 

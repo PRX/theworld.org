@@ -19,6 +19,7 @@ const GET_PROGRAM = gql`
     program(id: $id, idType: $idType) {
       id
       link
+      slug
       name
       description
       teaserFields {
