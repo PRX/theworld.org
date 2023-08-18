@@ -306,7 +306,7 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
                     disabled={isLoading}
                     disableElevation={isLoading}
                   >
-                    Load More Media
+                    Load More Segments
                   </Button>
                 </Box>
               )}
