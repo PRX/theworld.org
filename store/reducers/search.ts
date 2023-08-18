@@ -8,12 +8,9 @@ import { HYDRATE } from 'next-redux-wrapper';
 import type {
   ContentNodeConnection,
   ContentNodeConnectionEdge,
-  RootState,
   SearchAction,
   SearchState
 } from '@interfaces';
-
-type State = SearchState | RootState;
 
 const addSearchPage = (
   state: ContentNodeConnection,
@@ -28,7 +25,7 @@ const addSearchPage = (
   return result;
 };
 
-export const search = (state: State, action: SearchAction) => {
+export const search = (state = {}, action: SearchAction) => {
   let query: string;
   let s: SearchState;
 
@@ -99,7 +96,7 @@ export const search = (state: State, action: SearchAction) => {
       } as SearchState;
 
     default:
-      return state || null;
+      return state;
   }
 };
 
