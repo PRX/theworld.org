@@ -3,7 +3,14 @@
  * Component for Category.
  */
 
-import type { Episode, MediaItem, PostStory } from '@interfaces';
+import type {
+  Episode,
+  PostStory,
+  Segment,
+  RootState,
+  SearchFacet,
+  ContentNodeConnection
+} from '@interfaces';
 import React, {
   FormEvent,
   MouseEvent,
@@ -14,9 +21,6 @@ import React, {
 } from 'react';
 import { useStore } from 'react-redux';
 import { useRouter } from 'next/router';
-import { parse } from 'url';
-import { customsearch_v1 as customSearch } from 'googleapis';
-import { RootState, SearchFacet, searchFacetLabels } from '@interfaces/state';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -37,11 +41,11 @@ import TabPanel from '@mui/lab/TabPanel';
 import Grid from '@mui/material/Grid';
 import { ThemeProvider } from '@mui/styles';
 import { EpisodeCard } from '@components/EpisodeCard';
-import { MediaCard } from '@components/MediaCard';
+import { SegmentCard } from '@components/SegmentCard';
 import { StoryCard } from '@components/StoryCard';
+import { searchFacetKeys } from '@interfaces';
 import { fetchSearchData } from '@store/actions/fetchSearchData';
 import {
-  getContentDataByAlias,
   getSearchData,
   getSearchLoading,
   getSearchOpen,
@@ -54,13 +58,18 @@ export interface AppSearchProps {
   q?: string;
 }
 
+function getContentData<T>(results?: ContentNodeConnection) {
+  if (!results) return undefined;
+  return results.edges.map((edge) => edge.node as T);
+}
+
 export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
   const router = useRouter();
   const queryRef = useRef<HTMLInputElement>(null);
   const dialogContentRef = useRef<HTMLDivElement>(null);
   const store = useStore<RootState>();
   const [state, setState] = useState(store.getState());
-  const [label, setLabel] = useState('story' as SearchFacet);
+  const [label, setLabel] = useState('posts' as SearchFacet);
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
@@ -69,27 +78,16 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
   const isLoading = getSearchLoading(state) || false;
   const data = getSearchData(state, query);
   const hasData = !!data;
-  const { story, episode, media } = data || {};
-  const { nextPage: nextPageStory } = story?.[story.length - 1].queries || {};
-  const { nextPage: nextPageEpisode } =
-    episode?.[episode.length - 1].queries || {};
-  const { nextPage: nextPageMedia } = media?.[media.length - 1].queries || {};
-  const getContentData = (results: customSearch.Schema$Search[]) =>
-    (results || [])
-      .reduce((a, { items }) => (!items ? a : [...a, ...items]), [])
-      .map(({ link }) => {
-        if (!link) return undefined;
-        const { pathname } = parse(link);
-        return pathname && getContentDataByAlias(state, pathname);
-      })
-      .filter((item) => !!item && item);
-  const storyData = getContentData(story);
-  const episodeData = getContentData(episode);
-  const mediaData = getContentData(media);
+  const { posts, episodes, segments } = data || {};
+  const postsHasNextPage = !!posts?.pageInfo?.hasNextPage;
+  const episodesHasNextPage = !!episodes?.pageInfo?.hasNextPage;
+  const segmentsHasNextPage = !!segments?.pageInfo?.hasNextPage;
+  const storyData = getContentData<PostStory>(posts);
+  const episodeData = getContentData<Episode>(episodes);
+  const segmentsData = getContentData<Segment>(segments);
   const { classes } = appSearchStyles();
 
-  const formatTabLabel = (l: SearchFacet) =>
-    `${l} (${data?.[l]?.[0].searchInformation?.totalResults || 0})`;
+  const formatTabLabel = (l: SearchFacet) => `${l === 'posts' ? 'stories' : l}`;
 
   const handleClose = () => {
     store.dispatch({ type: 'SEARCH_CLOSE' });
@@ -99,7 +97,7 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
     e.preventDefault();
 
     if (queryRef?.current) {
-      store.dispatch<any>(fetchSearchData(queryRef.current.value, 'all'));
+      store.dispatch<any>(fetchSearchData(queryRef.current.value));
     }
   };
 
@@ -207,9 +205,11 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
               onChange={handleFilterChange}
               aria-label="filter results"
             >
-              {searchFacetLabels.map((l) => (
-                <Tab label={formatTabLabel(l)} value={l} key={l} />
-              ))}
+              {[...searchFacetKeys]
+                .filter((l) => !!data[l]?.edges.length)
+                .map((l) => (
+                  <Tab label={formatTabLabel(l)} value={l} key={l} />
+                ))}
             </TabList>
           </Container>
         </AppBar>
@@ -218,14 +218,14 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
   );
 
   const renderSearchResults = () =>
-    !!data && (
+    hasData && (
       <>
-        <TabPanel value="story">
-          {!!storyData.length && (
+        <TabPanel value="posts">
+          {!!storyData?.length && (
             <Container fixed>
               <Grid container spacing={3}>
                 {storyData.map(
-                  (item: PostStory) =>
+                  (item) =>
                     item && (
                       <Grid item xs={12} key={item.id}>
                         <StoryCard data={item} short />
@@ -233,13 +233,13 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
                     )
                 )}
               </Grid>
-              {nextPageStory && (
+              {postsHasNextPage && (
                 <Box mt={3}>
                   <Button
                     variant="contained"
                     color="primary"
                     size="large"
-                    onClick={handleLoadMore('story')}
+                    onClick={handleLoadMore('posts')}
                     fullWidth
                     disabled={isLoading}
                     disableElevation={isLoading}
@@ -251,8 +251,8 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
             </Container>
           )}
         </TabPanel>
-        <TabPanel value="episode">
-          {!!episodeData.length && (
+        <TabPanel value="episodes">
+          {!!episodeData?.length && (
             <Container fixed>
               <Grid container spacing={3}>
                 {episodeData.map(
@@ -264,13 +264,13 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
                     )
                 )}
               </Grid>
-              {nextPageEpisode && (
+              {episodesHasNextPage && (
                 <Box mt={3}>
                   <Button
                     variant="contained"
                     color="primary"
                     size="large"
-                    onClick={handleLoadMore('episode')}
+                    onClick={handleLoadMore('episodes')}
                     fullWidth
                     disabled={isLoading}
                     disableElevation={isLoading}
@@ -282,26 +282,26 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
             </Container>
           )}
         </TabPanel>
-        <TabPanel value="media">
-          {!!mediaData.length && (
+        <TabPanel value="segments">
+          {!!segmentsData?.length && (
             <Container fixed>
               <Grid container spacing={3}>
-                {mediaData.map(
-                  (item: MediaItem) =>
+                {segmentsData.map(
+                  (item) =>
                     item && (
                       <Grid item xs={12} md={6} key={item.id}>
-                        <MediaCard data={item} />
+                        <SegmentCard data={item} />
                       </Grid>
                     )
                 )}
               </Grid>
-              {nextPageMedia && (
+              {segmentsHasNextPage && (
                 <Box mt={3}>
                   <Button
                     variant="contained"
                     color="primary"
                     size="large"
-                    onClick={handleLoadMore('media')}
+                    onClick={handleLoadMore('segments')}
                     fullWidth
                     disabled={isLoading}
                     disableElevation={isLoading}

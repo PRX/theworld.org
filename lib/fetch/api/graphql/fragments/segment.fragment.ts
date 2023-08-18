@@ -12,3 +12,15 @@ export const SEGMENT_LIST_PROPS = gql`
     }
   }
 `;
+
+export const SEGMENT_CARD_PROPS = gql`
+  fragment SegmentCardProps on Segment {
+    id
+    link
+    title
+    date
+    segmentDates {
+      broadcastDate
+    }
+  }
+`;

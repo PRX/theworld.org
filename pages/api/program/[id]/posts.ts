@@ -23,8 +23,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json(posts);
     }
 
-    return res.status(404);
+    return res.status(404).end();
   }
 
-  return res.status(400);
+  return res.status(400).end();
 };

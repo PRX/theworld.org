@@ -4,28 +4,24 @@
  * Actions to fetch data for a search query.
  */
 
-import { AnyAction } from 'redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { IPriApiResource } from 'pri-api-library/types';
-import { parse } from 'url';
-import {
+import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
+import type { AnyAction } from 'redux';
+import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import type {
   RootState,
-  searchFacetLabels,
-  SearchFacetAll
+  SearchFacetAll,
+  SearchQueryCursors,
+  SearchQueryOptions,
+  SearchQueryProps
 } from '@interfaces/state';
-import { fetchApiSearch, fetchQuerySearch } from '@lib/fetch';
+import { fetchApiSearch, fetchGqlQuerySearch } from '@lib/fetch';
 import { getSearchData } from '@store/reducers';
-import { fetchBulkAliasData } from './fetchAliasData';
-import { fetchStoryData } from './fetchStoryData';
-import { fetchEpisodeData } from './fetchEpisodeData';
-import { fetchAudioData } from './fetchAudioData';
-import { fetchImageData } from './fetchImageData';
-import { fetchVideoData } from './fetchVideoData';
 
 export const fetchSearchData =
   (
     query: string,
-    label: SearchFacetAll
+    facet?: SearchFacetAll,
+    init?: RequestInit
   ): ThunkAction<void, {}, {}, AnyAction> =>
   async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>,
@@ -38,68 +34,42 @@ export const fetchSearchData =
     }
 
     const state = getState();
-    const facets = label === 'all' ? searchFacetLabels : [label];
-    const currentData = getSearchData(state, q) || {};
+    const currentData = getSearchData(state, q);
+    const cursors =
+      currentData &&
+      Object.entries(currentData).reduce(
+        (a, [f, nc]) => ({
+          ...a,
+          ...(nc.pageInfo.endCursor && {
+            [f]: nc.pageInfo.endCursor
+          })
+        }),
+        {} as SearchQueryCursors
+      );
+    const queryProps = {
+      query: q,
+      ...(facet && {
+        facet,
+        cursors
+      })
+    } as SearchQueryProps;
+    const options = {
+      pageSize: 10
+    } as SearchQueryOptions;
     const isOnServer = typeof window === 'undefined';
-    const fetchFunc = isOnServer ? fetchQuerySearch : fetchApiSearch;
-
-    // Map facet labels to data fetch for content type.
-    const funcMap = new Map();
-    funcMap.set('node--stories', fetchStoryData);
-    funcMap.set('node--episodes', fetchEpisodeData);
-    funcMap.set('file--audio', fetchAudioData);
-    funcMap.set('file--images', fetchImageData);
-    funcMap.set('file--videos', fetchVideoData);
+    const fetchFunc = isOnServer ? fetchGqlQuerySearch : fetchApiSearch;
 
     dispatch({
       type: 'FETCH_SEARCH_REQUEST'
     });
 
-    const requests = [...facets].map(async (l: SearchFacetAll) => {
-      const facetData = currentData[l];
-      const start = [...(facetData || [])].pop()?.queries?.nextPage?.[0]
-        .startIndex;
-
-      return fetchFunc(q, l, start || 0).then((data) => ({
-        l,
-        data
-      }));
-    });
-
-    const payloadData = await Promise.all(requests).then(
-      async (searchResults) => {
-        const dataRequests = searchResults.map(async ({ l, data }) => {
-          const aliases = (data.items || []).map(
-            ({ link }) => parse(link).pathname
-          );
-          const aliasesData: [string, IPriApiResource][] = await dispatch<any>(
-            fetchBulkAliasData(aliases)
-          );
-
-          const reqs = aliasesData
-            .map(
-              ([, { id, type }]): [
-                string,
-                // eslint-disable-next-line no-unused-vars, no-shadow
-                (id: string) => ThunkAction<void, {}, {}, AnyAction>
-              ] => [id as string, funcMap.get(type)]
-            )
-            .filter(([, func]) => !!func)
-            .map(async ([id, func]) => dispatch<any>(func(id)));
-
-          await Promise.all(reqs);
-
-          return { label: l, data };
-        });
-
-        return Promise.all(dataRequests);
-      }
-    );
+    const payloadData = await fetchFunc(queryProps, options, init);
 
     dispatch({
       type: 'FETCH_SEARCH_SUCCESS',
       payload: {
         query: q,
+        options,
         data: payloadData
       }
     });

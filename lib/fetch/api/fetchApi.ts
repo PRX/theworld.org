@@ -19,17 +19,20 @@ import type {
   CollectionQueryOptions,
   CategoryToPostConnection,
   PostConnection,
-  Maybe
+  Maybe,
+  SearchQueryOptions,
+  SearchQueryProps
 } from '@interfaces';
 import type {
   fetchGqlAudio,
   fetchGqlContributor,
   fetchGqlEpisode,
   fetchGqlProgram,
-  fetchGqlStory,
-  fetchQuerySearch
+  fetchGqlQuerySearch,
+  fetchGqlStory
 } from '@lib/fetch';
 import { format } from 'url';
+import { encode as base64Encode } from 'base-64';
 
 /**
  * Method that simplifies GET requests.
@@ -706,15 +709,21 @@ export const fetchApiCtaRegionGroup = async (
   });
 
 export const fetchApiSearch = (
-  q: string,
-  label: string,
-  start: string | number,
+  queryProps: SearchQueryProps,
+  options?: SearchQueryOptions,
   init?: RequestInit
-) =>
-  fetchApi<ReturnType<typeof fetchQuerySearch>>({
-    path: `query/search/${label}/${q}`,
+) => {
+  const { query, facet, cursors } = queryProps;
+  const { pageSize } = options || {};
+  return fetchApi<ReturnType<typeof fetchGqlQuerySearch>>({
+    path: `query/search/${query}`,
     query: {
-      start: start as string
+      ...(pageSize && { f: `${pageSize}` }),
+      ...(facet && {
+        t: facet
+      }),
+      ...(cursors && { c: base64Encode(JSON.stringify(cursors)) })
     },
     init
   });
+};
