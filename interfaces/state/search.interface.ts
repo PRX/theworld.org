@@ -5,33 +5,54 @@
  */
 
 import { AnyAction } from 'redux';
-import { customsearch_v1 as customSearch } from 'googleapis';
+import { ContentNodeConnection } from '@interfaces/api';
 
-export const searchFacetLabels = ['story', 'episode', 'media'] as const;
-export type SearchFacet = typeof searchFacetLabels[number];
-export type SearchFacetAll = typeof searchFacetLabels[number] | 'all';
+export const searchFacetKeys = ['posts', 'episodes', 'segments'] as const;
+export type SearchFacet = (typeof searchFacetKeys)[number];
+export type SearchFacetAll = (typeof searchFacetKeys)[number] | 'all';
+
+// eslint-disable-next-line no-unused-vars
+export type SearchQueryCursors = { [key in SearchFacet]?: string };
+
+export type SearchQueryProps = {
+  query: string;
+  facet?: SearchFacetAll;
+  cursors?: SearchQueryCursors;
+};
+
+export type SearchQueryOptions = {
+  pageSize?: number;
+};
+
+export type SearchQueryState = {
+  // Key: Facet name.
+  // eslint-disable-next-line no-unused-vars
+  [key in SearchFacet]?: ContentNodeConnection;
+};
 
 export interface SearchesState {
-  // Key: Query signature.
-  // base64(query)
-  [k: string]: {
-    // Key: Facet name.
-    [k: string]: customSearch.Schema$Search[];
-  };
+  // Key: Query string (lowercase).
+  [k: string]: SearchQueryState;
 }
 
 export interface SearchState {
   open?: boolean;
   query?: string;
+  options?: SearchQueryOptions;
   loading?: boolean;
   searches?: SearchesState;
 }
+
+export type SearchResultsData = {
+  // eslint-disable-next-line no-unused-vars
+  [key in SearchFacet]?: ContentNodeConnection;
+};
 
 export interface SearchAction extends AnyAction {
   payload: {
     search?: SearchState;
     query: string;
-    label: SearchFacetAll;
-    data: { label: string; data: customSearch.Schema$Result }[];
+    options?: SearchQueryOptions;
+    data: SearchResultsData;
   };
 }

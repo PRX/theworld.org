@@ -5,7 +5,25 @@
  */
 
 import { HYDRATE } from 'next-redux-wrapper';
-import { SearchAction, SearchState } from '@interfaces/state';
+import type {
+  ContentNodeConnection,
+  ContentNodeConnectionEdge,
+  SearchAction,
+  SearchState
+} from '@interfaces';
+
+const addSearchPage = (
+  state: ContentNodeConnection,
+  pageItems: ContentNodeConnectionEdge[]
+) => {
+  const endIndex = state.edges.findIndex(
+    (item) => item.cursor === state.pageInfo.endCursor
+  );
+  const result = [...state.edges];
+  result.splice(endIndex + 1, 0, ...pageItems);
+
+  return result;
+};
 
 export const search = (state = {}, action: SearchAction) => {
   let query: string;
@@ -53,19 +71,25 @@ export const search = (state = {}, action: SearchAction) => {
       return {
         ...state,
         query: action.payload.query,
+        ...(action.payload.options && { options: action.payload.options }),
         searches: {
           ...(s.searches || {}),
           [query]: {
-            ...(s.searches?.[query] || {}),
-            ...action.payload.data.reduce(
-              (a: any, { label, data }) => ({
+            ...Object.entries(action.payload.data).reduce(
+              (a, [facet, data]) => ({
                 ...a,
-                [label]: [
-                  ...((s as SearchState).searches?.[query]?.[label] || []),
-                  data
-                ]
+                [facet]: {
+                  ...s.searches?.[query]?.[facet],
+                  ...data,
+                  ...(s.searches?.[query]?.[facet] && {
+                    edges: addSearchPage(
+                      s.searches?.[query]?.[facet],
+                      data.edges
+                    )
+                  })
+                }
               }),
-              []
+              s.searches?.[query] || {}
             )
           }
         }
@@ -80,4 +104,4 @@ export const getSearchOpen = (state: SearchState) => state?.open;
 export const getSearchLoading = (state: SearchState) => state?.loading;
 export const getSearchQuery = (state: SearchState) => state?.query || '';
 export const getSearchData = (state: SearchState, query: string) =>
-  query && state?.searches?.[query.toLowerCase()];
+  (!!query?.length || undefined) && state?.searches?.[query.toLowerCase()];
