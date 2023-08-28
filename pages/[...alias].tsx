@@ -47,7 +47,7 @@ const ContentProxy = ({ type, data }: Props) => {
 
     case 'post--newsletter':
     case 'node--newsletter_sign_ups':
-      return <DynamicNewsletter />;
+      return <DynamicNewsletter data={data} />;
 
     case 'post--page':
     case 'node--pages':
