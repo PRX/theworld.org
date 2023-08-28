@@ -3,7 +3,9 @@
  * Component for newsletter  elements.
  */
 
-import React, { ChangeEvent, FormEvent, useState, HTMLAttributes } from 'react';
+import type { Maybe } from '@interfaces';
+import type { ChangeEvent, FormEvent, HTMLAttributes } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -25,7 +27,7 @@ import {
 } from './NewsletterForm.styles';
 
 export interface INewsletterProps extends HTMLAttributes<{}> {
-  label?: string;
+  label?: Maybe<string>;
   options?: INewsletterOptions;
   onSubscribed?: Function;
   compact?: boolean;

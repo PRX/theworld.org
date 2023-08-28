@@ -1,20 +1,20 @@
 /**
- * @file program/[id]/index.ts
- * Gather program data from CMS API.
+ * @file contributor/[id]/index.ts
+ * Gather contributor data from CMS API.
  */
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchGqlProgram } from '@lib/fetch';
+import { fetchGqlContributor } from '@lib/fetch';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
-  const programId = !!id && (typeof id === 'string' ? id : id[0]);
+  const contributorId = !!id && (typeof id === 'string' ? id : id[0]);
 
-  if (programId) {
-    const program = await fetchGqlProgram(programId);
+  if (contributorId) {
+    const contributor = await fetchGqlContributor(contributorId);
 
-    if (program) {
-      return res.status(200).json(program);
+    if (contributor) {
+      return res.status(200).json(contributor);
     }
 
     return res.status(404).end();

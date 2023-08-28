@@ -1,29 +1,19 @@
 /**
- * @file episode/[id].ts
- * Gather episode data from CMS API.
+ * @file page/[id].ts
+ * Gather page data from CMS API.
  */
+
 import { NextApiRequest, NextApiResponse } from 'next';
-import { IPriApiResourceResponse } from 'pri-api-library/types';
-import { fetchPriApiItem } from '@lib/fetch/api';
+import { fetchGqlPage } from '@lib/fetch';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   if (id) {
-    const page = (await fetchPriApiItem(
-      'node--pages',
-      id as string,
-      {}
-    )) as IPriApiResourceResponse;
+    const data = await fetchGqlPage(id as string);
 
-    if (page) {
-      res.setHeader(
-        'Cache-Control',
-        process.env.TW_API_RESOURCE_CACHE_CONTROL ||
-          'public, s-maxage=600, stale-while-revalidate'
-      );
-
-      return res.status(200).json(page.data);
+    if (data) {
+      return res.status(200).json(data);
     }
 
     return res.status(404).end();

@@ -70,6 +70,242 @@ export enum AvatarRatingEnum {
   X = 'X'
 }
 
+/** The callToAction type */
+export type CallToAction = ContentNode & DatabaseIdentifier & Node & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
+  __typename?: 'CallToAction';
+  /**
+   * The id field matches the WP_Post-&gt;ID field.
+   * @deprecated Deprecated in favor of the databaseId field
+   */
+  callToActionId: Scalars['Int']['output'];
+  /** Connection between the ContentNode type and the ContentType type */
+  contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
+  /** The name of the Content Type the node belongs to */
+  contentTypeName: Scalars['String']['output'];
+  /** Fields to configure Call To Action prompts. | Added to the GraphQL Schema because the ACF Field Group &quot;CTA Options&quot; was set to Show in GraphQL. */
+  ctaOptions?: Maybe<CallToAction_Ctaoptions>;
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;CTA Settings&quot; was set to Show in GraphQL. */
+  ctaSettings?: Maybe<CallToAction_Ctasettings>;
+  /** Fields for targeting CTA&#039;s to content, either directly or by taxonomy. | Added to the GraphQL Schema because the ACF Field Group &quot;CTA Targeting&quot; was set to Show in GraphQL. */
+  ctaTargeting?: Maybe<CallToAction_Ctatargeting>;
+  /** The unique identifier stored in the database */
+  databaseId: Scalars['Int']['output'];
+  /** Post publishing date. */
+  date?: Maybe<Scalars['String']['output']>;
+  /** The publishing date set in GMT. */
+  dateGmt?: Maybe<Scalars['String']['output']>;
+  /** The desired slug of the post */
+  desiredSlug?: Maybe<Scalars['String']['output']>;
+  /** If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds */
+  editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
+  /** The RSS enclosure for the object */
+  enclosure?: Maybe<Scalars['String']['output']>;
+  /** Connection between the ContentNode type and the EnqueuedScript type */
+  enqueuedScripts?: Maybe<ContentNodeToEnqueuedScriptConnection>;
+  /** Connection between the ContentNode type and the EnqueuedStylesheet type */
+  enqueuedStylesheets?: Maybe<ContentNodeToEnqueuedStylesheetConnection>;
+  /** The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table. */
+  guid?: Maybe<Scalars['String']['output']>;
+  /** The globally unique identifier of the call_to_action object. */
+  id: Scalars['ID']['output'];
+  /** Whether the node is a Content Node */
+  isContentNode: Scalars['Boolean']['output'];
+  /** Whether the object is a node in the preview state */
+  isPreview?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the object is restricted from the current viewer */
+  isRestricted?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the node is a Term */
+  isTermNode: Scalars['Boolean']['output'];
+  /** The user that most recently edited the node */
+  lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
+  /** The permalink of the post */
+  link?: Maybe<Scalars['String']['output']>;
+  /** The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time. */
+  modified?: Maybe<Scalars['String']['output']>;
+  /** The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT. */
+  modifiedGmt?: Maybe<Scalars['String']['output']>;
+  /** Connection between the CallToAction type and the callToAction type */
+  preview?: Maybe<CallToActionToPreviewConnectionEdge>;
+  /** The database id of the preview node */
+  previewRevisionDatabaseId?: Maybe<Scalars['Int']['output']>;
+  /** Whether the object is a node in the preview state */
+  previewRevisionId?: Maybe<Scalars['ID']['output']>;
+  /** The Yoast SEO data of the ContentNode */
+  seo?: Maybe<PostTypeSeo>;
+  /** The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table. */
+  slug?: Maybe<Scalars['String']['output']>;
+  /** The current status of the object */
+  status?: Maybe<Scalars['String']['output']>;
+  /** The template assigned to the node */
+  template?: Maybe<ContentTemplate>;
+  /** The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made. */
+  title?: Maybe<Scalars['String']['output']>;
+  /** The unique resource identifier path */
+  uri?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** The callToAction type */
+export type CallToActionEnqueuedScriptsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The callToAction type */
+export type CallToActionEnqueuedStylesheetsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The callToAction type */
+export type CallToActionTitleArgs = {
+  format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+/** Connection to callToAction Nodes */
+export type CallToActionConnection = {
+  /** A list of edges (relational context) between RootQuery and connected callToAction Nodes */
+  edges: Array<CallToActionConnectionEdge>;
+  /** A list of connected callToAction Nodes */
+  nodes: Array<CallToAction>;
+  /** Information about pagination in a connection. */
+  pageInfo: CallToActionConnectionPageInfo;
+};
+
+/** Edge between a Node and a connected callToAction */
+export type CallToActionConnectionEdge = {
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The connected callToAction Node */
+  node: CallToAction;
+};
+
+/** Page Info on the connected CallToActionConnectionEdge */
+export type CallToActionConnectionPageInfo = {
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** The Type of Identifier used to fetch a single resource. Default is ID. */
+export enum CallToActionIdType {
+  /** Identify a resource by the Database ID. */
+  DatabaseId = 'DATABASE_ID',
+  /** Identify a resource by the (hashed) Global ID. */
+  Id = 'ID',
+  /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
+  Slug = 'SLUG',
+  /** Identify a resource by the URI. */
+  Uri = 'URI'
+}
+
+/** Connection between the CallToAction type and the callToAction type */
+export type CallToActionToPreviewConnectionEdge = CallToActionConnectionEdge & Edge & OneToOneConnection & {
+  __typename?: 'CallToActionToPreviewConnectionEdge';
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The node of the connection, without the edges */
+  node: CallToAction;
+};
+
+/** Field Group */
+export type CallToAction_Ctaoptions = AcfFieldGroup & {
+  __typename?: 'CallToAction_Ctaoptions';
+  actions?: Maybe<CallToAction_Ctaoptions_Actions>;
+  content?: Maybe<CallToAction_Ctaoptions_Content>;
+  /**
+   * &lt;p&gt;Select the type of call to action you wish to use.&lt;/p&gt;
+   * &lt;ul&gt;
+   * &lt;li&gt;Informational - General information.&lt;/li&gt;
+   * &lt;li&gt;Donation - Similar to Informational, but will be themed for donating. (Additional donation settings will come later for in app donation form configuration.)
+   * &lt;li&gt;Opt-In - Prompt to opt into something, such as privacy policy. Checkbox will be provided to enable action button when checked.&lt;/li&gt;
+   * &lt;li&gt;Newsletter - Show a newsletter subscription form. Mailing List can be customized from the default Top of The World newsletter list.&lt;/li&gt;
+   * &lt;/ul&gt;
+   */
+  ctaType?: Maybe<Scalars['String']['output']>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  newsletterSettings?: Maybe<CallToAction_Ctaoptions_NewsletterSettings>;
+  optInSettings?: Maybe<CallToAction_Ctaoptions_OptInSettings>;
+};
+
+/** Field Group */
+export type CallToAction_Ctaoptions_Actions = AcfFieldGroup & {
+  __typename?: 'CallToAction_Ctaoptions_Actions';
+  /** Label used in action button. Will override the default label, or create an action button for CTA types that usually do not have an default action. */
+  actionButtonLabel?: Maybe<Scalars['String']['output']>;
+  /** URL the action button should link to. Action button will act as a dismiss button in dismissible regions when no URL is provided. */
+  actionButtonUrl?: Maybe<Scalars['String']['output']>;
+  /** Customize the label of the dismiss button. Dismiss button will only be shown in dismissible regions. */
+  dismissButtonLabel?: Maybe<Scalars['String']['output']>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Field Group */
+export type CallToAction_Ctaoptions_Content = AcfFieldGroup & {
+  __typename?: 'CallToAction_Ctaoptions_Content';
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  heading?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+};
+
+/** Field Group */
+export type CallToAction_Ctaoptions_NewsletterSettings = AcfFieldGroup & {
+  __typename?: 'CallToAction_Ctaoptions_NewsletterSettings';
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Select a Newsletter post to have sign up form settings pulled from. If a region wouldn&#039;t support a sign up form, a link to the newsletter page will be provided. */
+  newsletter?: Maybe<CallToAction_Ctaoptions_NewsletterSettings_Newsletter>;
+};
+
+export type CallToAction_Ctaoptions_NewsletterSettings_Newsletter = Newsletter;
+
+/** Field Group */
+export type CallToAction_Ctaoptions_OptInSettings = AcfFieldGroup & {
+  __typename?: 'CallToAction_Ctaoptions_OptInSettings';
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  optInText?: Maybe<Scalars['String']['output']>;
+};
+
+/** Field Group */
+export type CallToAction_Ctasettings = AcfFieldGroup & {
+  __typename?: 'CallToAction_Ctasettings';
+  /** Dissed messages use cookies to determine the next time it should be shown to a user. Set the number of minutes the cookie should expire. Default is &#039;0&#039; which expires when the user closes the browser window or tab. */
+  cookieLifespan?: Maybe<Scalars['Float']['output']>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Field Group */
+export type CallToAction_Ctatargeting = AcfFieldGroup & {
+  __typename?: 'CallToAction_Ctatargeting';
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Select which categories this CTA should appear on. CTA will be shown on the terms&#039; landing pages, and content tagged by these terms. */
+  targetCategories?: Maybe<Array<Maybe<Category>>>;
+  targetContent?: Maybe<Array<Maybe<CallToAction_Ctatargeting_TargetContent>>>;
+  /** Select which programs this CTA should appear on. CTA will be shown on the terms&#039; landing pages, and content tagged by these terms. */
+  targetPrograms?: Maybe<Array<Maybe<Program>>>;
+};
+
+export type CallToAction_Ctatargeting_TargetContent = Episode | Post;
+
 /** The category type */
 export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermNode & MenuItemLinkable & Node & TermNode & UniformResourceIdentifiable & {
   __typename?: 'Category';
@@ -2122,7 +2358,13 @@ export enum ContentTypeEnum {
   /** The Type of Content object */
   Attachment = 'ATTACHMENT',
   /** The Type of Content object */
+  CallToAction = 'CALL_TO_ACTION',
+  /** The Type of Content object */
+  CtaRegion = 'CTA_REGION',
+  /** The Type of Content object */
   Episode = 'EPISODE',
+  /** The Type of Content object */
+  Newsletter = 'NEWSLETTER',
   /** The Type of Content object */
   Page = 'PAGE',
   /** The Type of Content object */
@@ -2297,6 +2539,12 @@ export enum ContentTypesOfCountryEnum {
   Post = 'POST',
   /** The Type of Content object */
   Segment = 'SEGMENT'
+}
+
+/** Allowed Content Types of the CtaRegionType taxonomy. */
+export enum ContentTypesOfCtaRegionTypeEnum {
+  /** The Type of Content object */
+  CtaRegion = 'CTA_REGION'
 }
 
 /** Allowed Content Types of the License taxonomy. */
@@ -4060,6 +4308,33 @@ export type Country_Taxonomyimages = AcfFieldGroup & {
   logo?: Maybe<MediaItem>;
 };
 
+/** Input for the createCallToAction mutation. */
+export type CreateCallToActionInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars['String']['input']>;
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the createCallToAction mutation. */
+export type CreateCallToActionPayload = {
+  __typename?: 'CreateCallToActionPayload';
+  /** The Post object mutation type. */
+  callToAction?: Maybe<CallToAction>;
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+};
+
 /** Input for the createCategory mutation. */
 export type CreateCategoryInput = {
   /** The slug that the category will be an alias of */
@@ -4214,6 +4489,60 @@ export type CreateCountryPayload = {
   country?: Maybe<Country>;
 };
 
+/** Input for the createCtaRegion mutation. */
+export type CreateCtaRegionInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the ctaRegion and ctaRegionTypes */
+  ctaRegionTypes?: InputMaybe<CtaRegionCtaRegionTypesInput>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars['String']['input']>;
+  /** The excerpt of the object */
+  excerpt?: InputMaybe<Scalars['String']['input']>;
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the createCtaRegion mutation. */
+export type CreateCtaRegionPayload = {
+  __typename?: 'CreateCtaRegionPayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The Post object mutation type. */
+  ctaRegion?: Maybe<CtaRegion>;
+};
+
+/** Input for the createCtaRegionType mutation. */
+export type CreateCtaRegionTypeInput = {
+  /** The slug that the cta_region_type will be an alias of */
+  aliasOf?: InputMaybe<Scalars['String']['input']>;
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The description of the cta_region_type object */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The name of the cta_region_type object to mutate */
+  name: Scalars['String']['input'];
+  /** If this argument exists then the slug will be checked to see if it is not an existing valid term. If that check succeeds (it is not a valid term), then it is added and the term id is given. If it fails, then a check is made to whether the taxonomy is hierarchical and the parent argument is not empty. If the second check succeeds, the term will be inserted and the term id will be given. If the slug argument is empty, then it will be calculated from the term name. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the createCtaRegionType mutation. */
+export type CreateCtaRegionTypePayload = {
+  __typename?: 'CreateCtaRegionTypePayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The created cta_region_type */
+  ctaRegionType?: Maybe<CtaRegionType>;
+};
+
 /** Input for the createEpisode mutation. */
 export type CreateEpisodeInput = {
   /** Set connections between the episode and categories */
@@ -4329,6 +4658,37 @@ export type CreateMediaItemPayload = {
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** The MediaItem object mutation type. */
   mediaItem?: Maybe<MediaItem>;
+};
+
+/** Input for the createNewsletter mutation. */
+export type CreateNewsletterInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The content of the object */
+  content?: InputMaybe<Scalars['String']['input']>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars['String']['input']>;
+  /** The excerpt of the object */
+  excerpt?: InputMaybe<Scalars['String']['input']>;
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the createNewsletter mutation. */
+export type CreateNewsletterPayload = {
+  __typename?: 'CreateNewsletterPayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The Post object mutation type. */
+  newsletter?: Maybe<Newsletter>;
 };
 
 /** Input for the createPage mutation. */
@@ -4732,6 +5092,672 @@ export type CreateUserPayload = {
   user?: Maybe<User>;
 };
 
+/** The ctaRegion type */
+export type CtaRegion = ContentNode & DatabaseIdentifier & Node & NodeWithExcerpt & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
+  __typename?: 'CtaRegion';
+  /** Connection between the ContentNode type and the ContentType type */
+  contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
+  /** The name of the Content Type the node belongs to */
+  contentTypeName: Scalars['String']['output'];
+  /** Fields to define CTA Region content. | Added to the GraphQL Schema because the ACF Field Group &quot;CTA Region Content&quot; was set to Show in GraphQL. */
+  ctaRegionContent?: Maybe<CtaRegion_Ctaregioncontent>;
+  /**
+   * The id field matches the WP_Post-&gt;ID field.
+   * @deprecated Deprecated in favor of the databaseId field
+   */
+  ctaRegionId: Scalars['Int']['output'];
+  /** Connection between the CtaRegion type and the ctaRegionType type */
+  ctaRegionTypes?: Maybe<CtaRegionToCtaRegionTypeConnection>;
+  /** The unique identifier stored in the database */
+  databaseId: Scalars['Int']['output'];
+  /** Post publishing date. */
+  date?: Maybe<Scalars['String']['output']>;
+  /** The publishing date set in GMT. */
+  dateGmt?: Maybe<Scalars['String']['output']>;
+  /** The desired slug of the post */
+  desiredSlug?: Maybe<Scalars['String']['output']>;
+  /** If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds */
+  editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
+  /** The RSS enclosure for the object */
+  enclosure?: Maybe<Scalars['String']['output']>;
+  /** Connection between the ContentNode type and the EnqueuedScript type */
+  enqueuedScripts?: Maybe<ContentNodeToEnqueuedScriptConnection>;
+  /** Connection between the ContentNode type and the EnqueuedStylesheet type */
+  enqueuedStylesheets?: Maybe<ContentNodeToEnqueuedStylesheetConnection>;
+  /** The excerpt of the post. */
+  excerpt?: Maybe<Scalars['String']['output']>;
+  /** The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table. */
+  guid?: Maybe<Scalars['String']['output']>;
+  /** The globally unique identifier of the cta_region object. */
+  id: Scalars['ID']['output'];
+  /** Whether the node is a Content Node */
+  isContentNode: Scalars['Boolean']['output'];
+  /** Whether the object is a node in the preview state */
+  isPreview?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the object is restricted from the current viewer */
+  isRestricted?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the node is a Term */
+  isTermNode: Scalars['Boolean']['output'];
+  /** The user that most recently edited the node */
+  lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
+  /** The permalink of the post */
+  link?: Maybe<Scalars['String']['output']>;
+  /** The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time. */
+  modified?: Maybe<Scalars['String']['output']>;
+  /** The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT. */
+  modifiedGmt?: Maybe<Scalars['String']['output']>;
+  /** Connection between the CtaRegion type and the ctaRegion type */
+  preview?: Maybe<CtaRegionToPreviewConnectionEdge>;
+  /** The database id of the preview node */
+  previewRevisionDatabaseId?: Maybe<Scalars['Int']['output']>;
+  /** Whether the object is a node in the preview state */
+  previewRevisionId?: Maybe<Scalars['ID']['output']>;
+  /** The Yoast SEO data of the ContentNode */
+  seo?: Maybe<PostTypeSeo>;
+  /** The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table. */
+  slug?: Maybe<Scalars['String']['output']>;
+  /** The current status of the object */
+  status?: Maybe<Scalars['String']['output']>;
+  /** The template assigned to the node */
+  template?: Maybe<ContentTemplate>;
+  /** Connection between the CtaRegion type and the TermNode type */
+  terms?: Maybe<CtaRegionToTermNodeConnection>;
+  /** The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made. */
+  title?: Maybe<Scalars['String']['output']>;
+  /** The unique resource identifier path */
+  uri?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** The ctaRegion type */
+export type CtaRegionCtaRegionTypesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CtaRegionToCtaRegionTypeConnectionWhereArgs>;
+};
+
+
+/** The ctaRegion type */
+export type CtaRegionEnqueuedScriptsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The ctaRegion type */
+export type CtaRegionEnqueuedStylesheetsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The ctaRegion type */
+export type CtaRegionExcerptArgs = {
+  format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+
+/** The ctaRegion type */
+export type CtaRegionTermsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CtaRegionToTermNodeConnectionWhereArgs>;
+};
+
+
+/** The ctaRegion type */
+export type CtaRegionTitleArgs = {
+  format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+/** Connection to ctaRegion Nodes */
+export type CtaRegionConnection = {
+  /** A list of edges (relational context) between RootQuery and connected ctaRegion Nodes */
+  edges: Array<CtaRegionConnectionEdge>;
+  /** A list of connected ctaRegion Nodes */
+  nodes: Array<CtaRegion>;
+  /** Information about pagination in a connection. */
+  pageInfo: CtaRegionConnectionPageInfo;
+};
+
+/** Edge between a Node and a connected ctaRegion */
+export type CtaRegionConnectionEdge = {
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The connected ctaRegion Node */
+  node: CtaRegion;
+};
+
+/** Page Info on the connected CtaRegionConnectionEdge */
+export type CtaRegionConnectionPageInfo = {
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Set relationships between the ctaRegion to ctaRegionTypes */
+export type CtaRegionCtaRegionTypesInput = {
+  /** If true, this will append the ctaRegionType to existing related ctaRegionTypes. If false, this will replace existing relationships. Default true. */
+  append?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The input list of items to set. */
+  nodes?: InputMaybe<Array<InputMaybe<CtaRegionCtaRegionTypesNodeInput>>>;
+};
+
+/** List of ctaRegionTypes to connect the ctaRegion to. If an ID is set, it will be used to create the connection. If not, it will look for a slug. If neither are valid existing terms, and the site is configured to allow terms to be created during post mutations, a term will be created using the Name if it exists in the input, then fallback to the slug if it exists. */
+export type CtaRegionCtaRegionTypesNodeInput = {
+  /** The description of the ctaRegionType. This field is used to set a description of the ctaRegionType if a new one is created during the mutation. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the ctaRegionType. If present, this will be used to connect to the ctaRegion. If no existing ctaRegionType exists with this ID, no connection will be made. */
+  id?: InputMaybe<Scalars['ID']['input']>;
+  /** The name of the ctaRegionType. This field is used to create a new term, if term creation is enabled in nested mutations, and if one does not already exist with the provided slug or ID or if a slug or ID is not provided. If no name is included and a term is created, the creation will fallback to the slug field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the ctaRegionType. If no ID is present, this field will be used to make a connection. If no existing term exists with this slug, this field will be used as a fallback to the Name field when creating a new term to connect to, if term creation is enabled as a nested mutation. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The Type of Identifier used to fetch a single resource. Default is ID. */
+export enum CtaRegionIdType {
+  /** Identify a resource by the Database ID. */
+  DatabaseId = 'DATABASE_ID',
+  /** Identify a resource by the (hashed) Global ID. */
+  Id = 'ID',
+  /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
+  Slug = 'SLUG',
+  /** Identify a resource by the URI. */
+  Uri = 'URI'
+}
+
+/** Connection between the CtaRegion type and the ctaRegionType type */
+export type CtaRegionToCtaRegionTypeConnection = Connection & CtaRegionTypeConnection & {
+  __typename?: 'CtaRegionToCtaRegionTypeConnection';
+  /** Edges for the CtaRegionToCtaRegionTypeConnection connection */
+  edges: Array<CtaRegionToCtaRegionTypeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<CtaRegionType>;
+  /** Information about pagination in a connection. */
+  pageInfo: CtaRegionToCtaRegionTypeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type CtaRegionToCtaRegionTypeConnectionEdge = CtaRegionTypeConnectionEdge & Edge & {
+  __typename?: 'CtaRegionToCtaRegionTypeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO Primary cta_region_type */
+  isPrimary?: Maybe<Scalars['Boolean']['output']>;
+  /** The item at the end of the edge */
+  node: CtaRegionType;
+};
+
+/** Page Info on the &quot;CtaRegionToCtaRegionTypeConnection&quot; */
+export type CtaRegionToCtaRegionTypeConnectionPageInfo = CtaRegionTypeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'CtaRegionToCtaRegionTypeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the CtaRegionToCtaRegionTypeConnection connection */
+export type CtaRegionToCtaRegionTypeConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Connection between the CtaRegion type and the ctaRegion type */
+export type CtaRegionToPreviewConnectionEdge = CtaRegionConnectionEdge & Edge & OneToOneConnection & {
+  __typename?: 'CtaRegionToPreviewConnectionEdge';
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The node of the connection, without the edges */
+  node: CtaRegion;
+};
+
+/** Connection between the CtaRegion type and the TermNode type */
+export type CtaRegionToTermNodeConnection = Connection & TermNodeConnection & {
+  __typename?: 'CtaRegionToTermNodeConnection';
+  /** Edges for the CtaRegionToTermNodeConnection connection */
+  edges: Array<CtaRegionToTermNodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<TermNode>;
+  /** Information about pagination in a connection. */
+  pageInfo: CtaRegionToTermNodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type CtaRegionToTermNodeConnectionEdge = Edge & TermNodeConnectionEdge & {
+  __typename?: 'CtaRegionToTermNodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: TermNode;
+};
+
+/** Page Info on the &quot;CtaRegionToTermNodeConnection&quot; */
+export type CtaRegionToTermNodeConnectionPageInfo = PageInfo & TermNodeConnectionPageInfo & WpPageInfo & {
+  __typename?: 'CtaRegionToTermNodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the CtaRegionToTermNodeConnection connection */
+export type CtaRegionToTermNodeConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** The Taxonomy to filter terms by */
+  taxonomies?: InputMaybe<Array<InputMaybe<TaxonomyEnum>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** The ctaRegionType type */
+export type CtaRegionType = DatabaseIdentifier & Node & TermNode & UniformResourceIdentifiable & {
+  __typename?: 'CtaRegionType';
+  /** Connection between the CtaRegionType type and the ContentNode type */
+  contentNodes?: Maybe<CtaRegionTypeToContentNodeConnection>;
+  /** The number of objects connected to the object */
+  count?: Maybe<Scalars['Int']['output']>;
+  /**
+   * The id field matches the WP_Post-&gt;ID field.
+   * @deprecated Deprecated in favor of databaseId
+   */
+  ctaRegionTypeId?: Maybe<Scalars['Int']['output']>;
+  /** Connection between the CtaRegionType type and the ctaRegion type */
+  ctaRegions?: Maybe<CtaRegionTypeToCtaRegionConnection>;
+  /** The unique identifier stored in the database */
+  databaseId: Scalars['Int']['output'];
+  /** The description of the object */
+  description?: Maybe<Scalars['String']['output']>;
+  /** Connection between the TermNode type and the EnqueuedScript type */
+  enqueuedScripts?: Maybe<TermNodeToEnqueuedScriptConnection>;
+  /** Connection between the TermNode type and the EnqueuedStylesheet type */
+  enqueuedStylesheets?: Maybe<TermNodeToEnqueuedStylesheetConnection>;
+  /** The unique resource identifier path */
+  id: Scalars['ID']['output'];
+  /** Whether the node is a Content Node */
+  isContentNode: Scalars['Boolean']['output'];
+  /** Whether the object is restricted from the current viewer */
+  isRestricted?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the node is a Term */
+  isTermNode: Scalars['Boolean']['output'];
+  /** The link to the term */
+  link?: Maybe<Scalars['String']['output']>;
+  /** The human friendly name of the object. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The Yoast SEO data of the CTA Region Types taxonomy. */
+  seo?: Maybe<TaxonomySeo>;
+  /** An alphanumeric identifier for the object unique to its type. */
+  slug?: Maybe<Scalars['String']['output']>;
+  /** Connection between the CtaRegionType type and the Taxonomy type */
+  taxonomy?: Maybe<CtaRegionTypeToTaxonomyConnectionEdge>;
+  /** The name of the taxonomy that the object is associated with */
+  taxonomyName?: Maybe<Scalars['String']['output']>;
+  /** The ID of the term group that this term object belongs to */
+  termGroupId?: Maybe<Scalars['Int']['output']>;
+  /** The taxonomy ID that the object is associated with */
+  termTaxonomyId?: Maybe<Scalars['Int']['output']>;
+  /** The unique resource identifier path */
+  uri?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** The ctaRegionType type */
+export type CtaRegionTypeContentNodesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CtaRegionTypeToContentNodeConnectionWhereArgs>;
+};
+
+
+/** The ctaRegionType type */
+export type CtaRegionTypeCtaRegionsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<CtaRegionTypeToCtaRegionConnectionWhereArgs>;
+};
+
+
+/** The ctaRegionType type */
+export type CtaRegionTypeEnqueuedScriptsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The ctaRegionType type */
+export type CtaRegionTypeEnqueuedStylesheetsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** Connection to ctaRegionType Nodes */
+export type CtaRegionTypeConnection = {
+  /** A list of edges (relational context) between RootQuery and connected ctaRegionType Nodes */
+  edges: Array<CtaRegionTypeConnectionEdge>;
+  /** A list of connected ctaRegionType Nodes */
+  nodes: Array<CtaRegionType>;
+  /** Information about pagination in a connection. */
+  pageInfo: CtaRegionTypeConnectionPageInfo;
+};
+
+/** Edge between a Node and a connected ctaRegionType */
+export type CtaRegionTypeConnectionEdge = {
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The connected ctaRegionType Node */
+  node: CtaRegionType;
+};
+
+/** Page Info on the connected CtaRegionTypeConnectionEdge */
+export type CtaRegionTypeConnectionPageInfo = {
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** The Type of Identifier used to fetch a single resource. Default is ID. */
+export enum CtaRegionTypeIdType {
+  /** The Database ID for the node */
+  DatabaseId = 'DATABASE_ID',
+  /** The hashed Global ID */
+  Id = 'ID',
+  /** The name of the node */
+  Name = 'NAME',
+  /** Url friendly name of the node */
+  Slug = 'SLUG',
+  /** The URI for the node */
+  Uri = 'URI'
+}
+
+/** Connection between the CtaRegionType type and the ContentNode type */
+export type CtaRegionTypeToContentNodeConnection = Connection & ContentNodeConnection & {
+  __typename?: 'CtaRegionTypeToContentNodeConnection';
+  /** Edges for the CtaRegionTypeToContentNodeConnection connection */
+  edges: Array<CtaRegionTypeToContentNodeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<ContentNode>;
+  /** Information about pagination in a connection. */
+  pageInfo: CtaRegionTypeToContentNodeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type CtaRegionTypeToContentNodeConnectionEdge = ContentNodeConnectionEdge & Edge & {
+  __typename?: 'CtaRegionTypeToContentNodeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: ContentNode;
+};
+
+/** Page Info on the &quot;CtaRegionTypeToContentNodeConnection&quot; */
+export type CtaRegionTypeToContentNodeConnectionPageInfo = ContentNodeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'CtaRegionTypeToContentNodeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the CtaRegionTypeToContentNodeConnection connection */
+export type CtaRegionTypeToContentNodeConnectionWhereArgs = {
+  /** The Types of content to filter */
+  contentTypes?: InputMaybe<Array<InputMaybe<ContentTypesOfCtaRegionTypeEnum>>>;
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the CtaRegionType type and the ctaRegion type */
+export type CtaRegionTypeToCtaRegionConnection = Connection & CtaRegionConnection & {
+  __typename?: 'CtaRegionTypeToCtaRegionConnection';
+  /** Edges for the CtaRegionTypeToCtaRegionConnection connection */
+  edges: Array<CtaRegionTypeToCtaRegionConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<CtaRegion>;
+  /** Information about pagination in a connection. */
+  pageInfo: CtaRegionTypeToCtaRegionConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type CtaRegionTypeToCtaRegionConnectionEdge = CtaRegionConnectionEdge & Edge & {
+  __typename?: 'CtaRegionTypeToCtaRegionConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: CtaRegion;
+};
+
+/** Page Info on the &quot;CtaRegionTypeToCtaRegionConnection&quot; */
+export type CtaRegionTypeToCtaRegionConnectionPageInfo = CtaRegionConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'CtaRegionTypeToCtaRegionConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the CtaRegionTypeToCtaRegionConnection connection */
+export type CtaRegionTypeToCtaRegionConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the CtaRegionType type and the Taxonomy type */
+export type CtaRegionTypeToTaxonomyConnectionEdge = Edge & OneToOneConnection & TaxonomyConnectionEdge & {
+  __typename?: 'CtaRegionTypeToTaxonomyConnectionEdge';
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The node of the connection, without the edges */
+  node: Taxonomy;
+};
+
+/** Field Group */
+export type CtaRegion_Ctaregioncontent = AcfFieldGroup & {
+  __typename?: 'CtaRegion_Ctaregioncontent';
+  callToActions?: Maybe<Array<Maybe<CtaRegion_Ctaregioncontent_CallToActions>>>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+export type CtaRegion_Ctaregioncontent_CallToActions = CallToAction;
+
 /** Object that can be identified with a Database ID */
 export type DatabaseIdentifier = {
   /** The unique identifier stored in the database */
@@ -4783,6 +5809,29 @@ export type DefaultTemplate = ContentTemplate & {
   __typename?: 'DefaultTemplate';
   /** The name of the template */
   templateName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Input for the deleteCallToAction mutation. */
+export type DeleteCallToActionInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** Whether the object should be force deleted instead of being moved to the trash */
+  forceDelete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The ID of the callToAction to delete */
+  id: Scalars['ID']['input'];
+  /** Override the edit lock when another user is editing the post */
+  ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** The payload for the deleteCallToAction mutation. */
+export type DeleteCallToActionPayload = {
+  __typename?: 'DeleteCallToActionPayload';
+  /** The object before it was deleted */
+  callToAction?: Maybe<CallToAction>;
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The ID of the deleted object */
+  deletedId?: Maybe<Scalars['ID']['output']>;
 };
 
 /** Input for the deleteCategory mutation. */
@@ -4901,6 +5950,48 @@ export type DeleteCountryPayload = {
   deletedId?: Maybe<Scalars['ID']['output']>;
 };
 
+/** Input for the deleteCtaRegion mutation. */
+export type DeleteCtaRegionInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** Whether the object should be force deleted instead of being moved to the trash */
+  forceDelete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The ID of the ctaRegion to delete */
+  id: Scalars['ID']['input'];
+  /** Override the edit lock when another user is editing the post */
+  ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** The payload for the deleteCtaRegion mutation. */
+export type DeleteCtaRegionPayload = {
+  __typename?: 'DeleteCtaRegionPayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The object before it was deleted */
+  ctaRegion?: Maybe<CtaRegion>;
+  /** The ID of the deleted object */
+  deletedId?: Maybe<Scalars['ID']['output']>;
+};
+
+/** Input for the deleteCtaRegionType mutation. */
+export type DeleteCtaRegionTypeInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the ctaRegionType to delete */
+  id: Scalars['ID']['input'];
+};
+
+/** The payload for the deleteCtaRegionType mutation. */
+export type DeleteCtaRegionTypePayload = {
+  __typename?: 'DeleteCtaRegionTypePayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The deteted term object */
+  ctaRegionType?: Maybe<CtaRegionType>;
+  /** The ID of the deleted object */
+  deletedId?: Maybe<Scalars['ID']['output']>;
+};
+
 /** Input for the deleteEpisode mutation. */
 export type DeleteEpisodeInput = {
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
@@ -4962,6 +6053,29 @@ export type DeleteMediaItemPayload = {
   deletedId?: Maybe<Scalars['ID']['output']>;
   /** The mediaItem before it was deleted */
   mediaItem?: Maybe<MediaItem>;
+};
+
+/** Input for the deleteNewsletter mutation. */
+export type DeleteNewsletterInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** Whether the object should be force deleted instead of being moved to the trash */
+  forceDelete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The ID of the newsletter to delete */
+  id: Scalars['ID']['input'];
+  /** Override the edit lock when another user is editing the post */
+  ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** The payload for the deleteNewsletter mutation. */
+export type DeleteNewsletterPayload = {
+  __typename?: 'DeleteNewsletterPayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The ID of the deleted object */
+  deletedId?: Maybe<Scalars['ID']['output']>;
+  /** The object before it was deleted */
+  newsletter?: Maybe<Newsletter>;
 };
 
 /** Input for the deletePage mutation. */
@@ -7232,8 +8346,6 @@ export type License = DatabaseIdentifier & MenuItemLinkable & Node & TermNode & 
   isRestricted?: Maybe<Scalars['Boolean']['output']>;
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Landing Page&quot; was set to Show in GraphQL. */
-  landingPage?: Maybe<License_Landingpage>;
   /**
    * The id field matches the WP_Post-&gt;ID field.
    * @deprecated Deprecated in favor of databaseId
@@ -7251,8 +8363,6 @@ export type License = DatabaseIdentifier & MenuItemLinkable & Node & TermNode & 
   slug?: Maybe<Scalars['String']['output']>;
   /** Connection between the License type and the Taxonomy type */
   taxonomy?: Maybe<LicenseToTaxonomyConnectionEdge>;
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Taxonomy Images&quot; was set to Show in GraphQL. */
-  taxonomyImages?: Maybe<License_Taxonomyimages>;
   /** The name of the taxonomy that the object is associated with */
   taxonomyName?: Maybe<Scalars['String']['output']>;
   /** The ID of the term group that this term object belongs to */
@@ -7510,25 +8620,6 @@ export type LicenseToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxono
   cursor?: Maybe<Scalars['String']['output']>;
   /** The node of the connection, without the edges */
   node: Taxonomy;
-};
-
-/** Field Group */
-export type License_Landingpage = AcfFieldGroup & {
-  __typename?: 'License_Landingpage';
-  featuredPosts?: Maybe<Array<Maybe<License_Landingpage_FeaturedPosts>>>;
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-};
-
-export type License_Landingpage_FeaturedPosts = Post;
-
-/** Field Group */
-export type License_Taxonomyimages = AcfFieldGroup & {
-  __typename?: 'License_Taxonomyimages';
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  imageBanner?: Maybe<MediaItem>;
-  logo?: Maybe<MediaItem>;
 };
 
 /** File details for a Media Item */
@@ -8355,7 +9446,7 @@ export enum MenuItemNodeIdTypeEnum {
 }
 
 /** Deprecated in favor of MenuItemLinkeable Interface */
-export type MenuItemObjectUnion = Category | Episode | License | Page | Post | Program | ResourceDevelopmentTag | Segment | StoryFormat | Tag;
+export type MenuItemObjectUnion = Category | Episode | License | Newsletter | Page | Post | Program | ResourceDevelopmentTag | Segment | StoryFormat | Tag;
 
 /** Connection between the MenuItem type and the Menu type */
 export type MenuItemToMenuConnectionEdge = Edge & MenuConnectionEdge & OneToOneConnection & {
@@ -8501,185 +9592,367 @@ export type MenuToMenuItemConnectionWhereArgs = {
 
 /** The MimeType of the object */
 export enum MimeTypeEnum {
-  /** MimeType application/java */
+  /** application/java mime type. */
   ApplicationJava = 'APPLICATION_JAVA',
-  /** MimeType application/msword */
+  /** application/msword mime type. */
   ApplicationMsword = 'APPLICATION_MSWORD',
-  /** MimeType application/octet-stream */
+  /** application/octet-stream mime type. */
   ApplicationOctetStream = 'APPLICATION_OCTET_STREAM',
-  /** MimeType application/onenote */
+  /** application/onenote mime type. */
   ApplicationOnenote = 'APPLICATION_ONENOTE',
-  /** MimeType application/oxps */
+  /** application/oxps mime type. */
   ApplicationOxps = 'APPLICATION_OXPS',
-  /** MimeType application/pdf */
+  /** application/pdf mime type. */
   ApplicationPdf = 'APPLICATION_PDF',
-  /** MimeType application/rar */
+  /** application/rar mime type. */
   ApplicationRar = 'APPLICATION_RAR',
-  /** MimeType application/rtf */
+  /** application/rtf mime type. */
   ApplicationRtf = 'APPLICATION_RTF',
-  /** MimeType application/ttaf+xml */
+  /** application/ttaf+xml mime type. */
   ApplicationTtafXml = 'APPLICATION_TTAF_XML',
-  /** MimeType application/vnd.apple.keynote */
+  /** application/vnd.apple.keynote mime type. */
   ApplicationVndAppleKeynote = 'APPLICATION_VND_APPLE_KEYNOTE',
-  /** MimeType application/vnd.apple.numbers */
+  /** application/vnd.apple.numbers mime type. */
   ApplicationVndAppleNumbers = 'APPLICATION_VND_APPLE_NUMBERS',
-  /** MimeType application/vnd.apple.pages */
+  /** application/vnd.apple.pages mime type. */
   ApplicationVndApplePages = 'APPLICATION_VND_APPLE_PAGES',
-  /** MimeType application/vnd.ms-access */
+  /** application/vnd.ms-access mime type. */
   ApplicationVndMsAccess = 'APPLICATION_VND_MS_ACCESS',
-  /** MimeType application/vnd.ms-excel */
+  /** application/vnd.ms-excel mime type. */
   ApplicationVndMsExcel = 'APPLICATION_VND_MS_EXCEL',
-  /** MimeType application/vnd.ms-excel.addin.macroEnabled.12 */
+  /** application/vnd.ms-excel.addin.macroEnabled.12 mime type. */
   ApplicationVndMsExcelAddinMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_ADDIN_MACROENABLED_12',
-  /** MimeType application/vnd.ms-excel.sheet.binary.macroEnabled.12 */
+  /** application/vnd.ms-excel.sheet.binary.macroEnabled.12 mime type. */
   ApplicationVndMsExcelSheetBinaryMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_SHEET_BINARY_MACROENABLED_12',
-  /** MimeType application/vnd.ms-excel.sheet.macroEnabled.12 */
+  /** application/vnd.ms-excel.sheet.macroEnabled.12 mime type. */
   ApplicationVndMsExcelSheetMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_SHEET_MACROENABLED_12',
-  /** MimeType application/vnd.ms-excel.template.macroEnabled.12 */
+  /** application/vnd.ms-excel.template.macroEnabled.12 mime type. */
   ApplicationVndMsExcelTemplateMacroenabled_12 = 'APPLICATION_VND_MS_EXCEL_TEMPLATE_MACROENABLED_12',
-  /** MimeType application/vnd.ms-powerpoint */
+  /** application/vnd.ms-powerpoint mime type. */
   ApplicationVndMsPowerpoint = 'APPLICATION_VND_MS_POWERPOINT',
-  /** MimeType application/vnd.ms-powerpoint.addin.macroEnabled.12 */
+  /** application/vnd.ms-powerpoint.addin.macroEnabled.12 mime type. */
   ApplicationVndMsPowerpointAddinMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_ADDIN_MACROENABLED_12',
-  /** MimeType application/vnd.ms-powerpoint.presentation.macroEnabled.12 */
+  /** application/vnd.ms-powerpoint.presentation.macroEnabled.12 mime type. */
   ApplicationVndMsPowerpointPresentationMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_PRESENTATION_MACROENABLED_12',
-  /** MimeType application/vnd.ms-powerpoint.slideshow.macroEnabled.12 */
+  /** application/vnd.ms-powerpoint.slideshow.macroEnabled.12 mime type. */
   ApplicationVndMsPowerpointSlideshowMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_SLIDESHOW_MACROENABLED_12',
-  /** MimeType application/vnd.ms-powerpoint.slide.macroEnabled.12 */
+  /** application/vnd.ms-powerpoint.slide.macroEnabled.12 mime type. */
   ApplicationVndMsPowerpointSlideMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_SLIDE_MACROENABLED_12',
-  /** MimeType application/vnd.ms-powerpoint.template.macroEnabled.12 */
+  /** application/vnd.ms-powerpoint.template.macroEnabled.12 mime type. */
   ApplicationVndMsPowerpointTemplateMacroenabled_12 = 'APPLICATION_VND_MS_POWERPOINT_TEMPLATE_MACROENABLED_12',
-  /** MimeType application/vnd.ms-project */
+  /** application/vnd.ms-project mime type. */
   ApplicationVndMsProject = 'APPLICATION_VND_MS_PROJECT',
-  /** MimeType application/vnd.ms-word.document.macroEnabled.12 */
+  /** application/vnd.ms-word.document.macroEnabled.12 mime type. */
   ApplicationVndMsWordDocumentMacroenabled_12 = 'APPLICATION_VND_MS_WORD_DOCUMENT_MACROENABLED_12',
-  /** MimeType application/vnd.ms-word.template.macroEnabled.12 */
+  /** application/vnd.ms-word.template.macroEnabled.12 mime type. */
   ApplicationVndMsWordTemplateMacroenabled_12 = 'APPLICATION_VND_MS_WORD_TEMPLATE_MACROENABLED_12',
-  /** MimeType application/vnd.ms-write */
+  /** application/vnd.ms-write mime type. */
   ApplicationVndMsWrite = 'APPLICATION_VND_MS_WRITE',
-  /** MimeType application/vnd.ms-xpsdocument */
+  /** application/vnd.ms-xpsdocument mime type. */
   ApplicationVndMsXpsdocument = 'APPLICATION_VND_MS_XPSDOCUMENT',
-  /** MimeType application/vnd.oasis.opendocument.chart */
+  /** application/vnd.oasis.opendocument.chart mime type. */
   ApplicationVndOasisOpendocumentChart = 'APPLICATION_VND_OASIS_OPENDOCUMENT_CHART',
-  /** MimeType application/vnd.oasis.opendocument.database */
+  /** application/vnd.oasis.opendocument.database mime type. */
   ApplicationVndOasisOpendocumentDatabase = 'APPLICATION_VND_OASIS_OPENDOCUMENT_DATABASE',
-  /** MimeType application/vnd.oasis.opendocument.formula */
+  /** application/vnd.oasis.opendocument.formula mime type. */
   ApplicationVndOasisOpendocumentFormula = 'APPLICATION_VND_OASIS_OPENDOCUMENT_FORMULA',
-  /** MimeType application/vnd.oasis.opendocument.graphics */
+  /** application/vnd.oasis.opendocument.graphics mime type. */
   ApplicationVndOasisOpendocumentGraphics = 'APPLICATION_VND_OASIS_OPENDOCUMENT_GRAPHICS',
-  /** MimeType application/vnd.oasis.opendocument.presentation */
+  /** application/vnd.oasis.opendocument.presentation mime type. */
   ApplicationVndOasisOpendocumentPresentation = 'APPLICATION_VND_OASIS_OPENDOCUMENT_PRESENTATION',
-  /** MimeType application/vnd.oasis.opendocument.spreadsheet */
+  /** application/vnd.oasis.opendocument.spreadsheet mime type. */
   ApplicationVndOasisOpendocumentSpreadsheet = 'APPLICATION_VND_OASIS_OPENDOCUMENT_SPREADSHEET',
-  /** MimeType application/vnd.oasis.opendocument.text */
+  /** application/vnd.oasis.opendocument.text mime type. */
   ApplicationVndOasisOpendocumentText = 'APPLICATION_VND_OASIS_OPENDOCUMENT_TEXT',
-  /** MimeType application/vnd.openxmlformats-officedocument.presentationml.presentation */
+  /** application/vnd.openxmlformats-officedocument.presentationml.presentation mime type. */
   ApplicationVndOpenxmlformatsOfficedocumentPresentationmlPresentation = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_PRESENTATION',
-  /** MimeType application/vnd.openxmlformats-officedocument.presentationml.slide */
+  /** application/vnd.openxmlformats-officedocument.presentationml.slide mime type. */
   ApplicationVndOpenxmlformatsOfficedocumentPresentationmlSlide = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDE',
-  /** MimeType application/vnd.openxmlformats-officedocument.presentationml.slideshow */
+  /** application/vnd.openxmlformats-officedocument.presentationml.slideshow mime type. */
   ApplicationVndOpenxmlformatsOfficedocumentPresentationmlSlideshow = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDESHOW',
-  /** MimeType application/vnd.openxmlformats-officedocument.presentationml.template */
+  /** application/vnd.openxmlformats-officedocument.presentationml.template mime type. */
   ApplicationVndOpenxmlformatsOfficedocumentPresentationmlTemplate = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_TEMPLATE',
-  /** MimeType application/vnd.openxmlformats-officedocument.spreadsheetml.sheet */
+  /** application/vnd.openxmlformats-officedocument.spreadsheetml.sheet mime type. */
   ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlSheet = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_SHEET',
-  /** MimeType application/vnd.openxmlformats-officedocument.spreadsheetml.template */
+  /** application/vnd.openxmlformats-officedocument.spreadsheetml.template mime type. */
   ApplicationVndOpenxmlformatsOfficedocumentSpreadsheetmlTemplate = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_TEMPLATE',
-  /** MimeType application/vnd.openxmlformats-officedocument.wordprocessingml.document */
+  /** application/vnd.openxmlformats-officedocument.wordprocessingml.document mime type. */
   ApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlDocument = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_DOCUMENT',
-  /** MimeType application/vnd.openxmlformats-officedocument.wordprocessingml.template */
+  /** application/vnd.openxmlformats-officedocument.wordprocessingml.template mime type. */
   ApplicationVndOpenxmlformatsOfficedocumentWordprocessingmlTemplate = 'APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_TEMPLATE',
-  /** MimeType application/wordperfect */
+  /** application/wordperfect mime type. */
   ApplicationWordperfect = 'APPLICATION_WORDPERFECT',
-  /** MimeType application/x-7z-compressed */
+  /** application/x-7z-compressed mime type. */
   ApplicationX_7ZCompressed = 'APPLICATION_X_7Z_COMPRESSED',
-  /** MimeType application/x-gzip */
+  /** application/x-gzip mime type. */
   ApplicationXGzip = 'APPLICATION_X_GZIP',
-  /** MimeType application/x-tar */
+  /** application/x-tar mime type. */
   ApplicationXTar = 'APPLICATION_X_TAR',
-  /** MimeType application/zip */
+  /** application/zip mime type. */
   ApplicationZip = 'APPLICATION_ZIP',
-  /** MimeType audio/aac */
+  /** audio/aac mime type. */
   AudioAac = 'AUDIO_AAC',
-  /** MimeType audio/flac */
+  /** audio/flac mime type. */
   AudioFlac = 'AUDIO_FLAC',
-  /** MimeType audio/midi */
+  /** audio/midi mime type. */
   AudioMidi = 'AUDIO_MIDI',
-  /** MimeType audio/mpeg */
+  /** audio/mpeg mime type. */
   AudioMpeg = 'AUDIO_MPEG',
-  /** MimeType audio/ogg */
+  /** audio/ogg mime type. */
   AudioOgg = 'AUDIO_OGG',
-  /** MimeType audio/wav */
+  /** audio/wav mime type. */
   AudioWav = 'AUDIO_WAV',
-  /** MimeType audio/x-matroska */
+  /** audio/x-matroska mime type. */
   AudioXMatroska = 'AUDIO_X_MATROSKA',
-  /** MimeType audio/x-ms-wax */
+  /** audio/x-ms-wax mime type. */
   AudioXMsWax = 'AUDIO_X_MS_WAX',
-  /** MimeType audio/x-ms-wma */
+  /** audio/x-ms-wma mime type. */
   AudioXMsWma = 'AUDIO_X_MS_WMA',
-  /** MimeType audio/x-realaudio */
+  /** audio/x-realaudio mime type. */
   AudioXRealaudio = 'AUDIO_X_REALAUDIO',
-  /** MimeType image/bmp */
+  /** image/bmp mime type. */
   ImageBmp = 'IMAGE_BMP',
-  /** MimeType image/gif */
+  /** image/gif mime type. */
   ImageGif = 'IMAGE_GIF',
-  /** MimeType image/heic */
+  /** image/heic mime type. */
   ImageHeic = 'IMAGE_HEIC',
-  /** MimeType image/jpeg */
+  /** image/jpeg mime type. */
   ImageJpeg = 'IMAGE_JPEG',
-  /** MimeType image/png */
+  /** image/png mime type. */
   ImagePng = 'IMAGE_PNG',
-  /** MimeType image/tiff */
+  /** image/tiff mime type. */
   ImageTiff = 'IMAGE_TIFF',
-  /** MimeType image/webp */
+  /** image/webp mime type. */
   ImageWebp = 'IMAGE_WEBP',
-  /** MimeType image/x-icon */
+  /** image/x-icon mime type. */
   ImageXIcon = 'IMAGE_X_ICON',
-  /** MimeType text/calendar */
+  /** text/calendar mime type. */
   TextCalendar = 'TEXT_CALENDAR',
-  /** MimeType text/css */
+  /** text/css mime type. */
   TextCss = 'TEXT_CSS',
-  /** MimeType text/csv */
+  /** text/csv mime type. */
   TextCsv = 'TEXT_CSV',
-  /** MimeType text/plain */
+  /** text/plain mime type. */
   TextPlain = 'TEXT_PLAIN',
-  /** MimeType text/richtext */
+  /** text/richtext mime type. */
   TextRichtext = 'TEXT_RICHTEXT',
-  /** MimeType text/tab-separated-values */
+  /** text/tab-separated-values mime type. */
   TextTabSeparatedValues = 'TEXT_TAB_SEPARATED_VALUES',
-  /** MimeType text/vtt */
+  /** text/vtt mime type. */
   TextVtt = 'TEXT_VTT',
-  /** MimeType video/3gpp */
+  /** video/3gpp mime type. */
   Video_3Gpp = 'VIDEO_3GPP',
-  /** MimeType video/3gpp2 */
+  /** video/3gpp2 mime type. */
   Video_3Gpp2 = 'VIDEO_3GPP2',
-  /** MimeType video/avi */
+  /** video/avi mime type. */
   VideoAvi = 'VIDEO_AVI',
-  /** MimeType video/divx */
+  /** video/divx mime type. */
   VideoDivx = 'VIDEO_DIVX',
-  /** MimeType video/mp4 */
+  /** video/mp4 mime type. */
   VideoMp4 = 'VIDEO_MP4',
-  /** MimeType video/mpeg */
+  /** video/mpeg mime type. */
   VideoMpeg = 'VIDEO_MPEG',
-  /** MimeType video/ogg */
+  /** video/ogg mime type. */
   VideoOgg = 'VIDEO_OGG',
-  /** MimeType video/quicktime */
+  /** video/quicktime mime type. */
   VideoQuicktime = 'VIDEO_QUICKTIME',
-  /** MimeType video/webm */
+  /** video/webm mime type. */
   VideoWebm = 'VIDEO_WEBM',
-  /** MimeType video/x-flv */
+  /** video/x-flv mime type. */
   VideoXFlv = 'VIDEO_X_FLV',
-  /** MimeType video/x-matroska */
+  /** video/x-matroska mime type. */
   VideoXMatroska = 'VIDEO_X_MATROSKA',
-  /** MimeType video/x-ms-asf */
+  /** video/x-ms-asf mime type. */
   VideoXMsAsf = 'VIDEO_X_MS_ASF',
-  /** MimeType video/x-ms-wm */
+  /** video/x-ms-wm mime type. */
   VideoXMsWm = 'VIDEO_X_MS_WM',
-  /** MimeType video/x-ms-wmv */
+  /** video/x-ms-wmv mime type. */
   VideoXMsWmv = 'VIDEO_X_MS_WMV',
-  /** MimeType video/x-ms-wmx */
+  /** video/x-ms-wmx mime type. */
   VideoXMsWmx = 'VIDEO_X_MS_WMX'
 }
+
+/** The newsletter type */
+export type Newsletter = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithExcerpt & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
+  __typename?: 'Newsletter';
+  /** The content of the post. */
+  content?: Maybe<Scalars['String']['output']>;
+  /** Connection between the ContentNode type and the ContentType type */
+  contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
+  /** The name of the Content Type the node belongs to */
+  contentTypeName: Scalars['String']['output'];
+  /** The unique identifier stored in the database */
+  databaseId: Scalars['Int']['output'];
+  /** Post publishing date. */
+  date?: Maybe<Scalars['String']['output']>;
+  /** The publishing date set in GMT. */
+  dateGmt?: Maybe<Scalars['String']['output']>;
+  /** The desired slug of the post */
+  desiredSlug?: Maybe<Scalars['String']['output']>;
+  /** If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds */
+  editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
+  /** The RSS enclosure for the object */
+  enclosure?: Maybe<Scalars['String']['output']>;
+  /** Connection between the ContentNode type and the EnqueuedScript type */
+  enqueuedScripts?: Maybe<ContentNodeToEnqueuedScriptConnection>;
+  /** Connection between the ContentNode type and the EnqueuedStylesheet type */
+  enqueuedStylesheets?: Maybe<ContentNodeToEnqueuedStylesheetConnection>;
+  /** The excerpt of the post. */
+  excerpt?: Maybe<Scalars['String']['output']>;
+  /** Connection between the NodeWithFeaturedImage type and the MediaItem type */
+  featuredImage?: Maybe<NodeWithFeaturedImageToMediaItemConnectionEdge>;
+  /** The database identifier for the featured image node assigned to the content node */
+  featuredImageDatabaseId?: Maybe<Scalars['Int']['output']>;
+  /** Globally unique ID of the featured image assigned to the node */
+  featuredImageId?: Maybe<Scalars['ID']['output']>;
+  /** The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table. */
+  guid?: Maybe<Scalars['String']['output']>;
+  /** The globally unique identifier of the newsletter object. */
+  id: Scalars['ID']['output'];
+  /** Whether the node is a Content Node */
+  isContentNode: Scalars['Boolean']['output'];
+  /** Whether the object is a node in the preview state */
+  isPreview?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the object is restricted from the current viewer */
+  isRestricted?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the node is a Term */
+  isTermNode: Scalars['Boolean']['output'];
+  /** The user that most recently edited the node */
+  lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
+  /** The permalink of the post */
+  link?: Maybe<Scalars['String']['output']>;
+  /** The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time. */
+  modified?: Maybe<Scalars['String']['output']>;
+  /** The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT. */
+  modifiedGmt?: Maybe<Scalars['String']['output']>;
+  /**
+   * The id field matches the WP_Post-&gt;ID field.
+   * @deprecated Deprecated in favor of the databaseId field
+   */
+  newsletterId: Scalars['Int']['output'];
+  /** Added to the GraphQL Schema because the ACF Field Group &quot;Newsletter Options&quot; was set to Show in GraphQL. */
+  newsletterOptions?: Maybe<Newsletter_Newsletteroptions>;
+  /** Connection between the Newsletter type and the newsletter type */
+  preview?: Maybe<NewsletterToPreviewConnectionEdge>;
+  /** The database id of the preview node */
+  previewRevisionDatabaseId?: Maybe<Scalars['Int']['output']>;
+  /** Whether the object is a node in the preview state */
+  previewRevisionId?: Maybe<Scalars['ID']['output']>;
+  /** The Yoast SEO data of the ContentNode */
+  seo?: Maybe<PostTypeSeo>;
+  /** The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table. */
+  slug?: Maybe<Scalars['String']['output']>;
+  /** The current status of the object */
+  status?: Maybe<Scalars['String']['output']>;
+  /** The template assigned to the node */
+  template?: Maybe<ContentTemplate>;
+  /** The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made. */
+  title?: Maybe<Scalars['String']['output']>;
+  /** The unique resource identifier path */
+  uri?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** The newsletter type */
+export type NewsletterContentArgs = {
+  format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+
+/** The newsletter type */
+export type NewsletterEnqueuedScriptsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The newsletter type */
+export type NewsletterEnqueuedStylesheetsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The newsletter type */
+export type NewsletterExcerptArgs = {
+  format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+
+/** The newsletter type */
+export type NewsletterTitleArgs = {
+  format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+/** Connection to newsletter Nodes */
+export type NewsletterConnection = {
+  /** A list of edges (relational context) between RootQuery and connected newsletter Nodes */
+  edges: Array<NewsletterConnectionEdge>;
+  /** A list of connected newsletter Nodes */
+  nodes: Array<Newsletter>;
+  /** Information about pagination in a connection. */
+  pageInfo: NewsletterConnectionPageInfo;
+};
+
+/** Edge between a Node and a connected newsletter */
+export type NewsletterConnectionEdge = {
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The connected newsletter Node */
+  node: Newsletter;
+};
+
+/** Page Info on the connected NewsletterConnectionEdge */
+export type NewsletterConnectionPageInfo = {
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** The Type of Identifier used to fetch a single resource. Default is ID. */
+export enum NewsletterIdType {
+  /** Identify a resource by the Database ID. */
+  DatabaseId = 'DATABASE_ID',
+  /** Identify a resource by the (hashed) Global ID. */
+  Id = 'ID',
+  /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
+  Slug = 'SLUG',
+  /** Identify a resource by the URI. */
+  Uri = 'URI'
+}
+
+/** Connection between the Newsletter type and the newsletter type */
+export type NewsletterToPreviewConnectionEdge = Edge & NewsletterConnectionEdge & OneToOneConnection & {
+  __typename?: 'NewsletterToPreviewConnectionEdge';
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The node of the connection, without the edges */
+  node: Newsletter;
+};
+
+/** Field Group */
+export type Newsletter_Newsletteroptions = AcfFieldGroup & {
+  __typename?: 'Newsletter_Newsletteroptions';
+  /** Text to use in sign up form&#039;s submit button. */
+  buttonLabel?: Maybe<Scalars['String']['output']>;
+  /** The name of the ACF Field Group */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** To get the ID of the list, in CM, go to &lt;b&gt;Lists &amp; Subscribers&lt;/b&gt;, choose the list you want and click on &lt;b&gt;change name/type&lt;/b&gt;. */
+  listId?: Maybe<Scalars['String']['output']>;
+  /** Text to use as the label next to opt-in checkbox. Should include conformation of accepting privacy terms and include a link to a privacy policy page. */
+  optInText?: Maybe<Scalars['String']['output']>;
+};
 
 /** An object with an ID */
 export type Node = {
@@ -10240,8 +11513,6 @@ export type PostFormat = DatabaseIdentifier & Node & TermNode & UniformResourceI
   isRestricted?: Maybe<Scalars['Boolean']['output']>;
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Landing Page&quot; was set to Show in GraphQL. */
-  landingPage?: Maybe<PostFormat_Landingpage>;
   /** The link to the term */
   link?: Maybe<Scalars['String']['output']>;
   /** The human friendly name of the object. */
@@ -10259,8 +11530,6 @@ export type PostFormat = DatabaseIdentifier & Node & TermNode & UniformResourceI
   slug?: Maybe<Scalars['String']['output']>;
   /** Connection between the PostFormat type and the Taxonomy type */
   taxonomy?: Maybe<PostFormatToTaxonomyConnectionEdge>;
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Taxonomy Images&quot; was set to Show in GraphQL. */
-  taxonomyImages?: Maybe<PostFormat_Taxonomyimages>;
   /** The name of the taxonomy that the object is associated with */
   taxonomyName?: Maybe<Scalars['String']['output']>;
   /** The ID of the term group that this term object belongs to */
@@ -10538,25 +11807,6 @@ export type PostFormatToTaxonomyConnectionEdge = Edge & OneToOneConnection & Tax
   cursor?: Maybe<Scalars['String']['output']>;
   /** The node of the connection, without the edges */
   node: Taxonomy;
-};
-
-/** Field Group */
-export type PostFormat_Landingpage = AcfFieldGroup & {
-  __typename?: 'PostFormat_Landingpage';
-  featuredPosts?: Maybe<Array<Maybe<PostFormat_Landingpage_FeaturedPosts>>>;
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-};
-
-export type PostFormat_Landingpage_FeaturedPosts = Post;
-
-/** Field Group */
-export type PostFormat_Taxonomyimages = AcfFieldGroup & {
-  __typename?: 'PostFormat_Taxonomyimages';
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  imageBanner?: Maybe<MediaItem>;
-  logo?: Maybe<MediaItem>;
 };
 
 /** The Type of Identifier used to fetch a single resource. Default is ID. */
@@ -14129,8 +15379,6 @@ export type ResourceDevelopmentTag = DatabaseIdentifier & MenuItemLinkable & Nod
   isRestricted?: Maybe<Scalars['Boolean']['output']>;
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Landing Page&quot; was set to Show in GraphQL. */
-  landingPage?: Maybe<ResourceDevelopmentTag_Landingpage>;
   /** The link to the term */
   link?: Maybe<Scalars['String']['output']>;
   /** The human friendly name of the object. */
@@ -14148,8 +15396,6 @@ export type ResourceDevelopmentTag = DatabaseIdentifier & MenuItemLinkable & Nod
   slug?: Maybe<Scalars['String']['output']>;
   /** Connection between the ResourceDevelopmentTag type and the Taxonomy type */
   taxonomy?: Maybe<ResourceDevelopmentTagToTaxonomyConnectionEdge>;
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Taxonomy Images&quot; was set to Show in GraphQL. */
-  taxonomyImages?: Maybe<ResourceDevelopmentTag_Taxonomyimages>;
   /** The name of the taxonomy that the object is associated with */
   taxonomyName?: Maybe<Scalars['String']['output']>;
   /** The ID of the term group that this term object belongs to */
@@ -14429,25 +15675,6 @@ export type ResourceDevelopmentTagToTaxonomyConnectionEdge = Edge & OneToOneConn
   node: Taxonomy;
 };
 
-/** Field Group */
-export type ResourceDevelopmentTag_Landingpage = AcfFieldGroup & {
-  __typename?: 'ResourceDevelopmentTag_Landingpage';
-  featuredPosts?: Maybe<Array<Maybe<ResourceDevelopmentTag_Landingpage_FeaturedPosts>>>;
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-};
-
-export type ResourceDevelopmentTag_Landingpage_FeaturedPosts = Post;
-
-/** Field Group */
-export type ResourceDevelopmentTag_Taxonomyimages = AcfFieldGroup & {
-  __typename?: 'ResourceDevelopmentTag_Taxonomyimages';
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  imageBanner?: Maybe<MediaItem>;
-  logo?: Maybe<MediaItem>;
-};
-
 /** Input for the restoreComment mutation. */
 export type RestoreCommentInput = {
   /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
@@ -14470,6 +15697,8 @@ export type RestoreCommentPayload = {
 /** The root mutation */
 export type RootMutation = {
   __typename?: 'RootMutation';
+  /** The createCallToAction mutation */
+  createCallToAction?: Maybe<CreateCallToActionPayload>;
   /** The createCategory mutation */
   createCategory?: Maybe<CreateCategoryPayload>;
   /** The createCity mutation */
@@ -14482,12 +15711,18 @@ export type RootMutation = {
   createContributor?: Maybe<CreateContributorPayload>;
   /** The createCountry mutation */
   createCountry?: Maybe<CreateCountryPayload>;
+  /** The createCtaRegion mutation */
+  createCtaRegion?: Maybe<CreateCtaRegionPayload>;
+  /** The createCtaRegionType mutation */
+  createCtaRegionType?: Maybe<CreateCtaRegionTypePayload>;
   /** The createEpisode mutation */
   createEpisode?: Maybe<CreateEpisodePayload>;
   /** The createLicense mutation */
   createLicense?: Maybe<CreateLicensePayload>;
   /** The createMediaItem mutation */
   createMediaItem?: Maybe<CreateMediaItemPayload>;
+  /** The createNewsletter mutation */
+  createNewsletter?: Maybe<CreateNewsletterPayload>;
   /** The createPage mutation */
   createPage?: Maybe<CreatePagePayload>;
   /** The createPerson mutation */
@@ -14514,6 +15749,8 @@ export type RootMutation = {
   createTag?: Maybe<CreateTagPayload>;
   /** The createUser mutation */
   createUser?: Maybe<CreateUserPayload>;
+  /** The deleteCallToAction mutation */
+  deleteCallToAction?: Maybe<DeleteCallToActionPayload>;
   /** The deleteCategory mutation */
   deleteCategory?: Maybe<DeleteCategoryPayload>;
   /** The deleteCity mutation */
@@ -14526,12 +15763,18 @@ export type RootMutation = {
   deleteContributor?: Maybe<DeleteContributorPayload>;
   /** The deleteCountry mutation */
   deleteCountry?: Maybe<DeleteCountryPayload>;
+  /** The deleteCtaRegion mutation */
+  deleteCtaRegion?: Maybe<DeleteCtaRegionPayload>;
+  /** The deleteCtaRegionType mutation */
+  deleteCtaRegionType?: Maybe<DeleteCtaRegionTypePayload>;
   /** The deleteEpisode mutation */
   deleteEpisode?: Maybe<DeleteEpisodePayload>;
   /** The deleteLicense mutation */
   deleteLicense?: Maybe<DeleteLicensePayload>;
   /** The deleteMediaItem mutation */
   deleteMediaItem?: Maybe<DeleteMediaItemPayload>;
+  /** The deleteNewsletter mutation */
+  deleteNewsletter?: Maybe<DeleteNewsletterPayload>;
   /** The deletePage mutation */
   deletePage?: Maybe<DeletePagePayload>;
   /** The deletePerson mutation */
@@ -14568,6 +15811,8 @@ export type RootMutation = {
   restoreComment?: Maybe<RestoreCommentPayload>;
   /** Send password reset email to user */
   sendPasswordResetEmail?: Maybe<SendPasswordResetEmailPayload>;
+  /** The updateCallToAction mutation */
+  updateCallToAction?: Maybe<UpdateCallToActionPayload>;
   /** The updateCategory mutation */
   updateCategory?: Maybe<UpdateCategoryPayload>;
   /** The updateCity mutation */
@@ -14580,12 +15825,18 @@ export type RootMutation = {
   updateContributor?: Maybe<UpdateContributorPayload>;
   /** The updateCountry mutation */
   updateCountry?: Maybe<UpdateCountryPayload>;
+  /** The updateCtaRegion mutation */
+  updateCtaRegion?: Maybe<UpdateCtaRegionPayload>;
+  /** The updateCtaRegionType mutation */
+  updateCtaRegionType?: Maybe<UpdateCtaRegionTypePayload>;
   /** The updateEpisode mutation */
   updateEpisode?: Maybe<UpdateEpisodePayload>;
   /** The updateLicense mutation */
   updateLicense?: Maybe<UpdateLicensePayload>;
   /** The updateMediaItem mutation */
   updateMediaItem?: Maybe<UpdateMediaItemPayload>;
+  /** The updateNewsletter mutation */
+  updateNewsletter?: Maybe<UpdateNewsletterPayload>;
   /** The updatePage mutation */
   updatePage?: Maybe<UpdatePagePayload>;
   /** The updatePerson mutation */
@@ -14614,6 +15865,12 @@ export type RootMutation = {
   updateTag?: Maybe<UpdateTagPayload>;
   /** The updateUser mutation */
   updateUser?: Maybe<UpdateUserPayload>;
+};
+
+
+/** The root mutation */
+export type RootMutationCreateCallToActionArgs = {
+  input: CreateCallToActionInput;
 };
 
 
@@ -14654,6 +15911,18 @@ export type RootMutationCreateCountryArgs = {
 
 
 /** The root mutation */
+export type RootMutationCreateCtaRegionArgs = {
+  input: CreateCtaRegionInput;
+};
+
+
+/** The root mutation */
+export type RootMutationCreateCtaRegionTypeArgs = {
+  input: CreateCtaRegionTypeInput;
+};
+
+
+/** The root mutation */
 export type RootMutationCreateEpisodeArgs = {
   input: CreateEpisodeInput;
 };
@@ -14668,6 +15937,12 @@ export type RootMutationCreateLicenseArgs = {
 /** The root mutation */
 export type RootMutationCreateMediaItemArgs = {
   input: CreateMediaItemInput;
+};
+
+
+/** The root mutation */
+export type RootMutationCreateNewsletterArgs = {
+  input: CreateNewsletterInput;
 };
 
 
@@ -14750,6 +16025,12 @@ export type RootMutationCreateUserArgs = {
 
 
 /** The root mutation */
+export type RootMutationDeleteCallToActionArgs = {
+  input: DeleteCallToActionInput;
+};
+
+
+/** The root mutation */
 export type RootMutationDeleteCategoryArgs = {
   input: DeleteCategoryInput;
 };
@@ -14786,6 +16067,18 @@ export type RootMutationDeleteCountryArgs = {
 
 
 /** The root mutation */
+export type RootMutationDeleteCtaRegionArgs = {
+  input: DeleteCtaRegionInput;
+};
+
+
+/** The root mutation */
+export type RootMutationDeleteCtaRegionTypeArgs = {
+  input: DeleteCtaRegionTypeInput;
+};
+
+
+/** The root mutation */
 export type RootMutationDeleteEpisodeArgs = {
   input: DeleteEpisodeInput;
 };
@@ -14800,6 +16093,12 @@ export type RootMutationDeleteLicenseArgs = {
 /** The root mutation */
 export type RootMutationDeleteMediaItemArgs = {
   input: DeleteMediaItemInput;
+};
+
+
+/** The root mutation */
+export type RootMutationDeleteNewsletterArgs = {
+  input: DeleteNewsletterInput;
 };
 
 
@@ -14912,6 +16211,12 @@ export type RootMutationSendPasswordResetEmailArgs = {
 
 
 /** The root mutation */
+export type RootMutationUpdateCallToActionArgs = {
+  input: UpdateCallToActionInput;
+};
+
+
+/** The root mutation */
 export type RootMutationUpdateCategoryArgs = {
   input: UpdateCategoryInput;
 };
@@ -14948,6 +16253,18 @@ export type RootMutationUpdateCountryArgs = {
 
 
 /** The root mutation */
+export type RootMutationUpdateCtaRegionArgs = {
+  input: UpdateCtaRegionInput;
+};
+
+
+/** The root mutation */
+export type RootMutationUpdateCtaRegionTypeArgs = {
+  input: UpdateCtaRegionTypeInput;
+};
+
+
+/** The root mutation */
 export type RootMutationUpdateEpisodeArgs = {
   input: UpdateEpisodeInput;
 };
@@ -14962,6 +16279,12 @@ export type RootMutationUpdateLicenseArgs = {
 /** The root mutation */
 export type RootMutationUpdateMediaItemArgs = {
   input: UpdateMediaItemInput;
+};
+
+
+/** The root mutation */
+export type RootMutationUpdateNewsletterArgs = {
+  input: UpdateNewsletterInput;
 };
 
 
@@ -15053,6 +16376,15 @@ export type RootQuery = {
   __typename?: 'RootQuery';
   /** Entry point to get all settings for the site */
   allSettings?: Maybe<Settings>;
+  /** An object of the callToAction Type. Manages the Call To Action custom post type */
+  callToAction?: Maybe<CallToAction>;
+  /**
+   * A callToAction object
+   * @deprecated Deprecated in favor of using the single entry point for this type with ID and IDType fields. For example, instead of postBy( id: &quot;&quot; ), use post(id: &quot;&quot; idType: &quot;&quot;)
+   */
+  callToActionBy?: Maybe<CallToAction>;
+  /** Connection between the RootQuery type and the callToAction type */
+  callToActions?: Maybe<RootQueryToCallToActionConnection>;
   /** Connection between the RootQuery type and the category type */
   categories?: Maybe<RootQueryToCategoryConnection>;
   /** A 0bject */
@@ -15085,6 +16417,19 @@ export type RootQuery = {
   countries?: Maybe<RootQueryToCountryConnection>;
   /** A 0bject */
   country?: Maybe<Country>;
+  /** An object of the ctaRegion Type. Manages the CTA Region custom post type */
+  ctaRegion?: Maybe<CtaRegion>;
+  /**
+   * A ctaRegion object
+   * @deprecated Deprecated in favor of using the single entry point for this type with ID and IDType fields. For example, instead of postBy( id: &quot;&quot; ), use post(id: &quot;&quot; idType: &quot;&quot;)
+   */
+  ctaRegionBy?: Maybe<CtaRegion>;
+  /** A 0bject */
+  ctaRegionType?: Maybe<CtaRegionType>;
+  /** Connection between the RootQuery type and the ctaRegionType type */
+  ctaRegionTypes?: Maybe<RootQueryToCtaRegionTypeConnection>;
+  /** Connection between the RootQuery type and the ctaRegion type */
+  ctaRegions?: Maybe<RootQueryToCtaRegionConnection>;
   /** Fields of the &#039;DiscussionSettings&#039; settings group */
   discussionSettings?: Maybe<DiscussionSettings>;
   /** An object of the episode Type. Manages the Episode custom post type */
@@ -15119,6 +16464,15 @@ export type RootQuery = {
   menuItems?: Maybe<RootQueryToMenuItemConnection>;
   /** Connection between the RootQuery type and the Menu type */
   menus?: Maybe<RootQueryToMenuConnection>;
+  /** An object of the newsletter Type. Manages the Newsletter custom post type */
+  newsletter?: Maybe<Newsletter>;
+  /**
+   * A newsletter object
+   * @deprecated Deprecated in favor of using the single entry point for this type with ID and IDType fields. For example, instead of postBy( id: &quot;&quot; ), use post(id: &quot;&quot; idType: &quot;&quot;)
+   */
+  newsletterBy?: Maybe<Newsletter>;
+  /** Connection between the RootQuery type and the newsletter type */
+  newsletters?: Maybe<RootQueryToNewsletterConnection>;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
   /** Fetches an object given its Unique Resource Identifier */
@@ -15224,6 +16578,33 @@ export type RootQuery = {
   viewer?: Maybe<User>;
   /** Fields of the &#039;WritingSettings&#039; settings group */
   writingSettings?: Maybe<WritingSettings>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryCallToActionArgs = {
+  asPreview?: InputMaybe<Scalars['Boolean']['input']>;
+  id: Scalars['ID']['input'];
+  idType?: InputMaybe<CallToActionIdType>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryCallToActionByArgs = {
+  callToActionId?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  uri?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryCallToActionsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RootQueryToCallToActionConnectionWhereArgs>;
 };
 
 
@@ -15365,6 +16746,50 @@ export type RootQueryCountryArgs = {
 
 
 /** The root entry point into the Graph */
+export type RootQueryCtaRegionArgs = {
+  asPreview?: InputMaybe<Scalars['Boolean']['input']>;
+  id: Scalars['ID']['input'];
+  idType?: InputMaybe<CtaRegionIdType>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryCtaRegionByArgs = {
+  ctaRegionId?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  uri?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryCtaRegionTypeArgs = {
+  id: Scalars['ID']['input'];
+  idType?: InputMaybe<CtaRegionTypeIdType>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryCtaRegionTypesArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RootQueryToCtaRegionTypeConnectionWhereArgs>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryCtaRegionsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RootQueryToCtaRegionConnectionWhereArgs>;
+};
+
+
+/** The root entry point into the Graph */
 export type RootQueryEpisodeArgs = {
   asPreview?: InputMaybe<Scalars['Boolean']['input']>;
   id: Scalars['ID']['input'];
@@ -15466,6 +16891,33 @@ export type RootQueryMenusArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<RootQueryToMenuConnectionWhereArgs>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryNewsletterArgs = {
+  asPreview?: InputMaybe<Scalars['Boolean']['input']>;
+  id: Scalars['ID']['input'];
+  idType?: InputMaybe<NewsletterIdType>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryNewsletterByArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  newsletterId?: InputMaybe<Scalars['Int']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  uri?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryNewslettersArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RootQueryToNewsletterConnectionWhereArgs>;
 };
 
 
@@ -15836,6 +17288,79 @@ export type RootQueryUsersArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<RootQueryToUserConnectionWhereArgs>;
+};
+
+/** Connection between the RootQuery type and the callToAction type */
+export type RootQueryToCallToActionConnection = CallToActionConnection & Connection & {
+  __typename?: 'RootQueryToCallToActionConnection';
+  /** Edges for the RootQueryToCallToActionConnection connection */
+  edges: Array<RootQueryToCallToActionConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<CallToAction>;
+  /** Information about pagination in a connection. */
+  pageInfo: RootQueryToCallToActionConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type RootQueryToCallToActionConnectionEdge = CallToActionConnectionEdge & Edge & {
+  __typename?: 'RootQueryToCallToActionConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: CallToAction;
+};
+
+/** Page Info on the &quot;RootQueryToCallToActionConnection&quot; */
+export type RootQueryToCallToActionConnectionPageInfo = CallToActionConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'RootQueryToCallToActionConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the RootQueryToCallToActionConnection connection */
+export type RootQueryToCallToActionConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Connection between the RootQuery type and the category type */
@@ -16450,6 +17975,160 @@ export type RootQueryToCountryConnectionWhereArgs = {
   updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** Connection between the RootQuery type and the ctaRegion type */
+export type RootQueryToCtaRegionConnection = Connection & CtaRegionConnection & {
+  __typename?: 'RootQueryToCtaRegionConnection';
+  /** Edges for the RootQueryToCtaRegionConnection connection */
+  edges: Array<RootQueryToCtaRegionConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<CtaRegion>;
+  /** Information about pagination in a connection. */
+  pageInfo: RootQueryToCtaRegionConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type RootQueryToCtaRegionConnectionEdge = CtaRegionConnectionEdge & Edge & {
+  __typename?: 'RootQueryToCtaRegionConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: CtaRegion;
+};
+
+/** Page Info on the &quot;RootQueryToCtaRegionConnection&quot; */
+export type RootQueryToCtaRegionConnectionPageInfo = CtaRegionConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'RootQueryToCtaRegionConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the RootQueryToCtaRegionConnection connection */
+export type RootQueryToCtaRegionConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Connection between the RootQuery type and the ctaRegionType type */
+export type RootQueryToCtaRegionTypeConnection = Connection & CtaRegionTypeConnection & {
+  __typename?: 'RootQueryToCtaRegionTypeConnection';
+  /** Edges for the RootQueryToCtaRegionTypeConnection connection */
+  edges: Array<RootQueryToCtaRegionTypeConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<CtaRegionType>;
+  /** Information about pagination in a connection. */
+  pageInfo: RootQueryToCtaRegionTypeConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type RootQueryToCtaRegionTypeConnectionEdge = CtaRegionTypeConnectionEdge & Edge & {
+  __typename?: 'RootQueryToCtaRegionTypeConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: CtaRegionType;
+};
+
+/** Page Info on the &quot;RootQueryToCtaRegionTypeConnection&quot; */
+export type RootQueryToCtaRegionTypeConnectionPageInfo = CtaRegionTypeConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'RootQueryToCtaRegionTypeConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the RootQueryToCtaRegionTypeConnection connection */
+export type RootQueryToCtaRegionTypeConnectionWhereArgs = {
+  /** Unique cache key to be produced when this query is stored in an object cache. Default is 'core'. */
+  cacheDomain?: InputMaybe<Scalars['String']['input']>;
+  /** Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0. */
+  childOf?: InputMaybe<Scalars['Int']['input']>;
+  /** True to limit results to terms that have no children. This parameter has no effect on non-hierarchical taxonomies. Default false. */
+  childless?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Retrieve terms where the description is LIKE the input value. Default empty. */
+  descriptionLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array. */
+  exclude?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term ids to exclude along with all of their descendant terms. If $include is non-empty, $exclude_tree is ignored. Default empty array. */
+  excludeTree?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to hide terms not assigned to any posts. Accepts true or false. Default false */
+  hideEmpty?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true. */
+  hierarchical?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Array of term ids to include. Default empty array. */
+  include?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of names to return term(s) for. Default empty. */
+  name?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Retrieve terms where the name is LIKE the input value. Default empty. */
+  nameLike?: InputMaybe<Scalars['String']['input']>;
+  /** Array of object IDs. Results will be limited to terms associated with these objects. */
+  objectIds?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Direction the connection should be ordered in */
+  order?: InputMaybe<OrderEnum>;
+  /** Field(s) to order terms by. Defaults to 'name'. */
+  orderby?: InputMaybe<TermObjectsConnectionOrderbyEnum>;
+  /** Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false. */
+  padCounts?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Parent term ID to retrieve direct-child terms of. Default empty. */
+  parent?: InputMaybe<Scalars['Int']['input']>;
+  /** Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty. */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Array of slugs to return term(s) for. Default empty. */
+  slug?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Whether to prime meta caches for matched terms. Default true. */
+  updateTermMetaCache?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 /** Connection between the RootQuery type and the EnqueuedScript type */
 export type RootQueryToEnqueuedScriptConnection = Connection & EnqueuedScriptConnection & {
   __typename?: 'RootQueryToEnqueuedScriptConnection';
@@ -16865,6 +18544,79 @@ export type RootQueryToMenuItemConnectionWhereArgs = {
   parentDatabaseId?: InputMaybe<Scalars['Int']['input']>;
   /** The ID of the parent menu object */
   parentId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+/** Connection between the RootQuery type and the newsletter type */
+export type RootQueryToNewsletterConnection = Connection & NewsletterConnection & {
+  __typename?: 'RootQueryToNewsletterConnection';
+  /** Edges for the RootQueryToNewsletterConnection connection */
+  edges: Array<RootQueryToNewsletterConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<Newsletter>;
+  /** Information about pagination in a connection. */
+  pageInfo: RootQueryToNewsletterConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type RootQueryToNewsletterConnectionEdge = Edge & NewsletterConnectionEdge & {
+  __typename?: 'RootQueryToNewsletterConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: Newsletter;
+};
+
+/** Page Info on the &quot;RootQueryToNewsletterConnection&quot; */
+export type RootQueryToNewsletterConnectionPageInfo = NewsletterConnectionPageInfo & PageInfo & WpPageInfo & {
+  __typename?: 'RootQueryToNewsletterConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the RootQueryToNewsletterConnection connection */
+export type RootQueryToNewsletterConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What paramater to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** Connection between the RootQuery type and the page type */
@@ -18312,8 +20064,11 @@ export type SeoContentTypeArchive = {
 /** The Yoast SEO search appearance content types */
 export type SeoContentTypes = {
   __typename?: 'SEOContentTypes';
+  callToAction?: Maybe<SeoContentType>;
+  ctaRegion?: Maybe<SeoContentType>;
   episode?: Maybe<SeoContentType>;
   mediaItem?: Maybe<SeoContentType>;
+  newsletter?: Maybe<SeoContentType>;
   page?: Maybe<SeoContentType>;
   post?: Maybe<SeoContentType>;
   segment?: Maybe<SeoContentType>;
@@ -20722,8 +22477,6 @@ export type StoryFormat = DatabaseIdentifier & MenuItemLinkable & Node & TermNod
   isRestricted?: Maybe<Scalars['Boolean']['output']>;
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Landing Page&quot; was set to Show in GraphQL. */
-  landingPage?: Maybe<StoryFormat_Landingpage>;
   /** The link to the term */
   link?: Maybe<Scalars['String']['output']>;
   /** The human friendly name of the object. */
@@ -20741,8 +22494,6 @@ export type StoryFormat = DatabaseIdentifier & MenuItemLinkable & Node & TermNod
   storyFormatId?: Maybe<Scalars['Int']['output']>;
   /** Connection between the StoryFormat type and the Taxonomy type */
   taxonomy?: Maybe<StoryFormatToTaxonomyConnectionEdge>;
-  /** Added to the GraphQL Schema because the ACF Field Group &quot;Taxonomy Images&quot; was set to Show in GraphQL. */
-  taxonomyImages?: Maybe<StoryFormat_Taxonomyimages>;
   /** The name of the taxonomy that the object is associated with */
   taxonomyName?: Maybe<Scalars['String']['output']>;
   /** The ID of the term group that this term object belongs to */
@@ -21020,25 +22771,6 @@ export type StoryFormatToTaxonomyConnectionEdge = Edge & OneToOneConnection & Ta
   cursor?: Maybe<Scalars['String']['output']>;
   /** The node of the connection, without the edges */
   node: Taxonomy;
-};
-
-/** Field Group */
-export type StoryFormat_Landingpage = AcfFieldGroup & {
-  __typename?: 'StoryFormat_Landingpage';
-  featuredPosts?: Maybe<Array<Maybe<StoryFormat_Landingpage_FeaturedPosts>>>;
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-};
-
-export type StoryFormat_Landingpage_FeaturedPosts = Post;
-
-/** Field Group */
-export type StoryFormat_Taxonomyimages = AcfFieldGroup & {
-  __typename?: 'StoryFormat_Taxonomyimages';
-  /** The name of the ACF Field Group */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  imageBanner?: Maybe<MediaItem>;
-  logo?: Maybe<MediaItem>;
 };
 
 /** The tag type */
@@ -21691,6 +23423,8 @@ export enum TaxonomyEnum {
   Contributor = 'CONTRIBUTOR',
   /** Taxonomy enum country */
   Country = 'COUNTRY',
+  /** Taxonomy enum cta_region_type */
+  Ctaregiontype = 'CTAREGIONTYPE',
   /** Taxonomy enum license */
   License = 'LICENSE',
   /** Taxonomy enum person */
@@ -22043,6 +23777,37 @@ export type UniformResourceIdentifiable = {
   uri?: Maybe<Scalars['String']['output']>;
 };
 
+/** Input for the updateCallToAction mutation. */
+export type UpdateCallToActionInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the callToAction object */
+  id: Scalars['ID']['input'];
+  /** Override the edit lock when another user is editing the post */
+  ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the updateCallToAction mutation. */
+export type UpdateCallToActionPayload = {
+  __typename?: 'UpdateCallToActionPayload';
+  /** The Post object mutation type. */
+  callToAction?: Maybe<CallToAction>;
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+};
+
 /** Input for the updateCategory mutation. */
 export type UpdateCategoryInput = {
   /** The slug that the category will be an alias of */
@@ -22209,6 +23974,66 @@ export type UpdateCountryPayload = {
   country?: Maybe<Country>;
 };
 
+/** Input for the updateCtaRegion mutation. */
+export type UpdateCtaRegionInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** Set connections between the ctaRegion and ctaRegionTypes */
+  ctaRegionTypes?: InputMaybe<CtaRegionCtaRegionTypesInput>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars['String']['input']>;
+  /** The excerpt of the object */
+  excerpt?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the ctaRegion object */
+  id: Scalars['ID']['input'];
+  /** Override the edit lock when another user is editing the post */
+  ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the updateCtaRegion mutation. */
+export type UpdateCtaRegionPayload = {
+  __typename?: 'UpdateCtaRegionPayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The Post object mutation type. */
+  ctaRegion?: Maybe<CtaRegion>;
+};
+
+/** Input for the updateCtaRegionType mutation. */
+export type UpdateCtaRegionTypeInput = {
+  /** The slug that the cta_region_type will be an alias of */
+  aliasOf?: InputMaybe<Scalars['String']['input']>;
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The description of the cta_region_type object */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the ctaRegionType object to update */
+  id: Scalars['ID']['input'];
+  /** The name of the cta_region_type object to mutate */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** If this argument exists then the slug will be checked to see if it is not an existing valid term. If that check succeeds (it is not a valid term), then it is added and the term id is given. If it fails, then a check is made to whether the taxonomy is hierarchical and the parent argument is not empty. If the second check succeeds, the term will be inserted and the term id will be given. If the slug argument is empty, then it will be calculated from the term name. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the updateCtaRegionType mutation. */
+export type UpdateCtaRegionTypePayload = {
+  __typename?: 'UpdateCtaRegionTypePayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The created cta_region_type */
+  ctaRegionType?: Maybe<CtaRegionType>;
+};
+
 /** Input for the updateEpisode mutation. */
 export type UpdateEpisodeInput = {
   /** Set connections between the episode and categories */
@@ -22332,6 +24157,41 @@ export type UpdateMediaItemPayload = {
   clientMutationId?: Maybe<Scalars['String']['output']>;
   /** The MediaItem object mutation type. */
   mediaItem?: Maybe<MediaItem>;
+};
+
+/** Input for the updateNewsletter mutation. */
+export type UpdateNewsletterInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The content of the object */
+  content?: InputMaybe<Scalars['String']['input']>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars['String']['input']>;
+  /** The excerpt of the object */
+  excerpt?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the newsletter object */
+  id: Scalars['ID']['input'];
+  /** Override the edit lock when another user is editing the post */
+  ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the updateNewsletter mutation. */
+export type UpdateNewsletterPayload = {
+  __typename?: 'UpdateNewsletterPayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The Post object mutation type. */
+  newsletter?: Maybe<Newsletter>;
 };
 
 /** Input for the updatePage mutation. */

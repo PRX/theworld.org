@@ -1,17 +1,17 @@
 /**
- * @file pages/episodes/[year]/[month]/[day]/[slug].tsx
+ * @file pages/newsletters/[slug].tsx
  *
- * Episode page.
+ * Newsletter page.
  */
 
-import { Episode } from '@components/pages/Episode';
+import { Newsletter } from '@components/pages/Newsletter';
 import { IContentComponentProxyProps } from '@interfaces';
 import { fetchAppData } from '@store/actions/fetchAppData';
-import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
+import { fetchNewsletterData } from '@store/actions/fetchNewsletterData';
 import { GetServerSideProps } from 'next';
 
-const EpisodePage = ({ data }: IContentComponentProxyProps) => (
-  <Episode data={data} />
+const NewsletterPage = ({ data }: IContentComponentProxyProps) => (
+  <Newsletter data={data} />
 );
 
 export const getServerSideProps: GetServerSideProps<
@@ -23,14 +23,14 @@ export const getServerSideProps: GetServerSideProps<
 
   if (slug) {
     const [data, appData] = await Promise.all([
-      fetchEpisodeData(slug, 'SLUG'),
+      fetchNewsletterData(slug, 'SLUG'),
       fetchAppData()
     ]);
 
     if (data) {
       return {
         props: {
-          type: 'post--episode',
+          type: 'post--newsletter',
           id: data.id,
           cookies: req.cookies,
           data,
@@ -43,4 +43,4 @@ export const getServerSideProps: GetServerSideProps<
   return { notFound: true };
 };
 
-export default EpisodePage;
+export default NewsletterPage;
