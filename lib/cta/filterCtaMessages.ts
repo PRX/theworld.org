@@ -29,26 +29,35 @@ export const filterCtaMessages =
 
     // Check Category Targets.
     if (targetCategories?.length) {
-      const filterPropsCategories = filterProps?.categories || [];
+      const filterPropsCategories = [
+        ...new Set([...(filterProps?.categories || [])])
+      ];
+      const targetCategoriesUnique = [
+        ...new Set([...targetCategories.map((item) => item.id)])
+      ];
       const combinedCategories = new Set([
-        ...targetCategories.map((item) => item.id),
+        ...targetCategoriesUnique,
         ...filterPropsCategories
       ]);
 
       categoriesMatched =
-        [...combinedCategories].length === targetCategories.length;
+        [...combinedCategories].length === filterPropsCategories.length;
     }
 
     // Check Program Target.
     if (targetPrograms) {
-      const filterPropsPrograms = filterProps?.programs || [];
-      const combinedCategories = new Set([
-        ...targetPrograms.map((item) => item.id),
+      const filterPropsPrograms = [
+        ...new Set([...(filterProps?.programs || [])])
+      ];
+      const targetProgramsUnique = [
+        ...new Set([...targetPrograms.map((item) => item.id)])
+      ];
+      const combinedPrograms = new Set([
+        ...targetProgramsUnique,
         ...filterPropsPrograms
       ]);
 
-      programsMatched =
-        [...combinedCategories].length === targetPrograms.length;
+      programsMatched = [...combinedPrograms].length === targetPrograms.length;
     }
 
     // Use message if any of the targeting matched.

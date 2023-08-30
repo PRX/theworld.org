@@ -31,7 +31,7 @@ export const CtaMessageInfo = ({ data }: ICtaMessageProps) => {
     <Card elevation={0}>
       {heading && <CardHeader title={heading} />}
       {message && (
-        <CardContent>
+        <CardContent sx={{ '&:last-child': { paddingBlockEnd: 0 } }}>
           <Typography component="div" variant="body1">
             <HtmlContent html={message} />
           </Typography>

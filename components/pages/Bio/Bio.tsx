@@ -300,6 +300,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
                     count={segmentsPageCount}
                     page={segmentsPage}
                     color="primary"
+                    size="small"
                     onChange={handleSegmentsPageChange}
                   />
                 )}
