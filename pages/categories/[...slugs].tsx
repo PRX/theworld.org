@@ -23,9 +23,9 @@ export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps>
 
     if (slug) {
       const dataResponse = fetchCategoryData(slug, 'SLUG');
-      const [data, appData] = await Promise.all([
+      const [data] = await Promise.all([
         store.dispatch<any>(dataResponse),
-        fetchAppData()
+        store.dispatch<any>(fetchAppData(req.cookies))
       ]);
 
       if (data) {
@@ -33,9 +33,7 @@ export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps>
           props: {
             type: 'term--category',
             id: data.id,
-            cookies: req.cookies,
-            data,
-            appData
+            data
           }
         };
       }

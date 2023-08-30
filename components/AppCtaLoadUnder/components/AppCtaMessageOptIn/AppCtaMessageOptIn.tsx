@@ -70,7 +70,7 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
                     name="optIn"
                   />
                 }
-                label={optinLabel}
+                label={<HtmlContent html={optinLabel} />}
               />
             </Paper>
           </Box>

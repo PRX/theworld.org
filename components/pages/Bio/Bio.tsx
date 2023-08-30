@@ -34,6 +34,7 @@ import {
   Box,
   Button,
   Divider,
+  Hidden,
   IconButton,
   SvgIcon,
   Typography
@@ -41,7 +42,7 @@ import {
 import { EqualizerRounded, PublicRounded } from '@mui/icons-material';
 import Pagination from '@mui/material/Pagination';
 import { LandingPage } from '@components/LandingPage';
-// import { CtaRegion } from '@components/CtaRegion';
+import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -51,13 +52,13 @@ import {
   SidebarLatestStories,
   SidebarList,
   SidebarFooter,
-  SidebarContent
-  // SidebarCta,
+  SidebarContent,
+  SidebarCta
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { fetchApiContributorStories } from '@lib/fetch';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { getCollectionData } from '@store/reducers';
+import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { BioHeader } from './components/BioHeader';
 import { bioStyles } from './Bio.styles';
@@ -148,19 +149,14 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
 
   const { classes } = bioStyles();
 
-  // // CTA data.
-  // const ctaSidebarTop = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_landing_sidebar_01',
-  //   type,
-  //   id
-  // );
-  // const ctaSidebarBottom = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_landing_sidebar_02',
-  //   type,
-  //   id
-  // );
+  // CTA data.
+  const ctaSidebarTop = getCtaRegionData(state, 'landing-sidebar-1', type, id);
+  const ctaSidebarBottom = getCtaRegionData(
+    state,
+    'landing-sidebar-2',
+    type,
+    id
+  );
 
   // Plausible Events.
   const props = {
@@ -323,7 +319,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
               </SidebarContent>
             </Sidebar>
           )}
-          {/* {ctaSidebarTop && (
+          {ctaSidebarTop && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarTop} />
@@ -332,7 +328,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
                 <CtaRegion data={ctaSidebarTop} />
               </Hidden>
             </>
-          )} */}
+          )}
         </>
       )
     },
@@ -341,7 +337,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
       children: (
         <>
           <SidebarLatestStories />
-          {/* {ctaSidebarBottom && (
+          {ctaSidebarBottom && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarBottom} />
@@ -350,7 +346,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
                 <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
             </>
-          )} */}
+          )}
         </>
       )
     }

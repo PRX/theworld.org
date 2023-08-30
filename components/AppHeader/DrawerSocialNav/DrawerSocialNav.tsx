@@ -3,8 +3,8 @@
  * Component for app drawer social nav.
  */
 
-import { useContext } from 'react';
-import { parse } from 'url';
+import type { RootState } from '@interfaces';
+import { useStore } from 'react-redux';
 import { IconButton, Toolbar } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import {
@@ -14,7 +14,7 @@ import {
   Instagram,
   WhatsApp
 } from '@mui/icons-material';
-import { AppContext } from '@contexts/AppContext';
+import { getAppDataMenu } from '@store/reducers';
 import { drawerTopNavStyles } from './DrawerSocialNav.styles';
 
 const iconComponentMap = new Map();
@@ -31,16 +31,19 @@ const renderIcon = (icon: string, label: string) => {
 };
 
 export const DrawerSocialNav = () => {
-  const { data } = useContext(AppContext);
-  const { menus } = data || {};
-  const { drawerSocialNav } = menus || {};
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const drawerSocialNav = getAppDataMenu(state, 'drawerSocialNav');
   const { classes } = drawerTopNavStyles();
 
   return (
     (drawerSocialNav && (
       <Toolbar className={classes.root}>
         {drawerSocialNav
-          .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
+          .map(({ url, ...other }) => ({
+            ...other,
+            url: new URL(url, 'https://theworld.org')
+          }))
           .map(({ service, ...other }) => {
             if (!service) return other;
 
@@ -65,7 +68,7 @@ export const DrawerSocialNav = () => {
           .map(({ name, url, icon, key, title, attributes }) => (
             <IconButton
               color="inherit"
-              href={isLocalUrl(url.href) && url.path ? url.path : url.href}
+              href={isLocalUrl(url.href) ? url.pathname || '/' : url.href}
               target="_blank"
               rel="noopener noreferrer"
               key={key}

@@ -3,6 +3,7 @@
  * Component for Homepage.
  */
 
+import type React from 'react';
 import type {
   Episode,
   Homepage as HomepageType,
@@ -10,9 +11,9 @@ import type {
   Post,
   RootState
 } from '@interfaces';
-// import type { ICtaRegionProps } from '@interfaces/cta';
+import type { ICtaRegionProps } from '@interfaces/cta';
 import { useContext, useEffect, useState } from 'react';
-// import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { Box, Hidden, Typography } from '@mui/material';
 import StyleRounded from '@mui/icons-material/StyleRounded';
@@ -31,22 +32,23 @@ import { QuickLinks } from '@components/QuickLinks';
 import { StoryCard } from '@components/StoryCard';
 import { StoryCardGrid } from '@components/StoryCardGrid';
 import { SidebarEpisode } from '@components/Sidebar/SidebarEpisode';
-import {
-  getCollectionData
-  // getCtaRegionData
-} from '@store/reducers';
+import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { AppContext } from '@contexts/AppContext';
 
-// const CtaRegion = dynamic(
-//   () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
-// ) as React.FC<ICtaRegionProps>;
+const CtaRegion = dynamic(
+  () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
+) as React.FC<ICtaRegionProps>;
 
-// const SidebarCta = dynamic(
-//   () => import('@components/Sidebar').then((mod) => mod.SidebarCta) as any
-// ) as React.FC<ICtaRegionProps>;
+const SidebarCta = dynamic(
+  () => import('@components/Sidebar').then((mod) => mod.SidebarCta) as any
+) as React.FC<ICtaRegionProps>;
 
 export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
-  const { data: appData } = useContext(AppContext);
+  const {
+    data: appData,
+    page: { resource }
+  } = useContext(AppContext);
+  const { type, id } = resource || {};
   const { menus: appMenus } = appData || {};
   const { drawerMainNav } = appMenus || {};
   const store = useStore<RootState>();
@@ -96,31 +98,16 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
         } as SidebarListItem)
     );
 
-  // // CTA data.
-  // const inlineTop = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_landing_inline_01',
-  //   type,
-  //   id
-  // );
-  // const inlineBottom = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_landing_inline_02',
-  //   type,
-  //   id
-  // );
-  // const sidebarTop = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_landing_sidebar_01',
-  //   type,
-  //   id
-  // );
-  // const sidebarBottom = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_landing_sidebar_02',
-  //   type,
-  //   id
-  // );
+  // CTA data.
+  const inlineTop = getCtaRegionData(state, 'landing-inline-top', type, id);
+  const inlineBottom = getCtaRegionData(
+    state,
+    'landing-inline-bottom',
+    type,
+    id
+  );
+  const sidebarTop = getCtaRegionData(state, 'landing-sidebar-1', type, id);
+  const sidebarBottom = getCtaRegionData(state, 'landing-sidebar-2', type, id);
 
   const mainElements = [
     {
@@ -135,7 +122,7 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
               <StoryCardGrid data={featuredStories} gap={1} />
             )}
           </Box>
-          {/* {inlineTop && (
+          {inlineTop && (
             <>
               <Hidden xsDown>
                 <CtaRegion data={inlineTop} />
@@ -144,7 +131,7 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
                 <SidebarCta data={inlineTop} />
               </Hidden>
             </>
-          )} */}
+          )}
         </>
       )
     },
@@ -162,7 +149,7 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
               key={item.id}
             />
           ))}
-          {/* {inlineBottom && (
+          {inlineBottom && (
             <>
               <Hidden xsDown>
                 <CtaRegion data={inlineBottom} />
@@ -171,7 +158,7 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
                 <SidebarCta data={inlineBottom} />
               </Hidden>
             </>
-          )} */}
+          )}
         </>
       )
     }
@@ -186,14 +173,14 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
             <SidebarEpisode data={latestEpisode} label="Latest Episode" />
           )}
           <Hidden only="sm">
-            {/* {sidebarTop && <SidebarCta data={sidebarTop} />} */}
+            {sidebarTop && <SidebarCta data={sidebarTop} />}
             <SidebarLatestStories
               data={latestStories}
               label="Latest from our partners"
             />
           </Hidden>
           <Hidden xsDown mdUp>
-            {/* {sidebarTop && <CtaRegion data={sidebarTop} />} */}
+            {sidebarTop && <CtaRegion data={sidebarTop} />}
           </Hidden>
         </>
       )
@@ -211,7 +198,7 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
               <SidebarList data={categoriesMenu} />
             </Sidebar>
           )}
-          {/* {sidebarBottom && (
+          {sidebarBottom && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={sidebarBottom} />
@@ -220,7 +207,7 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
                 <CtaRegion data={sidebarBottom} />
               </Hidden>
             </>
-          )} */}
+          )}
         </>
       )
     }

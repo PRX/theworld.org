@@ -61,11 +61,21 @@ export const getCtaRegionData = (
   id?: string | number
 ) => {
   const messages = type
-    ? state?.data?.[region]?.filter(
-        filterCtaMessages(
-          state.filterProps?.[makeResourceSignature({ type, id })]
+    ? state?.data?.[region]
+        ?.map((cta) => ({
+          priority:
+            (cta.targetContent && 2) ||
+            ((cta.targetCategories || cta.targetPrograms) && 1) ||
+            0,
+          cta
+        }))
+        .sort((a, b) => b.priority - a.priority)
+        .map((item) => item.cta)
+        .filter(
+          filterCtaMessages(
+            state.filterProps?.[makeResourceSignature({ type, id })]
+          )
         )
-      )
     : state?.data?.[region];
 
   return messages?.length ? messages : undefined;

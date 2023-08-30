@@ -2,12 +2,20 @@
  * Fetch Story data from WP GraphQL API.
  */
 
-import type { Maybe, Menu, Program } from '@interfaces';
+import type {
+  CtaRegion,
+  IApp,
+  Maybe,
+  Menu,
+  Program,
+  RootQueryToCtaRegionConnection
+} from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
+import { parseCtaMessage } from '@lib/parse/cta';
 import { parseMenu } from '@lib/parse/menu';
 import { STORY_CARD_PROPS } from '../story';
-import { MENU_PROPS } from '../api/graphql';
+import { CTA_PROPS, CTA_REGION_PROPS, MENU_PROPS } from '../api/graphql';
 
 const GET_APP = gql`
   query getApp {
@@ -34,9 +42,16 @@ const GET_APP = gql`
     topMenu: menu(id: "top-nav", idType: SLUG) {
       ...MenuProps
     }
+    ctaRegions(first: 100) {
+      nodes {
+        ...CtaRegionProps
+      }
+    }
   }
-  ${STORY_CARD_PROPS}
+  ${CTA_PROPS}
+  ${CTA_REGION_PROPS}
   ${MENU_PROPS}
+  ${STORY_CARD_PROPS}
 `;
 
 export const fetchGqlApp = async () => {
@@ -47,6 +62,7 @@ export const fetchGqlApp = async () => {
     mainMenu: Maybe<Menu>;
     socialMenu: Maybe<Menu>;
     topMenu: Maybe<Menu>;
+    ctaRegions: RootQueryToCtaRegionConnection;
   }>({
     query: GET_APP
   });
@@ -60,6 +76,18 @@ export const fetchGqlApp = async () => {
   const drawerTopNav = data.topMenu?.menuItems?.nodes;
   const footerNav = data.footerMenu?.menuItems?.nodes;
   const headerNav = data.headerMenu?.menuItems?.nodes;
+  const ctaRegions = data.ctaRegions.nodes.reduce(
+    (a, ctaRegion: CtaRegion) =>
+      ctaRegion.slug
+        ? {
+            ...a,
+            [ctaRegion.slug]: ctaRegion.ctaRegionContent?.callToActions?.map(
+              (cta) => parseCtaMessage(cta, ctaRegion.slug)
+            )
+          }
+        : a,
+    {}
+  );
 
   return {
     ...(latestStories && { latestStories }),
@@ -69,8 +97,9 @@ export const fetchGqlApp = async () => {
       ...(drawerTopNav && { drawerTopNav: parseMenu(drawerTopNav) }),
       ...(footerNav && { footerNav: parseMenu(footerNav) }),
       ...(headerNav && { headerNav: parseMenu(headerNav) })
-    }
-  };
+    },
+    ctaRegions
+  } as IApp;
 };
 
 export default fetchGqlApp;

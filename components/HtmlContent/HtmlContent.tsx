@@ -5,6 +5,7 @@
 
 import { type ReactElement } from 'react';
 import { type DomElement } from 'htmlparser2';
+import type { Maybe } from '@interfaces';
 import ReactHtmlParser, { type Transform } from 'react-html-parser';
 import {
   anchorToLink,
@@ -19,7 +20,7 @@ import {
 } from './transforms';
 
 export interface IHtmlContentProps {
-  html: string;
+  html?: Maybe<string>;
   transforms?: ((
     // eslint-disable-next-line no-unused-vars
     N: DomElement,
@@ -56,10 +57,10 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
     );
 
   return (
-      <>
-        {ReactHtmlParser(cleanHtml(html), {
-          transform: transform as Transform
-        })}
-      </>
+    <>
+      {ReactHtmlParser(cleanHtml(html), {
+        transform: transform as Transform
+      })}
+    </>
   );
 };

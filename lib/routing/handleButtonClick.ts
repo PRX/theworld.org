@@ -5,7 +5,6 @@
 
 import { MouseEvent } from 'react';
 import Router from 'next/router';
-import { parse, Url } from 'url';
 import { isLocalUrl } from '../parse/url';
 
 /**
@@ -18,7 +17,7 @@ import { isLocalUrl } from '../parse/url';
  * @returns
  *    Url object with alias query relative to app.
  */
-export const generateLinkHrefFromUrl = (url: Url) => {
+export const generateLinkHrefFromUrl = (url: URL) => {
   const pathname = url.pathname !== '/' ? '/[...alias]' : '/';
   const query =
     pathname !== '/' && url.pathname
@@ -42,11 +41,14 @@ export const generateLinkHrefFromUrl = (url: Url) => {
  */
 /* istanbul ignore next */
 export const handleButtonClick =
-  (url?: Url | string, callback?: Function) => (event: MouseEvent) => {
+  (url?: URL | string, callback?: Function) => (event: MouseEvent) => {
     event.preventDefault();
 
     if (url) {
-      const parsedUrl = typeof url === 'string' ? parse(url as string) : url;
+      const parsedUrl =
+        typeof url === 'string'
+          ? new URL(url as string, 'https://theworld.org')
+          : url;
 
       Router.push(
         isLocalUrl(parsedUrl.href)

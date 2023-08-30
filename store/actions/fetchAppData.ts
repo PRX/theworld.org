@@ -3,19 +3,44 @@
  *
  * Actions to fetch data for app.
  */
+import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import type { AppDataAction, Cookies, RootState } from '@interfaces';
 import { fetchGqlApp } from '@lib/fetch';
-// import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
+import { getAppData } from '@store/reducers';
+import { AnyAction } from 'redux';
 
-export const fetchAppData = async () => {
-  const appData = await fetchGqlApp();
+export const fetchAppData =
+  (cookies: Cookies): ThunkAction<void, {}, {}, AppDataAction> =>
+  async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>,
+    getState: () => RootState
+  ) => {
+    const appData = getAppData(getState());
 
-  if (appData) {
-    // const ctaDataPromise = dispatch<any>(
-    //   fetchCtaRegionGroupData('tw_cta_regions_site')
-    // );
+    if (!appData) {
+      const data = await fetchGqlApp();
 
-    return appData;
-  }
+      if (data) {
+        const { ctaRegions, ...payload } = data;
 
-  return undefined;
-};
+        dispatch({
+          type: 'SET_COOKIES',
+          payload: {
+            cookies
+          }
+        });
+
+        dispatch({
+          type: 'FETCH_CTA_REGION_GROUP_DATA_SUCCESS',
+          payload: {
+            data: ctaRegions
+          }
+        });
+
+        dispatch({
+          type: 'FETCH_APP_DATA_SUCCESS',
+          payload
+        });
+      }
+    }
+  };

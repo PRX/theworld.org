@@ -29,12 +29,7 @@ export const AppCtaLoadUnder = () => {
       resource: { type, id }
     }
   } = useContext(AppContext);
-  const banner = getCtaRegionData(
-    state,
-    'tw_cta_region_site_load_under',
-    type,
-    id
-  );
+  const banner = getCtaRegionData(state, 'site-load-under', type, id);
   const cookies = getCookies(state);
   const shownMessage = getShownMessage(banner, cookies);
   const { type: msgType } = shownMessage || {};
@@ -62,7 +57,7 @@ export const AppCtaLoadUnder = () => {
 
   return CtaMessageComponent && shownMessage && !closed ? (
     <ThemeProvider theme={appCtaLoadUnderTheme}>
-      <Box component="aside" className={classes.root} px={4} height={5}>
+      <Box component="aside" className={classes.root} px={4}>
         <Container className={classes.container} maxWidth="lg">
           <CtaMessageComponent data={shownMessage} onClose={handleClose} />
         </Container>

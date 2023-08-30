@@ -11,7 +11,7 @@ export const MENU_ITEM_PROPS = gql`
 
 export const MENU_PROPS = gql`
   fragment MenuProps on Menu {
-    menuItems {
+    menuItems(first: 100) {
       nodes {
         ...MenuItemProps
       }

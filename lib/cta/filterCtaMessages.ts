@@ -8,45 +8,49 @@ import { ICtaFilterProps, ICtaMessage } from '@interfaces/cta';
  * Determine if a message should be used based on filterProps.
  *
  * @param filterProps - Properties to compare to for filter targeting.
- *
- * @return {object|null} - Returns array filter callback to filter CTA message.
  */
-export const filterCtaMessages = (filterProps: ICtaFilterProps) => (
-  message: ICtaMessage
-) => {
-  const { targetContent, targetCategories, targetProgram } = message;
-  const isTargeted = targetContent || targetCategories || targetProgram;
-  let contentMatched = false;
-  let categoriesMatched = false;
-  let programMatched = false;
+export const filterCtaMessages =
+  (filterProps: ICtaFilterProps) => (message: ICtaMessage) => {
+    const { targetContent, targetCategories, targetPrograms } = message;
+    const isTargeted = targetContent || targetCategories || targetPrograms;
+    let contentMatched = false;
+    let categoriesMatched = false;
+    let programsMatched = false;
 
-  // Always use messages that are not target.
-  if (!isTargeted) return true;
+    // Always use messages that are not target.
+    if (!isTargeted) return true;
 
-  // Check Content Targets.
-  if (targetContent?.length) {
-    contentMatched =
-      !!filterProps?.id && targetContent.includes(filterProps.id);
-  }
+    // Check Content Targets.
+    if (targetContent?.length) {
+      contentMatched =
+        !!filterProps?.id &&
+        targetContent.map((item) => item.id).includes(filterProps.id);
+    }
 
-  // Check Category Targets.
-  if (targetCategories?.length) {
-    const filterPropsCategories = filterProps?.categories || [];
-    const combinedCategories = new Set([
-      ...targetCategories,
-      ...filterPropsCategories
-    ]);
+    // Check Category Targets.
+    if (targetCategories?.length) {
+      const filterPropsCategories = filterProps?.categories || [];
+      const combinedCategories = new Set([
+        ...targetCategories.map((item) => item.id),
+        ...filterPropsCategories
+      ]);
 
-    categoriesMatched =
-      [...combinedCategories].length !==
-      targetCategories.length + filterPropsCategories.length;
-  }
+      categoriesMatched =
+        [...combinedCategories].length === targetCategories.length;
+    }
 
-  // Check Program Target.
-  if (targetProgram) {
-    programMatched = targetProgram === filterProps?.program;
-  }
+    // Check Program Target.
+    if (targetPrograms) {
+      const filterPropsPrograms = filterProps?.programs || [];
+      const combinedCategories = new Set([
+        ...targetPrograms.map((item) => item.id),
+        ...filterPropsPrograms
+      ]);
 
-  // Use message if any of the targeting matched.
-  return contentMatched || categoriesMatched || programMatched;
-};
+      programsMatched =
+        [...combinedCategories].length === targetPrograms.length;
+    }
+
+    // Use message if any of the targeting matched.
+    return contentMatched || categoriesMatched || programsMatched;
+  };

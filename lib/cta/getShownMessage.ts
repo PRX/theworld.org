@@ -28,9 +28,11 @@ export const getShownMessage = (
           const { name, hash } = msg;
           const cookieName = getCookieKey(name);
           const hashOld = cookies[cookieName];
+
           if (!result && (!hashOld || hashOld !== hash)) {
             return msg;
           }
+
           return result;
         }, message);
   }

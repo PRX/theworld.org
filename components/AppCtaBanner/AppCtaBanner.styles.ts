@@ -3,77 +3,79 @@
  * Styles for appCtaBanner.
  */
 
-import { createTheme, Theme } from '@mui/material/styles';
+import { Theme, alpha } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
-
-export const appCtaBannerTheme = (theme: Theme) =>
-  createTheme(theme, {
-    typography: {
-      h2: {
-        color: theme.palette.primary.contrastText,
-        fontSize: '1.2rem'
-      },
-      body1: {
-        fontSize: '1rem',
-        lineHeight: 1.3
-      }
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          containedPrimary: {
-            '&:hover': {
-              backgroundColor: theme.palette.secondary.main
-            }
-          }
-        }
-      },
-      MuiCheckbox: {
-        styleOverrides: {
-          root: {
-            color: 'inherit'
-          }
-        }
-      },
-      MuiFormControlLabel: {
-        styleOverrides: {
-          root: {
-            paddingLeft: theme.spacing(2)
-          },
-          label: {
-            paddingTop: theme.spacing(1),
-            paddingBottom: theme.spacing(0),
-            textAlign: 'left'
-          }
-        }
-      },
-      MuiIconButton: {
-        styleOverrides: {
-          root: {
-            '&:hover': {
-              backgroundColor: theme.palette.action.focus
-            }
-          }
-        }
-      },
-      MuiToolbar: {
-        styleOverrides: {
-          root: {
-            justifyContent: 'center',
-            marginTop: 0,
-            marginBottom: 0,
-            '& > * + *': {
-              marginLeft: theme.spacing(2)
-            }
-          }
-        }
-      }
-    }
-  });
 
 export const appCtaBannerStyles = makeStyles()((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.primary.dark,
-    color: theme.palette.getContrastText(theme.palette.primary.dark)
+    color: theme.palette.getContrastText(theme.palette.primary.dark),
+
+    '.MuiTypography-h2': {
+      color: theme.palette.primary.contrastText,
+      fontSize: '1.2rem'
+    },
+
+    '.MuiTypography-body1': {
+      fontSize: '1rem',
+      lineHeight: 1.3,
+
+      p: {
+        marginBlock: 0,
+        '& + &': {
+          marginBlockStart: theme.spacing(1)
+        }
+      },
+
+      a: {
+        color: theme.palette.secondary.main,
+        textDecoration: 'none',
+        '&:hover': {
+          textDecoration: 'underline'
+        }
+      }
+    },
+
+    '.MuiButton-containedPrimary': {
+      '&:hover': {
+        backgroundColor: theme.palette.secondary.main
+      }
+    },
+
+    '.MuiCheckbox-root': {
+      color: 'inherit'
+    },
+
+    '.MuiFormControlLabel-root': {
+      paddingLeft: theme.spacing(2)
+    },
+
+    '.MuiFormControlLabel-label': {
+      paddingBottom: theme.spacing(0),
+      textAlign: 'left',
+
+      p: {
+        marginBlock: 0
+      }
+    },
+
+    '.MuiButtonBase-root.Mui-disabled': {
+      color: alpha(theme.palette.primary.main, 0.6)
+    },
+
+    '.MuiIconButton-root': {
+      '&:hover': {
+        backgroundColor: theme.palette.action.focus
+      }
+    },
+
+    '.MuiToolbar-root': {
+      justifyContent: 'center',
+      marginTop: 0,
+      marginBottom: 0,
+      '& > * + *': {
+        marginLeft: theme.spacing(2)
+      }
+    }
   }
 }));

@@ -3,22 +3,22 @@
  * Component for links to content page.
  */
 
-import React, { useContext } from 'react';
+import type { RootState } from '@interfaces';
+import { useStore } from 'react-redux';
 import Image from 'next/legacy/image';
-import { parse } from 'url';
 import { Box, Breadcrumbs, Container, Divider, Link } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
 import TwLogo from '@svg/tw-white.svg';
 import PrxLogo from '@svg/PRX-Logo-Horizontal-Color.svg';
 import GBHLogo from '@svg/GBH-Logo-Purple.svg';
-import { AppContext } from '@contexts/AppContext';
+import { getAppDataMenu } from '@store/reducers';
 import { appFooterStyles } from './AppFooter.styles';
 
 export const AppFooter = () => {
-  const { data } = useContext(AppContext);
-  const { menus } = data || {};
-  const { footerNav } = menus || {};
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const footerNav = getAppDataMenu(state, 'footerNav');
   const copyrightDate = new Date().getFullYear();
   const { classes, cx } = appFooterStyles();
   const producedByLogoClasses = cx(classes.logo, classes.producedByLogo);
@@ -128,11 +128,14 @@ export const AppFooter = () => {
             classes={{ ol: classes.footerNavMuiOl }}
           >
             {footerNav
-              .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
+              .map(({ url, ...other }) => ({
+                ...other,
+                url: new URL(url, 'https://theworld.org')
+              }))
               .map(({ name, url, key, attributes }) =>
                 isLocalUrl(url.href) ? (
                   <Link
-                    href={url.path || '/'}
+                    href={url.pathname || '/'}
                     onClick={handleButtonClick(url)}
                     key={key}
                     className={classes.link}

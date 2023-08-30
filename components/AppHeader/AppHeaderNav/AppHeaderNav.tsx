@@ -3,16 +3,16 @@
  * Component for app header nav.
  */
 
-import React, { useContext } from 'react';
-import { parse } from 'url';
+import type { ButtonColors, IconButtonColors, RootState } from '@interfaces';
+import { Fragment } from 'react';
+import { useStore } from 'react-redux';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { ThemeProvider } from '@mui/styles';
 import { FavoriteSharp } from '@mui/icons-material';
-import { ButtonColors, IconButtonColors } from '@interfaces';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
-import { AppContext } from '@contexts/AppContext';
+import { getAppDataMenu } from '@store/reducers';
 import { appHeaderNavTheme } from './AppHeaderNav.styles';
 
 const iconComponentMap = new Map();
@@ -24,14 +24,17 @@ const renderIcon = (icon: string) => {
 };
 
 export const AppHeaderNav = () => {
-  const { data } = useContext(AppContext);
-  const { menus } = data || {};
-  const { headerNav } = menus || {};
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const headerNav = getAppDataMenu(state, 'headerNav');
 
   return headerNav?.length ? (
     <ThemeProvider theme={appHeaderNavTheme}>
       {headerNav
-        .map(({ url, ...other }) => ({ ...other, url: parse(url || '') }))
+        .map(({ url, ...other }) => ({
+          ...other,
+          url: new URL(url, 'https://theworld.org')
+        }))
         .map(({ service, ...other }) => {
           if (!service) return other;
 
@@ -54,11 +57,11 @@ export const AppHeaderNav = () => {
         })
         .map(
           ({ color, icon, name, url, key, attributes, itemLinkClass = '' }) => (
-            <React.Fragment key={key}>
+            <Fragment key={key}>
               <Button
                 sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
                 component="a"
-                href={isLocalUrl(url.href) ? url.path || undefined : url.href}
+                href={isLocalUrl(url.href) ? url.pathname || '/' : url.href}
                 onClick={handleButtonClick(url)}
                 variant={
                   /\bbtn-(text|link)\b/.test(itemLinkClass)
@@ -106,7 +109,7 @@ export const AppHeaderNav = () => {
                   {name}
                 </Button>
               )}
-            </React.Fragment>
+            </Fragment>
           )
         )}
     </ThemeProvider>

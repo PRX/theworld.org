@@ -3,9 +3,10 @@
  * Component for app drawer top nav.
  */
 
-import React, { useContext, useState } from 'react';
+import type { IButton, RootState } from '@interfaces';
+import { useState } from 'react';
+import { useStore } from 'react-redux';
 import { handleButtonClick } from '@lib/routing';
-import { IButton } from '@interfaces';
 import {
   Box,
   Collapse,
@@ -15,7 +16,7 @@ import {
   ThemeProvider
 } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { AppContext } from '@contexts/AppContext';
+import { getAppDataMenu } from '@store/reducers';
 import {
   drawerMainNavTheme,
   drawerMainNavStyles
@@ -26,9 +27,9 @@ export interface OpenStateMap {
 }
 
 export const DrawerMainNav = () => {
-  const { data } = useContext(AppContext);
-  const { menus } = data || {};
-  const { drawerMainNav } = menus || {};
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const drawerMainNav = getAppDataMenu(state, 'drawerMainNav');
   const [{ open }, setState] = useState({
     open: drawerMainNav
       ? drawerMainNav.reduce(

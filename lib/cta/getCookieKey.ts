@@ -10,5 +10,5 @@ import { cookieKeyPrefix } from './ctaConfig';
  * @param id
  *    CTA message id.
  */
-export const getCookieKey = (id: string | number) =>
-  [cookieKeyPrefix, id].join('-');
+export const getCookieKey = (id: string) =>
+  [cookieKeyPrefix, id.replace(/[^\w]/g, '')].join('-');

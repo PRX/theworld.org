@@ -3,8 +3,9 @@
  * Interfaces for content.
  */
 
+import { Category, ContentNode, Newsletter, Program } from '@interfaces/api';
 import { IButton } from '@interfaces/button';
-import { INewsletterOptions, IPriApiNewsletter } from '@interfaces/newsletter';
+import { INewsletterOptions } from '@interfaces/newsletter';
 
 export type CtaMessageType = 'info' | 'optin' | 'donation' | 'newsletter';
 
@@ -18,11 +19,11 @@ export interface ICtaMessage {
   cookieLifespan?: number;
   action?: IButton;
   dismiss?: IButton;
-  newsletter?: IPriApiNewsletter;
+  newsletter?: Newsletter;
   newsletterOptions?: INewsletterOptions;
-  targetContent?: string[];
-  targetCategories?: string[];
-  targetProgram?: string;
+  targetContent?: ContentNode[];
+  targetCategories?: Category[];
+  targetPrograms?: Program[];
   region?: string;
 }
 
@@ -45,5 +46,5 @@ export interface ICtaMessageComponentContext {
 export interface ICtaFilterProps {
   id?: string;
   categories?: string[];
-  program?: string;
+  programs?: string[];
 }

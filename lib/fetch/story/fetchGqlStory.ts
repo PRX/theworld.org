@@ -2,7 +2,7 @@
  * Fetch Story data from WP GraphQL API.
  */
 
-import type { Maybe, Post, PostStory } from '@interfaces';
+import type { Maybe, PostStory } from '@interfaces';
 import { gql } from '@apollo/client';
 import { gqlClient } from '@lib/fetch/api';
 import { IMAGE_PROPS, POST_SEO_PROPS } from '@lib/fetch/api/graphql';
@@ -167,34 +167,13 @@ const GET_POST = gql`
 `;
 
 export const fetchGqlStory = async (id?: string, idType?: string) => {
-  let storyId = id;
-
-  if (idType) {
-    const response = await gqlClient.query<{ post: Maybe<Post> }>({
-      query: gql`
-        query getPost($id: ID!, $idType: PostIdType) {
-          post(id: $id, idType: $idType) {
-            id
-          }
-        }
-      `,
-      variables: {
-        id,
-        idType
-      }
-    });
-
-    storyId = response.data.post?.id;
-  }
-
-  if (!storyId) return undefined;
-
   const response = await gqlClient.query<{
     post: Maybe<PostStory>;
   }>({
     query: GET_POST,
     variables: {
-      id: storyId
+      id,
+      idType
     }
   });
   const post = response?.data?.post;

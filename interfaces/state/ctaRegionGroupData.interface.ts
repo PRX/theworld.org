@@ -12,9 +12,9 @@ export interface CtaRegionGroupData {
   [k: string]: ICtaMessage[];
 }
 
-export interface Cookies {
+export type Cookies = Partial<{
   [k: string]: string;
-}
+}>;
 
 export interface CtaRegionGroupFilterProps {
   id: string;

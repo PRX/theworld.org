@@ -3,12 +3,17 @@
  * Helper functions to parse CTA message API data.
  */
 
-import { IPriApiResource } from 'pri-api-library/types';
-import type { Newsletter, INewsletterOptions, ICtaMessage } from '@interfaces';
+import type {
+  Newsletter,
+  INewsletterOptions,
+  ICtaMessage,
+  Maybe,
+  CallToAction
+} from '@interfaces';
 
 export const parseNewsletterOptions = (
   data: Newsletter,
-  region: string
+  region?: Maybe<string>
 ): INewsletterOptions => ({
   listId: data.newsletterOptions?.listId,
   customFields: {
@@ -18,44 +23,61 @@ export const parseNewsletterOptions = (
 });
 
 export const parseCtaMessage = (
-  message: IPriApiResource,
-  region: string
-): ICtaMessage => ({
-  name: message.id as string,
-  type: message.ctaType,
-  hash: message.contentHash, // TODO: create this hash during parse.
-  ...(message.heading && { heading: message.heading }),
-  ...(message.message && { message: message.message }),
-  ...(message.cookieLifespan && {
-    cookieLifespan: +message.cookieLifespan
-  }),
-  ...(message.optinLabel && { optinLabel: message.optinLabel }),
-  ...(message.actionLabel && {
-    action: {
-      name: message.actionLabel,
-      ...(message.actionUrl && { url: message.actionUrl })
-    }
-  }),
-  ...(message.dismissButtonLabel && {
-    dismiss: {
-      name: message.dismissButtonLabel
-    }
-  }),
-  ...(message.ctaType === 'newsletter' &&
-    message.newsletter && {
-      ...(!message.heading && { heading: message.newsletter.title }),
-      ...(!message.message && { message: message.newsletter.summary }),
-      action: {
-        name: message.actionLabel || message.newsletter.buttonLabel,
-        url: message.newsletter.link
-      },
-      newsletter: message.newsletter,
-      newsletterOptions: parseNewsletterOptions(message.newsletter, region)
-    }),
-  ...(message.targetContent && { targetContent: message.targetContent }),
-  ...(message.targetCategories && {
-    targetCategories: message.targetCategories
-  }),
-  ...(message.targetProgram && { targetProgram: message.targetProgram }),
-  ...(region && { region })
-});
+  cta: Maybe<CallToAction>,
+  region?: Maybe<string>
+) =>
+  cta?.ctaOptions?.ctaType
+    ? ({
+        name: cta.id,
+        type: cta.ctaOptions.ctaType,
+        hash: `${cta.id}:${cta.modified}`,
+        ...(cta.ctaOptions.content?.heading && {
+          heading: cta.ctaOptions.content.heading
+        }),
+        ...(cta.ctaOptions.content?.message && {
+          message: cta.ctaOptions.content.message
+        }),
+        ...(cta.ctaSettings?.cookieLifespan && {
+          cookieLifespan: cta.ctaSettings.cookieLifespan
+        }),
+        ...(cta.ctaOptions.optInSettings?.optInText && {
+          optinLabel: cta.ctaOptions.optInSettings.optInText
+        }),
+        ...(cta.ctaOptions.actions?.actionButtonLabel && {
+          action: {
+            name: cta.ctaOptions.actions.actionButtonLabel,
+            ...(cta.ctaOptions.actions.actionButtonUrl && {
+              url: cta.ctaOptions.actions.actionButtonUrl
+            })
+          }
+        }),
+        ...(cta.ctaOptions.actions?.dismissButtonLabel && {
+          dismiss: {
+            name: cta.ctaOptions.actions.dismissButtonLabel
+          }
+        }),
+        ...(cta.ctaOptions.ctaType === 'newsletter' &&
+          cta.ctaOptions.newsletterSettings?.newsletter && {
+            ...(!cta.ctaOptions.content?.heading && {
+              heading: cta.ctaOptions.newsletterSettings.newsletter.title
+            }),
+            ...(!cta.ctaOptions.content?.message && {
+              message: cta.ctaOptions.newsletterSettings.newsletter.excerpt
+            }),
+            action: {
+              name:
+                cta.ctaOptions.actions?.actionButtonLabel ||
+                cta.ctaOptions.newsletterSettings.newsletter.newsletterOptions
+                  ?.buttonLabel,
+              url: cta.ctaOptions.newsletterSettings.newsletter.link
+            },
+            newsletter: cta.ctaOptions.newsletterSettings.newsletter,
+            newsletterOptions: parseNewsletterOptions(
+              cta.ctaOptions.newsletterSettings.newsletter,
+              region
+            )
+          }),
+        ...(cta.ctaTargeting && { ...cta.ctaTargeting }),
+        ...(region && { region })
+      } as ICtaMessage)
+    : undefined;
