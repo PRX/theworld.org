@@ -10,10 +10,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   if (id) {
-    const story = await fetchGqlEpisode(id as string);
+    const data = await fetchGqlEpisode(id as string);
 
-    if (story) {
-      return res.status(200).json(story);
+    if (data) {
+      return res.status(200).json(data);
     }
 
     return res.status(404).end();

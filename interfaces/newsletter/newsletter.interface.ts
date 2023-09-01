@@ -3,7 +3,8 @@
  * Interfaces for link.
  */
 
-import { IPriApiResource } from 'pri-api-library/types';
+import type { Maybe } from '@interfaces/api';
+import type { IPriApiResource } from 'pri-api-library/types';
 
 export interface IPriApiNewsletter extends IPriApiResource {
   listId: string;
@@ -25,7 +26,7 @@ export interface INewsletterCustomFields {
 }
 
 export interface INewsletterOptions {
-  listId?: string;
+  listId?: Maybe<string>;
   customFields?: INewsletterCustomFields;
 }
 

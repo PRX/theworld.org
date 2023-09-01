@@ -1,7 +1,7 @@
 /**
- * @file fetchAudioData.ts
+ * @file fetchEpisodeData.ts
  *
- * Actions to fetch data for a audio resource.
+ * Actions to fetch data for a episode resource.
  */
 
 import { fetchGqlEpisode } from '@lib/fetch';

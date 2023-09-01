@@ -4,14 +4,13 @@
  */
 
 import { IPriApiResource } from 'pri-api-library/types';
-import { ICtaMessage } from '@interfaces/cta';
-import { IPriApiNewsletter, INewsletterOptions } from '@interfaces/newsletter';
+import type { Newsletter, INewsletterOptions, ICtaMessage } from '@interfaces';
 
 export const parseNewsletterOptions = (
-  { listId }: IPriApiNewsletter,
+  data: Newsletter,
   region: string
 ): INewsletterOptions => ({
-  listId,
+  listId: data.newsletterOptions?.listId,
   customFields: {
     source: 'website',
     ...(region && { 'source-placement': region })
@@ -24,7 +23,7 @@ export const parseCtaMessage = (
 ): ICtaMessage => ({
   name: message.id as string,
   type: message.ctaType,
-  hash: message.contentHash,
+  hash: message.contentHash, // TODO: create this hash during parse.
   ...(message.heading && { heading: message.heading }),
   ...(message.message && { message: message.message }),
   ...(message.cookieLifespan && {
