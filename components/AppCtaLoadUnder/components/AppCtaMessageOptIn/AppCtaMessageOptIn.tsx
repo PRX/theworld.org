@@ -4,7 +4,6 @@
  */
 
 import React, { useState } from 'react';
-import { handleButtonClick } from '@lib/routing';
 import {
   Box,
   Button,
@@ -25,7 +24,6 @@ import {
 
 export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   const { heading, message, optinLabel, action, dismiss } = data;
-  const hasActions = !!(action || dismiss);
   const [optedIn, setOptedIn] = useState(false);
   const { classes } = appCtaMessageOptInStyles();
   const actionAttrs: ButtonProps = {
@@ -37,9 +35,16 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
     variant: 'outlined',
     color: 'primary'
   };
-  const handleActionClick = handleButtonClick(action?.url, () => {
+
+  const handleActionClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+
+    // TODO: Store user setting for optin in local storage or account settings.
+
     onClose();
-  });
+  };
   const handleDismissClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -52,7 +57,7 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
 
   return (
     <ThemeProvider theme={appCtaMessageOptInTheme}>
-      <Box textAlign="center">
+      <Box textAlign="center" display="grid" gap={1}>
         {heading && <Typography variant="h2">{heading}</Typography>}
         {message && (
           <Typography component="div" variant="body1">
@@ -68,26 +73,21 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
                     checked={optedIn}
                     onChange={handleOptInChange}
                     name="optIn"
+                    color="success"
                   />
                 }
                 label={<HtmlContent html={optinLabel} />}
               />
             </Paper>
           </Box>
-          {hasActions && (
-            <Toolbar>
-              {action && (
-                <Button {...actionAttrs} onClick={handleActionClick}>
-                  {action.name}
-                </Button>
-              )}
-              {dismiss && (
-                <Button {...dismissAttrs} onClick={handleDismissClick}>
-                  {dismiss.name}
-                </Button>
-              )}
-            </Toolbar>
-          )}
+          <Toolbar>
+            <Button {...actionAttrs} onClick={handleActionClick}>
+              {action?.name || 'Accept'}
+            </Button>
+            <Button {...dismissAttrs} onClick={handleDismissClick}>
+              {dismiss?.name || 'No Thanks'}
+            </Button>
+          </Toolbar>
         </Box>
       </Box>
     </ThemeProvider>

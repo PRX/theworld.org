@@ -49,7 +49,7 @@ export const AppCtaMessageNewsletter = ({
     <ThemeProvider theme={newsletterFormTheme}>
       <Box textAlign="center">
         <Grid container justifyContent="center" alignItems="center">
-          <Grid item sm={12} md={8}>
+          <Grid item sm={12} md={hasActions ? 8 : 12} display="grid" gap={1}>
             {heading && <Typography variant="h2">{heading}</Typography>}
             {message && (
               <Typography component="div" variant="body1">
@@ -57,8 +57,8 @@ export const AppCtaMessageNewsletter = ({
               </Typography>
             )}
           </Grid>
-          <Grid item sm={12} md={4}>
-            {hasActions && (
+          {hasActions && (
+            <Grid item sm={12} md={4}>
               <Toolbar>
                 {action && (
                   <Button {...actionAttrs} onClick={handleActionClick}>
@@ -71,8 +71,8 @@ export const AppCtaMessageNewsletter = ({
                   </Button>
                 )}
               </Toolbar>
-            )}
-          </Grid>
+            </Grid>
+          )}
         </Grid>
       </Box>
     </ThemeProvider>

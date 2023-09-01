@@ -68,6 +68,7 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
               checked={optedIn}
               onChange={handleOptInChange}
               name="optIn"
+              color="success"
             />
           }
           label={<HtmlContent html={optinLabel} />}

@@ -3,10 +3,10 @@
  * Styles for appCtaBanner.
  */
 
-import { Theme, alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
 
-export const appCtaBannerStyles = makeStyles()((theme: Theme) => ({
+export const appCtaBannerStyles = makeStyles()((theme) => ({
   root: {
     backgroundColor: theme.palette.primary.dark,
     color: theme.palette.getContrastText(theme.palette.primary.dark),
@@ -43,7 +43,7 @@ export const appCtaBannerStyles = makeStyles()((theme: Theme) => ({
     },
 
     '.MuiCheckbox-root': {
-      color: 'inherit'
+      color: theme.palette.primary.contrastText
     },
 
     '.MuiFormControlLabel-root': {
@@ -51,7 +51,6 @@ export const appCtaBannerStyles = makeStyles()((theme: Theme) => ({
     },
 
     '.MuiFormControlLabel-label': {
-      paddingBottom: theme.spacing(0),
       textAlign: 'left',
 
       p: {
