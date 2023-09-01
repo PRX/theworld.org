@@ -33,9 +33,9 @@ export type ButtonColors = OverridableStringUnion<
 >;
 
 export interface IButton {
-  key: string | number;
+  key?: string | number;
   name: string;
-  url: string;
+  url?: string;
   service?: string;
   itemLinkClass?: string;
   color?: IconButtonColors | ButtonColors;

@@ -40,7 +40,6 @@ import {
   Typography
 } from '@mui/material';
 import { EqualizerRounded, PublicRounded } from '@mui/icons-material';
-import Pagination from '@mui/material/Pagination';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
@@ -51,7 +50,6 @@ import {
   SidebarHeader,
   SidebarLatestStories,
   SidebarList,
-  SidebarFooter,
   SidebarContent,
   SidebarCta
 } from '@components/Sidebar';
@@ -82,7 +80,6 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
   const [oldScrollY, setOldScrollY] = useState(0);
   const [moreStoriesController, setMoreStoriesController] =
     useState<AbortController>();
-  const [segmentsPage, setSegmentsPage] = useState(1);
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
@@ -138,14 +135,8 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
   );
 
   const segmentsState = getCollectionData<Segment>(state, type, id, 'segments');
-  const { items: allSegments, options: segmentsOptions } = segmentsState || {};
-  const segmentsPageSize = segmentsOptions?.pageSize || 10;
-  const segmentsCount = allSegments?.length || 0;
-  const segmentsPageCount = Math.ceil(segmentsCount / segmentsPageSize);
-  const segmentsStartIndex = (segmentsPage - 1) * segmentsPageSize;
-  const segmentsEndIndex = segmentsStartIndex + segmentsPageSize;
-  const segments = allSegments?.slice(segmentsStartIndex, segmentsEndIndex);
-  const hasSegments = !!allSegments?.length;
+  const { items: segments, options: segmentsOptions } = segmentsState || {};
+  const hasSegments = !!segments?.length;
 
   const { classes } = bioStyles();
 
@@ -208,13 +199,6 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
     store.dispatch<any>(
       appendResourceCollection(moreStories, type, id, 'stories', options)
     );
-  };
-
-  const handleSegmentsPageChange = async (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    setSegmentsPage(value);
   };
 
   const mainElements = [
@@ -280,31 +264,23 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
         <>
           {hasSegments && (
             <Sidebar item elevated>
-              <SidebarHeader>
-                <EqualizerRounded />
-                <Typography variant="h2">
-                  Latest segments from {name}
-                </Typography>
-              </SidebarHeader>
               <SidebarList
-                disablePadding
                 data={segments.map((segment) => ({
                   data: segment,
                   audio: segment.segmentContent?.audio
                 }))}
+                subheader={
+                  <SidebarHeader disablePadding>
+                    <EqualizerRounded />
+                    <Typography variant="h2">
+                      Latest segments from {name}
+                    </Typography>
+                  </SidebarHeader>
+                }
+                paginationProps={{
+                  pageSize: segmentsOptions?.pageSize
+                }}
               />
-              <SidebarFooter>
-                {segmentsPageCount > 1 && (
-                  <Pagination
-                    size="small"
-                    count={segmentsPageCount}
-                    page={segmentsPage}
-                    color="primary"
-                    size="small"
-                    onChange={handleSegmentsPageChange}
-                  />
-                )}
-              </SidebarFooter>
             </Sidebar>
           )}
           {!!followLinks?.length && (

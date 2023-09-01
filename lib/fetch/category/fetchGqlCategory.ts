@@ -14,6 +14,27 @@ import {
   TAXONOMY_SEO_PROPS
 } from '@lib/fetch/api/graphql';
 
+const GET_CATEGORY_CHILDREN = gql`
+  query getCategoryChildren($id: ID!, $cursor: String) {
+    category(id: $id) {
+      children(first: 100, after: $cursor) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          cursor
+          node {
+            id
+            name
+            link
+          }
+        }
+      }
+    }
+  }
+`;
+
 const GET_CATEGORY = gql`
   query getCategory($id: ID!, $idType: CategoryIdType) {
     category(id: $id, idType: $idType) {
@@ -63,10 +84,17 @@ const GET_CATEGORY = gql`
         ...TaxonomySEOProps
       }
       children(first: 100) {
-        nodes {
-          id
-          name
-          link
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        edges {
+          cursor
+          node {
+            id
+            name
+            link
+          }
         }
       }
       episodes(first: 10) {
@@ -102,6 +130,37 @@ export async function fetchGqlCategory(id: string, idType?: string) {
   const category = response?.data?.category;
 
   if (!category) return undefined;
+
+  if (category.children.pageInfo) {
+    let childrenEdges = [...category.children.edges];
+    let { hasNextPage, endCursor } = category.children.pageInfo;
+
+    while (hasNextPage && endCursor) {
+      // eslint-disable-next-line no-await-in-loop
+      const moreChildren = await gqlClient
+        .query<{
+          category: Maybe<Category>;
+        }>({
+          query: GET_CATEGORY_CHILDREN,
+          variables: {
+            id: category.id,
+            cursor: endCursor
+          }
+        })
+        .then((res) => res.data.category.children);
+
+      if (moreChildren) {
+        childrenEdges = [...childrenEdges, ...moreChildren.edges];
+      }
+
+      hasNextPage = !!moreChildren?.pageInfo.hasNextPage;
+      endCursor = moreChildren?.pageInfo.endCursor;
+
+      category.children.pageInfo = { ...moreChildren.pageInfo };
+    }
+
+    category.children.edges = childrenEdges;
+  }
 
   return category;
 }

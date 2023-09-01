@@ -382,24 +382,26 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
                 bulleted
               />
             )}
-            {children && !!children.nodes.length && (
+          </Sidebar>
+          {children && !!children.edges.length && (
+            <Sidebar item elevated>
               <SidebarList
-                data={children.nodes.map(
-                  (child) =>
+                data={children.edges.map(
+                  ({ node }) =>
                     ({
-                      data: child
+                      data: node
                     } as SidebarListItem)
                 )}
                 subheader={
-                  <SidebarHeader>
+                  <SidebarHeader disablePadding>
                     <ListAltRounded />
                     <Typography variant="h2">Subcategories</Typography>
                   </SidebarHeader>
                 }
                 bulleted
               />
-            )}
-          </Sidebar>
+            </Sidebar>
+          )}
           {ctaSidebarTop && (
             <>
               <Hidden only="sm">
