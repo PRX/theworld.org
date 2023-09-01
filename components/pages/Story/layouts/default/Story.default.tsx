@@ -7,32 +7,35 @@ import type React from 'react';
 import type { ITagsProps } from '@components/Tags';
 import type {
   IContentComponentProps,
+  ICtaRegionProps,
   Post_Additionalmedia as PostAdditionalMedia,
-  PostStory
+  PostStory,
+  RootState
 } from '@interfaces';
+import { useStore } from 'react-redux';
 import dynamic from 'next/dynamic';
 import { convertNodeToElement, Transform } from 'react-html-parser';
 import { DomElement } from 'htmlparser2';
 import { ThemeProvider } from '@mui/styles';
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Container, Grid, Hidden } from '@mui/material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
 import { Sidebar, SidebarLatestStories } from '@components/Sidebar';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
-// import { ICtaRegionProps } from '@interfaces/cta';
+import { getCtaRegionData } from '@store/reducers';
 import { useStoryStyles, storyTheme } from './Story.default.styles';
 import { IStoryRelatedLinksProps, StoryHeader, StoryLede } from './components';
 
-// const CtaRegion = dynamic(
-//   () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
-// ) as React.FC<ICtaRegionProps>;
+const CtaRegion = dynamic(
+  () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
+) as React.FC<ICtaRegionProps>;
 
-// const SidebarCta = dynamic(
-//   () =>
-//     import('@components/Sidebar/SidebarCta').then(
-//       (mod) => mod.SidebarCta
-//     ) as any
-// ) as React.FC<ICtaRegionProps>;
+const SidebarCta = dynamic(
+  () =>
+    import('@components/Sidebar/SidebarCta').then(
+      (mod) => mod.SidebarCta
+    ) as any
+) as React.FC<ICtaRegionProps>;
 
 const StoryRelatedLinks = dynamic(
   () =>
@@ -50,7 +53,11 @@ export interface IStoryDefaultProps {
 }
 
 export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const type = 'post--story';
   const {
+    id,
     additionalMedia,
     content,
     categories,
@@ -82,37 +89,37 @@ export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
   let ctaMobile01Position: number;
   let ctaMobile02Position: number;
 
-  // // CTA data.
-  // const ctaInlineMobile01 = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_content_inline_mobile_01',
-  //   type,
-  //   id as string
-  // );
-  // const ctaInlineMobile02 = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_content_inline_mobile_02',
-  //   type,
-  //   id as string
-  // );
-  // const ctaInlineEnd = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_content_inline_end',
-  //   type,
-  //   id as string
-  // );
-  // const ctaSidebarTop = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_content_sidebar_01',
-  //   type,
-  //   id as string
-  // );
-  // const ctaSidebarBottom = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_content_sidebar_02',
-  //   type,
-  //   id as string
-  // );
+  // CTA data.
+  const ctaInlineMobile01 = getCtaRegionData(
+    state,
+    'content-inline-1-mobile',
+    type,
+    id as string
+  );
+  const ctaInlineMobile02 = getCtaRegionData(
+    state,
+    'content-inline-2-mobile',
+    type,
+    id as string
+  );
+  const ctaInlineEnd = getCtaRegionData(
+    state,
+    'content-inline-end',
+    type,
+    id as string
+  );
+  const ctaSidebarTop = getCtaRegionData(
+    state,
+    'content-sidebar-1',
+    type,
+    id as string
+  );
+  const ctaSidebarBottom = getCtaRegionData(
+    state,
+    'content-sidebar-2',
+    type,
+    id as string
+  );
 
   const insertCtaMobile01 = (
     node: DomElement,
@@ -124,6 +131,7 @@ export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
       node.type === 'tag' &&
       node.name === 'p' &&
       node?.next?.name === 'p' &&
+      node?.next?.next?.next &&
       !ctaMobile01Position &&
       index >= 5
     ) {
@@ -131,11 +139,9 @@ export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
       return (
         <>
           {convertNodeToElement(node, index, transform)}
-          {/* {ctaInlineMobile01 && (
-            <Hidden mdUp>
-              <CtaRegion data={ctaInlineMobile01} />
-            </Hidden>
-          )} */}
+          <Hidden mdUp>
+            <CtaRegion data={ctaInlineMobile01} />
+          </Hidden>
         </>
       );
     }
@@ -161,11 +167,11 @@ export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
       return (
         <>
           {convertNodeToElement(node, index, transform)}
-          {/* {ctaInlineMobile02 && (
+          {ctaInlineMobile02 && (
             <Hidden mdUp>
               <CtaRegion data={ctaInlineMobile02} />
             </Hidden>
-          )} */}
+          )}
         </>
       );
     }
@@ -217,7 +223,24 @@ export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
                     />
                   )}
                 </Box>
-                {/* {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />} */}
+                {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
+              </Box>
+              <Sidebar container className={classes.sidebar}>
+                <SidebarLatestStories />
+                <Hidden mdDown>
+                  {ctaSidebarTop && (
+                    <Sidebar item stretch>
+                      <SidebarCta data={ctaSidebarTop} />
+                    </Sidebar>
+                  )}
+                  {ctaSidebarBottom && (
+                    <Sidebar item stretch>
+                      <SidebarCta data={ctaSidebarBottom} />
+                    </Sidebar>
+                  )}
+                </Hidden>
+              </Sidebar>
+              <Box component="aside" gridColumn="1 / -1">
                 {hasRelated && (
                   <aside>
                     <header>
@@ -231,21 +254,6 @@ export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
                 )}
                 {hasTags && <Tags data={allTags} label="Tags" />}
               </Box>
-              <Sidebar container className={classes.sidebar}>
-                <SidebarLatestStories />
-                {/* <Hidden smDown>
-                  {ctaSidebarTop && (
-                    <Sidebar item stretch>
-                      <SidebarCta data={ctaSidebarTop} />
-                    </Sidebar>
-                  )}
-                  {ctaSidebarBottom && (
-                    <Sidebar item stretch>
-                      <SidebarCta data={ctaSidebarBottom} />
-                    </Sidebar>
-                  )}
-                </Hidden> */}
-              </Sidebar>
             </Box>
           </Grid>
         </Grid>

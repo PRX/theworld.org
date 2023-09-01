@@ -121,27 +121,17 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
   const { classes } = programStyles();
 
   // CTA data.
-  const ctaInlineTop = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_inline_01',
-    type,
-    id
-  );
+  const ctaInlineTop = getCtaRegionData(state, 'landing-inline-top', type, id);
   const ctaInlineBottom = getCtaRegionData(
     state,
-    'tw_cta_region_landing_inline_02',
+    'landing-inline-bottom',
     type,
     id
   );
-  const ctaSidebarTop = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_sidebar_01',
-    type,
-    id
-  );
+  const ctaSidebarTop = getCtaRegionData(state, 'landing-sidebar-1', type, id);
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    'tw_cta_region_landing_sidebar_02',
+    'landing-sidebar-2',
     type,
     id
   );
@@ -260,7 +250,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
           )}
           {ctaInlineTop && (
             <>
-              <Hidden xsDown>
+              <Hidden smDown>
                 <CtaRegion data={ctaInlineTop} />
               </Hidden>
               <Hidden smUp>
@@ -339,7 +329,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
           )}
           {ctaInlineBottom && (
             <>
-              <Hidden xsDown>
+              <Hidden smDown>
                 <CtaRegion data={ctaInlineBottom} />
               </Hidden>
               <Hidden smUp>
@@ -429,7 +419,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarTop} />
               </Hidden>
-              <Hidden xsDown mdUp>
+              <Hidden smDown mdUp>
                 <CtaRegion data={ctaSidebarTop} />
               </Hidden>
             </>
@@ -447,7 +437,7 @@ export const Program = ({ data }: IContentComponentProps<ProgramType>) => {
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarBottom} />
               </Hidden>
-              <Hidden xsDown mdUp>
+              <Hidden smDown mdUp>
                 <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
             </>

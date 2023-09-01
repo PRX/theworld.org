@@ -252,7 +252,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
           )}
           {ctaInlineTop && (
             <>
-              <Hidden xsDown>
+              <Hidden smDown>
                 <CtaRegion data={ctaInlineTop} />
               </Hidden>
               <Hidden smUp>
@@ -331,7 +331,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
           )}
           {ctaInlineBottom && (
             <>
-              <Hidden xsDown>
+              <Hidden smDown>
                 <CtaRegion data={ctaInlineBottom} />
               </Hidden>
               <Hidden smUp>
@@ -407,7 +407,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarTop} />
               </Hidden>
-              <Hidden xsDown mdUp>
+              <Hidden smDown mdUp>
                 <CtaRegion data={ctaSidebarTop} />
               </Hidden>
             </>
@@ -425,7 +425,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarBottom} />
               </Hidden>
-              <Hidden xsDown mdUp>
+              <Hidden smDown mdUp>
                 <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
             </>

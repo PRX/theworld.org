@@ -94,21 +94,11 @@ export const Episode = ({ data }: IContentComponentProps<EpisodeType>) => {
   );
 
   // CTA data.
-  const ctaInlineEnd = getCtaRegionData(
-    state,
-    'tw_cta_region_content_inline_end',
-    type,
-    id
-  );
-  const ctaSidebarTop = getCtaRegionData(
-    state,
-    'tw_cta_region_content_sidebar_01',
-    type,
-    id
-  );
+  const ctaInlineEnd = getCtaRegionData(state, 'content-inline-end', type, id);
+  const ctaSidebarTop = getCtaRegionData(state, 'content-sidebar-1', type, id);
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    'tw_cta_region_content_sidebar_02',
+    'content-sidebar-2',
     type,
     id
   );
