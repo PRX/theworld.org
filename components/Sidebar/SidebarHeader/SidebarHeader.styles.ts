@@ -15,7 +15,8 @@ export const sidebarHeaderStyles = makeStyles<{ disablePadding?: boolean }>()(
       '& :is(h1, h2, h3, h4, h5, h6)': {
         flexGrow: 1,
         fontSize: theme.typography.pxToRem(15),
-        fontWeight: 400
+        fontWeight: 400,
+        textWrap: 'balance'
       },
       '& > :is(.MuiSvgIcon-root)': {
         marginRight: '0.25rem',

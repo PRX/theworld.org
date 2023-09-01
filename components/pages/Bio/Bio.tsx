@@ -102,6 +102,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
         ([k, v]) =>
           v && (
             <IconButton
+              key={`${k}:${v}`}
               href={v}
               target="_blank"
               LinkComponent={Link}
