@@ -21,7 +21,10 @@ export const appPlayerStyles = makeStyles()((theme) => ({
     display: 'grid',
     gridTemplateColumns: '0fr 1fr 0fr',
     justifyContent: 'space-between',
-    gap: theme.typography.pxToRem(16)
+    gap: theme.typography.pxToRem(16),
+    [theme.breakpoints.down(760)]: {
+      gap: 0
+    }
   },
 
   controls: {
@@ -31,6 +34,9 @@ export const appPlayerStyles = makeStyles()((theme) => ({
     gap: theme.typography.pxToRem(2),
     '&:last-child': {
       justifySelf: 'end'
+    },
+    [theme.breakpoints.down(760)]: {
+      justifyContent: 'end'
     }
   },
 
@@ -65,7 +71,7 @@ export const appPlayerStyles = makeStyles()((theme) => ({
   },
 
   trackInfo: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down(760)]: {
       display: 'none'
     }
   },
@@ -79,7 +85,7 @@ export const appPlayerStyles = makeStyles()((theme) => ({
   },
 
   volume: {
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none'
     }
   },
