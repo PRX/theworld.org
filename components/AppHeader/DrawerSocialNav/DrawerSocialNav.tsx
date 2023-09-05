@@ -3,7 +3,7 @@
  * Component for app drawer social nav.
  */
 
-import type { RootState } from '@interfaces';
+import type { IButtonWithUrl, RootState } from '@interfaces';
 import { useStore } from 'react-redux';
 import { IconButton, Toolbar } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
@@ -40,6 +40,7 @@ export const DrawerSocialNav = () => {
     (drawerSocialNav && (
       <Toolbar className={classes.root}>
         {drawerSocialNav
+          .filter((v): v is IButtonWithUrl => !!v.url)
           .map(({ url, ...other }) => ({
             ...other,
             url: new URL(url, 'https://theworld.org')

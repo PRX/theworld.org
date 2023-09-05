@@ -3,7 +3,7 @@
  * Component for links to content page.
  */
 
-import type { RootState } from '@interfaces';
+import type { IButtonWithUrl, RootState } from '@interfaces';
 import { useStore } from 'react-redux';
 import Image from 'next/legacy/image';
 import { Box, Breadcrumbs, Container, Divider, Link } from '@mui/material';
@@ -128,6 +128,7 @@ export const AppFooter = () => {
             classes={{ ol: classes.footerNavMuiOl }}
           >
             {footerNav
+              .filter((v): v is IButtonWithUrl => !!v.url)
               .map(({ url, ...other }) => ({
                 ...other,
                 url: new URL(url, 'https://theworld.org')

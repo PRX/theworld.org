@@ -139,9 +139,11 @@ export const StoryDefault = ({ data }: IContentComponentProps<PostStory>) => {
       return (
         <>
           {convertNodeToElement(node, index, transform)}
-          <Hidden mdUp>
-            <CtaRegion data={ctaInlineMobile01} />
-          </Hidden>
+          {ctaInlineMobile01 && (
+            <Hidden mdUp>
+              <CtaRegion data={ctaInlineMobile01} />
+            </Hidden>
+          )}
         </>
       );
     }

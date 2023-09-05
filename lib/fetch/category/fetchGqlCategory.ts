@@ -129,7 +129,7 @@ export async function fetchGqlCategory(id: string, idType?: string) {
   });
   const category = response?.data?.category;
 
-  if (!category) return undefined;
+  if (!category?.children) return undefined;
 
   if (category.children.pageInfo) {
     let childrenEdges = [...category.children.edges];
@@ -147,16 +147,15 @@ export async function fetchGqlCategory(id: string, idType?: string) {
             cursor: endCursor
           }
         })
-        .then((res) => res.data.category.children);
+        .then((res) => res.data.category?.children);
 
       if (moreChildren) {
         childrenEdges = [...childrenEdges, ...moreChildren.edges];
+        category.children.pageInfo = { ...moreChildren.pageInfo };
       }
 
       hasNextPage = !!moreChildren?.pageInfo.hasNextPage;
       endCursor = moreChildren?.pageInfo.endCursor;
-
-      category.children.pageInfo = { ...moreChildren.pageInfo };
     }
 
     category.children.edges = childrenEdges;

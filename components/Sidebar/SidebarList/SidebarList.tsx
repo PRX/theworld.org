@@ -76,9 +76,10 @@ export const SidebarList = ({
             (('title' in item.data && item.data?.title) ||
               ('name' in item.data && item.data?.name)));
 
-        return !!text
-          ?.toLocaleLowerCase()
-          .includes(searchText.toLocaleLowerCase());
+        return (
+          !!text &&
+          text.toLocaleLowerCase().includes(searchText.toLocaleLowerCase())
+        );
       });
   const [page, setPage] = useState(1);
   const { pageSize = 10 } = paginationProps || {};
@@ -97,7 +98,7 @@ export const SidebarList = ({
   };
 
   const handleSearchClear = () => {
-    setSearchText(null);
+    setSearchText(undefined);
   };
 
   const listProps = {
@@ -179,81 +180,80 @@ export const SidebarList = ({
     setPage(value);
   };
 
-  return (
-    hasData && (
-      <>
-        <List {...listProps}>
-          {pageItems.map((item) => {
-            const text =
-              item.title ||
-              (item.data &&
-                (('title' in item.data && item.data?.title) ||
-                  ('name' in item.data && item.data?.name)));
-            const url = item.url || item.data?.link;
-            const avatarSrc =
-              item.avatar?.sourceUrl || item.avatar?.mediaItemUrl;
+  if (!hasData) return null;
 
-            return item.data ? (
-              <ListItemButton
-                component={ContentLink}
-                url={url}
-                key={item.data.id}
-              >
-                {item.avatar && (
-                  <ListItemAvatar>
-                    {avatarSrc ? (
-                      <Avatar aria-hidden>
-                        <Image
-                          src={avatarSrc}
-                          alt={`Avatar of ${text}`}
-                          width={styleOptions.avatar.size}
-                          height={styleOptions.avatar.size}
-                          style={{ objectFit: 'cover' }}
-                        />
-                      </Avatar>
-                    ) : (
-                      <Avatar className={classes.noAvatarImage} aria-hidden>
-                        {text ? (
-                          [...text.matchAll(/\b[A-Z]/g)].join('')
-                        ) : (
-                          <Person />
-                        )}
-                      </Avatar>
-                    )}
-                  </ListItemAvatar>
-                )}
+  return (
+    <>
+      <List {...listProps}>
+        {pageItems.map((item) => {
+          const text =
+            item.title ||
+            (item.data &&
+              (('title' in item.data && item.data?.title) ||
+                ('name' in item.data && item.data?.name)));
+          const url = item.url || item.data?.link;
+          const avatarSrc = item.avatar?.sourceUrl || item.avatar?.mediaItemUrl;
+
+          return item.data ? (
+            <ListItemButton
+              component={ContentLink}
+              url={url}
+              key={item.data.id}
+            >
+              {item.avatar && (
+                <ListItemAvatar>
+                  {avatarSrc ? (
+                    <Avatar aria-hidden>
+                      <Image
+                        src={avatarSrc}
+                        alt={`Avatar of ${text}`}
+                        width={styleOptions.avatar.size}
+                        height={styleOptions.avatar.size}
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </Avatar>
+                  ) : (
+                    <Avatar className={classes.noAvatarImage} aria-hidden>
+                      {text ? (
+                        [...text.matchAll(/\b[A-Z]/g)].join('')
+                      ) : (
+                        <Person />
+                      )}
+                    </Avatar>
+                  )}
+                </ListItemAvatar>
+              )}
+              <ListItemText {...listItemTextProps}>{text}</ListItemText>
+              {item.audio && (
+                <ListItemSecondaryAction>
+                  <AudioControls
+                    id={item.audio.id}
+                    fallbackProps={item.audioProps}
+                    variant="minimal"
+                  />
+                </ListItemSecondaryAction>
+              )}
+            </ListItemButton>
+          ) : (
+            (url && (
+              <ListItemButton component="a" href={url} key={url}>
                 <ListItemText {...listItemTextProps}>{text}</ListItemText>
-                {item.audio && (
-                  <ListItemSecondaryAction>
-                    <AudioControls
-                      id={item.audio.id}
-                      fallbackProps={item.audioProps}
-                      variant="minimal"
-                    />
-                  </ListItemSecondaryAction>
-                )}
               </ListItemButton>
-            ) : (
-              (url && (
-                <ListItemButton component="a" href={url} key={url}>
-                  <ListItemText {...listItemTextProps}>{text}</ListItemText>
-                </ListItemButton>
-              )) || <ListItemText {...listItemTextProps}>{text}</ListItemText>
-            );
-          })}
-        </List>
-        <SidebarFooter>
-          {showPagination && (
-            <Pagination
-              size="small"
-              count={pageCount}
-              page={page}
-              color="primary"
-              onChange={handleSegmentsPageChange}
-            />
-          )}
-        </SidebarFooter>
-      </>
-    )
+            )) || <ListItemText {...listItemTextProps}>{text}</ListItemText>
+          );
+        })}
+      </List>
+      <SidebarFooter>
+        {showPagination && (
+          <Pagination
+            size="small"
+            count={pageCount}
+            page={page}
+            color="primary"
+            onChange={handleSegmentsPageChange}
+          />
+        )}
+      </SidebarFooter>
+    </>
   );
 };

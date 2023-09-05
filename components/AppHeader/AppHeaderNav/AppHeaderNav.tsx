@@ -3,7 +3,12 @@
  * Component for app header nav.
  */
 
-import type { ButtonColors, IconButtonColors, RootState } from '@interfaces';
+import type {
+  ButtonColors,
+  IButtonWithUrl,
+  IconButtonColors,
+  RootState
+} from '@interfaces';
 import { Fragment } from 'react';
 import { useStore } from 'react-redux';
 import Button from '@mui/material/Button';
@@ -31,6 +36,7 @@ export const AppHeaderNav = () => {
   return headerNav?.length ? (
     <ThemeProvider theme={appHeaderNavTheme}>
       {headerNav
+        .filter((v): v is IButtonWithUrl => !!v.url)
         .map(({ url, ...other }) => ({
           ...other,
           url: new URL(url, 'https://theworld.org')

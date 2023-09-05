@@ -3,7 +3,7 @@
  * Component for app drawer top nav.
  */
 
-import type { RootState } from '@interfaces';
+import type { IButtonWithUrl, RootState } from '@interfaces';
 import { useStore } from 'react-redux';
 import { Button, ButtonGroup } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
@@ -27,6 +27,7 @@ export const DrawerTopNav = () => {
         disableRipple
       >
         {drawerTopNav
+          .filter((v): v is IButtonWithUrl => !!v.url)
           .map(({ url, ...other }) => ({
             ...other,
             url: new URL(url, 'https://theworld.org')
