@@ -19,17 +19,15 @@ const IndexPage = ({ data }: IContentComponentProps<HomepageType>) => (
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {
-      const [data, appData] = await Promise.all([
+      const [data] = await Promise.all([
         store.dispatch<any>(fetchHomepageData()),
-        fetchAppData()
+        store.dispatch<any>(fetchAppData(req.cookies))
       ]);
 
       return {
         props: {
           type: 'homepage',
-          cookies: req.cookies,
-          data,
-          appData
+          data
         }
       };
     }

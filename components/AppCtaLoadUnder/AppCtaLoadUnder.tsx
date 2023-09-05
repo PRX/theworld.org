@@ -7,15 +7,11 @@ import type { RootState } from '@interfaces';
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { Box, Container, IconButton } from '@mui/material';
-import { ThemeProvider } from '@mui/styles';
 import { CloseSharp } from '@mui/icons-material';
 import { AppContext } from '@contexts/AppContext';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
 import { getCookies, getCtaRegionData } from '@store/reducers';
-import {
-  appCtaLoadUnderStyles,
-  appCtaLoadUnderTheme
-} from './AppCtaLoadUnder.styles';
+import { appCtaLoadUnderStyles } from './AppCtaLoadUnder.styles';
 import { ctaTypeComponentMap } from './components';
 
 export const AppCtaLoadUnder = () => {
@@ -29,12 +25,7 @@ export const AppCtaLoadUnder = () => {
       resource: { type, id }
     }
   } = useContext(AppContext);
-  const banner = getCtaRegionData(
-    state,
-    'tw_cta_region_site_load_under',
-    type,
-    id
-  );
+  const banner = getCtaRegionData(state, 'site-load-under', type, id);
   const cookies = getCookies(state);
   const shownMessage = getShownMessage(banner, cookies);
   const { type: msgType } = shownMessage || {};
@@ -61,22 +52,20 @@ export const AppCtaLoadUnder = () => {
   );
 
   return CtaMessageComponent && shownMessage && !closed ? (
-    <ThemeProvider theme={appCtaLoadUnderTheme}>
-      <Box component="aside" className={classes.root} px={4} height={5}>
-        <Container className={classes.container} maxWidth="lg">
-          <CtaMessageComponent data={shownMessage} onClose={handleClose} />
-        </Container>
-        <Box position="absolute" top={0} right={0}>
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            disableRipple
-            onClick={handleClose}
-          >
-            <CloseSharp />
-          </IconButton>
-        </Box>
+    <Box component="aside" className={classes.root} px={4}>
+      <Container className={classes.container} maxWidth="lg">
+        <CtaMessageComponent data={shownMessage} onClose={handleClose} />
+      </Container>
+      <Box position="absolute" top={0} right={0}>
+        <IconButton
+          aria-label="close"
+          color="inherit"
+          disableRipple
+          onClick={handleClose}
+        >
+          <CloseSharp />
+        </IconButton>
       </Box>
-    </ThemeProvider>
+    </Box>
   ) : null;
 };

@@ -5,6 +5,7 @@
 
 import { type ReactElement } from 'react';
 import { type DomElement } from 'htmlparser2';
+import type { Maybe } from '@interfaces';
 import ReactHtmlParser, { type Transform } from 'react-html-parser';
 import {
   anchorToLink,
@@ -19,7 +20,7 @@ import {
 } from './transforms';
 
 export interface IHtmlContentProps {
-  html: string;
+  html?: Maybe<string>;
   transforms?: ((
     // eslint-disable-next-line no-unused-vars
     N: DomElement,
@@ -34,10 +35,11 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
   if (!html) return null;
 
   const cleanHtml = (dirtyHtml: string) =>
-    [(h: string) => h.replace(/<[^>/]+>(\s|&nbsp;)*<\/[^>]+>/g, '')].reduce(
-      (acc, func) => func(acc),
-      dirtyHtml
-    );
+    [
+      (h: string) =>
+        h.replace(/\r?\n|\r/g, '').replace(/<[^>/]+>(\s|&nbsp;)*<\/[^>]+>/g, '')
+    ].reduce((acc, func) => func(acc), dirtyHtml);
+
   const transform = (node: DomElement, index: number) =>
     [
       anchorToLink,
@@ -56,10 +58,10 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
     );
 
   return (
-      <>
-        {ReactHtmlParser(cleanHtml(html), {
-          transform: transform as Transform
-        })}
-      </>
+    <>
+      {ReactHtmlParser(cleanHtml(html), {
+        transform: transform as Transform
+      })}
+    </>
   );
 };

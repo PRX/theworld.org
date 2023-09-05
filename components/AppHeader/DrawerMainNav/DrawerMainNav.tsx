@@ -3,9 +3,10 @@
  * Component for app drawer top nav.
  */
 
-import React, { useContext, useState } from 'react';
+import type { IButton, RootState } from '@interfaces';
+import { useState } from 'react';
+import { useStore } from 'react-redux';
 import { handleButtonClick } from '@lib/routing';
-import { IButton } from '@interfaces';
 import {
   Box,
   Collapse,
@@ -15,7 +16,7 @@ import {
   ThemeProvider
 } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { AppContext } from '@contexts/AppContext';
+import { getAppDataMenu } from '@store/reducers';
 import {
   drawerMainNavTheme,
   drawerMainNavStyles
@@ -25,27 +26,27 @@ export interface OpenStateMap {
   [k: string]: boolean;
 }
 
+const genOpenStateMapKey = (button: IButton, index: number) =>
+  button.key || `${button.name}:${index}`;
+
 export const DrawerMainNav = () => {
-  const { data } = useContext(AppContext);
-  const { menus } = data || {};
-  const { drawerMainNav } = menus || {};
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const drawerMainNav = getAppDataMenu(state, 'drawerMainNav');
   const [{ open }, setState] = useState({
     open: drawerMainNav
-      ? drawerMainNav.reduce(
-          (a: OpenStateMap, { children, key }: IButton): OpenStateMap => {
-            if (children) {
-              const b = {
-                ...a,
-                [key]: false
-              };
+      ? drawerMainNav.reduce((a: OpenStateMap, btn, index): OpenStateMap => {
+          if (btn.children) {
+            const b = {
+              ...a,
+              [genOpenStateMapKey(btn, index)]: false
+            };
 
-              return b;
-            }
+            return b;
+          }
 
-            return a;
-          },
-          {}
-        )
+          return a;
+        }, {})
       : {}
   });
   const { classes, cx } = drawerMainNavStyles();
@@ -63,8 +64,10 @@ export const DrawerMainNav = () => {
     (drawerMainNav && (
       <ThemeProvider theme={drawerMainNavTheme}>
         <List component="nav" className={classes.root} disablePadding>
-          {drawerMainNav.map(
-            ({ name, url, key, children }, index: number) =>
+          {drawerMainNav.map((btn, index: number) => {
+            const { name, url, children } = btn;
+            const key = genOpenStateMapKey(btn, index);
+            return (
               (children && (
                 <Box className={classes.accordion} key={key}>
                   <ListItemButton
@@ -108,7 +111,8 @@ export const DrawerMainNav = () => {
                   <ListItemText primary={name} />
                 </ListItemButton>
               )
-          )}
+            );
+          })}
         </List>
       </ThemeProvider>
     )) ||

@@ -3,12 +3,12 @@
  * Component for sidebar latest story links list.
  */
 
-import type { PostStory } from '@interfaces';
-import { useContext } from 'react';
+import type { PostStory, RootState } from '@interfaces';
+import { useStore } from 'react-redux';
 import Link from 'next/link';
 import { Button, Typography } from '@mui/material';
 import { MenuBookRounded, NavigateNext } from '@mui/icons-material';
-import { AppContext } from '@contexts/AppContext';
+import { getAppDataLatestStories } from '@store/reducers';
 import { Sidebar } from '../Sidebar';
 import { SidebarHeader } from '../SidebarHeader';
 import { SidebarFooter } from '../SidebarFooter';
@@ -23,8 +23,9 @@ export const SidebarLatestStories = ({
   data,
   label
 }: SidebarLatestStoriesProps) => {
-  const { data: appData } = useContext(AppContext);
-  const { latestStories } = appData || {};
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const latestStories = getAppDataLatestStories(state);
   const stories = data || latestStories;
   const listItems = stories?.map<SidebarListItem>((story) => ({
     data: story,

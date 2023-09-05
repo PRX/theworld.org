@@ -5,13 +5,7 @@
 
 import React from 'react';
 import { handleButtonClick } from '@lib/routing';
-import {
-  Box,
-  Button,
-  Toolbar,
-  Typography,
-  ButtonProps
-} from '@mui/material';
+import { Box, Button, Toolbar, Typography, ButtonProps } from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
 
@@ -43,7 +37,7 @@ export const AppCtaMessageDonation = ({
   };
 
   return (
-    <Box textAlign="center">
+    <Box textAlign="center" display="grid" gap={1}>
       {heading && <Typography variant="h2">{heading}</Typography>}
       {message && (
         <Typography component="div" variant="body1">

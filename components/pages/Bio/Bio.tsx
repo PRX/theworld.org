@@ -34,14 +34,14 @@ import {
   Box,
   Button,
   Divider,
+  Hidden,
   IconButton,
   SvgIcon,
   Typography
 } from '@mui/material';
 import { EqualizerRounded, PublicRounded } from '@mui/icons-material';
-import Pagination from '@mui/material/Pagination';
 import { LandingPage } from '@components/LandingPage';
-// import { CtaRegion } from '@components/CtaRegion';
+import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -50,14 +50,13 @@ import {
   SidebarHeader,
   SidebarLatestStories,
   SidebarList,
-  SidebarFooter,
-  SidebarContent
-  // SidebarCta,
+  SidebarContent,
+  SidebarCta
 } from '@components/Sidebar';
 import { StoryCard } from '@components/StoryCard';
 import { fetchApiContributorStories } from '@lib/fetch';
 import { StoryCardGrid } from '@components/StoryCardGrid';
-import { getCollectionData } from '@store/reducers';
+import { getCollectionData, getCtaRegionData } from '@store/reducers';
 import { appendResourceCollection } from '@store/actions/appendResourceCollection';
 import { BioHeader } from './components/BioHeader';
 import { bioStyles } from './Bio.styles';
@@ -81,7 +80,6 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
   const [oldScrollY, setOldScrollY] = useState(0);
   const [moreStoriesController, setMoreStoriesController] =
     useState<AbortController>();
-  const [segmentsPage, setSegmentsPage] = useState(1);
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
@@ -104,6 +102,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
         ([k, v]) =>
           v && (
             <IconButton
+              key={`${k}:${v}`}
               href={v}
               target="_blank"
               LinkComponent={Link}
@@ -137,30 +136,19 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
   );
 
   const segmentsState = getCollectionData<Segment>(state, type, id, 'segments');
-  const { items: allSegments, options: segmentsOptions } = segmentsState || {};
-  const segmentsPageSize = segmentsOptions?.pageSize || 10;
-  const segmentsCount = allSegments?.length || 0;
-  const segmentsPageCount = Math.ceil(segmentsCount / segmentsPageSize);
-  const segmentsStartIndex = (segmentsPage - 1) * segmentsPageSize;
-  const segmentsEndIndex = segmentsStartIndex + segmentsPageSize;
-  const segments = allSegments?.slice(segmentsStartIndex, segmentsEndIndex);
-  const hasSegments = !!allSegments?.length;
+  const { items: segments, options: segmentsOptions } = segmentsState || {};
+  const hasSegments = !!segments?.length;
 
   const { classes } = bioStyles();
 
-  // // CTA data.
-  // const ctaSidebarTop = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_landing_sidebar_01',
-  //   type,
-  //   id
-  // );
-  // const ctaSidebarBottom = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_landing_sidebar_02',
-  //   type,
-  //   id
-  // );
+  // CTA data.
+  const ctaSidebarTop = getCtaRegionData(state, 'landing-sidebar-1', type, id);
+  const ctaSidebarBottom = getCtaRegionData(
+    state,
+    'landing-sidebar-2',
+    type,
+    id
+  );
 
   // Plausible Events.
   const props = {
@@ -212,13 +200,6 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
     store.dispatch<any>(
       appendResourceCollection(moreStories, type, id, 'stories', options)
     );
-  };
-
-  const handleSegmentsPageChange = async (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    setSegmentsPage(value);
   };
 
   const mainElements = [
@@ -284,30 +265,23 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
         <>
           {hasSegments && (
             <Sidebar item elevated>
-              <SidebarHeader>
-                <EqualizerRounded />
-                <Typography variant="h2">
-                  Latest segments from {name}
-                </Typography>
-              </SidebarHeader>
               <SidebarList
-                disablePadding
                 data={segments.map((segment) => ({
                   data: segment,
                   audio: segment.segmentContent?.audio
                 }))}
+                subheader={
+                  <SidebarHeader disablePadding>
+                    <EqualizerRounded />
+                    <Typography variant="h2">
+                      Latest segments from {name}
+                    </Typography>
+                  </SidebarHeader>
+                }
+                paginationProps={{
+                  pageSize: segmentsOptions?.pageSize
+                }}
               />
-              <SidebarFooter>
-                {segmentsPageCount > 1 && (
-                  <Pagination
-                    size="small"
-                    count={segmentsPageCount}
-                    page={segmentsPage}
-                    color="primary"
-                    onChange={handleSegmentsPageChange}
-                  />
-                )}
-              </SidebarFooter>
             </Sidebar>
           )}
           {!!followLinks?.length && (
@@ -323,7 +297,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
               </SidebarContent>
             </Sidebar>
           )}
-          {/* {ctaSidebarTop && (
+          {ctaSidebarTop && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarTop} />
@@ -332,7 +306,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
                 <CtaRegion data={ctaSidebarTop} />
               </Hidden>
             </>
-          )} */}
+          )}
         </>
       )
     },
@@ -341,7 +315,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
       children: (
         <>
           <SidebarLatestStories />
-          {/* {ctaSidebarBottom && (
+          {ctaSidebarBottom && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarBottom} />
@@ -350,7 +324,7 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
                 <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
             </>
-          )} */}
+          )}
         </>
       )
     }

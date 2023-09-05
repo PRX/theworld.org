@@ -1,6 +1,7 @@
 import type { ContentNode } from '@interfaces';
 import { combineReducers } from 'redux';
 import { RootState } from '@interfaces/state';
+import * as fromAppData from './appData';
 import * as fromAliasData from './aliasData';
 import * as fromCollections from './collections';
 import * as fromContentData from './contentData';
@@ -10,6 +11,7 @@ import * as fromSearch from './search';
 import * as fromUi from './ui';
 
 export const initialState: RootState = {
+  appData: null,
   aliasData: {},
   contentData: {},
   collections: {},
@@ -31,6 +33,7 @@ export const initialState: RootState = {
 };
 
 export const reducers = combineReducers({
+  appData: fromAppData.appData,
   aliasData: fromAliasData.aliasData,
   contentData: fromContentData.contentData,
   collections: fromCollections.collections,
@@ -39,6 +42,12 @@ export const reducers = combineReducers({
   search: fromSearch.search,
   ui: fromUi.ui
 });
+
+export const getAppData = (state: RootState) => state?.appData;
+export const getAppDataMenu = (state: RootState, menu: string) =>
+  fromAppData.getAppDataMenu(getAppData(state), menu);
+export const getAppDataLatestStories = (state: RootState) =>
+  fromAppData.getAppDataLatestStories(getAppData(state));
 
 export const getDataByAlias = (state: RootState, alias: string) =>
   fromAliasData.getAliasData(state.aliasData, alias);

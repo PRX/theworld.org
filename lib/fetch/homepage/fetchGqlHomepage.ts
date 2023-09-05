@@ -32,7 +32,7 @@ const GET_HOMEPAGE = gql`
         }
       }
     }
-    quickLinks: menu(id: "homepage-quick-links", idType: SLUG) {
+    quickLinks: menu(id: "homepage-quick-links-menu", idType: SLUG) {
       ...MenuProps
     }
   }
@@ -80,7 +80,6 @@ export async function fetchGqlHomepage() {
   // Get latest stories NOT from The World.
   const latestStoriesResponse = await gqlClient.query<{
     posts: Maybe<RootQueryToPostConnection>;
-    quickLinks: Maybe<Menu>;
   }>({
     query: GET_HOMEPAGE_LATEST_STORIES,
     variables: {

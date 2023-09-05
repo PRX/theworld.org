@@ -7,14 +7,17 @@ import React from 'react';
 import { Box, BoxProps } from '@mui/material';
 import { sidebarHeaderStyles } from './SidebarHeader.styles';
 
-export interface ISidebarHeaderProps extends BoxProps {}
+export interface ISidebarHeaderProps extends BoxProps {
+  disablePadding?: boolean;
+}
 
 export const SidebarHeader = ({
+  disablePadding,
   children,
   className,
   ...other
 }: ISidebarHeaderProps) => {
-  const { classes, cx } = sidebarHeaderStyles();
+  const { classes, cx } = sidebarHeaderStyles({ disablePadding });
 
   return (
     <Box component="header" {...other} className={cx(classes.root, className)}>

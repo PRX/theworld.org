@@ -119,12 +119,10 @@ const TwApp = ({
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props as AppProps<AppPageProps>;
   const [plausibleDomain, setPlausibleDomain] = useState('');
-  const { cookies, appData, contentOnly, ...componentProps } = pageProps;
+  const { cookies, contentOnly, ...componentProps } = pageProps;
   const { type, id } = componentProps;
   const contextValue = useMemo(
     () => ({
-      ...(appData && { data: appData }),
-      ...(cookies && { cookies }),
       page: {
         resource: {
           type,
@@ -136,6 +134,7 @@ const TwApp = ({
   );
 
   useEffect(() => {
+    // Configure Plausible provider.
     setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
 
     // Remove the server-side injected CSS.

@@ -71,7 +71,7 @@ export const NewsletterForm = ({
     const resp = await postNewsletterSubscription(data, {
       ...options,
       ...(isAmp &&
-        options && { 'source-position': `${options['source-position']}-amp` })
+        options && { 'source-placement': `${options['source-placement']}-amp` })
     });
     const { error: err } = resp;
 

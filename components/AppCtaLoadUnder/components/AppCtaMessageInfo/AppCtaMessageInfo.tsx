@@ -42,8 +42,8 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
 
   return (
     <Box textAlign="center">
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item sm={12} md={8}>
+      <Grid container justifyItems="center" alignItems="center">
+        <Grid item sm={12} md={hasActions ? 8 : 12} display="grid" gap={1}>
           {heading && <Typography variant="h2">{heading}</Typography>}
           {message && (
             <Typography component="div" variant="body1">
@@ -51,8 +51,8 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
             </Typography>
           )}
         </Grid>
-        <Grid item sm={12} md={4}>
-          {hasActions && (
+        {hasActions && (
+          <Grid item sm={12} md={4}>
             <Toolbar>
               {action && (
                 <Button {...actionAttrs} onClick={handleActionClick}>
@@ -65,8 +65,8 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
                 </Button>
               )}
             </Toolbar>
-          )}
-        </Grid>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

@@ -12,17 +12,14 @@ import {
   Typography,
   ButtonProps,
   FormControlLabel,
-  Paper,
-  ThemeProvider
+  Paper
 } from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
-import { handleButtonClick } from '@lib/routing';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
-import { appCtaMessageOptInTheme } from './AppCtaMessageOptIn.styles';
+import { appCtaMessageOptInStyles } from './AppCtaMessageOptIn.styles';
 
 export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   const { heading, message, optinLabel, action, dismiss } = data;
-  const hasActions = !!(action || dismiss);
   const [optedIn, setOptedIn] = useState(false);
   const actionAttrs: ButtonProps = {
     variant: 'contained',
@@ -30,15 +27,22 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
     size: 'large',
     disabled: !optedIn
   };
-  const dismissAttrs: ButtonProps = !action
-    ? actionAttrs
-    : {
-        variant: 'outlined',
-        color: 'primary'
-      };
-  const handleActionClick = handleButtonClick(action?.url, () => {
+  const dismissAttrs: ButtonProps = {
+    variant: 'outlined',
+    color: 'primary',
+    size: 'large'
+  };
+  const { classes } = appCtaMessageOptInStyles();
+
+  const handleActionClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+
+    // TODO: Store user setting for optin in local storage or account settings.
+
     onClose();
-  });
+  };
   const handleDismissClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -50,41 +54,34 @@ export const AppCtaMessageOptIn = ({ data, onClose }: IAppCtaMessageProps) => {
   };
 
   return (
-    <ThemeProvider theme={appCtaMessageOptInTheme}>
-      <Box textAlign="center">
-        {heading && <Typography variant="h2">{heading}</Typography>}
-        {message && (
-          <Typography component="div" variant="body1">
-            <HtmlContent html={message} />
-          </Typography>
-        )}
-        <Paper>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={optedIn}
-                onChange={handleOptInChange}
-                name="optIn"
-              />
-            }
-            label={optinLabel}
-          />
-        </Paper>
-        {hasActions && (
-          <Toolbar>
-            {action && (
-              <Button {...actionAttrs} onClick={handleActionClick}>
-                {action.name}
-              </Button>
-            )}
-            {dismiss && (
-              <Button {...dismissAttrs} onClick={handleDismissClick}>
-                {dismiss.name}
-              </Button>
-            )}
-          </Toolbar>
-        )}
-      </Box>
-    </ThemeProvider>
+    <Box className={classes.root} textAlign="center" display="grid" gap={2}>
+      {heading && <Typography variant="h2">{heading}</Typography>}
+      {message && (
+        <Typography component="div" variant="body1">
+          <HtmlContent html={message} />
+        </Typography>
+      )}
+      <Paper>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={optedIn}
+              onChange={handleOptInChange}
+              name="optIn"
+              color="success"
+            />
+          }
+          label={<HtmlContent html={optinLabel} />}
+        />
+      </Paper>
+      <Toolbar>
+        <Button {...actionAttrs} onClick={handleActionClick}>
+          {action?.name || 'Accept'}
+        </Button>
+        <Button {...dismissAttrs} onClick={handleDismissClick}>
+          {dismiss?.name || 'No Thanks'}
+        </Button>
+      </Toolbar>
+    </Box>
   );
 };

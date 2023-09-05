@@ -3,9 +3,8 @@
  * Component for links to content page.
  */
 
-import type { IButton } from '@interfaces';
+import type { IButton, IButtonWithUrl } from '@interfaces';
 import React from 'react';
-import { parse } from 'url';
 import { Label } from '@mui/icons-material';
 import { Breadcrumbs, Container, Link } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
@@ -34,7 +33,11 @@ export const QuickLinks = ({ data }: QuickLinksProps) => {
             className={classes.label}
           />
           {data
-            .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
+            .filter((v): v is IButtonWithUrl => !!v.url)
+            .map(({ url, ...other }) => ({
+              ...other,
+              url: new URL(url, 'https://theworld.org')
+            }))
             .map(({ name, url, key, attributes }) =>
               isLocalUrl(url.href) ? (
                 <Link

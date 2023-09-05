@@ -52,7 +52,7 @@ export const sidebarListStyles = makeStyles()((theme) => ({
       listStyle: 'disc',
       marginTop: 0,
       marginBottom: 0,
-      marginLeft: theme.spacing(2),
+      marginLeft: theme.spacing(3),
       color: theme.palette.grey[500],
       '&.noBullet': {
         display: 'unset',

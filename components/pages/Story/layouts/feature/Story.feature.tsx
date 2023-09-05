@@ -7,18 +7,25 @@ import type React from 'react';
 import type { ITagsProps } from '@components/Tags';
 import type {
   IContentComponentProps,
+  ICtaRegionProps,
   Post_Additionalmedia as PostAdditionalMedia,
-  PostStory
+  PostStory,
+  RootState
 } from '@interfaces';
+import { useStore } from 'react-redux';
 import dynamic from 'next/dynamic';
 import { ThemeProvider } from '@mui/styles';
 import { Box, Container } from '@mui/material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
-// import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { enhanceImage } from '@components/HtmlContent/transforms';
+import { getCtaRegionData } from '@store/reducers';
 import { storyStyles, storyTheme } from './Story.feature.styles';
 import { StoryHeader, IStoryRelatedLinksProps } from './components';
+
+const CtaRegion = dynamic(
+  () => import('@components/CtaRegion').then((mod) => mod.CtaRegion) as any
+) as React.FC<ICtaRegionProps>;
 
 const StoryRelatedLinks = dynamic(
   () =>
@@ -32,7 +39,11 @@ const Tags = dynamic(() =>
 ) as React.FC<ITagsProps>;
 
 export const StoryFeatured = ({ data }: IContentComponentProps<PostStory>) => {
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const type = 'post--story';
   const {
+    id,
     additionalMedia,
     content,
     categories,
@@ -83,6 +94,13 @@ export const StoryFeatured = ({ data }: IContentComponentProps<PostStory>) => {
     }
   });
 
+  const ctaInlineEnd = getCtaRegionData(
+    state,
+    'content-inline-end',
+    type,
+    id as string
+  );
+
   return (
     <ThemeProvider theme={storyTheme}>
       <StoryHeader data={data} />
@@ -93,7 +111,7 @@ export const StoryFeatured = ({ data }: IContentComponentProps<PostStory>) => {
             <HtmlContent html={content} transforms={[enhanceImages]} />
           )}
         </Box>
-        {/* {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />} */}
+        {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
         {hasRelated && (
           <aside>
             <header>

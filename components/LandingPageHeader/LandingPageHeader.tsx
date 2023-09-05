@@ -34,15 +34,13 @@ export const LandingPageHeader = ({
         })}
       >
         {image?.sourceUrl && (
-          <Box>
-            <Image
-              alt={image.altText || ''}
-              src={image.sourceUrl}
-              layout="fill"
-              objectFit="cover"
-              priority
-            />
-          </Box>
+          <Image
+            alt={image.altText || ''}
+            src={image.sourceUrl}
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
         )}
         <Box className={classes.content}>
           <Container fixed className={classes.header}>

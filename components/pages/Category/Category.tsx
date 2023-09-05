@@ -120,27 +120,17 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
   const { classes } = categoryStyles();
 
   // CTA data.
-  const ctaInlineTop = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_inline_01',
-    type,
-    id
-  );
+  const ctaInlineTop = getCtaRegionData(state, 'landing-inline-top', type, id);
   const ctaInlineBottom = getCtaRegionData(
     state,
-    'tw_cta_region_landing_inline_02',
+    'landing-inline-bottom',
     type,
     id
   );
-  const ctaSidebarTop = getCtaRegionData(
-    state,
-    'tw_cta_region_landing_sidebar_01',
-    type,
-    id
-  );
+  const ctaSidebarTop = getCtaRegionData(state, 'landing-sidebar-1', type, id);
   const ctaSidebarBottom = getCtaRegionData(
     state,
-    'tw_cta_region_landing_sidebar_02',
+    'landing-sidebar-2',
     type,
     id
   );
@@ -262,7 +252,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
           )}
           {ctaInlineTop && (
             <>
-              <Hidden xsDown>
+              <Hidden smDown>
                 <CtaRegion data={ctaInlineTop} />
               </Hidden>
               <Hidden smUp>
@@ -341,7 +331,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
           )}
           {ctaInlineBottom && (
             <>
-              <Hidden xsDown>
+              <Hidden smDown>
                 <CtaRegion data={ctaInlineBottom} />
               </Hidden>
               <Hidden smUp>
@@ -392,30 +382,32 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
                 bulleted
               />
             )}
-            {children && !!children.nodes.length && (
+          </Sidebar>
+          {children && !!children.edges.length && (
+            <Sidebar item elevated>
               <SidebarList
-                data={children.nodes.map(
-                  (child) =>
+                data={children.edges.map(
+                  ({ node }) =>
                     ({
-                      data: child
+                      data: node
                     } as SidebarListItem)
                 )}
                 subheader={
-                  <SidebarHeader>
+                  <SidebarHeader disablePadding>
                     <ListAltRounded />
                     <Typography variant="h2">Subcategories</Typography>
                   </SidebarHeader>
                 }
                 bulleted
               />
-            )}
-          </Sidebar>
+            </Sidebar>
+          )}
           {ctaSidebarTop && (
             <>
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarTop} />
               </Hidden>
-              <Hidden xsDown mdUp>
+              <Hidden smDown mdUp>
                 <CtaRegion data={ctaSidebarTop} />
               </Hidden>
             </>
@@ -433,7 +425,7 @@ export const Category = ({ data }: IContentComponentProps<CategoryType>) => {
               <Hidden only="sm">
                 <SidebarCta data={ctaSidebarBottom} />
               </Hidden>
-              <Hidden xsDown mdUp>
+              <Hidden smDown mdUp>
                 <CtaRegion data={ctaSidebarBottom} />
               </Hidden>
             </>

@@ -10,8 +10,6 @@ import { getResourceFetchData } from '@lib/import/fetchData';
 import { fetchTwApiQueryAlias } from '@lib/fetch';
 import { wrapper } from '@store';
 import { fetchAppData } from '@store/actions/fetchAppData';
-// import { fetchCtaRegionGroupData } from '@store/actions/fetchCtaRegionGroupData';
-// import { fetchAppData } from '@store/actions/fetchAppData';
 
 // Define dynamic component imports.
 const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
@@ -128,29 +126,25 @@ export const getServerSideProps: GetServerSideProps<IContentComponentProxyProps>
 
         if (fetchData) {
           const fetchDataResp = fetchData(resourceId);
-          const [data, appData] = await Promise.all([
+          const [data] = await Promise.all([
             typeof fetchDataResp !== 'function'
               ? fetchDataResp
               : store.dispatch(fetchDataResp),
-            fetchAppData()
+            store.dispatch<any>(fetchAppData(req.cookies))
           ]);
-
-          // await store.dispatch<any>(
-          //   fetchCtaRegionGroupData('tw_cta_regions_site')
-          // );
 
           return {
             props: {
               type: resourceType,
               id: data.id,
-              cookies: req.cookies,
-              data,
-              appData
+              data
             }
           };
         }
       }
     }
+
+    await store.dispatch<any>(fetchAppData(req.cookies));
 
     return { notFound: true };
   });

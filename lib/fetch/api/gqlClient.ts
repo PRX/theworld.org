@@ -65,7 +65,12 @@ export const gqlClient = new ApolloClient({
       }
     }
   }),
-  link: from([httpLink])
+  link: from([httpLink]),
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'no-cache'
+    }
+  }
 });
 
 export default gqlClient;

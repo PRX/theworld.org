@@ -1,4 +1,5 @@
 export * from './audio.fragment';
+export * from './cta.fragment';
 export * from './episode.fragment';
 export * from './image.fragment';
 export * from './menu.fragment';

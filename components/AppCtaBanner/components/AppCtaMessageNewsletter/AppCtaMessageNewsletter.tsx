@@ -46,7 +46,7 @@ export const AppCtaMessageNewsletter = ({
 
   return (
     <ThemeProvider theme={newsletterFormTheme}>
-      <Box textAlign="center">
+      <Box textAlign="center" display="grid" gap={2}>
         {heading && <Typography variant="h2">{heading}</Typography>}
         {message && (
           <Typography component="div" variant="body1">

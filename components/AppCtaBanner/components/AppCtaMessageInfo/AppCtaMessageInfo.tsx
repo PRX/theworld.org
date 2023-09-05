@@ -4,13 +4,7 @@
  */
 
 import React from 'react';
-import {
-  Box,
-  Button,
-  Toolbar,
-  Typography,
-  ButtonProps
-} from '@mui/material';
+import { Box, Button, Toolbar, Typography, ButtonProps } from '@mui/material';
 import { HtmlContent } from '@components/HtmlContent';
 import { handleButtonClick } from '@lib/routing';
 import { IAppCtaMessageProps } from '../AppCtaMessage.interface';
@@ -40,7 +34,7 @@ export const AppCtaMessageInfo = ({ data, onClose }: IAppCtaMessageProps) => {
   };
 
   return (
-    <Box textAlign="center">
+    <Box textAlign="center" display="grid" gap={2}>
       {heading && <Typography variant="h2">{heading}</Typography>}
       {message && (
         <Typography component="div" variant="body1">

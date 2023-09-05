@@ -3,18 +3,18 @@
  * Component for app drawer top nav.
  */
 
-import { useContext } from 'react';
-import { parse } from 'url';
+import type { IButtonWithUrl, RootState } from '@interfaces';
+import { useStore } from 'react-redux';
 import { Button, ButtonGroup } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
 import { handleButtonClick } from '@lib/routing';
-import { AppContext } from '@contexts/AppContext';
+import { getAppDataMenu } from '@store/reducers';
 import { drawerTopNavStyles } from './DrawerTopNav.styles';
 
 export const DrawerTopNav = () => {
-  const { data } = useContext(AppContext);
-  const { menus } = data || {};
-  const { drawerTopNav } = menus || {};
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const drawerTopNav = getAppDataMenu(state, 'drawerTopNav');
   const { classes } = drawerTopNavStyles();
 
   return (
@@ -27,11 +27,15 @@ export const DrawerTopNav = () => {
         disableRipple
       >
         {drawerTopNav
-          .map(({ url, ...other }) => ({ ...other, url: parse(url) }))
+          .filter((v): v is IButtonWithUrl => !!v.url)
+          .map(({ url, ...other }) => ({
+            ...other,
+            url: new URL(url, 'https://theworld.org')
+          }))
           .map(({ name, url, key, attributes }) => (
             <Button
               component="a"
-              href={isLocalUrl(url.href) ? url.path || '/' : url.href}
+              href={isLocalUrl(url.href) ? url.pathname || '/' : url.href}
               onClick={handleButtonClick(url)}
               key={key}
               disableRipple

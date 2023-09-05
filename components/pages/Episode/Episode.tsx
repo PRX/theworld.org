@@ -12,12 +12,22 @@ import type {
   MediaItem,
   MediaItem_Audiofields as MediaItemAudioFields,
   Episode_Episodecontent as EpisodeEpisodeContent,
-  PostStory
+  PostStory,
+  RootState
 } from '@interfaces';
-import React, { useContext } from 'react';
-import { Box, Container, Divider, Grid, Typography } from '@mui/material';
+import { useContext } from 'react';
+import { useStore } from 'react-redux';
+import {
+  Box,
+  Container,
+  Divider,
+  Grid,
+  Hidden,
+  Typography
+} from '@mui/material';
 import { EqualizerRounded } from '@mui/icons-material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
+import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
@@ -26,7 +36,8 @@ import {
   SidebarHeader,
   SidebarFooter,
   SidebarList,
-  SidebarLatestStories
+  SidebarLatestStories,
+  SidebarCta
 } from '@components/Sidebar';
 import { SpotifyPlayer } from '@components/SpotifyPlayer';
 import { StoryCard } from '@components/StoryCard';
@@ -34,11 +45,14 @@ import { StoryCard } from '@components/StoryCard';
 import { AppContext } from '@contexts/AppContext';
 // import { UiAction } from '@interfaces/state';
 import { parseDateParts } from '@lib/parse/date';
+import { getCtaRegionData } from '@store/reducers';
 import { episodeStyles } from './Episode.styles';
 import { EpisodeLede } from './components/EpisodeLede';
 import { EpisodeHeader } from './components/EpisodeHeader';
 
 export const Episode = ({ data }: IContentComponentProps<EpisodeType>) => {
+  const store = useStore<RootState>();
+  const state = store.getState();
   const {
     page: {
       resource: { type, id }
@@ -79,25 +93,15 @@ export const Episode = ({ data }: IContentComponentProps<EpisodeType>) => {
     (story): story is PostStory => !!story
   );
 
-  // // CTA data.
-  // const ctaInlineEnd = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_content_inline_end',
-  //   type,
-  //   id
-  // );
-  // const ctaSidebarTop = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_content_sidebar_01',
-  //   type,
-  //   id
-  // );
-  // const ctaSidebarBottom = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_content_sidebar_02',
-  //   type,
-  //   id
-  // );
+  // CTA data.
+  const ctaInlineEnd = getCtaRegionData(state, 'content-inline-end', type, id);
+  const ctaSidebarTop = getCtaRegionData(state, 'content-sidebar-1', type, id);
+  const ctaSidebarBottom = getCtaRegionData(
+    state,
+    'content-sidebar-2',
+    type,
+    id
+  );
 
   // Plausible Events.
   const props = {
@@ -245,7 +249,7 @@ export const Episode = ({ data }: IContentComponentProps<EpisodeType>) => {
                     ))}
                   </Box>
                 )}
-                {/* {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />} */}
+                {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
               </Box>
               <Sidebar container className={classes.sidebar}>
                 {segmentsList && (
@@ -310,21 +314,21 @@ export const Episode = ({ data }: IContentComponentProps<EpisodeType>) => {
                     />
                   </Sidebar>
                 )}
-                {/* {ctaSidebarTop && (
+                {ctaSidebarTop && (
                   <Hidden smDown>
                     <Sidebar item>
                       <SidebarCta data={ctaSidebarTop} />
                     </Sidebar>
                   </Hidden>
-                )} */}
+                )}
                 <SidebarLatestStories />
-                {/* {ctaSidebarBottom && (
+                {ctaSidebarBottom && (
                   <Hidden smDown>
                     <Sidebar item>
                       <SidebarCta data={ctaSidebarBottom} />
                     </Sidebar>
                   </Hidden>
-                )} */}
+                )}
               </Sidebar>
             </Box>
           </Grid>
