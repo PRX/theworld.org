@@ -9,6 +9,7 @@ import ReactHtmlParser, { type Transform } from 'react-html-parser';
 import {
   anchorToLink,
   audioDescendant,
+  datawrapperEmbed,
   facebookPost,
   facebookVideo,
   fbRootRemove,
@@ -40,6 +41,7 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
     [
       anchorToLink,
       audioDescendant,
+      datawrapperEmbed,
       facebookPost,
       facebookVideo,
       fbRootRemove,

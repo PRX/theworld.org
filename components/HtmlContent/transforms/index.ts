@@ -1,5 +1,6 @@
 export * from './anchorToLink';
 export * from './audioDescendant';
+export * from './datawrapperEmbed';
 export * from './enhanceImage';
 export * from './facebookPost';
 export * from './facebookVideo';
