@@ -17,35 +17,34 @@ export interface IAudioResource extends IPriApiResource {
   /**
    * Meta tags for resource page.
    */
-  metatags: {
-    canonical: string;
-    [k: string]: string;
+  metatags?: {
+    [k: string]: string | null;
   };
 
   /**
    * System title of resource.
    */
-  title: string;
+  title?: string;
 
   /**
    * Display title.
    */
-  audioTitle: string;
+  audioTitle?: string;
 
   /**
    * Description of audio content.
    */
-  description: string;
+  description?: string;
 
   /**
    * System created date for resource.
    */
-  date: string;
+  date?: string;
 
   /**
    * Broadcast data of audio content.
    */
-  broadcastDate: string;
+  broadcastDate?: string;
 
   /**
    * Audio file URL.
@@ -55,7 +54,7 @@ export interface IAudioResource extends IPriApiResource {
   /**
    * File metadata.
    */
-  metadata: {
+  metadata?: {
     duration: string;
     size: string;
     mime: string;
@@ -64,22 +63,22 @@ export interface IAudioResource extends IPriApiResource {
   /**
    * Array authors of the audio content.
    */
-  audioAuthor: IPriApiResource[];
+  audioAuthor?: IPriApiResource[];
 
   /**
    * Program owning audio content.
    */
-  program: IPriApiResource;
+  program?: IPriApiResource;
 
   /**
    * Segment audio resources.
    */
-  segments: IAudioResource[];
+  segments?: IAudioResource[];
 
   /**
    * Resource the audio is associated with.
    */
-  usage:
+  usage?:
     | []
     | {
         episode?: IAudioUsage[];

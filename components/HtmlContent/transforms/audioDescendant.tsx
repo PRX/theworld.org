@@ -31,18 +31,6 @@ export const audioDescendant = (node: DomElement) => {
         data={{
           id: '',
           type: '',
-          self: '',
-          metatags: null,
-          title: '',
-          audioTitle: '',
-          description: '',
-          date: null,
-          broadcastDate: null,
-          metadata: null,
-          audioAuthor: null,
-          program: null,
-          segments: null,
-          usage: null,
           url: src
         }}
       />

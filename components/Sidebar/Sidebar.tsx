@@ -23,7 +23,7 @@ export const Sidebar = ({
   elevated
 }: ISidebarProps) => {
   const { classes, cx } = sidebarStyles();
-  const component = item ? 'aside' : null;
+  const component = item ? 'aside' : undefined;
 
   return (
     <Box
