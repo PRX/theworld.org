@@ -22,6 +22,8 @@ export const DatawrapperEmbed = ({
   const [iframeHeight, setIframeHeight] = useState(height);
 
   function handleMessage(a: MessageEvent) {
+    if (a.origin !== 'https://datawrapper.dwcdn.net') return;
+
     const newHeight = chartId && a.data['datawrapper-height']?.[chartId]
     if (newHeight && newHeight !== height) {
       setIframeHeight(newHeight)
