@@ -4,11 +4,12 @@
  * Story page.
  */
 
-import type { IContentComponentProxyProps } from '@interfaces';
+import { PostIdType, type IContentComponentProxyProps } from '@interfaces';
 import { Story } from '@components/pages/Story';
 import { fetchAppData } from '@store/actions/fetchAppData';
 import { wrapper } from '@store/configureStore';
 import { fetchStoryData } from '@store/actions/fetchStoryData';
+import { generateShareLinks } from '@lib/generate/social';
 
 const StoryPage = ({ data }: IContentComponentProxyProps) => (
   <Story data={data} />
@@ -24,15 +25,20 @@ export const getServerSideProps =
 
         if (slug) {
           const [data] = await Promise.all([
-            fetchStoryData(slug, 'SLUG'),
+            fetchStoryData(slug, PostIdType.Slug),
             store.dispatch<any>(fetchAppData(req.cookies))
           ]);
 
           if (data) {
+            const { link, title } = data;
+            const shareLinks =
+              link != null ? generateShareLinks(link, title) : undefined;
+
             return {
               props: {
                 type: 'post--story',
                 id: data.id,
+                ...(shareLinks && { shareLinks }),
                 data
               }
             };

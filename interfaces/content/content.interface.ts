@@ -3,6 +3,8 @@
  * Interfaces for content.
  */
 
+import { ISocialLink } from '@interfaces/social';
+
 export interface IContentComponentProps<D> {
   data: D;
 }
@@ -14,6 +16,7 @@ export interface IContentComponentProxyProps {
   redirect?: string;
   data?: any;
   cookies?: any;
+  shareLinks?: ISocialLink[];
 }
 
 export interface IContentContext {

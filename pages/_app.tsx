@@ -3,8 +3,14 @@
  * Override the main app component.
  */
 
+import type React from 'react';
 import type { RootState } from '@interfaces/state';
-import type { IContentComponentProxyProps } from '@interfaces';
+import {
+  socialShareKeys,
+  type IContentComponentProxyProps,
+  type ISocialLink,
+  type UiAction
+} from '@interfaces';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useStore, Provider } from 'react-redux';
 import { AppProps } from 'next/app';
@@ -36,11 +42,16 @@ type AppPageProps = IContentComponentProxyProps & {
   contentOnly?: boolean;
 };
 
-interface MyAppProps extends AppProps<AppPageProps> {
+interface TwAppProps extends AppProps<AppPageProps> {
   emotionCache?: EmotionCache;
 }
 
-const AppLayout = ({ children }) => {
+type AppLayoutProps = {
+  children?: React.JSX.Element;
+  shareLinks?: ISocialLink[];
+};
+
+const AppLayout = ({ children, shareLinks }: AppLayoutProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const uiFooterRef = useRef<HTMLDivElement>(null);
   const store = useStore<RootState>();
@@ -61,6 +72,29 @@ const AppLayout = ({ children }) => {
       `${footerPadding}px`
     );
   }, [playerOpen]);
+
+  useEffect(() => {
+    store.dispatch<UiAction>({
+      type: 'UI_HIDE_SOCIAL_SHARE_MENU'
+    });
+
+    if (shareLinks) {
+      store.dispatch<UiAction>({
+        type: 'UI_SHOW_SOCIAL_SHARE_MENU',
+        payload: {
+          ui: {
+            socialShareMenu: {
+              links: socialShareKeys
+                .map((key) =>
+                  shareLinks.find((shareLink) => key === shareLink.key)
+                )
+                .filter((v): v is ISocialLink => !!v)
+            }
+          }
+        }
+      });
+    }
+  }, [shareLinks, store]);
 
   useEffect(
     () => () => {
@@ -114,13 +148,13 @@ const TwApp = ({
   Component,
   emotionCache = clientSideEmotionCache,
   ...rest
-}: MyAppProps) => {
+}: TwAppProps) => {
   const AnyComponent = Component as any;
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props as AppProps<AppPageProps>;
   const [plausibleDomain, setPlausibleDomain] = useState('');
   const { cookies, contentOnly, ...componentProps } = pageProps;
-  const { type, id } = componentProps;
+  const { type, id, shareLinks } = componentProps;
   const contextValue = useMemo(
     () => ({
       page: {
@@ -181,7 +215,7 @@ const TwApp = ({
             <ThemeProvider theme={appTheme}>
               <AppContext.Provider value={contextValue}>
                 <Player>
-                  <AppLayout>
+                  <AppLayout shareLinks={shareLinks}>
                     <AnyComponent {...componentProps} />
                   </AppLayout>
                   <AppSearch />

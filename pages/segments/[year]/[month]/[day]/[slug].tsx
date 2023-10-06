@@ -5,10 +5,11 @@
  */
 
 import { Segment } from '@components/pages/Segment';
-import { IContentComponentProxyProps } from '@interfaces';
+import { IContentComponentProxyProps, SegmentIdType } from '@interfaces';
 import { wrapper } from '@store/configureStore';
 import { fetchAppData } from '@store/actions/fetchAppData';
 import { fetchSegmentData } from '@store/actions/fetchSegmentData';
+import { generateShareLinks } from '@lib/generate/social';
 
 const SegmentPage = ({ data }: IContentComponentProxyProps) => (
   <Segment data={data} />
@@ -24,15 +25,20 @@ export const getServerSideProps =
 
         if (slug) {
           const [data] = await Promise.all([
-            fetchSegmentData(slug, 'SLUG'),
+            fetchSegmentData(slug, SegmentIdType.Slug),
             store.dispatch<any>(fetchAppData(req.cookies))
           ]);
 
           if (data) {
+            const { link, title } = data;
+            const shareLinks =
+              link != null ? generateShareLinks(link, title) : undefined;
+
             return {
               props: {
                 type: 'post--segment',
                 id: data.id,
+                ...(shareLinks && { shareLinks }),
                 data
               }
             };

@@ -7,7 +7,7 @@
 import { fetchGqlStory } from '@lib/fetch';
 import { IPriApiResource } from 'pri-api-library/types';
 import _uniqBy from 'lodash/uniqBy';
-// import { fetchCtaRegionGroupData } from './fetchCtaRegionGroupData';
+import { PostIdType } from '@interfaces';
 
 export const decorateWithBylines = (story: IPriApiResource) => {
   const { byline: b, bylines: bs, ...other } = story;
@@ -40,35 +40,8 @@ export const decorateWithBylines = (story: IPriApiResource) => {
   };
 };
 
-export const fetchStoryData = async (id: string, idType?: string) => {
-  const dataPromise = fetchGqlStory(id, idType);
-
-  // const ctaDataPromise = dispatch<any>(
-  //   fetchCtaRegionGroupData('tw_cta_regions_content')
-  // );
-
-  const story = await dataPromise;
-  // await ctaDataPromise;
-
-  if (story) {
-    // Set CTA filter props.
-    // dispatch({
-    //   type: 'SET_RESOURCE_CTA_FILTER_PROPS',
-    //   payload: {
-    //     filterProps: {
-    //       type,
-    //       id,
-    //       props: {
-    //         id,
-    //         categories: [
-    //           ...(story.categories?.nodes || []).map(({ id: tid }) => tid)
-    //         ].filter((v: any) => !!v),
-    //         program: story.programs?.nodes[0].id || null
-    //       }
-    //     }
-    //   } as ICtaFilterProps
-    // });
-  }
+export const fetchStoryData = async (id: string, idType?: PostIdType) => {
+  const story = await fetchGqlStory(id, idType);
 
   return story;
 };
