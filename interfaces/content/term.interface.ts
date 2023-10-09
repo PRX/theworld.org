@@ -13,16 +13,6 @@ import type {
   Tag
 } from '@interfaces';
 
-export interface ITerm {
-  id: number;
-  type: string;
-  link: string;
-  title: string;
-  body: string;
-  metatags: { [k: string]: any };
-  metatagsHtml?: string;
-}
-
 export type PostTag =
   | Tag
   | City

@@ -26,24 +26,6 @@ export const fetchProgramData =
       const { episodes, ...programData } = program;
       const state = getState();
 
-      // const ctaDataPromise = dispatch<any>(
-      //   fetchCtaRegionGroupData('tw_cta_regions_landing')
-      // );
-
-      // // Set CTA filter props.
-      // dispatch({
-      //   type: 'SET_RESOURCE_CTA_FILTER_PROPS',
-      //   payload: {
-      //     filterProps: {
-      //       type,
-      //       id,
-      //       props: {
-      //         program: id
-      //       }
-      //     }
-      //   } as ICtaFilterProps
-      // });
-
       // Get first page of stories.
       // Has to be synchronous so we known what featured posts to exclude.
       const storiesCollection = getCollectionData(

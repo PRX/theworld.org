@@ -3,14 +3,14 @@
  * Query CMS API for data related to the provided URL path alias.
  */
 import { NextApiRequest, NextApiResponse } from 'next';
-import { fetchQueryAlias } from '@lib/fetch';
+import { fetchTwApiQueryAlias } from '@lib/fetch';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { slugs } = req.query;
   const path = (slugs as string[]).join('/');
 
   if (path.length) {
-    const apiResp = await fetchQueryAlias(path);
+    const apiResp = await fetchTwApiQueryAlias(path);
 
     if (apiResp) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');

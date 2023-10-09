@@ -5,7 +5,6 @@
  */
 
 import type { AnyAction } from 'redux';
-import type { IPriApiResource } from 'pri-api-library/types';
 import type { ContentNode } from '@interfaces';
 import type { ContentDataState, RootState } from '@interfaces/state';
 import { HYDRATE } from 'next-redux-wrapper';
@@ -34,7 +33,7 @@ export const aliasData = (state: State = {}, action: AnyAction) => {
         ...action.data.reduce(
           (
             a: { [k: string]: { id: string; type: string } },
-            [alias, { id, type }]: [string, IPriApiResource]
+            [alias, { id, type }]: [string, { id: string; type: string }]
           ) => ({
             ...a,
             [alias]: { id, type: type || null }

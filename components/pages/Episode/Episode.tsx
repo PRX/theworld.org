@@ -15,7 +15,6 @@ import type {
   PostStory,
   RootState
 } from '@interfaces';
-import { useContext } from 'react';
 import { useStore } from 'react-redux';
 import {
   Box,
@@ -41,9 +40,6 @@ import {
 } from '@components/Sidebar';
 import { SpotifyPlayer } from '@components/SpotifyPlayer';
 import { StoryCard } from '@components/StoryCard';
-// import { CtaRegion } from '@components/CtaRegion';
-import { AppContext } from '@contexts/AppContext';
-// import { UiAction } from '@interfaces/state';
 import { parseDateParts } from '@lib/parse/date';
 import { getCtaRegionData } from '@store/reducers';
 import { episodeStyles } from './Episode.styles';
@@ -53,14 +49,11 @@ import { EpisodeHeader } from './components/EpisodeHeader';
 export const Episode = ({ data }: IContentComponentProps<EpisodeType>) => {
   const store = useStore<RootState>();
   const state = store.getState();
-  const {
-    page: {
-      resource: { type, id }
-    }
-  } = useContext(AppContext);
+  const type = 'post--episode';
   const { classes } = episodeStyles();
 
   const {
+    id,
     seo: dataMetatags,
     title,
     content,
@@ -142,54 +135,6 @@ export const Episode = ({ data }: IContentComponentProps<EpisodeType>) => {
       ]);
     }
   });
-
-  // useEffect(() => {
-  //   if (shareLinks) {
-  //     // Show social hare menu.
-  //     store.dispatch<UiAction>({
-  //       type: 'UI_SHOW_SOCIAL_SHARE_MENU',
-  //       payload: {
-  //         ui: {
-  //           socialShareMenu: {
-  //             links: [
-  //               {
-  //                 key: 'twitter',
-  //                 link: shareLinks.twitter
-  //               },
-  //               {
-  //                 key: 'facebook',
-  //                 link: shareLinks.facebook
-  //               },
-  //               {
-  //                 key: 'linkedin',
-  //                 link: shareLinks.linkedin
-  //               },
-  //               {
-  //                 key: 'flipboard',
-  //                 link: shareLinks.flipboard
-  //               },
-  //               {
-  //                 key: 'whatsapp',
-  //                 link: shareLinks.whatsapp
-  //               },
-  //               {
-  //                 key: 'email',
-  //                 link: shareLinks.email
-  //               }
-  //             ]
-  //           }
-  //         }
-  //       }
-  //     });
-  //   }
-
-  //   return () => {
-  //     // Hide social hare menu.
-  //     store.dispatch<UiAction>({
-  //       type: 'UI_HIDE_SOCIAL_SHARE_MENU'
-  //     });
-  //   };
-  // }, [shareLinks, store]);
 
   return (
     <>
