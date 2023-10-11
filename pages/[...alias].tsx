@@ -12,9 +12,6 @@ import { wrapper } from '@store';
 import { fetchAppData } from '@store/actions/fetchAppData';
 
 // Define dynamic component imports.
-const DynamicAudio = dynamic(() => import('@components/pages/Audio'));
-const DynamicImage = dynamic(() => import('@components/pages/Image'));
-const DynamicVideo = dynamic(() => import('@components/pages/Video'));
 const DynamicBio = dynamic(() => import('@components/pages/Bio'));
 const DynamicCategory = dynamic(() => import('@components/pages/Category'));
 const DynamicEpisode = dynamic(() => import('@components/pages/Episode'));
@@ -30,48 +27,31 @@ type Props = IContentComponentProxyProps;
 
 const ContentProxy = ({ type, data }: Props) => {
   switch (type) {
-    case 'file--audio':
-      return <DynamicAudio />;
-
-    case 'file--images':
-      return <DynamicImage />;
-
-    case 'file--videos':
-      return <DynamicVideo />;
-
     case 'post--episode':
-    case 'node--episodes':
       return <DynamicEpisode data={data} />;
 
     case 'post--newsletter':
-    case 'node--newsletter_sign_ups':
       return <DynamicNewsletter data={data} />;
 
     case 'post--page':
-    case 'node--pages':
       return <DynamicPage data={data} />;
 
     case 'term--contributor':
-    case 'node--people':
       return <DynamicBio data={data} />;
 
     case 'term--program':
-    case 'node--programs':
       return <DynamicProgram data={data} />;
 
     case 'post--segment':
       return <DynamicSegment data={data} />;
 
     case 'post--story':
-    case 'node--stories':
       return <DynamicStory data={data} />;
 
     case 'term--category':
-    case 'taxonomy_term--categories':
       return <DynamicCategory data={data} />;
 
     case 'term--tag':
-    case 'taxonomy_term--terms':
       return <DynamicTerm data={data} />;
 
     case 'team':

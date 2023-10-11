@@ -5,19 +5,25 @@
 
 import type {
   IContentComponentProps,
+  RootState,
   Segment as SegmentType
 } from '@interfaces';
+import { useStore } from 'react-redux';
 import { Box, Container, Grid } from '@mui/material';
 import { NoJsPlayer } from '@components/AudioPlayer/NoJsPlayer';
-// import { CtaRegion } from '@components/CtaRegion';
+import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';
 import { MetaTags } from '@components/MetaTags';
 import { Plausible, PlausibleEventArgs } from '@components/Plausible';
 import { parseDateParts } from '@lib/parse/date';
+import { getCtaRegionData } from '@store/reducers';
 import { segmentStyles } from './Segment.styles';
 import { AudioHeader } from './components/SegmentHeader';
 
 export const Segment = ({ data }: IContentComponentProps<SegmentType>) => {
+  const store = useStore<RootState>();
+  const state = store.getState();
+  const type = 'post--segment';
   const { classes } = segmentStyles();
 
   const { seo, id, title, content, segmentContent, segmentDates } = data;
@@ -37,13 +43,12 @@ export const Segment = ({ data }: IContentComponentProps<SegmentType>) => {
     })
   };
 
-  // // CTA data.
-  // const ctaInlineEnd = getCtaRegionData(
-  //   state,
-  //   'tw_cta_region_content_inline_end',
-  //   type,
-  //   id
-  // );
+  const ctaInlineEnd = getCtaRegionData(
+    state,
+    'content-inline-end',
+    type,
+    id as string
+  );
 
   // Plausible Events.
   const props = {
@@ -90,7 +95,7 @@ export const Segment = ({ data }: IContentComponentProps<SegmentType>) => {
               {mediaItemUrl && <NoJsPlayer url={mediaItemUrl} />}
               {content && <HtmlContent html={content} />}
             </Box>
-            {/* {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />} */}
+            {ctaInlineEnd && <CtaRegion data={ctaInlineEnd} />}
           </Grid>
         </Grid>
       </Container>

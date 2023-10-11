@@ -1,5 +1,5 @@
 /**
- * @file ContentContext.js
+ * @file CtaRegionContext.js
  * Creates context for cta region data.
  */
 

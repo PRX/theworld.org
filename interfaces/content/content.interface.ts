@@ -18,15 +18,3 @@ export interface IContentComponentProxyProps {
   cookies?: any;
   shareLinks?: ISocialLink[];
 }
-
-export interface IContentContext {
-  type: string;
-  id?: string;
-}
-
-export interface IContent {
-  id: number;
-  type: string;
-  link: string;
-  [k: string]: any;
-}

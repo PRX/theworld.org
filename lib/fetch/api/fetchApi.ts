@@ -6,10 +6,6 @@
 import type { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import type { ParsedUrlQuery } from 'querystring';
 import type {
-  IPriApiCollectionResponse,
-  IPriApiResourceResponse
-} from 'pri-api-library/types';
-import type {
   INewsletterOptions,
   INewsletterData,
   ICMApiCustomField,
@@ -21,7 +17,9 @@ import type {
   PostConnection,
   Maybe,
   SearchQueryOptions,
-  SearchQueryProps
+  SearchQueryProps,
+  Category,
+  Page
 } from '@interfaces';
 import type {
   fetchGqlAudio,
@@ -224,34 +222,6 @@ export const fetchApiFileAudio = async (id: string, init?: RequestInit) =>
   });
 
 /**
- * Method that simplifies GET queries for video file data.
- *
- * @param id
- *    API id of video file.
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @returns
- *    Video file data object.
- */
-export const fetchApiFileVideo = async (id: string, init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: `file/video/${id}`, init });
-
-/**
- * Method that simplifies GET queries for image file data.
- *
- * @param id
- *    API id of image file.
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @returns
- *    Image file data object.
- */
-export const fetchApiFileImage = async (id: string, init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: `file/image/${id}`, init });
-
-/**
  * Method that simplifies GET queries for contributor data.
  *
  * @param id
@@ -382,7 +352,7 @@ export const fetchApiProgramEpisodes = async (
  *    Category data object.
  */
 export const fetchApiCategory = async (id: string, init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: `category/${id}`, init });
+  fetchApi<Category>({ path: `category/${id}`, init });
 
 /**
  * Method that simplifies GET queries for category stories data.
@@ -495,88 +465,6 @@ export const fetchApiTagEpisodes = async (
 };
 
 /**
- * Method that simplifies GET queries for term data.
- *
- * @param id
- *    API id of term.
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @returns
- *    Term data object.
- */
-export const fetchApiTerm = async (id: string, init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: `term/${id}`, init });
-
-/**
- * Method that simplifies GET queries for term stories data.
- *
- * @param id
- *    API id of term.
- * @param page
- *    Page number of stories to return.
- * @param range
- *    Number of stories to return for the page.
- * @param exclude
- *    Array of story ids to exclude from query.
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @returns
- *    Promise that returns Collection of Story data objects.
- */
-export const fetchApiTermStories = async (
-  id: string,
-  endCursor?: string,
-  range?: number,
-  exclude?: string[],
-  init?: RequestInit
-) =>
-  fetchApi<IPriApiCollectionResponse>({
-    path: `term/${id}/stories`,
-    query: {
-      ...(endCursor && { endCursor }),
-      ...(range && { range: `${range}` }),
-      ...(exclude && { exclude })
-    },
-    init
-  });
-
-/**
- * Method that simplifies GET queries for term episodes data.
- *
- * @param id
- *    API id of term.
- * @param page
- *    Page number of episodes to return.
- * @param range
- *    Number of episodes to return for the page.
- * @param exclude
- *    Array of story ids to exclude from query.
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @returns
- *    Promise that returns Collection of episode data objects.
- */
-export const fetchApiTermEpisodes = async (
-  id: string,
-  endCursor?: string,
-  range?: number,
-  exclude?: string[],
-  init?: RequestInit
-) =>
-  fetchApi<IPriApiCollectionResponse>({
-    path: `term/${id}/episodes`,
-    query: {
-      ...(endCursor && { endCursor }),
-      ...(range && { range: `${range}` }),
-      ...(exclude && { exclude })
-    },
-    init
-  });
-
-/**
  * Method that simplifies GET queries for page data.
  *
  * @param id
@@ -588,125 +476,7 @@ export const fetchApiTermEpisodes = async (
  *    Page data object.
  */
 export const fetchApiPage = async (id: string, init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: `page/${id}`, init });
-
-/**
- * Method that simplifies GET queries for team data.
- *
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @returns
- *    Person data object.
- */
-export const fetchApiTeam = async (init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: 'team', init });
-
-/**
- * Method that simplifies GET queries for person data.
- *
- * @param id
- *    API id of person.
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @returns
- *    Person data object.
- */
-export const fetchApiPerson = async (id: string, init?: RequestInit) =>
-  fetchApi<IPriApiResourceResponse>({ path: `person/${id}`, init });
-
-/**
- * Method that simplifies GET queries for person stories data.
- *
- * @param id
- *    API id of person.
- * @param page
- *    Page number of stories to return.
- * @param range
- *    Number of stories to return for the page.
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @returns
- *    Promise that returns Collection of Story data objects.
- */
-export const fetchApiPersonStories = async (
-  id: string,
-  endCursor?: string,
-  range?: number,
-  exclude?: string[],
-  init?: RequestInit
-) =>
-  fetchApi<ContributorToPostConnection>({
-    path: `person/${id}/stories`,
-    query: {
-      ...(endCursor && { endCursor }),
-      ...(range && { range: `${range}` }),
-      ...(exclude && { exclude })
-    },
-    init
-  });
-
-/**
- * Method that simplifies GET queries for person stories data.
- *
- * @param id
- *    API id of person.
- * @param page
- *    Page number of stories to return.
- * @param range
- *    Number of stories to return for the page.
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @returns
- *    Promise that returns Collection of Story data objects.
- */
-export const fetchApiPersonAudio = async (
-  id: string,
-  endCursor?: string,
-  range?: number,
-  exclude?: string[],
-  init?: RequestInit
-) =>
-  fetchApi<IPriApiCollectionResponse>({
-    path: `person/${id}/segments`,
-    query: {
-      ...(endCursor && { endCursor }),
-      ...(range && { range: `${range}` }),
-      ...(exclude && { exclude })
-    },
-    init
-  });
-
-/**
- * Method that simplifies fetching of CTA Region Group data.
- *
- * @param regionGroup
- *    Machine name of region group's entity queue.
- * @param context
- *    Array of strings that describe the type and id's of targetable traits of
- *    the shown content.
- * @param req
- *    Request object from `getInitialProps` ctx object.
- *
- * @return
- *    Promise that returns object with region names as keys containing
- *    collection of CTA messages available for the content in that region.
- */
-export const fetchApiCtaRegionGroup = async (
-  regionGroup: string,
-  context?: string[],
-  init?: RequestInit
-) =>
-  fetchApi<IPriApiResourceResponse>({
-    path: `cta/${regionGroup}`,
-    body: context && {
-      context
-    },
-    init
-  });
+  fetchApi<Page>({ path: `page/${id}`, init });
 
 export const fetchApiSearch = (
   queryProps: SearchQueryProps,

@@ -4,17 +4,6 @@
  */
 
 import type { Maybe } from '@interfaces/api';
-import type { IPriApiResource } from 'pri-api-library/types';
-
-export interface IPriApiNewsletter extends IPriApiResource {
-  listId: string;
-  title: string;
-  body?: string;
-  buttonLabel?: string;
-  image?: IPriApiResource;
-  optIn?: string;
-  summary?: string;
-}
 
 export interface ICMApiCustomField {
   Key: string;
