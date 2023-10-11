@@ -2,7 +2,7 @@
  * @file Homepage.tsx
  * Component for Homepage.
  */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
@@ -45,10 +45,7 @@ export const Homepage = () => {
     }
   } = useContext(AppContext);
   const store = useStore();
-  const [state, setState] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
+  const state = store.getState();
   const featuredStoryState = getCollectionData(
     state,
     'homepage',
@@ -213,13 +210,6 @@ export const Homepage = () => {
       )
     }
   ];
-
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
 
   const title = 'The World from PRX';
   const description =

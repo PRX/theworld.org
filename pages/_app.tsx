@@ -38,10 +38,7 @@ const AppLayout = ({ children }) => {
   const rootRef = useRef<HTMLDivElement>();
   const uiFooterRef = useRef<HTMLDivElement>();
   const store = useStore();
-  const [state, updateForce] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    updateForce(store.getState());
-  });
+  const state = store.getState();
   const playerOpen = getUiPlayerOpen(state);
   const playlistOpen = getUiPlayerPlaylistOpen(state);
   const { classes } = useAppStyles({ playerOpen, playlistOpen });
@@ -55,13 +52,6 @@ const AppLayout = ({ children }) => {
       `${footerPadding}px`
     );
   }, [playerOpen]);
-
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
 
   return (
     <div ref={rootRef} className={classes.root}>

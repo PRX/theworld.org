@@ -6,9 +6,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { IPriApiResource } from 'pri-api-library/types';
-import { Box, Button, Hidden, Typography } from '@mui/material';
+import { Box, Button, Hidden, Typography, Pagination } from '@mui/material';
 import { EqualizerRounded, PublicRounded } from '@mui/icons-material';
-import Pagination from '@mui/lab/Pagination';
 import { LandingPage } from '@components/LandingPage';
 import { CtaRegion } from '@components/CtaRegion';
 import { HtmlContent } from '@components/HtmlContent';

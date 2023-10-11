@@ -16,7 +16,7 @@ import { ctaTypeComponentMap } from './components';
 
 export const AppCtaBanner = () => {
   const store = useStore();
-  const [state, setState] = useState(store.getState());
+  const state = store.getState();
   const {
     page: {
       resource: { type, id }
@@ -28,10 +28,6 @@ export const AppCtaBanner = () => {
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap[msgType] || null;
   const [closed, setClosed] = useState(false);
-  const unsub = store.subscribe(() => {
-    setClosed(false);
-    setState(store.getState());
-  });
   const { classes } = appCtaBannerStyles();
 
   const handleClose = () => {
@@ -48,9 +44,9 @@ export const AppCtaBanner = () => {
 
   useEffect(
     () => () => {
-      unsub();
+      setClosed(false);
     },
-    [unsub]
+    []
   );
 
   return CtaMessageComponent && shownMessage && !closed ? (
