@@ -11,7 +11,7 @@ import { useStore } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faFacebook,
-  faTwitter,
+  faXTwitter,
   faLinkedin,
   faFlipboard,
   faWhatsapp
@@ -30,7 +30,7 @@ import { useSocialShareMenuStyles } from './SocialShareMenu.styles';
 const defaultIconsMap = new Map();
 [
   ['facebook', <FontAwesomeIcon size="sm" icon={faFacebook} />],
-  ['twitter', <FontAwesomeIcon size="sm" icon={faTwitter} />],
+  ['twitter', <FontAwesomeIcon size="sm" icon={faXTwitter} />],
   ['linkedin', <FontAwesomeIcon size="sm" icon={faLinkedin} />],
   ['flipboard', <FontAwesomeIcon size="sm" icon={faFlipboard} />],
   ['whatsapp', <FontAwesomeIcon size="sm" icon={faWhatsapp} />],

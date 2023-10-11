@@ -5,29 +5,36 @@
 
 import type { IButtonWithUrl, RootState } from '@interfaces';
 import { useStore } from 'react-redux';
-import { IconButton, Toolbar } from '@mui/material';
+import { IconButton, SvgIcon, Toolbar } from '@mui/material';
 import { isLocalUrl } from '@lib/parse/url';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  Facebook,
-  Twitter,
-  RssFeed,
-  Instagram,
-  WhatsApp
-} from '@mui/icons-material';
+  faFacebook,
+  faInstagram,
+  faXTwitter,
+  faLinkedin,
+  faFlipboard,
+  faWhatsapp
+} from '@fortawesome/free-brands-svg-icons';
 import { getAppDataMenu } from '@store/reducers';
 import { drawerTopNavStyles } from './DrawerSocialNav.styles';
 
 const iconComponentMap = new Map();
-iconComponentMap.set('facebook', Facebook);
-iconComponentMap.set('twitter', Twitter);
-iconComponentMap.set('rss', RssFeed);
-iconComponentMap.set('instagram', Instagram);
-iconComponentMap.set('whatsapp', WhatsApp);
+[
+  ['facebook', <FontAwesomeIcon icon={faFacebook} aria-label="Facebook" />],
+  ['instagram', <FontAwesomeIcon icon={faInstagram} aria-label="Instagram" />],
+  ['twitter', <FontAwesomeIcon icon={faXTwitter} aria-label="Twitter" />],
+  ['linkedin', <FontAwesomeIcon icon={faLinkedin} aria-label="LinkedIn" />],
+  ['flipboard', <FontAwesomeIcon icon={faFlipboard} aria-label="Flipboard" />],
+  ['whatsapp', <FontAwesomeIcon icon={faWhatsapp} aria-label="WhatsApp" />]
+].forEach(([key, icon]) => {
+  iconComponentMap.set(key, icon);
+});
 
 const renderIcon = (icon: string, label: string) => {
   const IconComponent = iconComponentMap.get(icon);
 
-  return (IconComponent && <IconComponent aria-label={label} />) || label;
+  return (IconComponent && <SvgIcon>{IconComponent}</SvgIcon>) || label;
 };
 
 export const DrawerSocialNav = () => {

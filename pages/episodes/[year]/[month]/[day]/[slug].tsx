@@ -5,10 +5,11 @@
  */
 
 import { Episode } from '@components/pages/Episode';
-import { IContentComponentProxyProps } from '@interfaces';
+import { EpisodeIdType, IContentComponentProxyProps } from '@interfaces';
 import { wrapper } from '@store/configureStore';
 import { fetchAppData } from '@store/actions/fetchAppData';
 import { fetchEpisodeData } from '@store/actions/fetchEpisodeData';
+import { generateShareLinks } from '@lib/generate/social';
 
 const EpisodePage = ({ data }: IContentComponentProxyProps) => (
   <Episode data={data} />
@@ -24,15 +25,20 @@ export const getServerSideProps =
 
         if (slug) {
           const [data] = await Promise.all([
-            fetchEpisodeData(slug, 'SLUG'),
+            fetchEpisodeData(slug, EpisodeIdType.Slug),
             store.dispatch<any>(fetchAppData(req.cookies))
           ]);
 
           if (data) {
+            const { link, title } = data;
+            const shareLinks =
+              link != null ? generateShareLinks(link, title) : undefined;
+
             return {
               props: {
                 type: 'post--episode',
                 id: data.id,
+                ...(shareLinks && { shareLinks }),
                 data
               }
             };
