@@ -2,8 +2,8 @@
  * Defines story data interface and types.
  */
 
-import type { Maybe, Post, PostToCategoryConnection } from '@interfaces/api';
+import type { Category, Maybe, Post } from '@interfaces/api';
 
 export type PostStory = Post & {
-  primaryCategory?: Maybe<PostToCategoryConnection>;
+  primaryCategory?: Maybe<Category>;
 };

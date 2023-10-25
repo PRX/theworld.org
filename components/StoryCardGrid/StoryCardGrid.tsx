@@ -198,7 +198,7 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                         </Moment>
                       </Typography>
                     </Grid>
-                    {primaryCategory?.nodes[0] && (
+                    {primaryCategory && (
                       <Grid item xs="auto" zeroMinWidth>
                         <Typography
                           className={classes.primaryCategory}
@@ -206,12 +206,12 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                           noWrap
                         >
                           <Label color="secondary" />
-                          {primaryCategory.nodes[0].link ? (
-                            <ContentLink url={primaryCategory.nodes[0].link}>
-                              {primaryCategory.nodes[0].name}
+                          {primaryCategory.link ? (
+                            <ContentLink url={primaryCategory.link}>
+                              {primaryCategory.name}
                             </ContentLink>
                           ) : (
-                            <span>{primaryCategory.nodes[0].name}</span>
+                            <span>{primaryCategory.name}</span>
                           )}
                         </Typography>
                       </Grid>

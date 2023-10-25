@@ -58,7 +58,7 @@ export const StoryFeatured = ({ data }: IContentComponentProps<PostStory>) => {
   } = data;
   const { audio } = additionalMedia as PostAdditionalMedia;
   const audioUrl = audio?.sourceUrl || audio?.mediaItemUrl;
-  const related = primaryCategory?.nodes[0].posts?.nodes;
+  const related = primaryCategory?.posts?.nodes;
   const { classes } = storyStyles();
   const hasRelated = related && !!related.length;
   const hasCategories = !!categories?.nodes?.length;

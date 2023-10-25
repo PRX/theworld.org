@@ -60,13 +60,13 @@ export const StoryHeader = ({ data }: Props) => {
 
   return (
     <Box component="header" className={classes.root} mt={4} mb={2}>
-      {primaryCategory?.nodes[0].link && (
+      {primaryCategory?.link && (
         <Box mb={2}>
           <ContentLink
             className={classes.categoryLink}
-            url={primaryCategory.nodes[0].link}
+            url={primaryCategory.link}
           >
-            {primaryCategory.nodes[0].name}
+            {primaryCategory.name}
           </ContentLink>
         </Box>
       )}

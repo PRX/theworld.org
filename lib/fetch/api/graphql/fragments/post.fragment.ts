@@ -12,12 +12,10 @@ export const POST_CARD_PROPS = gql`
         ...ImageProps
       }
     }
-    primaryCategory: categories(first: 1) {
-      nodes {
-        id
-        link
-        name
-      }
+    primaryCategory {
+      id
+      link
+      name
     }
     additionalDates {
       broadcastDate

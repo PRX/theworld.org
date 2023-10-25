@@ -65,7 +65,7 @@ const AppLayout = ({ children, shareLinks }: AppLayoutProps) => {
 
   useEffect(() => {
     const uiFooterRect = uiFooterRef.current?.getBoundingClientRect();
-    const footerPadding = uiFooterRect?.height || 0;
+    const footerPadding = (playerOpen && uiFooterRect?.height) || 0;
 
     rootRef.current?.style.setProperty(
       '--footer-padding',
