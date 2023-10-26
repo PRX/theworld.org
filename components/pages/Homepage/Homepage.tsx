@@ -56,7 +56,7 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
   const unsub = store.subscribe(() => {
     setState(store.getState());
   });
-  const { landingPage, menus, latestStories } = data;
+  const { landingPage, menus, latestStories } = data || {};
   const featuredPosts =
     landingPage?.featuredPosts &&
     (landingPage.featuredPosts || []).reduce(
