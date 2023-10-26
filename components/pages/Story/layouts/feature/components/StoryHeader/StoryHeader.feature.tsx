@@ -89,13 +89,13 @@ export const StoryHeader = ({ data }: Props) => {
         )}
         <Box className={classes.content}>
           <Container fixed className={classes.header}>
-            {primaryCategory?.nodes[0].link && (
+            {primaryCategory?.link && (
               <Box mb={2}>
                 <ContentLink
                   className={classes.categoryLink}
-                  url={primaryCategory.nodes[0].link}
+                  url={primaryCategory.link}
                 >
-                  {primaryCategory.nodes[0].name}
+                  {primaryCategory.name}
                 </ContentLink>
               </Box>
             )}

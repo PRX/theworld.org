@@ -35,7 +35,7 @@ export const storyHeaderTheme = (theme: Theme) =>
               color: theme.palette.primary.contrastText
             },
             '&:hover': {
-              color: alpha(theme.palette.primary.contrastText, 0.6)
+              color: theme.palette.primary.light
             }
           }
         }
@@ -77,25 +77,32 @@ export const storyHeaderStyles = makeStyles()((theme) => ({
 
   content: {
     position: 'relative',
+    isolation: 'isolate',
     gridColumn: '1 / -1',
-    gridRow: '1 / -1',
-    display: 'grid',
-    alignContent: 'end',
-    // gridTemplateColumns: '1fr 100vw 1fr',
+    gridRow: '2',
     gridGap: theme.typography.pxToRem(16),
     width: '100%',
-    padding: theme.typography.pxToRem(24),
     textShadow: `1px 1px 6px ${alpha(
       theme.palette.common.black,
       0.3
-    )}, 1px 1px 3px ${alpha(theme.palette.common.black, 0.4)}`
+    )}, 1px 1px 3px ${alpha(theme.palette.common.black, 0.4)}`,
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      inset: '-4rem 0 0',
+      zIndex: -1,
+      backgroundImage: `linear-gradient(${alpha(
+        theme.palette.primary.dark,
+        0
+      )}, ${alpha(theme.palette.primary.dark, 0.6)})`
+    }
   },
 
   header: {
     gridRow: '1 / -1',
-    display: 'flex',
-    flexDirection: 'column',
-    zIndex: 1
+    display: 'grid',
+    zIndex: 1,
+    padding: theme.typography.pxToRem(24)
   },
 
   teaser: {

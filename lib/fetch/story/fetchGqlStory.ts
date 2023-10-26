@@ -18,12 +18,10 @@ export const STORY_CARD_PROPS = gql`
         ...ImageProps
       }
     }
-    primaryCategory: categories(first: 1) {
-      nodes {
-        id
-        name
-        link
-      }
+    primaryCategory {
+      id
+      name
+      link
     }
     additionalMedia {
       audio {
@@ -96,15 +94,13 @@ const GET_POST = gql`
           link
         }
       }
-      primaryCategory: categories(first: 1) {
-        nodes {
-          id
-          name
-          link
-          posts(first: 4, where: { notIn: [$id] }) {
-            nodes {
-              ...StoryCardProps
-            }
+      primaryCategory {
+        id
+        name
+        link
+        posts(first: 4, where: { notIn: [$id] }) {
+          nodes {
+            ...StoryCardProps
           }
         }
       }
