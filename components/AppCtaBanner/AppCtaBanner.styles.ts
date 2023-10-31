@@ -16,11 +16,11 @@ export const appCtaBannerStyles = makeStyles()((theme: Theme) => ({
 
     '.MuiTypography-h2': {
       color: 'inherit',
-      textWrap: 'balance'
+      textWrap: 'balance',
+      fontSize: '1.5rem'
     },
 
     '.MuiTypography-body1': {
-      fontSize: '1rem',
       lineHeight: 1.3,
       textWrap: 'balance'
     },
