@@ -12,6 +12,7 @@ module.exports = withPlausibleProxy({
   subdirectory: uid(6),
   scriptName: uid()
 })({
+  output: 'standalone',
   env: {
     CM_API_KEY: process.env.CM_API_KEY,
     CM_API_KEY_28C2ADD24B84C68A: process.env.CM_API_KEY_28C2ADD24B84C68A,
