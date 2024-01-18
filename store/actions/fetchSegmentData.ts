@@ -7,8 +7,12 @@
 import { SegmentIdType } from '@interfaces';
 import { fetchGqlSegment } from '@lib/fetch';
 
-export const fetchSegmentData = async (id: string, idType?: SegmentIdType) => {
-  const segment = await fetchGqlSegment(id, idType);
+export const fetchSegmentData = async (
+  id: string,
+  idType?: SegmentIdType,
+  authToken?: string
+) => {
+  const segment = await fetchGqlSegment(id, idType, authToken);
 
   return segment;
 };

@@ -3,16 +3,25 @@
  * Initialize Apollo GraphQL client.
  */
 
-import { ApolloClient, HttpLink, InMemoryCache, from } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloClientOptions,
+  HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+  from
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
 const httpLink = new HttpLink({
   uri: `${process.env.API_URL_BASE}/${process.env.WP_GRAPHQL_ENDPOINT}`,
+  credentials: 'same-origin',
   fetchOptions: {
     method: 'GET'
   }
 });
 
-export const gqlClient = new ApolloClient({
+const options = {
   cache: new InMemoryCache({
     typePolicies: {
       Post: {
@@ -71,6 +80,26 @@ export const gqlClient = new ApolloClient({
       fetchPolicy: 'no-cache'
     }
   }
-});
+} as ApolloClientOptions<NormalizedCacheObject>;
+
+export const gqlClient = new ApolloClient(options);
+
+export const getClient = (authToken?: string) => {
+  const authLink = setContext((_, { headers }) => {
+    if (!authToken) return { headers };
+
+    return {
+      headers: {
+        ...headers,
+        authorization: `Bearer ${authToken}`
+      }
+    };
+  });
+
+  return new ApolloClient({
+    ...options,
+    link: authLink.concat(httpLink)
+  });
+};
 
 export default gqlClient;

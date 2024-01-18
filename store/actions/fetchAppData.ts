@@ -26,7 +26,16 @@ export const fetchAppData =
         dispatch({
           type: 'SET_COOKIES',
           payload: {
-            cookies
+            // The app is only concerned with storing our CTA related cookies.
+            cookies: Object.entries(cookies)
+              .filter(([key]) => key.startsWith('cta_prompt'))
+              .reduce(
+                (a, [key, value]) => ({
+                  ...a,
+                  [key]: value
+                }),
+                {}
+              )
           }
         });
 
