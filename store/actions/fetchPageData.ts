@@ -6,8 +6,12 @@
 
 import { fetchGqlPage } from '@lib/fetch';
 
-export const fetchPageData = async (id: string) => {
-  const page = await fetchGqlPage(id);
+export const fetchPageData = async (
+  id: string,
+  idType?: string,
+  authToken?: string
+) => {
+  const page = await fetchGqlPage(id, idType, authToken);
 
   return page;
 };

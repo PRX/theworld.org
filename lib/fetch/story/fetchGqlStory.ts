@@ -4,7 +4,7 @@
 
 import { PostIdType, type Maybe, type PostStory } from '@interfaces';
 import { gql } from '@apollo/client';
-import { gqlClient } from '@lib/fetch/api';
+import { getClient } from '@lib/fetch/api';
 import { IMAGE_PROPS, POST_SEO_PROPS } from '@lib/fetch/api/graphql';
 
 export const STORY_CARD_PROPS = gql`
@@ -162,12 +162,17 @@ const GET_POST = gql`
   ${POST_SEO_PROPS}
 `;
 
-export const fetchGqlStory = async (id?: string, idType?: PostIdType) => {
+export const fetchGqlStory = async (
+  id?: string | number,
+  idType?: PostIdType,
+  authToken?: string
+) => {
+  const gqlClient = getClient(authToken);
   let storyId = id;
 
   // The post query need an Id to properly exclude this post from related stories results.
   // When passed a slug, look up the Id.
-  if (idType === PostIdType.Slug) {
+  if (idType !== PostIdType.Id) {
     const infoResponse = await gqlClient.query<{
       post: Maybe<PostStory>;
     }>({

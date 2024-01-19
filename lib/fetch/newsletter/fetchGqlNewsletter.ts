@@ -4,7 +4,7 @@
 
 import type { Newsletter, Maybe } from '@interfaces';
 import { gql } from '@apollo/client';
-import { gqlClient } from '@lib/fetch/api';
+import { getClient } from '@lib/fetch/api';
 import { IMAGE_PROPS } from '@lib/fetch/api/graphql';
 
 const GET_NEWSLETTER = gql`
@@ -30,7 +30,12 @@ const GET_NEWSLETTER = gql`
   ${IMAGE_PROPS}
 `;
 
-export async function fetchGqlNewsletter(id: string, idType?: string) {
+export async function fetchGqlNewsletter(
+  id: string,
+  idType?: string,
+  authToken?: string
+) {
+  const gqlClient = getClient(authToken);
   const response = await gqlClient.query<{
     newsletter: Maybe<Newsletter>;
   }>({

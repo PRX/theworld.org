@@ -4,7 +4,7 @@
 
 import type { Episode, EpisodeIdType, Maybe } from '@interfaces';
 import { gql } from '@apollo/client';
-import { gqlClient } from '@lib/fetch/api';
+import { getClient } from '@lib/fetch/api';
 import {
   AUDIO_PARENT_PROPS,
   IMAGE_PROPS,
@@ -99,7 +99,12 @@ const GET_EPISODE = gql`
   ${AUDIO_PARENT_PROPS}
 `;
 
-export async function fetchGqlEpisode(id: string, idType?: EpisodeIdType) {
+export async function fetchGqlEpisode(
+  id: string,
+  idType?: EpisodeIdType,
+  authToken?: string
+) {
+  const gqlClient = getClient(authToken);
   const response = await gqlClient.query<{
     episode: Maybe<Episode>;
   }>({
