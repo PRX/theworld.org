@@ -80,6 +80,7 @@ export const storyBodyTypography = (theme: Theme) =>
         fontFamily: alegreya.style.fontFamily,
         fontSize: '1.75rem',
         textAlign: 'center',
+        textWrap: 'balance',
         '& > *': {
           maxWidth: '1200px',
           marginLeft: 'auto',
