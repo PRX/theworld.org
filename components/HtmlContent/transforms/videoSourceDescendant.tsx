@@ -54,7 +54,7 @@ export const videoSourceDescendant = (node: DomElement) => {
 
     if (src) {
       return (
-        <div className="media-youtube-video" key={src}>
+        <div className="media-youtube-video" key={node.attribs.key}>
           <iframe
             title={src}
             allow="encrypted-media; accelerometer; gyroscope; picture-in-picture"

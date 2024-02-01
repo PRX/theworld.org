@@ -9,15 +9,6 @@ import { generateContentLinkHref } from '@lib/routing';
 import { isLocalUrl } from '@lib/parse/url';
 import { DomElement } from 'htmlparser2';
 
-function* genId() {
-  let id = 0;
-  while (true) {
-    id += 1;
-    yield id;
-  }
-}
-const gen = genId();
-
 export const anchorToLink = (
   node: DomElement,
   transform: Transform,
@@ -32,7 +23,7 @@ export const anchorToLink = (
     // Return an app link.
     const {
       attribs,
-      attribs: { href }
+      attribs: { href, key }
     } = node;
     let url: URL | undefined = new URL(href, 'https://theworld.org');
 
@@ -43,7 +34,6 @@ export const anchorToLink = (
     }
 
     if (url?.href && isLocalUrl(url.href)) {
-      const id = gen.next().value as number;
       const linkHref = generateContentLinkHref(url.href);
       const children = convertNodeToElement(
         { ...node, attribs },
@@ -54,7 +44,7 @@ export const anchorToLink = (
       delete attribs.target;
 
       return linkHref ? (
-        <Link href={linkHref} passHref key={id} legacyBehavior>
+        <Link href={linkHref} passHref key={key} legacyBehavior>
           {children}
         </Link>
       ) : (

@@ -19,14 +19,13 @@ export const audioDescendant = (node: DomElement) => {
   if (
     audioSource &&
     node.type === 'tag' &&
-    node.name === 'div' &&
     'class' in node.attribs &&
-    /\bfile-audio\b/.test(node.attribs.class)
+    /\b(?:file-audio|block-audio)\b/.test(node.attribs.class)
   ) {
     const {
       attribs: { src }
     } = audioSource;
-    return <AudioPlayer data={src as string} />;
+    return <AudioPlayer data={src as string} key={node.attribs.key} />;
   }
 
   return undefined;
