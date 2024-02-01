@@ -15,9 +15,10 @@ export const storyBodyQAStyles = (theme: Theme) =>
       marginBlockEnd: theme.typography.pxToRem(32),
       paddingBlockStart: theme.typography.pxToRem(16),
       paddingBlockEnd: theme.typography.pxToRem(16),
-      borderInlineStartWidth: theme.typography.pxToRem(accentBorderWidth),
-      borderInlineStartStyle: 'solid',
-      borderInlineStartColor: theme.palette.primary.main,
+      borderInlineStar: 'none',
+      boxShadow: `-${theme.typography.pxToRem(accentBorderWidth)} 0 0 ${
+        theme.palette.primary.main
+      }`,
 
       '& .qa-question': {
         marginBlockEnd: theme.typography.pxToRem(16),

@@ -17,49 +17,64 @@ export const storyBodyMediaStyles = (theme: Theme) =>
 
     // Reset for img tag dimension attributes.
     '& img:not([width="1"])': {
-      width: '100%',
       maxWidth: '100%',
       height: 'auto',
       margin: '0 auto',
       backgroundColor: theme.palette.grey[200]
     },
 
+    // Alignment styles.
+    '& .alignwide': {},
+
     // Media styles.
-    '& .media': {
+    '& :where(.file-image, .media, .wp-block-image, .wp-block-embed)': {
       position: 'relative',
       clear: 'both',
       width: '100%',
-      marginTop: theme.typography.pxToRem(32),
-      marginBottom: theme.typography.pxToRem(32),
+      marginBlock: theme.typography.pxToRem(32),
+      marginInline: 0,
 
-      '&.media-full_width': {
+      '&:where(.alignwide, .alignfull), & .file-full-width-wrapper': {
+        transform: 'translateX(-50%)',
         position: 'relative',
+        left: '50%',
+        width: '100vw',
 
-        '& .file-full-width-wrapper': {
-          transform: 'translateX(-50%)',
-          position: 'relative',
-          left: '50%',
-          width: '100vw',
-          maxWidth: '1200px'
+        '& > span': {
+          maxHeight: '90vh',
+
+          '& img': {
+            objectFit: 'cover'
+          }
         }
       },
 
-      '&.media-browser_width': {
-        position: 'relative',
+      '&.alignwide, & .file-browser-width-wrapper': {
+        maxWidth: '1200px'
+      },
 
-        '& .file-browser-width-wrapper': {
-          transform: 'translateX(-50%)',
-          position: 'relative',
-          left: '50%',
-          width: '100vw'
-        }
-      }
-    },
-    '& .file-image': {
-      '& .content': {
+      '&.aligncenter': {
+        paddingInline: theme.spacing(4)
+      },
+
+      '&:where(.wp-block-image, .wp-block-embed), & :where(.content)': {
         ...theme.typography.caption,
-        '& > * + *': {
-          marginTop: theme.typography.pxToRem(16)
+        display: 'grid',
+        rowGap: theme.spacing(1),
+        '&:where(.alignwide, .alignfull) :where(figcaption)': {
+          paddingInline: theme.spacing(2),
+          marginInline: 'auto',
+          [theme.breakpoints.up('sm')]: {
+            width: '100%',
+            maxWidth: 600,
+            paddingInline: theme.spacing(3)
+          },
+          [theme.breakpoints.up('md')]: {
+            maxWidth: 960
+          },
+          [theme.breakpoints.up('lg')]: {
+            maxWidth: 960
+          }
         },
         '& p': {
           margin: 0
@@ -82,22 +97,21 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     },
 
     // YouTube embed styles.
-    '& .media-youtube-video': {
-      position: 'relative',
-      height: 0,
-      marginBlockStart: theme.typography.pxToRem(24),
-      marginBlockEnd: theme.typography.pxToRem(24),
-      paddingTop: `${(9 / 16) * 100}%`,
-      '& iframe': {
-        display: 'block',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        border: 0
-      }
-    },
+    '& .media-youtube-video, & :where(.wp-block-embed-youtube, .wp-block-embed-vimeo) > .wp-block-embed__wrapper':
+      {
+        position: 'relative',
+        height: 0,
+        paddingTop: `${(9 / 16) * 100}%`,
+        '& iframe': {
+          display: 'block',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          border: 0
+        }
+      },
 
     // Twitter embeds.
     '& .twitter-tweet': {
@@ -124,7 +138,7 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     },
 
     [theme.breakpoints.up('md')]: {
-      '& .media-wysiwyg-align-left, & .media-image_on_left': {
+      '& :where(.media-wysiwyg-align-left, .media-image_on_left, .alignleft)': {
         float: 'left',
         clear: 'left',
         width: '44%',
@@ -133,18 +147,25 @@ export const storyBodyMediaStyles = (theme: Theme) =>
           theme.typography.pxToRem(48),
           theme.typography.pxToRem(32),
           0
-        ].join(' ')}`
+        ].join(' ')}`,
+        [theme.breakpoints.up(1028)]: {
+          marginInlineStart: theme.spacing(-4)
+        }
       },
-      '& .media-wysiwyg-align-right, & .media-image_on_right': {
-        float: 'right',
-        clear: 'right',
-        width: '44%',
-        margin: `${[
-          theme.typography.pxToRem(8),
-          0,
-          theme.typography.pxToRem(32),
-          theme.typography.pxToRem(48)
-        ].join(' ')}`
-      }
+      '& :where(.media-wysiwyg-align-right, .media-image_on_right, .alignright)':
+        {
+          float: 'right',
+          clear: 'right',
+          width: '44%',
+          margin: `${[
+            theme.typography.pxToRem(8),
+            0,
+            theme.typography.pxToRem(32),
+            theme.typography.pxToRem(48)
+          ].join(' ')}`,
+          [theme.breakpoints.up(1028)]: {
+            marginInlineEnd: theme.spacing(-4)
+          }
+        }
     }
   } as any);

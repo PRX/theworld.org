@@ -49,7 +49,7 @@ export const twitterEmbed = (node: DomElement) => {
     const { pathname } = parse(embedUrl);
     const [, id] = (pathname || '').match(/\/(\w+)\W*$/) || [];
 
-    return <TwitterTweetEmbed tweetId={id} />;
+    return <TwitterTweetEmbed tweetId={id} key={node.attribs.key} />;
   }
 
   return undefined;

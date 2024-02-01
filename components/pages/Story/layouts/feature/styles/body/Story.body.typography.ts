@@ -26,25 +26,51 @@ export const storyBodyTypography = (theme: Theme) =>
       marginTop: theme.typography.pxToRem(64)
     },
 
+    '& .has-text-align-center': {
+      textAlign: 'center'
+    },
+    '& .has-text-align-right': {
+      textAlign: 'right'
+    },
+
     '& hr': {
+      height: '2px',
+      backgroundColor: theme.palette.divider,
+      border: 'none'
+    },
+    '& hr.is-style-wide': {
+      height: '4px'
+    },
+    '& hr:where(.alignwide, .alignfull)': {
+      transform: 'translateX(-50%)',
+      position: 'relative',
+      left: '50%',
+      width: '100vw'
+    },
+    '& hr.alignwide': {
+      maxWidth: '1200px'
+    },
+    '& hr.aligncenter': {
+      marginInline: theme.spacing(4)
+    },
+    '& hr.is-style-dots': {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       height: '2rem',
-      border: 'none',
+      background: 'none',
+      color: theme.palette.divider,
       '&::before': {
-        content: '"* * *"',
-        position: 'relative',
-        top: '0.25rem',
+        content: '"•••"',
         fontSize: '1.5rem',
-        lineHeight: 0
+        lineHeight: 0,
+        letterSpacing: '3rem'
       }
     },
 
-    '& blockquote, & aside:not(.node-story-act)': {
+    '& > blockquote, & > aside:not(.node-story-act), & > .wp-block-pullquote': {
       display: 'flow-root',
       backgroundColor: theme.palette.grey[200],
-      margin: 0,
       padding: theme.typography.pxToRem(24),
       color: theme.palette.grey[700],
       fontSize: '0.9rem',
@@ -55,41 +81,54 @@ export const storyBodyTypography = (theme: Theme) =>
           marginTop: '1rem'
         }
       },
-      '& footer': {
-        marginTop: '0.75rem',
-        '& cite': {
-          '&::before': {
-            content: '"-"',
-            marginRight: '0.25rem'
-          }
+      '& :where(footer)': {
+        marginTop: '0.75rem'
+      },
+      '& cite': {
+        '&::before': {
+          content: '"-"',
+          marginRight: '0.25rem'
         }
       },
-      '&.pullquote': {
-        position: 'relative',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '100vw',
-        marginTop: theme.typography.pxToRem(32),
-        marginBottom: theme.typography.pxToRem(32),
+      '&:where(.pullquote, .wp-block-pullquote)': {
+        marginBlock: theme.typography.pxToRem(32),
         paddingBlock: `${theme.typography.pxToRem(64)}`,
         paddingInline: `${theme.typography.pxToRem(16)}`,
-        borderTop: `1px solid ${theme.palette.divider}`,
-        borderBottom: `1px solid ${theme.palette.divider}`,
+        borderBlock: `1px solid ${theme.palette.divider}`,
         background: 'none',
         color: theme.palette.primary.dark,
         fontFamily: alegreya.style.fontFamily,
         fontSize: '1.75rem',
         textAlign: 'center',
         textWrap: 'balance',
-        '& > *': {
-          maxWidth: '1200px',
-          marginLeft: 'auto',
-          marginRight: 'auto'
+        '&:where(.alignwide, .alignfull)': {
+          position: 'relative',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '100vw',
+          '& > *': {
+            maxWidth: '1200px',
+            marginInline: 'auto'
+          }
+        },
+        '&.alignwide': {
+          maxWidth: '1200px'
+        },
+        '&:not(.alignleft, .alignright)': {
+          marginInline: 0
+        },
+        '&:where(.alignleft, .alignright)': {
+          marginBlockStart: 0,
+          paddingBlock: `${theme.typography.pxToRem(24)}`
+        },
+        '& blockquote': {
+          display: 'grid',
+          gap: theme.typography.pxToRem(16)
         },
         '& p': {
           lineHeight: theme.typography.pxToRem(32.4)
         },
-        '& footer': {
+        '& :where(footer, cite)': {
           color: theme.palette.grey[700],
           fontSize: '1rem'
         }
