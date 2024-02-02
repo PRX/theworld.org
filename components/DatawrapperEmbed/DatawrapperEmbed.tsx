@@ -3,12 +3,16 @@
  * Component for datawrapperEmbed elements.
  */
 
-import { Box } from '@mui/material';
 import type { DetailedHTMLProps, IframeHTMLAttributes } from 'react';
 import { useEffect, useState } from 'react';
 
-export interface IDatawrapperEmbedProps extends DetailedHTMLProps<IframeHTMLAttributes<HTMLIFrameElement>, HTMLIFrameElement> {
+export interface IDatawrapperEmbedProps
+  extends DetailedHTMLProps<
+    IframeHTMLAttributes<HTMLIFrameElement>,
+    HTMLIFrameElement
+  > {
   frameborder?: string;
+  class?: string;
 }
 
 export const DatawrapperEmbed = ({
@@ -16,17 +20,20 @@ export const DatawrapperEmbed = ({
   height,
   frameborder,
   style,
+  class: className,
   ...iframeAttribs
 }: IDatawrapperEmbedProps) => {
-  const chartId = iframeAttribs.id?.split('-').pop();
   const [iframeHeight, setIframeHeight] = useState(height);
 
   function handleMessage(a: MessageEvent) {
-    if (a.origin !== 'https://datawrapper.dwcdn.net') return;
-
-    const newHeight = chartId && a.data['datawrapper-height']?.[chartId]
-    if (newHeight && newHeight !== height) {
-      setIframeHeight(newHeight)
+    if (typeof a.data['datawrapper-height'] !== 'undefined') {
+      Object.entries(a.data['datawrapper-height']).forEach(
+        ([chartId, newHeight]) => {
+          if (iframeAttribs.src?.includes(`/${chartId}/`)) {
+            setIframeHeight(newHeight as number);
+          }
+        }
+      );
     }
   }
 
@@ -35,18 +42,20 @@ export const DatawrapperEmbed = ({
 
     return () => {
       window.removeEventListener('message', handleMessage);
-    }
+    };
   }, []);
 
-  if(!chartId) return null;
-
   return (
-    <Box sx={{ my: 6 }}>
-      <iframe
-        title={title}
-        style={{ height: `${iframeHeight}px`, width: 0, minWidth: '100%', border: 'none'}}
-        {...iframeAttribs}
-      />
-    </Box>
+    <iframe
+      title={title}
+      style={{
+        height: `${iframeHeight}px`,
+        width: 0,
+        minWidth: '100%',
+        border: 'none'
+      }}
+      className={className}
+      {...iframeAttribs}
+    />
   );
 };
