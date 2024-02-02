@@ -12,6 +12,7 @@ export interface IDatawrapperEmbedProps
     HTMLIFrameElement
   > {
   frameborder?: string;
+  class?: string;
 }
 
 export const DatawrapperEmbed = ({
@@ -19,17 +20,20 @@ export const DatawrapperEmbed = ({
   height,
   frameborder,
   style,
+  class: className,
   ...iframeAttribs
 }: IDatawrapperEmbedProps) => {
-  const chartId = iframeAttribs.id?.split('-').pop();
   const [iframeHeight, setIframeHeight] = useState(height);
 
   function handleMessage(a: MessageEvent) {
-    if (a.origin !== 'https://datawrapper.dwcdn.net') return;
-
-    const newHeight = chartId && a.data['datawrapper-height']?.[chartId];
-    if (newHeight && newHeight !== height) {
-      setIframeHeight(newHeight);
+    if (typeof a.data['datawrapper-height'] !== 'undefined') {
+      Object.entries(a.data['datawrapper-height']).forEach(
+        ([chartId, newHeight]) => {
+          if (iframeAttribs.src?.includes(`/${chartId}/`)) {
+            setIframeHeight(newHeight as number);
+          }
+        }
+      );
     }
   }
 
@@ -41,8 +45,6 @@ export const DatawrapperEmbed = ({
     };
   }, []);
 
-  // if(!chartId) return null;
-
   return (
     <iframe
       title={title}
@@ -52,6 +54,7 @@ export const DatawrapperEmbed = ({
         minWidth: '100%',
         border: 'none'
       }}
+      className={className}
       {...iframeAttribs}
     />
   );
