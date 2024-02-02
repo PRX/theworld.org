@@ -5,6 +5,8 @@ export * from './enhanceImage';
 export * from './facebookPost';
 export * from './facebookVideo';
 export * from './fbRootRemove';
+export * from './fixBlockInParagraph';
+export * from './fixNestedSpans';
 export * from './instagramEmbed';
 export * from './scriptRemove';
 export * from './twitterEmbed';

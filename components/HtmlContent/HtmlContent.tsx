@@ -14,6 +14,8 @@ import {
   facebookPost,
   facebookVideo,
   fbRootRemove,
+  fixBlockInParagraph,
+  fixNestedSpans,
   instagramEmbed,
   scriptRemove,
   twitterEmbed,
@@ -43,11 +45,13 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
 
   const transform = (node: DomElement, index: number) =>
     [
+      fixNestedSpans,
+      fixBlockInParagraph,
       // Transform to add `key` attribute to all tag nodes.
       (n: DomElement, t: Transform, i: number) => {
         if (n.type === 'tag') {
           // eslint-disable-next-line no-param-reassign
-          n.attribs.key = `${n.name}:${i}`;
+          n.attribs.key = `${n.name}:${index}:${i}`;
         }
       },
       anchorToLink,

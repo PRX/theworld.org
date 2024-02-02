@@ -3,11 +3,14 @@
  * Component for datawrapperEmbed elements.
  */
 
-import { Box } from '@mui/material';
 import type { DetailedHTMLProps, IframeHTMLAttributes } from 'react';
 import { useEffect, useState } from 'react';
 
-export interface IDatawrapperEmbedProps extends DetailedHTMLProps<IframeHTMLAttributes<HTMLIFrameElement>, HTMLIFrameElement> {
+export interface IDatawrapperEmbedProps
+  extends DetailedHTMLProps<
+    IframeHTMLAttributes<HTMLIFrameElement>,
+    HTMLIFrameElement
+  > {
   frameborder?: string;
 }
 
@@ -24,9 +27,9 @@ export const DatawrapperEmbed = ({
   function handleMessage(a: MessageEvent) {
     if (a.origin !== 'https://datawrapper.dwcdn.net') return;
 
-    const newHeight = chartId && a.data['datawrapper-height']?.[chartId]
+    const newHeight = chartId && a.data['datawrapper-height']?.[chartId];
     if (newHeight && newHeight !== height) {
-      setIframeHeight(newHeight)
+      setIframeHeight(newHeight);
     }
   }
 
@@ -35,18 +38,21 @@ export const DatawrapperEmbed = ({
 
     return () => {
       window.removeEventListener('message', handleMessage);
-    }
+    };
   }, []);
 
-  if(!chartId) return null;
+  // if(!chartId) return null;
 
   return (
-    <Box sx={{ my: 6 }}>
-      <iframe
-        title={title}
-        style={{ height: `${iframeHeight}px`, width: 0, minWidth: '100%', border: 'none'}}
-        {...iframeAttribs}
-      />
-    </Box>
+    <iframe
+      title={title}
+      style={{
+        height: `${iframeHeight}px`,
+        width: 0,
+        minWidth: '100%',
+        border: 'none'
+      }}
+      {...iframeAttribs}
+    />
   );
 };
