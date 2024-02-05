@@ -16,10 +16,7 @@ export const SpotifyPlayer = ({
   size = 'compact',
   stretch
 }: ISpotifyPlayerProps) => {
-  const path = uri
-    .split(':')
-    .slice(1)
-    .join('/');
+  const path = uri.split(':').slice(1).join('/');
   const url = `https://open.spotify.com/embed/${path}`;
   let height = '80';
   let width = '300';
