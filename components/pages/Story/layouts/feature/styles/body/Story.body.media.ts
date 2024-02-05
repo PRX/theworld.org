@@ -38,7 +38,7 @@ export const storyBodyMediaStyles = (theme: Theme) =>
         transform: 'translateX(-50%)',
         position: 'relative',
         left: '50%',
-        width: '100vw',
+        width: 'var(--_full-width, 100vw)',
 
         '& > span': {
           maxHeight: '90vh',
@@ -53,8 +53,9 @@ export const storyBodyMediaStyles = (theme: Theme) =>
         maxWidth: '1200px'
       },
 
-      '&.aligncenter': {
-        paddingInline: theme.spacing(4)
+      '&:where(.aligncenter, .alignleft, .alignright)': {
+        maxWidth: `calc(100% - ${theme.spacing(6)})`,
+        marginInline: 'auto'
       },
 
       '&:where(.wp-block-image, .wp-block-embed), & :where(.content)': {
@@ -135,6 +136,11 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     '& .instagram-media': {
       marginLeft: 'auto !important',
       marginRight: 'auto !important'
+    },
+
+    // Spotify embeds.
+    '& .wp-block-embed-spotify:where(.alignwide, .alignfull)': {
+      '--_full-width': `calc(100vw - ${theme.spacing(6)})`
     },
 
     [theme.breakpoints.up('md')]: {
