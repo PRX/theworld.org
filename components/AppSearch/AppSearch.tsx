@@ -68,11 +68,8 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
   const queryRef = useRef<HTMLInputElement>(null);
   const dialogContentRef = useRef<HTMLDivElement>(null);
   const store = useStore<RootState>();
-  const [state, setState] = useState(store.getState());
+  const state = store.getState();
   const [label, setLabel] = useState('posts' as SearchFacet);
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
   const query = getSearchQuery(state) || q;
   const isOpen = staticPage || getSearchOpen(state) || false;
   const isLoading = getSearchLoading(state) || false;
@@ -137,9 +134,8 @@ export const AppSearch = ({ static: staticPage, q = '' }: AppSearchProps) => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
       router.events.off('routeChangeError', handleRouteChangeEnd);
-      unsub();
     };
-  }, [router.events, store, unsub]);
+  }, [router.events, store]);
 
   useEffect(() => {
     if (staticPage && !hasData) {

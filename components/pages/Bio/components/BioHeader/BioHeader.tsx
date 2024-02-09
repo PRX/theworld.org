@@ -57,7 +57,11 @@ export const BioHeader = ({
               programs.map(
                 (program) =>
                   program?.link && (
-                    <ContentLink className={classes.link} url={program.link}>
+                    <ContentLink
+                      className={classes.link}
+                      url={program.link}
+                      key={program.id}
+                    >
                       {program.name}
                     </ContentLink>
                   )

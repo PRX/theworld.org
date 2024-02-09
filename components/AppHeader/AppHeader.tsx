@@ -4,7 +4,7 @@
  */
 
 import type { RootState } from '@interfaces';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useStore } from 'react-redux';
 import Link from 'next/link';
 import Router from 'next/router';
@@ -31,10 +31,7 @@ import { appHeaderStyles } from './AppHeader.styles';
 
 export const AppHeader = () => {
   const store = useStore<RootState>();
-  const [state, setState] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
+  const state = store.getState();
   const open = getUiDrawerOpen(state) || false;
   const { classes } = appHeaderStyles();
 
@@ -49,9 +46,8 @@ export const AppHeader = () => {
 
     return function cleanup() {
       Router.events.off('routeChangeComplete', handleRouteChangeComplete);
-      unsub();
     };
-  }, [store, unsub]);
+  }, [store]);
 
   const handleDrawerOpen = () => () => {
     store.dispatch({ type: 'UI_DRAWER_OPEN' });

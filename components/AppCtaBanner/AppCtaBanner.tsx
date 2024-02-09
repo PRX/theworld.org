@@ -4,8 +4,7 @@
  */
 
 import type { RootState } from '@interfaces/state';
-import React, { useContext, useEffect, useState } from 'react';
-import { useStore } from 'react-redux';
+import React, { useContext, useState } from 'react';
 import { getShownMessage, setCtaCookie } from '@lib/cta';
 import { Box, Container, IconButton } from '@mui/material';
 import { CloseSharp } from '@mui/icons-material';
@@ -14,9 +13,11 @@ import { getCookies, getCtaRegionData } from '@store/reducers';
 import { appCtaBannerStyles } from './AppCtaBanner.styles';
 import { ctaTypeComponentMap } from './components';
 
-export const AppCtaBanner = () => {
-  const store = useStore<RootState>();
-  const [state, setState] = useState(store.getState());
+export type AppCtaBannerProps = {
+  state: RootState;
+};
+
+export const AppCtaBanner = ({ state }: AppCtaBannerProps) => {
   const { page } = useContext(AppContext);
   const { resource } = page || {};
   const { type, id } = resource || {};
@@ -25,11 +26,7 @@ export const AppCtaBanner = () => {
   const shownMessage = getShownMessage(banner, cookies);
   const { type: msgType } = shownMessage || {};
   const CtaMessageComponent = ctaTypeComponentMap.get(msgType);
-  const [closed, setClosed] = useState(false);
-  const unsub = store.subscribe(() => {
-    setClosed(false);
-    setState(store.getState());
-  });
+  const [closed, setClosed] = useState(!shownMessage);
   const { classes } = appCtaBannerStyles();
 
   const handleClose = () => {
@@ -46,13 +43,6 @@ export const AppCtaBanner = () => {
     // Close prompt.
     setClosed(true);
   };
-
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
 
   return CtaMessageComponent && shownMessage && !closed ? (
     <Box

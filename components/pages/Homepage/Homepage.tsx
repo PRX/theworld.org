@@ -12,7 +12,7 @@ import type {
   RootState
 } from '@interfaces';
 import type { ICtaRegionProps } from '@interfaces/cta';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import { useStore } from 'react-redux';
 import { Box, Hidden, Typography } from '@mui/material';
@@ -52,10 +52,7 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
   const { menus: appMenus } = appData || {};
   const { drawerMainNav } = appMenus || {};
   const store = useStore<RootState>();
-  const [state, setState] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
+  const state = store.getState();
   const { landingPage, menus, latestStories } = data || {};
   const featuredPosts =
     landingPage?.featuredPosts &&
@@ -212,13 +209,6 @@ export const Homepage = ({ data }: IContentComponentProps<HomepageType>) => {
       )
     }
   ];
-
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
 
   const title = 'The World from PRX';
   const description =
