@@ -48,10 +48,12 @@ export const HtmlContent = ({ html, transforms = [] }: IHtmlContentProps) => {
       fixNestedSpans,
       fixBlockInParagraph,
       // Transform to add `key` attribute to all tag nodes.
-      (n: DomElement, t: Transform, i: number) => {
+      (n: DomElement) => {
         if (n.type === 'tag') {
           // eslint-disable-next-line no-param-reassign
-          n.attribs.key = `${n.name}:${index}:${i}`;
+          n.attribs.key = `${n.parent?.attribs.key || 'root'}_${
+            n.name
+          }:${index}`;
         }
       },
       anchorToLink,
