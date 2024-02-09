@@ -83,7 +83,7 @@ export const AddAudioButton = ({
       if (!ar) return;
 
       const linkResource = ar.parent?.node as PostStory | Segment | Episode;
-      const linkResourceImage = linkResource.featuredImage?.node;
+      const linkResourceImage = linkResource?.featuredImage?.node;
       const linkResourceImageUrl =
         linkResourceImage?.sourceUrl || linkResourceImage?.mediaItemUrl;
       const ad = parseAudioData(

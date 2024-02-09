@@ -7,10 +7,13 @@ import type React from 'react';
 import type { IAudioData } from '@components/Player/types';
 import type {
   ContentNode,
+  Episode,
   Maybe,
   MediaItem,
-  NodeWithFeaturedImage,
+  Node,
   NodeWithTitle,
+  PostStory,
+  Segment,
   TermNode
 } from '@interfaces';
 import { useState } from 'react';
@@ -40,14 +43,23 @@ import { SidebarFooter } from '../SidebarFooter';
 export type SidebarListItem = {
   title?: Maybe<string>;
   url?: Maybe<string>;
-  audio?: Maybe<MediaItem>;
-  audioProps?: Partial<IAudioData>;
   avatar?: Maybe<MediaItem>;
-  data?:
-    | (ContentNode & NodeWithTitle & NodeWithFeaturedImage)
-    | TermNode
-    | null;
-};
+} & (
+  | {
+      audio?: Maybe<MediaItem>;
+      audioProps?: Partial<IAudioData>;
+      data?:
+        | (ContentNode & NodeWithTitle & Node)
+        | PostStory
+        | Episode
+        | Segment
+        | null;
+    }
+  | {
+      audio?: undefined;
+      data?: PostStory | Episode | Segment | TermNode | null;
+    }
+);
 
 export interface ISidebarListProps extends ListProps {
   data: SidebarListItem[];
@@ -228,7 +240,9 @@ export const SidebarList = ({
                 <ListItemSecondaryAction>
                   <AudioControls
                     id={item.audio.id}
-                    fallbackProps={item.audioProps}
+                    fallbackProps={
+                      item.audioProps || { linkResource: item.data }
+                    }
                     variant="minimal"
                   />
                 </ListItemSecondaryAction>
