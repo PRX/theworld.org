@@ -58,6 +58,7 @@ export const PlaylistItem = ({
               width={thumbnailWidth}
               height={thumbnailHeight}
               layout="fixed"
+              objectFit="cover"
               alt={`Thumbnail for "${title}"`}
             />
           ) : null}

@@ -43,6 +43,7 @@ const GET_POST = gql`
       title
       excerpt
       content
+      date
       featuredImage {
         node {
           ...ImageProps

@@ -27,6 +27,9 @@ export const useSidebarCtaStyles = makeStyles()((theme) => ({
     },
     '& :is(.MuiCardContent-root)': {
       padding: 0,
+      '&:last-child': {
+        paddingBlockEnd: 0
+      },
       '& p': {
         margin: 0
       },

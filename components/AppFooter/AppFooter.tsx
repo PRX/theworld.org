@@ -7,8 +7,8 @@ import type { IButtonWithUrl, RootState } from '@interfaces';
 import { useStore } from 'react-redux';
 import Image from 'next/legacy/image';
 import { Box, Breadcrumbs, Container, Divider, Link } from '@mui/material';
+import { ContentLink } from '@components/ContentLink';
 import { isLocalUrl } from '@lib/parse/url';
-import { handleButtonClick } from '@lib/routing';
 import TwLogo from '@svg/tw-white.svg';
 import PrxLogo from '@svg/PRX-Logo-Horizontal-Color.svg';
 import GBHLogo from '@svg/GBH-Logo-Purple.svg';
@@ -129,24 +129,19 @@ export const AppFooter = () => {
           >
             {footerNav
               .filter((v): v is IButtonWithUrl => !!v.url)
-              .map(({ url, ...other }) => ({
-                ...other,
-                url: new URL(url, 'https://theworld.org')
-              }))
               .map(({ name, url, key, attributes }) =>
-                isLocalUrl(url.href) ? (
-                  <Link
-                    href={url.pathname || '/'}
-                    onClick={handleButtonClick(url)}
+                isLocalUrl(url) ? (
+                  <ContentLink
+                    url={url}
                     key={key}
                     className={classes.link}
                     {...attributes}
                   >
                     {name}
-                  </Link>
+                  </ContentLink>
                 ) : (
                   <a
-                    href={url.href}
+                    href={url}
                     className={classes.link}
                     key={key}
                     {...attributes}

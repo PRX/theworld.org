@@ -13,13 +13,14 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "dev:start": "yarn dev",
+    "dev:start": "yarn dev:caniuse:update-db ; yarn dev",
     "build": "next build",
     "lint": "eslint --ext .jsx,.js,.tsx,.ts ./{components,config,contexts,interfaces,lib,pages,theme,assets/svg} --no-error-on-unmatched-pattern",
     "format:check": "prettier --config ./prettier.config.js --check **/*.{js,ts,tsx}",
     "start": "next start",
     "test": "NODE_ENV=test jest --detectOpenHandles",
-    "dev:gql:generate:types": "graphql-codegen --config codegen.ts"
+    "dev:gql:generate:types": "graphql-codegen --config codegen.ts",
+    "dev:caniuse:update-db": "npx browserslist@latest --update-db"
   },
   "dependencies": {
     "@apollo/client": "^3.7.15",

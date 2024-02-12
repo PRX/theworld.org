@@ -18,7 +18,6 @@ import PlausibleProvider from 'next-plausible';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
-import { analytics } from '@config';
 import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppFooter } from '@components/AppFooter';
@@ -49,16 +48,13 @@ interface TwAppProps extends AppProps<AppPageProps> {
 type AppLayoutProps = {
   children?: React.JSX.Element;
   shareLinks?: ISocialLink[];
+  state: RootState;
 };
 
-const AppLayout = ({ children, shareLinks }: AppLayoutProps) => {
+const AppLayout = ({ children, shareLinks, state }: AppLayoutProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const uiFooterRef = useRef<HTMLDivElement>(null);
   const store = useStore<RootState>();
-  const [state, updateForce] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    updateForce(store.getState());
-  });
   const playerOpen = getUiPlayerOpen(state);
   const playlistOpen = getUiPlayerPlaylistOpen(state);
   const { classes } = useAppStyles({ playerOpen, playlistOpen });
@@ -96,13 +92,6 @@ const AppLayout = ({ children, shareLinks }: AppLayoutProps) => {
     }
   }, [shareLinks, store]);
 
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
-
   return (
     <div ref={rootRef} className={classes.root}>
       <div
@@ -111,7 +100,7 @@ const AppLayout = ({ children, shareLinks }: AppLayoutProps) => {
         })}
       >
         <AppLoadingBar />
-        <AppCtaBanner />
+        <AppCtaBanner state={state} />
         <AppHeader />
       </div>
       <div
@@ -137,7 +126,7 @@ const AppLayout = ({ children, shareLinks }: AppLayoutProps) => {
             <SocialShareMenu className={classes.socialShareMenu} />
             <AppPlayer />
           </div>
-          <AppCtaLoadUnder />
+          <AppCtaLoadUnder state={state} />
         </div>
       </div>
     </div>
@@ -151,6 +140,10 @@ const TwApp = ({
 }: TwAppProps) => {
   const AnyComponent = Component as any;
   const { store, props } = wrapper.useWrappedStore(rest);
+  const [state, updateForce] = useState(store.getState());
+  const unsub = store.subscribe(() => {
+    updateForce(store.getState());
+  });
   const { pageProps } = props as AppProps<AppPageProps>;
   const [plausibleDomain, setPlausibleDomain] = useState('');
   const { cookies, contentOnly, ...componentProps } = pageProps;
@@ -169,7 +162,9 @@ const TwApp = ({
 
   useEffect(() => {
     // Configure Plausible provider.
-    setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
+    setPlausibleDomain(
+      (window as any)?.location.hostname || process.env.APP_DOMAIN
+    );
 
     // Remove the server-side injected CSS.
     // Fix for https://github.com/mui-org/material-ui/issues/15073
@@ -181,6 +176,13 @@ const TwApp = ({
     // Remove `no-js` styling flag class.
     document.documentElement.classList.remove('no-js');
   }, []);
+
+  useEffect(
+    () => () => {
+      unsub();
+    },
+    [unsub]
+  );
 
   if (contentOnly) {
     return (
@@ -215,7 +217,7 @@ const TwApp = ({
             <ThemeProvider theme={appTheme}>
               <AppContext.Provider value={contextValue}>
                 <Player>
-                  <AppLayout shareLinks={shareLinks}>
+                  <AppLayout shareLinks={shareLinks} state={state}>
                     <AnyComponent {...componentProps} />
                   </AppLayout>
                   <AppSearch />

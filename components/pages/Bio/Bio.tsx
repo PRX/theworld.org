@@ -21,7 +21,7 @@ import {
   faInstagram,
   faTiktok,
   faTumblr,
-  faTwitter
+  faXTwitter
 } from '@fortawesome/free-brands-svg-icons';
 import {
   faBlog,
@@ -70,19 +70,16 @@ followIconMap.set('podcast', faPodcast);
 followIconMap.set('rss', faRss);
 followIconMap.set('tiktok', faTiktok);
 followIconMap.set('tumblr', faTumblr);
-followIconMap.set('twitter', faTwitter);
+followIconMap.set('twitter', faXTwitter);
 followIconMap.set('website', faGlobe);
 
 export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
   const store = useStore<RootState>();
-  const [state, setState] = useState(store.getState());
+  const state = store.getState();
   const [loadingStories, setLoadingStories] = useState(false);
   const [oldScrollY, setOldScrollY] = useState(0);
   const [moreStoriesController, setMoreStoriesController] =
     useState<AbortController>();
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
   const type = 'term--contributor';
   const {
     id,
@@ -158,10 +155,9 @@ export const Bio = ({ data }: IContentComponentProps<Contributor>) => {
 
   useEffect(
     () => () => {
-      unsub();
       moreStoriesController?.abort();
     },
-    [unsub]
+    [moreStoriesController]
   );
 
   useEffect(() => {

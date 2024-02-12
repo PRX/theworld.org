@@ -3,8 +3,8 @@
  *
  * Unwrap paragraph content that contain a paragraph.
  */
-import { convertNodeToElement, Transform } from 'react-html-parser';
-import { DomElement, Element } from 'htmlparser2';
+import { DomElement } from 'htmlparser2';
+import { convertNodeToElement, type Transform } from 'react-html-parser';
 import { findDescendant } from '@lib/parse/html';
 
 export const fixBlockInParagraph = (node: DomElement, transform: Transform) => {
@@ -18,17 +18,36 @@ export const fixBlockInParagraph = (node: DomElement, transform: Transform) => {
   });
 
   if (isParagraph && blockDescendant) {
-    const children = node.children
+    const children: ReturnType<typeof convertNodeToElement>[] = [];
+    let pChildren: ReturnType<typeof convertNodeToElement>[] = [];
+
+    node.children
       .map((n: DomElement) => {
         if (n.type === 'text') {
-          return (n.data as string)?.trim().length
-            ? new Element('p', {}, [n])
-            : null;
+          return (n.data as string)?.trim().length ? n : null;
         }
         return n;
       })
       .filter((v: DomElement | null) => !!v)
-      .map((n: DomElement, i: number) => convertNodeToElement(n, i, transform));
+      .forEach((n: DomElement, i: number) => {
+        if (n.type === 'tag' && blockTags.includes(n.name)) {
+          // Add stored paragraph children to output children and reset store.
+          if (pChildren.length) {
+            children.push(<p>{[...pChildren]}</p>);
+            pChildren = [];
+          }
+          // Append rendered block element to output children.
+          children.push(convertNodeToElement(n, i, transform));
+        } else {
+          // Store rendered paragraph child.
+          pChildren.push(convertNodeToElement(n, i, transform));
+        }
+      });
+
+    // Add any remaining stored children to output children.
+    if (pChildren.length) {
+      children.push(<p>{[...pChildren]}</p>);
+    }
 
     return children;
   }

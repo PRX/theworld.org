@@ -26,7 +26,9 @@ export const fixNestedSpans = (
       return false;
     });
 
-    return convertNodeToElement(validDescendant, index, transform);
+    if (validDescendant) {
+      return convertNodeToElement(validDescendant, index, transform);
+    }
   }
 
   return undefined;

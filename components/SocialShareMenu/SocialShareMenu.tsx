@@ -6,7 +6,7 @@
 import type { HTMLAttributes } from 'react';
 import type { IIconsMap } from '@interfaces/icons';
 import type { RootState } from '@interfaces/state';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useStore } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -55,10 +55,7 @@ export interface ISocialShareMenuProps extends HTMLAttributes<{}> {}
 
 export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
   const store = useStore<RootState>();
-  const [state, updateForce] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    updateForce(store.getState());
-  });
+  const state = store.getState();
   const { shown, links, icons } = getUiSocialShareMenu(state) || {};
   const playlistOpen = getUiPlayerPlaylistOpen(state);
   const [open, setOpen] = useState(false);
@@ -92,13 +89,6 @@ export const SocialShareMenu = ({ className }: ISocialShareMenuProps) => {
   const handleActionClick = (url: string) => () => {
     window.open(url, '_ blank');
   };
-
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
 
   return links ? (
     <NoSsr>

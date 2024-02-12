@@ -6,31 +6,23 @@
 const path = require('path');
 const { withPlausibleProxy } = require('next-plausible');
 const { uid } = require('uid');
-const { priApi, twApi } = require('./config');
 
 module.exports = withPlausibleProxy({
   subdirectory: uid(6),
   scriptName: uid()
 })({
   env: {
+    APP_DOMAIN: process.env.APP_DOMAIN,
+    API_URL_BASE: process.env.API_URL_BASE,
+    WP_REST_ENDPOINT: process.env.WP_REST_ENDPOINT,
+    WP_GRAPHQL_ENDPOINT: process.env.WP_GRAPHQL_ENDPOINT,
     CM_API_KEY: process.env.CM_API_KEY,
     CM_API_KEY_28C2ADD24B84C68A: process.env.CM_API_KEY_28C2ADD24B84C68A,
     CSE_API_KEY: process.env.CSE_API_KEY,
     FB_ACCESS_TOKEN: process.env.FB_ACCESS_TOKEN,
     FB_ADMINS: process.env.FB_ADMINS,
     FB_APP_ID: process.env.FB_APP_ID,
-    PRI_API_CONFIG: priApi,
-    TW_API_CONFIG: twApi,
-    ISR_REVALIDATE: process.env.ISR_REVALIDATE,
-    TWITTER_ACCOUNT_ID: process.env.TWITTER_ACCOUNT_ID,
-    TW_API_RESOURCE_CACHE_CONTROL: process.env.TW_API_RESOURCE_CACHE_CONTROL,
-    TW_API_COLLECTION_CACHE_CONTROL:
-      process.env.TW_API_COLLECTION_CACHE_CONTROL,
-    TW_API_CTA_CACHE_CONTROL: process.env.TW_API_CTA_CACHE_CONTROL,
-    TW_STATIC_PREBUILD: process.env.TW_STATIC_PREBUILD,
-    API_URL_BASE: process.env.API_URL_BASE,
-    WP_REST_ENDPOINT: process.env.WP_REST_ENDPOINT,
-    WP_GRAPHQL_ENDPOINT: process.env.WP_GRAPHQL_ENDPOINT
+    TWITTER_ACCOUNT_ID: process.env.TWITTER_ACCOUNT_ID
   },
   images: {
     domains: [
@@ -72,7 +64,6 @@ module.exports = withPlausibleProxy({
         alias: {
           ...config.resolve.alias,
           '@components': path.join(__dirname, 'components'),
-          '@config': path.join(__dirname, 'config'),
           '@contexts': path.join(__dirname, 'contexts'),
           '@interfaces': path.join(__dirname, 'interfaces'),
           '@lib': path.join(__dirname, 'lib'),

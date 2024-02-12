@@ -4,8 +4,7 @@
  */
 
 import type { RootState } from '@interfaces';
-import React, { useContext, useEffect, useState } from 'react';
-import { useStore } from 'react-redux';
+import React, { useContext, useState } from 'react';
 import { Box, Container, IconButton } from '@mui/material';
 import { CloseSharp } from '@mui/icons-material';
 import { AppContext } from '@contexts/AppContext';
@@ -14,12 +13,11 @@ import { getCookies, getCtaRegionData } from '@store/reducers';
 import { appCtaLoadUnderStyles } from './AppCtaLoadUnder.styles';
 import { ctaTypeComponentMap } from './components';
 
-export const AppCtaLoadUnder = () => {
-  const store = useStore<RootState>();
-  const [state, setState] = useState(store.getState());
-  const unsub = store.subscribe(() => {
-    setState(store.getState());
-  });
+export type AppCtaBannerProps = {
+  state: RootState;
+};
+
+export const AppCtaLoadUnder = ({ state }: AppCtaBannerProps) => {
   const {
     page: {
       resource: { type, id }
@@ -43,13 +41,6 @@ export const AppCtaLoadUnder = () => {
     // Close prompt.
     setClosed(true);
   };
-
-  useEffect(
-    () => () => {
-      unsub();
-    },
-    [unsub]
-  );
 
   return CtaMessageComponent && shownMessage && !closed ? (
     <Box component="aside" className={classes.root} px={4}>

@@ -54,7 +54,7 @@ const ContentProxy = ({ type, data }: Props) => {
     case 'term--tag':
       return <DynamicTerm data={data} />;
 
-    case 'team':
+    case 'term--program-team':
       return <DynamicTeam data={data} />;
 
     default:

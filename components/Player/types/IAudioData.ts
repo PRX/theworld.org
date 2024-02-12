@@ -1,4 +1,11 @@
-import { Episode, PostStory, Segment } from '@interfaces';
+import {
+  ContentNode,
+  Episode,
+  Node,
+  NodeWithTitle,
+  PostStory,
+  Segment
+} from '@interfaces';
 
 /**
  * Audio data interface.
@@ -53,5 +60,9 @@ export interface IAudioData {
   /**
    * Content link resource data.
    */
-  linkResource?: PostStory | Episode | Segment;
+  linkResource?:
+    | (ContentNode & NodeWithTitle & Node)
+    | PostStory
+    | Episode
+    | Segment;
 }

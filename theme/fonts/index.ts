@@ -10,39 +10,17 @@ import {
 } from 'next/font/google';
 
 export const montserrat = Montserrat({
-  subsets: ['latin'],
-  fallback: [
-    '"Helvetica Neue"',
-    'Helvetica',
-    'Arial',
-    '"Nimbus Sans L"',
-    'sans-serif'
-  ]
+  subsets: ['latin']
 });
 
 export const sourceSans3 = SourceSans3({
-  subsets: ['latin'],
-  fallback: [
-    "'Helvetica Neue'",
-    'Helvetica',
-    'Arial',
-    "'Nimbus Sans L'",
-    'sans-serif'
-  ]
+  subsets: ['latin']
 });
 
 export const openSans = OpenSans({
-  subsets: ['latin'],
-  fallback: [
-    "'Helvetica Neue'",
-    'Helvetica',
-    'Arial',
-    "'Nimbus Sans L'",
-    'sans-serif'
-  ]
+  subsets: ['latin']
 });
 
 export const alegreya = Alegreya({
-  subsets: ['latin'],
-  fallback: ['serif']
+  subsets: ['latin']
 });
