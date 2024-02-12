@@ -7,8 +7,6 @@
     "paths": {
       "*": ["./*"],
       "@components/*": ["./components/*"],
-      "@config": ["./config"],
-      "@config/*": ["./config/*"],
       "@contexts/*": ["./contexts/*"],
       "@interfaces": ["./interfaces"],
       "@interfaces/*": ["./interfaces/*"],

@@ -18,7 +18,6 @@ import PlausibleProvider from 'next-plausible';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
-import { analytics } from '@config';
 import { AppCtaBanner } from '@components/AppCtaBanner';
 import { AppCtaLoadUnder } from '@components/AppCtaLoadUnder';
 import { AppFooter } from '@components/AppFooter';
@@ -163,7 +162,9 @@ const TwApp = ({
 
   useEffect(() => {
     // Configure Plausible provider.
-    setPlausibleDomain((window as any)?.location.hostname || analytics.domain);
+    setPlausibleDomain(
+      (window as any)?.location.hostname || process.env.APP_DOMAIN
+    );
 
     // Remove the server-side injected CSS.
     // Fix for https://github.com/mui-org/material-ui/issues/15073

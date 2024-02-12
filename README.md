@@ -6,18 +6,18 @@ React/Next.js Frontend for theworld.org. A daily world news public media program
 
 Make sure you have **node**, **NPM**, **yarn**, and **now** installed and/or updated. Tested and required versions:
 
-- `node` 12.0.0+ - Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.
-- `npm` 6.9.0+ - CLI used to manage node pages.
-- `yarn` 1.17.3+ - Wrapper CLI for **npm** that streamlines package retreival and management.
+- `node` 20.0.0+ - Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.
+- `npm` 10.0.0+ - CLI used to manage node pages.
+- `yarn` 1.22.0+ - Wrapper CLI for **npm** that streamlines package retrieval and management.
 
 ### Install Node and NPM using NVM
 
-It is recommended to install and update using _Node Version Manager_ (**nvm**). Follow [Installation and Update](https://github.com/nvm-sh/nvm/blob/master/README.md#installation-and-update) instructions to get started.
+It is recommended to install and update using _asdf_. Follow [Getting Started](https://asdf-vm.com/guide/getting-started.html) guide for installation instructions.
 
-Once **nvm** has been installed, use it to install the latest LTS release of **node** and **npm** by running the following command in your terminal:
+Once **asdf** has been installed, use it to install the configured version of **node** and **npm** by running the following command in your terminal:
 
 ```bash
-nvm install --lts
+asdf install
 ```
 
 ### Install Yarn
@@ -36,7 +36,7 @@ git clone git@github.com:PRX/theworld.org.git
 cd theworld.org
 ```
 
-> By default, development environments will pull API data from the dev staging environemt. To pull data from the live API, in the `./config` directory, make a copy of `production.json` and rename it to `local.json`.
+> By default, development environments will pull API data from the dev staging environment. To pull data from the live API, in the `./config` directory, make a copy of `production.json` and rename it to `local.json`.
 
 Now we need to make sure we are using the the version of _node_ need for the app:
 
@@ -53,24 +53,10 @@ yarn
 Next we need to setup the environment variables:
 
 ```
-cp .env-example .env
+cp .env.example .env.local
 ```
 
 Update variable values as needed. Some features, like newsletter subscriptions will not work until a valid key is provided here.
-
-If you need to use a local data API, do the following to create a local app config file:
-
-```
-cp ./config/local.example.js ./config/local.js
-```
-
-Update the settings here to point at you local dev API if they differ from the default.
-
-Make sure you are logged into the vercel CLI:
-
-```
-yarn vercel login
-```
 
 Finally, lets spin up the development server:
 
@@ -78,9 +64,9 @@ Finally, lets spin up the development server:
 yarn dev:start
 ```
 
-> You will be prompted to link the code with a Vercel project the first time you start dev server. All projects should be in the PRX Team. If you are not presented with that team as an option, post a request in _#tech-devops_ in Slack to be added to the PRX Team on Vercel.
+Then open the app in your browser at [localhost:3000](http://localhost:3000).
 
-Then open the app in your browser at [localhost:3000]().
+> When you have your local Lando WordPress environment running, and need to develop features that require WordPress authentication cookies, you can use [the-world-wp.lndo.site:3000](http://the-world-wp.lndo.site:3000).
 
 ---
 
@@ -100,10 +86,16 @@ When importing module exports, do not use relative import paths for exports not 
 `@contexts` -> `./contexts`
 `@interfaces` -> `./interfaces`
 `@lib` -> `./lib`
+`@store` -> './store'
 `@svg` -> `./assets/svg`
 `@theme` -> `./theme`
 
-> Additional aliases must be defined in both `./tsconfig.json` and `next.config.js`. Be sure to add the alias path to the `include` array in `./tsconfig.json`.
+> Additional aliases must be defined all of the following:
+>
+> - `./tsconfig.json`
+> - `./jsconfig.json`
+> - `./next.config.js`
+> - `./jest.config.js`
 
 ### Module Exports
 
@@ -117,8 +109,6 @@ Component files should be organized in a module directory in `./components`. The
 <small>_./components/MyComponent/MyComponent.tsx_</small>
 
 ```tsx
-import React from 'react';
-
 export const MyComponent = () => {
   return <h1>Hello World</h1>;
 };
@@ -133,7 +123,6 @@ export * from './MyComponent';
 <small>_./components/OtherComponent/OtherComponent.tsx_</small>
 
 ```tsx
-import React from 'react';
 import { MyComponent } from '@components/MyComponent';
 
 export const OtherComponent = () => {
@@ -146,8 +135,6 @@ Component files can include additional exports. Those exports should also be exp
 <small>_./components/MyComponent/MyComponent.tsx_</small>
 
 ```tsx
-import React from 'react';
-
 export interface MyComponentProps {
   title: string;
 }
@@ -166,8 +153,7 @@ export * from './MyComponent';
 <small>_./components/OtherComponent/OtherComponent.tsx_</small>
 
 ```tsx
-import React from 'react';
-import { MyComponent, MyComponentProps } from '@components/MyComponent';
+import { MyComponent, type MyComponentProps } from '@components/MyComponent';
 
 export const OtherComponent = () => {
   const props: MyComponentProps = {
@@ -178,7 +164,7 @@ export const OtherComponent = () => {
 };
 ```
 
-Conponent modules can have submodule directories. Submodules directies should follow the same export pattern. Submodule components should only be exported from the index file if they are intended to be used along with the main module component.
+Component modules can have submodule directories. Submodules directories should follow the same export pattern. Submodule components should only be exported from the index file if they are intended to be used along with the main module component.
 
 Type and interface exports for the main component and submodule components, and any functions or other variables needed for unit tests, should always by exported by the index file.
 
@@ -186,74 +172,7 @@ Type and interface exports for the main component and submodule components, and 
 
 ## Contexts
 
-Application state and data should be passed to components via [Contexts](https://reactjs.org/docs/context.html). Components can export their own local contexts. Contexts used by the application or by multiple components should be defined in `./contexts`.
-
----
-
-## Routing
-
-### Understanding the problem
-
-NextJs [dynamically creates app routes](https://nextjs.org/docs/routing/introduction) based on the files in `./pages` directory. This is great if this were a new site delivering new content. However, we have a **huge** amount of existing content, from a mutitude of source, with inconsitent URL's that don't contain the information needed to look up the content to be displayed. We have to continue to support **all** URL's for SEO and analytics reasons. Setting up a `./pages/stories/[id].tsx` component file is not going to work. Trust me. It was the first thing we tried.
-
-First instinct would be to setup a catch-all route that can lookup content by alias, map that content type to an app page, then rewrite to that page with the content id. Sounds like the job for a custm Express server, right? Unfortunately, no. Now deployments of NextJS application handles endpoints in a serverless pattern, and running a server from a serveless endpoint is not only ironic, but doesn't work as expected.
-
-### The Solution
-
-Let's work with what we have. Vercel CLI offers a dev env that mirrors deployment behavior, so if it works with that dev env, it should work on deploy. Lets start with rewrites setup via `./vercel.json`.
-
-But what rewrites do we need? None of our content URL's adhere to any one pattern. There is one characteristic of a URL that makes things a little easier: they are _unique_ to the content they deliver from a data perspective. With a few exceptions for local app files and assets, we can assume all other URLs' pathnames are an alias for a page normally found on our Drupal CMS driven site. (This also assumes only requests for relevent front facing pages have been forward to this application. We shouldn't have to worry about admin pages, files, feeds, etc.) All we need is one rewrite to a [catch-all](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes) render page, `./pages/[...alias].tsx`.
-
-The `[...alias].tsx` page will be our whole app, appart from the homepage, which remains our `index.tsx` page. Instead of routing to another page, it will be a proxy for our content components, dynamically loading and rendering the content component for the data type associated with the alias.
-
----
-
-## Content Components
-
-Content components are our top level component for a page. It is responsible for defining its render output, and a fetcher for the data it intends to render.
-
-Content components should be written as function components. Lifecylce methods can be implemented using [`useEffect` hook](https://reactjs.org/docs/hooks-reference.html#useeffect). It is also much easier to use multiple contexts with the [`useContext` hook](https://reactjs.org/docs/hooks-reference.html#usecontext).
-
-### Properties and Methods
-
-- **fetchData** - _function_ - Fetch and return data the component will render. This will be used by the alias resolver to provide the data via the `data` property on the _ContentContext_. Optional.
-  - **Paramater**
-    - **id** - _string | number_ - Identifier of the resource to load data for. Optional.
-  - **Return** - Promise that returns the data.
-
-### Example
-
-```typescript
-import React, { useContext } from 'react';
-import Head from 'next/head';
-import ContentContext from '@contexts/ContentContext';
-import { fetchPriApiItem } from '@lib/fetch';
-
-const Story = () => {
-  const {
-    data: { title }
-  } = useContext(ContentContext);
-
-  return (
-    <>
-      {/* Use Head component to set meta data. */}
-      <Head>
-        <title>{title}</title>
-      </Head>
-      <h1>{title}</h1>
-      {/* Render additional properties... */}
-    </>
-  );
-};
-
-Story.fetchData = async (id: string | number) => {
-  return await fetchPriApiItem('node--stories', id, {
-    fields: ['title']
-  });
-};
-
-export default Story;
-```
+Application state and data can be passed to components via [Contexts](https://reactjs.org/docs/context.html). Components can export their own local contexts. Contexts used by the application or by multiple components should be defined in `./contexts`.
 
 ---
 
@@ -263,7 +182,7 @@ This project uses [Material UI](https://material-ui.com/) as the building blocks
 
 Application level theming can be found in `./theme`. See [Material UI Theming](https://material-ui.com/customization/theming/).
 
-When using a Material UI component not yet used in the application, customize theming of the component at the application level. Component specific theming for addition useage can then be done with a component theme.
+When using a Material UI component not yet used in the application, customize theming of the component at the application level. Component specific theming for addition usage can then be done with a component theme.
 
 Component styling should be done using the [Hook API](https://material-ui.com/styles/basics/#hook-api) for elements that are not Material UI components.
 
