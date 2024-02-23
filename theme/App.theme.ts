@@ -3,7 +3,13 @@
  * Theme and styles for App layout.
  */
 
-import { createTheme, alpha, Theme } from '@mui/material/styles';
+import { deepmerge } from '@mui/utils';
+import {
+  createTheme,
+  alpha,
+  type Theme,
+  type Breakpoint
+} from '@mui/material/styles';
 import { common } from '@mui/material/colors';
 import { makeStyles } from 'tss-react/mui';
 import { blue, orange, red, green, grey, yellow } from './colors';
@@ -77,6 +83,15 @@ export const headingProps = {
 
 export const baseMuiTheme = createTheme(
   {
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 960,
+        lg: 1200,
+        xl: 1536
+      }
+    },
     palette: {
       primary: {
         main: blue[600],
@@ -171,103 +186,135 @@ export const baseMuiTheme = createTheme(
 );
 
 export const appTheme = (theme: Theme) =>
-  createTheme(theme, {
-    shadows: (() => {
-      const shadows = [...theme.shadows] as Theme['shadows'];
-      shadows[1] = `0 1px 1px 0 ${theme.palette.divider}, 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0)`;
-      return shadows;
-    })(),
-    components: {
-      MuiCssBaseline: {
-        styleOverrides: {
-          html: {
-            backgroundColor: theme.palette.primary.main
-          }
-        }
-      },
-      MuiAppBar: {
-        styleOverrides: {
-          root: {}
-        }
-      },
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            borderRadius: '0.25em',
-            fontSize: '1rem'
-          },
-          contained: {
-            fontWeight: 'bold'
-          },
-          containedSecondary: {
-            border: `1px solid ${yellow[500]}`,
-            '&:hover': {
-              backgroundColor: yellow[500]
+  createTheme(
+    deepmerge(theme, {
+      shadows: (() => {
+        const shadows = [...theme.shadows] as Theme['shadows'];
+        shadows[1] = `0 1px 1px 0 ${theme.palette.divider}, 0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0)`;
+        return shadows;
+      })(),
+      components: {
+        MuiCssBaseline: {
+          styleOverrides: {
+            html: {
+              backgroundColor: theme.palette.primary.main
             }
-          },
-          label: {
-            textTransform: 'none'
           }
-        }
-      },
-      MuiButtonGroup: {
-        styleOverrides: {
-          contained: {
-            boxShadow: 'none'
-          },
-          groupedContained: {
-            whiteSpace: 'nowrap',
-            '&:first-of-type': {
-              borderRadius: `${buttonBorderRadius} 0 0 ${buttonBorderRadius}`
+        },
+        MuiAppBar: {
+          styleOverrides: {
+            root: {}
+          }
+        },
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              borderRadius: '0.25em',
+              fontSize: '1rem'
             },
-            '&:last-of-type': {
-              borderRadius: `0 ${buttonBorderRadius} ${buttonBorderRadius} 0`
+            contained: {
+              fontWeight: 'bold'
+            },
+            containedSecondary: {
+              border: `1px solid ${yellow[500]}`,
+              '&:hover': {
+                backgroundColor: yellow[500]
+              }
+            },
+            label: {
+              textTransform: 'none'
             }
-          },
-          groupedContainedSecondary: {
-            border: `${buttonBorderWidth} solid ${theme.palette.secondary.light}`,
-            '&:not(:last-of-type)': {
-              borderRight: `${buttonBorderWidth} solid ${theme.palette.secondary.light}`,
-              borderColor: `${theme.palette.secondary.light}`
-            },
-            '& + *': {
-              marginLeft: `-${buttonBorderWidth}`
-            },
-            '&:hover, &:focus': {
-              backgroundColor: theme.palette.secondary.light,
+          }
+        },
+        MuiButtonGroup: {
+          styleOverrides: {
+            contained: {
               boxShadow: 'none'
+            },
+            groupedContained: {
+              whiteSpace: 'nowrap',
+              '&:first-of-type': {
+                borderRadius: `${buttonBorderRadius} 0 0 ${buttonBorderRadius}`
+              },
+              '&:last-of-type': {
+                borderRadius: `0 ${buttonBorderRadius} ${buttonBorderRadius} 0`
+              }
+            },
+            groupedContainedSecondary: {
+              border: `${buttonBorderWidth} solid ${theme.palette.secondary.light}`,
+              '&:not(:last-of-type)': {
+                borderRight: `${buttonBorderWidth} solid ${theme.palette.secondary.light}`,
+                borderColor: `${theme.palette.secondary.light}`
+              },
+              '& + *': {
+                marginLeft: `-${buttonBorderWidth}`
+              },
+              '&:hover, &:focus': {
+                backgroundColor: theme.palette.secondary.light,
+                boxShadow: 'none'
+              }
             }
           }
-        }
-      },
-      MuiDrawer: {
-        styleOverrides: {
-          paper: {
-            color: theme.palette.primary.contrastText,
-            backgroundColor: theme.palette.primary.main
+        },
+
+        MuiContainer: {
+          styleOverrides: {
+            // Add CSS variables for each breakpoint in each container `maxWidth` value.
+            ...Object.keys(theme.breakpoints.values).reduce(
+              (a, bp) => ({
+                ...a,
+                [`maxWidth${bp.slice(0, 1).toUpperCase()}${bp.slice(1)}`]: {
+                  ...Object.entries(theme.breakpoints.values)
+                    .filter(
+                      ([, width]) => width <= theme.breakpoints.values[bp]
+                    )
+                    .reduce(
+                      (ai, [bpi, width]) => ({
+                        ...ai,
+                        [theme.breakpoints.up(bpi as Breakpoint)]: {
+                          '--container--max-width': `${Math.max(width, 444)}${
+                            theme.breakpoints.unit || 'px'
+                          }`
+                        }
+                      }),
+                      {}
+                    )
+                }
+              }),
+              {}
+            )
           }
-        }
-      },
-      MuiIconButton: {
-        styleOverrides: {
-          root: {
-            borderRadius: 0,
-            fontSize: 'inherit'
+        },
+
+        MuiDrawer: {
+          styleOverrides: {
+            paper: {
+              color: theme.palette.primary.contrastText,
+              backgroundColor: theme.palette.primary.main
+            }
           }
-        }
-      },
-      MuiLink: {
-        styleOverrides: {
-          root: {
-            color: theme.palette.primary.main,
-            '&:visited': {
-              color: theme.palette.primary.main
-            },
-            '&:hover': {
-              color: theme.palette.primary.dark
+        },
+        MuiIconButton: {
+          styleOverrides: {
+            root: {
+              borderRadius: 0,
+              fontSize: 'inherit'
+            }
+          }
+        },
+        MuiLink: {
+          styleOverrides: {
+            root: {
+              color: theme.palette.primary.main,
+              '&:visited': {
+                color: theme.palette.primary.main
+              },
+              '&:hover': {
+                color: theme.palette.primary.dark
+              }
             }
           }
         }
       }
-    }
-  });
+    })
+  );

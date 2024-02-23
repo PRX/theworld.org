@@ -24,32 +24,39 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     },
 
     // Media styles.
-    '& :where(.file-image, .media, .wp-block-image, .wp-block-embed)': {
-      clear: 'both',
-      marginBlock: theme.typography.pxToRem(32),
-      marginInline: 0,
-      '&:where(.wp-block-image, .wp-block-embed), & :where(.content)': {
-        ...theme.typography.caption,
+    '& :where(.file-image, .media, .wp-block-image, .wp-block-embed, .tw-scroll-gallery-slide)':
+      {
+        clear: 'both',
         display: 'grid',
-        rowGap: '0.5rem',
-        '& p': {
-          margin: 0
-        },
-        '& p + p': {
-          marginTop: '1rem'
-        },
-        '& .image__credit': {
-          display: 'flex',
-          fontSize: '0.75rem',
-          lineHeight: 1
-        },
-        '& .image__credit-label': {
-          marginRight: '0.25rem'
+        rowGap: theme.spacing(1),
+        marginBlock: theme.typography.pxToRem(32),
+        marginInline: 0,
+        '& :where(.wp-element-caption, .content, .tw-scroll-gallery-slide--content)':
+          {
+            ...theme.typography.caption,
+            display: 'grid',
+            rowGap: '0.5rem',
+            '& p': {
+              margin: 0
+            },
+            '& p + p': {
+              marginTop: '1rem'
+            },
+            '& .image__credit': {
+              display: 'flex',
+              fontSize: '0.75rem',
+              lineHeight: 1
+            },
+            '& .image__credit-label': {
+              marginRight: '0.25rem'
+            }
+          },
+        '&  > .wp-block-embed__wrapper': {
+          lineHeight: 0
         }
       },
-      '&  > .wp-block-embed__wrapper': {
-        lineHeight: 0
-      }
+    '& .tw-scroll-gallery': {
+      display: 'contents'
     },
 
     // YouTube embed styles.

@@ -23,9 +23,6 @@ export const storyBodyMediaStyles = (theme: Theme) =>
       backgroundColor: theme.palette.grey[200]
     },
 
-    // Alignment styles.
-    '& .alignwide': {},
-
     // Media styles.
     '& :where(.file-image, .media, .wp-block-image, .wp-block-embed)': {
       position: 'relative',
