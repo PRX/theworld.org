@@ -13,11 +13,12 @@ export const storyBodyScrollGalleryStyles = (theme: Theme) =>
       '--_slide--offset--start': 'var(--_screen-height)',
       '--_slide--offset--end': 'var(--_screen-height)',
       '--_backdrop--color': alpha(theme.palette.background.default, 0.7),
-      '--_backdrop--blur': '20px',
-      '--_backdrop--border-radius--size': theme.spacing(10),
+      '--_backdrop--blur': '30px',
+      '--_backdrop--border-radius--size': theme.spacing(6),
       '--_backdrop--border-radius':
         'var(--_backdrop--border-radius--size, 2rem)',
-      '--_backdrop--padding-inline': theme.spacing(8),
+      '--_backdrop--padding-block': theme.spacing(6),
+      '--_backdrop--padding-inline': theme.spacing(6),
 
       position: 'relative',
       clear: 'both',
@@ -60,6 +61,9 @@ export const storyBodyScrollGalleryStyles = (theme: Theme) =>
           }
         },
         '@keyframes scroll-fade': {
+          from: {
+            opacity: 0
+          },
           to: {
             opacity: 1
           }
@@ -147,9 +151,16 @@ export const storyBodyScrollGalleryStyles = (theme: Theme) =>
       maxWidth: 'calc(var(--container--max-width) * 0.8)',
       backgroundColor: 'var(--_backdrop--color)',
       backdropFilter: 'blur(var(--_backdrop--blur))',
-      paddingBlock: theme.spacing(2),
+      paddingBlock: 'var(--_backdrop--padding-block)',
       paddingInline: 'var(--_backdrop--padding-inline)',
       borderRadius: 'var(--_backdrop--border-radius)',
-      fontSize: '1.5rem'
+      fontSize: '1.5rem',
+      '> *': {
+        margin: 0,
+
+        '& + *': {
+          marginBlockStart: theme.spacing(3)
+        }
+      }
     }
   } as any);
