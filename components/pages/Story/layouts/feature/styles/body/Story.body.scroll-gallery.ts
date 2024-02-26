@@ -14,7 +14,7 @@ export const storyBodyScrollGalleryStyles = (theme: Theme) =>
       '--_slide--offset--end': 'var(--_screen-height)',
       '--_backdrop--color': alpha(theme.palette.background.default, 0.7),
       '--_backdrop--blur': '20px',
-      '--_backdrop--border-radius--size': '100vw',
+      '--_backdrop--border-radius--size': theme.spacing(10),
       '--_backdrop--border-radius':
         'var(--_backdrop--border-radius--size, 2rem)',
       '--_backdrop--padding-inline': theme.spacing(8),
@@ -118,21 +118,14 @@ export const storyBodyScrollGalleryStyles = (theme: Theme) =>
       },
 
       '&[data-content-position="left"]': {
-        '--_backdrop--direction': 'to left',
         '--_backdrop--border-radius':
           '0 var(--_backdrop--border-radius--size) var(--_backdrop--border-radius--size) 0',
-        '--_backdrop--padding-inline': `${theme.spacing(8)} ${theme.spacing(
-          10
-        )}`,
         justifyItems: 'start'
       },
 
       '&[data-content-position="right"]': {
         '--_backdrop--border-radius':
           'var(--_backdrop--border-radius--size) 0 0 var(--_backdrop--border-radius--size)',
-        '--_backdrop--padding-inline': `${theme.spacing(10)} ${theme.spacing(
-          8
-        )}`,
         justifyItems: 'end'
       }
     },
