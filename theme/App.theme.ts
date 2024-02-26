@@ -198,6 +198,9 @@ export const appTheme = (theme: Theme) =>
           styleOverrides: {
             html: {
               backgroundColor: theme.palette.primary.main
+            },
+            body: {
+              overflowX: 'hidden'
             }
           }
         },

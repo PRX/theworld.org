@@ -37,12 +37,10 @@ export const storyBodyMediaStyles = (theme: Theme) =>
         left: '50%',
         width: 'var(--_full-width, 100vw)',
 
-        '& > span': {
+        '& > img': {
           maxHeight: '90vh',
-
-          '& img': {
-            objectFit: 'cover'
-          }
+          width: '100%',
+          objectFit: 'cover'
         }
       },
 
