@@ -49,7 +49,7 @@ export const storyBodyScrollGalleryStyles = (theme: Theme) =>
               '.tw-scroll-gallery-slide--media': {
                 animation: 'scroll-fade linear forwards',
                 animationTimeline: 'view()',
-                animationRangeStart: 'contain',
+                animationRangeStart: 'var(--_screen-height)',
                 animationRangeEnd: 'calc(var(--_screen-height) * 2)',
                 opacity: 0,
                 transformOrigin: 'center'
