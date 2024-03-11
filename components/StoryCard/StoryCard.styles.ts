@@ -30,13 +30,19 @@ export const useStoryCardStyles = makeStyles()((theme) => ({
     lineHeight: '1.3'
   },
   primaryCategory: {
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: 'min-content 1fr',
     position: 'relative',
     alignItems: 'center',
     zIndex: 1,
     fontFamily: openSans.style.fontFamily,
     letterSpacing: 'unset',
     textTransform: 'unset'
+  },
+  primaryCategoryLink: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap'
   },
   imageWrapper: {
     position: 'absolute',
