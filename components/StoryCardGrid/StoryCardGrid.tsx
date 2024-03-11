@@ -36,6 +36,7 @@ import {
 import { IAudioData } from '@components/Player/types';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { storyCardGridStyles } from './StoryCardGrid.styles';
+import { Marquee } from '@components/Marquee';
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
@@ -191,14 +192,13 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                     </Typography>
                   </Grid>
                   {primaryCategory && (
-                    <Grid item xs="auto" zeroMinWidth>
+                    <Grid item xs={12}>
                       <Typography
                         className={classes.primaryCategory}
                         variant="overline"
-                        noWrap
                       >
                         <Label color="secondary" />
-                        <ContentLink data={primaryCategory}>
+                        <ContentLink className={classes.primaryCategoryLink} data={primaryCategory} title={primaryCategory.title}>
                           {primaryCategory.title}
                         </ContentLink>
                       </Typography>

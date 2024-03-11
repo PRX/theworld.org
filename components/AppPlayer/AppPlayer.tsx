@@ -163,7 +163,7 @@ export const AppPlayer = () => {
         open={Boolean(menuButtonElm)}
         onClose={handleMenuClose}
         MenuListProps={
-          { component: 'nav', style: { display: 'grid' } } as ListProps
+          { component: 'nav', className: styles.menu } as ListProps
         }
       >
         <MenuItem component="button" onClick={handleClearPlaylistClick}>

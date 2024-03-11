@@ -40,13 +40,21 @@ export const storyCardGridStyles = makeStyles()((theme) => ({
   },
 
   primaryCategory: {
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: 'min-content 1fr',
+    gap: theme.spacing(0.5),
     position: 'relative',
     alignItems: 'center',
     zIndex: 1,
     fontFamily: openSans.style.fontFamily,
     letterSpacing: 'unset',
     textTransform: 'unset'
+  },
+
+  primaryCategoryLink: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap'
   },
 
   audio: {
