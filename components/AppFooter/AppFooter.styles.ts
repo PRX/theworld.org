@@ -19,13 +19,14 @@ export const appFooterStyles = makeStyles()((theme) => ({
     padding: theme.typography.pxToRem(32),
 
     '& > p': {
-      margin: 0
+      margin: 0,
+      fontSize: '1.15rem',
     }
   },
 
   twLogo: {
-    width: '100%',
-    maxWidth: theme.typography.pxToRem(250),
+    width: '300px',
+    maxWidth: theme.typography.pxToRem(300),
     height: 'auto',
     fill: theme.palette.grey.A200
   },
@@ -37,6 +38,8 @@ export const appFooterStyles = makeStyles()((theme) => ({
       display: 'block',
       minHeight: '48px',
       minWidth: '48px',
+      fontSize: '1.25rem',
+      fontWeight: 'bold',
       '&:hover': {
         textDecoration: 'underline'
       }
@@ -54,6 +57,7 @@ export const appFooterStyles = makeStyles()((theme) => ({
     marginTop: 0,
     marginBottom: theme.typography.pxToRem(12),
     fontStyle: 'italic',
+    fontSize: '1.25rem',
 
     '&::after': {
       content: '":"'
@@ -71,30 +75,46 @@ export const appFooterStyles = makeStyles()((theme) => ({
   producedBy: {},
 
   producedByMuiOl: {
-    justifyContent: 'center'
+    display: 'grid',
+    gridTemplateColumns: `${theme.typography.pxToRem(300)}`,
+    gridGap: theme.typography.pxToRem(12),
+    justifyContent: 'center',
+    [theme.breakpoints.up(370)]: {
+      gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(300)})`
+    }
   },
-
+  
   producedByMuiLi: {
-    height: theme.typography.pxToRem(25)
+    width: '100%',
+    height: 'auto'
   },
 
-  producedByLogo: {
-    width: 'auto',
-    height: '100%'
+  producedByMuiSeparator: {
+    display: 'none'
+  },
+
+  sponsoredBy: {},
+
+  sponsoredByMuiOl: {
+    display: 'grid',
+    gridTemplateColumns: `${theme.typography.pxToRem(300)}`,
+    gridGap: theme.typography.pxToRem(8),
+    justifyContent: 'center',
+  },
+
+  sponsoredByMuiStyleLogosTitle: {
+    margin: '0',
   },
 
   fundedBy: {},
 
   fundedByMuiOl: {
     display: 'grid',
-    gridTemplateColumns: `${theme.typography.pxToRem(150)}`,
-    gridGap: theme.typography.pxToRem(8),
+    gridTemplateColumns: `${theme.typography.pxToRem(300)}`,
+    gridGap: theme.typography.pxToRem(12),
     justifyContent: 'center',
     [theme.breakpoints.up(370)]: {
-      gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(150)})`
-    },
-    [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: `repeat(4, ${theme.typography.pxToRem(150)})`
+      gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(300)})`
     }
   },
 
