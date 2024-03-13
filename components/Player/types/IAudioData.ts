@@ -2,6 +2,7 @@ import {
   ContentNode,
   Episode,
   Node,
+  NodeWithFeaturedImage,
   NodeWithTitle,
   PostStory,
   Segment
@@ -61,7 +62,7 @@ export interface IAudioData {
    * Content link resource data.
    */
   linkResource?:
-    | (ContentNode & NodeWithTitle & Node)
+    | (ContentNode & NodeWithTitle & NodeWithFeaturedImage & Node)
     | PostStory
     | Episode
     | Segment;
