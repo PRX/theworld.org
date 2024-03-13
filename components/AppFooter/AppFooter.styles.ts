@@ -105,6 +105,8 @@ export const appFooterStyles = makeStyles()((theme) => ({
     maxWidth: '300px',
     height: '100px',
     background: theme.palette.common.white,
+    paddingInline: theme.spacing(3),
+    lineHeight: 0,
     border: `1px solid ${theme.palette.grey[300]}`,
     [theme.breakpoints.up('md')]: {
       width: '300px',
