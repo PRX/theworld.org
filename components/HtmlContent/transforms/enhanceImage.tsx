@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { DomElement } from 'htmlparser2';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 
 export type ImageWidth = [string | null, string];
 
@@ -47,21 +47,21 @@ export const enhanceImage =
       return wrapperClass ? (
         <div className={wrapperClass} key={key}>
           <Image
+            className={className}
             src={absoluteSrc}
             alt={alt || ''}
             width={width || 16}
             height={height || 9}
-            layout="responsive"
             sizes={sizes}
           />
         </div>
       ) : (
         <Image
+          className={className}
           src={absoluteSrc}
           alt={alt || ''}
           width={width || 16}
           height={height || 9}
-          layout="responsive"
           sizes={sizes}
           key={key}
         />

@@ -104,7 +104,8 @@ export const StoryFeatured = ({ data }: IContentComponentProps<PostStory>) => {
   return (
     <ThemeProvider theme={storyTheme}>
       <StoryHeader data={data} />
-      <Container classes={{ maxWidthLg: classes.MuiContainerMaxWidthLg }} fixed>
+      {/* <Container classes={{ maxWidthLg: classes.MuiContainerMaxWidthLg }} fixed> */}
+      <Container fixed maxWidth="lg">
         <Box className={classes.body} my={2}>
           {audioUrl && <NoJsPlayer url={audioUrl} />}
           {content && (

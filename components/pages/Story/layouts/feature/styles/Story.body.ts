@@ -6,8 +6,9 @@
 import { type Theme } from '@mui/material/styles';
 import { type CSSObject } from 'tss-react';
 import {
-  storyBodyQAStyles,
   storyBodyMediaStyles,
+  storyBodyQAStyles,
+  storyBodyScrollGalleryStyles,
   storyBodyStoryActStyles,
   storyBodyTypography
 } from './body';
@@ -19,6 +20,7 @@ export const storyBodyStyles = (theme: Theme) => ({
     ...storyBodyTypography(theme),
     ...storyBodyMediaStyles(theme),
     ...storyBodyQAStyles(theme),
+    ...storyBodyScrollGalleryStyles(theme),
     ...storyBodyStoryActStyles(theme),
 
     '&::after': {
