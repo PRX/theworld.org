@@ -24,42 +24,44 @@ export const storyBodyMediaStyles = (theme: Theme) =>
     },
 
     // Media styles.
-    '& :where(.file-image, .media, .wp-block-image, .wp-block-embed)': {
-      clear: 'both',
-      marginBlock: theme.typography.pxToRem(32),
-      marginInline: 0,
-      '&:where(.wp-block-image, .wp-block-embed), & :where(.content, .wp-element-caption)':
-        {
-          ...theme.typography.caption,
-          display: 'grid',
-          rowGap: '0.5rem',
-          '& :where(figcaption)': {
+    '& :where(.file-image, .media, .wp-block-image, .wp-block-embed, .tw-scroll-gallery-slide)':
+      {
+        clear: 'both',
+        display: 'grid',
+        rowGap: theme.spacing(1),
+        marginBlock: theme.typography.pxToRem(32),
+        marginInline: 0,
+        '& :where(.wp-element-caption, .content, .tw-scroll-gallery-slide--content)':
+          {
+            ...theme.typography.caption,
             display: 'grid',
-            gap: theme.spacing(1)
+            rowGap: '0.5rem',
+            '& p': {
+              margin: 0
+            },
+            '& p + p': {
+              marginTop: '1rem'
+            },
+            '& :where(.image__credit, .media-credit)': {
+              display: 'flex',
+              gap: '0.25rem',
+              fontSize: '0.75rem',
+              lineHeight: 1,
+              backgroundImage: `linear-gradient(to right, ${theme.palette.divider}, transparent 75%)`,
+              backgroundSize: '100% 1px',
+              backgroundRepeat: 'no-repeat',
+              paddingBlockStart: theme.spacing(1)
+            },
+            '& .image__credit-label': {
+              marginRight: '0.25rem'
+            }
           },
-          '& p': {
-            margin: 0
-          },
-          '& p + p': {
-            marginTop: '1rem'
-          },
-          '& :where(.image__credit, .media-credit)': {
-            display: 'flex',
-            gap: '0.25rem',
-            fontSize: '0.75rem',
-            lineHeight: 1,
-            backgroundImage: `linear-gradient(to right, ${theme.palette.divider}, transparent 75%)`,
-            backgroundSize: '100% 1px',
-            backgroundRepeat: 'no-repeat',
-            paddingBlockStart: theme.spacing(1)
-          },
-          '& .image__credit-label': {
-            marginRight: '0.25rem'
-          }
-        },
-      '&  > .wp-block-embed__wrapper': {
-        lineHeight: 0
-      }
+        '&  > .wp-block-embed__wrapper': {
+          lineHeight: 0
+        }
+      },
+    '& .tw-scroll-gallery': {
+      display: 'contents'
     },
 
     // YouTube embed styles.
