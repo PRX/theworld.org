@@ -28,25 +28,35 @@ export const storyBodyMediaStyles = (theme: Theme) =>
       clear: 'both',
       marginBlock: theme.typography.pxToRem(32),
       marginInline: 0,
-      '&:where(.wp-block-image, .wp-block-embed), & :where(.content)': {
-        ...theme.typography.caption,
-        display: 'grid',
-        rowGap: '0.5rem',
-        '& p': {
-          margin: 0
+      '&:where(.wp-block-image, .wp-block-embed), & :where(.content, .wp-element-caption)':
+        {
+          ...theme.typography.caption,
+          display: 'grid',
+          rowGap: '0.5rem',
+          '& :where(figcaption)': {
+            display: 'grid',
+            gap: theme.spacing(1)
+          },
+          '& p': {
+            margin: 0
+          },
+          '& p + p': {
+            marginTop: '1rem'
+          },
+          '& :where(.image__credit, .media-credit)': {
+            display: 'flex',
+            gap: '0.25rem',
+            fontSize: '0.75rem',
+            lineHeight: 1,
+            backgroundImage: `linear-gradient(to right, ${theme.palette.divider}, transparent 75%)`,
+            backgroundSize: '100% 1px',
+            backgroundRepeat: 'no-repeat',
+            paddingBlockStart: theme.spacing(1)
+          },
+          '& .image__credit-label': {
+            marginRight: '0.25rem'
+          }
         },
-        '& p + p': {
-          marginTop: '1rem'
-        },
-        '& .image__credit': {
-          display: 'flex',
-          fontSize: '0.75rem',
-          lineHeight: 1
-        },
-        '& .image__credit-label': {
-          marginRight: '0.25rem'
-        }
-      },
       '&  > .wp-block-embed__wrapper': {
         lineHeight: 0
       }
