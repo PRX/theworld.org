@@ -21,7 +21,7 @@ export const AppFooter = () => {
   const footerNav = getMenusData(store.getState(), 'footerNav');
   const copyrightDate = new Date().getFullYear();
   const { classes, cx } = appFooterStyles();
-  const producedByLogoClasses = cx(classes.logo, classes.producedByLogo);
+  const fundedByLogoClasses = cx(classes.logo, classes.fundedByLogo);
 
   return (
     <footer className={classes.root}>
@@ -34,140 +34,108 @@ export const AppFooter = () => {
         </p>
         <Box className={cx(classes.logos, classes.fundedBy)}>
           <p className={classes.logosTitle}>Produced by</p>
-          <Breadcrumbs
-            separator=" "
-            aria-label="Footer Navigation"
-            classes={{
-              ol: classes.fundedByMuiOl,
-              li: classes.fundedByMuiLi,
-              separator: classes.fundedByMuiSeparator
-            }}
-          >
-            <a
-              className={classes.logoLink}
-              href="https://www.prx.org"
-              aria-label="PRX"
-            >
-              <Image
-                className={classes.logo}
-                alt="PRX"
-                title="PRX"
-                src="https://media.pri.org/s3fs-public/images/2024/03/prx-box.png"
-                width="300"
-                height="100"
-              />
-            </a>
-            <a
-              className={classes.logoLink}
-              href="https://gbh.org/"
-              aria-label="GBH"
-            >
-              <Image
-                className={classes.logo}
-                alt="GBH"
-                title="GBH"
-                src="https://media.pri.org/s3fs-public/images/2024/03/gbh-box.png"
-                width="300"
-                height="100"
-              />
-            </a>
-          </Breadcrumbs>
+          <ol className={classes.fundedByMuiOl}> 
+            <li className={classes.fundedByMuiLi}> 
+              <Link href="https://prx.org/" aria-label="PRX">
+                <PrxLogo className={cx(fundedByLogoClasses, classes.prxLogo)} />
+              </Link>
+            </li>
+            <li className={classes.fundedByMuiLi}> 
+              <Link href="https://gbh.org/" aria-label="GBH">
+                <GBHLogo className={cx(fundedByLogoClasses, classes.gbhLogo)} />
+              </Link>
+            </li>
+          </ol>
         </Box>
         <Box className={cx(classes.logos, classes.sponsoredBy)}>
-          <p className={classes.logosTitle}>Thanks to our Sponsor</p>
-          <Breadcrumbs
-            separator=" "
-            aria-label="Footer Navigation"
-            classes={{
-              ol: classes.sponsoredByMuiOl,
-              li: classes.sponsoredByMuiLi,
-              separator: classes.sponsoredByMuiSeparator
-            }}
-          >
-            <a
-              className={classes.logoLink}
-              href="http://www.progressive.com/"
-              aria-label="Progressive Insurance"
-            >
-              <Image
-                className={classes.logo}
-                alt="Progressive Insurance logo"
-                title="Progressive Insurance"
-                src="https://media.pri.org/s3fs-public/images/2024/03/pgr_logo_300x100_blue_2_360_bg.png"
-                width="300"
-                height="100"
-              />
-            </a>
-          </Breadcrumbs>
+          <p className={classes.logosTitle}>Thanks to our sponsor</p>
+          <ol className={classes.sponsoredByMuiOl}> 
+            <li className={classes.sponsoredByMuiLi}> 
+              <a
+                  className={classes.logoLink}
+                  href="https://www.progressive.com/"
+                  aria-label="Progressive Insurance"
+                >
+                  <Image
+                    className={classes.logo}
+                    alt="Progressive Insurance logo"
+                    title="Progressive Insurance"
+                    src="https://media.pri.org/s3fs-public/images/2024/03/progressive.png"
+                    width="300"
+                    height="100"
+                  />
+                </a>
+            </li>
+          </ol>  
         </Box>
         <Box className={cx(classes.logos, classes.fundedBy)}>
           <p className={classes.logosTitle}>Major funding provided by</p>
-          <Breadcrumbs
-            separator=" "
-            aria-label="Footer Navigation"
-            classes={{
-              ol: classes.fundedByMuiOl,
-              li: classes.fundedByMuiLi,
-              separator: classes.fundedByMuiSeparator
-            }}
-          >
-            <a
-              className={classes.logoLink}
-              href="https://www.carnegie.org/"
-              aria-label="Carnegie Corporation of New York"
-            >
-              <Image
-                className={classes.logo}
-                alt="Carnegie Corporation of New York"
-                title="Carnegie Corporation of New York"
-                src="https://media.pri.org/s3fs-public/images/2024/03/carnegie.png"
-                width="300"
-                height="100"
-              />
-            </a>
-            <a
-              className={classes.logoLink}
-              href="https://www.macfound.org/"
-              aria-label="MacArthur Foundation"
-            >
-              <Image
-                className={classes.logo}
-                alt="MacArthur Foundation"
-                title="MacArthur Foundation"
-                src="https://media.pri.org/s3fs-public/images/2024/03/macarthur-foundation.png"
-                width="300"
-                height="100"
-              />
-            </a>
-            <a
-              className={classes.logoLink}
-              href="https://www.fordfoundation.org/"
-              aria-label="Ford Foundation"
-            >
-              <Image
-                className={classes.logo}
-                alt="Ford Foundation"
-                title="Ford Foundation"
-                src="https://media.pri.org/s3fs-public/images/2024/03/ford-foundation.png"
-                width="300"
-                height="100"
-              />
-            </a>
-            <a
-              className={classes.logoLink}
-              href="https://cpb.org/"
-              aria-label="Corporation for Public Broadcasting"
-            >
-              <Image
-                className={classes.logo}
-                alt="Corporation for Public Broadcasting"
-                title="Corporation for Public Broadcasting"
-                src="https://media.pri.org/s3fs-public/images/2024/03/cpb.png"
-                width="300"
-                height="100"
-              />
-            </a>
-          </Breadcrumbs>
+          <ol className={classes.fundedByMuiOl}> 
+            <li className={classes.fundedByMuiLi}> 
+              <a
+                className={classes.logoLink}
+                href="https://www.carnegie.org/"
+                aria-label="Carnegie Corporation of New York"
+              >
+                <Image
+                  className={classes.logo}
+                  alt="Carnegie Corporation of New York"
+                  title="Carnegie Corporation of New York"
+                  src="https://media.pri.org/s3fs-public/images/2024/03/carnegie_1.png"
+                  width="128"
+                  height="60"
+                />
+              </a>
+            </li>  
+            <li className={classes.fundedByMuiLi}> 
+              <a
+                className={classes.logoLink}
+                href="https://www.macfound.org/"
+                aria-label="MacArthur Foundation"
+              >
+                <Image
+                  className={classes.logo}
+                  alt="MacArthur Foundation"
+                  title="MacArthur Foundation"
+                  src="https://media.pri.org/s3fs-public/images/2024/03/macarthur-foundation-logo-ec538487d4-seeklogo.png"
+                  width="171"
+                  height="60"
+                />
+              </a>
+            </li>  
+            <li className={classes.fundedByMuiLi}> 
+              <a
+                className={classes.logoLink}
+                href="https://www.fordfoundation.org/"
+                aria-label="Ford Foundation"
+              >
+                <Image
+                  className={classes.logo}
+                  alt="Ford Foundation"
+                  title="Ford Foundation"
+                  src="https://media.pri.org/s3fs-public/images/2024/03/logo_of_the_ford_foundation.png"
+                  width="270"
+                  height="40"
+                />
+              </a>
+            </li>  
+            <li className={classes.fundedByMuiLi}> 
+              <a
+                className={classes.logoLink}
+                href="https://cpb.org/"
+                aria-label="Corporation for Public Broadcasting"
+              >
+                <Image
+                  className={classes.logo}
+                  alt="Corporation for Public Broadcasting"
+                  title="Corporation for Public Broadcasting"
+                  src="https://media.pri.org/s3fs-public/images/2024/03/g10.png"
+                  width="128"
+                  height="60"
+                />
+              </a>
+            </li>  
+          </ol>
         </Box>
       </Container>
       <Divider />

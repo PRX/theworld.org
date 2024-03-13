@@ -19,16 +19,27 @@ export const appFooterStyles = makeStyles()((theme) => ({
     padding: theme.typography.pxToRem(32),
 
     '& > p': {
-      margin: 0,
-      fontSize: '1.15rem',
+      margin: 0
     }
   },
 
   twLogo: {
-    width: '300px',
-    maxWidth: theme.typography.pxToRem(300),
+    width: '100%',
+    maxWidth: theme.typography.pxToRem(250),
     height: 'auto',
     fill: theme.palette.grey.A200
+  },
+
+  prxLogo: {
+    width: '100%',
+    maxWidth: theme.typography.pxToRem(167),
+    height: 'auto',
+  },
+
+  gbhLogo: {
+    width: '100%',
+    maxWidth: theme.typography.pxToRem(104),
+    height: 'auto',
   },
 
   link: {
@@ -38,8 +49,6 @@ export const appFooterStyles = makeStyles()((theme) => ({
       display: 'block',
       minHeight: '48px',
       minWidth: '48px',
-      fontSize: '1.25rem',
-      fontWeight: 'bold',
       '&:hover': {
         textDecoration: 'underline'
       }
@@ -57,7 +66,6 @@ export const appFooterStyles = makeStyles()((theme) => ({
     marginTop: 0,
     marginBottom: theme.typography.pxToRem(12),
     fontStyle: 'italic',
-    fontSize: '1.25rem',
 
     '&::after': {
       content: '":"'
@@ -72,59 +80,65 @@ export const appFooterStyles = makeStyles()((theme) => ({
     height: '100%'
   },
 
-  producedBy: {},
+  fundedBy: {},
 
-  producedByMuiOl: {
-    display: 'grid',
-    gridTemplateColumns: `${theme.typography.pxToRem(300)}`,
-    gridGap: theme.typography.pxToRem(12),
+  fundedByMuiOl: {
+    display: 'flex',
+    flexDirection: 'column',
+    listStyleType: 'none',
+    margin: 0,
+    padding: 0,
+    gridTemplateColumns: `1fr`,
+    gridGap: theme.typography.pxToRem(8),
     justifyContent: 'center',
-    [theme.breakpoints.up(370)]: {
+    [theme.breakpoints.up('md')]: {
+      display: 'grid',
       gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(300)})`
     }
   },
-  
-  producedByMuiLi: {
-    width: '100%',
-    height: 'auto'
-  },
 
-  producedByMuiSeparator: {
-    display: 'none'
+  fundedByMuiLi: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    maxWidth: '300px',
+    height: '100px',
+    background: theme.palette.common.white,
+    border: `1px solid ${theme.palette.grey[300]}`,
+    [theme.breakpoints.up('md')]: {
+      width: '300px',
+      height: '100px',
+    }
   },
 
   sponsoredBy: {},
 
   sponsoredByMuiOl: {
     display: 'grid',
-    gridTemplateColumns: `${theme.typography.pxToRem(300)}`,
+    flexDirection: 'column',
+    listStyleType: 'none',
+    margin: 0,
+    padding: 0,
+    gridTemplateColumns: `1fr`,
     gridGap: theme.typography.pxToRem(8),
     justifyContent: 'center',
+
   },
 
-  sponsoredByMuiStyleLogosTitle: {
-    margin: '0',
-  },
-
-  fundedBy: {},
-
-  fundedByMuiOl: {
-    display: 'grid',
-    gridTemplateColumns: `${theme.typography.pxToRem(300)}`,
-    gridGap: theme.typography.pxToRem(12),
+  sponsoredByMuiLi: {
+    display: 'flex',
+    alignItems: 'center',
     justifyContent: 'center',
-    [theme.breakpoints.up(370)]: {
-      gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(300)})`
-    }
-  },
-
-  fundedByMuiLi: {
     width: '100%',
-    height: 'auto'
-  },
-
-  fundedByMuiSeparator: {
-    display: 'none'
+    maxWidth: '300px',
+    height: '100px',
+    background: theme.palette.common.white,
+    border: `1px solid ${theme.palette.grey[300]}`,
+    [theme.breakpoints.up('md')]: {
+      width: '300px',
+      height: '100px',
+    }
   },
 
   footerNav: {},
@@ -133,5 +147,5 @@ export const appFooterStyles = makeStyles()((theme) => ({
     justifyContent: 'center'
   },
 
-  copyright: {}
+  copyright: {},
 }));
