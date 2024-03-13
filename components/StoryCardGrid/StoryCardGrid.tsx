@@ -36,7 +36,6 @@ import {
 import { IAudioData } from '@components/Player/types';
 import { generateLinkHrefForContent } from '@lib/routing';
 import { storyCardGridStyles } from './StoryCardGrid.styles';
-import { Marquee } from '@components/Marquee';
 
 const Moment = dynamic(() => import('react-moment')) as any;
 
