@@ -89,6 +89,7 @@ export const appPlayerStyles = makeStyles()((theme) => ({
       display: 'none'
     }
   },
+
   menu: {
     display: 'grid',
     '& > *': {

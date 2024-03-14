@@ -204,7 +204,7 @@ export const StoryCard = ({
                         {primaryCategory.link ? (
                           <ContentLink
                             className={classes.primaryCategoryLink}
-                            title={primaryCategory.title}
+                            title={primaryCategory.name || ''}
                             url={primaryCategory.link}
                           >
                             {primaryCategory.name}

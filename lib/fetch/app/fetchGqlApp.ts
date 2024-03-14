@@ -81,9 +81,10 @@ export const fetchGqlApp = async () => {
       ctaRegion.slug
         ? {
             ...a,
-            [ctaRegion.slug]: ctaRegion.ctaRegionContent?.callToActions?.map(
-              (cta) => parseCtaMessage(cta, ctaRegion.slug)
-            )
+            [ctaRegion.slug]:
+              ctaRegion.ctaRegionContent?.callToActions
+                ?.map((cta) => parseCtaMessage(cta, ctaRegion.slug))
+                .filter((v) => !!v) || null
           }
         : a,
     {}
