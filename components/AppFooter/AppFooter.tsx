@@ -21,7 +21,7 @@ export const AppFooter = () => {
   const footerNav = getMenusData(store.getState(), 'footerNav');
   const copyrightDate = new Date().getFullYear();
   const { classes, cx } = appFooterStyles();
-  const fundedByLogoClasses = cx(classes.logo, classes.fundedByLogo);
+  const fundedByLogoClasses = cx(classes.logo);
 
   return (
     <footer className={classes.root}>
@@ -34,13 +34,13 @@ export const AppFooter = () => {
         </p>
         <Box className={cx(classes.logos, classes.fundedBy)}>
           <p className={classes.logosTitle}>Produced by</p>
-          <ol className={classes.fundedByMuiOl}> 
-            <li className={classes.fundedByMuiLi}> 
+          <ol className={classes.fundedByMuiOl}>
+            <li className={classes.fundedByMuiLi}>
               <Link href="https://prx.org/" aria-label="PRX">
                 <PrxLogo className={cx(fundedByLogoClasses, classes.prxLogo)} />
               </Link>
             </li>
-            <li className={classes.fundedByMuiLi}> 
+            <li className={classes.fundedByMuiLi}>
               <Link href="https://gbh.org/" aria-label="GBH">
                 <GBHLogo className={cx(fundedByLogoClasses, classes.gbhLogo)} />
               </Link>
@@ -49,8 +49,8 @@ export const AppFooter = () => {
         </Box>
         <Box className={cx(classes.logos, classes.sponsoredBy)}>
           <p className={classes.logosTitle}>Thanks to our sponsor</p>
-          <ol className={classes.sponsoredByMuiOl}> 
-            <li className={classes.sponsoredByMuiLi}> 
+          <ol className={classes.sponsoredByMuiOl}>
+            <li className={classes.sponsoredByMuiLi}>
               <a
                   className={classes.logoLink}
                   href="https://www.progressive.com/"
@@ -66,12 +66,12 @@ export const AppFooter = () => {
                   />
                 </a>
             </li>
-          </ol>  
+          </ol>
         </Box>
         <Box className={cx(classes.logos, classes.fundedBy)}>
           <p className={classes.logosTitle}>Major funding provided by</p>
-          <ol className={classes.fundedByMuiOl}> 
-            <li className={classes.fundedByMuiLi}> 
+          <ol className={classes.fundedByMuiOl}>
+            <li className={classes.fundedByMuiLi}>
               <a
                 className={classes.logoLink}
                 href="https://www.carnegie.org/"
@@ -86,8 +86,8 @@ export const AppFooter = () => {
                   height="60"
                 />
               </a>
-            </li>  
-            <li className={classes.fundedByMuiLi}> 
+            </li>
+            <li className={classes.fundedByMuiLi}>
               <a
                 className={classes.logoLink}
                 href="https://www.macfound.org/"
@@ -102,8 +102,8 @@ export const AppFooter = () => {
                   height="60"
                 />
               </a>
-            </li>  
-            <li className={classes.fundedByMuiLi}> 
+            </li>
+            <li className={classes.fundedByMuiLi}>
               <a
                 className={classes.logoLink}
                 href="https://www.fordfoundation.org/"
@@ -118,8 +118,8 @@ export const AppFooter = () => {
                   height="40"
                 />
               </a>
-            </li>  
-            <li className={classes.fundedByMuiLi}> 
+            </li>
+            <li className={classes.fundedByMuiLi}>
               <a
                 className={classes.logoLink}
                 href="https://cpb.org/"
@@ -134,7 +134,7 @@ export const AppFooter = () => {
                   height="60"
                 />
               </a>
-            </li>  
+            </li>
           </ol>
         </Box>
       </Container>
