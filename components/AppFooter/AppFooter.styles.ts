@@ -30,6 +30,18 @@ export const appFooterStyles = makeStyles()((theme) => ({
     fill: theme.palette.grey.A200
   },
 
+  prxLogo: {
+    width: '100%',
+    maxWidth: theme.typography.pxToRem(167),
+    height: 'auto',
+  },
+
+  gbhLogo: {
+    width: '100%',
+    maxWidth: theme.typography.pxToRem(104),
+    height: 'auto',
+  },
+
   link: {
     color: theme.palette.primary.main,
     '&:is(a)': {
@@ -68,43 +80,67 @@ export const appFooterStyles = makeStyles()((theme) => ({
     height: '100%'
   },
 
-  producedBy: {},
-
-  producedByMuiOl: {
-    justifyContent: 'center'
-  },
-
-  producedByMuiLi: {
-    height: theme.typography.pxToRem(25)
-  },
-
-  producedByLogo: {
-    width: 'auto',
-    height: '100%'
-  },
-
   fundedBy: {},
 
   fundedByMuiOl: {
-    display: 'grid',
-    gridTemplateColumns: `${theme.typography.pxToRem(150)}`,
+    display: 'flex',
+    flexDirection: 'column',
+    listStyleType: 'none',
+    margin: 0,
+    padding: 0,
+    gridTemplateColumns: `1fr`,
     gridGap: theme.typography.pxToRem(8),
     justifyContent: 'center',
-    [theme.breakpoints.up(370)]: {
-      gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(150)})`
-    },
     [theme.breakpoints.up('md')]: {
-      gridTemplateColumns: `repeat(4, ${theme.typography.pxToRem(150)})`
+      display: 'grid',
+      gridTemplateColumns: `repeat(2, ${theme.typography.pxToRem(300)})`
     }
   },
 
   fundedByMuiLi: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
-    height: 'auto'
+    maxWidth: '300px',
+    height: '100px',
+    background: theme.palette.common.white,
+    paddingInline: theme.spacing(3),
+    lineHeight: 0,
+    border: `1px solid ${theme.palette.grey[300]}`,
+    [theme.breakpoints.up('md')]: {
+      width: '300px',
+      height: '100px',
+    }
   },
 
-  fundedByMuiSeparator: {
-    display: 'none'
+  sponsoredBy: {},
+
+  sponsoredByMuiOl: {
+    display: 'grid',
+    flexDirection: 'column',
+    listStyleType: 'none',
+    margin: 0,
+    padding: 0,
+    gridTemplateColumns: `1fr`,
+    gridGap: theme.typography.pxToRem(8),
+    justifyContent: 'center',
+
+  },
+
+  sponsoredByMuiLi: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    maxWidth: '300px',
+    height: '100px',
+    background: theme.palette.common.white,
+    border: `1px solid ${theme.palette.grey[300]}`,
+    [theme.breakpoints.up('md')]: {
+      width: '300px',
+      height: '100px',
+    }
   },
 
   footerNav: {},
@@ -113,5 +149,5 @@ export const appFooterStyles = makeStyles()((theme) => ({
     justifyContent: 'center'
   },
 
-  copyright: {}
+  copyright: {},
 }));

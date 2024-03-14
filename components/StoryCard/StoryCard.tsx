@@ -183,7 +183,7 @@ export const StoryCard = ({
                   spacing={1}
                   // style={{ marginBottom: 0 }}
                 >
-                  <Grid item xs="auto" zeroMinWidth>
+                  <Grid item xs={12}>
                     <Typography component="span">
                       <Moment
                         format="MMMM D, YYYY"
@@ -195,15 +195,18 @@ export const StoryCard = ({
                     </Typography>
                   </Grid>
                   {primaryCategory && (
-                    <Grid item xs="auto" zeroMinWidth>
+                    <Grid item xs={12}>
                       <Typography
                         variant="overline"
-                        noWrap
                         className={classes.primaryCategory}
                       >
                         <Label color="secondary" />
                         {primaryCategory.link ? (
-                          <ContentLink url={primaryCategory.link}>
+                          <ContentLink
+                            className={classes.primaryCategoryLink}
+                            title={primaryCategory.title}
+                            url={primaryCategory.link}
+                          >
                             {primaryCategory.name}
                           </ContentLink>
                         ) : (

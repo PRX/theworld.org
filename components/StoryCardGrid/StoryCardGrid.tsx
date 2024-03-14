@@ -207,7 +207,11 @@ export const StoryCardGrid = ({ data, ...other }: StoryCardGridProps) => {
                         >
                           <Label color="secondary" />
                           {primaryCategory.link ? (
-                            <ContentLink url={primaryCategory.link}>
+                            <ContentLink
+                              className={classes.primaryCategoryLink}
+                              title={primaryCategory.title}
+                              url={primaryCategory.link}
+                            >
                               {primaryCategory.name}
                             </ContentLink>
                           ) : (
