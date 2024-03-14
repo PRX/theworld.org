@@ -89,11 +89,7 @@ export const storyBodyMediaStyles = (theme: Theme) =>
           display: 'flex',
           gap: '0.25rem',
           fontSize: '0.75rem',
-          lineHeight: 1,
-          backgroundImage: `linear-gradient(to right, ${theme.palette.divider}, transparent 75%)`,
-          backgroundSize: '100% 1px',
-          backgroundRepeat: 'no-repeat',
-          paddingBlockStart: theme.spacing(1)
+          lineHeight: 1
         }
       }
     },
