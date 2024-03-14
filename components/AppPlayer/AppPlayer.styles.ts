@@ -90,7 +90,12 @@ export const appPlayerStyles = makeStyles()((theme) => ({
     }
   },
 
-  MuiMenuItemRoot: {
-    textAlign: 'start'
+  menu: {
+    display: 'grid',
+    '& > *': {
+      display: 'grid',
+      gridTemplateColumns: 'min-content 1fr',
+      textAlign: 'start'
+    }
   }
 }));

@@ -42,8 +42,9 @@ export const storyBodyMediaStyles = (theme: Theme) =>
             '& p + p': {
               marginTop: '1rem'
             },
-            '& .image__credit': {
+            '& :where(.image__credit, .media-credit)': {
               display: 'flex',
+              gap: '0.25rem',
               fontSize: '0.75rem',
               lineHeight: 1
             },

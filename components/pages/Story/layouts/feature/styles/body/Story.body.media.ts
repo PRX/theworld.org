@@ -53,10 +53,14 @@ export const storyBodyMediaStyles = (theme: Theme) =>
         marginInline: 'auto'
       },
 
-      '&:where(.wp-block-image, .wp-block-embed), & :where(.content)': {
+      '&:where(.wp-block-image, .wp-block-embed)': {
         ...theme.typography.caption,
         display: 'grid',
         rowGap: theme.spacing(1),
+        '& :where(figcaption)': {
+          display: 'grid',
+          gap: theme.spacing(1)
+        },
         '&:where(.alignwide, .alignfull) :where(figcaption)': {
           paddingInline: theme.spacing(2),
           marginInline: 'auto',
@@ -81,13 +85,11 @@ export const storyBodyMediaStyles = (theme: Theme) =>
         '& .field-caption': {
           marginTop: '0.25rem'
         },
-        '& .image__credit': {
+        '& :where(.image__credit, .media-credit)': {
           display: 'flex',
+          gap: '0.25rem',
           fontSize: '0.75rem',
           lineHeight: 1
-        },
-        '& .image__credit-label': {
-          marginRight: '0.25rem'
         }
       }
     },

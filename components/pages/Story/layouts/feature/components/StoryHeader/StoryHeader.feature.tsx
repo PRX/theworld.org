@@ -10,9 +10,9 @@ import type {
   Contributor,
   Post_Additionalmedia as PostAdditionalMedia
 } from '@interfaces';
-import type { IContentLinkProps } from '@components/ContentLink';
 import type { IAudioControlsProps } from '@components/Player/components';
 import type { IAudioData } from '@components/Player/types';
+import { ContentLink } from '@components/ContentLink';
 import Image from 'next/legacy/image';
 import dynamic from 'next/dynamic';
 import 'moment-timezone';
@@ -28,10 +28,6 @@ const Moment = dynamic(() => import('react-moment')) as any;
 const AudioControls = dynamic(() =>
   import('@components/Player/components').then((mod) => mod.AudioControls)
 ) as React.FC<IAudioControlsProps>;
-
-const ContentLink = dynamic(() =>
-  import('@components/ContentLink').then((mod) => mod.ContentLink)
-) as React.FC<IContentLinkProps>;
 
 interface Props {
   data: PostStory;
