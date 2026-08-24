@@ -91,7 +91,7 @@ export async function proxy(request: NextRequest) {
 
       isImageUrlOk = imageHeaders.ok;
     } catch (err) {
-      console.error("Error fetching source image.", { err });
+      console.warn("Error fetching source image.", { err });
     }
 
     if (!isImageUrlOk) {
