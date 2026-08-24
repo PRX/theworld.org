@@ -5,7 +5,7 @@ import { has } from "lodash";
  * @file removeImgWithRelativeSrc.ts
  * Remove img tags with relative src URL's.
  */
-export const removeImgWIthRelativeSrc = replaceElement("img", (el) => {
+export const removeImgWithRelativeSrc = replaceElement("img", (el) => {
   if (
     !has(el.attribs, "src") ||
     (el.attribs.src.startsWith("/") && !el.attribs.src.startsWith("//:"))
