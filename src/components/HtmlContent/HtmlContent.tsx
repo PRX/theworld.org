@@ -21,7 +21,8 @@ import {
   //   fbRootRemove,
   fixBlockInParagraph,
   fixNestedSpans,
-  removeImgWIthRelativeSrc,
+  preservePixelImages,
+  removeImgWithRelativeSrc,
   removeLegacyEntityEmbed,
   //   instagramEmbed,
   removeUnsupportedElementTypes,
@@ -66,7 +67,8 @@ export const HtmlContent = ({
         /* GLOBAL FIXES */
 
         removeUnsupportedElementTypes,
-        removeImgWIthRelativeSrc,
+        removeImgWithRelativeSrc,
+        preservePixelImages,
         removeLegacyEntityEmbed,
         fbRootRemove,
         unwrapLegacyWrappers,
